@@ -126,11 +126,12 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private function doColonyCheckAndConsumeEnergy(BuildingUpgrade $upgrade, Colony $colony, GameControllerInterface $game): bool
     {
-        $storage = $colony->getStorage();
+        $storages = $colony->getStorage();
 
-        /** @var BuildingUpgradeCost $obj */
         foreach ($upgrade->getUpgradeCosts() as $obj) {
-            if (!$storage->containsKey($obj->getCommodityId())) {
+
+            $storage = $storages->get($obj->getCommodityId());
+            if ($storage === null) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
@@ -138,12 +139,12 @@ final class UpgradeBuilding implements ActionControllerInterface
                 );
                 return false;
             }
-            if ($obj->getAmount() > $storage[$obj->getCommodityId()]->getAmount()) {
+            if ($obj->getAmount() > $storage->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
-                    $storage[$obj->getCommodityId()]->getAmount()
+                    $storage->getAmount()
                 );
                 return false;
             }

@@ -62,11 +62,6 @@ class AllianceBoard
         return $this->id;
     }
 
-    public function getAllianceId(): int
-    {
-        return $this->alliance_id;
-    }
-
     public function getName(): string
     {
         return $this->name;

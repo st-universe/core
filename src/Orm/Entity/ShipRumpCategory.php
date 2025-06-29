@@ -27,9 +27,6 @@ class ShipRumpCategory
     #[Column(type: 'string')]
     private string $name = '';
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $database_id = 0;
-
     #[Column(type: 'string', enumType: SpacecraftTypeEnum::class)]
     private SpacecraftTypeEnum $type = SpacecraftTypeEnum::SHIP;
 
@@ -52,11 +49,6 @@ class ShipRumpCategory
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getDatabaseId(): int
-    {
-        return $this->database_id;
     }
 
     public function getDatabaseEntry(): ?DatabaseEntry

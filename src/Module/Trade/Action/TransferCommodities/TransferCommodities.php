@@ -6,6 +6,7 @@ namespace Stu\Module\Trade\Action\TransferCommodities;
 
 use Override;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -20,9 +21,7 @@ final class TransferCommodities implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TRANSFER';
 
-    public function __construct(private TransferCommoditiesRequestInterface $transferCommoditiesRequest, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private TransferCommoditiesRequestInterface $transferCommoditiesRequest, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,6 +46,9 @@ final class TransferCommodities implements ActionControllerInterface
         }
 
         $tradepost = $selectedStorage->getTradePost();
+        if ($tradepost === null) {
+            throw new SanityCheckException(sprintf('storageId %d not on tradepost', $storageId));
+        }
         $tradePostId = $tradepost->getId();
 
         if ($selectedStorage->getAmount() < $amount) {

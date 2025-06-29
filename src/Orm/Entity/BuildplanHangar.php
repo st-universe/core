@@ -30,9 +30,6 @@ class BuildplanHangar
     #[Column(type: 'integer')]
     private int $buildplan_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $default_torpedo_type_id = null;
-
     #[Column(type: 'integer')]
     private int $start_energy_costs;
 
@@ -61,18 +58,6 @@ class BuildplanHangar
     public function setBuildplanId(int $buildplanId): BuildplanHangar
     {
         $this->buildplan_id = $buildplanId;
-
-        return $this;
-    }
-
-    public function getDefaultTorpedoTypeId(): int
-    {
-        return $this->default_torpedo_type_id;
-    }
-
-    public function setDefaultTorpedoTypeId(int $defaultTorpedoTypeId): BuildplanHangar
-    {
-        $this->default_torpedo_type_id = $defaultTorpedoTypeId;
 
         return $this;
     }

@@ -44,10 +44,6 @@ interface TradePostRepositoryInterface extends ObjectRepository
 
     public function getClosestNpcTradePost(Location $location): ?TradePost;
 
-    public function getFergTradePost(
-        int $tradePostId
-    ): ?TradePost;
-
     /**
      * @return array<User>
      */

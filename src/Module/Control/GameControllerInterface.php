@@ -43,7 +43,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function setTargetLink(TargetLink $targetLink): GameControllerInterface;
 
-    public function setTemplateVar(string $key, mixed $variable);
+    public function setTemplateVar(string $key, mixed $variable): void;
 
     public function getUser(): User;
 
@@ -113,5 +113,8 @@ interface GameControllerInterface extends InformationInterface
 
     public function resetGameData(): void;
 
+    /**
+     * @return array{executionTime: float|string, memoryPeakUsage: float|string}
+     */
     public function getBenchmarkResult(): array;
 }

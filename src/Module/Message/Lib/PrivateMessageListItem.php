@@ -106,7 +106,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     #[Override]
     public function displayUserLinks(): bool
     {
-        return $this->getSender() && $this->getSender()->getId() !== UserEnum::USER_NOONE;
+        return $this->getSender()->getId() !== UserEnum::USER_NOONE;
     }
 
     #[Override]

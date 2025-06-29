@@ -48,7 +48,7 @@ final class CreateLicense implements ActionControllerInterface
             return;
         }
 
-        if ($giveAmount < 1 || $commodityId < 1 || $giveAmount === null || $commodityId === null) {
+        if ($giveAmount < 1 || $commodityId < 1) {
             $game->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
             return;
         }

@@ -9,25 +9,24 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeleteTopic implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_TOPIC';
 
-    public function __construct(private DeleteTopicRequestInterface $deleteTopicRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(
+        private DeleteTopicRequestInterface $deleteTopicRequest,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->deleteTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
+        if ($topic === null || $topic->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

@@ -51,7 +51,7 @@ interface UserRepositoryInterface extends ObjectRepository
      *
      * @return array<User>
      */
-    public function getByAlliance(Alliance $alliance): iterable;
+    public function getByAlliance(Alliance $alliance): array;
 
     /**
      * @return array<User>
@@ -76,12 +76,12 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return array<User>
      */
-    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): iterable;
+    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): array;
 
     /**
      * @return array<User>
      */
-    public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable;
+    public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): array;
 
     public function getActiveAmount(): int;
 
@@ -94,12 +94,12 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return array<User>
      */
-    public function getNpcList(): iterable;
+    public function getNpcList(): array;
 
     /**
      * @return array<User>
      */
-    public function getNonNpcList(): iterable;
+    public function getNonNpcList(): array;
 
     /**
      * Returns the game's default fallback user item

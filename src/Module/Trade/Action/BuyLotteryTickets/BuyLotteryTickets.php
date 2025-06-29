@@ -6,6 +6,7 @@ namespace Stu\Module\Trade\Action\BuyLotteryTickets;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,9 +22,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_BUY_LOTTERY_TICKETS';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLibFactoryInterface $tradeLibFactory, private LotteryFacadeInterface $lotteryFacade, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLibFactoryInterface $tradeLibFactory, private LotteryFacadeInterface $lotteryFacade, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -59,7 +58,10 @@ final class BuyLotteryTickets implements ActionControllerInterface
             return;
         }
 
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $tradePost = $this->tradepostRepository->find(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        if ($tradePost === null) {
+            throw new RuntimeException('no deals ferg tradepost found');
+        }
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
         $storageManagerUser->lowerStorage(

@@ -13,7 +13,7 @@ use Stu\Orm\Entity\PartnerSite;
 interface PartnerSiteRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<PartnerSite>
+     * @return array<PartnerSite>
      */
-    public function getOrdered(): iterable;
+    public function getOrdered(): array;
 }

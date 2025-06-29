@@ -14,9 +14,7 @@ final class MovePm implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_MOVE_PM';
 
-    public function __construct(private MovePmRequestInterface $movePmRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository)
-    {
-    }
+    public function __construct(private MovePmRequestInterface $movePmRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -24,19 +22,19 @@ final class MovePm implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
-        $fromCategory = $pm->getCategory();
-
-        if ($fromCategory === null || $fromCategory->isPMOutDir()) {
-            return;
-        }
-        $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
-
-        if ($destination === null || $destination->getUserId() !== $userId) {
-            $game->addInformation(_('Dieser Ordner existiert nicht'));
-            return;
-        }
         if ($pm === null || $pm->getRecipientId() !== $userId) {
             $game->addInformation(_('Diese Nachricht existiert nicht'));
+            return;
+        }
+
+        $fromCategory = $pm->getCategory();
+        if ($fromCategory->isPMOutDir()) {
+            return;
+        }
+
+        $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
+        if ($destination === null || $destination->getUserId() !== $userId) {
+            $game->addInformation(_('Dieser Ordner existiert nicht'));
             return;
         }
         $pm->setCategory($destination);

@@ -13,7 +13,7 @@ interface BuildingFieldAlternativeRepositoryInterface extends ObjectRepository
     public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternative;
 
     /**
-     * @return list<BuildingFieldAlternative>
+     * @return array<BuildingFieldAlternative>
      */
-    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable;
+    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): array;
 }

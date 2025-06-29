@@ -58,12 +58,12 @@ interface ModuleRepositoryInterface extends ObjectRepository
         int $moduleTypeId,
         SpacecraftRumpRoleEnum $shipRumpRole,
         array $moduleLevel
-    ): iterable;
+    ): array;
 
     /**
      * @param array<int> $specialTypeIds
      *
-     * @return iterable<Module>
+     * @return array<Module>
      */
-    public function getBySpecialTypeIds(array $specialTypeIds): iterable;
+    public function getBySpecialTypeIds(array $specialTypeIds): array;
 }

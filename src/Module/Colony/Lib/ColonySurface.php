@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -46,6 +48,9 @@ final class ColonySurface implements ColonySurfaceInterface
 
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
+            if ($building === null) {
+                throw new SanityCheckException(sprintf('buildingId %d does not exist', $this->buildingId));
+            }
             $user = $this->host->getUser();
 
             $researchedArray = $this->researchedRepository->getFinishedListByUser($user->getId());
@@ -72,6 +77,7 @@ final class ColonySurface implements ColonySurfaceInterface
         return $fields;
     }
 
+    /** @param array<Researched> $researched */
     private function isResearched(int $researchId, array $researched): bool
     {
         foreach ($researched as $research) {

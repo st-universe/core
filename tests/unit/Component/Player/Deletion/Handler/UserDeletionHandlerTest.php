@@ -16,25 +16,10 @@ use Stu\StuTestCase;
 
 class UserDeletionHandlerTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|SessionStringRepositoryInterface
-     */
-    private $sessionStringRepository;
-
-    /**
-     * @var null|MockInterface
-     */
-    private $userProfileVisitorRepository;
-
-    /**
-     * @var null|MockInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var null|MockInterface|UserLockRepositoryInterface
-     */
-    private $userLockRepository;
+    private MockInterface&SessionStringRepositoryInterface $sessionStringRepository;
+    private MockInterface&UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&UserLockRepositoryInterface $userLockRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -70,9 +55,6 @@ class UserDeletionHandlerTest extends StuTestCase
             ->andReturn($userLock);
 
         $userLock->shouldReceive('setUser')
-            ->with(null)
-            ->once();
-        $userLock->shouldReceive('setUserId')
             ->with(null)
             ->once();
         $userLock->shouldReceive('setFormerUserId')

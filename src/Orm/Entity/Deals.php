@@ -69,12 +69,12 @@ class Deals
     private ?int $auction_amount = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'want_commodity', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private Commodity $wantedCommodity;
+    #[JoinColumn(name: 'want_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Commodity $wantedCommodity;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'give_commodity', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private Commodity $giveCommodity;
+    #[JoinColumn(name: 'give_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Commodity $giveCommodity;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
@@ -126,23 +126,23 @@ class Deals
         return $this;
     }
 
-    public function getgiveCommodityId(): ?int
+    public function getGiveCommodityId(): ?int
     {
         return $this->give_commodity;
     }
 
-    public function getwantCommodityId(): ?int
+    public function getWantCommodityId(): ?int
     {
         return $this->want_commodity;
     }
 
-    public function getgiveCommodityAmount(): ?int
+    public function getGiveCommodityAmount(): ?int
     {
         return $this->give_commodity_amonut;
     }
 
 
-    public function getwantCommodityAmount(): ?int
+    public function getWantCommodityAmount(): ?int
     {
         return $this->want_commodity_amount;
     }
@@ -238,24 +238,24 @@ class Deals
         return $this;
     }
 
-    public function getWantedCommodity(): Commodity
+    public function getWantedCommodity(): ?Commodity
     {
         return $this->wantedCommodity;
     }
 
-    public function setWantedCommodity(Commodity $wantedCommodity): Deals
+    public function setWantedCommodity(?Commodity $wantedCommodity): Deals
     {
         $this->wantedCommodity = $wantedCommodity;
 
         return $this;
     }
 
-    public function getGiveCommodity(): Commodity
+    public function getGiveCommodity(): ?Commodity
     {
         return $this->giveCommodity;
     }
 
-    public function setGiveCommodity(Commodity $giveCommodity): Deals
+    public function setGiveCommodity(?Commodity $giveCommodity): Deals
     {
         $this->giveCommodity = $giveCommodity;
 
@@ -267,10 +267,9 @@ class Deals
      */
     public function getModules(): array
     {
-        return $this->getBuildplan()
-            ->getModules()
+        return $this->getBuildplan()?->getModules()
             ->map(fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule())
-            ->toArray();
+            ->toArray() ?? [];
     }
 
     public function getBuildplan(): ?SpacecraftBuildplan
@@ -280,17 +279,17 @@ class Deals
 
     public function getRumpId(): int
     {
-        return $this->getBuildplan()->getRumpId();
+        return $this->getBuildplan()?->getRumpId() ?? 0;
     }
 
     public function getCrew(): int
     {
-        return $this->getBuildplan() == null ? 0 : $this->getBuildplan()->getCrew();
+        return $this->getBuildplan()?->getCrew() ?? 0;
     }
 
     public function getBuildplanName(): string
     {
-        return $this->getBuildplan()->getName();
+        return $this->getBuildplan()?->getName() ?? '';
     }
 
     /**
@@ -303,7 +302,9 @@ class Deals
 
     public function getHighestBid(): ?AuctionBid
     {
-        return $this->getAuctionBids()->count() > 0 ? $this->getAuctionBids()->last() : null;
+        $last = $this->getAuctionBids()->last();
+
+        return $last === false ? null : $last;
     }
 
     public function isPrestigeCost(): bool

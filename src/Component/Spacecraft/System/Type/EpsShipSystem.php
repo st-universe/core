@@ -40,14 +40,14 @@ class EpsShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSy
     #[Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
-        $wrapper->getEpsSystemData()->setEps(0)->update();
+        $wrapper->getEpsSystemData()?->setEps(0)->update();
     }
 
     #[Override]
     public function handleDamage(SpacecraftWrapperInterface $wrapper): void
     {
         $data = $wrapper->getEpsSystemData();
-        if ($data->getEps() > $data->getMaxEps()) {
+        if ($data !== null && $data->getEps() > $data->getMaxEps()) {
             $data->setEps($data->getMaxEps())->update();
         }
     }

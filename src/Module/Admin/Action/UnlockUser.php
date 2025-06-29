@@ -6,18 +6,21 @@ namespace Stu\Module\Admin\Action;
 
 use Override;
 use request;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UnlockUser implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNLOCK_USER';
 
-    public function __construct(private UserLockRepositoryInterface $userLockRepository)
-    {
-    }
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserLockRepositoryInterface $userLockRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,20 +34,22 @@ final class UnlockUser implements ActionControllerInterface
         }
 
         $userIdToUnlock = request::getIntFatal('uid');
-        $lock = $this->userLockRepository->getActiveByUser($userIdToUnlock);
+        $user = $this->userRepository->find($userIdToUnlock);
+        if ($user === null) {
+            throw new SanityCheckException(sprintf('userId %d does not exist', $userIdToUnlock));
+        }
 
+        $lock = $this->userLockRepository->getActiveByUser($user);
         if ($lock === null) {
             return;
         }
 
         $user = $lock->getUser();
-
         if ($user === null) {
             return;
         }
 
         $lock->setUser(null);
-        $lock->setUserId(null);
         $lock->setFormerUserId($user->getId());
         $this->userLockRepository->save($lock);
 

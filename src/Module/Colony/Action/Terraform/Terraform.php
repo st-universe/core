@@ -113,7 +113,7 @@ final class Terraform implements ActionControllerInterface
             return false;
         }
 
-        $storage = $colony->getStorage();
+        $storages = $colony->getStorage();
 
         foreach ($terraforming->getCosts() as $obj) {
             if ($obj->getAmount() < 0) {
@@ -121,7 +121,8 @@ final class Terraform implements ActionControllerInterface
             }
 
             $commodityId = $obj->getCommodityId();
-            if (!$storage->containsKey($commodityId)) {
+            $storage = $storages->get($obj->getCommodityId());
+            if ($storage === null) {
                 $game->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
@@ -130,12 +131,12 @@ final class Terraform implements ActionControllerInterface
                 return false;
             }
 
-            if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
+            if ($obj->getAmount() > $storage->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
-                    $storage[$commodityId]->getAmount()
+                    $storage->getAmount()
                 );
                 return false;
             }

@@ -20,9 +20,7 @@ final class KickPlayer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_KICK_USER';
 
-    public function __construct(private KickPlayerRequestInterface $kickPlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private KickPlayerRequestInterface $kickPlayerRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,8 +32,6 @@ final class KickPlayer implements ActionControllerInterface
         if ($alliance === null) {
             throw new AccessViolationException();
         }
-
-        $allianceId = $alliance->getId();
 
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
@@ -59,8 +55,8 @@ final class KickPlayer implements ActionControllerInterface
             $this->allianceJobRepository->truncateByUser($userId);
 
             $this->allianceActionManager->setJobForUser(
-                $allianceId,
-                $userId,
+                $alliance,
+                $user,
                 AllianceEnum::ALLIANCE_JOBS_FOUNDER
             );
         }

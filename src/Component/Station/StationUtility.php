@@ -163,6 +163,9 @@ final class StationUtility implements StationUtilityInterface
     {
         $station = $progress->getStation();
         $plan = $station->getBuildplan();
+        if ($plan === null) {
+            throw new RuntimeException(sprintf('stationId %d does not have buildplan', $station->getId()));
+        }
         $rump = $station->getRump();
 
         // transform ship
@@ -177,13 +180,13 @@ final class StationUtility implements StationUtilityInterface
             ->get();
 
         // set influence area
-        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE) {
-            $station->setInfluenceArea($station->getMap()->getSystem());
+        if ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE) {
+            $station->setInfluenceArea($station->getMap()?->getSystem());
             $this->stationRepository->save($station);
         }
 
         // make tradepost entry
-        if ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST) {
+        if ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST) {
             $this->createTradepostAndLicense($station);
         }
 
@@ -295,18 +298,16 @@ final class StationUtility implements StationUtilityInterface
     #[Override]
     public function canManageShips(Station $station): bool
     {
-        return $station->getRump()->getShipRumpRole() !== null
-            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST
-                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
+        return ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_OUTPOST
+            || $station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
             && $station->hasEnoughCrew();
     }
 
     #[Override]
     public function canRepairShips(Station $station): bool
     {
-        return $station->getRump()->getShipRumpRole() !== null
-            && ($station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD
-                || $station->getRump()->getShipRumpRole()->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
+        return ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD
+            || $station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE)
             && $station->hasEnoughCrew();
     }
 }

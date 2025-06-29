@@ -20,20 +20,24 @@ final class ShowSystem implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $system = $this->starSystemRepository->find($this->showSystemRequest->getSystemId());
-
         if ($system === null) {
+            return;
+        }
+
+        $layer = $system->getLayer();
+        if ($layer === null) {
             return;
         }
 
         $fields = [];
         foreach (range(1, $system->getMaxY()) as $value) {
-            $fields[] = $this->starmapUiFactory->createYRow($system->getLayer(), $value, 1, $system->getMaxX(), $system);
+            $fields[] = $this->starmapUiFactory->createYRow($layer, $value, 1, $system->getMaxX(), $system);
         }
 
         $game->setTemplateFile('html/admin/mapeditor_system.twig');
         $game->appendNavigationPart(sprintf(
             '/admin/?SHOW_MAP_EDITOR=1&layerid=%d',
-            $system->getLayer()->getId()
+            $layer->getId()
         ), _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(

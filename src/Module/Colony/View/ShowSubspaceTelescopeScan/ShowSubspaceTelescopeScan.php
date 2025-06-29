@@ -15,6 +15,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 
@@ -51,20 +52,21 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             return;
         }
 
+        $layer = $colony->getStarsystemMap()->getSystem()->getLayer();
+        if ($layer === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
         $cx = request::getIntFatal('x');
         $cy = request::getIntFatal('y');
 
-        $scanCost = $this->calculateScanCost($colony, $cx, $cy);
+        $scanCost = $this->calculateScanCost($layer, $colony, $cx, $cy);
         $changeable = $colony->getChangeable();
 
         if ($scanCost > $changeable->getEps()) {
             return;
         }
 
-        $layer = $colony->getStarsystemMap()->getSystem()->getLayer();
-        if ($layer === null) {
-            throw new RuntimeException('this should not happen');
-        }
 
         $game->setTemplateVar('INFOS', $this->locationRepository->getRumpCategoryInfo($layer, $cx, $cy));
 
@@ -75,10 +77,8 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/colony/component/telescopeScan.twig');
     }
 
-    private function calculateScanCost(Colony $colony, int $cx, int $cy): int
+    private function calculateScanCost(Layer $layer, Colony $colony, int $cx, int $cy): int
     {
-        $layer = $colony->getSystem()->getLayer();
-
         $difX = abs($cx - $colony->getSystem()->getCx());
         $difY = abs($cy - $colony->getSystem()->getCy());
         $diagonal = (int)ceil(sqrt($difX * $difX + $difY * $difY));

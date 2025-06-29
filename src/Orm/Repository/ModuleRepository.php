@@ -177,7 +177,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 
     // used for admin createBuildplan
     #[Override]
-    public function getBySpecialTypeIds(array $specialTypeIds): iterable
+    public function getBySpecialTypeIds(array $specialTypeIds): array
     {
         return $this->getEntityManager()
             ->createQuery(

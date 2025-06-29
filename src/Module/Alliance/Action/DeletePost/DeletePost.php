@@ -11,7 +11,6 @@ use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -19,22 +18,22 @@ final class DeletePost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
-    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(
+        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoardPost $post */
         $post = $this->allianceBoardPostRepository->find(request::getIntFatal('pid'));
         if ($post === null) {
             return;
         }
 
-        if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
+        if ($post->getBoard()->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

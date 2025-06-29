@@ -183,11 +183,11 @@ class Fleet
 
     public function getCrewSum(): int
     {
-        return array_reduce(
-            $this->shiplist->toArray(),
-            fn(int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
-            0
-        );
+        return    $this->shiplist
+            ->reduce(
+                fn(int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()?->getCrew() ?? 0),
+                0
+            );
     }
 
     public function getHiddenStyle(): string

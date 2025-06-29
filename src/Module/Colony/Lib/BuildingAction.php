@@ -19,7 +19,8 @@ final class BuildingAction implements BuildingActionInterface
     #[Override]
     public function activate(PlanetField $field, GameControllerInterface $game): void
     {
-        if (!$field->hasBuilding()) {
+        $building = $field->getBuilding();
+        if ($building === null) {
             return;
         }
         if (!$field->isActivateAble()) {
@@ -31,7 +32,7 @@ final class BuildingAction implements BuildingActionInterface
         if ($field->hasHighDamage()) {
             $game->addInformationf(
                 _('Das Gebäude (%s) kann aufgrund zu starker Beschädigung nicht aktiviert werden'),
-                $field->getBuilding()->getName()
+                $building->getName()
             );
             return;
         }
@@ -39,12 +40,12 @@ final class BuildingAction implements BuildingActionInterface
         $host = $field->getHost();
         if (
             $host instanceof Colony
-            && $host->getChangeable()->getWorkless() < $field->getBuilding()->getWorkers()
+            && $host->getChangeable()->getWorkless() < $building->getWorkers()
         ) {
             $game->addInformationf(
                 _('Zum Aktivieren des Gebäudes (%s) werden %s Arbeiter benötigt'),
-                $field->getBuilding()->getName(),
-                $field->getBuilding()->getWorkers()
+                $building->getName(),
+                $building->getWorkers()
             );
             return;
         }
@@ -53,7 +54,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $game->addInformationf(
             _('%s auf Feld %s wurde aktiviert'),
-            $field->getBuilding()->getName(),
+            $building->getName(),
             $field->getFieldId()
         );
     }
@@ -61,7 +62,8 @@ final class BuildingAction implements BuildingActionInterface
     #[Override]
     public function deactivate(PlanetField $field, GameControllerInterface $game): void
     {
-        if (!$field->hasBuilding()) {
+        $building = $field->getBuilding();
+        if ($building === null) {
             return;
         }
         if (!$field->isActivateAble()) {
@@ -75,7 +77,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $game->addInformationf(
             _('%s auf Feld %s wurde deaktiviert'),
-            $field->getBuilding()->getName(),
+            $building->getName(),
             $field->getFieldId()
         );
     }
@@ -87,11 +89,10 @@ final class BuildingAction implements BuildingActionInterface
         bool $isDueToUpgrade = false
     ): void {
 
-        if (!$field->hasBuilding()) {
+        $building = $field->getBuilding();
+        if ($building === null) {
             return;
         }
-
-        $building = $field->getBuilding();
 
         if (!$isDueToUpgrade && !$building->isRemovable()) {
             return;

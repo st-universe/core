@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLock;
 
 /**
@@ -14,16 +15,16 @@ use Stu\Orm\Entity\UserLock;
 final class UserLockRepository extends EntityRepository implements UserLockRepositoryInterface
 {
     #[Override]
-    public function getActiveByUser(int $userId): ?UserLock
+    public function getActiveByUser(User $user): ?UserLock
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT ul FROM %s ul WHERE ul.user_id = :userId
+                'SELECT ul FROM %s ul WHERE ul.user = :user
                 ORDER BY ul.id DESC',
                 UserLock::class
             )
         )->setParameters([
-            'userId' => $userId
+            'user' => $user
         ])
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -35,7 +36,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT ul FROM %s ul
-                WHERE ul.user_id IS NOT NULL
+                WHERE ul.user IS NOT NULL
                 AND ul.remaining_ticks > 0',
                 UserLock::class
             )

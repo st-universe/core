@@ -77,7 +77,7 @@ final class BuildOnField implements ActionControllerInterface
                 return;
             }
 
-            $researchId = $building->getBuildableFields()->get($field->getFieldType())->getResearchId();
+            $researchId = $building->getBuildableFields()->get($field->getFieldType())?->getResearchId();
             if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
             }
@@ -114,7 +114,8 @@ final class BuildOnField implements ActionControllerInterface
             $building = $alt_building->getAlternativeBuilding();
         }
 
-        if ($field->hasBuilding()) {
+        $currentBuilding = $field->getBuilding();
+        if ($currentBuilding !== null) {
 
             if ($host instanceof Colony) {
 
@@ -130,8 +131,8 @@ final class BuildOnField implements ActionControllerInterface
                     );
                     return;
                 } elseif (
-                    $changeable->getEps() > $host->getMaxEps() - $field->getBuilding()->getEpsStorage()
-                    && $host->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()
+                    $changeable->getEps() > $host->getMaxEps() - $currentBuilding->getEpsStorage()
+                    && $host->getMaxEps() - $currentBuilding->getEpsStorage() < $building->getEpsCost()
                 ) {
                     $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
                     return;
@@ -229,21 +230,22 @@ final class BuildOnField implements ActionControllerInterface
         GameControllerInterface $game
     ): bool {
         $isEnoughAvailable = true;
-        $storage = $colony->getStorage();
+        $storages = $colony->getStorage();
 
         foreach ($building->getCosts() as $cost) {
             $commodityId = $cost->getCommodityId();
 
             $currentBuildingCost = [];
+            $currentBuilding = $field->getBuilding();
 
-            if ($field->hasBuilding()) {
-                $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
+            if ($currentBuilding !== null) {
+                $currentBuildingCost = $currentBuilding->getCosts()->toArray();
                 $result = array_filter(
                     $currentBuildingCost,
                     fn(BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if (
-                    !$storage->containsKey($commodityId) &&
+                    !$storages->containsKey($commodityId) &&
                     $result === []
                 ) {
                     $game->addInformationf(
@@ -254,7 +256,7 @@ final class BuildOnField implements ActionControllerInterface
                     $isEnoughAvailable = false;
                     continue;
                 }
-            } elseif (!$storage->containsKey($commodityId)) {
+            } elseif (!$storages->containsKey($commodityId)) {
                 $game->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $cost->getAmount(),
@@ -263,7 +265,8 @@ final class BuildOnField implements ActionControllerInterface
                 $isEnoughAvailable = false;
                 continue;
             }
-            $amount = $storage->containsKey($commodityId) ? $storage[$commodityId]->getAmount() : 0;
+            $storage = $storages->get($commodityId);
+            $amount = $storage !== null ? $storage->getAmount() : 0;
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,

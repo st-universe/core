@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
+use Doctrine\Common\Collections\Collection;
 use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Orm\Entity\BuildplanHangar;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -79,7 +85,11 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
+
         $hangar = $this->buildplanHangarRepository->getByRump($rump->getId());
+        if ($hangar === null) {
+            throw new SanityCheckException();
+        }
 
         if ($hangar->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
@@ -97,8 +107,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             return;
         }
 
-        $storage = $colony->getStorage();
-        if (!$storage->containsKey($commodity->getId())) {
+        $storages = $colony->getStorage();
+        if (!$storages->containsKey($commodity->getId())) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
@@ -127,17 +137,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $this->crewCreator->createCrewAssignment($ship, $colony);
+        $this->loadTorpedos($hangar, $storages, $wrapper, $colony);
 
-        $defaultTorpedoType = $hangar->getDefaultTorpedoType();
-        if ($defaultTorpedoType !== null && $storage->containsKey($defaultTorpedoType->getCommodityId())) {
-            $count = $ship->getMaxTorpedos();
-            if ($count > $storage[$defaultTorpedoType->getCommodityId()]->getAmount()) {
-                $count = $storage[$defaultTorpedoType->getCommodityId()]->getAmount();
-            }
-            $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $defaultTorpedoType);
-            $this->shipRepository->save($ship);
-            $this->storageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
-        }
         if ($hangar->getBuildplan()->getCrew() > 0) {
             $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
             $this->shipRepository->save($ship);
@@ -159,6 +160,31 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->checkDatabaseItem($rump->getDatabaseId());
         }
         $game->addInformation(_('Das Schiff wurde gestartet'));
+    }
+
+    /**
+     * @param Collection<int, Storage> $storages
+     */
+    private function loadTorpedos(BuildplanHangar $hangar, Collection $storages, ShipWrapperInterface $wrapper, Colony $colony): void
+    {
+        $defaultTorpedoType = $hangar->getDefaultTorpedoType();
+        if ($defaultTorpedoType === null) {
+            return;
+        }
+
+        $storage = $storages->get($defaultTorpedoType->getCommodityId());
+        if ($storage === null) {
+            return;
+        }
+
+        $ship = $wrapper->get();
+        $count = $ship->getMaxTorpedos();
+        if ($count > $storage->getAmount()) {
+            $count = $storage->getAmount();
+        }
+        $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $defaultTorpedoType);
+        $this->shipRepository->save($ship);
+        $this->storageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
     }
 
     #[Override]

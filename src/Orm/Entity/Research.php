@@ -36,10 +36,10 @@ class Research
     private int $rump_id;
 
     /**
-     * @var int[]|null
+     * @var int[]
      */
     #[Column(type: 'json')]
-    private ?array $database_entries = null;
+    private array $database_entries = [];
 
     #[Column(type: 'smallint')]
     private int $points;

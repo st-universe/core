@@ -176,7 +176,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getByAlliance(Alliance $alliance): iterable
+    public function getByAlliance(Alliance $alliance): array
     {
         return $this->findBy(
             [
@@ -239,7 +239,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): iterable
+    public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -258,7 +258,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable
+    public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -352,7 +352,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getNpcList(): iterable
+    public function getNpcList(): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -366,7 +366,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
-    public function getNonNpcList(): iterable
+    public function getNonNpcList(): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

@@ -57,7 +57,7 @@ final class FirstColony implements ActionControllerInterface
         }
         $this->planetColonization->colonize(
             $colony,
-            $user->getId(),
+            $user,
             $startingBuilding
         );
 

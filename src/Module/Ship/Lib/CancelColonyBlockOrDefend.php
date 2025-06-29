@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Override;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -41,6 +42,9 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
         $this->loggerUtil->log('D');
 
         $fleet = $target->getFleet();
+        if ($fleet === null) {
+            throw new SanityCheckException(sprintf('spacecraftId %d not in fleet', $target->getId()));
+        }
 
         if ($fleet->getDefendedColony() !== null) {
             $this->loggerUtil->log('E');

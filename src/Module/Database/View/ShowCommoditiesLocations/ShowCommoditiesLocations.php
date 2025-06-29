@@ -62,7 +62,7 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
                 fn(Storage $storage): StorageWrapper => $this->databaseUiFactory->createStorageWrapper(
                     $storage->getCommodityId(),
                     $storage->getAmount(),
-                    $storage->getTradePost()->getId()
+                    $storage->getTradePost()?->getId() ?? 0
                 ),
                 $this->storageRepository->getTradePostStorageByUserAndCommodity($user, $commodityId)
             )

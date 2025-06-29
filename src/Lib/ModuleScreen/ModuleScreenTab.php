@@ -31,11 +31,15 @@ class ModuleScreenTab
         }
 
         if ($this->moduleSelector->isMandatory()) {
+
+            $buildplan = $this->moduleSelector->getBuildplan();
+
             if (!$this->moduleSelector->hasSelectedModule()) {
                 $class .= ' module_selector_unselected';
-            } else {
+            } elseif ($buildplan !== null) {
+
                 /** @var Module $mod */
-                $mod = $this->moduleSelector->getBuildplan()->getModulesByType($this->moduleSelector->getModuleType())->first();
+                $mod = $buildplan->getModulesByType($this->moduleSelector->getModuleType())->first();
                 $commodityId = $mod->getCommodityId();
 
                 $stor = $this->moduleSelector->getHost()->getStorage()[$commodityId] ?? null;

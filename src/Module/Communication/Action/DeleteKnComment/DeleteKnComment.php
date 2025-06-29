@@ -8,16 +8,13 @@ use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class DeleteKnComment implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_COMMENT';
 
-    public function __construct(private DeleteKnCommentRequestInterface $deleteKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository)
-    {
-    }
+    public function __construct(private DeleteKnCommentRequestInterface $deleteKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -26,7 +23,6 @@ final class DeleteKnComment implements ActionControllerInterface
 
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
-        /** @var KnComment $obj */
         $obj = $this->knCommentRepository->find($this->deleteKnCommentRequest->getCommentId());
         if ($obj === null) {
             return;

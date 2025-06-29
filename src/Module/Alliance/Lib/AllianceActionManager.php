@@ -31,18 +31,18 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     ) {}
 
     #[Override]
-    public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
+    public function setJobForUser(Alliance $alliance, User $user, int $jobTypeId): void
     {
         $obj = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $allianceId,
+            $alliance->getId(),
             $jobTypeId
         );
         if ($obj === null) {
             $obj = $this->allianceJobRepository->prototype();
             $obj->setType($jobTypeId);
-            $obj->setAlliance($this->allianceRepository->find($allianceId));
+            $obj->setAlliance($alliance);
         }
-        $obj->setUser($this->userRepository->find($userId));
+        $obj->setUser($user);
 
         if (!$obj->getAlliance()->getJobs()->containsKey($jobTypeId)) {
             $obj->getAlliance()->getJobs()->set($jobTypeId, $obj);

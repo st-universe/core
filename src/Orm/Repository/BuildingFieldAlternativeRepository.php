@@ -24,7 +24,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
     }
 
     #[Override]
-    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
+    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): array
     {
         return $this->getEntityManager()
             ->createQuery(

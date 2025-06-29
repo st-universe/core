@@ -39,7 +39,7 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
     public function getSuitableForShieldRegeneration(): array;
 
     /**
-     * @return array<Spacecraft>
+     * @return iterable<Spacecraft>
      */
     public function getPlayerSpacecraftsForTick(): iterable;
 

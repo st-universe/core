@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Override;
+use RuntimeException;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Storage;
@@ -14,20 +15,18 @@ final class BasicTradeItem implements BasicTradeItemInterface
     public const int BASIC_TRADE_VALUE_SCALE = 100;
     public const float BASIC_TRADE_SELL_BUY_ALPHA = 1.1;
 
-    public function __construct(private ?BasicTrade $basicTrade, private ?Storage $storage, private ?Commodity $commodity = null)
-    {
-    }
+    public function __construct(private ?BasicTrade $basicTrade, private ?Storage $storage, private ?Commodity $commodity = null) {}
 
     #[Override]
     public function getUniqId(): string
     {
-        return $this->basicTrade === null ? '' : $this->basicTrade->getUniqId();
+        return $this->basicTrade?->getUniqId() ?? '';
     }
 
     #[Override]
     public function getCommodity(): Commodity
     {
-        return $this->commodity ?? $this->basicTrade->getCommodity();
+        return $this->commodity ?? $this->basicTrade?->getCommodity() ?? throw new RuntimeException('either commodity or basicTrade should be filled');
     }
 
     #[Override]
@@ -39,12 +38,12 @@ final class BasicTradeItem implements BasicTradeItemInterface
     #[Override]
     public function getBuyValue(): int
     {
-        return (int) ($this->basicTrade->getValue() / self::BASIC_TRADE_VALUE_SCALE);
+        return (int) ($this->basicTrade?->getValue() ?? 0 / self::BASIC_TRADE_VALUE_SCALE);
     }
 
     #[Override]
     public function getSellValue(): int
     {
-        return (int)($this->basicTrade->getValue() / self::BASIC_TRADE_VALUE_SCALE * self::BASIC_TRADE_SELL_BUY_ALPHA);
+        return (int)($this->basicTrade?->getValue() ?? 0 / self::BASIC_TRADE_VALUE_SCALE * self::BASIC_TRADE_SELL_BUY_ALPHA);
     }
 }

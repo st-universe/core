@@ -14,7 +14,7 @@ use Stu\Orm\Entity\PartnerSite;
 final class PartnerSiteRepository extends EntityRepository implements PartnerSiteRepositoryInterface
 {
     #[Override]
-    public function getOrdered(): iterable
+    public function getOrdered(): array
     {
         return $this->findBy(
             [],

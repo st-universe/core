@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
@@ -11,6 +12,7 @@ use Override;
 
 final class StuBbCodeDefinitionSet implements CodeDefinitionSet
 {
+    /** @var array<CodeDefinition> */
     private ?array $definitions = null;
 
     #[Override]

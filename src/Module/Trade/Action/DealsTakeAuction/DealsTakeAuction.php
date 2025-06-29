@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\DealsTakeAuction;
 
 use Override;
+use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,6 +16,7 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
+use Stu\Orm\Entity\AuctionBid;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\TradePost;
@@ -55,10 +57,9 @@ final class DealsTakeAuction implements ActionControllerInterface
         if ($auction->getTakenTime() !== null) {
             return;
         }
-        if ($auction->getAuctionUser()->getId() !== $userId) {
+        if ($auction->getAuctionUser() !== $user) {
             return;
         }
-
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
             throw new AccessViolationException(sprintf(
@@ -67,8 +68,16 @@ final class DealsTakeAuction implements ActionControllerInterface
             ));
         }
 
-        $neededStorageSpace = $this->determineNeededStorageSpace($auction);
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $highestBid = $auction->getHighestBid();
+        if ($highestBid === null) {
+            throw new RuntimeException('no highest bid present');
+        }
+
+        $neededStorageSpace = $this->determineNeededStorageSpace($auction, $highestBid);
+        $tradePost = $this->tradepostRepository->find(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        if ($tradePost === null) {
+            throw new RuntimeException('no deals ferg tradepost found');
+        }
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
         $freeStorage = $storageManagerUser->getFreeStorage();
 
@@ -80,14 +89,15 @@ final class DealsTakeAuction implements ActionControllerInterface
             return; */
         }
 
-
         $currentBidAmount = $auction->getAuctionAmount();
-        $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
+        $currentMaxAmount = $highestBid->getMaxAmount();
 
         //give overpay back
         if ($auction->getAuctionAmount() < $currentMaxAmount) {
             //give prestige back
-            if ($auction->isPrestigeCost()) {
+
+            $wantedCommodity = $auction->getWantedCommodity();
+            if ($wantedCommodity === null) {
                 $description = sprintf(
                     '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil dein Maximalgebot über dem Höchstgebot lag',
                     $currentMaxAmount - $currentBidAmount
@@ -101,56 +111,60 @@ final class DealsTakeAuction implements ActionControllerInterface
                 $game->addInformation(sprintf(
                     _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
                     $currentMaxAmount - $currentBidAmount,
-                    $auction->getWantedCommodity()->getName()
+                    $wantedCommodity->getName()
                 ));
                 return;
             } else {
                 $storageManagerUser->upperStorage(
-                    $auction->getwantCommodityId(),
+                    $wantedCommodity->getId(),
                     $currentMaxAmount - $currentBidAmount
                 );
                 $game->addInformation(sprintf(
                     _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
                     $currentMaxAmount - $currentBidAmount,
-                    $auction->getWantedCommodity()->getName()
+                    $wantedCommodity->getName()
                 ));
             }
         }
 
-        if ($auction->getgiveCommodityId() !== null) {
+        $givenCommodity = $auction->getGiveCommodity();
+        if ($givenCommodity !== null) {
             $storageManagerUser->upperStorage(
-                $auction->getgiveCommodityId(),
-                (int) $auction->getgiveCommodityAmount()
+                $givenCommodity->getId(),
+                (int) $auction->getGiveCommodityAmount()
             );
 
-            $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount(), $auction->getgiveCommodity()->getName()));
+            $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getGiveCommodityAmount(), $givenCommodity->getName()));
         }
 
-        if ($auction->getShip() == true) {
-            $this->createShip($auction->getBuildplan(), $tradePost, $userId);
-            $game->addInformation(_('Du hast dein Schiff erhalten'));
-        }
+        $buildplan = $auction->getBuildplan();
+        if ($buildplan !== null) {
+            if ($auction->getShip() == true) {
+                $this->createShip($buildplan, $tradePost, $userId);
+                $game->addInformation(_('Du hast dein Schiff erhalten'));
+            }
 
-        if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
-            $this->copyBuildplan($auction->getBuildplan(), $user);
+            if ($auction->getShip() == false) {
+                $this->copyBuildplan($buildplan, $user);
 
-            $game->addInformation(_('Du hast deinen Bauplan erhalten'));
+                $game->addInformation(_('Du hast deinen Bauplan erhalten'));
+            }
         }
 
         $auction->setTakenTime($this->stuTime->time());
         $this->dealsRepository->save($auction);
     }
 
-    private function determineNeededStorageSpace(Deals $auction): int
+    private function determineNeededStorageSpace(Deals $auction, AuctionBid $highestBid): int
     {
         $result = 0;
 
-        if ($auction->getgiveCommodityId() !== null) {
-            $result += $auction->getgiveCommodityAmount();
+        if ($auction->getGiveCommodityId() !== null) {
+            $result += $auction->getGiveCommodityAmount();
         }
 
-        if ($auction->getAuctionAmount() < $auction->getHighestBid()->getMaxAmount()) {
-            $result += $auction->getHighestBid()->getMaxAmount() - $auction->getAuctionAmount();
+        if ($auction->getAuctionAmount() < $highestBid->getMaxAmount()) {
+            $result += $highestBid->getMaxAmount() - $auction->getAuctionAmount();
         }
 
         return $result;

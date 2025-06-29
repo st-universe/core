@@ -11,7 +11,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -27,9 +26,7 @@ final class PostKnComment implements ActionControllerInterface
     {
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
-        /** @var KnPost $post */
         $post = $this->knPostRepository->find($this->postKnCommentRequest->getKnId());
-
         if ($post === null) {
             return;
         }

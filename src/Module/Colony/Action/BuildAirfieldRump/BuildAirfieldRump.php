@@ -8,6 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -53,6 +54,9 @@ final class BuildAirfieldRump implements ActionControllerInterface
         }
 
         $rump = $this->spacecraftRumpRepository->find($rumpId);
+        if ($rump === null) {
+            throw new SanityCheckException(sprintf('rumpId %d does not exist', $rumpId));
+        }
 
         $wantedAmount = request::postIntFatal('amount');
         $amount = 0;

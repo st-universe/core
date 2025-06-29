@@ -17,6 +17,10 @@ Init::run(function (ContainerInterface $dic): void {
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP);
     $shipRumpRepo = $dic->get(SpacecraftRumpRepositoryInterface::class);
 
+    if ($type === null || $category === null) {
+        throw new RuntimeException('type or category is null');
+    }
+
     $result = $shipRumpRepo->getWithoutDatabaseEntry();
     foreach ($result as $obj) {
         $db = $repository->prototype();

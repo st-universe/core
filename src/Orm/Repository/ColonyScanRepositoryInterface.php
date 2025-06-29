@@ -24,6 +24,7 @@ interface ColonyScanRepositoryInterface extends ObjectRepository
 
     public function truncateByUserId(ColonyScan $userId): void;
 
+    /** @return array<array<string, int>> */
     public function getSurface(int $colonyId): array;
 
     public function getSurfaceArray(int $id): string;

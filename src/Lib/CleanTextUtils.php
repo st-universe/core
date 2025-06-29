@@ -2,6 +2,8 @@
 
 namespace Stu\Lib;
 
+use RuntimeException;
+
 class CleanTextUtils
 {
     public static function clearEmojis(string $text): string
@@ -14,7 +16,7 @@ class CleanTextUtils
 
     public static function clearUnicode(string $text): string
     {
-        return preg_replace('/&#?\d+;?/', '', $text);
+        return preg_replace('/&#?\d+;?/', '', $text) ?? throw new RuntimeException(sprintf('Fehler beim Entfernen des Unicode aus: %s', $text));
     }
 
     /**

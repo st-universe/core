@@ -12,7 +12,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -31,7 +30,6 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         private TradePostRepositoryInterface $tradePostRepository,
         private StorageRepositoryInterface $storageRepository,
         private ShipRepositoryInterface $shipRepository,
-        private CommodityRepositoryInterface $commodityRepository,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
@@ -70,8 +68,12 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         }
 
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
-        $commodityId = $licenseInfo->getCommodityId();
-        $commodity = $this->commodityRepository->find($commodityId);
+        if ($licenseInfo === null) {
+            $game->addInformation('Keine Lizenz verfügbar');
+            return;
+        }
+        $commodity = $licenseInfo->getCommodity();
+        $commodityId = $commodity->getId();
         $commodityName = $commodity->getName();
         $licenseCost = $licenseInfo->getAmount();
 

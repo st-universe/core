@@ -13,9 +13,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private SessionStringRepositoryInterface $sessionStringRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private UserRepositoryInterface $userRepository, private UserLockRepositoryInterface $userLockRepository)
-    {
-    }
+    public function __construct(private SessionStringRepositoryInterface $sessionStringRepository, private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository, private UserRepositoryInterface $userRepository, private UserLockRepositoryInterface $userLockRepository) {}
 
     #[Override]
     public function delete(User $user): void
@@ -37,7 +35,6 @@ final class UserDeletionHandler implements PlayerDeletionHandlerInterface
         }
 
         $lock->setUser(null);
-        $lock->setUserId(null);
         $lock->setFormerUserId($user->getId());
         $this->userLockRepository->save($lock);
     }

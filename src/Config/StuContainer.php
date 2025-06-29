@@ -59,11 +59,7 @@ class StuContainer extends Container
     #[Override]
     public function get(string $id): mixed
     {
-        $service = $this->additionalServices->get($id);
-
-        return $service === null
-            ? parent::get($id)
-            : $service;
+        return $this->additionalServices->get($id) ?? parent::get($id);
     }
 
     /**

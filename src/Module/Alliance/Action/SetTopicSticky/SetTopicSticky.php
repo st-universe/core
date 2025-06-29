@@ -16,18 +16,18 @@ final class SetTopicSticky implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SET_STICKY';
 
-    public function __construct(private SetTopicStickyRequestInterface $setTopicStickyRequest, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository)
-    {
-    }
+    public function __construct(
+        private SetTopicStickyRequestInterface $setTopicStickyRequest,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        /** @var AllianceBoardTopic $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->setTopicStickyRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
+        if ($topic === null || $topic->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

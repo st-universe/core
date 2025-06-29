@@ -7,16 +7,13 @@ namespace Stu\Module\Message\Action\DeleteIgnores;
 use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
 final class DeleteIgnores implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_IGNORES';
 
-    public function __construct(private DeleteIgnoresRequestInterface $deleteIgnoresRequest, private IgnoreListRepositoryInterface $ignoreListRepository)
-    {
-    }
+    public function __construct(private DeleteIgnoresRequestInterface $deleteIgnoresRequest, private IgnoreListRepositoryInterface $ignoreListRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -24,7 +21,6 @@ final class DeleteIgnores implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         foreach ($this->deleteIgnoresRequest->getIgnoreIds() as $val) {
-            /** @var IgnoreList $contact */
             $contact = $this->ignoreListRepository->find($val);
             if (!$contact || !$contact->getUserId() != $userId) {
                 continue;

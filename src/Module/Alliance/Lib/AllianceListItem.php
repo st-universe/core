@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 
 final class AllianceListItem
 {
-    public function __construct(private Alliance $alliance)
-    {
-    }
+    public function __construct(private Alliance $alliance) {}
 
     public function getId(): int
     {
@@ -48,7 +48,8 @@ final class AllianceListItem
         return $this->alliance->getAvatar();
     }
 
-    public function getMembers(): iterable
+    /** @return Collection<int, User> */
+    public function getMembers(): Collection
     {
         return $this->alliance->getMembers();
     }

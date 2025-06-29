@@ -13,10 +13,10 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
@@ -26,14 +26,13 @@ final class PlanetColonization implements PlanetColonizationInterface
         private readonly StorageManagerInterface $storageManager,
         private readonly ColonyLibFactoryInterface $colonyLibFactory,
         private readonly ColonyRepositoryInterface $colonyRepository,
-        private readonly UserRepositoryInterface $userRepository,
         private readonly BuildingManagerInterface $buildingManager
     ) {}
 
     #[Override]
     public function colonize(
         Colony $colony,
-        int $userId,
+        User $user,
         Building $building,
         ?PlanetField $field = null
     ): void {
@@ -62,7 +61,7 @@ final class PlanetColonization implements PlanetColonizationInterface
 
         $this->buildingManager->finish($field, true);
 
-        $colony->setUser($this->userRepository->find($userId));
+        $colony->setUser($user);
         $colony->setName(_('Kolonie'));
 
         $this->colonyRepository->save($colony);

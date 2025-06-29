@@ -4,12 +4,11 @@ namespace Stu\Module\Maintenance;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
 
 final class DatabaseBackup implements MaintenanceHandlerInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ConfigInterface $config) {}
 
     #[Override]
     public function handle(): void
@@ -23,6 +22,9 @@ final class DatabaseBackup implements MaintenanceHandlerInterface
         $backup_dir = $this->config->get('db.backup_dir');
 
         $dir = dir($backup_dir);
+        if ($dir === false) {
+            throw new RuntimeException('error opening backup directory');
+        }
         while ($file = $dir->read()) {
             $filename = sprintf('%s/%s', $backup_dir, $file);
 

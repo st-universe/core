@@ -11,13 +11,13 @@ use Override;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
+    /** @var callable|Config|null */
     private $config;
 
     /**
      * @param array<mixed> $request
-     * @param callable|Config $config
      */
-    public function __construct(private array $request, $config)
+    public function __construct(private array $request, callable|Config|null $config)
     {
         $this->config = $config;
     }
@@ -26,7 +26,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
-            fn ($parameterName) => $this->request[$parameterName] ?? null,
+            fn($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }
@@ -35,7 +35,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(
-            fn ($parameterName) => $this->request[$parameterName] ?? null,
+            fn($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }

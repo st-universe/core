@@ -6,6 +6,7 @@ namespace Stu\Module\Admin\Action;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use RuntimeException;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -66,6 +67,9 @@ final class StartMirrorWorld implements ActionControllerInterface
         $backup_dir = $this->config->get('db.backup_dir');
 
         $dir = dir($backup_dir);
+        if ($dir === false) {
+            throw new RuntimeException('Fehler beim Öffnen des Backup Ordners');
+        }
         while ($file = $dir->read()) {
             $filename = sprintf('%s/%s', $backup_dir, $file);
 

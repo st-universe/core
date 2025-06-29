@@ -9,6 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -28,6 +29,10 @@ final class ShowStationInfo implements ViewControllerInterface
         $planId = request::getIntFatal('planid');
 
         $plan = $this->stationUtility->getBuidplanIfResearchedByUser($planId, $userId);
+        if ($plan === null) {
+            throw new SanityCheckException(sprintf('planId %d is not researched by userId %d', $planId, $userId));
+        }
+
         $rump = $plan->getRump();
 
         if (!$this->shipRumpUserRepository->isAvailableForUser($rump->getId(), $userId)) {

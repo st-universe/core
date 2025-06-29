@@ -69,7 +69,8 @@ abstract class AbstractJoinFleet
             );
             return;
         }
-        if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
+        $newCrewAmount = $fleet->getCrewSum() + ($ship->getBuildplan()?->getCrew() ?? 0);
+        if ($newCrewAmount > GameEnum::CREW_PER_FLEET) {
             $game->addInformation(sprintf(
                 _('%s: Es sind maximal %d Crew pro Flotte möglich'),
                 $ship->getName(),

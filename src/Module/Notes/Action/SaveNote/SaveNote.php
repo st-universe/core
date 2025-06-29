@@ -15,9 +15,7 @@ final class SaveNote implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SAVE_NOTE';
 
-    public function __construct(private SaveNoteRequestInterface $saveNoteRequest, private NoteRepositoryInterface $noteRepository)
-    {
-    }
+    public function __construct(private SaveNoteRequestInterface $saveNoteRequest, private NoteRepositoryInterface $noteRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +27,7 @@ final class SaveNote implements ActionControllerInterface
             $note = $this->noteRepository->prototype();
         } else {
             $note = $this->noteRepository->find($noteId);
-            if ($note->getUserId() !== $userId) {
+            if ($note === null || $note->getUserId() !== $userId) {
                 throw new AccessViolationException();
             }
         }

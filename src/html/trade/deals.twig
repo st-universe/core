@@ -79,14 +79,14 @@
                     <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
                             name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
-                        {{ data.getwantCommodityAmount }}
+                        {{ data.getWantCommodityAmount }}
                     </td>
                     {% if data.getAmount %}
                     <td>{{ data.getAmount }}</td>
@@ -105,9 +105,9 @@
                     <td><input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
                             name="B_DEALS_TAKE_OFFER" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     <td>
                         <img src="assets/buttons/prestige.png" title="Prestige" />
@@ -139,9 +139,9 @@
                         <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
                     </td>
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
-                        {{ data.getwantCommodityAmount }}
+                        {{ data.getWantCommodityAmount }}
                     </td>
                     {% if data.getAmount %}
                     <td>{{ data.getAmount }}</td>
@@ -200,9 +200,9 @@
                         <img src="assets/buttons/crew.png" title="Benötigte Crew" /> {{ data.getCrew }}
                     </td>
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
-                        {{ data.getwantCommodityAmount }}
+                        {{ data.getWantCommodityAmount }}
                     </td>
                     {% if data.getAmount %}
                     <td>{{ data.getAmount }}</td>
@@ -273,19 +273,19 @@
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -308,9 +308,9 @@
                     <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input type="submit"
                             value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     {% if data.getWantPrestige %}
                     <td>
@@ -352,13 +352,13 @@
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -431,13 +431,13 @@
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -514,19 +514,19 @@
                     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -548,9 +548,9 @@
                     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <td><input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                     <td>
-                        <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                             title="{{ data.getGiveCommodity.getName }}" />
-                        {{ data.getgiveCommodityAmount }}
+                        {{ data.getGiveCommodityAmount }}
                     </td>
                     {% if data.getWantPrestige %}
                     <td>
@@ -591,13 +591,13 @@
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -668,13 +668,13 @@
                     </td>
                     {% if data.getAuctionAmount %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         {{ data.getAuctionAmount }}
                     </td>
                     {% else %}
                     <td>
-                        <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                        <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                             title="{{ data.getWantedCommodity.getName }}" />
                         Kein Gebot
                     </td>
@@ -740,19 +740,19 @@
             {% for data in ENDEDAUCTIONSGOODS %}
             <tr class="row{{ loop.index is odd }}">
                 <td>
-                    <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                         title="{{ data.getGiveCommodity.getName }}" />
-                    {{ data.getgiveCommodityAmount }}
+                    {{ data.getGiveCommodityAmount }}
                 </td>
                 {% if data.getAuctionAmount %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     {{ data.getAuctionAmount }}
                 </td>
                 {% else %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     Kein Gebot
                 </td>
@@ -769,9 +769,9 @@
             {% for data in ENDEDAUCTIONSGOODSPRESTIGE %}
             <tr class="row{{ loop.index is odd }}">
                 <td>
-                    <img src="assets/commodities/{{ data.getgiveCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getGiveCommodityId }}.png"
                         title="{{ data.getGiveCommodity.getName }}" />
-                    {{ data.getgiveCommodityAmount }}
+                    {{ data.getGiveCommodityAmount }}
                 </td>
                 {% if data.getWantPrestige %}
                 <td>
@@ -806,13 +806,13 @@
                 </td>
                 {% if data.getAuctionAmount %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     {{ data.getAuctionAmount }}
                 </td>
                 {% else %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     Kein Gebot
                 </td>
@@ -873,13 +873,13 @@
                 </td>
                 {% if data.getAuctionAmount %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     {{ data.getAuctionAmount }}
                 </td>
                 {% else %}
                 <td>
-                    <img src="assets/commodities/{{ data.getwantCommodityId }}.png"
+                    <img src="assets/commodities/{{ data.getWantCommodityId }}.png"
                         title="{{ data.getWantedCommodity.getName }}" />
                     Kein Gebot
                 </td>

@@ -9,7 +9,7 @@ use Stu\Orm\Entity\User;
 
 interface AllianceActionManagerInterface
 {
-    public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void;
+    public function setJobForUser(Alliance $alliance, User $user, int $jobTypeId): void;
 
     public function delete(Alliance $alliance, bool $sendMessage = true): void;
 

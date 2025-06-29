@@ -77,7 +77,9 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
 
         //modify constellation
         foreach ($fleets as $shiplist) {
-            $fleet = current($shiplist)->getFleet();
+
+            $current = current($shiplist);
+            $fleet = $current ? $current->getFleet() : null;
 
             if ($fleet === null) {
                 throw new RuntimeException('this should not happen');

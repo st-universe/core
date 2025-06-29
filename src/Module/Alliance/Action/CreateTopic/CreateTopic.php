@@ -9,7 +9,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
@@ -18,9 +17,12 @@ final class CreateTopic implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
-    public function __construct(private CreateTopicRequestInterface $createTopicRequest, private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository, private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository, private AllianceBoardRepositoryInterface $allianceBoardRepository)
-    {
-    }
+    public function __construct(
+        private CreateTopicRequestInterface $createTopicRequest,
+        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private AllianceBoardRepositoryInterface $allianceBoardRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,9 +45,8 @@ final class CreateTopic implements ActionControllerInterface
             return;
         }
 
-        /** @var AllianceBoard $board */
         $board = $this->allianceBoardRepository->find($this->createTopicRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
+        if ($board === null || $board->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

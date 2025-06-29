@@ -9,16 +9,16 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class RenameBoard implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RENAME_BOARD';
 
-    public function __construct(private RenameBoardRequestInterface $renameBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository)
-    {
-    }
+    public function __construct(
+        private RenameBoardRequestInterface $renameBoardRequest,
+        private AllianceBoardRepositoryInterface $allianceBoardRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -27,9 +27,8 @@ final class RenameBoard implements ActionControllerInterface
 
         $name = $this->renameBoardRequest->getTitle();
 
-        /** @var AllianceBoard $board */
         $board = $this->allianceBoardRepository->find($this->renameBoardRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
+        if ($board === null || $board->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 

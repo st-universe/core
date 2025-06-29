@@ -72,10 +72,9 @@ final class TickManager implements TickManagerInterface
             $remainingTicks = $lock->getRemainingTicks();
 
             if ($remainingTicks === 1) {
-                $userId = $lock->getUser()->getId();
+                $userId = $lock->getUser()?->getId() ?? 0;
 
                 $lock->setUser(null);
-                $lock->setUserId(null);
                 $lock->setFormerUserId($userId);
                 $lock->setRemainingTicks(0);
             } else {

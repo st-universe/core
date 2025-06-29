@@ -18,6 +18,10 @@ Init::run(function (ContainerInterface $dic): void {
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM_TYPE);
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
 
+    if ($type === null || $category === null) {
+        throw new RuntimeException('type or category is null');
+    }
+
     $result = $starSystemTypeRepo->getWithoutDatabaseEntry();
     foreach ($result as $obj) {
         $db = $repository->prototype();

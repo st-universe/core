@@ -25,9 +25,6 @@ class UserLock
     private int $id;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $user_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
     private ?int $former_user_id = null;
 
     #[Column(type: 'integer')]
@@ -37,23 +34,12 @@ class UserLock
     private string $reason = '';
 
     #[OneToOne(targetEntity: User::class, inversedBy: 'userLock')]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', nullable: true, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?User $user = null;
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setUserId(?int $userId): UserLock
-    {
-        $this->user_id = $userId;
-        return $this;
-    }
-
-    public function getUserId(): int
-    {
-        return $this->user_id;
     }
 
     public function getUser(): ?User

@@ -47,7 +47,9 @@ final class ShowMapOverall implements ViewControllerInterface
         }
 
         $img = imagecreatetruecolor($width, $height);
-
+        if ($img === false) {
+            throw new RuntimeException('Fehler bei Erstellung von true color image');
+        }
 
         // mapfields
         $startY = 1;
@@ -91,7 +93,11 @@ final class ShowMapOverall implements ViewControllerInterface
             }
 
             $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType());
-            $types[$data->getFieldId()] = imagecreatefrompng($imagePath);
+            $partialImage = imagecreatefrompng($imagePath);
+            if ($partialImage === false) {
+                throw new RuntimeException('error creating partial image');
+            }
+            $types[$data->getFieldId()] = $partialImage;
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;
         }

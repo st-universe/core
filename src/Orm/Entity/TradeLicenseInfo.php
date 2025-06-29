@@ -76,11 +76,6 @@ class TradeLicenseInfo
         return $this;
     }
 
-    public function getCommodityId(): int
-    {
-        return $this->commodity_id;
-    }
-
     public function getCommodity(): Commodity
     {
         return $this->commodity;

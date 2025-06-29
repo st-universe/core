@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Action\Selfrepair;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairTaskConstants;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -138,8 +139,7 @@ final class Selfrepair implements ActionControllerInterface
 
         if (
             ($repairType === RepairTaskConstants::SPARE_PARTS_ONLY || $repairType === RepairTaskConstants::BOTH)
-            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::COMMODITY_SPARE_PART)
-                || $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)->getAmount() < $neededSparePartCount)
+            && ($ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)?->getAmount() ?? 0) < $neededSparePartCount
         ) {
             $game->addInformationf(_('Für die Reparatur werden %d Ersatzteile benötigt'), $neededSparePartCount);
             $result = false;
@@ -147,8 +147,7 @@ final class Selfrepair implements ActionControllerInterface
 
         if (
             ($repairType === RepairTaskConstants::SYSTEM_COMPONENTS_ONLY || $repairType === RepairTaskConstants::BOTH)
-            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)
-                || $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)->getAmount() < $neededSparePartCount)
+            && ($ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)?->getAmount() ?? 0) < $neededSparePartCount
         ) {
             $game->addInformationf(_('Für die Reparatur werden %d Systemkomponenten benötigt'), $neededSparePartCount);
             $result = false;
@@ -163,7 +162,7 @@ final class Selfrepair implements ActionControllerInterface
             $repairType === RepairTaskConstants::SPARE_PARTS_ONLY
             || $repairType === RepairTaskConstants::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)->getCommodity();
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)?->getCommodity() ?? throw new RuntimeException('this should not happen');
             $this->storageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
             $game->addInformationf(_('Für die Reparatur werden %d Ersatzteile verwendet'), $neededSparePartCount);
         }
@@ -172,7 +171,7 @@ final class Selfrepair implements ActionControllerInterface
             $repairType === RepairTaskConstants::SYSTEM_COMPONENTS_ONLY
             || $repairType === RepairTaskConstants::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)->getCommodity();
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)?->getCommodity() ?? throw new RuntimeException('this should not happen');
             $this->storageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
             $game->addInformationf(_('Für die Reparatur werden %d Systemkomponenten verwendet'), $neededSparePartCount);
         }

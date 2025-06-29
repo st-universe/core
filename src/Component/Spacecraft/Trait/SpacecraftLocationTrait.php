@@ -55,17 +55,12 @@ trait SpacecraftLocationTrait
             return null;
         }
 
-        $map = $this->getMap();
-        if ($map === null) {
-            return null;
-        }
-
-        return $map->getMapRegion();
+        return $this->getMap()?->getMapRegion();
     }
 
     public function isOverColony(): ?Colony
     {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
+        return $this->getStarsystemMap()?->getColony();
     }
 
     public function isOverSystem(): ?StarSystem
@@ -80,7 +75,7 @@ trait SpacecraftLocationTrait
 
     public function getSystem(): ?StarSystem
     {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
+        return $this->getStarsystemMap()?->getSystem();
     }
 
     public function getSectorString(): string
