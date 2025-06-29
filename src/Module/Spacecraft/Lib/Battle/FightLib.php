@@ -72,7 +72,9 @@ final class FightLib implements FightLibInterface
             $this->cancelRetrofit->cancelRetrofit($spacecraft);
         }
 
-        $this->alertLevelBasedReaction->react($wrapper, $informationWrapper);
+        if ($spacecraft->hasComputer()) {
+            $this->alertLevelBasedReaction->react($wrapper, $informationWrapper);
+        }
 
         if (!$informationWrapper->isEmpty()) {
             $informations->addInformationf('Aktionen der %s', $spacecraft->getName());
