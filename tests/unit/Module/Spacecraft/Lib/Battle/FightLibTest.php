@@ -166,7 +166,6 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-
         $this->ship->shouldReceive('getDockedTo')
             ->withNoArgs()
             ->once()
@@ -174,6 +173,10 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
@@ -242,11 +245,14 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-
         $this->ship->shouldReceive('getDockedTo')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $this->ship->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
@@ -269,10 +275,6 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($informationWrapper);
-
-        $this->alertLevelBasedReaction->shouldReceive('react')
-            ->with($this->wrapper, $informationWrapper)
-            ->once();
 
         $informationWrapper->shouldReceive('isEmpty')
             ->withNoArgs()
