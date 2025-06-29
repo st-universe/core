@@ -129,7 +129,16 @@ function showSpacecraftDetails(id) {
 function showCommunication(id) {
   closeAjaxWindow();
   openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_SPACECRAFT_COMMUNICATION=1&id=" + id);
+  ajax_update("elt", "?SHOW_SPACECRAFT_COMMUNICATION=1&id=" + id, function () {
+    // Nach dem AJAX-Update initialisieren
+    var emergencyTextElement = document.getElementById('emergencytext');
+    if (emergencyTextElement) {
+      var limit = parseInt(emergencyTextElement.getAttribute('data-limit'));
+      if (limit) {
+        initEmergencyTextLimiter(limit);
+      }
+    }
+  });
 }
 function openTradeMenu(postid) {
   closeAjaxWindow();
@@ -416,3 +425,48 @@ function selectLssMode(mode) {
     `id=${spacecraftid}&mode=${mode}&sstr=${sstr}`
   );
 }
+
+function initEmergencyTextLimiter(limit) {
+  var emergencyTextElement = document.getElementById('emergencytext');
+  if (emergencyTextElement && !emergencyTextElement.hasAttribute('data-initialized')) {
+    emergencyTextElement.setAttribute('data-initialized', 'true');
+    emergencyTextElement.addEventListener(
+      "keyup",
+      function () {
+        var length = this.value.length;
+        document.getElementById('emergencyTextLength').innerHTML = length;
+        if (length > limit) {
+          document.getElementById('emergencyTextLength').classList.add('error');
+          document.getElementById('startEmergencyButton').disabled = true;
+        } else {
+          document.getElementById('emergencyTextLength').classList.remove('error');
+          document.getElementById('startEmergencyButton').disabled = false;
+        }
+      },
+      false
+    );
+  }
+}
+
+function initCommunicationObserver() {
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === 'childList') {
+        var emergencyTextElement = document.getElementById('emergencytext');
+        if (emergencyTextElement && !emergencyTextElement.hasAttribute('data-initialized')) {
+          var limit = parseInt(emergencyTextElement.getAttribute('data-limit'));
+          if (limit) {
+            initEmergencyTextLimiter(limit);
+          }
+        }
+      }
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initCommunicationObserver);

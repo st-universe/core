@@ -59,6 +59,7 @@
   <div class="box_body">
     <form method="post" action="ship.php">
       <input type="hidden" name="id" value="42">
+      <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
       <div id="writelog" style="display: none;">
         <table class="tcal">
           <tr>
@@ -88,12 +89,15 @@
   <div class="box_body">
     <form method="post" action="ship.php">
       <input type="hidden" name="id" value="42">
+      <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
       <table class="tcal">
         <tr>
           <th colspan="2">Sende Notrufsignal</th>
         </tr>
         <tr>
-          <td colspan="2"><textarea id="emergencytext" name="text" style="width: 100%; height: 300px;"></textarea></td>
+          <td colspan="2">
+<textarea id="emergencytext" name="text" style="width: 100%; height: 300px;" data-limit="250"></textarea>
+          </td>
         </tr>
         <tr>
           <td style="width: 200px">
@@ -116,24 +120,6 @@
     </form>
   </div>
 </div>
-<script>
-    document.getElementById('emergencytext').addEventListener(
-      "keyup",
-      function () {
-        var limit = 250;
-        var length = this.value.length;
-        document.getElementById('emergencyTextLength').innerHTML = length;
-        if (length > limit) {
-          document.getElementById('emergencyTextLength').classList.add('error');
-          document.getElementById('startEmergencyButton').disabled = true;
-        } else {
-          document.getElementById('emergencyTextLength').classList.remove('error');
-          document.getElementById('startEmergencyButton').disabled = false;
-        }
-      },
-      false
-    );
-  </script>
       </div>
   </body>
 
