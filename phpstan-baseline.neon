@@ -1687,12 +1687,6 @@ parameters:
 			path: src/Orm/Entity/UserLock.php
 
 		-
-			message: '#^Property Stu\\Orm\\Entity\\UserTag\:\:\$date type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
 			message: '#^Method Stu\\Orm\\Repository\\ColonyScanRepository\:\:getSurface\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

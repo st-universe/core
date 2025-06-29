@@ -162,7 +162,6 @@ use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserReferer;
 use Stu\Orm\Entity\UserSetting;
-use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\UserPirateRound;
 use Stu\Orm\Entity\Weapon;
@@ -327,7 +326,6 @@ return [
     UserPirateRoundRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserPirateRound::class),
     UserRefererRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserReferer::class),
     UserSettingRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserSetting::class),
-    UserTagRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTag::class),
     UserTutorialRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserTutorial::class),
     WeaponRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Weapon::class),
     WeaponShieldRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(WeaponShield::class),
