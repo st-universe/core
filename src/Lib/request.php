@@ -157,7 +157,7 @@ class request
         return self::returnArray(self::getVarByMethod(self::postvars(), $var));
     }
 
-    public static function returnInt(int|bool $result): int
+    public static function returnInt(mixed $result): int
     {
         if (
             !$result
