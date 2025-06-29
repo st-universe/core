@@ -69,7 +69,24 @@ final class ShowUserArchiveSearchResult implements ViewControllerInterface
             if ($post->getPlotId() && isset($plots[$post->getPlotId()])) {
                 $plot = $plots[$post->getPlotId()];
             }
-            $knPostings[] = $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot);
+            $archiveItem = $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot);
+
+            $knPostings[] = [
+                'id' => $archiveItem->getId(),
+                'username' => $archiveItem->getUsername(),
+                'title' => $archiveItem->getTitle(),
+                'text' => $this->sanitizeHtml($archiveItem->getText()),
+                'date' => $archiveItem->getDate(),
+                'editDate' => $archiveItem->getEditDate(),
+                'formerId' => $archiveItem->getFormerId(),
+                'refs' => $archiveItem->getRefs(),
+                'ratingBar' => $archiveItem->getRatingBar(),
+                'commentCount' => $archiveItem->getCommentCount(),
+                'divClass' => $archiveItem->getDivClass(),
+                'rpgPlot' => $archiveItem->getRpgPlot(),
+                'formattedDate' => $this->formatDateForVersion($archiveItem->getDate(), $version),
+                'formattedEditDate' => $archiveItem->getEditDate() > 0 ? $this->formatDateForVersion($archiveItem->getEditDate(), $version) : null,
+            ];
         }
 
         $game->setTemplateVar('KN_POSTINGS', $knPostings);
@@ -77,5 +94,58 @@ final class ShowUserArchiveSearchResult implements ViewControllerInterface
         $game->setTemplateVar('TOTAL_POSTS', $this->knPostArchivRepository->getAmountByVersion($version));
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', 'SHOW_KN_ARCHIVE');
         $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+    }
+
+    private function formatDateForVersion(int $timestamp, string $version): string
+    {
+        $yearsToAdd = $this->getYearsForVersion($version);
+
+        $date = new \DateTime('@' . $timestamp);
+        $date->modify('+' . $yearsToAdd . ' years');
+
+        return $date->format('d.m.Y H:i');
+    }
+
+    private function getYearsForVersion(string $version): int
+    {
+        $cleanVersion = ltrim($version, 'v');
+
+        return match (true) {
+            str_contains($cleanVersion, 'alpha') || str_starts_with($cleanVersion, '3') => 370,
+            str_starts_with($cleanVersion, '26') => 374,
+            str_starts_with($cleanVersion, '15') => 375,
+            default => 373
+        };
+    }
+
+    private function sanitizeHtml(string $html): string
+    {
+        if (empty(trim($html))) {
+            return $html;
+        }
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        libxml_use_internal_errors(true);
+
+        $dom->loadHTML(
+            '<?xml encoding="UTF-8">' .
+                '<div>' . $html . '</div>',
+            LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+        );
+
+        libxml_clear_errors();
+
+        $body = $dom->getElementsByTagName('div')->item(0);
+        if ($body === null) {
+            return $html;
+        }
+
+        $result = '';
+        foreach ($body->childNodes as $node) {
+            $result .= $dom->saveHTML($node);
+        }
+
+        return $result;
     }
 }
