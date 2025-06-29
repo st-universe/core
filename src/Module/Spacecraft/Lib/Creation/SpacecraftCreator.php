@@ -79,6 +79,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
             $spacecraftCreationConfig
         );
 
+        /** @var T */
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
         foreach (SpacecraftModuleTypeEnum::cases() as $moduleType) {

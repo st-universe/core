@@ -11,13 +11,13 @@ use Override;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
-    /** @var callable|Config|null */
+    /** @var callable|Config */
     private $config;
 
     /**
      * @param array<mixed> $request
      */
-    public function __construct(private array $request, callable|Config|null $config)
+    public function __construct(private array $request, callable|Config $config)
     {
         $this->config = $config;
     }

@@ -50,7 +50,7 @@ class StuContainer extends Container
      * Returns an entry of the container by its name.
      *
      * @template T
-     * @param string|class-string<T> $id Entry name or a class name.
+     * @param class-string<T>|string $id
      *
      * @return mixed|T
      * @throws DependencyException Error while resolving the entry.
