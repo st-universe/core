@@ -19,7 +19,11 @@ final class LoadShields implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LOAD_SHIELDS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyRepositoryInterface $colonyRepository) {}
+    public function __construct(
+        private readonly ColonyLoaderInterface $colonyLoader,
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly ColonyRepositoryInterface $colonyRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -50,7 +54,7 @@ final class LoadShields implements ActionControllerInterface
             return;
         }
 
-        $changeable->lowerEps(-(int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
+        $changeable->lowerEps((int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
         $changeable->setShields($changeable->getShields() + $load);
 
         $this->colonyRepository->save($colony);
