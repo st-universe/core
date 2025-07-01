@@ -4477,7 +4477,7 @@ final class VersionTestMapFtypes extends AbstractMigration
                        (13000843, 13000843, 0, 1, \'Thalassanebel\', NULL, 6, 0, 1, 0, 0, NULL, NULL),
                        (13000844, 13000844, 0, 1, \'Thalassanebel\', NULL, 6, 0, 1, 0, 1, NULL, NULL),
                        (13000845, 13000845, 0, 1, \'Thalassanebel\', NULL, 6, 0, 1, 0, 1, NULL, NULL),
-                       (13000846, 13000846, 0, 1, \'Thalassanebel\', NULL, 6, 0, 1, 0, 1, NULL, NULL),
+                       (13000846, 13000846, 0, 1, \'Thalassanebel\', NULL, 6, 0, 1, 0, 1, NULL, \'["LSS_BLOCKADE"]\'),
                        (13000849, 13000849, 0, 1, \'Argentumkaskade\', NULL, 6, 0, 1, 0, 1, NULL, NULL),
                        (13000850, 13000850, 0, 1, \'Argentumkaskade\', NULL, 6, 0, 1, 0, 1, NULL, NULL),
                        (13000851, 13000851, 0, 1, \'Argentumkaskade\', NULL, 6, 0, 1, 0, 1, NULL, NULL),

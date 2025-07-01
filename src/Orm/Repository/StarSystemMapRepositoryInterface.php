@@ -39,6 +39,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
         bool $sortAscending = true
     ): array;
 
+    /** @return array< array{x: int, y: int, effects: ?string}> */
+    public function getLssBlockadeLocations(PanelBoundaries $boundaries): array;
+
     /** @return array<CellDataInterface> */
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 

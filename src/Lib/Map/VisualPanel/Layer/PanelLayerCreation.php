@@ -22,8 +22,10 @@ use Stu\Lib\Map\VisualPanel\Layer\Render\MapLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SpacecraftCountLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SubspaceLayerRenderer;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
+use Stu\Lib\Map\VisualPanel\LssBlockade\LssBlockadeGridFactory;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
@@ -39,11 +41,12 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 
     /** @param array<int, PanelLayerDataProviderInterface> $dataProviders */
     public function __construct(
-        private EncodedMapInterface $encodedMap,
-        private BorderDataProviderFactoryInterface $borderDataProviderFactory,
-        private SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
-        private SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
-        private array $dataProviders
+        private readonly EncodedMapInterface $encodedMap,
+        private readonly BorderDataProviderFactoryInterface $borderDataProviderFactory,
+        private readonly SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
+        private readonly SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
+        private readonly LssBlockadeGridFactory $lssBlockadeGridFactory,
+        private readonly array $dataProviders
     ) {}
 
     #[Override]
@@ -110,18 +113,19 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     }
 
     #[Override]
-    public function build(AbstractVisualPanel $panel): PanelLayers
+    public function build(AbstractVisualPanel $panel, ?Location $observerLocation = null): PanelLayers
     {
         $layers = $this->layers;
         $this->layers = [];
 
-        return $this->createLayers($layers, $panel);
+        return $this->createLayers($layers, $panel, $observerLocation);
     }
 
     /** @param array<int, LayerRendererInterface> $layers */
-    private function createLayers(array $layers, AbstractVisualPanel $panel): PanelLayers
+    private function createLayers(array $layers, AbstractVisualPanel $panel, ?Location $observerLocation): PanelLayers
     {
-        $result = new PanelLayers($panel);
+        $lssBlockadeGrid = $observerLocation !== null ? $this->lssBlockadeGridFactory->createLssBlockadeGrid($observerLocation, $panel) : null;
+        $result = new PanelLayers($panel, $lssBlockadeGrid);
 
         foreach ($layers as $layerType => $renderer) {
 

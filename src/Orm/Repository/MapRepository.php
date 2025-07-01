@@ -10,6 +10,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
@@ -314,6 +315,37 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yStart' => $boundaries->getMinY(),
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getLssBlockadeLocations(PanelBoundaries $boundaries): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('cx', 'x', 'integer');
+        $rsm->addScalarResult('cy', 'y', 'integer');
+        $rsm->addScalarResult('effects', 'effects', 'string');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'WITH bbox AS (
+                SELECT id, field_id, cx, cy
+                FROM stu_location
+                WHERE layer_id = :layerId
+                AND  cx BETWEEN :xStart AND :xEnd
+                AND  cy BETWEEN :yStart AND :yEnd
+                and discr = \'map\'
+            )
+            SELECT  l.cx, l.cy, mft.effects
+            FROM bbox l
+            JOIN stu_map_ftypes mft ON mft.id = l.field_id
+            JOIN stu_map m ON m.id = l.id',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'layerId' => $boundaries->getParentId()
         ])->getResult();
     }
 

@@ -33,6 +33,7 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFact
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Lib\Map\VisualPanel\LssBlockade\LssBlockadeGridFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
@@ -116,15 +117,17 @@ return [
     BorderDataProviderFactoryInterface::class => autowire(BorderDataProviderFactory::class),
     SubspaceDataProviderFactoryInterface::class => autowire(SubspaceDataProviderFactory::class),
     SpacecraftCountDataProviderFactoryInterface::class => autowire(SpacecraftCountDataProviderFactory::class),
-    PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)->constructorParameter(
-        'dataProviders',
-        [
-            PanelLayerEnum::SYSTEM->value => autowire(MapDataProvider::class),
-            PanelLayerEnum::MAP->value => autowire(MapDataProvider::class),
-            PanelLayerEnum::COLONY_SHIELD->value => autowire(ColonyShieldDataProvider::class),
-            PanelLayerEnum::ANOMALIES->value => autowire(AnomalyDataProvider::class)
-        ]
-    ),
+    PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)
+        ->constructorParameter('lssBlockadeGridFactory', autowire(LssBlockadeGridFactory::class))
+        ->constructorParameter(
+            'dataProviders',
+            [
+                PanelLayerEnum::SYSTEM->value => autowire(MapDataProvider::class),
+                PanelLayerEnum::MAP->value => autowire(MapDataProvider::class),
+                PanelLayerEnum::COLONY_SHIELD->value => autowire(ColonyShieldDataProvider::class),
+                PanelLayerEnum::ANOMALIES->value => autowire(AnomalyDataProvider::class)
+            ]
+        ),
     InteractionMemberFactoryInterface::class => autowire(InteractionMemberFactory::class),
     InteractionCheckerBuilderFactoryInterface::class => autowire(InteractionCheckerBuilderFactory::class),
     StorageManagerInterface::class => autowire(StorageManager::class),

@@ -54,7 +54,7 @@ class VisualNavPanel extends AbstractVisualPanel
             $this->isOnShipLevel()
         );
 
-        $this->layers = $this->panelLayerCreation->build($this);
+        $this->layers = $this->panelLayerCreation->build($this, $this->wrapper->get()->getLocation());
     }
 
     #[Override]

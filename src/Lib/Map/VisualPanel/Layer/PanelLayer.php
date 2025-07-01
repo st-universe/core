@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
 use RuntimeException;
-use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Render\LayerRendererInterface;
+use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 
 final class PanelLayer
 {
@@ -24,7 +24,7 @@ final class PanelLayer
         }
     }
 
-    public function renderCell(int $x, int $y, AbstractVisualPanel $panel): string
+    public function renderCell(int $x, int $y, PanelAttributesInterface $panel): string
     {
         if (!array_key_exists($x, $this->data)) {
             throw new RuntimeException('array index not available');
