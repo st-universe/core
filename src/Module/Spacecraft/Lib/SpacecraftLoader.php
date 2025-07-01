@@ -170,8 +170,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         //main spacecraft sema on
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
-        $this->semaphoreUtil->acquireMainSemaphore($mainSema);
+        $mainSema = $this->semaphoreUtil->acquireSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
 
         $wrapper = $this->acquireSemaphoreForSpacecraft($spacecraft, null);
         if ($wrapper === null) {
@@ -204,8 +203,8 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         $key = $spacecraft->getUser()->getId();
-        $semaphore = $this->semaphoreUtil->getSemaphore($key);
-        $this->semaphoreUtil->acquireSemaphore($key, $semaphore); //prüft ob schon genommen
+        $this->semaphoreUtil->acquireSemaphore($key);
+
         return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
     }
 }

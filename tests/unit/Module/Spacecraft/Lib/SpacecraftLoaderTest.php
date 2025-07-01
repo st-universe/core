@@ -224,13 +224,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn(false);
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with($this->userId, $userSema)
-            ->once();
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -263,13 +260,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn(false);
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with($this->userId, $userSema)
-            ->once();
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -295,13 +289,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with($this->userId, $userSema)
-            ->once();
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -336,13 +327,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with($this->userId, $userSema)
-            ->once();
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -354,13 +342,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(1)
             ->once()
             ->andReturn($target);
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with(999)
             ->once()
             ->andReturn($targetUserSema);
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with(999, $targetUserSema)
-            ->once();
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($target)
             ->once()
@@ -384,13 +369,10 @@ class SpacecraftLoaderTest extends StuTestCase
     {
         $mainSema = 666;
 
-        $this->semaphoreUtil->shouldReceive('getSemaphore')
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
             ->with(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY)
             ->once()
             ->andReturn($mainSema);
-        $this->semaphoreUtil->shouldReceive('acquireMainSemaphore')
-            ->with($mainSema)
-            ->once();
         $this->semaphoreUtil->shouldReceive('releaseSemaphore')
             ->with($mainSema)
             ->once();
