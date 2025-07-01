@@ -91,10 +91,6 @@ class SpacecraftStorageCrewLogic
     {
         $spacecraft = $wrapper->get();
 
-        if (!$spacecraft instanceof Station) {
-            return false;
-        }
-
         if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
             $information->addInformationf('Die %s hat keine Lebenserhaltungssysteme', $spacecraft->getName());
 
@@ -113,6 +109,10 @@ class SpacecraftStorageCrewLogic
 
         if ($spacecraft->getUser() === $user) {
             return true;
+        }
+
+        if (!$spacecraft instanceof Station) {
+            return false;
         }
         if (!$spacecraft->hasUplink()) {
             return false;
