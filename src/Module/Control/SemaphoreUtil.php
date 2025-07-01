@@ -25,12 +25,26 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[Override]
-    public function getSemaphore(int $key): null|int|SysvSemaphore
+    public function acquireSemaphore(int $key): null|int|SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
             return null;
         }
 
+        $semaphore = $this->getSemaphore($key);
+
+        if ($this->game->isSemaphoreAlreadyAcquired($key)) {
+            return null;
+        }
+
+        $this->acquire($semaphore);
+        $this->game->addSemaphore($key, $semaphore);
+
+        return $semaphore;
+    }
+
+    private function getSemaphore(int $key): SysvSemaphore
+    {
         $semaphore = sem_get(
             $key,
             1,
@@ -43,31 +57,6 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         }
 
         return $semaphore;
-    }
-
-    #[Override]
-    public function acquireMainSemaphore(null|int|SysvSemaphore $semaphore): void
-    {
-        if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
-            return;
-        }
-
-        $this->acquire($semaphore);
-    }
-
-    #[Override]
-    public function acquireSemaphore(int $key, null|int|SysvSemaphore $semaphore): void
-    {
-        if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
-            return;
-        }
-
-        if ($this->game->isSemaphoreAlreadyAcquired($key)) {
-            return;
-        }
-
-        $this->acquire($semaphore);
-        $this->game->addSemaphore($key, $semaphore);
     }
 
     private function acquire(SysvSemaphore $semaphore): void

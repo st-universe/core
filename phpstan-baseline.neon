@@ -22,7 +22,7 @@ parameters:
 			path: src/Config/StuContainer.php
 
 		-
-			message: '#^Method Stu\\Module\\Control\\SemaphoreUtil\:\:getSemaphore\(\) never returns int so it can be removed from the return type\.$#'
+			message: '#^Method Stu\\Module\\Control\\SemaphoreUtil\:\:acquireSemaphore\(\) never returns int so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: src/Module/Control/SemaphoreUtil.php

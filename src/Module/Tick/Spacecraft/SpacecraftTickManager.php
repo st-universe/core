@@ -57,8 +57,7 @@ final class SpacecraftTickManager implements SpacecraftTickManagerInterface
     private function setLock(int $batchGroupId): void
     {
         //main ship sema on
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
-        $this->semaphoreUtil->acquireMainSemaphore($mainSema);
+        $mainSema = $this->semaphoreUtil->acquireSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
 
         $this->lockManager->setLock($batchGroupId, LockTypeEnum::SHIP_GROUP);
 
