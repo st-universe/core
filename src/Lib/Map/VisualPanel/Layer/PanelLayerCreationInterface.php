@@ -9,6 +9,7 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLa
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 
 interface PanelLayerCreationInterface
@@ -32,5 +33,5 @@ interface PanelLayerCreationInterface
         int $id
     ): PanelLayerCreationInterface;
 
-    public function build(AbstractVisualPanel $panel): PanelLayers;
+    public function build(AbstractVisualPanel $panel, ?Location $observerLocation = null): PanelLayers;
 }

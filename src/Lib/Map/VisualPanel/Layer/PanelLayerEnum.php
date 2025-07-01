@@ -14,4 +14,13 @@ enum PanelLayerEnum: int
     case SPACECRAFT_COUNT = 6;
     case BORDER = 7;
     case ANOMALIES = 8;
+
+    public function isAffectedByLssBlockade(): bool
+    {
+        return match ($this) {
+            self::MAP,
+            self::SYSTEM => false,
+            default => true
+        };
+    }
 }

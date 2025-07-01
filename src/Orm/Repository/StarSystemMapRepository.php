@@ -11,6 +11,7 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\StarSystem;
@@ -273,6 +274,36 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             WHERE sm.systems_id = :systemId
             AND sm.sx BETWEEN :xStart AND :xEnd
             AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId()
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getLssBlockadeLocations(PanelBoundaries $boundaries): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('sx', 'x', 'integer');
+        $rsm->addScalarResult('sy', 'y', 'integer');
+        $rsm->addScalarResult('effects', 'effects', 'string');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'WITH bbox AS (
+                SELECT id, sx, sy
+                FROM stu_sys_map
+                WHERE systems_id = :systemId
+                AND sx BETWEEN :xStart AND :xEnd
+                AND sy BETWEEN :yStart AND :yEnd
+            )
+            SELECT sm.sx, sm.sy, mft.effects
+            FROM bbox sm
+            JOIN stu_location l ON sm.id = l.id
+            JOIN stu_map_ftypes mft ON mft.id   = l.field_id',
             $rsm
         )->setParameters([
             'xStart' => $boundaries->getMinX(),

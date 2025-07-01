@@ -59,7 +59,7 @@ class ColonyScanPanel extends AbstractVisualPanel
             $panelLayerCreation->addSubspaceLayer($this->colony->getUser()->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
         }
 
-        $this->layers = $panelLayerCreation->build($this);
+        $this->layers = $panelLayerCreation->build($this, $this->colony->getLocation());
     }
 
     #[Override]
