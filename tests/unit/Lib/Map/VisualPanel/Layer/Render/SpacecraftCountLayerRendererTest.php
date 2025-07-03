@@ -69,7 +69,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 
         $result = $subject->render($mapData, $this->panel);
 
-        $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">!</div>', $result);
+        $this->assertEquals('<div style="FONTSIZE; z-index: 7;" class="centered">!</div>', $result);
     }
 
     public function testRenderExpectNullWhenDisabled(): void
@@ -113,7 +113,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 
         $result = $subject->render($mapData, $this->panel);
 
-        $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">1</div>', $result);
+        $this->assertEquals('<div style="FONTSIZE; z-index: 7;" class="centered">1</div>', $result);
     }
 
     public static function dubiousAndCloakedSignDataProvider(): array
@@ -153,7 +153,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 
         $result = $subject->render($mapData, $this->panel);
 
-        $this->assertEquals(sprintf('<div style="FONTSIZE; z-index: 6;" class="centered">%s</div>', $expectedSign), $result);
+        $this->assertEquals(sprintf('<div style="FONTSIZE; z-index: 7;" class="centered">%s</div>', $expectedSign), $result);
     }
 
     public function testRenderExpectNoCloakedInfoWhenNotSet(): void
@@ -309,7 +309,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 
         if ($isShowCloakedExpected) {
 
-            $this->assertEquals('<div style="FONTSIZE; z-index: 6;" class="centered">?</div>', $result);
+            $this->assertEquals('<div style="FONTSIZE; z-index: 7;" class="centered">?</div>', $result);
         } else {
             $this->assertEquals('', $result);
         }

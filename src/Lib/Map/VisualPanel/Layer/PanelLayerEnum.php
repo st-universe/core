@@ -11,9 +11,10 @@ enum PanelLayerEnum: int
     case MAP = 3;
     case COLONY_SHIELD = 4;
     case SUBSPACE_SIGNATURES = 5;
-    case SPACECRAFT_COUNT = 6;
-    case BORDER = 7;
-    case ANOMALIES = 8;
+    case SPACECRAFT_SIGNATURE = 6;
+    case SPACECRAFT_COUNT = 7;
+    case BORDER = 8;
+    case ANOMALIES = 9;
 
     public function isAffectedByLssBlockade(): bool
     {
