@@ -7,10 +7,10 @@ namespace Stu\Module\Spacecraft\Action\Shutdown;
 use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -36,23 +36,22 @@ final class Shutdown implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $ship = $wrapper->get();
+        $spacecraft = $wrapper->get();
         $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
-        $triggerAlertRed = $ship->getWarpDriveState() || $ship->isCloaked();
+        $triggerAlertRed = $spacecraft->getWarpDriveState() || $spacecraft->isCloaked();
 
-        //deactivate all systems except life support and troop quarters
-        foreach ($this->spacecraftSystemManager->getActiveSystems($ship) as $system) {
-            if (
-                $system->getSystemType() !== SpacecraftSystemTypeEnum::LIFE_SUPPORT &&
-                $system->getSystemType() !== SpacecraftSystemTypeEnum::TROOP_QUARTERS
-            ) {
+        //deactivate all systems that can be deactivated
+        foreach ($this->spacecraftSystemManager->getActiveSystems($spacecraft) as $system) {
+            if ($system->getMode() !== SpacecraftSystemModeEnum::MODE_ALWAYS_ON) {
                 $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $game);
             }
         }
 
         //set alert to green
-        $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
+        if ($spacecraft->hasComputer()) {
+            $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
+        }
 
         $game->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
 
@@ -62,10 +61,10 @@ final class Shutdown implements ActionControllerInterface
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {
-                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $ship);
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $spacecraft);
             }
 
-            if ($ship->getCondition()->isDestroyed()) {
+            if ($spacecraft->getCondition()->isDestroyed()) {
                 return;
             }
         }
