@@ -21,7 +21,7 @@ class SubspaceLayerRendererTest extends StuTestCase
     {
         $this->panel = mock(AbstractVisualPanel::class);
 
-        $this->subject = new SubspaceLayerRenderer();
+        $this->subject = new SubspaceLayerRenderer(5);
     }
 
     public function testRenderExpectEmptyStringIfSubspaceDisabled(): void
@@ -105,6 +105,7 @@ class SubspaceLayerRendererTest extends StuTestCase
 
     public function testRenderExpectRenderWhenCodeAvailable2(): void
     {
+        $this->subject = new SubspaceLayerRenderer(42, true);
         $mapData = $this->mock(SubspaceData::class);
 
         $mapData->shouldReceive('isDisabled')
@@ -132,8 +133,8 @@ class SubspaceLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $this->assertEquals(
-            '<img src="/assets/subspace/generated/2345.png" class="visualPanelLayer"
-                style="z-index: 5; H+W;" />',
+            '<img src="/assets/subspace/generated/2345.png" class="visualPanelLayer inverted"
+                style="z-index: 42; H+W;" />',
             $result
         );
     }

@@ -10,7 +10,6 @@ use Override;
 use RuntimeException;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
