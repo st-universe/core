@@ -282,7 +282,7 @@
 						<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
 				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
-						<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
+												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(42);">
 				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
 			<th style="text-align: center;">Batterie</th>
@@ -303,7 +303,7 @@
 				</a>
 			</td>
 			<td style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="/assets/buttons/alert1.png" title="Alarmstufe" name="setalvl"></a>
+								<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
 							</td>
 			<td style="text-align: center;">
 				7|8
@@ -321,7 +321,7 @@
 <td style="text-align: center;">
 								107/108
 								<span id="effectiveEps"></span>
-												(<span class="neg">3</span>/<span class="neg" id="reactorUsage">0</span>)
+												(<span class="neg">4</span>/<span class="neg" id="reactorUsage">0</span>)
 							</td>
 			<td style="text-align: center;">
 								<span>36</span>
@@ -496,9 +496,9 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
 </tr>
     
 <tr>
-    <td colspan="2">
-        <img src="/assets/buttons/act_phaser2.png" name="actphaser">
-        bei Alarmstufe deaktiviert
+    <td colspan="3">
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser1');" onmouseout="cp('act_phaser','buttons/act_phaser2');">
+    <img src="/assets/buttons/act_phaser2.png" name="act_phaser"> Strahlenwaffe aktivieren</a>
     </td>
 </tr>
         
@@ -774,7 +774,7 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 <script>
-            setReactorSplitConstants(54,3,2,1,57,58);
+            setReactorSplitConstants(54,4,2,1,57,58);
                 updateReactorValues(100);
                 updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&component=GAME_PM_NAVLET', 60000);
                 updateComponent('GAME_SERVERTIME', '/game.php?SHOW_COMPONENT=1&component=GAME_SERVERTIME', 300000);

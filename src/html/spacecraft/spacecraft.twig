@@ -51,7 +51,11 @@
 			<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
 				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			{% endif %}
-			<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
+			{% set hasEpsUsage = WRAPPER.getEpsUsage> 0 %}
+			{% set epsUsageStyle = hasEpsUsage ? ' cursor: pointer;' : '' %}
+			<th style="text-align: center;{{ epsUsageStyle }}"
+				title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" {% if hasEpsUsage %}
+				onclick="showEpsUsage({{ spacecraftId }});" {% endif %}>
 				Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
 			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png"

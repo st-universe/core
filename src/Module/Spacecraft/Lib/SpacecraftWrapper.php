@@ -182,7 +182,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         foreach ($this->spacecraft->getSystems() as $system) {
             if ($system->getStatus() < 100) {
                 $damagedSystems[] = $system;
-                $prioArray[$system->getSystemType()->value] = $this->spacecraftSystemManager->lookupSystem($system->getSystemType())->getPriority();
+                $prioArray[$system->getSystemType()->value] = $system->getSystemType()->getPriority();
             }
         }
 
