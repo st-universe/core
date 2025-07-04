@@ -1,0 +1,38 @@
+{% set spacecraft = WRAPPER.get %}
+{% if SHIP.hasComputer %}
+{% set computer = WRAPPER.getComputerSystemDataMandatory %}
+{% endif %}
+{% set lss = WRAPPER.getLssSystemData %}
+{% set energyWeapon = WRAPPER.getEnergyWeaponSystemData %}
+{% set reactor = WRAPPER.getReactorWrapper %}
+{% set launcher = WRAPPER.getProjectileLauncherSystemData %}
+<div>
+    {% if not WRAPPER.isUnalerted %}
+    <br />
+    {% set alertState = WRAPPER.getAlertState %}
+    <div class="divhead">Alarmstufe Verbrauch</div>
+    <div class="divbody">
+        <img src="/assets/buttons/alert{{ alertState.value }}.png" title="{{ alertState.getDescription }}" />
+        <span>{{ alertState.getEpsUsage }} EPS</span>
+    </div>
+    {% endif %}
+    <br />
+    <div class="divhead">Systemverbrauch</div>
+    <div class="divbody">
+        <table class="tcal">
+            {% for wrapper in SYSTEM_WRAPPERS %}
+            {% set system = wrapper.getSystem %}
+            <tr>
+                <td>
+                    <div>
+                        <img style="vertical-align: middle" title="{{ system.getName }}"
+                            class="{{ system.getCssClass }}" src="assets/system/{{ system.getSystemType.value }}.png" />
+                        {{ system.getName }}
+                    </div>
+                </td>
+                <td>{{ wrapper.getUsage }} EPS</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

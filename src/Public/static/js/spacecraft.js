@@ -126,6 +126,11 @@ function showSpacecraftDetails(id) {
   openPJsWin("elt", 1);
   ajax_update("elt", "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
 }
+function showEpsUsage(id) {
+  closeAjaxWindow();
+  openPJsWin("elt", 1);
+  ajax_update("elt", "?SHOW_EPS_USAGE=1&id=" + id);
+}
 function showCommunication(id) {
   closeAjaxWindow();
   openPJsWin("elt", 1);

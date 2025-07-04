@@ -49,6 +49,9 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
+
+    /** @return array<CellDataInterface> */
     public function getColonyShieldData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */

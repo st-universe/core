@@ -515,6 +515,10 @@ div.lssobj {
   left: 0;
 }
 
+.inverted {
+  filter: saturate(10000%) invert(100%);
+}
+
 .activeshield {
   color: #00b3c8;
 }

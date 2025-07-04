@@ -253,6 +253,7 @@ use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
+use Stu\Module\Spacecraft\View\ShowEpsUsage\ShowEpsUsage;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\AggregrationSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
@@ -472,6 +473,7 @@ return [
         ShowAnalyseBuoy::VIEW_IDENTIFIER => autowire(ShowAnalyseBuoy::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
+        ShowEpsUsage::VIEW_IDENTIFIER => autowire(ShowEpsUsage::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowLSSFilter::VIEW_IDENTIFIER => autowire(ShowLSSFilter::class),
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),

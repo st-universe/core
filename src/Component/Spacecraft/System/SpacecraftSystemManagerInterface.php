@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Spacecraft\System;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Component\Spacecraft\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
 use Stu\Component\Spacecraft\System\Exception\DeactivationConditionsNotMetException;
@@ -56,7 +57,7 @@ interface SpacecraftSystemManagerInterface
     public function handleDamagedSystem(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type): void;
 
     /**
-     * @return array<SpacecraftSystem>
+     * @return Collection<int, SpacecraftSystem>
      */
-    public function getActiveSystems(Spacecraft $ship, bool $sort = false): array;
+    public function getActiveSystems(Spacecraft $ship, bool $sort = false): Collection;
 }

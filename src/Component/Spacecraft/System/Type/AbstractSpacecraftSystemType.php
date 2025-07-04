@@ -7,7 +7,6 @@ namespace Stu\Component\Spacecraft\System\Type;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemPriorities;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -53,16 +52,6 @@ abstract class AbstractSpacecraftSystemType implements SpacecraftSystemTypeInter
     public function getEnergyUsageForActivation(): int
     {
         return 1;
-    }
-
-    #[Override]
-    public function getPriority(): int
-    {
-        if (array_key_exists($this->getSystemType()->value, SpacecraftSystemPriorities::PRIORITIES)) {
-            return SpacecraftSystemPriorities::PRIORITIES[$this->getSystemType()->value];
-        }
-
-        return SpacecraftSystemPriorities::PRIORITY_STANDARD;
     }
 
     #[Override]

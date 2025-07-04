@@ -17,11 +17,6 @@ interface SpacecraftSystemTypeInterface
 
     public function getEnergyConsumption(): int;
 
-    /**
-     * the higher the number, the more important the system is
-     */
-    public function getPriority(): int;
-
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void;
 
     public function deactivate(SpacecraftWrapperInterface $wrapper): void;

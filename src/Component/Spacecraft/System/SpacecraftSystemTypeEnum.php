@@ -102,6 +102,27 @@ enum SpacecraftSystemTypeEnum: int
         };
     }
 
+    /**
+     * the higher the number, the more important the system is
+     */
+    public function getPriority(): int
+    {
+        return match ($this) {
+            self::LIFE_SUPPORT => 10,
+            self::EPS => 6,
+            self::WARPCORE,
+            self::FUSION_REACTOR => 5,
+            self::DEFLECTOR => 4,
+            self::TROOP_QUARTERS,
+            self::WARPDRIVE => 3,
+            self::LSS,
+            self::NBS => 2,
+            self::SUBSPACE_SCANNER,
+            self::CLOAK => 0,
+            default => 1
+        };
+    }
+
     public function getIcon(): string
     {
         return match ($this) {

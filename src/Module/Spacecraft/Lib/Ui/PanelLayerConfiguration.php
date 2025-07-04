@@ -36,6 +36,9 @@ class PanelLayerConfiguration
 
         if ($wrapper->get()->getSubspaceState()) {
             $panelLayerCreation->addSubspaceLayer($currentUser->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
+
+            // TODO @hux: hier einfügen, falls ein Target ausgewählt wurde etc.
+            //$panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
         }
 
         $isLssMalfunctioning = $spacecraft->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::LSS_MALFUNCTION);

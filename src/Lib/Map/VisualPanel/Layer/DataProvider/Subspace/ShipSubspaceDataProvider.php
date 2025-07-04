@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Crunz\Exception\NotImplementedException;
 use Override;
+use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftSignatureData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -27,14 +27,22 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
     }
 
     #[Override]
+    protected function getDataClassString(): string
+    {
+        return SpacecraftSignatureData::class;
+    }
+
+    #[Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        return $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
+        $result = $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
+
+        return $result;
     }
 
     #[Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
-        throw new NotImplementedException('this is not possible');
+        return $this->starSystemMapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
     }
 }

@@ -11,7 +11,6 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\StarSystem;
@@ -356,6 +355,52 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
             'ignoreUserId' => $ignoreUserId,
+            'timeThreshold' => $maxAge
+        ])->getResult();
+    }
+
+    #[Override]
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
+    {
+        $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
+                WHERE fs1.location_id = l.id
+                AND fs1.ship_id = :shipId
+                AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+                AND fs1.time > :timeThreshold) as d1c,
+            (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
+                WHERE fs2.location_id = l.id
+                AND fs2.ship_id = :shipId
+                AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+                AND fs2.time > :timeThreshold) as d2c,
+            (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
+                WHERE fs3.location_id = l.id
+                AND fs3.ship_id = :shipId
+                AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+                AND fs3.time > :timeThreshold) as d3c,
+            (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
+                WHERE fs4.location_id = l.id
+                AND fs4.ship_id = :shipId
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+                AND fs4.time > :timeThreshold) as d4c 
+            FROM stu_sys_map sm
+                JOIN stu_location l
+                ON sm.id = l.id
+                JOIN stu_map_ftypes mft
+                ON l.field_id = mft.id
+                WHERE sm.systems_id = :systemId
+                AND sm.sx BETWEEN :xStart AND :xEnd AND sm.sy BETWEEN :yStart AND :yEnd',
+            $rsm
+        )->setParameters([
+            'xStart' => $boundaries->getMinX(),
+            'xEnd' => $boundaries->getMaxX(),
+            'yStart' => $boundaries->getMinY(),
+            'yEnd' => $boundaries->getMaxY(),
+            'systemId' => $boundaries->getParentId(),
+            'shipId' => $shipId,
             'timeThreshold' => $maxAge
         ])->getResult();
     }

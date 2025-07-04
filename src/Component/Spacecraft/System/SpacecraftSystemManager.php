@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Component\Spacecraft\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Spacecraft\System\Exception\AlreadyActiveException;
@@ -212,7 +214,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
     }
 
     #[Override]
-    public function getActiveSystems(Spacecraft $ship, bool $sort = false): array
+    public function getActiveSystems(Spacecraft $ship, bool $sort = false): Collection
     {
         $activeSystems = [];
         $prioArray = [];
@@ -220,7 +222,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
             if ($system->getMode()->isActivated()) {
                 $activeSystems[] = $system;
                 if ($sort) {
-                    $prioArray[$system->getSystemType()->value] = $this->lookupSystem($system->getSystemType())->getPriority();
+                    $prioArray[$system->getSystemType()->value] = $system->getSystemType()->getPriority();
                 }
             }
         }
@@ -232,6 +234,6 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
             );
         }
 
-        return $activeSystems;
+        return new ArrayCollection($activeSystems);
     }
 }

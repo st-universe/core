@@ -184,12 +184,12 @@ class TwigHelper
         $maskMobileFunction = new TwigFunction('maskMobile', fn(?string $mobile): string => $this->maskMobile($mobile));
         $this->environment->addFunction($maskMobileFunction);
 
-        $hasSpacecraftSystemByNameFunction = new TwigFunction(
+        $getSpacecraftSystemWrapperFunction = new TwigFunction(
             'getSpacecraftSystemWrapper',
             fn(Spacecraft $spacecraft, string $name): ?SpacecraftSystemWrapper
             => $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::getByName($name))
         );
-        $this->environment->addFunction($hasSpacecraftSystemByNameFunction);
+        $this->environment->addFunction($getSpacecraftSystemWrapperFunction);
 
         $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn(int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature), $this->game));
         $this->environment->addFunction($isFeatureGrantedFunction);

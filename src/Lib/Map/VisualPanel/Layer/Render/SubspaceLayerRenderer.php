@@ -6,13 +6,17 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
-use Stu\Lib\Map\VisualPanel\Layer\Data\SubspaceData;
-use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Lib\Map\VisualPanel\Layer\Data\AbstractSubspaceData;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 
 final class SubspaceLayerRenderer implements LayerRendererInterface
 {
-    /** @param SubspaceData $data */
+    public function __construct(
+        private readonly int $zIndex,
+        private readonly bool $isInverted = false
+    ) {}
+
+    /** @param AbstractSubspaceData $data */
     #[Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
@@ -26,15 +30,16 @@ final class SubspaceLayerRenderer implements LayerRendererInterface
         }
 
         return sprintf(
-            '<img src="/assets/subspace/generated/%s.png" class="visualPanelLayer"
+            '<img src="/assets/subspace/generated/%s.png" class="visualPanelLayer%s"
                 style="z-index: %d; %s" />',
             $subspaceCode,
-            PanelLayerEnum::SUBSPACE_SIGNATURES->value,
+            $this->isInverted ? ' inverted' : '',
+            $this->zIndex,
             $panel->getHeightAndWidth()
         );
     }
 
-    private function getSubspaceCode(SubspaceData $data): ?string
+    private function getSubspaceCode(AbstractSubspaceData $data): ?string
     {
         if (!$this->isSubspaceCodeAvailable($data)) {
             return null;
@@ -49,7 +54,7 @@ final class SubspaceLayerRenderer implements LayerRendererInterface
         );
     }
 
-    private function isSubspaceCodeAvailable(SubspaceData $data): bool
+    private function isSubspaceCodeAvailable(AbstractSubspaceData $data): bool
     {
         return $data->getDirection1Count() > 0
             || $data->getDirection2Count() > 0

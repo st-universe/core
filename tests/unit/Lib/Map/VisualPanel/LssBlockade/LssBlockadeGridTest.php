@@ -85,10 +85,42 @@ class LssBlockadeGridTest extends StuTestCase
     public static function cornerPeekProvider(): iterable
     {
         return [
-            'NW‑Peek' => [2, 1, 1, 2, 1, 1],
-            'NE‑Peek' => [2, 1, 3, 2, 3, 1],
-            'SW‑Peek' => [2, 3, 1, 2, 1, 3],
-            'SE‑Peek' => [2, 3, 3, 2, 3, 3],
+            'NW-Peek' => [2, 1, 1, 2, 1, 1],
+            'NE-Peek' => [2, 1, 3, 2, 3, 1],
+            'SW-Peek' => [2, 3, 1, 2, 1, 3],
+            'SE-Peek' => [2, 3, 3, 2, 3, 3],
         ];
+    }
+
+    public function testNoSurroundView(): void
+    {
+        $observerX = 56;
+        $observerY = 76;
+        $g = new LssBlockadeGrid(40, 71, 60, 91, $observerX, $observerY); // 11×11
+
+        $g->setBlocked(55, 75);
+        $g->setBlocked(55, 76);
+        $g->setBlocked(55, 77);
+        $g->setBlocked(56, 77);
+        $g->setBlocked(57, 77);
+        $g->setBlocked(57, 76);
+        $g->setBlocked(57, 75);
+        $g->setBlocked(56, 75);
+
+        $startTime = microtime(true);
+
+        for ($x = 40; $x < 72; $x++) {
+            for ($y = 60; $y < 92; $y++) {
+
+                if ($x === $observerX && $y === $observerY) {
+                    continue;
+                }
+                self::assertFalse($g->isVisible($x, $y));
+            }
+        }
+
+        $endTime = microtime(true);
+        //@hux Runtime sollte höchstens 0.01s sein mittels 
+        //echo sprintf("\tresearch, seconds: %F", $endTime - $startTime);
     }
 }

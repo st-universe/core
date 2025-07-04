@@ -76,8 +76,17 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
     #[Override]
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface
     {
-        $this->layers[PanelLayerEnum::SUBSPACE_SIGNATURES->value] = new SubspaceLayerRenderer();
+        $this->layers[PanelLayerEnum::SUBSPACE_SIGNATURES->value] = new SubspaceLayerRenderer(PanelLayerEnum::SUBSPACE_SIGNATURES->value);
         $this->specialDataProviders[PanelLayerEnum::SUBSPACE_SIGNATURES->value] = $this->subspaceDataProviderFactory->getDataProvider($id, $type);
+
+        return $this;
+    }
+
+    #[Override]
+    public function addSpacecraftSignatureLayer(int $spacecraftId): PanelLayerCreationInterface
+    {
+        $this->layers[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = new SubspaceLayerRenderer(PanelLayerEnum::SPACECRAFT_SIGNATURE->value, true);
+        $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = $this->subspaceDataProviderFactory->getDataProvider($spacecraftId, SubspaceLayerTypeEnum::SPACECRAFT_ONLY);
 
         return $this;
     }
