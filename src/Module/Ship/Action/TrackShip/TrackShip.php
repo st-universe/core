@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Ship;
 
 final class TrackShip implements ActionControllerInterface
 {
@@ -22,9 +23,9 @@ final class TrackShip implements ActionControllerInterface
     private const int MAXIMUM_TICKS = 70;
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
-        private ActivatorDeactivatorHelperInterface $helper,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private readonly ShipLoaderInterface $shipLoader,
+        private readonly ActivatorDeactivatorHelperInterface $helper,
+        private readonly InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[Override]
@@ -50,6 +51,10 @@ final class TrackShip implements ActionControllerInterface
         }
 
         $target = $targetWrapper->get();
+        if (!$target instanceof Ship) {
+            return;
+        }
+
         $ship = $wrapper->get();
 
         if (!$this->interactionCheckerBuilderFactory
@@ -90,7 +95,7 @@ final class TrackShip implements ActionControllerInterface
             ->setRemainingTicks(self::MAXIMUM_TICKS)
             ->update();
 
-        $game->addInformation(sprintf(_('Die %s ist nun mit einem verborgenen Tracker markiert'), $target->getName()));
+        $game->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
     }
 
     #[Override]
