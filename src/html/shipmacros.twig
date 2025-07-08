@@ -226,7 +226,7 @@
     <span style="width: 100%; color: #474791;">Im Warp</span>
     {% else %}
     {% if not nbsItem.isCloaked %}
-    {% if not nbsItem.isDestroyed %}
+    {% if nbsItem.isTransferPossible %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showETransferWindow({{ targetId }})"
             onmouseover="cp('etr_{{ targetId }}','buttons/e_trans2')"
@@ -321,7 +321,7 @@
         </a>
     </div>
     {% endif %}
-    {% if WRAPPER.getTrackerSystemData and WRAPPER.getTrackerSystemData.isUseable and not nbsItem.isDestroyed %}
+    {% if WRAPPER.getTrackerSystemData and WRAPPER.getTrackerSystemData.isUseable and nbsItem.canBeTracked %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TRACK=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('track_{{ targetId }}','buttons/mark_1', 'png')"
@@ -331,7 +331,7 @@
     </div>
     {% endif %}
     {% endif %}
-    {% if nbsItem.isStation and not nbsItem.isDestroyed and not SPACECRAFT.getDockedTo %}
+    {% if nbsItem.isStation and not SPACECRAFT.getDockedTo %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);"
             onClick="actionToInnerContent('B_DOCK', 'id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"

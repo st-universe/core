@@ -93,6 +93,10 @@ class SpacecraftNfsItem
     {
         return $this->item->getRumpCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE->value;
     }
+    public function canBeTracked(): bool
+    {
+        return $this->item->getType() === SpacecraftTypeEnum::SHIP;
+    }
     public function getRumpId(): int
     {
         return $this->item->getRumpId();
