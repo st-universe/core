@@ -10,11 +10,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\PrestigeLogRepository;
 
 #[Table(name: 'stu_prestige_log')]
 #[Index(name: 'prestige_log_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: PrestigeLogRepository::class)]
+#[TruncateOnGameReset]
 class PrestigeLog
 {
     #[Id]

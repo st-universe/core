@@ -56,15 +56,4 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
         $q->setParameter('userId', $userId);
         $q->execute();
     }
-
-    #[Override]
-    public function truncateAllNotes(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s n',
-                Note::class
-            )
-        )->execute();
-    }
 }

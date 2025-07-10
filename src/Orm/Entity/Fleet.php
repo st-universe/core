@@ -17,11 +17,13 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\FleetRepository;
 
 #[Table(name: 'stu_fleets')]
 #[Index(name: 'fleet_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: FleetRepository::class)]
+#[TruncateOnGameReset]
 class Fleet
 {
     #[Id]

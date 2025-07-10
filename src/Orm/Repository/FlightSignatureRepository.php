@@ -239,15 +239,4 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ])
             ->getSingleScalarResult();
     }
-
-    #[Override]
-    public function truncateAllSignatures(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s fs',
-                FlightSignature::class
-            )
-        )->execute();
-    }
 }

@@ -68,15 +68,4 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
         $q->setParameter('user', $user);
         $q->execute();
     }
-
-    #[Override]
-    public function truncateAllEntries(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s upv',
-                UserProfileVisitor::class
-            )
-        )->execute();
-    }
 }

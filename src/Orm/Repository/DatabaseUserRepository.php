@@ -147,15 +147,4 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
 
         return $query->setParameters($parameters)->getSingleScalarResult() == 0;
     }
-
-    #[Override]
-    public function truncateAllEntries(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s du',
-                DatabaseUser::class
-            )
-        )->execute();
-    }
 }

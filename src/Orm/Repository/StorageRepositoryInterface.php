@@ -86,6 +86,4 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function truncateByColony(Colony $colony): void;
 
     public function truncateByCommodity(int $commodityId): void;
-
-    public function truncateAllStorages(): void;
 }

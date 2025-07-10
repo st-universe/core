@@ -44,15 +44,4 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
 
         $em->remove($turn);
     }
-
-    #[Override]
-    public function truncateAllGameTurns(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s gt',
-                GameTurn::class
-            )
-        )->execute();
-    }
 }

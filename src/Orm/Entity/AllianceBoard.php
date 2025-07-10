@@ -16,11 +16,13 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceBoardRepository;
 
 #[Table(name: 'stu_alliance_boards')]
 #[Index(name: 'alliance_idx', columns: ['alliance_id'])]
 #[Entity(repositoryClass: AllianceBoardRepository::class)]
+#[TruncateOnGameReset]
 class AllianceBoard
 {
     #[Id]

@@ -232,15 +232,4 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             )
         )->execute();
     }
-
-    #[Override]
-    public function truncateAllPrivateMessages(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s pm',
-                PrivateMessage::class
-            )
-        )->execute();
-    }
 }

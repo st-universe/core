@@ -60,15 +60,4 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
             'plot_id' => $plotId
         ]);
     }
-
-    #[Override]
-    public function truncateAllEntities(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s pm',
-                RpgPlotMember::class
-            )
-        )->execute();
-    }
 }

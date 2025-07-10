@@ -13,11 +13,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceRelationRepository;
 
 #[Table(name: 'stu_alliances_relations')]
 #[Index(name: 'alliance_relation_idx', columns: ['alliance_id', 'recipient'])]
 #[Entity(repositoryClass: AllianceRelationRepository::class)]
+#[TruncateOnGameReset]
 class AllianceRelation
 {
     #[Id]

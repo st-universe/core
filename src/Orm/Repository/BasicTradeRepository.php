@@ -99,15 +99,4 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
             ->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)
             ->getResult();
     }
-
-    #[Override]
-    public function truncateAllBasicTrades(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s bt',
-                BasicTrade::class
-            )
-        )->execute();
-    }
 }

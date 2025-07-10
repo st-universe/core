@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\OpenedAdventDoorRepository;
 
 #[Table(name: 'stu_opened_advent_door')]
 #[Entity(repositoryClass: OpenedAdventDoorRepository::class)]
+#[TruncateOnGameReset]
 class OpenedAdventDoor
 {
     #[Id]

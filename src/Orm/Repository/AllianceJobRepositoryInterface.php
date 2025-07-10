@@ -48,6 +48,4 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     ): ?AllianceJob;
 
     public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJob;
-
-    public function truncateAllAllianceJobs(): void;
 }

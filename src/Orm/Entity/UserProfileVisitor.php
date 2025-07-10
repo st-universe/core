@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserProfileVisitorRepository;
 
 #[Table(name: 'stu_user_profile_visitors')]
 #[Index(name: 'user_profile_visitor_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: UserProfileVisitorRepository::class)]
+#[TruncateOnGameReset]
 class UserProfileVisitor
 {
     #[Id]

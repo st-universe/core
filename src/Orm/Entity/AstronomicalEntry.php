@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AstroEntryRepository;
 
 #[Table(name: 'stu_astro_entry')]
@@ -19,6 +20,7 @@ use Stu\Orm\Repository\AstroEntryRepository;
 #[Index(name: 'astro_entry_star_system_idx', columns: ['systems_id'])]
 #[Index(name: 'astro_entry_map_region_idx', columns: ['region_id'])]
 #[Entity(repositoryClass: AstroEntryRepository::class)]
+#[TruncateOnGameReset]
 class AstronomicalEntry
 {
     #[Id]

@@ -30,6 +30,4 @@ interface AllianceRepositoryInterface extends ObjectRepository
      * @return array<Alliance>
      */
     public function findByApplicationState(bool $acceptApplications): array;
-
-    public function truncateAllAlliances(): void;
 }

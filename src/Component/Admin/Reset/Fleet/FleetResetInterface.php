@@ -6,5 +6,5 @@ namespace Stu\Component\Admin\Reset\Fleet;
 
 interface FleetResetInterface
 {
-    public function deleteAllFleets(): void;
+    public function unsetShipFleetReference(): void;
 }

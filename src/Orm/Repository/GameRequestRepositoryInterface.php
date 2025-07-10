@@ -17,6 +17,4 @@ interface GameRequestRepositoryInterface extends ObjectRepository
     public function save(GameRequest $gameRequest): void;
 
     public function delete(GameRequest $gameRequest): void;
-
-    public function truncateAllGameRequests(): void;
 }

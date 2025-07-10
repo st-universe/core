@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\KnPostRepository;
 
 #[Table(name: 'stu_kn')]
@@ -26,6 +27,7 @@ use Stu\Orm\Repository\KnPostRepository;
 #[Index(name: 'kn_post_date_idx', columns: ['date'])]
 #[Index(name: 'kn_post_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: KnPostRepository::class)]
+#[TruncateOnGameReset]
 class KnPost implements EntityWithHrefInterface
 {
     #[Id]

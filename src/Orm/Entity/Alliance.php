@@ -16,10 +16,12 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceRepository;
 
 #[Table(name: 'stu_alliances')]
 #[Entity(repositoryClass: AllianceRepository::class)]
+#[TruncateOnGameReset]
 class Alliance
 {
     #[Id]

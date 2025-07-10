@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\RpgPlotMemberRepository;
 
 #[Table(name: 'stu_plots_members')]
 #[UniqueConstraint(name: 'plot_user_idx', columns: ['plot_id', 'user_id'])]
 #[Entity(repositoryClass: RpgPlotMemberRepository::class)]
+#[TruncateOnGameReset]
 class RpgPlotMember
 {
     #[Id]

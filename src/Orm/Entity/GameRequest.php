@@ -10,16 +10,14 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\GameRequestRepository;
 use Throwable;
 
-/**
- *
- * @todo remove entity and repo
- **/
 #[Table(name: 'stu_game_request')]
 #[Index(name: 'game_request_idx', columns: ['user_id', 'action', 'view'])]
 #[Entity(repositoryClass: GameRequestRepository::class)]
+#[TruncateOnGameReset]
 class GameRequest
 {
     public const TABLE_NAME = 'stu_game_request';

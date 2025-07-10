@@ -11,10 +11,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\PirateWrathRepository;
 
 #[Table(name: 'stu_pirate_wrath')]
 #[Entity(repositoryClass: PirateWrathRepository::class)]
+#[TruncateOnGameReset]
 class PirateWrath
 {
     #[Column(type: 'integer')]

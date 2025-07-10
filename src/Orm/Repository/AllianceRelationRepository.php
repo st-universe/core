@@ -160,15 +160,4 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ])
             ->getOneOrNullResult();
     }
-
-    #[Override]
-    public function truncateAllAllianceRelations(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ar',
-                AllianceRelation::class
-            )
-        )->execute();
-    }
 }

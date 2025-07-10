@@ -44,7 +44,5 @@ interface HistoryRepositoryInterface extends ObjectRepository
 
     public function delete(History $history): void;
 
-    public function truncateAllEntities(): void;
-
     public function getSumDestroyedByUser(int $source_user, int $target_user): int;
 }

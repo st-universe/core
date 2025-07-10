@@ -34,15 +34,4 @@ final class TorpedoStorageRepository extends EntityRepository implements Torpedo
 
         $em->remove($torpedoStorage);
     }
-
-    #[Override]
-    public function truncateAllTorpedoStorages(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ts',
-                TorpedoStorage::class
-            )
-        )->execute();
-    }
 }

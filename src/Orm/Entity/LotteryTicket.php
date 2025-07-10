@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\LotteryTicketRepository;
 
 #[Table(name: 'stu_lottery_ticket')]
 #[Index(name: 'lottery_ticket_period_idx', columns: ['period'])]
 #[Entity(repositoryClass: LotteryTicketRepository::class)]
+#[TruncateOnGameReset]
 class LotteryTicket
 {
     #[Id]

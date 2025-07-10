@@ -15,10 +15,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\DealsRepository;
 
 #[Table(name: 'stu_deals')]
 #[Entity(repositoryClass: DealsRepository::class)]
+#[TruncateOnGameReset]
 class Deals
 {
     #[Id]

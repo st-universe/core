@@ -178,15 +178,4 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ])
             ->getResult();
     }
-
-    #[Override]
-    public function truncateAllTradeOffers(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s to',
-                TradeOffer::class
-            )
-        )->execute();
-    }
 }

@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\NoteRepository;
 
 #[Table(name: 'stu_notes')]
 #[Index(name: 'note_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: NoteRepository::class)]
+#[TruncateOnGameReset]
 class Note
 {
     #[Id]

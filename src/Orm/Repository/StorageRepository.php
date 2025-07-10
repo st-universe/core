@@ -329,15 +329,4 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ->setParameter('commodityId', $commodityId)
             ->execute();
     }
-
-    #[Override]
-    public function truncateAllStorages(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s s',
-                Storage::class
-            )
-        )->execute();
-    }
 }

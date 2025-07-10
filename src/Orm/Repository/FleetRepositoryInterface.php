@@ -35,6 +35,4 @@ interface FleetRepositoryInterface extends ObjectRepository
      * @return array<Fleet>
      */
     public function getNonNpcFleetList(): array;
-
-    public function truncateAllFleets(): void;
 }

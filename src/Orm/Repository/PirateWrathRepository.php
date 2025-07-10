@@ -38,17 +38,6 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
         return new PirateWrath();
     }
 
-    #[Override]
-    public function truncateAllEntries(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s pw',
-                PirateWrath::class
-            )
-        )->execute();
-    }
-
     /**
      * @return PirateWrath[]
      */

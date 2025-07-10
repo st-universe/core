@@ -34,6 +34,4 @@ interface ContactRepositoryInterface extends ObjectRepository
     public function truncateByUser(int $userId): void;
 
     public function truncateByUserAndOpponent(int $userId, int $opponentId): void;
-
-    public function truncateAllContacts(): void;
 }

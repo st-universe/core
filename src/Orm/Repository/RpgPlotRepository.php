@@ -105,15 +105,4 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
     {
         return $this->findBy([], ['start_date' => 'asc']);
     }
-
-    #[Override]
-    public function truncateAllEntities(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s rp',
-                RpgPlot::class
-            )
-        )->execute();
-    }
 }

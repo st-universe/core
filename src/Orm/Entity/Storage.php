@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\StorageRepository;
 
 #[Table(name: 'stu_storage')]
@@ -24,6 +25,7 @@ use Stu\Orm\Repository\StorageRepository;
 #[Index(name: 'storage_tradepost_idx', columns: ['tradepost_id'])]
 #[Index(name: 'storage_tradeoffer_idx', columns: ['tradeoffer_id'])]
 #[Entity(repositoryClass: StorageRepository::class)]
+#[TruncateOnGameReset]
 class Storage
 {
     #[Id]

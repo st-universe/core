@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\NPCLogRepository;
 
 #[Table(name: 'stu_npc_log')]
 #[Entity(repositoryClass: NPCLogRepository::class)]
+#[TruncateOnGameReset]
 class NPCLog
 {
     #[Id]

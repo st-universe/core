@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\TachyonScanRepository;
 
 #[Table(name: 'stu_tachyon_scan')]
 #[Index(name: 'tachyon_scan_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: TachyonScanRepository::class)]
+#[TruncateOnGameReset]
 class TachyonScan
 {
     #[Id]

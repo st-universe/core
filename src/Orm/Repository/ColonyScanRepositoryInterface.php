@@ -30,6 +30,4 @@ interface ColonyScanRepositoryInterface extends ObjectRepository
     public function getSurfaceArray(int $id): string;
 
     public function getSurfaceWidth(int $id): int;
-
-    public function truncateAllColonyScans(): void;
 }

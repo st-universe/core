@@ -27,6 +27,4 @@ interface CrewRepositoryInterface extends ObjectRepository
     ): int;
 
     public function truncateByUser(int $userId): void;
-
-    public function truncateAllCrew(): void;
 }

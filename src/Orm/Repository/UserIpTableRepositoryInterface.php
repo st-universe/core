@@ -18,6 +18,4 @@ interface UserIpTableRepositoryInterface extends ObjectRepository
     public function findMostRecentByUser(User $user): ?UserIpTable;
 
     public function findBySessionId(string $sessionId): ?UserIpTable;
-
-    public function truncateAllEntries(): void;
 }

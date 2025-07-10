@@ -6,20 +6,19 @@ namespace Stu\Component\Admin\Reset\Fleet;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetReset implements FleetResetInterface
 {
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {}
 
     #[Override]
-    public function deleteAllFleets(): void
+    public function unsetShipFleetReference(): void
     {
-        echo "  - deleting all fleets\n";
+        echo "  - removing all fleet references\n";
 
         $this->entityManager->getConnection()->executeQuery('update stu_ship set fleet_id = null');
-
-        $this->fleetRepository->truncateAllFleets();
 
         $this->entityManager->flush();
     }
