@@ -106,7 +106,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($spacecraft === null) {
-            throw new SpacecraftDoesNotExistException('Spacecraft does not exist!');
+            throw new SpacecraftDoesNotExistException('Raumfahrzeug existiert nicht!');
         }
         $this->checkviolations($spacecraft, $userId, $allowUplink);
 
