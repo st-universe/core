@@ -37,8 +37,8 @@ class FightLibTest extends StuTestCase
     private MockInterface&InformationFactoryInterface $informationFactory;
 
     private MockInterface&ShipWrapperInterface $wrapper;
-
     private MockInterface&Ship $ship;
+    private InformationWrapper $individualInformationWrapper;
 
     private FightLibInterface $subject;
 
@@ -57,11 +57,17 @@ class FightLibTest extends StuTestCase
 
         //other
         $this->ship = $this->mock(Ship::class);
+        $this->individualInformationWrapper = new InformationWrapper();
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
+
+        $this->informationFactory->shouldReceive('createInformationWrapper')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($this->individualInformationWrapper);
 
         $this->subject = new FightLib(
             $this->spacecraftSystemManager,
@@ -82,7 +88,7 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, true, $informations);
     }
 
     public function testReadyExpectNoActionsWhenEscapePod(): void
@@ -98,7 +104,47 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, false, $informations);
+    }
+
+    public function testReadyExpectUndockingWhenDockedAndUndockingMandatory(): void
+    {
+        $informations = $this->mock(InformationInterface::class);
+        $station = $this->mock(Station::class);
+
+        $this->ship->shouldReceive('getRump->isEscapePods')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getCondition->isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $this->ship->shouldReceive('getDockedTo')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($station);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SHIPNAME');
+
+        $this->ship->shouldReceive('setDockedTo')
+            ->with(null)
+            ->once();
+
+        $informations->shouldReceive('addInformationf')
+            ->with('Aktionen der %s', 'SHIPNAME')
+            ->once();
+        $informations->shouldReceive('addInformation')
+            ->with('- Das Schiff hat abgedockt')
+            ->once();
+
+        $this->subject->ready($this->wrapper, true, $informations);
     }
 
     public function testReadyExpectNoActionsWhenNoBuildplan(): void
@@ -117,8 +163,12 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $this->ship->shouldReceive('getDockedTo')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, true, $informations);
     }
 
     public function testReadyExpectNoActionsWhenNotEnoughCrew(): void
@@ -142,13 +192,12 @@ class FightLibTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, false, $informations);
     }
 
     public function testReadyExpectSuccessWhenNoErrors(): void
     {
         $informations = $this->mock(InformationInterface::class);
-        $informationWrapper = $this->mock(InformationWrapper::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
@@ -166,13 +215,6 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $this->ship->shouldReceive('getDockedTo')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(Station::class));
-        $this->ship->shouldReceive('setDockedTo')
-            ->with(null)
-            ->once();
         $this->ship->shouldReceive('hasComputer')
             ->withNoArgs()
             ->once()
@@ -193,40 +235,15 @@ class FightLibTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->informationFactory->shouldReceive('createInformationWrapper')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($informationWrapper);
-
         $this->alertLevelBasedReaction->shouldReceive('react')
-            ->with($this->wrapper, $informationWrapper)
+            ->with($this->wrapper, $this->individualInformationWrapper)
             ->once();
 
-        $informations->shouldReceive('addInformationf')
-            ->with('Aktionen der %s', 'shipname')
-            ->once();
-        $informationWrapper->shouldReceive('addInformation')
-            ->with('- Das Schiff hat abgedockt')
-            ->once();
-        $informationWrapper->shouldReceive('dumpTo')
-            ->with($informations)
-            ->once();
-        $informationWrapper->shouldReceive('isEmpty')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $this->ship->shouldReceive('getName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('shipname');
-
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, false, $informations);
     }
 
     public function testReadyExpectSuccessWhenErrors(): void
     {
-        $informationWrapper = $this->mock(InformationWrapper::class);
         $informations = $this->mock(InformationInterface::class);
 
         $this->ship->shouldReceive('getCondition->isDestroyed')
@@ -245,10 +262,6 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $this->ship->shouldReceive('getDockedTo')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->ship->shouldReceive('hasComputer')
             ->withNoArgs()
             ->once()
@@ -271,17 +284,7 @@ class FightLibTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->informationFactory->shouldReceive('createInformationWrapper')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($informationWrapper);
-
-        $informationWrapper->shouldReceive('isEmpty')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $this->subject->ready($this->wrapper, $informations);
+        $this->subject->ready($this->wrapper, false, $informations);
     }
 
     public function testCanAttackTargetExpectFalseWhenNoActiveWeapon(): void

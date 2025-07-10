@@ -13,6 +13,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
@@ -33,8 +34,11 @@ final class FightLib implements FightLibInterface
     ) {}
 
     #[Override]
-    public function ready(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void
-    {
+    public function ready(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isUndockingMandatory,
+        InformationInterface $informations
+    ): void {
         $spacecraft = $wrapper->get();
 
         if (
@@ -43,18 +47,39 @@ final class FightLib implements FightLibInterface
         ) {
             return;
         }
-        if ($spacecraft->getBuildplan() === null) {
-            return;
-        }
-        if (!$spacecraft->hasEnoughCrew()) {
-            return;
-        }
 
         $informationWrapper = $this->informationFactory->createInformationWrapper();
 
-        if ($spacecraft instanceof Ship && $spacecraft->getDockedTo() !== null) {
+        $this->readyInternal($wrapper, $isUndockingMandatory, $informationWrapper);
+
+        if (!$informationWrapper->isEmpty()) {
+            $informations->addInformationf('Aktionen der %s', $spacecraft->getName());
+            $informationWrapper->dumpTo($informations);
+        }
+    }
+
+    private function readyInternal(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isUndockingMandatory,
+        InformationWrapper $informations
+    ): void {
+        $spacecraft = $wrapper->get();
+
+        if (
+            $isUndockingMandatory
+            && $spacecraft instanceof Ship
+            && $spacecraft->getDockedTo() !== null
+        ) {
             $spacecraft->setDockedTo(null);
-            $informationWrapper->addInformation("- Das Schiff hat abgedockt");
+            $informations->addInformation("- Das Schiff hat abgedockt");
+        }
+
+        if ($spacecraft->getBuildplan() === null) {
+            return;
+        }
+
+        if (!$spacecraft->hasEnoughCrew()) {
+            return;
         }
 
         try {
@@ -73,12 +98,7 @@ final class FightLib implements FightLibInterface
         }
 
         if ($spacecraft->hasComputer()) {
-            $this->alertLevelBasedReaction->react($wrapper, $informationWrapper);
-        }
-
-        if (!$informationWrapper->isEmpty()) {
-            $informations->addInformationf('Aktionen der %s', $spacecraft->getName());
-            $informationWrapper->dumpTo($informations);
+            $this->alertLevelBasedReaction->react($wrapper, $informations);
         }
     }
 
