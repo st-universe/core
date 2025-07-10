@@ -27,15 +27,16 @@ final class SpacecraftAttackPreparation implements SpacecraftAttackPreparationIn
             $message = $this->messageFactory->createMessage(
                 $attacker->get()->getUser()->getId()
             );
-            $this->fightLib->ready($attacker, $message);
+            $this->fightLib->ready($attacker, true, $message);
             $messages->add($message);
         }
         if (!$isOneWay) {
+            $isUndockingMandatory = $defenders->isActive();
             foreach ($defenders->getActiveMembers() as $defender) {
                 $message = $this->messageFactory->createMessage(
                     $defender->get()->getUser()->getId()
                 );
-                $this->fightLib->ready($defender, $message);
+                $this->fightLib->ready($defender, $isUndockingMandatory, $message);
                 $messages->add($message);
             }
         }

@@ -73,6 +73,10 @@ class SpacecraftAttackPreparationTest extends StuTestCase
             $defenders->shouldReceive('getActiveMembers')
                 ->withNoArgs()
                 ->andReturn(new ArrayCollection([$defender1, $defender2]));
+            $defenders->shouldReceive('isActive')
+                ->withNoArgs()
+                ->once()
+                ->andReturn(false);
         }
 
         $attacker1->shouldReceive('get')
@@ -107,10 +111,10 @@ class SpacecraftAttackPreparationTest extends StuTestCase
             ->andReturn($message2);
 
         $this->fightLib->shouldReceive('ready')
-            ->with($attacker1, $message1)
+            ->with($attacker1, true, $message1)
             ->once();
         $this->fightLib->shouldReceive('ready')
-            ->with($attacker2, $message2)
+            ->with($attacker2, true, $message2)
             ->once();
 
         if (!$isOneWay) {
@@ -147,10 +151,10 @@ class SpacecraftAttackPreparationTest extends StuTestCase
                 ->andReturn($message4);
 
             $this->fightLib->shouldReceive('ready')
-                ->with($defender1, $message3)
+                ->with($defender1, false, $message3)
                 ->once();
             $this->fightLib->shouldReceive('ready')
-                ->with($defender2, $message4)
+                ->with($defender2, false, $message4)
                 ->once();
         }
 

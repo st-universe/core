@@ -14,7 +14,11 @@ use Stu\Orm\Entity\Spacecraft;
 
 interface FightLibInterface
 {
-    public function ready(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void;
+    public function ready(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isUndockingMandatory,
+        InformationInterface $informations
+    ): void;
 
     public function canAttackTarget(
         Spacecraft $spacecraft,

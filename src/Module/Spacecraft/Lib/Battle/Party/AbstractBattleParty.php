@@ -88,6 +88,13 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return $this->isAttackingShieldsOnly;
     }
 
+    #[Override]
+    public function isActive(): bool
+    {
+        return $this->getActiveMembers()
+            ->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => $wrapper->get()->hasEnoughCrew());
+    }
+
     /**
      * @return Collection<int, SpacecraftWrapperInterface>
      */
