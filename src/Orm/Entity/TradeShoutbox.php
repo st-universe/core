@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\TradeShoutboxRepository;
 
 #[Table(name: 'stu_trade_shoutbox')]
 #[Index(name: 'trade_network_date_idx', columns: ['trade_network_id', 'date'])]
 #[Entity(repositoryClass: TradeShoutboxRepository::class)]
+#[TruncateOnGameReset]
 class TradeShoutbox
 {
     #[Id]

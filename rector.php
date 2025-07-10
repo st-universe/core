@@ -63,8 +63,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         SimplifyBoolIdenticalTrueRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
-        PostIncDecToPreIncDecRector::class,
-        __DIR__ . '/src/OrmProxy'
+        PostIncDecToPreIncDecRector::class
     ]);
 
     /**

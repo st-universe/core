@@ -52,8 +52,6 @@ interface KnPostRepositoryInterface extends ObjectRepository
      */
     public function searchByContent(string $content): array;
 
-    public function truncateAllEntities(): void;
-
     /**
      * @return array<array{user_id: int, votes: int}>
      */

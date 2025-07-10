@@ -11,9 +11,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
+use Stu\Orm\Repository\UserRefererRepository;
 
 #[Table(name: 'stu_user_referer')]
-#[Entity(repositoryClass: 'Stu\Orm\Repository\UserRefererRepository')]
+#[Entity(repositoryClass: UserRefererRepository::class)]
+#[TruncateOnGameReset]
 class UserReferer
 {
     #[Id]

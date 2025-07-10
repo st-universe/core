@@ -17,12 +17,14 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AnomalyRepository;
 
 #[Table(name: 'stu_anomaly')]
 #[Index(name: 'anomaly_to_type_idx', columns: ['anomaly_type_id'])]
 #[Index(name: 'anomaly_remaining_idx', columns: ['remaining_ticks'])]
 #[Entity(repositoryClass: AnomalyRepository::class)]
+#[TruncateOnGameReset]
 class Anomaly implements SpacecraftDestroyerInterface
 {
     #[Id]

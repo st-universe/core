@@ -15,6 +15,4 @@ interface UserRefererRepositoryInterface extends ObjectRepository
     public function save(UserReferer $referer): void;
 
     public function delete(UserReferer $referer): void;
-
-    public function truncateAll(): void;
 }

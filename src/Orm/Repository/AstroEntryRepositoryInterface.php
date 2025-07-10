@@ -20,8 +20,6 @@ interface AstroEntryRepositoryInterface extends ObjectRepository
 
     public function delete(AstronomicalEntry $entry): void;
 
-    public function truncateAllAstroEntries(): void;
-
     /**
      * @return array<AstronomicalEntry>
      */

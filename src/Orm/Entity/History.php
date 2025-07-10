@@ -13,11 +13,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\History\HistoryTypeEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\HistoryRepository;
 
 #[Table(name: 'stu_history')]
 #[Index(name: 'type_idx', columns: ['type'])]
 #[Entity(repositoryClass: HistoryRepository::class)]
+#[TruncateOnGameReset]
 class History
 {
     #[Id]

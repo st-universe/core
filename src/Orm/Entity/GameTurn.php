@@ -11,11 +11,13 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\GameTurnRepository;
 
 #[Table(name: 'stu_game_turns')]
 #[Index(name: 'turn_idx', columns: ['turn'])]
 #[Entity(repositoryClass: GameTurnRepository::class)]
+#[TruncateOnGameReset]
 class GameTurn
 {
     #[Id]

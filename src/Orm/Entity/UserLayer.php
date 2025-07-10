@@ -11,10 +11,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserLayerRepository;
 
 #[Table(name: 'stu_user_layer')]
 #[Entity(repositoryClass: UserLayerRepository::class)]
+#[TruncateOnGameReset]
 class UserLayer
 {
     #[Column(type: 'smallint')]

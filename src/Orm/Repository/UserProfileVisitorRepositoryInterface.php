@@ -23,6 +23,4 @@ interface UserProfileVisitorRepositoryInterface extends ObjectRepository
     public function getRecent(int $userId): array;
 
     public function truncateByUser(User $user): void;
-
-    public function truncateAllEntries(): void;
 }

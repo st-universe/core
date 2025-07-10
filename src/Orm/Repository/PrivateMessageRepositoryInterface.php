@@ -66,6 +66,4 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     public function getAmountSince(int $timestamp): int;
 
     public function unsetAllInboxReferences(): void;
-
-    public function truncateAllPrivateMessages(): void;
 }

@@ -23,6 +23,4 @@ interface AllianceBoardRepositoryInterface extends ObjectRepository
      * @return array<AllianceBoard>
      */
     public function getByAlliance(int $allianceId): array;
-
-    public function truncateAllAllianceBoards(): void;
 }

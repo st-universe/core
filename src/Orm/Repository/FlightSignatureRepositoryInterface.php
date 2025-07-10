@@ -58,6 +58,4 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function getFlightsTop10(): array;
 
     public function getSignaturesForUser(User $user): int;
-
-    public function truncateAllSignatures(): void;
 }

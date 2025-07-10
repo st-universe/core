@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\PrivateMessageRepository;
 
 #[Table(name: 'stu_pms')]
@@ -20,6 +21,7 @@ use Stu\Orm\Repository\PrivateMessageRepository;
 #[Index(name: 'correspondence', columns: ['recip_user', 'send_user'])]
 #[Index(name: 'pm_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: PrivateMessageRepository::class)]
+#[TruncateOnGameReset]
 class PrivateMessage
 {
     #[Id]

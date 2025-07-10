@@ -44,6 +44,4 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
      * @param array<int> $typeIds
      */
     public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelation;
-
-    public function truncateAllAllianceRelations(): void;
 }

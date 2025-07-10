@@ -19,8 +19,6 @@ interface PirateWrathRepositoryInterface extends ObjectRepository
 
     public function prototype(): PirateWrath;
 
-    public function truncateAllEntries(): void;
-
     /**
      * @return PirateWrath[]
      */

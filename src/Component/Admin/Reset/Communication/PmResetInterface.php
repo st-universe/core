@@ -9,8 +9,4 @@ interface PmResetInterface
     public function unsetAllInboxReferences(): void;
 
     public function resetAllNonNpcPmFolders(): void;
-
-    public function resetPms(): void;
-
-    public function deleteAllContacts(): void;
 }

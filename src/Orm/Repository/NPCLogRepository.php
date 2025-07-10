@@ -44,15 +44,4 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
 
         $em->remove($npclog);
     }
-
-    #[Override]
-    public function truncateAllEntities(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s n',
-                NPCLog::class
-            )
-        )->execute();
-    }
 }

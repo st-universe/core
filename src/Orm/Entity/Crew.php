@@ -12,10 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\CrewRepository;
 
 #[Table(name: 'stu_crew')]
 #[Entity(repositoryClass: CrewRepository::class)]
+#[TruncateOnGameReset]
 class Crew
 {
     #[Id]

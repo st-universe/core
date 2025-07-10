@@ -13,12 +13,14 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\FlightSignatureRepository;
 
 #[Table(name: 'stu_flight_sig')]
 #[Index(name: 'flight_sig_user_idx', columns: ['user_id'])]
 #[Index(name: 'flight_sig_sensor_result_idx', columns: ['from_direction', 'to_direction', 'time'])]
 #[Entity(repositoryClass: FlightSignatureRepository::class)]
+#[TruncateOnGameReset]
 class FlightSignature
 {
     #[Id]

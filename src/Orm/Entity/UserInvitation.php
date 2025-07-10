@@ -11,12 +11,14 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserInvitationRepository;
 
 #[Table(name: 'stu_user_invitations')]
 #[Index(name: 'user_invitation_user_idx', columns: ['user_id'])]
 #[Index(name: 'user_invitation_token_idx', columns: ['token'])]
 #[Entity(repositoryClass: UserInvitationRepository::class)]
+#[TruncateOnGameReset]
 class UserInvitation
 {
     #[Id]

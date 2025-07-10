@@ -10,10 +10,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserMapRepository;
 
 #[Table(name: 'stu_user_map')]
 #[Entity(repositoryClass: UserMapRepository::class)]
+#[TruncateOnGameReset]
 class UserMap
 {
     #[Id]

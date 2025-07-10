@@ -15,12 +15,14 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\RpgPlotRepository;
 
 #[Table(name: 'stu_plots')]
 #[Index(name: 'rpg_plot_end_date_idx', columns: ['end_date'])]
 #[Index(name: 'rpg_plot_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: RpgPlotRepository::class)]
+#[TruncateOnGameReset]
 class RpgPlot
 {
     #[Id]

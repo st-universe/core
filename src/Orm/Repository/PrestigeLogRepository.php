@@ -68,15 +68,4 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
             ->setMaxResults($maxResults)
             ->getResult();
     }
-
-    #[Override]
-    public function truncateAllPrestigeLogs(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s pl',
-                PrestigeLog::class
-            )
-        )->execute();
-    }
 }

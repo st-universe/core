@@ -23,6 +23,4 @@ interface NPCLogRepositoryInterface extends ObjectRepository
     public function save(NPCLog $npclog): void;
 
     public function delete(NPCLog $npclog): void;
-
-    public function truncateAllEntities(): void;
 }

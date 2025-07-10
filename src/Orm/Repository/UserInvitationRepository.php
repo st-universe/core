@@ -60,15 +60,4 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
             ])
             ->execute();
     }
-
-    #[Override]
-    public function truncateAllEntries(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ui',
-                UserInvitation::class
-            )
-        )->execute();
-    }
 }

@@ -19,6 +19,4 @@ interface GameTurnRepositoryInterface extends ObjectRepository
     public function save(GameTurn $turn): void;
 
     public function delete(GameTurn $turn): void;
-
-    public function truncateAllGameTurns(): void;
 }

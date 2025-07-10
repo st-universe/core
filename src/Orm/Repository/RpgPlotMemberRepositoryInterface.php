@@ -28,6 +28,4 @@ interface RpgPlotMemberRepositoryInterface extends ObjectRepository
      * @return array<RpgPlotMember>
      */
     public function getByPlot(int $plotId): array;
-
-    public function truncateAllEntities(): void;
 }

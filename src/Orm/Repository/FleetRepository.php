@@ -105,15 +105,4 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
             ->getResult();
     }
-
-    #[Override]
-    public function truncateAllFleets(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s f',
-                Fleet::class
-            )
-        )->execute();
-    }
 }

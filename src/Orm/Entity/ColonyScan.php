@@ -11,10 +11,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\ColonyScanRepository;
 
 #[Table(name: 'stu_colony_scan')]
 #[Entity(repositoryClass: ColonyScanRepository::class)]
+#[TruncateOnGameReset]
 class ColonyScan
 {
     #[Id]

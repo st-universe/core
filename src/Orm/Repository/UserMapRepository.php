@@ -91,15 +91,4 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
             'layer' => $userLayer->getLayer()
         ])->execute();
     }
-
-    #[Override]
-    public function truncateAllUserMaps(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s um',
-                UserMap::class
-            )
-        )->execute();
-    }
 }

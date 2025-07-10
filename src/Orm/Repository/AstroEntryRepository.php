@@ -37,18 +37,6 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         $em->flush(); //TODO really neccessary?
     }
 
-
-    #[Override]
-    public function truncateAllAstroEntries(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ae',
-                AstronomicalEntry::class
-            )
-        )->execute();
-    }
-
     /** @return array<AstronomicalEntry> */
     #[Override]
     public function getByUser(User $user): array

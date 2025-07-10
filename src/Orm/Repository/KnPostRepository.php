@@ -133,17 +133,6 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[Override]
-    public function truncateAllEntities(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s kp',
-                KnPost::class
-            )
-        )->execute();
-    }
-
-    #[Override]
     public function getRpgVotesTop10(): array
     {
         $rsm = new ResultSetMapping();

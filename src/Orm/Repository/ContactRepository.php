@@ -97,15 +97,4 @@ final class ContactRepository extends EntityRepository implements ContactReposit
             'opponentId' => $opponentId
         ])->execute();
     }
-
-    #[Override]
-    public function truncateAllContacts(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s c',
-                Contact::class
-            )
-        )->execute();
-    }
 }

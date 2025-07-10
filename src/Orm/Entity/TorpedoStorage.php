@@ -14,11 +14,13 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\TorpedoStorageRepository;
 
 #[Table(name: 'stu_torpedo_storage')]
 #[Index(name: 'torpedo_storage_spacecraft_idx', columns: ['spacecraft_id'])]
 #[Entity(repositoryClass: TorpedoStorageRepository::class)]
+#[TruncateOnGameReset]
 class TorpedoStorage
 {
     #[Id]

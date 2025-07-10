@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserReferer;
-use Stu\Orm\Entity\User;
 use Override;
 
 /**
@@ -34,16 +33,5 @@ final class UserRefererRepository extends EntityRepository implements UserRefere
         $em = $this->getEntityManager();
         $em->remove($referer);
         $em->flush();
-    }
-
-    #[Override]
-    public function truncateAll(): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ur',
-                UserReferer::class
-            )
-        )->execute();
     }
 }

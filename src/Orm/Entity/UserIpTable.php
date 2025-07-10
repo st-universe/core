@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserIpTableRepository;
 
 #[Table(name: 'stu_user_iptable')]
@@ -21,6 +22,7 @@ use Stu\Orm\Repository\UserIpTableRepository;
 #[Index(name: 'iptable_end_idx', columns: ['endDate'])]
 #[Index(name: 'iptable_ip_idx', columns: ['ip'])]
 #[Entity(repositoryClass: UserIpTableRepository::class)]
+#[TruncateOnGameReset]
 class UserIpTable
 {
     #[Id]

@@ -14,11 +14,13 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\TradeOfferRepository;
 
 #[Table(name: 'stu_trade_offers')]
 #[Index(name: 'trade_post_user_idx', columns: ['posts_id', 'user_id'])]
 #[Entity(repositoryClass: TradeOfferRepository::class)]
+#[TruncateOnGameReset]
 class TradeOffer
 {
     #[Id]

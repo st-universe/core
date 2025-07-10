@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\BasicTradeRepository;
 
 #[Table(name: 'stu_basic_trade')]
 #[Index(name: 'base_trade_idx', columns: ['faction_id', 'commodity_id', 'date_ms'])]
 #[Entity(repositoryClass: BasicTradeRepository::class)]
+#[TruncateOnGameReset]
 class BasicTrade
 {
     #[Id]
