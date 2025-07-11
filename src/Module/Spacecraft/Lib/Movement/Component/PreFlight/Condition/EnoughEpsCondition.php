@@ -12,7 +12,6 @@ use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 
@@ -68,7 +67,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
         }
 
         if ($spacecraft instanceof Ship && $spacecraft->getDockedTo() !== null) {
-            $result += ShipEnum::SYSTEM_ECOST_DOCK;
+            $result += Spacecraft::SYSTEM_ECOST_DOCK;
         }
 
         return $result;

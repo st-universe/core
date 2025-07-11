@@ -9,9 +9,9 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 class DockConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
@@ -43,11 +43,11 @@ class DockConsequence extends AbstractFlightConsequence implements FlightStartCo
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
             $epsSystem = $wrapper->getEpsSystemData();
-            if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
                 $message->add(sprintf('%s konnte wegen Energiemangels nicht abgedockt werden', $ship->getName()));
                 return;
             } else {
-                $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
+                $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
                 $ship->setDockedTo(null);
             }
 

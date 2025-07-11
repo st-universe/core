@@ -8,7 +8,6 @@ use Override;
 use request;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -22,6 +21,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -109,7 +109,7 @@ final class DockFleet implements ActionControllerInterface
                 continue;
             }
 
-            if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
@@ -138,7 +138,7 @@ final class DockFleet implements ActionControllerInterface
 
             $ship->setDockedTo($station);
 
-            $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK);
+            $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);
 
