@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Component\ErrorHandling;
 
-final class ErrorCodeEnum
+enum ErrorCodeEnum: int
 {
-    public const int LOGIN_NAME_INVALID = 100001;
+    case LOGIN_NAME_INVALID = 100001;
+    case EMAIL_ADDRESS_INVALID = 100002;
+    case REGISTRATION_DUPLICATE = 100003;
+    case SMS_VERIFICATION_CODE_INVALID = 100009;
 
-    public const int EMAIL_ADDRESS_INVALID = 100002;
-
-    public const int REGISTRATION_DUPLICATE = 100003;
-
-    public const int INVALID_FACTION = 100004;
-
-    public const int AUTHENTICATION_FAILED = 100005;
-
-    public const int NOT_FOUND = 100006;
-
-    public const int REGISTRATION_NOT_PERMITTED = 100007;
-
-    public const int REGISTRATION_TOKEN_INVALID = 100008;
-
-    public const int SMS_VERIFICATION_CODE_INVALID = 100009;
+    public function getDescription(): string
+    {
+        return match ($this) {
+            self::LOGIN_NAME_INVALID => 'The provided login name is invalid (invalid characters or invalid length)',
+            self::EMAIL_ADDRESS_INVALID => 'The provided email address is not valid',
+            self::REGISTRATION_DUPLICATE => 'The provided email address or username are already registered',
+            self::SMS_VERIFICATION_CODE_INVALID => 'The provided mobile number is not valid'
+        };
+    }
 }

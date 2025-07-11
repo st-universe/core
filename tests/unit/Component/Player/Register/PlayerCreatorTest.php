@@ -8,9 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Override;
-use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
-use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
-use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
+use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
@@ -54,7 +52,8 @@ class PlayerCreatorTest extends MockeryTestCase
 
     public function testCreateThrowsErrorOnInvalidLoginName(): void
     {
-        $this->expectException(LoginNameInvalidException::class);
+        $this->expectException(RegistrationException::class);
+        $this->expectExceptionMessage('The provided login name is invalid (invalid characters or invalid length)');
 
         $this->creator->createWithMobileNumber(
             'meh',
@@ -67,7 +66,8 @@ class PlayerCreatorTest extends MockeryTestCase
 
     public function testCreateThrowsErrorOnInvalidEmail(): void
     {
-        $this->expectException(EmailAddressInvalidException::class);
+        $this->expectException(RegistrationException::class);
+        $this->expectExceptionMessage('The provided email address is not valid');
 
         $this->creator->createWithMobileNumber(
             'mehzomglol',
@@ -80,7 +80,8 @@ class PlayerCreatorTest extends MockeryTestCase
 
     public function testCreateThrowsErrorIfUserNameIsNotUnique(): void
     {
-        $this->expectException(PlayerDuplicateException::class);
+        $this->expectException(RegistrationException::class);
+        $this->expectExceptionMessage('The provided email address or username are already registered');
 
         $loginname = 'mehzomglol';
 
@@ -100,7 +101,8 @@ class PlayerCreatorTest extends MockeryTestCase
 
     public function testCreateThrowsErrorEmailIsNotUnique(): void
     {
-        $this->expectException(PlayerDuplicateException::class);
+        $this->expectException(RegistrationException::class);
+        $this->expectExceptionMessage('The provided email address or username are already registered');
 
         $loginname = 'mehzomglol';
         $email = 'lol@example.com';

@@ -7,7 +7,8 @@ namespace Stu\Module\Index\Action\Register;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Override;
-use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
+use Stu\Component\ErrorHandling\ErrorCodeEnum;
+use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
@@ -162,9 +163,10 @@ class RegisterTest extends StuTestCase
         $this->playerCreator->shouldReceive('createWithMobileNumber')
             ->with('login', 'email', $this->faction, '+4912345', $password, null)
             ->once()
-            ->andThrow(new LoginNameInvalidException());
+            ->andThrow(new RegistrationException(ErrorCodeEnum::LOGIN_NAME_INVALID));
 
-        static::expectException(LoginNameInvalidException::class);
+        static::expectException(RegistrationException::class);
+        static::expectExceptionMessage('The provided login name is invalid (invalid characters or invalid length)');
 
         $this->subject->handle($this->game);
     }
