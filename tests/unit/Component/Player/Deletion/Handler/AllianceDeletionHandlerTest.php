@@ -8,7 +8,6 @@ use ArrayIterator;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
@@ -16,6 +15,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\StuTestCase;
 
 class AllianceDeletionHandlerTest extends StuTestCase
@@ -66,7 +66,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
         $job->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturn(666);
+            ->andReturn(AllianceJobTypeEnum::DIPLOMATIC);
 
         $this->handler->delete($user);
     }
@@ -110,7 +110,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
         $job->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturn(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+            ->andReturn(AllianceJobTypeEnum::FOUNDER);
         $job->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
@@ -176,7 +176,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
         $job->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturn(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+            ->andReturn(AllianceJobTypeEnum::FOUNDER);
         $job->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
@@ -207,7 +207,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
             ->andReturn($successorUser);
 
         $this->allianceActionManager->shouldReceive('setJobForUser')
-            ->with($alliance, $successorUser, AllianceEnum::ALLIANCE_JOBS_FOUNDER)
+            ->with($alliance, $successorUser, AllianceJobTypeEnum::FOUNDER)
             ->once();
 
         $this->handler->delete($user);

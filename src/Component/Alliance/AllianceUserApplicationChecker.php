@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance;
 
 use Override;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -14,9 +15,7 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
  */
 final class AllianceUserApplicationChecker implements AllianceUserApplicationCheckerInterface
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository)
-    {
-    }
+    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository) {}
 
     #[Override]
     public function mayApply(
@@ -26,7 +25,7 @@ final class AllianceUserApplicationChecker implements AllianceUserApplicationChe
         $pendingApplication = $this->allianceJobRepository->getByUserAndAllianceAndType(
             $user,
             $alliance,
-            AllianceEnum::ALLIANCE_JOBS_PENDING
+            AllianceJobTypeEnum::PENDING
         );
         if ($pendingApplication !== null) {
             return false;

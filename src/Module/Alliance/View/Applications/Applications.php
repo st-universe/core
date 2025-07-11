@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Applications;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,9 +16,7 @@ final class Applications implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository)
-    {
-    }
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,7 +45,7 @@ final class Applications implements ViewControllerInterface
             'APPLICATIONS',
             $this->allianceJobRepository->getByAllianceAndType(
                 $alliance->getId(),
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
         );
     }

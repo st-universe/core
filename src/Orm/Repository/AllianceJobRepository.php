@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -80,11 +81,11 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     }
 
     #[Override]
-    public function getByAllianceAndType(int $allianceId, int $typeId): array
+    public function getByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): array
     {
         return $this->findBy([
             'alliance_id' => $allianceId,
-            'type' => $typeId,
+            'type' => $type->value,
         ]);
     }
 
@@ -92,21 +93,21 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     public function getByUserAndAllianceAndType(
         User $user,
         Alliance $alliance,
-        int $type
+        AllianceJobTypeEnum $type
     ): ?AllianceJob {
         return $this->findOneBy([
             'user' => $user,
             'alliance' => $alliance,
-            'type' => $type,
+            'type' => $type->value,
         ]);
     }
 
     #[Override]
-    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJob
+    public function getSingleResultByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): ?AllianceJob
     {
         return $this->findOneBy([
             'alliance_id' => $allianceId,
-            'type' => $typeId,
+            'type' => $type->value,
         ]);
     }
 }

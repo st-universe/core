@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Lib;
 use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -31,21 +31,21 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     ) {}
 
     #[Override]
-    public function setJobForUser(Alliance $alliance, User $user, int $jobTypeId): void
+    public function setJobForUser(Alliance $alliance, User $user, AllianceJobTypeEnum $jobType): void
     {
         $obj = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $alliance->getId(),
-            $jobTypeId
+            $jobType
         );
         if ($obj === null) {
             $obj = $this->allianceJobRepository->prototype();
-            $obj->setType($jobTypeId);
+            $obj->setType($jobType);
             $obj->setAlliance($alliance);
         }
         $obj->setUser($user);
 
-        if (!$obj->getAlliance()->getJobs()->containsKey($jobTypeId)) {
-            $obj->getAlliance()->getJobs()->set($jobTypeId, $obj);
+        if (!$obj->getAlliance()->getJobs()->containsKey($jobType->value)) {
+            $obj->getAlliance()->getJobs()->set($jobType->value, $obj);
         }
 
         $this->allianceJobRepository->save($obj);
@@ -119,7 +119,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         /** @var AllianceJob[] $jobList */
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
-            static fn(AllianceJob $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
+            static fn(AllianceJob $job): bool => $job->getType() !== AllianceJobTypeEnum::PENDING
         );
 
         foreach ($jobList as $job) {

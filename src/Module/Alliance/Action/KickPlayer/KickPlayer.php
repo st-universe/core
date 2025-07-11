@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
@@ -57,7 +57,7 @@ final class KickPlayer implements ActionControllerInterface
             $this->allianceActionManager->setJobForUser(
                 $alliance,
                 $user,
-                AllianceEnum::ALLIANCE_JOBS_FOUNDER
+                AllianceJobTypeEnum::FOUNDER
             );
         }
 

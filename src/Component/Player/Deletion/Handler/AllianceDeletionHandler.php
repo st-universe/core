@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Override;
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -20,7 +20,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
     public function delete(User $user): void
     {
         foreach ($this->allianceJobRepository->getByUser($user->getId()) as $job) {
-            if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
+            if ($job->getType() === AllianceJobTypeEnum::FOUNDER) {
 
                 $alliance = $job->getAlliance();
                 $successor = $alliance->getSuccessor();
@@ -42,7 +42,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
                     $this->allianceActionManager->setJobForUser(
                         $alliance,
                         $successor->getUser(),
-                        AllianceEnum::ALLIANCE_JOBS_FOUNDER
+                        AllianceJobTypeEnum::FOUNDER
                     );
                     $this->allianceJobRepository->delete($successor);
                 }
@@ -53,7 +53,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
                     $this->allianceActionManager->setJobForUser(
                         $alliance,
                         $lastonlinemember,
-                        AllianceEnum::ALLIANCE_JOBS_FOUNDER
+                        AllianceJobTypeEnum::FOUNDER
                     );
                 }
             } else {

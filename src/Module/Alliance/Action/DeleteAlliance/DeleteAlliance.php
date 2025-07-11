@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -39,7 +39,7 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $jobFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,
-            AllianceEnum::ALLIANCE_JOBS_FOUNDER
+            AllianceJobTypeEnum::FOUNDER
         );
 
         if ($jobFounder === null) {
@@ -48,7 +48,7 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,
-            AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
+            AllianceJobTypeEnum::SUCCESSOR
         );
 
         if (

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -51,11 +51,11 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $type = $this->promotePlayerRequest->getPromotionType();
+        $type = AllianceJobTypeEnum::from($this->promotePlayerRequest->getPromotionType());
         $availablePromotions = [
-            AllianceEnum::ALLIANCE_JOBS_FOUNDER,
-            AllianceEnum::ALLIANCE_JOBS_SUCCESSOR,
-            AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC,
+            AllianceJobTypeEnum::FOUNDER,
+            AllianceJobTypeEnum::SUCCESSOR,
+            AllianceJobTypeEnum::DIPLOMATIC,
         ];
 
         if (!in_array($type, $availablePromotions)) {
@@ -69,20 +69,20 @@ final class PromotePlayer implements ActionControllerInterface
         }
 
         $this->allianceJobRepository->truncateByUser($playerId);
-        $alliance->getJobs()->remove($type);
+        $alliance->getJobs()->remove($type->value);
 
         $text = '';
         $view = Management::VIEW_IDENTIFIER;
 
         switch ($type) {
-            case AllianceEnum::ALLIANCE_JOBS_FOUNDER:
+            case AllianceJobTypeEnum::FOUNDER:
                 if ($founderJob->getUserId() !== $userId) {
                     throw new AccessViolationException();
                 }
                 $this->allianceActionManager->setJobForUser(
                     $alliance,
                     $player,
-                    AllianceEnum::ALLIANCE_JOBS_FOUNDER
+                    AllianceJobTypeEnum::FOUNDER
                 );
                 $text = sprintf(
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
@@ -90,7 +90,7 @@ final class PromotePlayer implements ActionControllerInterface
                 );
                 $view = ModuleEnum::ALLIANCE;
                 break;
-            case AllianceEnum::ALLIANCE_JOBS_SUCCESSOR:
+            case AllianceJobTypeEnum::SUCCESSOR:
                 if ($userId === $playerId) {
                     throw new AccessViolationException();
                 }
@@ -98,7 +98,7 @@ final class PromotePlayer implements ActionControllerInterface
                 $this->allianceActionManager->setJobForUser(
                     $alliance,
                     $player,
-                    AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
+                    AllianceJobTypeEnum::SUCCESSOR
                 );
 
                 $text = sprintf(
@@ -106,7 +106,7 @@ final class PromotePlayer implements ActionControllerInterface
                     $alliance->getName()
                 );
                 break;
-            case AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC:
+            case AllianceJobTypeEnum::DIPLOMATIC:
                 if ($userId === $playerId) {
                     throw new AccessViolationException();
                 }
@@ -114,7 +114,7 @@ final class PromotePlayer implements ActionControllerInterface
                 $this->allianceActionManager->setJobForUser(
                     $alliance,
                     $player,
-                    AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC
+                    AllianceJobTypeEnum::DIPLOMATIC
                 );
 
                 $text = sprintf(
