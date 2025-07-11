@@ -76,6 +76,8 @@ abstract class Spacecraft implements
     use SpacecraftStateTrait;
     use SpacecraftHrefTrait;
 
+    public const int SYSTEM_ECOST_DOCK = 1;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]

@@ -8,7 +8,6 @@ use Override;
 use request;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -21,6 +20,7 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 
 final class DockShip implements ActionControllerInterface
@@ -115,7 +115,7 @@ final class DockShip implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
+        if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -183,7 +183,7 @@ final class DockShip implements ActionControllerInterface
             }
 
             $epsSystem = $fleetShipWrapper->getEpsSystemData();
-            if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
@@ -213,7 +213,7 @@ final class DockShip implements ActionControllerInterface
 
             $fleetShip->setDockedTo($target);
 
-            $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
+            $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
 
             $this->shipLoader->save($fleetShip);
 

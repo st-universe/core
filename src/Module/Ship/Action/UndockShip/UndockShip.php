@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UndockShip;
 
 use Override;
-use pq\Cancel;
 use request;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UndockShip implements ActionControllerInterface
@@ -63,7 +62,7 @@ final class UndockShip implements ActionControllerInterface
                 }
 
                 $epsSystem = $wrapper->getEpsSystemData();
-                if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
+                if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     break;
                 }
@@ -76,7 +75,7 @@ final class UndockShip implements ActionControllerInterface
                     continue;
                 }
                 $ship->setDockedTo(null);
-                $epsSystem->lowerEps(ShipEnum::SYSTEM_ECOST_DOCK)->update();
+                $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
 
                 $this->shipRepository->save($ship);
             }

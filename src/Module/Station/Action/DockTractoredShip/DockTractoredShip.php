@@ -6,7 +6,6 @@ namespace Stu\Module\Station\Action\DockTractoredShip;
 
 use Override;
 use request;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,6 +14,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class DockTractoredShip implements ActionControllerInterface
@@ -55,8 +55,8 @@ final class DockTractoredShip implements ActionControllerInterface
 
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() < ShipEnum::SYSTEM_ECOST_DOCK) {
-            $game->addInformationf('Zum Andocken wird %d Energie benötigt', ShipEnum::SYSTEM_ECOST_DOCK);
+        if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
+            $game->addInformationf('Zum Andocken wird %d Energie benötigt', Spacecraft::SYSTEM_ECOST_DOCK);
             return;
         }
         //check for free dock slots
