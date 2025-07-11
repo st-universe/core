@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony\Shields;
 
 use Override;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -17,6 +16,9 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  */
 final class ColonyShieldingManager implements ColonyShieldingManagerInterface
 {
+    public const int SHIELD_GENERATOR_CAPACITY = 4000;
+    public const int SHIELD_BATTERY_CAPACITY = 10000;
+
     public function __construct(
         private PlanetFieldRepositoryInterface $planetFieldRepository,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
@@ -43,12 +45,12 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
             $functions = $building->getFunctions();
 
             if ($functions->containsKey(BuildingFunctionEnum::SHIELD_GENERATOR->value)) {
-                $shields += BuildingEnum::SHIELD_GENERATOR_CAPACITY;
+                $shields += self::SHIELD_GENERATOR_CAPACITY;
                 $shieldState = true;
             }
 
             if ($functions->containsKey(BuildingFunctionEnum::SHIELD_BATTERY->value)) {
-                $shields += BuildingEnum::SHIELD_BATTERY_CAPACITY;
+                $shields += self::SHIELD_BATTERY_CAPACITY;
             }
         }
 
