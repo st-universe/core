@@ -28,7 +28,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
 
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
 
-        $menu = request::getIntFatal('menu');
+        $menu = BuildMenuEnum::from(request::getIntFatal('menu'));
         $offset = request::getInt('offset');
         $fieldType = request::has('fieldtype') ? request::getIntFatal('fieldtype') : null;
         if ($fieldType === 0) {
@@ -60,7 +60,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $fieldType
             );
         }
-        $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => BuildMenuEnum::getDescription($menu)]);
+        $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => $menu->getDescription()]);
         $game->setTemplateVar('menutype', $menu);
         $game->setTemplateVar('scrolloffset', $offset);
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);

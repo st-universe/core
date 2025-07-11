@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Orm\Entity\Building;
@@ -25,7 +26,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
     public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
-        int $buildMenu,
+        BuildMenuEnum $buildMenu,
         int $offset,
         ?int $commodityId = null,
         ?int $fieldType = null
@@ -77,7 +78,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
             ->setParameters([
                 'activeState' => 0,
                 'viewState' => 1,
-                'buildMenu' => $buildMenu,
+                'buildMenu' => $buildMenu->value,
                 'userId' => $userId,
                 'hostId' => $host->getId(),
                 'colonyClass' => $host->getColonyClass()
