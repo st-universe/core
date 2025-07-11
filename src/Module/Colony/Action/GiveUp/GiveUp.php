@@ -35,7 +35,7 @@ final class GiveUp implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $planetAmount = $this->colonyRepository->getAmountByUser($user, ColonyTypeEnum::COLONY_TYPE_PLANET);
+        $planetAmount = $this->colonyRepository->getAmountByUser($user, ColonyTypeEnum::PLANET);
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
 
         if ($colony === null || $colony->getUserId() !== $userId) {

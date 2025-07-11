@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Research;
@@ -41,7 +42,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
     }
 
     #[Override]
-    public function getColonyTypeLimitByUser(User $user, int $colonyType): int
+    public function getColonyTypeLimitByUser(User $user, ColonyTypeEnum $colonyType): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -56,7 +57,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         )->setParameters([
             'userId' => $user,
             'activeState' => 0,
-            'colonyType' => $colonyType
+            'colonyType' => $colonyType->value
         ])->getSingleScalarResult();
     }
 

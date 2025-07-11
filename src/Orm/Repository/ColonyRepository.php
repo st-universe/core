@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\NoResultException;
 use Override;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -59,7 +60,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     }
 
     #[Override]
-    public function getAmountByUser(User $user, int $colonyType): int
+    public function getAmountByUser(User $user, ColonyTypeEnum $colonyType): int
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -73,7 +74,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
             ->setParameters([
                 'userId' => $user,
-                'type' => $colonyType
+                'type' => $colonyType->value
             ])
             ->getSingleScalarResult();
     }

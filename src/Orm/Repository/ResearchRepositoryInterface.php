@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\User;
 
@@ -18,7 +19,7 @@ interface ResearchRepositoryInterface extends ObjectRepository
      */
     public function getAvailableResearch(int $userId): array;
 
-    public function getColonyTypeLimitByUser(User $user, int $colonyType): int;
+    public function getColonyTypeLimitByUser(User $user, ColonyTypeEnum $colonyType): int;
 
     /**
      * @return array<Research>
