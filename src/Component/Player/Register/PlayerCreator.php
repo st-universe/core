@@ -29,7 +29,7 @@ class PlayerCreator implements PlayerCreatorInterface
         private RegistrationEmailSenderInterface $registrationEmailSender,
         private SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
         private StuHashInterface $stuHash,
-        private EntityManagerInterface $entityManager,
+        protected EntityManagerInterface $entityManager,
         private UserRefererRepositoryInterface $userRefererRepository
     ) {}
 

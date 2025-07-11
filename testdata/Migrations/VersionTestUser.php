@@ -16,7 +16,7 @@ final class VersionTestUser extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_user (id, username, allys_id, race, lastaction, kn_lez, vac_active, description, sessiondata, vac_request_date, state, prestige, deals, last_boarding)
+        $this->addSql('INSERT INTO stu_user (id, username, allys_id, faction_id, lastaction, kn_lez, vac_active, description, sessiondata, vac_request_date, state, prestige, deals, last_boarding)
                 VALUES (11, \'[b][color=#055415]Romulanisches Sternenimperium[/color] [/b]\', NULL, 2, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (13, \'[b][color=#999900]Cardassianische Union[/color][/b]\', NULL, 4, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (14, \'[color=#FF8000][b]Ferengi Allianz[/b][/color]\', NULL, 5, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),

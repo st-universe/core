@@ -26,8 +26,12 @@ class LocalPlayerCreator extends PlayerCreator
     ): User {
 
         $player = $this->userRepository->prototype();
-        $player->setUsername(sprintf('Siedler %d', $player->getId()));
         $player->setFaction($faction);
+
+        $this->userRepository->save($player);
+        $this->entityManager->flush();
+
+        $player->setUsername(sprintf('Siedler %d', $player->getId()));
 
         $registration = $player->getRegistration();
         $registration->setLogin($loginName);
