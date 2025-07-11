@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Research;
@@ -20,7 +21,7 @@ interface BuildingRepositoryInterface extends ObjectRepository
     public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
-        int $buildMenu,
+        BuildMenuEnum $buildMenu,
         int $offset,
         ?int $commodityId = null,
         ?int $fieldType = null

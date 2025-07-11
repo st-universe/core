@@ -26,13 +26,14 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
             $game->addExecuteJS('fieldType = null;', GameEnum::JS_EXECUTION_AJAX_UPDATE);
         }
 
-        foreach (BuildMenuEnum::BUILDMENU_IDS as $id) {
+        foreach (BuildMenuEnum::cases() as $menu) {
 
-            $menus[$id]['name'] = BuildMenuEnum::getDescription($id);
+            $id = $menu->value;
+            $menus[$id]['name'] = $menu->getDescription();
             $menus[$id]['buildings'] = $this->buildingRepository->getBuildmenuBuildings(
                 $entity,
                 $game->getUser()->getId(),
-                $id,
+                $menu,
                 0,
                 request::has('cid') ? request::getIntFatal('cid') : null,
                 $fieldType
