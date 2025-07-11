@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Orm\Entity\GameConfig;
 
 /**
@@ -25,5 +26,5 @@ interface GameConfigRepositoryInterface extends ObjectRepository
      * The game state has the requirement to be updated without interfering
      * the EntityManager. So use a more direct approach
      */
-    public function updateGameState(int $state, Connection $connection): void;
+    public function updateGameState(GameStateEnum $state, Connection $connection): void;
 }

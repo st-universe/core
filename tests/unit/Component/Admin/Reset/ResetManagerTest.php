@@ -18,7 +18,7 @@ use Stu\Component\Admin\Reset\Communication\PmResetInterface;
 use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
 use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
 use Stu\Component\Admin\Reset\User\UserResetInterface;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\Colony;
@@ -221,7 +221,7 @@ class ResetManagerTest extends StuTestCase
             ->andReturnSelf();
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $this->connection)
+            ->with(GameStateEnum::RESET, $this->connection)
             ->once();
 
         $this->manager->performReset($this->interactor);
@@ -253,7 +253,7 @@ class ResetManagerTest extends StuTestCase
             ->once();
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $this->connection)
+            ->with(GameStateEnum::RESET, $this->connection)
             ->once();
 
         $this->manager->performReset($this->interactor);

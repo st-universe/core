@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -78,6 +79,6 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
     #[Override]
     public function isGameStateReset(): bool
     {
-        return $this->game->getGameState() === GameEnum::CONFIG_GAMESTATE_VALUE_RESET;
+        return $this->game->getGameState() === GameStateEnum::RESET;
     }
 }

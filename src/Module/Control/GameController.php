@@ -8,6 +8,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use RuntimeException;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
@@ -107,9 +108,9 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getGameState(): int
+    public function getGameState(): GameStateEnum
     {
-        return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
+        return GameStateEnum::from($this->getGameConfig()[self::CONFIG_GAMESTATE]->getValue());
     }
 
     #[Override]
@@ -534,15 +535,15 @@ final class GameController implements GameControllerInterface
     {
         $gameState = $this->getGameState();
 
-        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
+        if ($gameState === GameStateEnum::MAINTENANCE && !$this->isAdmin()) {
             throw new MaintenanceGameStateException();
         }
 
-        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RESET) {
+        if ($gameState === GameStateEnum::RESET) {
             throw new ResetGameStateException();
         }
 
-        if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
+        if ($gameState === GameStateEnum::RELOCATION) {
             throw new RelocationGameStateException();
         }
     }
@@ -664,8 +665,8 @@ final class GameController implements GameControllerInterface
                 'currentTurn' => $this->getCurrentRound()->getTurn(),
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
-                'gameState' => $this->getGameState(),
-                'gameStateTextual' => GameEnum::gameStateTypeToDescription($this->getGameState())
+                'gameState' => $this->getGameState()->value,
+                'gameStateTextual' => $this->getGameState()->getDescription()
             ];
         }
         return $this->gameData->gameStats;
