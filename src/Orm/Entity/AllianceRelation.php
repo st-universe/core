@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceRelationRepository;
 
@@ -27,8 +27,8 @@ class AllianceRelation
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'smallint')]
-    private int $type = 0;
+    #[Column(type: 'smallint', enumType: AllianceRelationTypeEnum::class)]
+    private AllianceRelationTypeEnum $type = AllianceRelationTypeEnum::FRIENDS;
 
     #[Column(type: 'integer')]
     private int $alliance_id = 0;
@@ -52,12 +52,12 @@ class AllianceRelation
         return $this->id;
     }
 
-    public function getType(): int
+    public function getType(): AllianceRelationTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(int $type): AllianceRelation
+    public function setType(AllianceRelationTypeEnum $type): AllianceRelation
     {
         $this->type = $type;
         return $this;
@@ -91,28 +91,7 @@ class AllianceRelation
 
     public function isWar(): bool
     {
-        return $this->getType() === AllianceEnum::ALLIANCE_RELATION_WAR;
-    }
-
-    /**
-     * @return array<array{name: string, value: int}>
-     */
-    public function getPossibleTypes(): array
-    {
-        $ret = [];
-        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_FRIENDS) {
-            $ret[] = ["name" => "Freundschaft", "value" => AllianceEnum::ALLIANCE_RELATION_FRIENDS];
-        }
-        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_ALLIED) {
-            $ret[] = ["name" => "Bündnis", "value" => AllianceEnum::ALLIANCE_RELATION_ALLIED];
-        }
-        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
-            $ret[] = ["name" => "Handelsabkommen", "value" => AllianceEnum::ALLIANCE_RELATION_TRADE];
-        }
-        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
-            $ret[] = ["name" => "Vasall", "value" => AllianceEnum::ALLIANCE_RELATION_VASSAL];
-        }
-        return $ret;
+        return $this->getType() === AllianceRelationTypeEnum::WAR;
     }
 
     public function getAlliance(): Alliance
@@ -137,21 +116,5 @@ class AllianceRelation
         $this->opponent = $opponent;
 
         return $this;
-    }
-
-    /**
-     * @deprecated Move into AllianceEnum
-     */
-    public function getTypeDescription(): string
-    {
-        return match ($this->getType()) {
-            AllianceEnum::ALLIANCE_RELATION_WAR => 'Krieg',
-            AllianceEnum::ALLIANCE_RELATION_PEACE => 'Friedensabkommen',
-            AllianceEnum::ALLIANCE_RELATION_FRIENDS => 'Freundschaftabkommen',
-            AllianceEnum::ALLIANCE_RELATION_ALLIED => 'Bündnis',
-            AllianceEnum::ALLIANCE_RELATION_TRADE => 'Handelsabkommen',
-            AllianceEnum::ALLIANCE_RELATION_VASSAL => 'Vasall',
-            default => '',
-        };
     }
 }

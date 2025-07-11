@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,9 +17,7 @@ final class AcceptOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
-    public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -59,29 +57,29 @@ final class AcceptOffer implements ActionControllerInterface
 
         $text = sprintf(
             _("%s abgeschlossen!\nDie Allianz %s hat hat das Angebot angenommen"),
-            AllianceEnum::relationTypeToDescription($relation->getType()),
+            $relation->getType()->getDescription(),
             $alliance->getName()
         );
 
-        if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_VASSAL) {
+        if ($relation->getType() != AllianceRelationTypeEnum::VASSAL) {
             $this->entryCreator->addEntry(
                 sprintf(
                     _('Die Allianzen %s und %s sind ein %s eingegangen'),
                     $relation->getAlliance()->getName(),
                     $relation->getOpponent()->getName(),
-                    AllianceEnum::relationTypeToDescription($relation->getType())
+                    $relation->getType()->getDescription()
                 ),
                 $userId,
                 $relation->getOpponent()
             );
         }
 
-        if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL) {
+        if ($relation->getType() == AllianceRelationTypeEnum::VASSAL) {
             $this->entryCreator->addEntry(
                 sprintf(
                     _('Die Allianz %s ist nun %s der Allianz %s'),
                     $relation->getOpponent()->getName(),
-                    AllianceEnum::relationTypeToDescription($relation->getType()),
+                    $relation->getType()->getDescription(),
                     $relation->getAlliance()->getName()
                 ),
                 $userId,

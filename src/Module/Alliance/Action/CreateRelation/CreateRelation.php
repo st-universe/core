@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Exception\AccessViolationException;
@@ -19,9 +19,7 @@ final class CreateRelation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
-    public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)
-    {
-    }
+    public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,10 +41,11 @@ final class CreateRelation implements ActionControllerInterface
         $typeId = $this->createRelationRequest->getRelationType();
 
         $counterpart = $this->allianceRepository->find($counterpartId);
+        $relationType = AllianceRelationTypeEnum::tryFrom($typeId);
         if (
             $counterpart === null
             || $alliance === $counterpart
-            || !in_array($typeId, AllianceEnum::ALLOWED_RELATION_TYPES, true)
+            || $relationType === null
         ) {
             return;
         }
@@ -64,12 +63,12 @@ final class CreateRelation implements ActionControllerInterface
         foreach ($existingRelations as $existingRelation) {
             $existingRelationType = $existingRelation->getType();
 
-            if ($existingRelationType === $typeId) {
+            if ($existingRelationType === $relationType) {
                 return;
             }
         }
 
-        if ($typeId === AllianceEnum::ALLIANCE_RELATION_WAR) {
+        if ($relationType === AllianceRelationTypeEnum::WAR) {
             $game->triggerEvent(new WarDeclaredEvent(
                 $alliance,
                 $counterpart,
@@ -83,7 +82,7 @@ final class CreateRelation implements ActionControllerInterface
             $game->triggerEvent(new DiplomaticRelationProposedEvent(
                 $alliance,
                 $counterpart,
-                $typeId
+                $relationType
             ));
 
             $game->addInformation('Das Abkommen wurde angeboten');

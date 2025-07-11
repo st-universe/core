@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Event;
 
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\Alliance;
 
 /**
@@ -11,9 +12,11 @@ use Stu\Orm\Entity\Alliance;
  */
 class DiplomaticRelationProposedEvent
 {
-    public function __construct(private Alliance $alliance, private Alliance $counterpart, private int $relationTypeId)
-    {
-    }
+    public function __construct(
+        private readonly Alliance $alliance,
+        private readonly Alliance $counterpart,
+        private readonly AllianceRelationTypeEnum $relationType
+    ) {}
 
     /**
      * Returns the alliance which created the proposal
@@ -34,8 +37,8 @@ class DiplomaticRelationProposedEvent
     /**
      * Returns the proposed relation type
      */
-    public function getRelationTypeId(): int
+    public function getRelationType(): AllianceRelationTypeEnum
     {
-        return $this->relationTypeId;
+        return $this->relationType;
     }
 }

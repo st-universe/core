@@ -10,7 +10,7 @@ use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
@@ -52,7 +52,7 @@ class AllianceRelationRendererTest extends StuTestCase
         $allianceId = 666;
         $opponentId = 42;
         $result = 'some-result';
-        $relationType = AllianceEnum::ALLIANCE_RELATION_ALLIED;
+        $relationType = AllianceRelationTypeEnum::ALLIED;
 
         $this->graphVizFactory->shouldReceive('createGraphViz')
             ->withNoArgs()
@@ -103,7 +103,7 @@ class AllianceRelationRendererTest extends StuTestCase
             ->with('graphviz.color', '#005183')
             ->once();
         $edge->shouldReceive('setAttribute')
-            ->with('graphviz.tooltip', AllianceEnum::relationTypeToDescription($relationType))
+            ->with('graphviz.tooltip', $relationType->getDescription())
             ->once();
         $edge->shouldReceive('setAttribute')
             ->with('graphviz.penwidth', 2)

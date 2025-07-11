@@ -6,6 +6,7 @@ namespace Stu\Component\Alliance\Event;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\StuTestCase;
 
@@ -15,7 +16,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
 
     private MockInterface&Alliance $counterpart;
 
-    private int $relationTypeId = 666;
+    private AllianceRelationTypeEnum $relationType = AllianceRelationTypeEnum::ALLIED;
 
     private DiplomaticRelationProposedEvent $subject;
 
@@ -28,7 +29,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
         $this->subject = new DiplomaticRelationProposedEvent(
             $this->alliance,
             $this->counterpart,
-            $this->relationTypeId
+            $this->relationType
         );
     }
 
@@ -51,8 +52,8 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
     public function testGetRelationTypeIdReturnsValue(): void
     {
         static::assertSame(
-            $this->relationTypeId,
-            $this->subject->getRelationTypeId()
+            $this->relationType,
+            $this->subject->getRelationType()
         );
     }
 }

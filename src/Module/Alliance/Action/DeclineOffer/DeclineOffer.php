@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\Action\DeclineOffer;
 
 use Override;
 use request;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,9 +16,7 @@ final class DeclineOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -51,7 +48,7 @@ final class DeclineOffer implements ActionControllerInterface
 
         $text = sprintf(
             _("%s wurde von der Allianz %s abgelehnt"),
-            AllianceEnum::relationTypeToDescription($relation->getType()),
+            $relation->getType()->getDescription(),
             $alliance->getName()
         );
 
