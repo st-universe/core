@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\View\Management;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -58,9 +59,9 @@ final class Management implements ViewControllerInterface
         ]);
         $game->setViewTemplate('html/alliance/alliancemanagement.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);
-        $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
-        $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
-        $game->setTemplateVar('ALLIANCE_JOB_FOUNDER', AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', AllianceJobTypeEnum::DIPLOMATIC);
+        $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', AllianceJobTypeEnum::SUCCESSOR);
+        $game->setTemplateVar('ALLIANCE_JOB_FOUNDER', AllianceJobTypeEnum::FOUNDER);
         $game->setTemplateVar('MEMBER_LIST', $list);
         $game->setTemplateVar(
             'USER_IS_FOUNDER',

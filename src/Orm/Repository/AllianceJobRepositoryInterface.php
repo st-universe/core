@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -39,13 +40,13 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     /**
      * @return AllianceJob[]
      */
-    public function getByAllianceAndType(int $allianceId, int $typeId): array;
+    public function getByAllianceAndType(int $allianceId, AllianceJobTypeEnum $typeId): array;
 
     public function getByUserAndAllianceAndType(
         User $user,
         Alliance $alliance,
-        int $type
+        AllianceJobTypeEnum $type
     ): ?AllianceJob;
 
-    public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJob;
+    public function getSingleResultByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): ?AllianceJob;
 }

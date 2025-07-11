@@ -6,14 +6,6 @@ namespace Stu\Component\Alliance;
 
 final class AllianceEnum
 {
-    public const int ALLIANCE_JOBS_FOUNDER = 1;
-
-    public const int ALLIANCE_JOBS_SUCCESSOR = 2;
-
-    public const int ALLIANCE_JOBS_DIPLOMATIC = 3;
-
-    public const int ALLIANCE_JOBS_PENDING = 4;
-
     public const int ALLIANCE_RELATION_WAR = 1;
 
     public const int ALLIANCE_RELATION_PEACE = 2;

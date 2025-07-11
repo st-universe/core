@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceRepository;
@@ -187,7 +187,7 @@ class Alliance
      */
     public function getFounder(): AllianceJob
     {
-        $job = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        $job = $this->jobs->get(AllianceJobTypeEnum::FOUNDER->value);
         if ($job === null) {
             // alliance without founder? this should not happen
             throw new AllianceFounderNotSetException();
@@ -197,12 +197,12 @@ class Alliance
 
     public function getSuccessor(): ?AllianceJob
     {
-        return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
+        return $this->jobs->get(AllianceJobTypeEnum::SUCCESSOR->value);
     }
 
     public function getDiplomatic(): ?AllianceJob
     {
-        return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
+        return $this->jobs->get(AllianceJobTypeEnum::DIPLOMATIC->value);
     }
 
     /**
@@ -218,7 +218,7 @@ class Alliance
      */
     public function isNpcAlliance(): bool
     {
-        $founder = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        $founder = $this->jobs->get(AllianceJobTypeEnum::FOUNDER->value);
 
         if ($founder === null) {
             return false;

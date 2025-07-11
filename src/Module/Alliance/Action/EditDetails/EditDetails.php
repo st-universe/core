@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Override;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -81,7 +82,7 @@ final class EditDetails implements ActionControllerInterface
 
             $result = $this->allianceJobRepository->getByAllianceAndType(
                 $allianceId,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             );
 
             foreach ($result as $applicant) {

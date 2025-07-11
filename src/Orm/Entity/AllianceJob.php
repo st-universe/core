@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceJobRepository;
 
@@ -30,8 +31,8 @@ class AllianceJob
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[Column(type: 'smallint')]
-    private int $type = 0;
+    #[Column(type: 'smallint', enumType: AllianceJobTypeEnum::class)]
+    private AllianceJobTypeEnum $type = AllianceJobTypeEnum::PENDING;
 
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -51,12 +52,12 @@ class AllianceJob
         return $this->user_id;
     }
 
-    public function getType(): int
+    public function getType(): AllianceJobTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(int $type): AllianceJob
+    public function setType(AllianceJobTypeEnum $type): AllianceJob
     {
         $this->type = $type;
 

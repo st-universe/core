@@ -6,6 +6,7 @@ namespace Stu\Component\Alliance;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\Faction;
@@ -15,11 +16,10 @@ use Stu\StuTestCase;
 
 class AllianceUserApplicationCheckerTest extends StuTestCase
 {
-    private MockInterface $allianceJobRepository;
+    private AllianceJobRepositoryInterface&MockInterface $allianceJobRepository;
+    private User&MockInterface $user;
 
-    private MockInterface $user;
-
-    private MockInterface $alliance;
+    private Alliance&MockInterface $alliance;
 
     private AllianceUserApplicationChecker $subject;
 
@@ -42,7 +42,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturn($this->mock(AllianceJob::class));
@@ -58,7 +58,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -79,7 +79,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -105,7 +105,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -141,7 +141,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -175,7 +175,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->with(
                 $this->user,
                 $this->alliance,
-                AllianceEnum::ALLIANCE_JOBS_PENDING
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();

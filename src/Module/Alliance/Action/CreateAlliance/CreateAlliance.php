@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -57,13 +57,13 @@ final class CreateAlliance implements ActionControllerInterface
         $this->allianceJobRepository->truncateByUser($userId);
 
         $job = $this->allianceJobRepository->prototype();
-        $job->setType(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        $job->setType(AllianceJobTypeEnum::FOUNDER);
         $job->setAlliance($alliance);
         $job->setUser($user);
 
         $this->allianceJobRepository->save($job);
 
-        $alliance->getJobs()->set(AllianceEnum::ALLIANCE_JOBS_FOUNDER, $job);
+        $alliance->getJobs()->set(AllianceJobTypeEnum::FOUNDER->value, $job);
 
         $game->addInformation('Die Allianz wurde gegründet');
     }

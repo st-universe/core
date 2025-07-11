@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Signup;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,9 +18,7 @@ final class Signup implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
 
-    public function __construct(private SignupRequestInterface $signupRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private PrivateMessageSenderInterface $privateMessageSender, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker)
-    {
-    }
+    public function __construct(private SignupRequestInterface $signupRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceRepositoryInterface $allianceRepository, private PrivateMessageSenderInterface $privateMessageSender, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,7 +37,7 @@ final class Signup implements ActionControllerInterface
 
         $obj = $this->allianceJobRepository->prototype();
         $obj->setUser($user);
-        $obj->setType(AllianceEnum::ALLIANCE_JOBS_PENDING);
+        $obj->setType(AllianceJobTypeEnum::PENDING);
         $obj->setAlliance($alliance);
 
         $this->allianceJobRepository->save($obj);
