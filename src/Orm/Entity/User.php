@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepository;
@@ -34,6 +35,12 @@ class User
 
     #[Column(type: 'string')]
     private string $username = '';
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $allys_id = null;
+
+    #[Column(type: 'integer')]
+    private int $faction_id = FactionEnum::FACTION_FEDERATION;
 
     #[Column(type: 'smallint')]
     private int $state = UserEnum::USER_STATE_NEW;
@@ -73,7 +80,7 @@ class User
     private ?Alliance $alliance = null;
 
     #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'race', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
     private Faction $faction;
 
     /**

@@ -233,14 +233,14 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
-        $rsm->addScalarResult('factionid', 'factionid', 'integer');
+        $rsm->addScalarResult('faction_id', 'factionid', 'integer');
         $rsm->addScalarResult('crewc', 'crewc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
             'SELECT ca.user_id, count(*) as crewc,
-                (SELECT race as factionid
+                (SELECT faction_id
                 FROM stu_user u
-                WHERE ca.user_id = u.id) as factionid
+                WHERE ca.user_id = u.id) as faction_id
             FROM stu_crew_assign ca
             JOIN stu_spacecraft s
             ON ca.spacecraft_id = s.id

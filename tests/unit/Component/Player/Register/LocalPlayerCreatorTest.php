@@ -19,17 +19,11 @@ use Stu\StuTestCase;
 class LocalPlayerCreatorTest extends StuTestCase
 {
     private MockInterface&UserRepositoryInterface $userRepository;
-
     private MockInterface&PlayerDefaultsCreatorInterface $playerDefaultsCreator;
-
     private MockInterface&RegistrationEmailSenderInterface $registrationEmailSender;
-
     private MockInterface&SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
-
     private MockInterface&StuHashInterface $stuHash;
-
     private MockInterface&EntityManagerInterface $entityManager;
-
     private MockInterface&UserRefererRepositoryInterface $userRefererRepository;
 
     private LocalPlayerCreator $subject;
@@ -73,6 +67,10 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->andReturn($user);
         $this->userRepository->shouldReceive('save')
             ->with($user)
+            ->twice();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $user->shouldReceive('getRegistration')
