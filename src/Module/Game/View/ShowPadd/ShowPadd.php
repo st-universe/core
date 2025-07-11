@@ -7,7 +7,6 @@ namespace Stu\Module\Game\View\ShowPadd;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Component\Faction\FactionEnum;
 
 final class ShowPadd implements ViewControllerInterface
 {

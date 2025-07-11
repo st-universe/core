@@ -73,7 +73,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
         $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(FactionEnum::FACTION_FEDERATION);
+            ->andReturn(FactionEnum::FACTION_FEDERATION->value);
 
         static::assertSame(
             '#0000ff',

@@ -52,7 +52,7 @@ class UserCreateCommandTest extends StuTestCase
     public function testExecuteErrorsDueToUnknownFaction(): void
     {
         static::expectException(InvalidArgumentException::class);
-        static::expectExceptionMessage('The provided faction is invalid');
+        static::expectExceptionMessage('no faction defined for name some-faction');
 
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
@@ -159,7 +159,7 @@ class UserCreateCommandTest extends StuTestCase
             ->zeroOrMoreTimes();
 
         $this->factionRepository->shouldReceive('find')
-            ->with(FactionEnum::FACTION_KLINGON)
+            ->with(FactionEnum::FACTION_KLINGON->value)
             ->once()
             ->andReturn($faction);
 

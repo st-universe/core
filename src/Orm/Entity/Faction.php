@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Repository\FactionRepository;
 
 #[Table(name: 'stu_factions')]
@@ -18,9 +19,9 @@ use Stu\Orm\Repository\FactionRepository;
 class Faction
 {
     #[Id]
-    #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
+    #[Column(type: 'integer', enumType: FactionEnum::class)]
+    private FactionEnum $id;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -77,7 +78,7 @@ class Faction
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->id->value;
     }
 
     public function getName(): string
