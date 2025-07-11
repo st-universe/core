@@ -6,10 +6,8 @@ namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
-use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
-use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
-use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
+use Stu\Component\ErrorHandling\ErrorCodeEnum;
+use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Faction;
@@ -68,19 +66,19 @@ class PlayerCreator implements PlayerCreatorInterface
             !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
             mb_strlen($loginName) < 6
         ) {
-            throw new LoginNameInvalidException();
+            throw new RegistrationException(ErrorCodeEnum::LOGIN_NAME_INVALID);
         }
         if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
-            throw new EmailAddressInvalidException();
+            throw new RegistrationException(ErrorCodeEnum::EMAIL_ADDRESS_INVALID);
         }
         if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
-            throw new PlayerDuplicateException();
+            throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
         if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile))) {
-            throw new PlayerDuplicateException();
+            throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
         if ($mobile !== null && (!$this->isMobileNumberCountryAllowed($mobile) || !$this->isMobileFormatCorrect($mobile))) {
-            throw new MobileNumberInvalidException();
+            throw new RegistrationException(ErrorCodeEnum::SMS_VERIFICATION_CODE_INVALID);
         }
     }
 
