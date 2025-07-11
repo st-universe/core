@@ -7,7 +7,6 @@ namespace Stu\Module\Station\View\ShowStationInfo;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,10 +47,10 @@ final class ShowStationInfo implements ViewControllerInterface
 
         $game->setTemplateVar('PLAN', $plan);
 
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$role->value];
+        $limit = $role->getBuildLimit();
         $game->setTemplateVar('LIMIT', $limit === PHP_INT_MAX ? 'unbegrenzt' : $limit);
 
-        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$role->value];
+        $location = $role->getPossibleBuildLocations();
         $game->setTemplateVar('LOCATION', $location);
     }
 }

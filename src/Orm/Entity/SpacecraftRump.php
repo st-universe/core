@@ -385,7 +385,7 @@ class SpacecraftRump
     public function isShipyard(): bool
     {
         return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION
-            && $this->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD;
+            && $this->getRoleId() === SpacecraftRumpRoleEnum::SHIPYARD;
     }
 
     public function isStation(): bool

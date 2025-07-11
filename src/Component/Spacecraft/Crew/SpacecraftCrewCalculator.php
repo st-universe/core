@@ -59,7 +59,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         $crewCount = $this->getMaxCrewCountByRump($rump);
 
         if ($spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TROOP_QUARTERS)) {
-            if ($rump->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE) {
+            if ($rump->getRoleId() === SpacecraftRumpRoleEnum::BASE) {
                 $crewCount += TroopQuartersShipSystem::QUARTER_COUNT_BASE;
             } else {
                 $crewCount += TroopQuartersShipSystem::QUARTER_COUNT;

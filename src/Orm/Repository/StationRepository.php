@@ -310,7 +310,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
         )
             ->setParameters([
-                'phalanxRoleId' => SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR->value,
+                'phalanxRoleId' => SpacecraftRumpRoleEnum::SENSOR->value,
                 'minX' => $location->getCx() - $range,
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
