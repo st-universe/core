@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\CrewRepository;
 
@@ -20,13 +20,16 @@ use Stu\Orm\Repository\CrewRepository;
 #[TruncateOnGameReset]
 class Crew
 {
+    public const int CREW_GENDER_MALE = 1;
+    public const int CREW_GENDER_FEMALE = 2;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'smallint')]
-    private int $type = 0;
+    #[Column(type: 'smallint', enumType: CrewTypeEnum::class)]
+    private CrewTypeEnum $type = CrewTypeEnum::CREWMAN;
 
     #[Column(type: 'smallint')]
     private int $gender = 0;
@@ -53,12 +56,12 @@ class Crew
         return $this->id;
     }
 
-    public function getType(): int
+    public function getType(): CrewTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(int $type): Crew
+    public function setType(CrewTypeEnum $type): Crew
     {
         $this->type = $type;
 
@@ -120,15 +123,10 @@ class Crew
 
     public function getGenderShort(): string
     {
-        if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
+        if ($this->getGender() == self::CREW_GENDER_MALE) {
             return 'm';
         }
         return 'w';
-    }
-
-    public function getTypeDescription(): string
-    {
-        return CrewEnum::getDescription($this->getType());
     }
 
     public function getRace(): CrewRace

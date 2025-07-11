@@ -6,10 +6,11 @@ namespace Stu\Module\Crew\Lib;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Exception\SanityCheckException;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -56,7 +57,7 @@ final class CrewCreator implements CrewCreatorInterface
             throw new SanityCheckException(sprintf('raceId %d does not exist', $randomRaceId));
         }
 
-        $gender = random_int(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
+        $gender = random_int(1, 100) > $race->getMaleRatio() ? Crew::CREW_GENDER_FEMALE : Crew::CREW_GENDER_MALE;
 
         $crew = $this->crewRepository->prototype();
 
@@ -64,7 +65,7 @@ final class CrewCreator implements CrewCreatorInterface
         $crew->setName('Crew');
         $crew->setRace($race);
         $crew->setGender($gender);
-        $crew->setType(CrewEnum::CREW_TYPE_CREWMAN);
+        $crew->setType(CrewTypeEnum::CREWMAN);
         $this->crewRepository->save($crew);
 
         $crewAssignment = $this->shipCrewRepository->prototype();
@@ -91,9 +92,9 @@ final class CrewCreator implements CrewCreatorInterface
             throw new SanityCheckException(sprintf('rumpId %d does not have rump role', $spacecraft->getRump()->getId()));
         }
 
-        foreach (CrewEnum::CREW_ORDER as $crewType) {
+        foreach (CrewTypeEnum::getOrder() as $crewType) {
             $createdcount = 1;
-            $slot = $crewType == CrewEnum::CREW_TYPE_CREWMAN ? 'getJob6Crew' : 'getJob' . $crewType . 'Crew';
+            $slot = $crewType === CrewTypeEnum::CREWMAN ? 'getJob6Crew' : 'getJob' . $crewType->value . 'Crew';
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
                 $spacecraft->getRump()->getShipRumpCategory()->getId(),
                 $shipRumpRole->getId()
@@ -106,7 +107,7 @@ final class CrewCreator implements CrewCreatorInterface
                 ));
             }
 
-            while ($crewToSetup > 0 && ($crewType == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
+            while ($crewToSetup > 0 && ($crewType == CrewTypeEnum::CREWMAN || $createdcount <= $config->$slot())) {
                 $createdcount++;
                 $crewToSetup--;
 
@@ -134,7 +135,7 @@ final class CrewCreator implements CrewCreatorInterface
     }
 
     private function getCrewByType(
-        int $crewType,
+        CrewTypeEnum $crewType,
         Colony|Spacecraft $crewProvider
     ): ?CrewAssignment {
 
