@@ -3,6 +3,7 @@
 namespace Stu\Module\Control;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -13,13 +14,15 @@ use SysvSemaphore;
 
 interface GameControllerInterface extends InformationInterface
 {
+    public const int CONFIG_GAMESTATE = 1;
+
     public function setView(ModuleEnum|string $view): void;
 
     public function getViewContext(ViewContextTypeEnum $type): mixed;
 
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void;
 
-    public function getGameState(): int;
+    public function getGameState(): GameStateEnum;
 
     public function setViewTemplate(string $viewTemplate): void;
 

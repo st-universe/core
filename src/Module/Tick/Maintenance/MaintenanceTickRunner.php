@@ -4,7 +4,7 @@ namespace Stu\Module\Tick\Maintenance;
 
 use Doctrine\DBAL\Connection;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -25,13 +25,12 @@ class MaintenanceTickRunner implements TickRunnerInterface
         private readonly TransactionTickRunnerInterface $transactionTickRunner,
         private readonly Connection $connection,
         private readonly array $handlerList
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
-        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE);
+        $this->setGameState(GameStateEnum::MAINTENANCE);
 
         $this->transactionTickRunner->runWithResetCheck(
             function (): void {
@@ -44,11 +43,11 @@ class MaintenanceTickRunner implements TickRunnerInterface
             $batchGroupCount
         );
 
-        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
+        $this->setGameState(GameStateEnum::ONLINE);
     }
 
-    private function setGameState(int $stateId): void
+    private function setGameState(GameStateEnum $state): void
     {
-        $this->gameConfigRepository->updateGameState($stateId, $this->connection);
+        $this->gameConfigRepository->updateGameState($state, $this->connection);
     }
 }

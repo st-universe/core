@@ -10,6 +10,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 
@@ -41,7 +42,7 @@ class TransactionTickRunnerTest extends StuTestCase
         $this->game->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
-            ->andReturn(GameEnum::CONFIG_GAMESTATE_VALUE_RESET);
+            ->andReturn(GameStateEnum::RESET);
 
         $this->subject->runWithResetCheck(fn(): bool => true, "", 1, 2);
     }
@@ -58,7 +59,7 @@ class TransactionTickRunnerTest extends StuTestCase
         $this->game->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
-            ->andReturn(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
+            ->andReturn(GameStateEnum::ONLINE);
 
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
@@ -90,7 +91,7 @@ class TransactionTickRunnerTest extends StuTestCase
         $this->game->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
-            ->andReturn(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
+            ->andReturn(GameStateEnum::ONLINE);
 
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()

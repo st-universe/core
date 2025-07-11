@@ -13,7 +13,7 @@ use Stu\Component\Admin\Reset\Communication\PmResetInterface;
 use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
 use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
 use Stu\Component\Admin\Reset\User\UserResetInterface;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -49,7 +49,7 @@ final class ResetManager implements ResetManagerInterface
 
         $startTime = hrtime(true);
 
-        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $io);
+        $this->setGameState(GameStateEnum::RESET, $io);
 
         //wait for other processes (e.g. ticks) to finish
         $io->info('  - starting sleep, so other processes can finish (e.g. ticks)', true);
@@ -106,11 +106,11 @@ final class ResetManager implements ResetManagerInterface
         $io->info(sprintf('finished game reset, milliseconds: %d', (int) $resetMs / 1_000_000), true);
     }
 
-    private function setGameState(int $stateId, Interactor $io): void
+    private function setGameState(GameStateEnum $state, Interactor $io): void
     {
-        $this->gameConfigRepository->updateGameState($stateId, $this->connection);
+        $this->gameConfigRepository->updateGameState($state, $this->connection);
 
-        $io->info("  - setting game state to '" . GameEnum::gameStateTypeToDescription($stateId) . " - " . $stateId . "'", true);
+        $io->info("  - setting game state to '" . $state->getDescription() . " - " . $state->value . "'", true);
     }
 
     /**

@@ -9,7 +9,7 @@ use Exception;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
@@ -55,7 +55,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
         static::expectExceptionMessage($errorMessage);
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE, $this->connection)
+            ->with(GameStateEnum::MAINTENANCE, $this->connection)
             ->once();
 
         $this->transactionTickRunner->shouldReceive('runWithResetCheck')
@@ -71,10 +71,10 @@ class MaintenanceTickRunnerTest extends StuTestCase
         $batchGroupCount = 5;
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE, $this->connection)
+            ->with(GameStateEnum::MAINTENANCE, $this->connection)
             ->once();
         $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE, $this->connection)
+            ->with(GameStateEnum::ONLINE, $this->connection)
             ->once();
 
         $this->maintenanceHandler->shouldReceive('handle')

@@ -8,7 +8,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\GameConfig;
 
 /**
@@ -34,15 +35,15 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
     }
 
     #[Override]
-    public function updateGameState(int $state, Connection $connection): void
+    public function updateGameState(GameStateEnum $state, Connection $connection): void
     {
         $connection->update(
             GameConfig::TABLE_NAME,
             [
-                'value' => $state
+                'value' => $state->value
             ],
             [
-                'option' => GameEnum::CONFIG_GAMESTATE
+                'option' => GameControllerInterface::CONFIG_GAMESTATE
             ],
             [
                 'value' => ParameterType::INTEGER

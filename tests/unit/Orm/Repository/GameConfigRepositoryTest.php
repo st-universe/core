@@ -12,7 +12,8 @@ use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\ORM\UnitOfWork;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameStateEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\GameConfig;
 use Stu\StuTestCase;
 
@@ -91,7 +92,7 @@ class GameConfigRepositoryTest extends StuTestCase
 
     public function testUpdateGameStateUpdates(): void
     {
-        $state = 12345;
+        $state = GameStateEnum::RELOCATION;
 
         $database = $this->mock(Connection::class);
 
@@ -99,10 +100,10 @@ class GameConfigRepositoryTest extends StuTestCase
             ->with(
                 GameConfig::TABLE_NAME,
                 [
-                    'value' => $state
+                    'value' => $state->value
                 ],
                 [
-                    'option' => GameEnum::CONFIG_GAMESTATE
+                    'option' => GameControllerInterface::CONFIG_GAMESTATE
                 ],
                 [
                     'value' => ParameterType::INTEGER
