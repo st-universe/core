@@ -62,10 +62,7 @@ final class UserCreateCommand extends Command
 
         $io->info('email validated', true);
 
-        $factionId = FactionEnum::FACTION_NAME_TO_ID_MAP[$faction] ?? null;
-        if ($factionId === null) {
-            throw new InvalidArgumentException('The provided faction is invalid');
-        }
+        $factionId = FactionEnum::fromName($faction)->value;
 
         $io->info('faction is valid', true);
 

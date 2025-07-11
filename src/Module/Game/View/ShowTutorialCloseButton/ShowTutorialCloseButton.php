@@ -7,7 +7,6 @@ namespace Stu\Module\Game\View\ShowTutorialCloseButton;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Component\Faction\FactionEnum;
 
 final class ShowTutorialCloseButton implements ViewControllerInterface
 {

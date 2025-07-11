@@ -18,7 +18,7 @@ class TestUser extends AbstractTestData
         $user = $playerCreator->createPlayer(
             'testuser',
             'test@stu.de',
-            $factionRepository->find(FactionEnum::FACTION_FEDERATION),
+            $factionRepository->find(FactionEnum::FACTION_FEDERATION->value),
             'password'
         );
 

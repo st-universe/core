@@ -4,39 +4,42 @@ declare(strict_types=1);
 
 namespace Stu\Component\Faction;
 
-final class FactionEnum
+use InvalidArgumentException;
+use RuntimeException;
+
+enum FactionEnum: int
 {
-    /** @var array<string, int> */
-    public const array FACTION_NAME_TO_ID_MAP = [
-        'federation' => self::FACTION_FEDERATION,
-        'romulan' => self::FACTION_ROMULAN,
-        'klingon' => self::FACTION_KLINGON,
-        'cardassian' => self::FACTION_CARDASSIAN,
-        'ferengi' => self::FACTION_FERENGI,
-    ];
+    case FACTION_FEDERATION = 1;
+    case FACTION_ROMULAN = 2;
+    case FACTION_KLINGON = 3;
+    case FACTION_CARDASSIAN = 4;
+    case FACTION_FERENGI = 5;
+    case FACTION_PAKLED = 6;
+    case FACTION_KAZON = 7;
+    case FACTION_BORG = 8;
+    case FACTION_BLANK = 9;
 
-    /** @var array<int, string> */
-    public const array FACTION_ID_TO_COLOR_MAP = [
-        self::FACTION_FEDERATION => '#0000ff',
-        self::FACTION_ROMULAN => '#00ff00',
-        self::FACTION_KLINGON => '#ff0000',
-        self::FACTION_CARDASSIAN => '#ff7b42',
-        self::FACTION_FERENGI => '#943100',
-    ];
+    public function getColorCode(): string
+    {
+        return match ($this) {
+            self::FACTION_FEDERATION => '#0000ff',
+            self::FACTION_ROMULAN => '#00ff00',
+            self::FACTION_KLINGON => '#ff0000',
+            self::FACTION_CARDASSIAN => '#ff7b42',
+            self::FACTION_FERENGI => '#943100',
+            default => throw new RuntimeException(sprintf('no color code defined for %s', $this->name))
+        };
+    }
 
-    public const int FACTION_FEDERATION = 1;
-
-    public const int FACTION_ROMULAN = 2;
-
-    public const int FACTION_KLINGON = 3;
-
-    public const int FACTION_CARDASSIAN = 4;
-
-    public const int FACTION_FERENGI = 5;
-
-    public const int FACTION_PAKLED = 6;
-
-    public const int FACTION_KAZON = 7;
-
-    public const int FACTION_BORG = 8;
+    public static function fromName(string $name): FactionEnum
+    {
+        return match ($name) {
+            'federation' => self::FACTION_FEDERATION,
+            'romulan' => self::FACTION_ROMULAN,
+            'klingon' => self::FACTION_KLINGON,
+            'cardassian' => self::FACTION_CARDASSIAN,
+            'ferengi' => self::FACTION_FERENGI,
+            default => throw new InvalidArgumentException(sprintf('no faction defined for name %s', $name))
+        };
+    }
 }

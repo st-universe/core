@@ -39,8 +39,8 @@ class User
     #[Column(type: 'integer', nullable: true)]
     private ?int $allys_id = null;
 
-    #[Column(type: 'integer')]
-    private int $faction_id = FactionEnum::FACTION_FEDERATION;
+    #[Column(type: 'integer', enumType: FactionEnum::class)]
+    private FactionEnum $faction_id = FactionEnum::FACTION_FEDERATION;
 
     #[Column(type: 'smallint')]
     private int $state = UserEnum::USER_STATE_NEW;

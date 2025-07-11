@@ -15,9 +15,7 @@ use Stu\Orm\Entity\Alliance;
  */
 final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraphAttributeConverterInterface
 {
-    public function __construct(private Parser $bbCodeParser, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private Parser $bbCodeParser, private ConfigInterface $config) {}
 
     #[Override]
     public function convertName(
@@ -38,7 +36,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         $faction = $alliance->getFaction();
 
         if ($faction !== null) {
-            return FactionEnum::FACTION_ID_TO_COLOR_MAP[$faction->getId()];
+            return FactionEnum::from($faction->getId())->getColorCode();
         }
 
         $rgbCode = $alliance->getRgbCode();

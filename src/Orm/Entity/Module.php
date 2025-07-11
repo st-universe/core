@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -69,8 +70,8 @@ class Module
     #[Column(type: 'smallint')]
     private int $ecost = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $faction_id = null;
+    #[Column(type: 'integer', nullable: true, enumType: FactionEnum::class)]
+    private ?FactionEnum $faction_id = null;
 
     #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class, nullable: true)]
     private ?SpacecraftSystemTypeEnum $system_type = null;
@@ -300,12 +301,12 @@ class Module
         return $this;
     }
 
-    public function getFactionId(): ?int
+    public function getFactionId(): ?FactionEnum
     {
         return $this->faction_id;
     }
 
-    public function setFactionId(int $factionId): ?Module
+    public function setFactionId(FactionEnum $factionId): ?Module
     {
         $this->faction_id = $factionId;
 
