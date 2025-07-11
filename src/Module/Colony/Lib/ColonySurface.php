@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;

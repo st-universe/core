@@ -14,8 +14,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Orm\Repository\BuildingRepository;
 
 #[Table(name: 'stu_buildings')]
@@ -365,11 +365,11 @@ class Building
     public function getShieldCapacity(): ?int
     {
         if ($this->getFunctions()->containsKey(BuildingFunctionEnum::SHIELD_GENERATOR->value) === true) {
-            return BuildingEnum::SHIELD_GENERATOR_CAPACITY;
+            return ColonyShieldingManager::SHIELD_GENERATOR_CAPACITY;
         }
 
         if ($this->getFunctions()->containsKey(BuildingFunctionEnum::SHIELD_BATTERY->value) === true) {
-            return BuildingEnum::SHIELD_BATTERY_CAPACITY;
+            return ColonyShieldingManager::SHIELD_BATTERY_CAPACITY;
         }
         return null;
     }

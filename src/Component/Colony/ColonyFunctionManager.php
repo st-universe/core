@@ -11,8 +11,6 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
  * Provides methods to check for buildings having certain functions
- *
- * @see BuildingEnum
  */
 final class ColonyFunctionManager implements ColonyFunctionManagerInterface
 {

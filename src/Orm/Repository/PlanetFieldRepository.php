@@ -7,8 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
@@ -331,8 +331,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             'hostId' => $host->getId(),
             'shieldGenerator' => BuildingFunctionEnum::SHIELD_GENERATOR->value,
             'shieldBattery' => BuildingFunctionEnum::SHIELD_BATTERY->value,
-            'generatorCapacity' => BuildingEnum::SHIELD_GENERATOR_CAPACITY,
-            'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY
+            'generatorCapacity' => ColonyShieldingManager::SHIELD_GENERATOR_CAPACITY,
+            'batteryCapacity' => ColonyShieldingManager::SHIELD_BATTERY_CAPACITY
         ])->getSingleScalarResult();
     }
 
