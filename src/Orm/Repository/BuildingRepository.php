@@ -6,11 +6,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
-use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -73,7 +72,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                     $fieldTypeFilter
                 )
             )
-            ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
+            ->setMaxResults(ScrollBuildMenu::BUILDMENU_SCROLLOFFSET)
             ->setFirstResult($offset)
             ->setParameters([
                 'activeState' => 0,

@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,6 +16,8 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 final class ScrollBuildMenu implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
+
+    public const int BUILDMENU_SCROLLOFFSET = 6;
 
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository) {}
 
@@ -37,8 +38,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset < 0) {
             $offset = 0;
         }
-        if ($offset % ColonyEnum::BUILDMENU_SCROLLOFFSET != 0) {
-            $offset = (int)floor($offset / ColonyEnum::BUILDMENU_SCROLLOFFSET);
+        if ($offset % self::BUILDMENU_SCROLLOFFSET != 0) {
+            $offset = (int)floor($offset / self::BUILDMENU_SCROLLOFFSET);
         }
         $ret = $this->buildingRepository->getBuildmenuBuildings(
             $host,
@@ -49,7 +50,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
             $fieldType
         );
         if ($ret === []) {
-            $offset = max(0, $offset - ColonyEnum::BUILDMENU_SCROLLOFFSET);
+            $offset = max(0, $offset - self::BUILDMENU_SCROLLOFFSET);
             $ret = $this->buildingRepository->getBuildmenuBuildings(
                 $host,
                 $userId,

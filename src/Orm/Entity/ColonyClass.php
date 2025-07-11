@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Repository\ColonyClassRepository;
 
@@ -22,6 +21,8 @@ use Stu\Orm\Repository\ColonyClassRepository;
 #[Entity(repositoryClass: ColonyClassRepository::class)]
 class ColonyClass
 {
+    private const int COLONY_CLASS_SPECIAL_RING = 1;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -193,7 +194,7 @@ class ColonyClass
 
     public function hasRing(): bool
     {
-        return $this->getSpecialId() == ColonyEnum::COLONY_CLASS_SPECIAL_RING;
+        return $this->getSpecialId() == self::COLONY_CLASS_SPECIAL_RING;
     }
 
     public function getMinRotation(): int
