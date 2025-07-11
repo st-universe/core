@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Data;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -36,7 +37,7 @@ abstract class AbstractSystemData
         $this->shipSystemRepository->save($system);
     }
 
-    protected function getStatusBar(string $label, int $value, int $maxValue, string $color): StatusBarInterface
+    protected function getStatusBar(string $label, int $value, int $maxValue, StatusBarColorEnum $color): StatusBarInterface
     {
         return $this->statusBarFactory
             ->createStatusBar()

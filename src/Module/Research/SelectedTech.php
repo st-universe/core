@@ -160,7 +160,7 @@ final class SelectedTech implements SelectedTechInterface
 
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
+            ->setColor(StatusBarColorEnum::BLUE)
             ->setLabel(_('Forschung'))
             ->setMaxValue($this->research->getPoints())
             ->setValue($this->research->getPoints() - $researchState->getActive())

@@ -34,29 +34,29 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
         if ($energyProduction < 0) {
             $prod = abs($energyProduction);
             if ($currentEps - $prod < 0) {
-                $bars[StatusBarColorEnum::STATUSBAR_RED] = $currentEps;
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+                $bars[StatusBarColorEnum::RED->value] = $currentEps;
+                $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps;
             } else {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps - $prod;
-                $bars[StatusBarColorEnum::STATUSBAR_RED] = $prod;
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+                $bars[StatusBarColorEnum::YELLOW->value] = $currentEps - $prod;
+                $bars[StatusBarColorEnum::RED->value] = $prod;
+                $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps;
             }
         }
         if ($energyProduction > 0) {
             if ($currentEps + $energyProduction > $host->getMaxEps()) {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
+                $bars[StatusBarColorEnum::YELLOW->value] = $currentEps;
                 if ($currentEps < $host->getMaxEps()) {
-                    $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $host->getMaxEps() - $currentEps;
+                    $bars[StatusBarColorEnum::GREEN->value] = $host->getMaxEps() - $currentEps;
                 }
             } else {
-                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
-                $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $energyProduction;
-                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps - $energyProduction;
+                $bars[StatusBarColorEnum::YELLOW->value] = $currentEps;
+                $bars[StatusBarColorEnum::GREEN->value] = $energyProduction;
+                $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps - $energyProduction;
             }
         }
         if ($energyProduction == 0) {
-            $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $currentEps;
-            $bars[StatusBarColorEnum::STATUSBAR_GREY] = $host->getMaxEps() - $currentEps;
+            $bars[StatusBarColorEnum::YELLOW->value] = $currentEps;
+            $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps;
         }
         foreach ($bars as $color => $value) {
             if ($host->getMaxEps() < $value) {

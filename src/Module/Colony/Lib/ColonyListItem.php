@@ -206,7 +206,7 @@ final class ColonyListItem implements ColonyListItemInterface
     {
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setColor(StatusBarColorEnum::GREEN)
             ->setLabel(_('Lager'))
             ->setMaxValue($this->colony->getMaxStorage())
             ->setValue($this->colony->getStorageSum())

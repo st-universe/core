@@ -6,7 +6,7 @@ namespace Stu\Module\Template;
 
 interface StatusBarInterface
 {
-    public function setColor(string $color): StatusBarInterface;
+    public function setColor(StatusBarColorEnum $color): StatusBarInterface;
 
     public function setLabel(string $label): StatusBarInterface;
 

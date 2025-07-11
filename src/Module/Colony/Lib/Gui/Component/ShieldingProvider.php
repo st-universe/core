@@ -53,11 +53,11 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
         $maxShields = $colonyShieldingManager->getMaxShielding();
 
         if ($colonyShieldingManager->isShieldingEnabled()) {
-            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $currentShields;
+            $bars[StatusBarColorEnum::SHIELD_ON->value] = $currentShields;
         } else {
-            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $currentShields;
+            $bars[StatusBarColorEnum::SHIELD_OFF->value] = $currentShields;
         }
-        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $maxShields - $currentShields;
+        $bars[StatusBarColorEnum::GREY->value] = $maxShields - $currentShields;
 
         foreach ($bars as $color => $value) {
             if ($maxShields < $value) {

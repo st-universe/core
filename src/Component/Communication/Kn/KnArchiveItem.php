@@ -9,7 +9,6 @@ use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnCommentArchivRepositoryInterface;
 
 final class KnArchiveItem implements KnArchiveItemInterface
@@ -118,7 +117,7 @@ final class KnArchiveItem implements KnArchiveItemInterface
 
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->setColor(StatusBarColorEnum::YELLOW)
             ->setLabel('Bewertung')
             ->setMaxValue($ratingAmount)
             ->setValue($this->getRating())
