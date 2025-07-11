@@ -22,7 +22,7 @@ class HullSystemData extends AbstractSystemData
             _('Hülle'),
             $this->spacecraft->getCondition()->getHull(),
             $this->spacecraft->getMaxHull(),
-            StatusBarColorEnum::STATUSBAR_GREEN
+            StatusBarColorEnum::GREEN
         )
             ->render();
     }
@@ -33,7 +33,7 @@ class HullSystemData extends AbstractSystemData
             _('Hülle'),
             $this->spacecraft->getCondition()->getHull(),
             $this->spacecraft->getMaxHull(),
-            StatusBarColorEnum::STATUSBAR_GREEN
+            StatusBarColorEnum::GREEN
         )
             ->setSizeModifier(1.6)
             ->render();

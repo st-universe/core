@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-final class StatusBarColorEnum
+enum StatusBarColorEnum: string
 {
-    public const string STATUSBAR_YELLOW = 'aaaa00';
-    public const string STATUSBAR_GREEN = '00aa00';
-    public const string STATUSBAR_GREY = '777777';
-    public const string STATUSBAR_RED = 'ff0000';
-    public const string STATUSBAR_BLUE = '0070cf';
-    public const string STATUSBAR_DARKBLUE = '004682';
+    case EMPTY = '';
+    case YELLOW = 'aaaa00';
+    case GREEN = '00aa00';
+    case GREY = '777777';
+    case RED = 'ff0000';
+    case BLUE = '0070cf';
+    case DARKBLUE = '004682';
 
-    // shield bar
-    public const string STATUSBAR_SHIELD_ON = '00fbff';
-    public const string STATUSBAR_SHIELD_OFF = '004aff';
+        // shield bar
+    case SHIELD_ON = '00fbff';
+    case SHIELD_OFF = '004aff';
 }

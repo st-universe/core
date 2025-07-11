@@ -111,7 +111,7 @@ class WarpDriveSystemData extends AbstractSystemData
             _('Warpantrieb'),
             $this->getWarpDrive(),
             $this->getMaxWarpDrive(),
-            StatusBarColorEnum::STATUSBAR_BLUE
+            StatusBarColorEnum::BLUE
         )
             ->render();
     }
@@ -122,7 +122,7 @@ class WarpDriveSystemData extends AbstractSystemData
             _('Warpantrieb'),
             $this->getWarpDrive(),
             $this->getMaxWarpDrive(),
-            StatusBarColorEnum::STATUSBAR_BLUE
+            StatusBarColorEnum::BLUE
         )
             ->setSizeModifier(1.6)
             ->render();

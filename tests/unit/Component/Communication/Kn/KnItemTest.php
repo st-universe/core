@@ -433,7 +433,7 @@ class KnItemTest extends StuTestCase
             ->andReturn([666 => 1]);
 
         $statusBar->shouldReceive('setColor')
-            ->with(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->with(StatusBarColorEnum::YELLOW)
             ->once()
             ->andReturnSelf();
         $statusBar->shouldReceive('setLabel')

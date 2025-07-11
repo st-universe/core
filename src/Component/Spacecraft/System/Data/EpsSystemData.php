@@ -128,7 +128,7 @@ class EpsSystemData extends AbstractSystemData
             _('Energie'),
             $this->getEps(),
             $this->getMaxEps(),
-            StatusBarColorEnum::STATUSBAR_YELLOW
+            StatusBarColorEnum::YELLOW
         )
             ->render();
     }
@@ -139,7 +139,7 @@ class EpsSystemData extends AbstractSystemData
             _('Energie'),
             $this->getEps(),
             $this->getMaxEps(),
-            StatusBarColorEnum::STATUSBAR_YELLOW
+            StatusBarColorEnum::YELLOW
         )
             ->setSizeModifier(1.6)
             ->render();

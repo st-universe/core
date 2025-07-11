@@ -39,7 +39,7 @@ final class ResearchComponent implements ComponentInterface
             $researchStatusBar = $this
                 ->statusBarFactory
                 ->createStatusBar()
-                ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
+                ->setColor(StatusBarColorEnum::BLUE)
                 ->setLabel('Forschung')
                 ->setMaxValue($researchPoints)
                 ->setValue($researchPoints - current($currentResearch)->getActive())

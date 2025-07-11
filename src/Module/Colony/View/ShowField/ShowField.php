@@ -88,7 +88,7 @@ final class ShowField implements ViewControllerInterface
             if ($terraFormingState !== null) {
                 $terraFormingBar = $this->statusBarFactory
                     ->createStatusBar()
-                    ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+                    ->setColor(StatusBarColorEnum::GREEN)
                     ->setLabel('Fortschritt')
                     ->setMaxValue($terraFormingState->getTerraforming()->getDuration())
                     ->setValue($terraFormingState->getProgress())
@@ -144,7 +144,7 @@ final class ShowField implements ViewControllerInterface
     {
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setColor(StatusBarColorEnum::GREEN)
             ->setLabel(_('Fortschritt'))
             ->setMaxValue($building->getBuildtime())
             ->setValue($field->getBuildProgress())

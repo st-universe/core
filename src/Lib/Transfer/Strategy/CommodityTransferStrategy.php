@@ -53,7 +53,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
     {
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setColor(StatusBarColorEnum::GREEN)
             ->setLabel(_('Lager'))
             ->setMaxValue($entityWrapper->get()->getMaxStorage())
             ->setValue($entityWrapper->get()->getStorageSum())

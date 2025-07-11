@@ -8,7 +8,7 @@ use Override;
 
 class StatusBar implements StatusBarInterface
 {
-    private string $color = '';
+    private StatusBarColorEnum $color = StatusBarColorEnum::EMPTY;
 
     private string $label = '';
 
@@ -19,7 +19,7 @@ class StatusBar implements StatusBarInterface
     private float $sizeModifier = 1;
 
     #[Override]
-    public function setColor(string $color): StatusBarInterface
+    public function setColor(StatusBarColorEnum $color): StatusBarInterface
     {
         $this->color = $color;
         return $this;
@@ -63,7 +63,7 @@ class StatusBar implements StatusBarInterface
     public function render(): string
     {
         if ($this->maxValue === 0 && $this->value === 0) {
-            return $this->getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, 50);
+            return $this->getStatusBar(StatusBarColorEnum::GREY, 50);
         }
 
         $pro = $this->maxValue === 0 ? 100 : max(0, @round((100 / $this->maxValue) * min($this->value, $this->maxValue)));
@@ -72,12 +72,12 @@ class StatusBar implements StatusBarInterface
             ceil($pro / 2)
         );
         if ($pro < 100) {
-            $bar .= $this->getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2));
+            $bar .= $this->getStatusBar(StatusBarColorEnum::GREY, floor((100 - $pro) / 2));
         }
         return $bar;
     }
 
-    private function getStatusBar(string $color, float $amount): string
+    private function getStatusBar(StatusBarColorEnum $color, float $amount): string
     {
         return sprintf(
             '<img
@@ -87,7 +87,7 @@ class StatusBar implements StatusBarInterface
                 title="%s: %d/%d"
              />',
             $this->label,
-            $color,
+            $color->value,
             (int) (round($amount) * $this->sizeModifier),
             $this->label,
             $this->value,

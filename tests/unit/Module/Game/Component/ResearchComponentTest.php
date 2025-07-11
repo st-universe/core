@@ -131,7 +131,7 @@ class ResearchComponentTest extends StuTestCase
             ->andReturn($statusBar);
 
         $statusBar->shouldReceive('setColor')
-            ->with(StatusBarColorEnum::STATUSBAR_BLUE)
+            ->with(StatusBarColorEnum::BLUE)
             ->once()
             ->andReturnSelf();
         $statusBar->shouldReceive('setLabel')

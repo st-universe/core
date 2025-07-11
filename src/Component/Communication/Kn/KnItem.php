@@ -177,7 +177,7 @@ final class KnItem implements KnItemInterface
 
         return $this->statusBarFactory
             ->createStatusBar()
-            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->setColor(StatusBarColorEnum::YELLOW)
             ->setLabel('Bewertung')
             ->setMaxValue($ratingAmount)
             ->setValue($this->getRating())
