@@ -7,7 +7,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
@@ -17,9 +16,7 @@ use Stu\Orm\Entity\AllianceRelation;
  */
 final class AllianceRelationRenderer implements AllianceRelationRendererInterface
 {
-    public function __construct(private GraphVizFactoryInterface $graphvizFactory, private RelationItemVertexBuilderInterface $relationItemVertexBuilder)
-    {
-    }
+    public function __construct(private GraphVizFactoryInterface $graphvizFactory, private RelationItemVertexBuilderInterface $relationItemVertexBuilder) {}
 
     #[Override]
     public function render(
@@ -49,8 +46,8 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
             $type = $relation->getType();
 
             $edge = $vertexes[$allianceId]->createEdge($vertexes[$opponentId]);
-            $edge->setAttribute('graphviz.color', AllianceEnum::relationTypeToColor($type));
-            $edge->setAttribute('graphviz.tooltip', AllianceEnum::relationTypeToDescription($type));
+            $edge->setAttribute('graphviz.color', $type->getColor());
+            $edge->setAttribute('graphviz.tooltip', $type->getDescription());
             $edge->setAttribute('graphviz.penwidth', $penWidth);
         }
 

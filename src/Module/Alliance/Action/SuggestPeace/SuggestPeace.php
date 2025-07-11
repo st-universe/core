@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -37,7 +37,7 @@ final class SuggestPeace implements ActionControllerInterface
         $opponentId = $relation->getOpponent()->getId() === $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
 
         $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
-            [AllianceEnum::ALLIANCE_RELATION_PEACE],
+            [AllianceRelationTypeEnum::PEACE->value],
             $allianceId,
             $opponentId
         );
@@ -50,14 +50,14 @@ final class SuggestPeace implements ActionControllerInterface
             return;
         }
 
-        if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_WAR) {
+        if ($relation->getType() != AllianceRelationTypeEnum::WAR) {
             return;
         }
 
         $obj = $this->allianceRelationRepository->prototype();
         $obj->setAlliance($alliance);
         $obj->setOpponent($relation->getOpponent());
-        $obj->setType(AllianceEnum::ALLIANCE_RELATION_PEACE);
+        $obj->setType(AllianceRelationTypeEnum::PEACE);
 
         $this->allianceRelationRepository->save($obj);
 

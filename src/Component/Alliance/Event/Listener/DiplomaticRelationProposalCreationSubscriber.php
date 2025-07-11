@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Event\Listener;
 
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -16,9 +16,7 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
  */
 final class DiplomaticRelationProposalCreationSubscriber
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     /**
      * Reacts on war declaration events
@@ -34,7 +32,7 @@ final class DiplomaticRelationProposalCreationSubscriber
         $this->createAllianceRelation(
             $alliance,
             $counterpart,
-            AllianceEnum::ALLIANCE_RELATION_WAR,
+            AllianceRelationTypeEnum::WAR,
             time()
         );
 
@@ -56,7 +54,7 @@ final class DiplomaticRelationProposalCreationSubscriber
         $this->createAllianceRelation(
             $alliance,
             $counterpart,
-            $event->getRelationTypeId()
+            $event->getRelationType()
         );
 
         $this->allianceActionManager->sendMessage(
@@ -71,14 +69,14 @@ final class DiplomaticRelationProposalCreationSubscriber
     private function createAllianceRelation(
         Alliance $alliance,
         Alliance $counterpart,
-        int $relationTypeId,
+        AllianceRelationTypeEnum $relationType,
         int $date = 0
     ): void {
         $relation = $this->allianceRelationRepository
             ->prototype()
             ->setAlliance($alliance)
             ->setOpponent($counterpart)
-            ->setType($relationTypeId)
+            ->setType($relationType)
             ->setDate($date);
 
         $this->allianceRelationRepository->save($relation);

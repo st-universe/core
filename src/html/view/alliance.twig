@@ -90,7 +90,8 @@
       <div class="allianceHeader">Diplomatische Beziehungen</div>
       {% for wrapper in ALLIANCE_RELATIONS %}
       <div class="allianceRelation">
-        <div class="allianceRelationImage"><img src="/assets/alliance/relation_types/{{ wrapper.getImage }}.png" />
+        <div class="allianceRelationImage"><img
+            src="/assets/alliance/relation_types/{{ wrapper.getType.getImage }}.png" />
         </div>
         <div class="allianceRelationOpponentName">{{ wrapper.getDescription|bbcode }}</div>
         <div class="allianceRelationDate">

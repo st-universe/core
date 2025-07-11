@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Relations;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
@@ -18,9 +18,7 @@ final class Relations implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository)
-    {
-    }
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -46,11 +44,11 @@ final class Relations implements ViewControllerInterface
         }
 
         $possibleRelationTypes = [
-            AllianceEnum::ALLIANCE_RELATION_WAR => _('Krieg'),
-            AllianceEnum::ALLIANCE_RELATION_FRIENDS => _('Freundschaft'),
-            AllianceEnum::ALLIANCE_RELATION_ALLIED => _('Bündnis'),
-            AllianceEnum::ALLIANCE_RELATION_TRADE => _('Handelsabkommen'),
-            AllianceEnum::ALLIANCE_RELATION_VASSAL => _('Vasall')
+            AllianceRelationTypeEnum::WAR,
+            AllianceRelationTypeEnum::FRIENDS,
+            AllianceRelationTypeEnum::ALLIED,
+            AllianceRelationTypeEnum::TRADE,
+            AllianceRelationTypeEnum::VASSAL
         ];
 
         $game->setPageTitle(_('Diplomatie'));

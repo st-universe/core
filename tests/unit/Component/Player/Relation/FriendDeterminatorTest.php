@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Relation;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\Contact;
@@ -93,9 +93,9 @@ class FriendDeterminatorTest extends StuTestCase
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
             ->with(
                 [
-                    AllianceEnum::ALLIANCE_RELATION_FRIENDS,
-                    AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                    AllianceRelationTypeEnum::FRIENDS->value,
+                    AllianceRelationTypeEnum::ALLIED->value,
+                    AllianceRelationTypeEnum::VASSAL->value
                 ],
                 $allianceOpponentId,
                 $allianceUserId
@@ -142,9 +142,9 @@ class FriendDeterminatorTest extends StuTestCase
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
             ->with(
                 [
-                    AllianceEnum::ALLIANCE_RELATION_FRIENDS,
-                    AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                    AllianceRelationTypeEnum::FRIENDS->value,
+                    AllianceRelationTypeEnum::ALLIED->value,
+                    AllianceRelationTypeEnum::VASSAL->value
                 ],
                 $allianceOpponentId,
                 $allianceUserId

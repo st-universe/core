@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Management;
 
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;

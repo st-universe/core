@@ -7,7 +7,7 @@ namespace Stu\Component\Alliance\Event\Listener;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -92,7 +92,7 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
             ->once()
             ->andReturnSelf();
         $relation->shouldReceive('setType')
-            ->with(AllianceEnum::ALLIANCE_RELATION_WAR)
+            ->with(AllianceRelationTypeEnum::WAR)
             ->once()
             ->andReturnSelf();
         $relation->shouldReceive('setDate')
@@ -112,7 +112,7 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
 
         $allianceName = 'some-name';
         $counterpartId = 666;
-        $relationType = 42;
+        $relationType = AllianceRelationTypeEnum::ALLIED;
 
         $event->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -122,7 +122,7 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($counterpart);
-        $event->shouldReceive('getRelationTypeId')
+        $event->shouldReceive('getRelationType')
             ->withNoArgs()
             ->once()
             ->andReturn($relationType);

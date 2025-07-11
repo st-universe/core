@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use JBBCode\Parser;
 use Override;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
