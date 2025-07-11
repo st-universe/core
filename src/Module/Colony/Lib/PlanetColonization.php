@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Lib;
 use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\Building;
@@ -20,6 +19,8 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
+    private const int COLONY_FIELDTYPE_MEADOW = 101;
+
     public function __construct(
         private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
         private readonly CommodityRepositoryInterface $commodityRepository,
@@ -45,7 +46,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         if ($field === null) {
             $list = $this->planetFieldRepository->getByColonyAndType(
                 $colony->getId(),
-                ColonyEnum::COLONY_FIELDTYPE_MEADOW
+                self::COLONY_FIELDTYPE_MEADOW
             );
 
             shuffle($list);

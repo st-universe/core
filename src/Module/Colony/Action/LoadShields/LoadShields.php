@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\LoadShields;
 use Override;
 use request;
 
-use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,6 +17,8 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 final class LoadShields implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_LOAD_SHIELDS';
+
+    private const int SHIELDS_PER_EPS = 10;
 
     public function __construct(
         private readonly ColonyLoaderInterface $colonyLoader,
@@ -40,8 +41,8 @@ final class LoadShields implements ActionControllerInterface
         $load = request::postIntFatal('load');
         $changeable = $colony->getChangeable();
 
-        if ($changeable->getEps() * ColonyEnum::SHIELDS_PER_EPS < $load) {
-            $load = $changeable->getEps() * ColonyEnum::SHIELDS_PER_EPS;
+        if ($changeable->getEps() * self::SHIELDS_PER_EPS < $load) {
+            $load = $changeable->getEps() * self::SHIELDS_PER_EPS;
         }
 
         $maxShields = $this->planetFieldRepository->getMaxShieldsOfHost($colony);
@@ -54,7 +55,7 @@ final class LoadShields implements ActionControllerInterface
             return;
         }
 
-        $changeable->lowerEps((int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
+        $changeable->lowerEps((int) ceil($load / self::SHIELDS_PER_EPS));
         $changeable->setShields($changeable->getShields() + $load);
 
         $this->colonyRepository->save($colony);
