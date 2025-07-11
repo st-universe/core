@@ -41,7 +41,7 @@ class ColonyLimitCalculatorTest extends StuTestCase
     public function testCanColonizeFurtherColonyWithTypeReturnsFalseIfExceeded(): void
     {
         $user = $this->mock(User::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_ASTEROID;
+        $type = ColonyTypeEnum::ASTEROID;
 
         //use new function
         $this->researchRepository->shouldReceive('getColonyTypeLimitByUser')
@@ -63,7 +63,7 @@ class ColonyLimitCalculatorTest extends StuTestCase
     public function testCanColonizeFurtherPlanetsReturnsTrueIfPossible(): void
     {
         $user = $this->mock(User::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_ASTEROID;
+        $type = ColonyTypeEnum::ASTEROID;
 
         //use new function
         $this->researchRepository->shouldReceive('getColonyTypeLimitByUser')

@@ -56,8 +56,8 @@ class Research
     #[Column(type: 'integer', nullable: true)]
     private ?int $needed_award = null;
 
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $upper_limit_colony_type = null;
+    #[Column(type: 'smallint', nullable: true, enumType: ColonyTypeEnum::class)]
+    private ?ColonyTypeEnum $upper_limit_colony_type = null;
 
     #[Column(type: 'smallint', nullable: true)]
     private ?int $upper_limit_colony_amount = null;
@@ -164,19 +164,19 @@ class Research
 
     public function getUpperPlanetLimit(): int
     {
-        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_PLANET
+        return $this->upper_limit_colony_type === ColonyTypeEnum::PLANET
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
     public function getUpperMoonLimit(): int
     {
-        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_MOON
+        return $this->upper_limit_colony_type === ColonyTypeEnum::MOON
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
     public function getUpperAsteroidLimit(): int
     {
-        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_ASTEROID
+        return $this->upper_limit_colony_type === ColonyTypeEnum::ASTEROID
             && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 

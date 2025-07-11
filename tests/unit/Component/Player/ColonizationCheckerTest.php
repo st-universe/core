@@ -67,7 +67,7 @@ class ColonizationCheckerTest extends StuTestCase
     {
         $user = $this->mock(User::class);
         $colony = $this->mock(Colony::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
+        $type = ColonyTypeEnum::MOON;
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
@@ -94,7 +94,7 @@ class ColonizationCheckerTest extends StuTestCase
         $colony = $this->mock(Colony::class);
         $colonyClassResearch = $this->mock(ColonyClassResearch::class);
         $colonyClass = $this->mock(ColonyClass::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
+        $type = ColonyTypeEnum::MOON;
 
         $researchId = 666;
 
@@ -143,7 +143,7 @@ class ColonizationCheckerTest extends StuTestCase
         $colony = $this->mock(Colony::class);
         $colonyClassResearch = $this->mock(ColonyClassResearch::class);
         $colonyClass = $this->mock(ColonyClass::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
+        $type = ColonyTypeEnum::MOON;
 
         $researchId = 666;
 
@@ -191,7 +191,7 @@ class ColonizationCheckerTest extends StuTestCase
         $user = $this->mock(User::class);
         $colony = $this->mock(Colony::class);
         $colonyClass = $this->mock(ColonyClass::class);
-        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
+        $type = ColonyTypeEnum::MOON;
 
         $colonyClass->shouldReceive('getType')
             ->withNoArgs()

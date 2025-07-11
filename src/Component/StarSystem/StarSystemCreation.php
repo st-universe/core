@@ -147,7 +147,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
          */
         $systemMapsWithoutColony = array_filter(
             $starSystem->getFields()->toArray(),
-            fn (StarSystemMap $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
+            fn(StarSystemMap $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
         );
 
         foreach ($systemMapsWithoutColony as $systemMap) {
@@ -176,7 +176,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
 
         $colonyClass = $systemMap->getFieldType()->getColonyClass();
         if ($colonyClass !== null) {
-            if ($colonyClass->getType() === ColonyTypeEnum::COLONY_TYPE_ASTEROID) {
+            if ($colonyClass->getType() === ColonyTypeEnum::ASTEROID) {
                 $identifer = sprintf('%s %s', $colonyClass->getName(), $starSystem->getName());
             } else {
                 $identifer = sprintf('%s %s', $starSystem->getName(), $mapData->getIdentifier($index));

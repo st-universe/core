@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\StarSystemMap;
@@ -22,7 +23,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
 
     public function delete(Colony $colony): void;
 
-    public function getAmountByUser(User $user, int $colonyType): int;
+    public function getAmountByUser(User $user, ColonyTypeEnum $colonyType): int;
 
     /**
      * @return array<int, Colony>

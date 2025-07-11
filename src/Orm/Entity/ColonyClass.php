@@ -31,8 +31,8 @@ class ColonyClass
     #[Column(type: 'string')]
     private string $name = '';
 
-    #[Column(type: 'integer')]
-    private int $type;
+    #[Column(type: 'integer', enumType: ColonyTypeEnum::class)]
+    private ColonyTypeEnum $type;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = null;
@@ -98,24 +98,24 @@ class ColonyClass
         return $this;
     }
 
-    public function getType(): int
+    public function getType(): ColonyTypeEnum
     {
         return $this->type;
     }
 
     public function isPlanet(): bool
     {
-        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_PLANET;
+        return $this->getType() === ColonyTypeEnum::PLANET;
     }
 
     public function isMoon(): bool
     {
-        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_MOON;
+        return $this->getType() === ColonyTypeEnum::MOON;
     }
 
     public function isAsteroid(): bool
     {
-        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_ASTEROID;
+        return $this->getType() === ColonyTypeEnum::ASTEROID;
     }
 
     public function getDatabaseId(): ?int
