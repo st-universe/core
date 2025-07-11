@@ -106,7 +106,7 @@
             <tr>
                 <td>
                     <img
-                        src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType }}.png" />
+                        src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType.value }}.png" />
                     {% if data.getCrew.getUser != SHIP.getUser %}
                     <span style="vertical-align: top; color:red; cursor: default;"
                         title="von {{ data.getCrew.getUser.getName|bbcode2txt }}">*</span>
@@ -118,14 +118,14 @@
                     {% endif %}
                 </td>
                 <td>
-                    <div>{{ data.getPosition }}</div>
+                    <div>{{ data.getSlot.getDescription }}</div>
                 </td>
                 <td style="vertical-align: middle;">
                     {% set CREW = crew %}
                     {% include 'html/ship/crew/crewSlot.twig' %}
                 </td>
                 <td>
-                    <div>{{ data.getCrew.getTypeDescription }}</div>
+                    <div>{{ data.getCrew.getType.getDescription }}</div>
                 </td>
             </tr>
             {% endfor %}

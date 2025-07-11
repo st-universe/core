@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -229,7 +229,7 @@ final class RepairUtil implements RepairUtilInterface
         $nextNumber = 1;
         foreach ($ship->getCrewAssignments() as $shipCrew) {
             if (
-                $shipCrew->getSlot() === CrewEnum::CREW_TYPE_TECHNICAL
+                $shipCrew->getSlot() === CrewTypeEnum::TECHNICAL
                 //&& $shipCrew->getRepairTask() === null
             ) {
                 $engineerOptions[] = $nextNumber;

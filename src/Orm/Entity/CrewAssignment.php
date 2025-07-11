@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\CrewAssignmentRepository;
 
@@ -24,8 +24,8 @@ class CrewAssignment
     #[JoinColumn(name: 'crew_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Crew $crew;
 
-    #[Column(type: 'smallint', nullable: true)]
-    private ?int $slot = null;
+    #[Column(type: 'smallint', nullable: true, enumType: CrewTypeEnum::class)]
+    private ?CrewTypeEnum $slot = null;
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -47,21 +47,16 @@ class CrewAssignment
     #[JoinColumn(name: 'repair_task_id', referencedColumnName: 'id')]
     private ?RepairTask $repairTask = null;
 
-    public function getSlot(): ?int
+    public function getSlot(): ?CrewTypeEnum
     {
         return $this->slot;
     }
 
-    public function setSlot(?int $slot): CrewAssignment
+    public function setSlot(?CrewTypeEnum $slot): CrewAssignment
     {
         $this->slot = $slot;
 
         return $this;
-    }
-
-    public function getPosition(): string
-    {
-        return CrewEnum::getDescription($this->getSlot());
     }
 
     public function getUser(): User

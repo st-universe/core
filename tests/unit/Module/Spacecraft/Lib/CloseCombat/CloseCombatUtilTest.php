@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\CrewAssignment;
@@ -105,22 +105,22 @@ class CloseCombatUtilTest extends StuTestCase
 
         $crew1->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_NAVIGATION);
+            ->andReturn(CrewTypeEnum::NAVIGATION);
         $crew2->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SECURITY);
+            ->andReturn(CrewTypeEnum::SECURITY);
         $crew3->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_CAPTAIN);
+            ->andReturn(CrewTypeEnum::CAPTAIN);
         $crew4->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
+            ->andReturn(CrewTypeEnum::SCIENCE);
         $crew5->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
+            ->andReturn(CrewTypeEnum::SCIENCE);
         $crew6->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewEnum::CREW_TYPE_SCIENCE);
+            ->andReturn(CrewTypeEnum::SCIENCE);
 
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
@@ -152,11 +152,11 @@ class CloseCombatUtilTest extends StuTestCase
         $crew1->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturn(CrewEnum::CREW_TYPE_CAPTAIN);
+            ->andReturn(CrewTypeEnum::CAPTAIN);
         $crew2->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturn(CrewEnum::CREW_TYPE_NAVIGATION);
+            ->andReturn(CrewTypeEnum::NAVIGATION);
 
         $faction->shouldReceive('getCloseCombatScore')
             ->withNoArgs()
