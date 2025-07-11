@@ -16,7 +16,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
-use Stu\Component\Station\StationEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -109,7 +108,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if the construction limit is reached
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[SpacecraftRumpRoleEnum::SHIP_ROLE_CONSTRUCTION->value];
+        $limit = SpacecraftRumpRoleEnum::CONSTRUCTION->getBuildLimit();
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
             return;

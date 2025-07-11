@@ -9,8 +9,8 @@ use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Station\StationLocationEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -70,16 +70,16 @@ final class BuildStation implements ActionControllerInterface
         }
 
         // check if the limit is reached
-        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$role->value];
+        $limit = $role->getBuildLimit();
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
             $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
-        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$role->value];
-        if (!$this->locationAllowed($station, $location)) {
-            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location));
+        $location = $role->getPossibleBuildLocations();
+        if (!$this->isLocationAllowed($station, $location)) {
+            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location->value));
             return;
         }
 
@@ -120,25 +120,25 @@ final class BuildStation implements ActionControllerInterface
         ));
     }
 
-    private function locationAllowed(Station $station, string $location): bool
+    private function isLocationAllowed(Station $station, StationLocationEnum $location): bool
     {
-        if ($location === StationEnum::BUILDABLE_EVERYWHERE) {
+        if ($location === StationLocationEnum::BUILDABLE_EVERYWHERE) {
             return true;
         }
 
         $inSystem = $station->getSystem();
-        if ($inSystem && $location === StationEnum::BUILDABLE_INSIDE_SYSTEM) {
+        if ($inSystem && $location === StationLocationEnum::BUILDABLE_INSIDE_SYSTEM) {
             return true;
         }
 
         $overSystem = $station->isOverSystem();
-        if ($overSystem && ($location === StationEnum::BUILDABLE_OVER_SYSTEM
-            ||  $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM)) {
+        if ($overSystem && ($location === StationLocationEnum::BUILDABLE_OVER_SYSTEM
+            ||  $location === StationLocationEnum::BUILDABLE_OUTSIDE_SYSTEM)) {
             return true;
         }
 
         $outsideSystem = !$inSystem && !$overSystem;
-        return $outsideSystem && $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM;
+        return $outsideSystem && $location === StationLocationEnum::BUILDABLE_OUTSIDE_SYSTEM;
     }
 
     /**

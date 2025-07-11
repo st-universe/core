@@ -119,7 +119,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
         }
 
-        if ($station->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SHIPYARD) {
+        if ($station->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIPYARD) {
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($station->getId()));
         }
 

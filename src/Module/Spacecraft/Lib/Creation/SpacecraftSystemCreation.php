@@ -59,7 +59,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
             $systems[SpacecraftSystemTypeEnum::CONSTRUCTION_HUB->value] = null;
         }
 
-        if ($spacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR) {
+        if ($spacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SENSOR) {
             $systems[SpacecraftSystemTypeEnum::UPLINK->value] = null;
         }
 

@@ -101,8 +101,8 @@ class VisualNavPanel extends AbstractVisualPanel
         }
 
         if (
-            $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR
-            || $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE
+            $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SENSOR
+            || $this->wrapper->get()->getRump()->getRoleId() === SpacecraftRumpRoleEnum::BASE
         ) {
             $parentMapLocation = $this->getParentMapLocation($location);
 

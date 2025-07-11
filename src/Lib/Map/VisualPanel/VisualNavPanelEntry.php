@@ -45,8 +45,8 @@ class VisualNavPanelEntry extends SignaturePanelEntry
     public function isClickAble(): bool
     {
         if (
-            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR
-            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE
+            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SENSOR
+            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::BASE
         ) {
             return true;
         }
@@ -61,8 +61,8 @@ class VisualNavPanelEntry extends SignaturePanelEntry
     public function getOnClick(): string
     {
         if (
-            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_SENSOR
-            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SHIP_ROLE_BASE
+            $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::SENSOR
+            || $this->currentSpacecraft->getRump()->getRoleId() === SpacecraftRumpRoleEnum::BASE
         ) {
             return sprintf(
                 'showSectorScanWindow(this, %d, %d, %d, %s);',

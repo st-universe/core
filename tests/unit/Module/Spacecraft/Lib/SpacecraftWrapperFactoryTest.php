@@ -148,23 +148,23 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
         $shipSolo1->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
+            ->andReturn(SpacecraftRumpRoleEnum::BASE);
         $stationSolo2->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
+            ->andReturn(SpacecraftRumpRoleEnum::BASE);
         $shipFleetLowSort2->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
+            ->andReturn(SpacecraftRumpRoleEnum::BASE);
         $shipFleetLowSort1->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
+            ->andReturn(SpacecraftRumpRoleEnum::BASE);
         $shipFleetHighSort->shouldReceive('getRump->getRoleId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
-            ->andReturn(SpacecraftRumpRoleEnum::SHIP_ROLE_BASE);
+            ->andReturn(SpacecraftRumpRoleEnum::BASE);
 
         $shipSolo1->shouldReceive('getRumpId')
             ->withNoArgs()
