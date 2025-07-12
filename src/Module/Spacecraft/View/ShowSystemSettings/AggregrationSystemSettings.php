@@ -8,7 +8,7 @@ use RuntimeException;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
@@ -43,7 +43,7 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
             throw new SanityCheckException('no aggregation system installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
         }
 
-        $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
+        $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
         $mode1Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 1);
         $mode2Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 2);
 

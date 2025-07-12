@@ -12,7 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -68,7 +68,7 @@ final class TransformResources implements ActionControllerInterface
             }
 
             $canProduce = false;
-            foreach (CommodityTypeEnum::COMMODITY_CONVERSIONS as $conversion) {
+            foreach (CommodityTypeConstants::COMMODITY_CONVERSIONS as $conversion) {
                 if ($conversion[0] === $commodityId) {
                     $targetCommodityId = $conversion[1];
                     if ($this->buildingCommodityRepository->canProduceCommodity($userId, $targetCommodityId)) {

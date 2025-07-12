@@ -10,7 +10,7 @@ use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
@@ -230,7 +230,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 GROUP BY c.user_id, bc.commodity_id',
                 $rsm
             )
-            ->setParameters(['typeStandard' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD])
+            ->setParameters(['typeStandard' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD])
             ->getResult();
     }
 
@@ -267,7 +267,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
             ->setParameters([
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'lifeStandard' => CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD
+                'lifeStandard' => CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD
             ])
             ->getResult();
     }

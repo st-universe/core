@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\Action\BasicTradeBuy;
 use Override;
 use request;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\BasicTradeItem;
@@ -63,7 +63,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         }
 
         /** @var ?Storage */
-        $latinumStorage = $storageManager->getStorage()->get(CommodityTypeEnum::COMMODITY_LATINUM);
+        $latinumStorage = $storageManager->getStorage()->get(CommodityTypeConstants::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage->getAmount() < 1) {
             $game->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
@@ -99,7 +99,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $amount = (int) ($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE);
 
         $storageManager->upperStorage($basicTrade->getCommodity()->getId(), $amount);
-        $storageManager->lowerStorage(CommodityTypeEnum::COMMODITY_LATINUM, 1);
+        $storageManager->lowerStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
 
         $game->addInformation('Die Waren wurden gekauft');
     }

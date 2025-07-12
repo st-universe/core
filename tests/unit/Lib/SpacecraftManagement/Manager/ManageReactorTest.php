@@ -11,7 +11,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
@@ -202,13 +202,13 @@ class ManageReactorTest extends StuTestCase
             ->andReturn(false);
 
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_DILITHIUM)
+            ->with(CommodityTypeConstants::COMMODITY_DILITHIUM)
             ->andReturn($dilithium);
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_DEUTERIUM)
+            ->with(CommodityTypeConstants::COMMODITY_DEUTERIUM)
             ->andReturn($deut);
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_ANTIMATTER)
+            ->with(CommodityTypeConstants::COMMODITY_ANTIMATTER)
             ->andReturn($am);
 
         $dilithium->shouldReceive('getName')
@@ -291,13 +291,13 @@ class ManageReactorTest extends StuTestCase
             ->andReturn(false);
 
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_DILITHIUM)
+            ->with(CommodityTypeConstants::COMMODITY_DILITHIUM)
             ->andReturn($dilithium);
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_DEUTERIUM)
+            ->with(CommodityTypeConstants::COMMODITY_DEUTERIUM)
             ->andReturn($deut);
         $this->commodityCache->shouldReceive('get')
-            ->with(CommodityTypeEnum::COMMODITY_ANTIMATTER)
+            ->with(CommodityTypeConstants::COMMODITY_ANTIMATTER)
             ->andReturn($am);
 
         $dilithium->shouldReceive('getName')

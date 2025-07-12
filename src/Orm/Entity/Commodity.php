@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Repository\CommodityRepository;
 
 #[Table(name: 'stu_commodity')]
@@ -31,7 +31,7 @@ class Commodity
     private bool $view = true;
 
     #[Column(type: 'smallint')]
-    private int $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
+    private int $type = CommodityTypeConstants::COMMODITY_TYPE_STANDARD;
 
     #[Column(type: 'boolean')]
     private bool $npc_commodity = false;
@@ -101,12 +101,12 @@ class Commodity
     {
         $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user !== $targetUser;
 
-        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
+        return $this->getType() === CommodityTypeConstants::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
     }
 
     public function isSaveable(): bool
     {
-        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
+        return $this->getType() === CommodityTypeConstants::COMMODITY_TYPE_STANDARD;
     }
 
     public function isBoundToAccount(): bool
@@ -116,17 +116,17 @@ class Commodity
 
     public function isShuttle(): bool
     {
-        return in_array(intdiv($this->getId(), 10) * 10, CommodityTypeEnum::BASE_IDS_SHUTTLE);
+        return in_array(intdiv($this->getId(), 10) * 10, CommodityTypeConstants::BASE_IDS_SHUTTLE);
     }
 
     public function isWorkbee(): bool
     {
-        return intdiv($this->getId(), 10) * 10 === CommodityTypeEnum::BASE_ID_WORKBEE;
+        return intdiv($this->getId(), 10) * 10 === CommodityTypeConstants::BASE_ID_WORKBEE;
     }
 
     public function isBouy(): bool
     {
-        return $this->getId() === CommodityTypeEnum::BASE_ID_BUOY;
+        return $this->getId() === CommodityTypeConstants::BASE_ID_BUOY;
     }
 
     public function getTransferCount(): int

@@ -10,7 +10,7 @@ use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\EasterEggHandler;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -91,7 +91,7 @@ final class OpenEasterEgg implements ActionControllerInterface
 
         $this->createOpenedAdventDoor($user);
 
-        $commodity = $this->commodityCache->get(CommodityTypeEnum::COMMODITY_EASTER_EGG);
+        $commodity = $this->commodityCache->get(CommodityTypeConstants::COMMODITY_EASTER_EGG);
         $this->storageManager->upperStorage($ship, $commodity, 1);
 
         $game->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));

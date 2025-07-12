@@ -12,7 +12,7 @@ use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -48,8 +48,8 @@ final class RepairUtil implements RepairUtilInterface
         $neededSystemComponents = $this->calculateNeededSystemComponents($wrapper, $isRepairStationBonus, $tickBased);
 
         return [
-            CommodityTypeEnum::COMMODITY_SPARE_PART => $neededSpareParts,
-            CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents
+            CommodityTypeConstants::COMMODITY_SPARE_PART => $neededSpareParts,
+            CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents
         ];
     }
 
@@ -120,11 +120,11 @@ final class RepairUtil implements RepairUtilInterface
         Colony|Spacecraft $entity,
         Spacecraft $spacecraft
     ): bool {
-        $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
-        $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
+        $neededSpareParts = $neededParts[CommodityTypeConstants::COMMODITY_SPARE_PART];
+        $neededSystemComponents = $neededParts[CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT];
 
         if ($neededSpareParts > 0) {
-            $spareParts = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART);
+            $spareParts = $entity->getStorage()->get(CommodityTypeConstants::COMMODITY_SPARE_PART);
 
             if ($spareParts === null || $spareParts->getAmount() < $neededSpareParts) {
                 $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $spacecraft, $entity);
@@ -133,7 +133,7 @@ final class RepairUtil implements RepairUtilInterface
         }
 
         if ($neededSystemComponents > 0) {
-            $systemComponents = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT);
+            $systemComponents = $entity->getStorage()->get(CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT);
 
             if ($systemComponents === null || $systemComponents->getAmount() < $neededSystemComponents) {
                 $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $spacecraft, $entity);
@@ -153,11 +153,11 @@ final class RepairUtil implements RepairUtilInterface
         $neededPartsString = sprintf(
             "%d %s%s",
             $neededSpareParts,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART),
+            CommodityTypeConstants::getDescription(CommodityTypeConstants::COMMODITY_SPARE_PART),
             ($neededSystemComponents > 0 ? sprintf(
                 "\n%d %s",
                 $neededSystemComponents,
-                CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)
+                CommodityTypeConstants::getDescription(CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT)
             ) : '')
         );
 

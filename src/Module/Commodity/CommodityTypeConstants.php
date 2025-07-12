@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Commodity;
 
-final class CommodityTypeEnum
+final class CommodityTypeConstants
 {
     // commodity types
     public const int COMMODITY_TYPE_STANDARD = 1;
@@ -61,12 +61,12 @@ final class CommodityTypeEnum
     public static function getDescription(int $commodityId): string
     {
         return match ($commodityId) {
-            CommodityTypeEnum::COMMODITY_DEUTERIUM => _("Deuterium"),
-            CommodityTypeEnum::COMMODITY_ANTIMATTER => _("Antimaterie"),
-            CommodityTypeEnum::COMMODITY_PLASMA => _("Plasma"),
-            CommodityTypeEnum::COMMODITY_DILITHIUM => _("Dilithium"),
-            CommodityTypeEnum::COMMODITY_SPARE_PART => _("Ersatzteil"),
-            CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => _("Systemkomponente"),
+            CommodityTypeConstants::COMMODITY_DEUTERIUM => _("Deuterium"),
+            CommodityTypeConstants::COMMODITY_ANTIMATTER => _("Antimaterie"),
+            CommodityTypeConstants::COMMODITY_PLASMA => _("Plasma"),
+            CommodityTypeConstants::COMMODITY_DILITHIUM => _("Dilithium"),
+            CommodityTypeConstants::COMMODITY_SPARE_PART => _("Ersatzteil"),
+            CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT => _("Systemkomponente"),
             default => '',
         };
     }

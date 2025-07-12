@@ -9,7 +9,7 @@ use Override;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -63,22 +63,22 @@ final class FirstColony implements ActionControllerInterface
 
         $this->storageManager->upperStorage(
             $colony,
-            $this->getCommodity(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
+            $this->getCommodity(CommodityTypeConstants::COMMODITY_BUILDING_MATERIALS),
             150
         );
         $this->storageManager->upperStorage(
             $colony,
-            $this->getCommodity(CommodityTypeEnum::COMMODITY_TRANSPARENT_ALUMINIUM),
+            $this->getCommodity(CommodityTypeConstants::COMMODITY_TRANSPARENT_ALUMINIUM),
             150
         );
         $this->storageManager->upperStorage(
             $colony,
-            $this->getCommodity(CommodityTypeEnum::COMMODITY_DURANIUM),
+            $this->getCommodity(CommodityTypeConstants::COMMODITY_DURANIUM),
             150
         );
         $this->storageManager->upperStorage(
             $colony,
-            $this->getCommodity(CommodityTypeEnum::COMMODITY_DEUTERIUM),
+            $this->getCommodity(CommodityTypeConstants::COMMODITY_DEUTERIUM),
             100
         );
 
