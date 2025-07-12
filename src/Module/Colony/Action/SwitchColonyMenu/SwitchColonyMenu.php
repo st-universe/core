@@ -10,7 +10,6 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
@@ -44,7 +43,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         ) {
             return;
         }
-        if (BuildingFunctionTypeEnum::isBuildingFunctionMandatory($menu)) {
+        if ($menu->isBuildingFunctionMandatory()) {
             $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
             $game->setTemplateVar('FUNC', $func);
 

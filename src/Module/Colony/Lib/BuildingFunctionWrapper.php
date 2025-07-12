@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Lib;
 
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingFunction;
 
 final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
@@ -53,34 +52,28 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     #[Override]
     public function isShipyard(): bool
     {
-        foreach ($this->buildingfunctions as $func) {
-            if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
-                return true;
-            }
-        }
-        return false;
+        return array_any(
+            $this->buildingfunctions,
+            fn(BuildingFunction $function): bool => $function->getFunction()->isShipyard()
+        );
     }
 
     #[Override]
     public function getShipyardBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctions as $func) {
-            if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
-                return $func->getId();
-            }
-        }
-        return null;
+        return array_find(
+            $this->buildingfunctions,
+            fn(BuildingFunction $function): bool => $function->getFunction()->isShipyard()
+        )?->getId();
     }
 
     #[Override]
     public function isModuleFab(): bool
     {
-        foreach ($this->buildingfunctions as $func) {
-            if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
-                return true;
-            }
-        }
-        return false;
+        return array_any(
+            $this->buildingfunctions,
+            fn(BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
+        );
     }
 
     #[Override]
@@ -98,12 +91,10 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     #[Override]
     public function getModuleFabBuildingFunctionId(): ?int
     {
-        foreach ($this->buildingfunctions as $func) {
-            if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
-                return $func->getId();
-            }
-        }
-        return null;
+        return array_find(
+            $this->buildingfunctions,
+            fn(BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
+        )?->getId();
     }
 
     #[Override]

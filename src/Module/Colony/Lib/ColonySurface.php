@@ -9,7 +9,6 @@ use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\Researched;
@@ -155,7 +154,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
             $this->host,
-            BuildingFunctionTypeEnum::getShipyardOptions(),
+            BuildingFunctionEnum::getShipyards(),
             [0, 1]
         ) > 0;
     }
