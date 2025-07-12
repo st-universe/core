@@ -6,7 +6,7 @@ namespace Stu\Component\Colony\Commodity;
 
 use Override;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 
 final class ColonyProductionSumReducer implements ColonyProductionSumReducerInterface
 {
@@ -21,9 +21,9 @@ final class ColonyProductionSumReducer implements ColonyProductionSumReducerInte
         return array_reduce(
             array_filter(
                 $production,
-                fn (ColonyProduction $item): bool => $item->getCommodityType() !== CommodityTypeEnum::COMMODITY_TYPE_EFFECT
+                fn(ColonyProduction $item): bool => $item->getCommodityType() !== CommodityTypeConstants::COMMODITY_TYPE_EFFECT
             ),
-            fn (int $value, ColonyProduction $item): int => $value + $item->getProduction(),
+            fn(int $value, ColonyProduction $item): int => $value + $item->getProduction(),
             0
         );
     }

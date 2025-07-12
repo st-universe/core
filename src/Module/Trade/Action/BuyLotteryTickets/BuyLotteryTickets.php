@@ -8,7 +8,7 @@ use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
@@ -50,7 +50,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
             TradeEnum::DEALS_FERG_TRADEPOST_ID,
             $userId,
-            CommodityTypeEnum::COMMODITY_LATINUM
+            CommodityTypeConstants::COMMODITY_LATINUM
         );
 
         if ($storage === null || $storage->getAmount() < $amount) {
@@ -65,7 +65,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
         $storageManagerUser->lowerStorage(
-            CommodityTypeEnum::COMMODITY_LATINUM,
+            CommodityTypeConstants::COMMODITY_LATINUM,
             $amount
         );
 

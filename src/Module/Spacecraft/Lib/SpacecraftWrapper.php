@@ -15,7 +15,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
@@ -271,12 +271,12 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     {
         $neededParts = $this->repairUtil->determineSpareParts($this, false);
 
-        $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
-        $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
+        $neededSpareParts = $neededParts[CommodityTypeConstants::COMMODITY_SPARE_PART];
+        $neededSystemComponents = $neededParts[CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT];
 
         return [
-            new ShipRepairCost($neededSpareParts, CommodityTypeEnum::COMMODITY_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART)),
-            new ShipRepairCost($neededSystemComponents, CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT))
+            new ShipRepairCost($neededSpareParts, CommodityTypeConstants::COMMODITY_SPARE_PART, CommodityTypeConstants::getDescription(CommodityTypeConstants::COMMODITY_SPARE_PART)),
+            new ShipRepairCost($neededSystemComponents, CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT, CommodityTypeConstants::getDescription(CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT))
         ];
     }
 

@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\Action\BasicTradeSell;
 use Override;
 use request;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\BasicTradeItem;
@@ -97,7 +97,7 @@ final class BasicTradeSell implements ActionControllerInterface
 
         $this->basicTradeRepository->save($newBasicTrade);
 
-        $storageManager->upperStorage(CommodityTypeEnum::COMMODITY_LATINUM, 1);
+        $storageManager->upperStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
         $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), $sellValue);
 
         $game->addInformation('Die Waren wurden verkauft');

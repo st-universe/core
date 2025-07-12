@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\TakeBuoy;
 use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -73,7 +73,7 @@ final class TakeBuoy implements ActionControllerInterface
             return;
         }
 
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BUOY);
+        $commodity = $this->commodityRepository->find(CommodityTypeConstants::BASE_ID_BUOY);
 
         if ($commodity !== null) {
             $this->storageManager->upperStorage(

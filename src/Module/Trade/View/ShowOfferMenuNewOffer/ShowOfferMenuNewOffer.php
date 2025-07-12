@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\View\ShowOfferMenuNewOffer;
 
 use Override;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -16,9 +16,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_OFFER_MENU_NEW_OFFER';
 
-    public function __construct(private ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest, private CommodityRepositoryInterface $commodityRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest, private CommodityRepositoryInterface $commodityRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -43,7 +41,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             $storage->getCommodity()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_LATINUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_LATINUM);
+        $game->setTemplateVar('IS_LATINUM', $storage->getCommodityId() === CommodityTypeConstants::COMMODITY_LATINUM);
         $game->setTemplateVar('IS_NPC_POST', $tradepost->getUser()->isNpc());
         $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
     }

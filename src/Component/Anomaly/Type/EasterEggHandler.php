@@ -6,7 +6,7 @@ namespace Stu\Component\Anomaly\Type;
 
 use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
@@ -39,7 +39,7 @@ final class EasterEggHandler implements AnomalyHandlerInterface
             return;
         }
 
-        $this->storageRepository->truncateByCommodity(CommodityTypeEnum::COMMODITY_EASTER_EGG);
+        $this->storageRepository->truncateByCommodity(CommodityTypeConstants::COMMODITY_EASTER_EGG);
 
         for ($i = 0; $i < self::EASTER_EGG_AMOUNT; $i++) {
             $subspaceEllipses[] = $this->anomalyCreation->create(

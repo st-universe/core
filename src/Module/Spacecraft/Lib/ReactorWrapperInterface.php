@@ -3,7 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Spacecraft\System\Data\AbstractReactorSystemData;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 
 interface ReactorWrapperInterface
 {
@@ -15,21 +15,21 @@ interface ReactorWrapperInterface
     // load commodities
     public const WARPCORE_LOAD = 30;
     public const WARPCORE_LOAD_COST = [
-        CommodityTypeEnum::COMMODITY_DILITHIUM => 1,
-        CommodityTypeEnum::COMMODITY_ANTIMATTER => 2,
-        CommodityTypeEnum::COMMODITY_DEUTERIUM => 2
+        CommodityTypeConstants::COMMODITY_DILITHIUM => 1,
+        CommodityTypeConstants::COMMODITY_ANTIMATTER => 2,
+        CommodityTypeConstants::COMMODITY_DEUTERIUM => 2
     ];
 
     public const SINGULARITY_CORE_LOAD = 85;
     public const SINGULARITY_CORE_LOAD_COST = [
-        CommodityTypeEnum::COMMODITY_DILITHIUM => 2,
-        CommodityTypeEnum::COMMODITY_ANTIMATTER => 3,
-        CommodityTypeEnum::COMMODITY_PLASMA => 2
+        CommodityTypeConstants::COMMODITY_DILITHIUM => 2,
+        CommodityTypeConstants::COMMODITY_ANTIMATTER => 3,
+        CommodityTypeConstants::COMMODITY_PLASMA => 2
     ];
 
     public const FUSION_REACTOR_LOAD = 2;
     public const FUSION_REACTOR_LOAD_COST = [
-        CommodityTypeEnum::COMMODITY_DEUTERIUM => 1
+        CommodityTypeConstants::COMMODITY_DEUTERIUM => 1
     ];
 
     public function get(): AbstractReactorSystemData;

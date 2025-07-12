@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
@@ -168,10 +168,10 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             )
             ->setParameters([
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'lvl1' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL1,
-                'lvl2' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL2,
-                'lvl3' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL3,
-                'lvl4' => CommodityTypeEnum::COMMODITY_RESEARCH_LVL4
+                'lvl1' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL1,
+                'lvl2' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL2,
+                'lvl3' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL3,
+                'lvl4' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL4
             ])
             ->getArrayResult();
     }

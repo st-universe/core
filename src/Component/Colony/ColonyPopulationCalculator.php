@@ -7,7 +7,7 @@ namespace Stu\Component\Colony;
 use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Colony;
 
 final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInterface
@@ -52,7 +52,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
     #[Override]
     public function getLifeStandardPercentage(): int
     {
-        $colonyProduction = $this->production[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD] ?? null;
+        $colonyProduction = $this->production[CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD] ?? null;
         $production = $colonyProduction !== null ? $colonyProduction->getProduction() : 0;
 
         if ($production == 0) {

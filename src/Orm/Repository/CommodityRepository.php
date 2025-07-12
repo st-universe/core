@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\PlanetField;
@@ -65,7 +65,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         return $this->findBy([
             'view' => true,
             'npc_commodity' => false,
-            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
+            'type' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }
 
@@ -74,7 +74,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     {
         return $this->findBy([
             'view' => true,
-            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
+            'type' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }
 

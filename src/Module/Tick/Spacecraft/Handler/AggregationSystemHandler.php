@@ -7,7 +7,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
@@ -46,7 +46,7 @@ class AggregationSystemHandler implements SpacecraftTickHandlerInterface
 
             if ($module !== null) {
                 $commodity = $aggsys->getCommodityId();
-                $commodities = CommodityTypeEnum::COMMODITY_CONVERSIONS;
+                $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
 
                 if ($commodity > 0) {
                     foreach ($commodities as $entry) {

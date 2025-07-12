@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Storage;
@@ -297,7 +297,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             LIMIT 10',
             $rsm
         )->setParameters([
-            'latId' => CommodityTypeEnum::COMMODITY_LATINUM,
+            'latId' => CommodityTypeConstants::COMMODITY_LATINUM,
             'firstUserId' => UserEnum::USER_FIRST_ID
         ])->getResult();
     }

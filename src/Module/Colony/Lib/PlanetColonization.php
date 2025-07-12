@@ -8,7 +8,7 @@ use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
@@ -68,7 +68,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         $this->colonyRepository->save($colony);
         $this->planetFieldRepository->save($field);
 
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS);
+        $commodity = $this->commodityRepository->find(CommodityTypeConstants::COMMODITY_BUILDING_MATERIALS);
         if ($commodity === null) {
             throw new RuntimeException('commodity does not exist');
         }

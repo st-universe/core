@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Colony;
@@ -20,7 +20,7 @@ final class StorageProvider implements PlanetFieldHostComponentInterface
         $entity,
         GameControllerInterface $game
     ): void {
-        $commodities = $this->commodityCache->getAll(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
+        $commodities = $this->commodityCache->getAll(CommodityTypeConstants::COMMODITY_TYPE_STANDARD);
 
         $prod = $this->colonyLibFactory->createColonyCommodityProduction($entity)->getProduction();
         $game->setTemplateVar(

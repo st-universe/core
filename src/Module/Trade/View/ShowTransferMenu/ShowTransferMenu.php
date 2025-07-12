@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\View\ShowTransferMenu;
 
 use Override;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -18,9 +18,7 @@ final class ShowTransferMenu implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_OFFER_MENU_TRANSFER';
 
-    public function __construct(private ShowTransferMenueRequestInterface $showTransferMenueRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository)
-    {
-    }
+    public function __construct(private ShowTransferMenueRequestInterface $showTransferMenueRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -56,7 +54,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             $storage->getCommodity()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_DILITHIUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_DILITHIUM);
+        $game->setTemplateVar('IS_DILITHIUM', $storage->getCommodityId() === CommodityTypeConstants::COMMODITY_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
             $this->tradeLibFactory->createTradeAccountWrapper($tradePost, $userId)

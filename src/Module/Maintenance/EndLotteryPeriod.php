@@ -7,7 +7,7 @@ use RuntimeException;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -158,7 +158,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $winner);
 
         $storageManagerUser->upperStorage(
-            CommodityTypeEnum::COMMODITY_LATINUM,
+            CommodityTypeConstants::COMMODITY_LATINUM,
             $jackpot
         );
 

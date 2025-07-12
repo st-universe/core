@@ -9,7 +9,7 @@ use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use Override;
 use request;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ResearchDependency;
@@ -21,9 +21,7 @@ final class ShowResearchTree implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RESEARCH_TREE';
 
-    public function __construct(private FactionRepositoryInterface $factionRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository)
-    {
-    }
+    public function __construct(private FactionRepositoryInterface $factionRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -87,16 +85,16 @@ final class ShowResearchTree implements ViewControllerInterface
 
         $commodityId = $research->getCommodityId();
 
-        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL1) {
+        if ($commodityId === CommodityTypeConstants::COMMODITY_RESEARCH_LVL1) {
             $points += $research->getPoints();
         }
-        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL2) {
+        if ($commodityId === CommodityTypeConstants::COMMODITY_RESEARCH_LVL2) {
             $points += $research->getPoints() * 2;
         }
-        if ($commodityId === CommodityTypeEnum::COMMODITY_RESEARCH_LVL3) {
+        if ($commodityId === CommodityTypeConstants::COMMODITY_RESEARCH_LVL3) {
             $points += $research->getPoints() * 3;
         }
-        if (in_array($commodityId, CommodityTypeEnum::COMMODITY_RESEARCH_LVL4)) {
+        if (in_array($commodityId, CommodityTypeConstants::COMMODITY_RESEARCH_LVL4)) {
             $points += $research->getPoints() * 4;
         }
     }

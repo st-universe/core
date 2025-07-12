@@ -17,7 +17,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -44,8 +44,8 @@ final class BuildConstruction implements ActionControllerInterface
     public const int NEEDED_WORKBEES = 5;
 
     public const array NEEDED_RESOURCES = [
-        CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS => 100,
-        CommodityTypeEnum::COMMODITY_DURANIUM => 50
+        CommodityTypeConstants::COMMODITY_BUILDING_MATERIALS => 100,
+        CommodityTypeConstants::COMMODITY_DURANIUM => 50
     ];
 
     public function __construct(

@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\SatisfiedWorkerRanking;
 
 use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
@@ -53,7 +53,7 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'EMPLOYER_LIST',
             array_map(
-                fn (array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
+                fn(array $data): DatabaseTopListWithPoints => $this->databaseUiFactory->createDatabaseTopListWithPoints($data['user_id'], (string)$data['satisfied']),
                 $this->colonyRepository->getSatisfiedWorkerTop10()
             )
         );
@@ -76,8 +76,8 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
             $workers = $colony->getWorkers();
 
             $colonyProduction = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
-            if (array_key_exists(CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD, $colonyProduction)) {
-                $lifestandard = $colonyProduction[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD]->getProduction();
+            if (array_key_exists(CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD, $colonyProduction)) {
+                $lifestandard = $colonyProduction[CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD]->getProduction();
             } else {
                 $lifestandard = 0;
             }

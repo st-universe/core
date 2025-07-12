@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\User;
@@ -82,7 +82,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             )
             ->setParameters([
                 'state' => ColonyFunctionManager::STATE_ENABLED,
-                'commodityType' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD,
+                'commodityType' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD,
                 'userId' => $user->getId(),
             ])
             ->toIterable();

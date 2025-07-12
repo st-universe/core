@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Override;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
@@ -61,8 +61,8 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     #[Override]
     public function getLatinumItem(): BasicTradeItem
     {
-        $latinumStorage = $this->getStorage()[CommodityTypeEnum::COMMODITY_LATINUM] ?? null;
-        $latinumCommodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_LATINUM);
+        $latinumStorage = $this->getStorage()[CommodityTypeConstants::COMMODITY_LATINUM] ?? null;
+        $latinumCommodity = $this->commodityRepository->find(CommodityTypeConstants::COMMODITY_LATINUM);
         return new BasicTradeItem(null, $latinumStorage, $latinumCommodity);
     }
 

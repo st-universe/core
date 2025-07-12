@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -80,7 +80,7 @@ final class DropBuoy implements ActionControllerInterface
 
         $storage = $ship->getStorage();
 
-        $commodity = $this->commodityRepository->find(CommodityTypeEnum::BASE_ID_BUOY);
+        $commodity = $this->commodityRepository->find(CommodityTypeConstants::BASE_ID_BUOY);
         if ($commodity !== null && !$storage->containsKey($commodity->getId())) {
             $game->addInformationf(
                 _('Es wird eine Boje benötigt')
