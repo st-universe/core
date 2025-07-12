@@ -14,7 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -43,8 +43,8 @@ final class EmailManagement implements
 
         $user = $game->getUser();
 
-        if ($user->getState() !== UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
-            $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION: ' . $user->getState());
+        if ($user->getState() !== UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+            $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION: ' . $user->getState()->value);
             return;
         }
 

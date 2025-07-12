@@ -12,6 +12,7 @@ use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyChangeable;
@@ -325,7 +326,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'maxY' => $location->getCy() + $range,
                 'layer' => $layer,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'stateActive' => UserEnum::USER_STATE_ACTIVE,
+                'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'false' => false,
                 'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,

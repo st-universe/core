@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\StuTestCase;
@@ -59,7 +59,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser->getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
+            ->andReturn(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
 
         $controller = $this->mock(ControllerInterface::class);
 
@@ -77,7 +77,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser->getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
 
         $result = $this->subject->checkUserAccess($controller, $this->game);
 
@@ -97,7 +97,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -132,7 +132,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -184,7 +184,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -248,7 +248,7 @@ class AccessCheckTest extends StuTestCase
             $user->shouldReceive('getState')
                 ->withNoArgs()
                 ->once()
-                ->andReturn(UserEnum::USER_STATE_ACTIVE);
+                ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
             $user->shouldReceive('getId')
                 ->withNoArgs()
                 ->andReturn(42);

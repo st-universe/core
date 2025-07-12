@@ -9,7 +9,7 @@ use Override;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
@@ -119,13 +119,13 @@ class PlayerCreator implements PlayerCreatorInterface
         $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $registration->setEmailCode($emailCode);
 
-        $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
+        $player->setState(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
 
         // set player state to awaiting sms code if mobile provided
         if ($mobile !== null) {
             $registration->setMobile($mobile);
             $registration->setSmsCode($smsCode);
-            $player->setState(UserEnum::USER_STATE_ACCOUNT_VERIFICATION);
+            $player->setState(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
         }
 
         if ($referer !== null) {

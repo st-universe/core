@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
@@ -90,10 +91,10 @@ final class SelfDestruct implements ActionControllerInterface
         }
 
         if (
-            $user->getState() == UserEnum::USER_STATE_COLONIZATION_SHIP
+            $user->getState() == UserStateEnum::USER_STATE_COLONIZATION_SHIP
             && $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 1
         ) {
-            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
         }
 
         $this->createNegativePrestigeLog($prestigeAmount, $rumpName, $user);

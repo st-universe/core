@@ -15,7 +15,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\SendWelcomeMessageInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -43,7 +43,7 @@ final class AccountVerification implements
 
         $user = $game->getUser();
 
-        if ($user->getState() !== UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        if ($user->getState() !== UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION');
             return;
         }
@@ -68,7 +68,7 @@ final class AccountVerification implements
 
         $this->loggerUtil->log('Account wird freigeschaltet');
 
-        $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+        $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
         if ($registration->getMobile() !== null) {
             $registration->setMobile($this->stuHash->hash($registration->getMobile()));
         }
@@ -78,7 +78,7 @@ final class AccountVerification implements
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
+            $user->getState() === UserStateEnum::USER_STATE_UNCOLONIZED
         );
 
         $this->lotteryFacade->createLotteryTicket($user, true);

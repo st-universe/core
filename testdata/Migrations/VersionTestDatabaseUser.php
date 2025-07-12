@@ -16,6 +16,10 @@ final class VersionTestDatabaseUser extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_database_user (database_id,user_id,date) VALUES (6501001,101,1732214228);');
+        $this->addSql(
+            'INSERT INTO stu_database_user (database_id,user_id,date)
+                VALUES  (6501001,101,1732214228),
+                        (6703019,10,1732214228);'
+        );
     }
 }

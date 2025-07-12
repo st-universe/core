@@ -6,7 +6,7 @@ use Override;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 class AccessCheck implements AccessCheckInterface
@@ -27,7 +27,7 @@ class AccessCheck implements AccessCheckInterface
         }
 
         $hasUser = $game->hasUser();
-        if ($hasUser && $game->getUser()->getState() === UserEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        if ($hasUser && $game->getUser()->getState() === UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
             throw new AccountNotVerifiedException();
         }
 
