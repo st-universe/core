@@ -16,7 +16,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackedBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -808,7 +808,7 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID - 1);
+            ->andReturn(UserConstants::USER_FIRST_ID - 1);
 
         $result = FightLib::isBoardingPossible($ship);
 
@@ -827,7 +827,7 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID);
+            ->andReturn(UserConstants::USER_FIRST_ID);
 
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -851,7 +851,7 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID);
+            ->andReturn(UserConstants::USER_FIRST_ID);
 
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()
@@ -879,7 +879,7 @@ class FightLibTest extends StuTestCase
         $ship->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_FIRST_ID);
+            ->andReturn(UserConstants::USER_FIRST_ID);
 
         $ship->shouldReceive('isCloaked')
             ->withNoArgs()

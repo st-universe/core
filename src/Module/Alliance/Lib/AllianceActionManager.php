@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -60,7 +60,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
         foreach ($alliance->getMembers() as $user) {
             if ($sendMesage === true) {
-                $this->privateMessageSender->send(UserEnum::USER_NOONE, $user->getId(), $text);
+                $this->privateMessageSender->send(UserConstants::USER_NOONE, $user->getId(), $text);
             }
 
             $user->setAlliance(null);
@@ -123,7 +123,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         );
 
         foreach ($jobList as $job) {
-            $this->privateMessageSender->send(UserEnum::USER_NOONE, $job->getUserId(), $text);
+            $this->privateMessageSender->send(UserConstants::USER_NOONE, $job->getUserId(), $text);
         }
     }
 

@@ -9,7 +9,7 @@ use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -43,7 +43,7 @@ class PirateReaction implements PirateReactionInterface
         $targetFleet = $target instanceof Ship ? $target->getFleet() : null;
         if (
             $targetFleet === null
-            || $targetFleet->getUser()->getId() !== UserEnum::USER_NPC_KAZON
+            || $targetFleet->getUser()->getId() !== UserConstants::USER_NPC_KAZON
         ) {
             return false;
         }

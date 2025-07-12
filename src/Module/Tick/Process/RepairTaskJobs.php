@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -30,7 +30,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
 
             if (!$spacecraft->hasEnoughCrew()) {
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $spacecraft->getUser()->getId(),
                     sprintf(
                         _('Ungenügend Crew auf der %s vorhanden, daher wurde die Reparatur des Systems %s abgebrochen'),
@@ -65,7 +65,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
             }
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $spacecraft->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SHIP,

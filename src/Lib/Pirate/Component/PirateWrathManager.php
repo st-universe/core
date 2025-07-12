@@ -11,7 +11,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\User;
@@ -47,7 +47,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     {
         if (
             $user->isNpc()
-            || $user->getId() === UserEnum::USER_NPC_KAZON
+            || $user->getId() === UserConstants::USER_NPC_KAZON
         ) {
             return;
         }
@@ -109,7 +109,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $this->pirateWrathRepository->save($wrath);
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NPC_KAZON,
+            UserConstants::USER_NPC_KAZON,
             $user->getId(),
             'Wie kannst du es wagen? Ich werde meine Horden auf dich hetzen bis du winselnd am Boden liegst! Der Nichtangriffspakt ist hinfällig!',
             PrivateMessageFolderTypeEnum::SPECIAL_MAIN
@@ -121,7 +121,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     {
         if (
             $user->isNpc()
-            || $user->getId() === UserEnum::USER_NPC_KAZON
+            || $user->getId() === UserConstants::USER_NPC_KAZON
         ) {
             return;
         }
@@ -189,7 +189,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         ));
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NPC_KAZON,
+            UserConstants::USER_NPC_KAZON,
             $user->getId(),
             sprintf(
                 'Ihr habt Euch einen Nicht-Angriffs-Pakt mit uns erkauft, dieser gilt bis zum %s Uhr.

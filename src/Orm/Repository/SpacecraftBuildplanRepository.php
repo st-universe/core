@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
@@ -187,7 +187,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                     SpacecraftBuildplan::class
                 )
             )
-            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getResult();
     }
 
@@ -203,7 +203,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                 )
             )
             ->setParameters([
-                'noOne' => UserEnum::USER_NOONE
+                'noOne' => UserConstants::USER_NOONE
             ])
             ->execute();
     }

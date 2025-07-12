@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\Table;
 use LogicException;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Repository\UserRepository;
 
@@ -292,7 +292,7 @@ class User
 
     public function isVacationRequestOldEnough(): bool
     {
-        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > UserEnum::VACATION_DELAY_IN_SECONDS);
+        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > UserConstants::VACATION_DELAY_IN_SECONDS);
     }
 
     public function getDescription(): string
@@ -384,7 +384,7 @@ class User
 
     public function isContactable(): bool
     {
-        return $this->getId() != UserEnum::USER_NOONE;
+        return $this->getId() != UserConstants::USER_NOONE;
     }
 
     public function hasAward(int $awardId): bool
@@ -394,7 +394,7 @@ class User
 
     public static function isUserNpc(int $userId): bool
     {
-        return $userId < UserEnum::USER_FIRST_ID;
+        return $userId < UserConstants::USER_FIRST_ID;
     }
 
     public function isNpc(): bool

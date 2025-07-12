@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeOffer;
@@ -298,7 +298,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             $rsm
         )->setParameters([
             'latId' => CommodityTypeConstants::COMMODITY_LATINUM,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserConstants::USER_FIRST_ID
         ])->getResult();
     }
 

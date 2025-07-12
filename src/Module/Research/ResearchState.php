@@ -13,7 +13,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Researched;
@@ -59,7 +59,7 @@ final class ResearchState implements ResearchStateInterface
         $state->setFinished(time());
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY
@@ -108,7 +108,7 @@ final class ResearchState implements ResearchStateInterface
         $txt = sprintf(_("Als Belohnung für den Abschluss der Forschung wurde dir ein Schiff vom Typ %s überstellt"), $plan->getRump()->getName());
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $userId,
             $txt,
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP

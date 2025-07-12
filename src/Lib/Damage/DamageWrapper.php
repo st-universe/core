@@ -4,7 +4,7 @@ namespace Stu\Lib\Damage;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -125,7 +125,7 @@ class DamageWrapper
 
     public function setPirateWrath(User $attacker, Spacecraft $target): void
     {
-        if ($attacker->getId() !== UserEnum::USER_NPC_KAZON) {
+        if ($attacker->getId() !== UserConstants::USER_NPC_KAZON) {
             return;
         }
 

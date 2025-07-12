@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
@@ -89,7 +89,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setParameters([
                 'userId' => $userId,
                 'actime' => time(),
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserConstants::USER_FIRST_ID
             ])
             ->getResult();
     }
@@ -147,7 +147,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                     'layer' => $layer,
                     'cx' => $location->getCx(),
                     'cy' => $location->getCy(),
-                    'firstUserId' => UserEnum::USER_FIRST_ID
+                    'firstUserId' => UserConstants::USER_FIRST_ID
                 ])
                 ->getSingleResult();
         } catch (NoResultException) {

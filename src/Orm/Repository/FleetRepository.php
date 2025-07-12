@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\User;
 
@@ -102,7 +102,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
                     Fleet::class
                 )
             )
-            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getResult();
     }
 }

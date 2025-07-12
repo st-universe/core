@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -42,7 +42,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             if (
                 $tradePost !== $obj
                 && $obj->getTradeNetwork() === $tradePost->getTradeNetwork()
-                && $obj->getUser()->getId() !== UserEnum::USER_NOONE
+                && $obj->getUser()->getId() !== UserConstants::USER_NOONE
             ) {
                 $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $game->getUser());
             }

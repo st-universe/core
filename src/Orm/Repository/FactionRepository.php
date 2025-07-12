@@ -6,7 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 
@@ -42,7 +42,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
             )
             ->setParameters([
                 'chooseable' => true,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserConstants::USER_FIRST_ID
             ])
             ->getResult();
     }

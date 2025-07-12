@@ -7,7 +7,7 @@ namespace Stu\Module\Communication\Lib;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
@@ -17,9 +17,7 @@ use Stu\Orm\Entity\RpgPlotMember;
  */
 final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 {
-    public function __construct(private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function notify(KnPost $post, RpgPlot $plot): void
@@ -37,11 +35,11 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
         // filter the postUser from the member list
         $plot->getMembers()
             ->filter(
-                fn (RpgPlotMember $member): bool => $member->getUserId() !== $postUserId
+                fn(RpgPlotMember $member): bool => $member->getUserId() !== $postUserId
             )
             ->map(function (RpgPlotMember $member) use ($text, $url): void {
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $member->getUserId(),
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,

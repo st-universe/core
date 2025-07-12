@@ -3,7 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib\Message;
 
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 class MessageFactory implements MessageFactoryInterface
 {
@@ -15,7 +15,7 @@ class MessageFactory implements MessageFactoryInterface
     ): MessageInterface {
 
         return new Message(
-            $senderId ?? UserEnum::USER_NOONE,
+            $senderId ?? UserConstants::USER_NOONE,
             $recipientId,
             $msg
         );

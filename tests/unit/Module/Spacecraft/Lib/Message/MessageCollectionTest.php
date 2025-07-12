@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Message;
 
 use Mockery\MockInterface;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\StuTestCase;
 
 class MessageCollectionTest extends StuTestCase
@@ -47,7 +47,7 @@ class MessageCollectionTest extends StuTestCase
             ->andReturn(false);
         $message3->shouldReceive('getRecipientId')
             ->withNoArgs()
-            ->andReturn(UserEnum::USER_NOONE);
+            ->andReturn(UserConstants::USER_NOONE);
         $message3->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);

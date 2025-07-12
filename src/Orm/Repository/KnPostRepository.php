@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\User;
@@ -151,7 +151,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             LIMIT 10",
             $rsm
         )
-            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getResult();
     }
 

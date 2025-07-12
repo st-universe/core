@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
@@ -86,7 +86,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                 LIMIT 10',
                 $rsm
             )
-            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getArrayResult();
     }
 

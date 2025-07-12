@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\Commodity;
@@ -47,7 +47,7 @@ final class CreateOffer implements ActionControllerInterface
             throw new SanityCheckException(sprintf('storageId %d not on tradepost!', $this->createOfferRequest->getStorageId()));
         }
 
-        if ($tradePost->getUserId() === UserEnum::USER_NOONE) {
+        if ($tradePost->getUserId() === UserConstants::USER_NOONE) {
             $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }

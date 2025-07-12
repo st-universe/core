@@ -9,7 +9,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Tick\Spacecraft\Handler\StationConstructionHandler;
 use Stu\Module\Tick\Spacecraft\Handler\StationPassiveRepairHandler;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickFinishedException;
@@ -79,7 +79,7 @@ class NpcShipHandling implements ManagerComponentInterface
         $text = sprintf("Tickreport der %s\n%s", $ship->getName(), $informationWrapper->getInformationsAsString());
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $ship->getUser()->getId(),
             $text,
             $ship->getType()->getMessageFolderType(),

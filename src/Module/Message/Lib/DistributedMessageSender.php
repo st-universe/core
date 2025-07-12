@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 
 final class DistributedMessageSender implements DistributedMessageSenderInterface
@@ -15,7 +15,7 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
     #[Override]
     public function distributeMessageCollection(
         MessageCollectionInterface $messageCollection,
-        int $senderId = UserEnum::USER_NOONE,
+        int $senderId = UserConstants::USER_NOONE,
         PrivateMessageFolderTypeEnum $folderType = PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         ?string $header = null,
         bool $sendDumpToEveryone = false

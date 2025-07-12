@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Component;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
@@ -30,7 +30,7 @@ class ColoniesComponentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NOONE);
+            ->andReturn(UserConstants::USER_NOONE);
 
         $game->shouldReceive('getUser')
             ->withNoArgs()

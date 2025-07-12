@@ -6,7 +6,7 @@ use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Ship;
@@ -49,7 +49,7 @@ class EscapePodHandling implements ManagerComponentInterface
         foreach ($escapedToColonies as [$colony, $count]) {
             $msg = sprintf(_('%d deiner Crewman sind aus Fluchtkapseln auf deiner Kolonie %s gelandet'), $count, $colony->getName());
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $colony->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_COLONY

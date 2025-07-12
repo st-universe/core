@@ -7,7 +7,7 @@ namespace Stu\Module\Tick\Process;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Ship\Lib\ShipRetrofitInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;

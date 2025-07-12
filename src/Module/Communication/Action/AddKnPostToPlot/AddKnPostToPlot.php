@@ -12,7 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -84,7 +84,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $user->getId(),
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,

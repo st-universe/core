@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Orm\Entity\BuildplanModule;
@@ -135,7 +135,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         // message to owner of source ship
         $this->sendRemainingPm(
             $takeover,
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $takeover->getSourceSpacecraft(),
             $remainingTurns
         );
@@ -189,7 +189,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         // message to owner of source ship
         $this->sendCancelPm(
             $takeover,
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $takeover->getSourceSpacecraft(),
             $cause
         );
@@ -275,7 +275,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         // message to new owner of target ship
         $this->sendFinishedPm(
             $takeover,
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $sourceUser,
             sprintf(
                 'Die %s von Spieler %s wurde übernommen',

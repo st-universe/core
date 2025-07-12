@@ -7,7 +7,7 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -94,7 +94,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $registration = $player->getRegistration();
             $playerName = $this->bbCodeParser->parse($player->getName())->getAsText();
 
-            if ($registration->getDeletionMark() == UserEnum::DELETION_CONFIRMED) {
+            if ($registration->getDeletionMark() == UserConstants::DELETION_CONFIRMED) {
                 $mail = $this->mailFactory->createStuMail()
                     ->withDefaultSender()
                     ->addTo($registration->getEmail())

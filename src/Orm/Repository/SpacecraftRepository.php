@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Anomaly;
@@ -155,8 +155,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         )->setParameters([
             'underConstruction' => SpacecraftStateEnum::UNDER_CONSTRUCTION,
             'scrapping' => SpacecraftStateEnum::UNDER_SCRAPPING,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
+            'firstUserId' => UserConstants::USER_FIRST_ID,
             'false' => false
         ])->toIterable();
     }
@@ -169,7 +169,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 'SELECT s FROM %s s WHERE s.user_id BETWEEN 2 AND (:firstUserId - 1)',
                 Spacecraft::class
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
     #[Override]

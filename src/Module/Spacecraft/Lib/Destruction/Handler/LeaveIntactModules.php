@@ -5,7 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -50,7 +50,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         $leaveCount = (int) ceil(count($intactModules) / 2);
 
         //maximum of 1 if ship is pirate
-        if ($spacecraft->getUser()->getId() === UserEnum::USER_NPC_KAZON) {
+        if ($spacecraft->getUser()->getId() === UserConstants::USER_NPC_KAZON) {
             $leaveCount = min(1, $leaveCount);
         }
 

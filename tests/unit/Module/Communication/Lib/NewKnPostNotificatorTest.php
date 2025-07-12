@@ -9,7 +9,7 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
@@ -84,7 +84,7 @@ class NewKnPostNotificatorTest extends StuTestCase
 
         $this->privateMessageSender->shouldReceive('send')
             ->with(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $memberUserId,
                 $messageText,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,

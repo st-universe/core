@@ -7,7 +7,7 @@ namespace Stu\Module\Index\Action\DeletionConfirmation;
 use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeletionConfirmation implements ActionControllerInterface
@@ -30,12 +30,12 @@ final class DeletionConfirmation implements ActionControllerInterface
         }
 
         $registration = $user->getRegistration();
-        if ($registration->getDeletionMark() !== UserEnum::DELETION_REQUESTED) {
+        if ($registration->getDeletionMark() !== UserConstants::DELETION_REQUESTED) {
             return;
         }
 
         $registration->setPasswordToken('');
-        $registration->setDeletionMark(UserEnum::DELETION_CONFIRMED);
+        $registration->setDeletionMark(UserConstants::DELETION_CONFIRMED);
 
         $this->userRepository->save($user);
 

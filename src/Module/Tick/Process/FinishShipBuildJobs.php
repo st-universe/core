@@ -7,7 +7,7 @@ namespace Stu\Module\Tick\Process;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
@@ -39,7 +39,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
                 $txt = _("Auf der Kolonie " . $colony->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $colony->getUserId(),
                     $txt,
                     PrivateMessageFolderTypeEnum::SPECIAL_COLONY
@@ -65,7 +65,7 @@ final class FinishShipBuildJobs implements ProcessTickHandlerInterface
             $txt = _("Auf der Werftstation " . $shipyard->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $shipyard->getUser()->getId(),
                 $txt,
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION

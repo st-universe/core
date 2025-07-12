@@ -17,7 +17,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
@@ -113,7 +113,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         $combatGroupDefender = $this->closeCombatUtil->getCombatGroup($closestPhalanx);
 
         $messages = $this->messageFactory->createMessageCollection();
-        $message = $this->messageFactory->createMessage(UserEnum::USER_NPC_KAZON, $closestPhalanx->getUser()->getId(), [sprintf(
+        $message = $this->messageFactory->createMessage(UserConstants::USER_NPC_KAZON, $closestPhalanx->getUser()->getId(), [sprintf(
             'Das Piratenschiff %s entsendet ein Enterkommando auf die %s',
             $boardingShip->getName(),
             $closestPhalanx->getName()
@@ -173,7 +173,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollection,
-            UserEnum::USER_NPC_KAZON,
+            UserConstants::USER_NPC_KAZON,
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $header,
             true

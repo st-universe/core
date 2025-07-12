@@ -11,16 +11,14 @@ use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
-    public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,7 +45,7 @@ final class DeclineApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(UserEnum::USER_NOONE, $appl->getUserId(), $text);
+        $this->privateMessageSender->send(UserConstants::USER_NOONE, $appl->getUserId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

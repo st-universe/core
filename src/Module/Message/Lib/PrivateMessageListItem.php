@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Lib;
 
 use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\User;
@@ -106,7 +106,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     #[Override]
     public function displayUserLinks(): bool
     {
-        return $this->getSender()->getId() !== UserEnum::USER_NOONE;
+        return $this->getSender()->getId() !== UserConstants::USER_NOONE;
     }
 
     #[Override]

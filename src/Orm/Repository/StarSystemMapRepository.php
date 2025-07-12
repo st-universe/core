@@ -12,7 +12,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 
@@ -430,7 +430,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->setParameters([
                 'systemId' => $starSystemId,
                 'location'  => $location,
-                'noOne' => UserEnum::USER_NOONE
+                'noOne' => UserConstants::USER_NOONE
             ])
             ->getResult();
 

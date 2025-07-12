@@ -12,7 +12,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
@@ -122,7 +122,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //give random users a ticket
         foreach ($this->userRepository->getNonNpcList() as $user) {
-            $winRateInPercent = 10 * ($user->getId() - UserEnum::USER_FIRST_ID) / $userCount;
+            $winRateInPercent = 10 * ($user->getId() - UserConstants::USER_FIRST_ID) / $userCount;
 
             if (random_int(1, 100) > $winRateInPercent) {
                 continue;

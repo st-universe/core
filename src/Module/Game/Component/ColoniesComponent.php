@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Component;
 use Override;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 /**
  * Renders the colony list in the header
@@ -21,7 +21,7 @@ final class ColoniesComponent implements ComponentInterface
 
         $game->setTemplateVar(
             'USER_COLONIES',
-            ($user->getId() === UserEnum::USER_NOONE) ? [] : $user->getColonies()
+            ($user->getId() === UserConstants::USER_NOONE) ? [] : $user->getColonies()
         );
     }
 }

@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Message;
 use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 final class MessageCollection implements MessageCollectionInterface
 {
@@ -26,7 +26,7 @@ final class MessageCollection implements MessageCollectionInterface
     public function addMessageBy(string|array $text, ?int $recipient = null): MessageInterface
     {
         $message = $this->messageFactory->createMessage(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $recipient,
             is_array($text) ? $text : [$text]
         );
@@ -66,7 +66,7 @@ final class MessageCollection implements MessageCollectionInterface
 
             $recipientId = $message->getRecipientId();
 
-            if ($recipientId === null || $recipientId === UserEnum::USER_NOONE) {
+            if ($recipientId === null || $recipientId === UserConstants::USER_NOONE) {
                 continue;
             }
 

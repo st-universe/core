@@ -14,7 +14,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Colony;
@@ -58,7 +58,7 @@ final class RepairActions implements ManagerComponentInterface
                     );
 
                     $this->privateMessageSender->send(
-                        UserEnum::USER_NOONE,
+                        UserConstants::USER_NOONE,
                         $colony->getUser()->getId(),
                         sprintf(
                             "Tickreport der Kolonie %s\nEs wurden %d %s hergestellt",
@@ -272,7 +272,7 @@ final class RepairActions implements ManagerComponentInterface
         );
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $entity->getUser()->getId(),
             $entityOwnerMessage,
             $entity instanceof Colony ? PrivateMessageFolderTypeEnum::SPECIAL_COLONY :

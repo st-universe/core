@@ -11,7 +11,7 @@ use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
@@ -107,7 +107,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
             ->setParameters([
                 'allowStart' => 1,
-                'userId' => UserEnum::USER_NOONE,
+                'userId' => UserConstants::USER_NOONE,
                 'factionId' => $factionId,
                 'true' => true
             ])
@@ -134,7 +134,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 )
             )
             ->setParameters([
-                'ignoreIds' => [$user->getId(), UserEnum::USER_NOONE],
+                'ignoreIds' => [$user->getId(), UserConstants::USER_NOONE],
                 'systemId' => $systemMap->getSystem()->getId(),
                 'sx' => $systemMap->getSx(),
                 'sy' => $systemMap->getSy()
@@ -157,7 +157,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'userId' => UserEnum::USER_NOONE
+                'userId' => UserConstants::USER_NOONE
             ])
             ->getResult();
     }
@@ -173,7 +173,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 )
             )
             ->setParameters([
-                'userId' => UserEnum::USER_NOONE,
+                'userId' => UserConstants::USER_NOONE,
             ])
             ->getResult();
     }
@@ -202,7 +202,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 GROUP BY u.id, bc.commodity_id',
                 $rsm
             )
-            ->setParameters(['firstUserId' => UserEnum::USER_FIRST_ID])
+            ->setParameters(['firstUserId' => UserConstants::USER_FIRST_ID])
             ->getResult();
     }
 
@@ -267,7 +267,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 $rsm
             )
             ->setParameters([
-                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'firstUserId' => UserConstants::USER_FIRST_ID,
                 'lifeStandard' => CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD
             ])
             ->getResult();
@@ -325,11 +325,11 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
                 'layer' => $layer,
-                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'firstUserId' => UserConstants::USER_FIRST_ID,
                 'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'false' => false,
-                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+                'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
                 'currentTime' => time()
             ])
             ->getResult();
@@ -358,7 +358,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $currentColony = $systemMap->getColony();
         if (
             $currentColony !== null &&
-            $currentColony->getUserId() === UserEnum::USER_NOONE &&
+            $currentColony->getUserId() === UserConstants::USER_NOONE &&
             $currentColony->getColonyClass()->getAllowStart()
         ) {
             return null;
@@ -387,7 +387,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'sy' => $systemMap->getSy(),
                     'systemId' => $systemMap->getSystemId(),
                     'currentMapId' => $systemMap->getId(),
-                    'nooneUserId' => UserEnum::USER_NOONE,
+                    'nooneUserId' => UserConstants::USER_NOONE,
                     'allowStart' => true
                 ])
                 ->getSingleScalarResult();
@@ -442,7 +442,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'currentX' => $currentX,
                     'currentY' => $currentY,
                     'currentLayerId' => $currentLayerId,
-                    'nooneUserId' => UserEnum::USER_NOONE,
+                    'nooneUserId' => UserConstants::USER_NOONE,
                     'allowStart' => true
                 ])
                 ->getSingleScalarResult();

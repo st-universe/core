@@ -9,7 +9,7 @@ use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\FallbackUserDoesNotExistException;
 use Stu\Module\Message\Lib\ContactListModeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Alliance;
@@ -92,9 +92,9 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'idleTimeThreshold' => $idleTimeThreshold,
             'idleTimeVacationThreshold' => $idleTimeVacationThreshold,
             'ignoreIds' => $ignoreIds,
-            'deletionMark' => UserEnum::DELETION_CONFIRMED,
-            'deletionForbidden' => UserEnum::DELETION_FORBIDDEN,
-            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'deletionMark' => UserConstants::DELETION_CONFIRMED,
+            'deletionForbidden' => UserConstants::DELETION_FORBIDDEN,
+            'firstUserId' => UserConstants::USER_FIRST_ID,
             'false' => false,
             'true' => true
         ])->getResult();
@@ -211,7 +211,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             $query->setMaxResults($limit);
         }
 
-        return $query->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
+        return $query->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
     #[Override]
@@ -285,7 +285,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'lastActionThreshold' => $lastActionThreshold,
             'showOnlineStateSetting' => UserSettingEnum::SHOW_ONLINE_STATUS->value,
             'showOnlineState' => 1,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserConstants::USER_FIRST_ID
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -299,7 +299,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId',
                 User::class
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getSingleScalarResult();
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getSingleScalarResult();
     }
 
     #[Override]
@@ -314,7 +314,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'threshold' => time() - $days * TimeConstants::ONE_DAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserConstants::USER_FIRST_ID
         ])
             ->getSingleScalarResult();
     }
@@ -331,8 +331,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 User::class
             )
         )->setParameters([
-            'vacThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID,
+            'vacThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
+            'firstUserId' => UserConstants::USER_FIRST_ID,
             'true' => true
         ])
             ->getSingleScalarResult();
@@ -348,7 +348,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'threshold' => $threshold,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserConstants::USER_FIRST_ID
         ])->getSingleScalarResult();
     }
 
@@ -362,7 +362,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 ORDER BY u.id',
                 User::class
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getResult();
     }
 
@@ -374,16 +374,16 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 'SELECT u FROM %s u WHERE u.id >= :firstUserId ORDER BY u.id ASC',
                 User::class
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
     #[Override]
     public function getFallbackUser(): User
     {
-        $user = $this->find(UserEnum::USER_NOONE);
+        $user = $this->find(UserConstants::USER_NOONE);
 
         if ($user === null) {
-            throw new FallbackUserDoesNotExistException(sprintf('the user with id %d does not exist', UserEnum::USER_NOONE));
+            throw new FallbackUserDoesNotExistException(sprintf('the user with id %d does not exist', UserConstants::USER_NOONE));
         }
 
         return $user;
