@@ -6,7 +6,7 @@ namespace Stu\Component\Building;
 
 enum BuildingFunctionEnum: int
 {
-        // building functions
+    // building functions
     case COLONY_CENTRAL = 1;
     case BASE_CAMP = 2;
     case AIRFIELD = 4;
@@ -40,4 +40,50 @@ enum BuildingFunctionEnum: int
         // spare parts
     case FABRICATION_HALL = 29;
     case TECH_CENTER = 30;
+
+    public function isModuleFab(): bool
+    {
+        return match ($this) {
+            self::MODULEFAB_TYPE1_LVL1,
+            self::MODULEFAB_TYPE1_LVL2,
+            self::MODULEFAB_TYPE1_LVL3,
+            self::MODULEFAB_TYPE2_LVL1,
+            self::MODULEFAB_TYPE2_LVL2,
+            self::MODULEFAB_TYPE2_LVL3,
+            self::MODULEFAB_TYPE3_LVL1,
+            self::MODULEFAB_TYPE3_LVL2,
+            self::MODULEFAB_TYPE3_LVL3 => true,
+            default => false
+        };
+    }
+
+    public function isShipyard(): bool
+    {
+        return match ($this) {
+            self::FIGHTER_SHIPYARD,
+            self::ESCORT_SHIPYARD,
+            self::FRIGATE_SHIPYARD,
+            self::CRUISER_SHIPYARD,
+            self::DESTROYER_SHIPYARD => true,
+            default => false
+        };
+    }
+
+    /** @return array<BuildingFunctionEnum> */
+    public static function getModuleFabs(): array
+    {
+        return array_filter(
+            self::cases(),
+            fn(BuildingFunctionEnum $function): bool => $function->isModuleFab()
+        );
+    }
+
+    /** @return array<BuildingFunctionEnum> */
+    public static function getShipyards(): array
+    {
+        return array_filter(
+            self::cases(),
+            fn(BuildingFunctionEnum $function): bool => $function->isShipyard()
+        );
+    }
 }

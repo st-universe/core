@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony;
 
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
@@ -71,15 +70,26 @@ enum ColonyMenuEnum: int
         return "";
     }
 
+    public function isBuildingFunctionMandatory(): bool
+    {
+        return match ($this) {
+            self::MENU_SHIPYARD,
+            self::MENU_SHIP_REPAIR,
+            self::MENU_SHIP_DISASSEMBLY,
+            self::MENU_BUILDPLANS,
+            self::MENU_SHIP_RETROFIT => true,
+            default => false
+        };
+    }
 
     /** @return array<BuildingFunctionEnum>|null */
     public function getNeededBuildingFunction(): ?array
     {
         return match ($this) {
             self::MENU_AIRFIELD => [BuildingFunctionEnum::AIRFIELD],
-            self::MENU_MODULEFAB => BuildingFunctionTypeEnum::getModuleFabOptions(),
-            self::MENU_SHIPYARD => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_BUILDPLANS => BuildingFunctionTypeEnum::getShipyardOptions(),
+            self::MENU_MODULEFAB => BuildingFunctionEnum::getModuleFabs(),
+            self::MENU_SHIPYARD => BuildingFunctionEnum::getShipyards(),
+            self::MENU_BUILDPLANS => BuildingFunctionEnum::getShipyards(),
             self::MENU_FIGHTER_SHIPYARD => [BuildingFunctionEnum::FIGHTER_SHIPYARD],
             self::MENU_TORPEDOFAB => [BuildingFunctionEnum::TORPEDO_FAB],
             self::MENU_ACADEMY => [BuildingFunctionEnum::ACADEMY],
@@ -87,9 +97,9 @@ enum ColonyMenuEnum: int
             self::MENU_FAB_HALL => [BuildingFunctionEnum::FABRICATION_HALL],
             self::MENU_TECH_CENTER => [BuildingFunctionEnum::TECH_CENTER],
             self::MENU_SUBSPACE_TELESCOPE => [BuildingFunctionEnum::SUBSPACE_TELESCOPE],
-            self::MENU_SHIP_DISASSEMBLY => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_SHIP_REPAIR => BuildingFunctionTypeEnum::getShipyardOptions(),
-            self::MENU_SHIP_RETROFIT => BuildingFunctionTypeEnum::getShipyardOptions(),
+            self::MENU_SHIP_DISASSEMBLY => BuildingFunctionEnum::getShipyards(),
+            self::MENU_SHIP_REPAIR => BuildingFunctionEnum::getShipyards(),
+            self::MENU_SHIP_RETROFIT => BuildingFunctionEnum::getShipyards(),
             default => null
         };
     }
