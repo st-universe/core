@@ -11,7 +11,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 
@@ -104,7 +104,7 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
             );
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $station->getUser()->getId(),
                 $shipOwnerMessage,
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION

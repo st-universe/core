@@ -8,7 +8,7 @@ use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -36,7 +36,7 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
             );
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $host->getUserId(),
                 $txt,
                 PrivateMessageFolderTypeEnum::SPECIAL_COLONY,

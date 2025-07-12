@@ -15,7 +15,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendMassMail implements ActionControllerInterface
@@ -101,7 +101,7 @@ final class SendMassMail implements ActionControllerInterface
         foreach ($this->userRepository->findAll() as $user) {
             $count++;
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 $message
             );

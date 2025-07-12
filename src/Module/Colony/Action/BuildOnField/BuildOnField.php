@@ -16,7 +16,7 @@ use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
@@ -72,7 +72,7 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
 
-        if ($userId !== UserEnum::USER_NOONE) {
+        if ($userId !== UserConstants::USER_NOONE) {
             if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
             }

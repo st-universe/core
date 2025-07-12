@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\TStationItem;
@@ -96,7 +96,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 )
             )
             ->setParameters([
-                'ignoreIds' => [$spacecraft->getUser()->getId(), UserEnum::USER_NOONE],
+                'ignoreIds' => [$spacecraft->getUser()->getId(), UserConstants::USER_NOONE],
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
@@ -154,7 +154,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             'userId' => $userId,
             'systemType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'mode' => SpacecraftSystemModeEnum::MODE_ON->value,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+            'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
             'false' => false
         ])
             ->getResult();
@@ -175,7 +175,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
         )->setParameters([
             'catId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION->value,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserConstants::USER_FIRST_ID
         ])
             ->getResult();
     }
@@ -317,10 +317,10 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
-                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'firstUserId' => UserConstants::USER_FIRST_ID,
                 'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
-                'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+                'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
                 'currentTime' => time(),
                 'false' => false
             ])

@@ -7,7 +7,7 @@ use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\Handler\SpacecraftTickHandlerInterface;
@@ -100,7 +100,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $text = sprintf("Tickreport der %s\n%s", $ship->getName(), $informationWrapper->getInformationsAsString());
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $ship->getUser()->getId(),
             $text,
             $ship->getType()->getMessageFolderType(),

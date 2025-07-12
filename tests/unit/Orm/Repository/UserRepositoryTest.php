@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepository;
 use Stu\StuTestCase;
@@ -40,7 +40,7 @@ class UserRepositoryTest extends StuTestCase
         $user = $this->mock(User::class);
 
         $this->entityManager->shouldReceive('find')
-            ->with(User::class, UserEnum::USER_NOONE, null, null)
+            ->with(User::class, UserConstants::USER_NOONE, null, null)
             ->once()
             ->andReturn($user);
 

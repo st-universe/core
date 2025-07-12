@@ -7,7 +7,7 @@ namespace Stu\Module\Prestige\Lib;
 use Override;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
@@ -43,7 +43,7 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
 
     private function createLogIntern(int $amount, string $description, User $user, int $date): void
     {
-        if ($user->getId() < UserEnum::USER_FIRST_ID) {
+        if ($user->getId() < UserConstants::USER_FIRST_ID) {
             return;
         }
 

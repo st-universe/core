@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -93,7 +93,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $colony->getUserId(),
             $txt,
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY

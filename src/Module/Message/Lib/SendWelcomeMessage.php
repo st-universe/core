@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
@@ -57,12 +57,12 @@ Möge Ihre Reise durch die Sterne erfolgreich verlaufen!
     private function getFactionNpcId(int $factionId): int
     {
         return match ($factionId) {
-            1 => UserEnum::USER_NPC_FEDERATION,
-            2 => UserEnum::USER_NPC_ROMULAN,
-            3 => UserEnum::USER_NPC_KLINGON,
-            4 => UserEnum::USER_NPC_CARDASSIAN,
-            5 => UserEnum::USER_NPC_FERG,
-            default => UserEnum::USER_NPC_FEDERATION,
+            1 => UserConstants::USER_NPC_FEDERATION,
+            2 => UserConstants::USER_NPC_ROMULAN,
+            3 => UserConstants::USER_NPC_KLINGON,
+            4 => UserConstants::USER_NPC_CARDASSIAN,
+            5 => UserConstants::USER_NPC_FERG,
+            default => UserConstants::USER_NPC_FEDERATION,
         };
     }
 }

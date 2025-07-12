@@ -15,7 +15,7 @@ use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\AllianceSettingsRepositoryInterface;
@@ -89,7 +89,7 @@ final class EditDetails implements ActionControllerInterface
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                $this->privateMessageSender->send(UserEnum::USER_NOONE, $applicant->getUserId(), $text);
+                $this->privateMessageSender->send(UserConstants::USER_NOONE, $applicant->getUserId(), $text);
             }
         }
 

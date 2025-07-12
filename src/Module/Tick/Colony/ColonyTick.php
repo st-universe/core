@@ -17,7 +17,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Tick\Colony\Component\ColonyTickComponentInterface;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Colony;
@@ -325,7 +325,7 @@ final class ColonyTick implements ColonyTickInterface
         );
 
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $colony->getUserId(),
             $text,
             PrivateMessageFolderTypeEnum::SPECIAL_COLONY,

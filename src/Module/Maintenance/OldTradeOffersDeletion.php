@@ -8,7 +8,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -87,7 +87,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
     private function sendMessage(int $userId, InformationWrapper $pm): void
     {
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $userId,
             $pm->getInformationsAsString(),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE

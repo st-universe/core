@@ -6,7 +6,7 @@ use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -44,7 +44,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
             // send message to user
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $license->getUser()->getId(),
                 sprintf(
                     "Deine Lizenz am Handelsposten %s läuft in weniger als %d Tage(n) ab.%s",
@@ -78,7 +78,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
                 // send message to user
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $userId,
                     sprintf(
                         "Deine Lizenz am Handelsposten %s ist abgelaufen.%s",

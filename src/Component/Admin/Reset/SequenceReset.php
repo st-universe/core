@@ -6,7 +6,7 @@ namespace Stu\Component\Admin\Reset;
 
 use Override;
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 final class SequenceReset implements SequenceResetInterface
 {
@@ -48,7 +48,7 @@ final class SequenceReset implements SequenceResetInterface
         $connection->executeQuery(
             sprintf(
                 "SELECT SETVAL('stu_user_id_seq', %d)",
-                UserEnum::USER_FIRST_ID
+                UserConstants::USER_FIRST_ID
             )
         );
 

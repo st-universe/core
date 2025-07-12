@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -68,7 +68,7 @@ final class TransferCommodities implements ActionControllerInterface
 
         $targetpost = $this->tradePostRepository->find($destinationTradePostId);
 
-        if ($targetpost === null || $targetpost->getUser()->getId() === UserEnum::USER_NOONE) {
+        if ($targetpost === null || $targetpost->getUser()->getId() === UserConstants::USER_NOONE) {
             return;
         }
 

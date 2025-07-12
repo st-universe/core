@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 
@@ -174,7 +174,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             )
             ->setParameters([
                 'maxAge' => time() - $threshold,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserConstants::USER_FIRST_ID
             ])
             ->getResult();
     }

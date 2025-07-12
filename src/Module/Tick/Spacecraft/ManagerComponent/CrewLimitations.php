@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -87,7 +87,7 @@ final class CrewLimitations implements ManagerComponentInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d Crewman ihren Dienst auf deinen Kolonien quittiert'), $amount);
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_COLONY
@@ -113,7 +113,7 @@ final class CrewLimitations implements ManagerComponentInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Handelsposten ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
@@ -139,7 +139,7 @@ final class CrewLimitations implements ManagerComponentInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Fluchtkapseln ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 $msg,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
@@ -201,7 +201,7 @@ final class CrewLimitations implements ManagerComponentInterface
 
         $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomSpacecraft->getName());
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $userId,
             $msg,
             $randomSpacecraft->isStation() ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP

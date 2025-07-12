@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -44,7 +44,7 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        if ($selectedOffer->getTradePost()->getUserId() === UserEnum::USER_NOONE) {
+        if ($selectedOffer->getTradePost()->getUserId() === UserConstants::USER_NOONE) {
             $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }

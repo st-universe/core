@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 
@@ -88,7 +88,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
             ->setParameters([
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
                 'rumpCategory' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
-                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'firstUserId' => UserConstants::USER_FIRST_ID,
                 'mode' => SpacecraftSystemModeEnum::MODE_OFF->value,
                 'state' => SpacecraftStateEnum::UNDER_CONSTRUCTION,
                 'systemwarp' => SpacecraftSystemTypeEnum::WARPDRIVE

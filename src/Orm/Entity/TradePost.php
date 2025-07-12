@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\TradePostRepository;
 
 #[Table(name: 'stu_trade_posts')]
@@ -240,7 +240,7 @@ class TradePost
 
     public function isNpcTradepost(): bool
     {
-        return $this->getUserId() < UserEnum::USER_FIRST_ID;
+        return $this->getUserId() < UserConstants::USER_FIRST_ID;
     }
 
     public function __toString(): string

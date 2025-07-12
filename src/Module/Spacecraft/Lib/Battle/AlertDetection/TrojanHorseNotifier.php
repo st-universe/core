@@ -5,7 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Spacecraft;
 
 class TrojanHorseNotifier implements TrojanHorseNotifierInterface
@@ -36,7 +36,7 @@ class TrojanHorseNotifier implements TrojanHorseNotifierInterface
 
         foreach ($users as $user) {
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 $txt
             );

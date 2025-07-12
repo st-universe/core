@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -26,7 +26,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         $registration = $user->getRegistration();
         $token = $this->stuHash->hash(time() . $registration->getCreationDate());
 
-        $registration->setDeletionMark(UserEnum::DELETION_REQUESTED);
+        $registration->setDeletionMark(UserConstants::DELETION_REQUESTED);
         $registration->setPasswordToken($token);
 
         $body = <<<EOT

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
 
@@ -167,7 +167,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
                 $rsm
             )
             ->setParameters([
-                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'firstUserId' => UserConstants::USER_FIRST_ID,
                 'lvl1' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL1,
                 'lvl2' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL2,
                 'lvl3' => CommodityTypeConstants::COMMODITY_RESEARCH_LVL3,

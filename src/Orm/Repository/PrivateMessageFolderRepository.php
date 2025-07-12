@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\User;
 
@@ -83,7 +83,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
                 WHERE pmf.user_id >= :firstUserId',
                 PrivateMessageFolder::class
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->execute();
     }
 }

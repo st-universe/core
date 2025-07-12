@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
@@ -150,7 +150,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $wantedCommodity = $auction->getWantedCommodity();
         if ($wantedCommodity === null) {
             $this->privateMessageSender->send(
-                UserEnum::USER_NPC_FERG,
+                UserConstants::USER_NPC_FERG,
                 $highestBid->getUserId(),
                 sprintf(
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d Prestige',
@@ -160,7 +160,7 @@ final class DealsBidAuction implements ActionControllerInterface
             );
         } else {
             $this->privateMessageSender->send(
-                UserEnum::USER_NPC_FERG,
+                UserConstants::USER_NPC_FERG,
                 $highestBid->getUserId(),
                 sprintf(
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d %s',
@@ -246,7 +246,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NPC_FERG,
+                    UserConstants::USER_NPC_FERG,
                     $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
@@ -265,7 +265,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NPC_FERG,
+                    UserConstants::USER_NPC_FERG,
                     $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',

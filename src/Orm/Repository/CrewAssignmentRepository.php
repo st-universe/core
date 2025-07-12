@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -249,7 +249,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+        )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)
             ->getResult();
     }
 

@@ -14,7 +14,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
@@ -156,7 +156,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         foreach ($crewmanPerUser as $ownerId => $count) {
             if ($ownerId !== $userId) {
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $ownerId,
                     sprintf(
                         _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an den Handelsposten "%s" (%s) überstellt.'),

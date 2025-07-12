@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Map;
@@ -77,7 +77,7 @@ class PirateCreation implements PirateCreationInterface
         }
 
         $gameTurn = $this->game->getCurrentRound();
-        $pirateFleets = $this->fleetRepository->getByUser(UserEnum::USER_NPC_KAZON);
+        $pirateFleets = $this->fleetRepository->getByUser(UserConstants::USER_NPC_KAZON);
         $currentFleetCount = count($pirateFleets);
 
         $dynamicLimits = $this->calculateDynamicLimits($currentRound);
@@ -218,7 +218,7 @@ class PirateCreation implements PirateCreationInterface
     #[Override]
     public function createPirateFleet(?Ship $supportCaller = null): Fleet
     {
-        $pirateUser = $this->userRepository->find(UserEnum::USER_NPC_KAZON);
+        $pirateUser = $this->userRepository->find(UserConstants::USER_NPC_KAZON);
         if ($pirateUser === null) {
             throw new RuntimeException('this should not happen');
         }
@@ -284,7 +284,7 @@ class PirateCreation implements PirateCreationInterface
 
                 $result[] = $this->shipCreator
                     ->createBy(
-                        UserEnum::USER_NPC_KAZON,
+                        UserConstants::USER_NPC_KAZON,
                         $rump->getId(),
                         $buildplan->getId()
                     )

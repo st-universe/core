@@ -11,7 +11,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -64,7 +64,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 );
             }
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Verteidigung der Kolonie %s aufgehoben'),
@@ -103,7 +103,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
             }
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Blockade der Kolonie %s aufgehoben'),

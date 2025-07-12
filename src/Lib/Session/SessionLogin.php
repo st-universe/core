@@ -11,7 +11,7 @@ use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLock;
@@ -128,7 +128,7 @@ final class SessionLogin implements SessionLoginInterface
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
-        if ($user->getRegistration()->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getRegistration()->getDeletionMark() === UserConstants::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount ist zur Löschung vorgesehen'));
         }
     }
@@ -191,7 +191,7 @@ final class SessionLogin implements SessionLoginInterface
         if ($user->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
-        if ($user->getRegistration()->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
+        if ($user->getRegistration()->getDeletionMark() === UserConstants::DELETION_CONFIRMED) {
             throw new SessionInvalidException("Löschung");
         }
         if ($user->isVacationMode() === true) {

@@ -6,7 +6,7 @@ use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
@@ -71,7 +71,7 @@ class PrestigeGain implements SpacecraftDestructionHandlerInterface
     private function sendSystemMessage(string $description, int $userId): void
     {
         $this->privateMessageSender->send(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $userId,
             $description
         );

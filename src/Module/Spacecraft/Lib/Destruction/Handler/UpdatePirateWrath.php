@@ -8,7 +8,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -52,12 +52,12 @@ class UpdatePirateWrath implements SpacecraftDestructionHandlerInterface
 
         $userOfDestroyed = $destroyedSpacecraftWrapper->get()->getUser();
 
-        if ($destroyerUser->getId() === UserEnum::USER_NPC_KAZON) {
+        if ($destroyerUser->getId() === UserConstants::USER_NPC_KAZON) {
             $this->pirateWrathManager->decreaseWrath($userOfDestroyed, $targetPrestige);
         }
 
         if (
-            $userOfDestroyed->getId() === UserEnum::USER_NPC_KAZON
+            $userOfDestroyed->getId() === UserConstants::USER_NPC_KAZON
             && $spacecraft instanceof Ship
         ) {
 

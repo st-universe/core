@@ -10,16 +10,14 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender)
-    {
-    }
+    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -52,9 +50,9 @@ final class CancelOffer implements ActionControllerInterface
 
         $opponent = $relation->getOpponent();
 
-        $this->privateMessageSender->send(UserEnum::USER_NOONE, $opponent->getFounder()->getUserId(), $text);
+        $this->privateMessageSender->send(UserConstants::USER_NOONE, $opponent->getFounder()->getUserId(), $text);
         if ($opponent->getDiplomatic() !== null) {
-            $this->privateMessageSender->send(UserEnum::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
+            $this->privateMessageSender->send(UserConstants::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
 
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));

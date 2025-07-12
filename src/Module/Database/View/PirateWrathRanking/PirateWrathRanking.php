@@ -10,7 +10,7 @@ use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -71,7 +71,7 @@ final class PirateWrathRanking implements ViewControllerInterface
             'USER_WRATH',
             ($game->getUser()->getPirateWrath()?->getWrath() ?? PirateWrathManager::DEFAULT_WRATH) / 10
         );
-        $game->setTemplateVar('DESTROYED_PIRATES', $this->historyRepository->getSumDestroyedByUser($game->getUser()->getId(), UserEnum::USER_NPC_KAZON));
-        $game->setTemplateVar('DESTROYED_BY_PIRATES', $this->historyRepository->getSumDestroyedByUser(UserEnum::USER_NPC_KAZON, $game->getUser()->getId()));
+        $game->setTemplateVar('DESTROYED_PIRATES', $this->historyRepository->getSumDestroyedByUser($game->getUser()->getId(), UserConstants::USER_NPC_KAZON));
+        $game->setTemplateVar('DESTROYED_BY_PIRATES', $this->historyRepository->getSumDestroyedByUser(UserConstants::USER_NPC_KAZON, $game->getUser()->getId()));
     }
 }

@@ -6,7 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\User;
@@ -76,7 +76,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'idNoOne' => UserEnum::USER_NOONE
+                'idNoOne' => UserConstants::USER_NOONE
             ])
             ->getResult();
     }

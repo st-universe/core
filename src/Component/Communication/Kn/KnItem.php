@@ -6,7 +6,7 @@ namespace Stu\Component\Communication\Kn;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPost;
@@ -98,7 +98,7 @@ final class KnItem implements KnItemInterface
     public function displayContactLinks(): bool
     {
         $user = $this->post->getUser();
-        return $user !== $this->currentUser && $user->getId() !== UserEnum::USER_NOONE;
+        return $user !== $this->currentUser && $user->getId() !== UserConstants::USER_NOONE;
     }
 
     #[Override]

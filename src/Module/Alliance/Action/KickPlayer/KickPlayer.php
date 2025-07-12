@@ -12,7 +12,7 @@ use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -68,7 +68,7 @@ final class KickPlayer implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(UserEnum::USER_NOONE, $playerId, $text);
+        $this->privateMessageSender->send(UserConstants::USER_NOONE, $playerId, $text);
 
         $game->setView(Management::VIEW_IDENTIFIER);
 

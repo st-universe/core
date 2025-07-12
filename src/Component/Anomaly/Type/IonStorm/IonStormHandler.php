@@ -21,7 +21,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
@@ -148,7 +148,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
                 }
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $userId,
                     $informations,
                     $spacecraft->getType()->getMessageFolderType(),
@@ -197,7 +197,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         $message = $this->messageFactory->createMessage(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             $wrapper->get()->getUser()->getId(),
             [sprintf("In Sektor %s befindet sich ein gefährlicher Ionensturm.\n", $wrapper->get()->getSectorString())]
         );

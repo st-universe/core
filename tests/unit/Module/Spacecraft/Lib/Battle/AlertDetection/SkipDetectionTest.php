@@ -10,7 +10,7 @@ use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Ship;
@@ -367,7 +367,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $unfinishedWeb->shouldReceive('isFinished')
             ->withNoArgs()
@@ -409,7 +409,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $alertUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
@@ -519,7 +519,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $unfinishedWeb->shouldReceive('isFinished')
             ->withNoArgs()
@@ -590,7 +590,7 @@ class SkipDetectionTest extends StuTestCase
         $this->alertedShip->shouldReceive('getUserId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $unfinishedWeb->shouldReceive('isFinished')
             ->withNoArgs()
@@ -632,7 +632,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $alertUser->shouldReceive('getPirateWrath')
             ->withNoArgs()
@@ -707,7 +707,7 @@ class SkipDetectionTest extends StuTestCase
         $incomingShipUser->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserEnum::USER_NPC_KAZON);
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $alertUser->shouldReceive('getPirateWrath')
             ->withNoArgs()

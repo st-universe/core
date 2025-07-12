@@ -8,7 +8,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -89,7 +89,7 @@ class SkipDetection implements SkipDetectionInterface
         //pirates don't attack if user is protected
         $pirateWrath = $incomingShipUser->getPirateWrath();
         if (
-            $alertedSpacecraft->getUserId() === UserEnum::USER_NPC_KAZON
+            $alertedSpacecraft->getUserId() === UserConstants::USER_NPC_KAZON
             && $pirateWrath !== null
             && $pirateWrath->getProtectionTimeout() > $time
         ) {
@@ -98,7 +98,7 @@ class SkipDetection implements SkipDetectionInterface
 
         //players don't attack pirates if protection is active
         $pirateWrath = $alertedSpacecraft->getUser()->getPirateWrath();
-        return $incomingShipUser->getId() === UserEnum::USER_NPC_KAZON
+        return $incomingShipUser->getId() === UserConstants::USER_NPC_KAZON
             && $pirateWrath !== null
             && $pirateWrath->getProtectionTimeout() > $time;
     }

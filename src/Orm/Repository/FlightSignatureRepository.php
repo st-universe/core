@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\StarSystemMap;
@@ -213,7 +213,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             )
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserConstants::USER_FIRST_ID
             ])
             ->getResult();
     }

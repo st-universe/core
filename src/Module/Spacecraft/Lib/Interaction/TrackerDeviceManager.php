@@ -7,7 +7,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -64,7 +64,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
             //send pm to target owner
             if ($sendPmToTargetOwner) {
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $target->getUser()->getId(),
                     sprintf(
                         'Die Crew der %s hat einen Transponder gefunden und deaktiviert. %s',
@@ -77,7 +77,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
 
             //send pm to tracker owner
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $spacecraft->getUser()->getId(),
                 sprintf(
                     'Die %s hat die Verbindung zum Tracker verloren',

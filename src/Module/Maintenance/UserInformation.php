@@ -6,7 +6,7 @@ use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -48,7 +48,7 @@ final class UserInformation implements MaintenanceHandlerInterface
                     );
 
                     $this->privateMessageSender->send(
-                        UserEnum::USER_NOONE,
+                        UserConstants::USER_NOONE,
                         $user->getId(),
                         $message,
                         PrivateMessageFolderTypeEnum::SPECIAL_MAIN
@@ -68,7 +68,7 @@ final class UserInformation implements MaintenanceHandlerInterface
                     );
 
                     $this->privateMessageSender->send(
-                        UserEnum::USER_NOONE,
+                        UserConstants::USER_NOONE,
                         $user->getId(),
                         $message,
                         PrivateMessageFolderTypeEnum::SPECIAL_MAIN

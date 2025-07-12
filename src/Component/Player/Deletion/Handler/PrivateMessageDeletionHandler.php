@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 
 /**
@@ -33,7 +33,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
             'UPDATE stu_pms SET send_user = :nobodyId
             WHERE send_user = :userId',
             [
-                'nobodyId' => UserEnum::USER_NOONE,
+                'nobodyId' => UserConstants::USER_NOONE,
                 'userId' => $user->getId(),
             ]
         );

@@ -4,7 +4,7 @@ namespace Stu\Module\PlayerSetting\Lib;
 
 use Stu\Component\Game\TimeConstants;
 
-final class UserEnum
+final class UserConstants
 {
     //NPC IDs
     public const int USER_NOONE = 1;

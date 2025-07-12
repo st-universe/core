@@ -6,7 +6,7 @@ use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
@@ -51,7 +51,7 @@ class LowerHull implements ManagerComponentInterface
 
     private function lowerOrphanizedTradepostHull(): void
     {
-        foreach ($this->tradePostRepository->getByUser(UserEnum::USER_NOONE) as $tradepost) {
+        foreach ($this->tradePostRepository->getByUser(UserConstants::USER_NOONE) as $tradepost) {
             $station = $tradepost->getStation();
             $condition = $station->getCondition();
 
@@ -83,7 +83,7 @@ class LowerHull implements ManagerComponentInterface
             if ($condition->getHull() <= $lower) {
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $station->getSectorString());
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $station->getUser()->getId(),
                     $msg,
                     PrivateMessageFolderTypeEnum::SPECIAL_STATION

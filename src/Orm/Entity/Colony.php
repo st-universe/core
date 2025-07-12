@@ -28,7 +28,7 @@ use Stu\Lib\Transfer\CommodityTransfer;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\ColonyRepository;
 
@@ -346,7 +346,7 @@ class Colony implements
 
     public function isFree(): bool
     {
-        return $this->getUserId() === UserEnum::USER_NOONE;
+        return $this->getUserId() === UserConstants::USER_NOONE;
     }
 
     public function getUser(): User

@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\FightLib;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
@@ -130,7 +130,7 @@ class SpacecraftNfsItem
 
     public function isContactable(): bool
     {
-        return $this->getUserId() != UserEnum::USER_NOONE;
+        return $this->getUserId() != UserConstants::USER_NOONE;
     }
 
     public function getUserName(): string

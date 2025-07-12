@@ -10,7 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -60,7 +60,7 @@ final class PostKnComment implements ActionControllerInterface
             );
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $post->getUserId(),
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
@@ -82,7 +82,7 @@ final class PostKnComment implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    UserEnum::USER_NOONE,
+                    UserConstants::USER_NOONE,
                     $commentatorId,
                     $text,
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,

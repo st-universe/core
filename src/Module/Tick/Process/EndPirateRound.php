@@ -7,7 +7,7 @@ use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateRound;
@@ -134,8 +134,8 @@ final class EndPirateRound implements ProcessTickHandlerInterface
 
     private function createHistoryEntry(string $text): void
     {
-        $nooneUser = $this->userRepository->find(UserEnum::USER_NOONE);
-        $kazonUser = $this->userRepository->find(UserEnum::USER_NOONE);
+        $nooneUser = $this->userRepository->find(UserConstants::USER_NOONE);
+        $kazonUser = $this->userRepository->find(UserConstants::USER_NOONE);
 
         if ($nooneUser === null || $kazonUser === null) {
             return;

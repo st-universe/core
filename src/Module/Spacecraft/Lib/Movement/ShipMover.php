@@ -4,7 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement;
 
 use Override;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -281,6 +281,6 @@ final class ShipMover implements ShipMoverInterface
      */
     private function addInformationMerge(array $value, MessageCollectionInterface $messages): void
     {
-        $messages->add($this->messageFactory->createMessage(UserEnum::USER_NOONE, null, $value));
+        $messages->add($this->messageFactory->createMessage(UserConstants::USER_NOONE, null, $value));
     }
 }

@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\User;
@@ -101,7 +101,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
             ->once();
 
         $this->userRepository->shouldReceive('find')
-            ->with(UserEnum::USER_FOREIGN_BUILDPLANS)
+            ->with(UserConstants::USER_FOREIGN_BUILDPLANS)
             ->once()
             ->andReturn($foreignBuildplansUser);
 

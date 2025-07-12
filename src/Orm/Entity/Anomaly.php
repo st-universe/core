@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AnomalyRepository;
@@ -166,7 +166,7 @@ class Anomaly implements SpacecraftDestroyerInterface
 
     public function getUserId(): int
     {
-        return UserEnum::USER_NOONE;
+        return UserConstants::USER_NOONE;
     }
 
     public function getName(): string

@@ -14,7 +14,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
@@ -77,7 +77,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $messagesForBases = $this->messageFactory->createMessageCollection();
 
         $intro = $this->messageFactory->createMessage(
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             null
         );
 
@@ -100,7 +100,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            $message = $this->messageFactory->createMessage(UserEnum::USER_NOONE, $spacecraft->getUser()->getId());
+            $message = $this->messageFactory->createMessage(UserConstants::USER_NOONE, $spacecraft->getUser()->getId());
             $message->add($spacecraft->getName());
 
             if ($shieldSystem->getMode()->isActivated()) {
@@ -164,7 +164,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         foreach ($usersToInform as $user) {
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                UserConstants::USER_NOONE,
                 $user->getId(),
                 sprintf('[b][color=yellow]In Sektor %s ist aufgrund des immensen Energiepotentials eine Subraumellipse entstanden![/color][/b]', $location->getSectorString())
             );
@@ -184,14 +184,14 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollectionForShips,
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $header
         );
 
         $this->distributedMessageSender->distributeMessageCollection(
             $messageCollectionForBases,
-            UserEnum::USER_NOONE,
+            UserConstants::USER_NOONE,
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $header
         );

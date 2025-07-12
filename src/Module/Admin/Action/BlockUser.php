@@ -13,7 +13,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -77,7 +77,7 @@ final class BlockUser implements ActionControllerInterface
         $this->blockedUserRepository->save($blockedUser);
 
         // mark user as deletable
-        $registration->setDeletionMark(UserEnum::DELETION_CONFIRMED);
+        $registration->setDeletionMark(UserConstants::DELETION_CONFIRMED);
         $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');

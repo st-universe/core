@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\History\HistoryTypeEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\History;
 
 /**
@@ -38,7 +38,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                     History::class
                 )
             )
-            ->setParameter('pirateId', UserEnum::USER_NPC_KAZON)
+            ->setParameter('pirateId', UserConstants::USER_NPC_KAZON)
             ->setMaxResults(10)
             ->getResult();
     }
@@ -81,7 +81,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             )->setParameters(
                 [
                     'typeId' => $type->value,
-                    'pirateId' => UserEnum::USER_NPC_KAZON
+                    'pirateId' => UserConstants::USER_NPC_KAZON
                 ]
             )
             ->setMaxResults($limit)
