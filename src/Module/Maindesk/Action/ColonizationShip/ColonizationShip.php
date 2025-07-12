@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -32,7 +32,7 @@ final class ColonizationShip implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() !== 1) {
+        if ($user->getState() !== UserStateEnum::USER_STATE_UNCOLONIZED) {
             throw new AccessViolationException();
         }
 
@@ -77,7 +77,7 @@ final class ColonizationShip implements ActionControllerInterface
             $warpdrive->setMaxWarpDrive((int)floor($warpdrive->getMaxWarpdrive() * 5))->update();
         }
 
-        $user->setState(UserEnum::USER_STATE_COLONIZATION_SHIP);
+        $user->setState(UserStateEnum::USER_STATE_COLONIZATION_SHIP);
         $this->userRepository->save($user);
 
         $game->redirectTo('./ship.php');

@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -30,7 +30,7 @@ final class FirstColony implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() !== UserEnum::USER_STATE_UNCOLONIZED) {
+        if ($user->getState() !== UserStateEnum::USER_STATE_UNCOLONIZED) {
             $game->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
             return;
         }
@@ -82,7 +82,7 @@ final class FirstColony implements ActionControllerInterface
             100
         );
 
-        $user->setState(UserEnum::USER_STATE_ACTIVE);
+        $user->setState(UserStateEnum::USER_STATE_ACTIVE);
 
         $this->userRepository->save($user);
 

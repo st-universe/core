@@ -11,7 +11,7 @@ use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -27,11 +27,11 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         $user = $game->getUser();
         $state = $user->getState();
 
-        if ($state !== UserEnum::USER_STATE_UNCOLONIZED) {
+        if ($state !== UserStateEnum::USER_STATE_UNCOLONIZED) {
             throw new AccessViolationException(sprintf(
                 _('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, State: %d'),
                 $user->getId(),
-                $state
+                $state->value
             ));
         }
         $game->setViewTemplate("html/maindesk/colonylist.twig");

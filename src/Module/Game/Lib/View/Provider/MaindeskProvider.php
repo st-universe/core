@@ -15,7 +15,7 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
@@ -54,12 +54,12 @@ final class MaindeskProvider implements ViewComponentProviderInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
+            $user->getState() === UserStateEnum::USER_STATE_UNCOLONIZED
         );
 
         $game->setTemplateVar(
             'DISPLAY_COLONIZATION_SHIP_DIALOGUE',
-            $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
+            $user->getState() === UserStateEnum::USER_STATE_COLONIZATION_SHIP
         );
 
         $newAmount = $this->knPostRepository->getAmountSince($user->getKnMark());

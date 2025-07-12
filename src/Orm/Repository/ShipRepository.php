@@ -13,6 +13,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Ship\Lib\TFleetShipItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
@@ -296,7 +297,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'stateActive' => UserEnum::USER_STATE_ACTIVE,
+                'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
                 'currentTime' => time(),

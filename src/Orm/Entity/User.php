@@ -21,6 +21,7 @@ use LogicException;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Repository\UserRepository;
 
 #[Table(name: 'stu_user')]
@@ -42,8 +43,8 @@ class User
     #[Column(type: 'integer', enumType: FactionEnum::class)]
     private FactionEnum $faction_id = FactionEnum::FACTION_FEDERATION;
 
-    #[Column(type: 'smallint')]
-    private int $state = UserEnum::USER_STATE_NEW;
+    #[Column(type: 'smallint', enumType: UserStateEnum::class)]
+    private UserStateEnum $state = UserStateEnum::USER_STATE_NEW;
 
     #[Column(type: 'integer')]
     private int $lastaction = 0;
@@ -225,17 +226,10 @@ class User
 
     public function hasColony(): bool
     {
-        if (
-            $this->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
-            || $this->getState() === UserEnum::USER_STATE_UNCOLONIZED
-        ) {
-            return false;
-        }
-
-        return !$this->getColonies()->isEmpty();
+        return $this->getState() === UserStateEnum::USER_STATE_ACTIVE && !$this->getColonies()->isEmpty();
     }
 
-    public function getState(): int
+    public function getState(): UserStateEnum
     {
         return $this->state;
     }
@@ -245,7 +239,7 @@ class User
         return $this->getUserLock() !== null && $this->getUserLock()->getRemainingTicks() > 0;
     }
 
-    public function setState(int $state): User
+    public function setState(UserStateEnum $state): User
     {
         $this->state = $state;
         return $this;

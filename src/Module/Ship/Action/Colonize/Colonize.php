@@ -14,7 +14,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -101,7 +101,7 @@ final class Colonize implements ActionControllerInterface
         }
 
         if (!$user->hasColony()) {
-            $user->setState(UserEnum::USER_STATE_ACTIVE);
+            $user->setState(UserStateEnum::USER_STATE_ACTIVE);
             $this->userRepository->save($user);
             $this->planetColonization->colonize(
                 $colony,

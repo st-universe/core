@@ -11,6 +11,7 @@ use Stu\Exception\FallbackUserDoesNotExistException;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
@@ -115,8 +116,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
-            'newUser' => UserEnum::USER_STATE_NEW,
-            'accountVerification' => UserEnum::USER_STATE_ACCOUNT_VERIFICATION
+            'newUser' => UserStateEnum::USER_STATE_NEW->value,
+            'accountVerification' => UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION->value
         ])->getResult();
     }
 

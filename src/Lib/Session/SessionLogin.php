@@ -12,6 +12,7 @@ use Stu\Lib\UserLockedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -134,8 +135,8 @@ final class SessionLogin implements SessionLoginInterface
 
     private function updateUser(User $user): void
     {
-        if ($user->getState() === UserEnum::USER_STATE_NEW) {
-            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+        if ($user->getState() === UserStateEnum::USER_STATE_NEW) {
+            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($user);
         }
@@ -184,7 +185,7 @@ final class SessionLogin implements SessionLoginInterface
             $this->sessionDestruction->destroySession($this->session);
             return;
         }
-        if ($user->getState() == UserEnum::USER_STATE_NEW) {
+        if ($user->getState() == UserStateEnum::USER_STATE_NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
         if ($user->isLocked()) {

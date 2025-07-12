@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Lib;
 
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
 
 final class UserlistEntry
@@ -21,7 +21,7 @@ final class UserlistEntry
         if ($this->user->isLocked()) {
             return _('GESPERRT');
         }
-        return UserEnum::getUserStateDescription($this->user->getState());
+        return $this->user->getState()->getDescription();
     }
 
     public function getUserStateColor(): string
@@ -30,7 +30,7 @@ final class UserlistEntry
         if ($user->isLocked()) {
             return _("red");
         }
-        if ($user->getState() === UserEnum::USER_STATE_ACTIVE) {
+        if ($user->getState() === UserStateEnum::USER_STATE_ACTIVE) {
             return _("greenyellow");
         }
         return '#dddddd';

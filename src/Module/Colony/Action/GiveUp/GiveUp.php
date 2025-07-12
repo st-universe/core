@@ -13,7 +13,7 @@ use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -57,7 +57,7 @@ final class GiveUp implements ActionControllerInterface
 
         $isPlanet = $colony->getColonyClass()->isPlanet();
         if ($isPlanet && $planetAmount === 1) {
-            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
+            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($user);
         }
