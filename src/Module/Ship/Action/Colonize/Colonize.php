@@ -19,11 +19,11 @@ use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -76,7 +76,7 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
+        if (!$ship->getRump()->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
             return;
         }
 

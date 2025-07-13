@@ -19,10 +19,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -33,6 +33,9 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 final class StartAirfieldShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_START_AIRFIELD_SHIP';
+
+    // start with fully loaded warpcore/eps from airfields
+    private const int FULLY_LOADED_START = 2;
 
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
@@ -79,8 +82,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
 
         if (
-            $rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE) &&
-            $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) > 0
+            $rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE) &&
+            $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, SpacecraftRump::SPECIAL_ABILITY_COLONIZE) > 0
         ) {
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
@@ -129,7 +132,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $hangar->getBuildplanId()
         )->setLocation($colony->getStarsystemMap());
 
-        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
+        if ($rump->hasSpecialAbility(self::FULLY_LOADED_START)) {
             $shipConfigurator->maxOutSystems();
         }
 

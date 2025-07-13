@@ -17,9 +17,9 @@ use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -92,7 +92,7 @@ final class SelfDestruct implements ActionControllerInterface
 
         if (
             $user->getState() == UserStateEnum::USER_STATE_COLONIZATION_SHIP
-            && $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 1
+            && $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, SpacecraftRump::SPECIAL_ABILITY_COLONIZE) === 1
         ) {
             $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
         }

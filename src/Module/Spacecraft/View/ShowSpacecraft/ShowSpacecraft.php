@@ -27,12 +27,12 @@ use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInte
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
@@ -108,7 +108,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $colony = $this->getColony($spacecraft);
         $canColonize = false;
         if ($colony !== null) {
-            if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
+            if ($rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
                 $canColonize = $this->colonizationChecker->canColonize($user, $colony);
             }
             $ownsCurrentColony = $colony->getUser() === $user;

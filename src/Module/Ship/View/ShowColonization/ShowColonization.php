@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Entity\SpacecraftRump;
 
 final class ShowColonization implements ViewControllerInterface
 {
@@ -64,7 +64,7 @@ final class ShowColonization implements ViewControllerInterface
             }
         }
 
-        if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
+        if ($ship->getRump()->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
             if (!$this->colonizationChecker->canColonize($game->getUser(), $colony)) {
                 return;
             }
