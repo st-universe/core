@@ -35,7 +35,7 @@ final class ColonyClassRepository extends EntityRepository implements ColonyClas
                 )
             )
             ->setParameters([
-                'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS
+                'categoryId' => DatabaseCategoryTypeEnum::COLONY_CLASS->value
             ])
             ->getResult();
     }

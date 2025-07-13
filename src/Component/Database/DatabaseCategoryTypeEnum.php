@@ -4,21 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Database;
 
-final class DatabaseCategoryTypeEnum
+enum DatabaseCategoryTypeEnum: int
 {
-    public const int DATABASE_CATEGORY_SHIPRUMP = 1;
-
-    public const int DATABASE_CATEGORY_RPGSHIP = 2;
-
-    public const int DATABASE_CATEGORY_TRADEPOST = 3;
-
-    public const int DATABASE_CATEGORY_REGION = 4;
-
-    public const int DATABASE_CATEGORY_COLONY_CLASS = 5;
-
-    public const int DATABASE_CATEGORY_STAR_SYSTEM_TYPE = 6;
-
-    public const int DATABASE_CATEGORY_STARSYSTEM = 7;
-
-    public const int DATABASE_CATEGORY_STATIONRUMP = 9;
+    case SHIPRUMP = 1;
+    case RPGSHIP = 2;
+    case TRADEPOST = 3;
+    case REGION = 4;
+    case COLONY_CLASS = 5;
+    case STAR_SYSTEM_TYPE = 6;
+    case STARSYSTEM = 7;
+    case STATIONRUMP = 9;
 }

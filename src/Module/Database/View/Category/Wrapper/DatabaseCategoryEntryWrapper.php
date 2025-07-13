@@ -37,9 +37,9 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
     public function getObject(): mixed
     {
         return match ($this->databaseEntry->getCategory()->getId()) {
-            DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM => $this->starSystemRepository->find($this->databaseEntry->getObjectId()),
-            DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST => $this->stationRepository->find($this->databaseEntry->getObjectId()),
-            DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS => $this->colonyClassRepository->find($this->databaseEntry->getObjectId()),
+            DatabaseCategoryTypeEnum::STARSYSTEM->value => $this->starSystemRepository->find($this->databaseEntry->getObjectId()),
+            DatabaseCategoryTypeEnum::TRADEPOST->value => $this->stationRepository->find($this->databaseEntry->getObjectId()),
+            DatabaseCategoryTypeEnum::COLONY_CLASS->value => $this->colonyClassRepository->find($this->databaseEntry->getObjectId()),
             default => null,
         };
     }
