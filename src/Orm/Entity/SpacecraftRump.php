@@ -24,6 +24,9 @@ use Stu\Orm\Repository\SpacecraftRumpRepository;
 #[Entity(repositoryClass: SpacecraftRumpRepository::class)]
 class SpacecraftRump
 {
+    // spacecraft can colonize
+    public const int SPECIAL_ABILITY_COLONIZE = 1;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]

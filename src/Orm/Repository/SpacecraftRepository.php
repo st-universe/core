@@ -14,7 +14,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\TShipItem;
-use Stu\Module\Spacecraft\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
@@ -22,6 +21,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftCondition;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
@@ -65,7 +65,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 Spacecraft::class,
                 SpacecraftBuildplan::class,
                 ShipRumpSpecial::class,
-                $specialAbilityId === ShipRumpSpecialAbilityEnum::COLONIZE ? 'AND bp.crew = 0' : ''
+                $specialAbilityId === SpacecraftRump::SPECIAL_ABILITY_COLONIZE ? 'AND bp.crew = 0' : ''
             )
         )->setParameters([
             'userId' => $userId,
