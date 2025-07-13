@@ -15,7 +15,7 @@ Init::run(function (ContainerInterface $dic): void {
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
     $systemRepository = $dic->get(StarSystemRepositoryInterface::class);
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM);
-    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM);
+    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::STARSYSTEM->value);
 
     if ($type === null || $category === null) {
         throw new RuntimeException('type or category is null');

@@ -24,38 +24,38 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
     #[Override]
     public function isCategoryStarSystemTypes(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STAR_SYSTEM_TYPE->value;
     }
 
     #[Override]
     public function isCategoryStarSystems(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STARSYSTEM->value;
     }
 
     #[Override]
     public function isCategoryTradePosts(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::TRADEPOST->value;
     }
 
     #[Override]
     public function isCategoryColonyClasses(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::COLONY_CLASS->value;
     }
 
     #[Override]
     public function isCategoryRumpTypes(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP
-            || $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STATIONRUMP;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::SHIPRUMP->value
+            || $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STATIONRUMP->value;
     }
 
     #[Override]
     public function isCategoryRegion(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_REGION;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::REGION->value;
     }
 
     #[Override]

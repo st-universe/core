@@ -35,7 +35,7 @@ final class StarSystemTypeRepository extends EntityRepository implements StarSys
                 )
             )
             ->setParameters([
-                'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE,
+                'categoryId' => DatabaseCategoryTypeEnum::STAR_SYSTEM_TYPE->value,
             ])
             ->getResult();
     }

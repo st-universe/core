@@ -20,9 +20,9 @@ Init::run(function (ContainerInterface $dic): void {
         throw new RuntimeException('type %d does not exist', DatabaseEntryTypeEnum::DATABASE_TYPE_PLANET);
     }
 
-    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS);
+    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::COLONY_CLASS->value);
     if ($category === null) {
-        throw new RuntimeException('category %d does not exist', DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS);
+        throw new RuntimeException('category %d does not exist', DatabaseCategoryTypeEnum::COLONY_CLASS->value);
     }
 
     $result = $colonyClassRepository->getWithoutDatabaseEntry();

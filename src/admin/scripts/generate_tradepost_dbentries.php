@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 Init::run(function (ContainerInterface $dic): void {
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_POI);
-    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST);
+    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::TRADEPOST->value);
     $stationRepo = $dic->get(StationRepositoryInterface::class);
 
     if ($type === null || $category === null) {
