@@ -94,7 +94,6 @@ final class CrewCreator implements CrewCreatorInterface
 
         foreach (CrewTypeEnum::getOrder() as $crewType) {
             $createdcount = 1;
-            $slot = $crewType === CrewTypeEnum::CREWMAN ? 'getJob6Crew' : 'getJob' . $crewType->value . 'Crew';
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
                 $spacecraft->getRump()->getShipRumpCategory()->getId(),
                 $shipRumpRole->getId()
@@ -107,7 +106,7 @@ final class CrewCreator implements CrewCreatorInterface
                 ));
             }
 
-            while ($crewToSetup > 0 && ($crewType == CrewTypeEnum::CREWMAN || $createdcount <= $config->$slot())) {
+            while ($crewToSetup > 0 && ($crewType == CrewTypeEnum::CREWMAN || $createdcount <= $config->getCrewForPosition($crewType))) {
                 $createdcount++;
                 $crewToSetup--;
 

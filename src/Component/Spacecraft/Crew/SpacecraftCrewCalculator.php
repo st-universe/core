@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Crew;
 
 use Override;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
@@ -37,7 +38,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         if ($this->getCrewObj($shipRump) === null) {
             return $this->getBaseCrewCount($shipRump);
         } else {
-            return $this->getBaseCrewCount($shipRump) + $this->getCrewObj($shipRump)->getJob6Crew();
+            return $this->getBaseCrewCount($shipRump) + $this->getCrewObj($shipRump)->getCrewForPosition(CrewTypeEnum::CREWMAN);
         }
     }
 
@@ -98,17 +99,9 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
     {
         $key = $shipRump->getId();
         if (!array_key_exists($key, $this->baseCrewCountCache)) {
-            $count = $shipRump->getBaseValues()->getBaseCrew();
-            $categoryRoleCrew = $this->getCrewObj($shipRump);
 
-            if ($categoryRoleCrew !== null) {
-                foreach ([1, 2, 3, 4, 5, 7] as $slot) {
-                    $crew_func = 'getJob' . $slot . 'Crew';
-                    $count += $categoryRoleCrew->$crew_func();
-                }
-            }
-
-            $this->baseCrewCountCache[$key] = $count;
+            $this->baseCrewCountCache[$key] = $shipRump->getBaseValues()->getBaseCrew()
+                + ($this->getCrewObj($shipRump)?->getCrewSumForPositionsExceptCrewman() ?? 0);
         }
 
         return $this->baseCrewCountCache[$key];

@@ -20,13 +20,13 @@ enum CrewTypeEnum: int
     public static function getOrder(): array
     {
         return [
-            CrewTypeEnum::CAPTAIN,
-            CrewTypeEnum::COMMAND,
-            CrewTypeEnum::SECURITY,
-            CrewTypeEnum::SCIENCE,
-            CrewTypeEnum::TECHNICAL,
-            CrewTypeEnum::NAVIGATION,
-            CrewTypeEnum::CREWMAN
+            self::CAPTAIN,
+            self::COMMAND,
+            self::SECURITY,
+            self::SCIENCE,
+            self::TECHNICAL,
+            self::NAVIGATION,
+            self::CREWMAN
         ];
     }
 

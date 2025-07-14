@@ -66,8 +66,13 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
             while ($flightDirection === DirectionEnum::NON) {
                 $flightDirection = DirectionEnum::from(random_int(1, 4));
             }
-            $met = 'fly' . $flightDirection->value;
-            $newXY = $this->$met($pods);
+
+            $newXY = match ($flightDirection) {
+                DirectionEnum::LEFT => $this->fly1($pods),
+                DirectionEnum::BOTTOM => $this->fly2($pods),
+                DirectionEnum::RIGHT => $this->fly3($pods),
+                DirectionEnum::TOP => $this->fly4($pods),
+            };
 
             if ($pods->getSystem() !== null) {
                 $field = $this->starSystemMapRepository->getByCoordinates(
