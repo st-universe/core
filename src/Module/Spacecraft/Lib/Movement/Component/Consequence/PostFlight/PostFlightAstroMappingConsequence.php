@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Override;
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -65,7 +65,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
         $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
         $messages->add($message);
 
-        if ($astroEntry->getState() === AstronomicalMappingEnum::PLANNED) {
+        if ($astroEntry->getState() === AstronomicalMappingStateEnum::PLANNED) {
             /** @var array<int> */
             $idsToMap = unserialize($astroEntry->getFieldIds());
 
@@ -76,7 +76,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
 
                 if (empty($idsToMap)) {
                     $astroEntry->setFieldIds('');
-                    $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
+                    $astroEntry->setState(AstronomicalMappingStateEnum::MEASURED);
                     $message->add(sprintf(_('Die %s hat alle Kartographierungs-Messpunkte erreicht'), $ship->getName()));
                 } else {
                     $astroEntry->setFieldIds(serialize($idsToMap));
@@ -91,12 +91,12 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
 
         if (
             $ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING
-            && $astroEntry->getState() === AstronomicalMappingEnum::FINISHING
+            && $astroEntry->getState() === AstronomicalMappingStateEnum::FINISHING
             && $astroLab !== null
         ) {
             $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
             $astroLab->setAstroStartTurn(null)->update();
-            $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
+            $astroEntry->setState(AstronomicalMappingStateEnum::MEASURED);
             $astroEntry->setAstroStartTurn(null);
             $message->add(sprintf(_('Die %s hat das Finalisieren der Kartographierung abgebrochen'), $ship->getName()));
         }

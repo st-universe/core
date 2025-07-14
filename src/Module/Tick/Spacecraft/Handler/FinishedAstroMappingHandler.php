@@ -3,8 +3,8 @@
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
 use Override;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
@@ -46,7 +46,7 @@ class FinishedAstroMappingHandler implements SpacecraftTickHandlerInterface
             $ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING
             && $databaseEntry !== null
             && $astroLab !== null
-            && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
+            && $this->game->getCurrentRound()->getTurn() >= ($astroLab->getAstroStartTurn() + AstroLaboratoryShipSystem::TURNS_TO_FINISH)
         ) {
 
             $this->astroEntryLib->finish($wrapper);

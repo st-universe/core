@@ -9,7 +9,7 @@ use Stu\Orm\Entity\StarSystemMap;
 use Override;
 use request;
 
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -75,7 +75,7 @@ final class PlanAstroMapping implements ActionControllerInterface
 
         $astroEntry = $this->astroEntryRepository->prototype();
         $astroEntry->setUser($game->getUser());
-        $astroEntry->setState(AstronomicalMappingEnum::PLANNED);
+        $astroEntry->setState(AstronomicalMappingStateEnum::PLANNED);
         $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $ship->getLocation());
 
         $this->astroEntryRepository->save($astroEntry);

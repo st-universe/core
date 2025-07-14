@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\AstroMapping;
 use Override;
 use request;
 use RuntimeException;
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
@@ -43,7 +43,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $message = '';
         $ship = $wrapper->get();
         $entry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, false);
-        if ($entry === null || $entry->getState() !== AstronomicalMappingEnum::MEASURED) {
+        if ($entry === null || $entry->getState() !== AstronomicalMappingStateEnum::MEASURED) {
             return;
         }
 
@@ -79,7 +79,7 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
-        $entry->setState(AstronomicalMappingEnum::FINISHING);
+        $entry->setState(AstronomicalMappingStateEnum::FINISHING);
         $entry->setAstroStartTurn($game->getCurrentRound()->getTurn());
         $this->astroEntryRepository->save($entry);
 

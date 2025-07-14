@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use JBBCode\Parser;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -71,7 +71,7 @@ class StateIconAndTitle
 
         return ['buttons/map1', sprintf(
             'Schiff kartographiert (noch %d Runden)',
-            $astroLab->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH - $this->game->getCurrentRound()->getTurn()
+            $astroLab->getAstroStartTurn() + AstroLaboratoryShipSystem::TURNS_TO_FINISH - $this->game->getCurrentRound()->getTurn()
         )];
     }
 
