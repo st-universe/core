@@ -77,7 +77,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         $endTime = microtime(true);
 
         if (
-            $endTime - $startTime > 0.01
+            $endTime - $startTime > 0.1
         ) {
 
             $classParts = explode('\\', get_class($handler));
