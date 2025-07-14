@@ -23,15 +23,26 @@
                 </tr>
                 {% set effects = fieldType.getEffects %}
                 {% if effects %}
-                <tr>
-                    <td>Effekte:</td>
-                    <td>
-                        {% for effect in effects %}
-                        {{ effect.getDescription }}
-                        <br />
-                        {% endfor %}
-                    </td>
-                </tr>
+                    {% set hasDescription = false %}
+                    {% for effect in effects %}
+                        {% if effect.getDescription %}
+                            {% set hasDescription = true %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if hasDescription %}
+                    <tr>
+                        <td>Effekte:</td>
+                        <td>
+                            {% for effect in effects %}
+                                {% if effect.getDescription %}
+                                {{ effect.getDescription }}
+                                <br />
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
                 {% endif %}
             </table>
         </td>
