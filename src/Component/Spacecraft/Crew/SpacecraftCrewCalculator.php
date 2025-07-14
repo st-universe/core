@@ -20,7 +20,15 @@ use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
  */
 final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterface
 {
-    public function __construct(private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository) {}
+    /** @var array<int, ?ShipRumpCategoryRoleCrew>  */
+    private array $shipRumpCategoryRoleCrewCache = [];
+
+    /** @var array<int, int>  */
+    private array $baseCrewCountCache = [];
+
+    public function __construct(
+        private readonly ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository
+    ) {}
 
     #[Override]
     public function getMaxCrewCountByRump(
@@ -38,16 +46,21 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         SpacecraftRump $shipRump
     ): ?ShipRumpCategoryRoleCrew {
 
-        $roleId = $shipRump->getRoleId();
-        if ($roleId === null) {
+        $rumpRole = $shipRump->getRoleId();
+        if ($rumpRole === null) {
             return null;
         }
 
-        return $this->shipRumpCategoryRoleCrewRepository
-            ->getByShipRumpCategoryAndRole(
-                $shipRump->getCategoryId(),
-                $roleId
-            );
+        $id = $rumpRole->value;
+        if (!array_key_exists($id, $this->shipRumpCategoryRoleCrewCache)) {
+            $this->shipRumpCategoryRoleCrewCache[$id] = $this->shipRumpCategoryRoleCrewRepository
+                ->getByShipRumpCategoryAndRole(
+                    $shipRump->getCategoryId(),
+                    $rumpRole
+                );
+        }
+
+        return $this->shipRumpCategoryRoleCrewCache[$id];
     }
 
     #[Override]
@@ -83,13 +96,21 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
 
     private function getBaseCrewCount(SpacecraftRump $shipRump): int
     {
-        $count = $shipRump->getBaseValues()->getBaseCrew();
-        if ($this->getCrewObj($shipRump) !== null) {
-            foreach ([1, 2, 3, 4, 5, 7] as $slot) {
-                $crew_func = 'getJob' . $slot . 'Crew';
-                $count += $this->getCrewObj($shipRump)->$crew_func();
+        $key = $shipRump->getId();
+        if (!array_key_exists($key, $this->baseCrewCountCache)) {
+            $count = $shipRump->getBaseValues()->getBaseCrew();
+            $categoryRoleCrew = $this->getCrewObj($shipRump);
+
+            if ($categoryRoleCrew !== null) {
+                foreach ([1, 2, 3, 4, 5, 7] as $slot) {
+                    $crew_func = 'getJob' . $slot . 'Crew';
+                    $count += $categoryRoleCrew->$crew_func();
+                }
             }
+
+            $this->baseCrewCountCache[$key] = $count;
         }
-        return $count;
+
+        return $this->baseCrewCountCache[$key];
     }
 }
