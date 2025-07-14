@@ -61,7 +61,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
             );
         }
         $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => $menu->getDescription()]);
-        $game->setTemplateVar('menutype', $menu);
+        $game->setTemplateVar('menutype', $menu->value);
         $game->setTemplateVar('scrolloffset', $offset);
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
     }
