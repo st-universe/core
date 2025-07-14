@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Lib;
 use Cache\Adapter\Common\CacheItem;
 use Override;
 use Psr\Cache\CacheItemPoolInterface;
-use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -20,6 +19,10 @@ use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
  */
 final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterface
 {
+    public const int FIELD_TYPE_CATEGORY_SURFACE = 1;
+    private const int FIELD_TYPE_CATEGORY_ORBIT = 2;
+    private const int FIELD_TYPE_CATEGORY_UNDERGROUND = 3;
+
     private const string CACHE_KEY_NAME = 'planet_field_type_list';
     private const string CACHE_KEY_CATEGORY = 'planet_field_type_categories';
 
@@ -72,7 +75,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     ): bool {
         return $this->isTypeOf(
             $planetField,
-            ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_UNDERGROUND
+            self::FIELD_TYPE_CATEGORY_UNDERGROUND
         );
     }
 
@@ -82,7 +85,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     ): bool {
         return $this->isTypeOf(
             $planetField,
-            ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_ORBIT
+            self::FIELD_TYPE_CATEGORY_ORBIT
         );
     }
 
