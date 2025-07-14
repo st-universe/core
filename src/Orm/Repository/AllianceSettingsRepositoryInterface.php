@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Alliance;
 
@@ -22,5 +23,5 @@ interface AllianceSettingsRepositoryInterface extends ObjectRepository
 
     public function delete(AllianceSettings $post): void;
 
-    public function findByAllianceAndSetting(Alliance $alliance, string $setting): ?AllianceSettings;
+    public function findByAllianceAndSetting(Alliance $alliance, AllianceSettingsEnum $setting): ?AllianceSettings;
 }

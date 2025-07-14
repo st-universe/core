@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
+use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Alliance;
 
@@ -37,11 +38,11 @@ final class AllianceSettingsRepository extends EntityRepository implements Allia
     }
 
     #[Override]
-    public function findByAllianceAndSetting(Alliance $alliance, string $setting): ?AllianceSettings
+    public function findByAllianceAndSetting(Alliance $alliance, AllianceSettingsEnum $setting): ?AllianceSettings
     {
         return $this->findOneBy([
             'alliance' => $alliance,
-            'setting' => $setting
+            'setting' => $setting->value
         ]);
     }
 }

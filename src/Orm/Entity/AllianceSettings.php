@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Orm\Repository\AllianceSettingsRepository;
 
 #[Table(name: 'stu_alliance_settings')]
@@ -22,8 +23,8 @@ class AllianceSettings
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'string')]
-    private string $setting = '';
+    #[Column(type: 'string', enumType: AllianceSettingsEnum::class)]
+    private AllianceSettingsEnum $setting;
 
     #[Column(type: 'string')]
     private string $value = '';
@@ -48,12 +49,12 @@ class AllianceSettings
         return $this;
     }
 
-    public function getSetting(): string
+    public function getSetting(): AllianceSettingsEnum
     {
         return $this->setting;
     }
 
-    public function setSetting(string $setting): AllianceSettings
+    public function setSetting(AllianceSettingsEnum $setting): AllianceSettings
     {
         $this->setting = $setting;
         return $this;
