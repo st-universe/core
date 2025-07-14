@@ -54,12 +54,12 @@ final class MaindeskProvider implements ViewComponentProviderInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getState() === UserStateEnum::USER_STATE_UNCOLONIZED
+            $user->getState() === UserStateEnum::UNCOLONIZED
         );
 
         $game->setTemplateVar(
             'DISPLAY_COLONIZATION_SHIP_DIALOGUE',
-            $user->getState() === UserStateEnum::USER_STATE_COLONIZATION_SHIP
+            $user->getState() === UserStateEnum::COLONIZATION_SHIP
         );
 
         $newAmount = $this->knPostRepository->getAmountSince($user->getKnMark());

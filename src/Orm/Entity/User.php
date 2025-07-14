@@ -44,7 +44,7 @@ class User
     private FactionEnum $faction_id = FactionEnum::FACTION_FEDERATION;
 
     #[Column(type: 'smallint', enumType: UserStateEnum::class)]
-    private UserStateEnum $state = UserStateEnum::USER_STATE_NEW;
+    private UserStateEnum $state = UserStateEnum::NEW;
 
     #[Column(type: 'integer')]
     private int $lastaction = 0;
@@ -226,7 +226,7 @@ class User
 
     public function hasColony(): bool
     {
-        return $this->getState() === UserStateEnum::USER_STATE_ACTIVE && !$this->getColonies()->isEmpty();
+        return $this->getState() === UserStateEnum::ACTIVE && !$this->getColonies()->isEmpty();
     }
 
     public function getState(): UserStateEnum

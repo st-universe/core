@@ -4,20 +4,20 @@ namespace Stu\Module\PlayerSetting\Lib;
 
 enum UserStateEnum: int
 {
-    case USER_STATE_NEW = 0;
-    case USER_STATE_UNCOLONIZED = 1;
-    case USER_STATE_ACTIVE = 2;
-    case USER_STATE_ACCOUNT_VERIFICATION = 3;
-    case USER_STATE_COLONIZATION_SHIP = 4;
+    case NEW = 0;
+    case UNCOLONIZED = 1;
+    case ACTIVE = 2;
+    case ACCOUNT_VERIFICATION = 3;
+    case COLONIZATION_SHIP = 4;
 
     public function getDescription(): string
     {
         return match ($this) {
-            self::USER_STATE_NEW => _("NEU"),
-            self::USER_STATE_UNCOLONIZED => _("OHNE KOLONIEN"),
-            self::USER_STATE_ACTIVE => _("AKTIV"),
-            self::USER_STATE_ACCOUNT_VERIFICATION => _("ACCOUNT VERIFIKATION"),
-            self::USER_STATE_COLONIZATION_SHIP => _("KOLONISATIONS SCHIFF")
+            self::NEW => "NEU",
+            self::UNCOLONIZED => "OHNE KOLONIEN",
+            self::ACTIVE => "AKTIV",
+            self::ACCOUNT_VERIFICATION => "ACCOUNT VERIFIKATION",
+            self::COLONIZATION_SHIP => "KOLONISATIONS SCHIFF"
         };
     }
 }

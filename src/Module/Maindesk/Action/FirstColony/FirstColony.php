@@ -30,7 +30,7 @@ final class FirstColony implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() !== UserStateEnum::USER_STATE_UNCOLONIZED) {
+        if ($user->getState() !== UserStateEnum::UNCOLONIZED) {
             $game->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
             return;
         }
@@ -82,7 +82,7 @@ final class FirstColony implements ActionControllerInterface
             100
         );
 
-        $user->setState(UserStateEnum::USER_STATE_ACTIVE);
+        $user->setState(UserStateEnum::ACTIVE);
 
         $this->userRepository->save($user);
 

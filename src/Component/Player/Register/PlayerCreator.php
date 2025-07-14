@@ -119,13 +119,13 @@ class PlayerCreator implements PlayerCreatorInterface
         $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $registration->setEmailCode($emailCode);
 
-        $player->setState(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
+        $player->setState(UserStateEnum::ACCOUNT_VERIFICATION);
 
         // set player state to awaiting sms code if mobile provided
         if ($mobile !== null) {
             $registration->setMobile($mobile);
             $registration->setSmsCode($smsCode);
-            $player->setState(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
+            $player->setState(UserStateEnum::ACCOUNT_VERIFICATION);
         }
 
         if ($referer !== null) {

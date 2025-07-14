@@ -32,7 +32,7 @@ final class ColonizationShip implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getState() !== UserStateEnum::USER_STATE_UNCOLONIZED) {
+        if ($user->getState() !== UserStateEnum::UNCOLONIZED) {
             throw new AccessViolationException();
         }
 
@@ -77,7 +77,7 @@ final class ColonizationShip implements ActionControllerInterface
             $warpdrive->setMaxWarpDrive((int)floor($warpdrive->getMaxWarpdrive() * 5))->update();
         }
 
-        $user->setState(UserStateEnum::USER_STATE_COLONIZATION_SHIP);
+        $user->setState(UserStateEnum::COLONIZATION_SHIP);
         $this->userRepository->save($user);
 
         $game->redirectTo('./ship.php');

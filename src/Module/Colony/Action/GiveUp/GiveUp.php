@@ -57,7 +57,7 @@ final class GiveUp implements ActionControllerInterface
 
         $isPlanet = $colony->getColonyClass()->isPlanet();
         if ($isPlanet && $planetAmount === 1) {
-            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
+            $user->setState(UserStateEnum::UNCOLONIZED);
 
             $this->userRepository->save($user);
         }

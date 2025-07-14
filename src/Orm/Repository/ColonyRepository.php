@@ -326,7 +326,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'maxY' => $location->getCy() + $range,
                 'layer' => $layer,
                 'firstUserId' => UserConstants::USER_FIRST_ID,
-                'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
+                'stateActive' => UserStateEnum::ACTIVE->value,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'false' => false,
                 'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,

@@ -27,7 +27,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         $user = $game->getUser();
         $state = $user->getState();
 
-        if ($state !== UserStateEnum::USER_STATE_UNCOLONIZED) {
+        if ($state !== UserStateEnum::UNCOLONIZED) {
             throw new AccessViolationException(sprintf(
                 _('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, State: %d'),
                 $user->getId(),

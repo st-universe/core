@@ -318,7 +318,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'maxY' => $location->getCy() + $range,
                 'layerId' => $layer->getId(),
                 'firstUserId' => UserConstants::USER_FIRST_ID,
-                'stateActive' => UserStateEnum::USER_STATE_ACTIVE->value,
+                'stateActive' => UserStateEnum::ACTIVE->value,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
                 'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
                 'currentTime' => time(),

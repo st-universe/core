@@ -91,10 +91,10 @@ final class SelfDestruct implements ActionControllerInterface
         }
 
         if (
-            $user->getState() == UserStateEnum::USER_STATE_COLONIZATION_SHIP
+            $user->getState() == UserStateEnum::COLONIZATION_SHIP
             && $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, SpacecraftRump::SPECIAL_ABILITY_COLONIZE) === 1
         ) {
-            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
+            $user->setState(UserStateEnum::UNCOLONIZED);
         }
 
         $this->createNegativePrestigeLog($prestigeAmount, $rumpName, $user);

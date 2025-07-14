@@ -43,7 +43,7 @@ final class AccountVerification implements
 
         $user = $game->getUser();
 
-        if ($user->getState() !== UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        if ($user->getState() !== UserStateEnum::ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION');
             return;
         }
@@ -68,7 +68,7 @@ final class AccountVerification implements
 
         $this->loggerUtil->log('Account wird freigeschaltet');
 
-        $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
+        $user->setState(UserStateEnum::UNCOLONIZED);
         if ($registration->getMobile() !== null) {
             $registration->setMobile($this->stuHash->hash($registration->getMobile()));
         }
@@ -78,7 +78,7 @@ final class AccountVerification implements
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getState() === UserStateEnum::USER_STATE_UNCOLONIZED
+            $user->getState() === UserStateEnum::UNCOLONIZED
         );
 
         $this->lotteryFacade->createLotteryTicket($user, true);

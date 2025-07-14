@@ -59,7 +59,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser->getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION);
+            ->andReturn(UserStateEnum::ACCOUNT_VERIFICATION);
 
         $controller = $this->mock(ControllerInterface::class);
 
@@ -77,7 +77,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser->getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::ACTIVE);
 
         $result = $this->subject->checkUserAccess($controller, $this->game);
 
@@ -97,7 +97,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -132,7 +132,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -184,7 +184,7 @@ class AccessCheckTest extends StuTestCase
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
+            ->andReturn(UserStateEnum::ACTIVE);
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -248,7 +248,7 @@ class AccessCheckTest extends StuTestCase
             $user->shouldReceive('getState')
                 ->withNoArgs()
                 ->once()
-                ->andReturn(UserStateEnum::USER_STATE_ACTIVE);
+                ->andReturn(UserStateEnum::ACTIVE);
             $user->shouldReceive('getId')
                 ->withNoArgs()
                 ->andReturn(42);

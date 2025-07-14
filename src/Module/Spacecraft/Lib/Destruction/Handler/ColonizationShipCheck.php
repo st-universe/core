@@ -26,8 +26,8 @@ class ColonizationShipCheck implements SpacecraftDestructionHandlerInterface
 
         $user = $destroyedSpacecraftWrapper->get()->getUser();
 
-        if ($user->getState() === UserStateEnum::USER_STATE_COLONIZATION_SHIP) {
-            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
+        if ($user->getState() === UserStateEnum::COLONIZATION_SHIP) {
+            $user->setState(UserStateEnum::UNCOLONIZED);
             $this->userRepository->save($user);
         }
     }
