@@ -53,7 +53,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         $this->trumfieldRepository->save($trumfield);
 
         foreach ($spacecraft->getBeamableStorage() as $storage) {
-            $storage->setSpacecraft(null)
+            $storage->setEntity(null)
                 ->setTrumfield($trumfield)
                 ->setUser($nobody);
 

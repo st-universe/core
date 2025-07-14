@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\StorageRepository;
 
@@ -144,20 +145,24 @@ class Storage
         return $this->colony;
     }
 
-    public function setColony(Colony $colony): Storage
-    {
-        $this->colony = $colony;
-        return $this;
-    }
-
     public function getSpacecraft(): ?Spacecraft
     {
         return $this->spacecraft;
     }
 
-    public function setSpacecraft(?Spacecraft $spacecraft): Storage
+    public function setEntity(?EntityWithStorageInterface $entity): Storage
     {
-        $this->spacecraft = $spacecraft;
+        if ($entity === null) {
+            $this->spacecraft = null;
+            $this->colony = null;
+        }
+        if ($entity instanceof Spacecraft) {
+            $this->spacecraft = $entity;
+        }
+        if ($entity instanceof Colony) {
+            $this->colony = $entity;
+        }
+
         return $this;
     }
 
