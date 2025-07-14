@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\AstronomicalEntry;
@@ -39,7 +39,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $entry->setState(AstronomicalMappingEnum::MEASURED);
+        $entry->setState(AstronomicalMappingStateEnum::MEASURED);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
     }
@@ -62,7 +62,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $entry->setState(AstronomicalMappingEnum::DONE);
+        $entry->setState(AstronomicalMappingStateEnum::DONE);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
     }

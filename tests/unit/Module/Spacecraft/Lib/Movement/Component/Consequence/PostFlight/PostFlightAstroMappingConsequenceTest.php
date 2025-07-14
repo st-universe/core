@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -218,7 +218,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $astroEntry->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(AstronomicalMappingEnum::PLANNED);
+            ->andReturn(AstronomicalMappingStateEnum::PLANNED);
         $astroEntry->shouldReceive('getFieldIds')
             ->withNoArgs()
             ->once()
@@ -325,7 +325,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $astroEntry->shouldReceive('getState')
             ->withNoArgs()
             ->once()
-            ->andReturn(AstronomicalMappingEnum::PLANNED);
+            ->andReturn(AstronomicalMappingStateEnum::PLANNED);
         $astroEntry->shouldReceive('getFieldIds')
             ->withNoArgs()
             ->once()
@@ -334,7 +334,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             ->with("")
             ->once();
         $astroEntry->shouldReceive('setState')
-            ->with(AstronomicalMappingEnum::MEASURED)
+            ->with(AstronomicalMappingStateEnum::MEASURED)
             ->once();
 
         $this->astroEntryLib->shouldReceive('getAstroEntryByShipLocation')
@@ -433,10 +433,10 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
         $astroEntry->shouldReceive('getState')
             ->withNoArgs()
-            ->andReturn(AstronomicalMappingEnum::FINISHING);
+            ->andReturn(AstronomicalMappingStateEnum::FINISHING);
 
         $astroEntry->shouldReceive('setState')
-            ->with(AstronomicalMappingEnum::MEASURED)
+            ->with(AstronomicalMappingStateEnum::MEASURED)
             ->once();
         $astroEntry->shouldReceive('setAstroStartTurn')
             ->with(null)

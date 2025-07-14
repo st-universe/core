@@ -15,6 +15,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
+    public const int TURNS_TO_FINISH = 3;
     public const int FINALIZING_ENERGY_COST = 15;
 
     public function __construct(private AstroEntryLibInterface $astroEntryLib) {}

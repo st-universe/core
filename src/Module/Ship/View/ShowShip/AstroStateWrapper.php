@@ -2,31 +2,31 @@
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 
 class AstroStateWrapper
 {
-    public function __construct(private int $state, private ?int $turnsLeft, private bool $isSystem, private ?int $measurementpointsleft) {}
+    public function __construct(private AstronomicalMappingStateEnum $state, private ?int $turnsLeft, private bool $isSystem, private ?int $measurementpointsleft) {}
 
     public function isPlannable(): bool
     {
-        return $this->state == AstronomicalMappingEnum::PLANNABLE;
+        return $this->state === AstronomicalMappingStateEnum::PLANNABLE;
     }
     public function isPlanned(): bool
     {
-        return $this->state == AstronomicalMappingEnum::PLANNED;
+        return $this->state === AstronomicalMappingStateEnum::PLANNED;
     }
     public function isMeasured(): bool
     {
-        return $this->state == AstronomicalMappingEnum::MEASURED;
+        return $this->state === AstronomicalMappingStateEnum::MEASURED;
     }
     public function isFinishing(): bool
     {
-        return $this->state == AstronomicalMappingEnum::FINISHING;
+        return $this->state === AstronomicalMappingStateEnum::FINISHING;
     }
     public function isDone(): bool
     {
-        return $this->state == AstronomicalMappingEnum::DONE;
+        return $this->state === AstronomicalMappingStateEnum::DONE;
     }
     public function getTurnsLeft(): ?int
     {

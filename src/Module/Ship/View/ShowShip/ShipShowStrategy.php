@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowShip;
 
 use Override;
-use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -52,20 +53,20 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         $astroEntry = null;
 
         if ($databaseEntry === null) {
-            $state = AstronomicalMappingEnum::NONE;
+            $state = AstronomicalMappingStateEnum::NONE;
         } elseif ($this->databaseUserRepository->exists($game->getUser()->getId(), $databaseEntry->getId())) {
-            $state = AstronomicalMappingEnum::DONE;
+            $state = AstronomicalMappingStateEnum::DONE;
         } else {
             $astroEntry = $this->astroEntryLib->getAstroEntryByShipLocation($ship, $isSystem);
 
-            $state = $astroEntry === null ? AstronomicalMappingEnum::PLANNABLE : $astroEntry->getState();
+            $state = $astroEntry === null ? AstronomicalMappingStateEnum::PLANNABLE : $astroEntry->getState();
         }
         $turnsLeft = null;
-        if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
-            $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
+        if ($state === AstronomicalMappingStateEnum::FINISHING && $astroEntry !== null) {
+            $turnsLeft = AstroLaboratoryShipSystem::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
         }
         $measurementpointsleft = null;
-        if ($state === AstronomicalMappingEnum::PLANNED && $astroEntry !== null) {
+        if ($state === AstronomicalMappingStateEnum::PLANNED && $astroEntry !== null) {
             $fieldIds = unserialize($astroEntry->getFieldIds());
             $measurementpointsleft = is_array($fieldIds) ? count($fieldIds) : 0;
         }

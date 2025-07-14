@@ -8,11 +8,11 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 
@@ -457,13 +457,13 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->setParameters([
                 'systemId' => $starSystemId,
                 'ids' => $result !== [] ? $result : [0],
-                'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result)
+                'theLimit' => AstronomicalEntry::MEASUREMENT_COUNT - count($result)
             ])
             ->getResult();
 
         $result = array_merge($result, $otherColonyFields);
 
-        if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
+        if (count($result) < AstronomicalEntry::MEASUREMENT_COUNT) {
             $otherFields = $this->getEntityManager()
                 ->createNativeQuery(
                     'SELECT sm.id as id
@@ -481,7 +481,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 )
                 ->setParameters([
                     'systemId' => $starSystemId,
-                    'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result)
+                    'theLimit' => AstronomicalEntry::MEASUREMENT_COUNT - count($result)
                 ])
                 ->getResult();
 

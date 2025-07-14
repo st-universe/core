@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AstroEntryRepository;
 
@@ -23,6 +24,8 @@ use Stu\Orm\Repository\AstroEntryRepository;
 #[TruncateOnGameReset]
 class AstronomicalEntry
 {
+    public const int MEASUREMENT_COUNT = 5;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -31,8 +34,8 @@ class AstronomicalEntry
     #[Column(type: 'integer')]
     private int $user_id = 0;
 
-    #[Column(type: 'smallint', length: 1)]
-    private int $state = 0;
+    #[Column(type: 'smallint', length: 1, enumType: AstronomicalMappingStateEnum::class)]
+    private AstronomicalMappingStateEnum $state = AstronomicalMappingStateEnum::PLANNABLE;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $astro_start_turn = null;
@@ -80,12 +83,12 @@ class AstronomicalEntry
         return $this;
     }
 
-    public function getState(): int
+    public function getState(): AstronomicalMappingStateEnum
     {
         return $this->state;
     }
 
-    public function setState(int $state): AstronomicalEntry
+    public function setState(AstronomicalMappingStateEnum $state): AstronomicalEntry
     {
         $this->state = $state;
         return $this;
