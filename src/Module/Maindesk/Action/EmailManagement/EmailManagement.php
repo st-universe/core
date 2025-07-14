@@ -43,7 +43,7 @@ final class EmailManagement implements
 
         $user = $game->getUser();
 
-        if ($user->getState() !== UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        if ($user->getState() !== UserStateEnum::ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION: ' . $user->getState()->value);
             return;
         }

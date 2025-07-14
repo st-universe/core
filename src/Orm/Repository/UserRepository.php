@@ -116,8 +116,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
-            'newUser' => UserStateEnum::USER_STATE_NEW->value,
-            'accountVerification' => UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION->value
+            'newUser' => UserStateEnum::NEW->value,
+            'accountVerification' => UserStateEnum::ACCOUNT_VERIFICATION->value
         ])->getResult();
     }
 

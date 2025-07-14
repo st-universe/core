@@ -135,8 +135,8 @@ final class SessionLogin implements SessionLoginInterface
 
     private function updateUser(User $user): void
     {
-        if ($user->getState() === UserStateEnum::USER_STATE_NEW) {
-            $user->setState(UserStateEnum::USER_STATE_UNCOLONIZED);
+        if ($user->getState() === UserStateEnum::NEW) {
+            $user->setState(UserStateEnum::UNCOLONIZED);
 
             $this->userRepository->save($user);
         }
@@ -185,7 +185,7 @@ final class SessionLogin implements SessionLoginInterface
             $this->sessionDestruction->destroySession($this->session);
             return;
         }
-        if ($user->getState() == UserStateEnum::USER_STATE_NEW) {
+        if ($user->getState() == UserStateEnum::NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
         if ($user->isLocked()) {

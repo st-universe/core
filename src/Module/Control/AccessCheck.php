@@ -27,7 +27,7 @@ class AccessCheck implements AccessCheckInterface
         }
 
         $hasUser = $game->hasUser();
-        if ($hasUser && $game->getUser()->getState() === UserStateEnum::USER_STATE_ACCOUNT_VERIFICATION) {
+        if ($hasUser && $game->getUser()->getState() === UserStateEnum::ACCOUNT_VERIFICATION) {
             throw new AccountNotVerifiedException();
         }
 

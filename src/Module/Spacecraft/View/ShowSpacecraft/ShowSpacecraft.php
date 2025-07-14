@@ -153,7 +153,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
         $game->setTemplateVar('HAS_FREE_SHUTTLE_SPACE', $this->hasFreeShuttleSpace($spacecraft));
         $game->setTemplateVar('STORED_SHUTTLE_COUNT', $this->getStoredShuttleCount($spacecraft));
-        if ($game->getUser()->getState() === UserStateEnum::USER_STATE_COLONIZATION_SHIP) {
+        if ($game->getUser()->getState() === UserStateEnum::COLONIZATION_SHIP) {
             $game->setTemplateVar('CLOSEST_COLONIZABLE_DISTANCE', $this->colonyRepository->getClosestColonizableColonyDistance($wrapper));
         }
 
