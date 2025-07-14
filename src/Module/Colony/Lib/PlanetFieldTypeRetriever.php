@@ -12,6 +12,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
 
 /**
@@ -42,7 +43,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     public function getDescription(int $fieldTypeId): string
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_NAME)) {
-            $this->fillCache(self::CACHE_KEY_NAME, 'getDescription');
+            $this->fillCache(self::CACHE_KEY_NAME, fn(PlanetFieldType $type): string => $type->getDescription());
         }
 
         return $this->cache->getItem(self::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
@@ -52,7 +53,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     public function getCategory(int $fieldTypeId): int
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_CATEGORY)) {
-            $this->fillCache(self::CACHE_KEY_CATEGORY, 'getCategory');
+            $this->fillCache(self::CACHE_KEY_CATEGORY, fn(PlanetFieldType $type): int => $type->getCategory());
         }
 
         if ($fieldTypeId === 1000) {
@@ -96,12 +97,13 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         return $this->getCategory($planetField->getFieldType()) === $fieldCategory;
     }
 
-    private function fillCache(string $cacheKey, string $method): void
+    /** @phpstan-param callable(PlanetFieldType): mixed $getter */
+    private function fillCache(string $cacheKey, callable $getter): void
     {
         $cacheData = [];
 
         foreach ($this->planetFieldTypeRepository->findAll() as $field) {
-            $cacheData[$field->getFieldType()] = $field->$method();
+            $cacheData[$field->getFieldType()] = $getter($field);
         }
 
         $cacheItem = new CacheItem($cacheKey);

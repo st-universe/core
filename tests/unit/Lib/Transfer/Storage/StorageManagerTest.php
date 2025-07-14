@@ -184,17 +184,16 @@ class StorageManagerTest extends StuTestCase
     public static function getTransferEntitiesProvider(): array
     {
         return [
-            [Mockery::mock(Colony::class), TransferEntityTypeEnum::COLONY, 'setColony'],
-            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::SHIP, 'setSpacecraft'],
-            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::STATION, 'setSpacecraft']
+            [Mockery::mock(Colony::class), TransferEntityTypeEnum::COLONY],
+            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::SHIP],
+            [Mockery::mock(Spacecraft::class), TransferEntityTypeEnum::STATION]
         ];
     }
 
     #[DataProvider('getTransferEntitiesProvider')]
     public function testUpperStorageCreatesNewStorageItem(
         EntityWithStorageInterface&MockInterface $entity,
-        TransferEntityTypeEnum $entityType,
-        string $expectedSetter
+        TransferEntityTypeEnum $entityType
     ): void {
         $storageItem = $this->mock(Storage::class);
         $user = $this->mock(User::class);
@@ -234,7 +233,7 @@ class StorageManagerTest extends StuTestCase
             ->with($user)
             ->once()
             ->andReturnSelf();
-        $storageItem->shouldReceive($expectedSetter)
+        $storageItem->shouldReceive('setEntity')
             ->with($entity)
             ->once()
             ->andReturnSelf();

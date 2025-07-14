@@ -11,12 +11,13 @@ use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
 use Stu\Lib\Transfer\Storage\Exception\QuantityTooSmallException;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class StorageManager implements StorageManagerInterface
 {
     public function __construct(
-        private StorageRepositoryInterface $storageRepository
+        private readonly StorageRepositoryInterface $storageRepository
     ) {}
 
     #[Override]
@@ -59,36 +60,38 @@ final class StorageManager implements StorageManagerInterface
     #[Override]
     public function upperStorage(EntityWithStorageInterface $entity, Commodity $commodity, int $amount): void
     {
-        $storage = $entity->getStorage();
+        $storages = $entity->getStorage();
         $commodityId = $commodity->getId();
 
-        $stor = $storage[$commodityId] ?? null;
+        $storage = $storages[$commodityId] ?? null;
 
-        if ($stor === null) {
+        if ($storage === null) {
             $user = $entity->getUser();
             if ($user === null) {
                 throw new RuntimeException('this should not happen');
             }
-            $setter = $this->getSetter($entity->getTransferEntityType());
-            $stor = $this->storageRepository->prototype()
+            $storage = $this->storageRepository->prototype()
                 ->setUser($user)
-                ->$setter($entity)
                 ->setCommodity($commodity);
 
-            $storage->set($commodityId, $stor);
+            $this->setOwner($storage, $entity);
+
+            $storages->set($commodityId, $storage);
         }
 
-        $stor->setAmount($stor->getAmount() + $amount);
+        $storage->setAmount($storage->getAmount() + $amount);
 
-        $this->storageRepository->save($stor);
+        $this->storageRepository->save($storage);
     }
 
-    private function getSetter(TransferEntityTypeEnum $entityType): string
+    private function setOwner(Storage $storage, EntityWithStorageInterface $entity): void
     {
-        return match ($entityType) {
+        $entityType = $entity->getTransferEntityType();
+
+        match ($entityType) {
+            TransferEntityTypeEnum::COLONY,
             TransferEntityTypeEnum::SHIP,
-            TransferEntityTypeEnum::STATION => 'setSpacecraft',
-            TransferEntityTypeEnum::COLONY => 'setColony',
+            TransferEntityTypeEnum::STATION => $storage->setEntity($entity),
             default => throw new RuntimeException(sprintf('unsupported setter for type %s', $entityType->value))
         };
     }
