@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 class ColonyCorrector implements ColonyCorrectorInterface
@@ -60,10 +62,18 @@ class ColonyCorrector implements ColonyCorrectorInterface
             );
 
             if (
-                $this->check($worker, $colony->getWorkers(), $colony, 'setWorkers', 'worker')
-                || $this->check($activeHousing, $colony->getChangeable()->getMaxBev(), $colony, 'setMaxBev', 'housing')
-                || $this->check($storage, $colony->getMaxStorage(), $colony, 'setMaxStorage', 'storage')
-                || $this->check($eps, $colony->getMaxEps(), $colony, 'setMaxEps', 'eps')
+                $this->check($worker, $colony->getWorkers(), $colony, function (ColonyChangeable $cc, $expected): void {
+                    $cc->setWorkers($expected);
+                }, 'worker')
+                || $this->check($activeHousing, $colony->getChangeable()->getMaxBev(), $colony, function (ColonyChangeable $cc, $expected): void {
+                    $cc->setMaxBev($expected);
+                }, 'housing')
+                || $this->check($storage, $colony->getMaxStorage(), $colony, function (ColonyChangeable $cc, $expected): void {
+                    $cc->setMaxStorage($expected);
+                }, 'storage')
+                || $this->check($eps, $colony->getMaxEps(), $colony, function (ColonyChangeable $cc, $expected): void {
+                    $cc->setMaxEps($expected);
+                }, 'eps')
             ) {
                 $this->colonyRepository->save($colony);
             }
@@ -72,10 +82,11 @@ class ColonyCorrector implements ColonyCorrectorInterface
         $this->entityManager->flush();
     }
 
-    private function check(int $expected, int $actual, Colony $colony, string $method, string $description): bool
+    /** @param Closure(ColonyChangeable, int): void $modifier */
+    private function check(int $expected, int $actual, Colony $colony, Closure $modifier, string $description): bool
     {
         if ($expected !== $actual) {
-            $colony->$method($expected);
+            $modifier($colony->getChangeable(), $expected);
 
             $this->loggerUtil->log(sprintf(
                 '%s of colonyId %d: expected: %d, actual: %d',

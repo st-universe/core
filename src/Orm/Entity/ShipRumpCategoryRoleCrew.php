@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepository;
 
@@ -71,92 +72,26 @@ class ShipRumpCategoryRoleCrew
         return $this->rump_role_id;
     }
 
-    public function getJob1Crew(): int
+    public function getCrewForPosition(CrewTypeEnum $type): int
     {
-        return $this->job_1_crew;
+        return match ($type) {
+            CrewTypeEnum::COMMAND => $this->job_1_crew,
+            CrewTypeEnum::SECURITY => $this->job_2_crew,
+            CrewTypeEnum::SCIENCE => $this->job_3_crew,
+            CrewTypeEnum::TECHNICAL => $this->job_4_crew,
+            CrewTypeEnum::NAVIGATION => $this->job_5_crew,
+            CrewTypeEnum::CREWMAN => $this->job_6_crew,
+            CrewTypeEnum::CAPTAIN => $this->job_7_crew
+        };
     }
 
-    public function setJob1Crew(int $job1crew): ShipRumpCategoryRoleCrew
+    public function getCrewSumForPositionsExceptCrewman(): int
     {
-        $this->job_1_crew = $job1crew;
-
-        return $this;
-    }
-
-    public function getJob2Crew(): int
-    {
-        return $this->job_2_crew;
-    }
-
-    public function setJob2Crew(int $job2crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_2_crew = $job2crew;
-
-        return $this;
-    }
-
-    public function getJob3Crew(): int
-    {
-        return $this->job_3_crew;
-    }
-
-    public function setJob3Crew(int $job3crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_3_crew = $job3crew;
-
-        return $this;
-    }
-
-    public function getJob4Crew(): int
-    {
-        return $this->job_4_crew;
-    }
-
-    public function setJob4Crew(int $job4crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_4_crew = $job4crew;
-
-        return $this;
-    }
-
-    public function getJob5Crew(): int
-    {
-        return $this->job_5_crew;
-    }
-
-    public function setJob5Crew(int $job5crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_5_crew = $job5crew;
-
-        return $this;
-    }
-
-    public function getJob6Crew(): int
-    {
-        return $this->job_6_crew;
-    }
-
-    public function setJob6Crew(int $job6crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_6_crew = $job6crew;
-
-        return $this;
-    }
-
-    public function getJob7Crew(): int
-    {
-        return $this->job_7_crew;
-    }
-
-    public function setJob7Crew(int $job7crew): ShipRumpCategoryRoleCrew
-    {
-        $this->job_7_crew = $job7crew;
-
-        return $this;
-    }
-
-    public function getShiprumpRole(): ShipRumpRole
-    {
-        return $this->shiprumpRole;
+        return $this->job_1_crew
+            + $this->job_2_crew
+            + $this->job_3_crew
+            + $this->job_4_crew
+            + $this->job_5_crew
+            + $this->job_7_crew;
     }
 }
