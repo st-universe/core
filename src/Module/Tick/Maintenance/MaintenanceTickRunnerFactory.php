@@ -25,7 +25,7 @@ final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactory
     ) {}
 
     /**
-     * @param array<MaintenanceHandlerInterface> $handlerList
+     * @param null|array<MaintenanceHandlerInterface> $handlerList
      */
     #[Override]
     public function createMaintenanceTickRunner(
