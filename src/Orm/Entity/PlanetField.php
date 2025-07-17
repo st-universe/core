@@ -16,11 +16,8 @@ use RuntimeException;
 use Stu\Orm\Repository\PlanetFieldRepository;
 
 #[Table(name: 'stu_colonies_fielddata')]
-#[Index(name: 'colony_field_idx', columns: ['colonies_id', 'field_id'])]
-#[Index(name: 'sandbox_field_idx', columns: ['colony_sandbox_id', 'field_id'])]
-#[Index(name: 'colony_building_active_idx', columns: ['colonies_id', 'buildings_id', 'aktiv'])]
-#[Index(name: 'sandbox_building_active_idx', columns: ['colony_sandbox_id', 'buildings_id', 'aktiv'])]
-#[Index(name: 'active_idx', columns: ['aktiv'])]
+#[Index(name: 'planet_field_field_idx', columns: ['field_id'])]
+#[Index(name: 'planet_field_aktiv_idx', columns: ['aktiv'])]
 #[Entity(repositoryClass: PlanetFieldRepository::class)]
 class PlanetField
 {

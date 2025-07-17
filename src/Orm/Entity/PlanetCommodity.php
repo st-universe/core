@@ -10,9 +10,13 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[Table(name: 'stu_planets_commodity')]
 #[Index(name: 'planet_classes_idx', columns: ['planet_classes_id'])]
+#[Index(name: 'planet_commodity_commodity_idx', columns: ['commodity_id'])]
+#[Index(name: 'planet_commodity_count_idx', columns: ['count'])]
+#[UniqueConstraint(name: 'planet_commodity_unique_idx', columns: ['planet_classes_id', 'commodity_id'])]
 #[Entity]
 class PlanetCommodity
 {

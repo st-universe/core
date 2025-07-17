@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250711082254 extends AbstractMigration
+final class Version20250717092004 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -174,10 +174,10 @@ final class Version20250711082254 extends AbstractMigration
             CREATE INDEX IDX_D20755B9B4ACC212 ON stu_buildings_commodity (commodity_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX building_commodity_building_idx ON stu_buildings_commodity (buildings_id)
+            CREATE INDEX IDX_D20755B91485E613 ON stu_buildings_commodity (buildings_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX commodity_count_idx ON stu_buildings_commodity (commodity_id, count)
+            CREATE INDEX building_commodity_count_idx ON stu_buildings_commodity (count)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_buildings_cost (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildings_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_A411CF8CB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A411CF8C1485E613 FOREIGN KEY (buildings_id) REFERENCES stu_buildings (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -297,19 +297,10 @@ final class Version20250711082254 extends AbstractMigration
             CREATE INDEX IDX_7E4F1097A0222FA4 ON stu_colonies_fielddata (colony_sandbox_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX colony_field_idx ON stu_colonies_fielddata (colonies_id, field_id)
+            CREATE INDEX planet_field_field_idx ON stu_colonies_fielddata (field_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX sandbox_field_idx ON stu_colonies_fielddata (colony_sandbox_id, field_id)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX colony_building_active_idx ON stu_colonies_fielddata (colonies_id, buildings_id, aktiv)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX sandbox_building_active_idx ON stu_colonies_fielddata (colony_sandbox_id, buildings_id, aktiv)
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE INDEX active_idx ON stu_colonies_fielddata (aktiv)
+            CREATE INDEX planet_field_aktiv_idx ON stu_colonies_fielddata (aktiv)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_colonies_shipqueue (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, buildplan_id INTEGER NOT NULL, buildtime INTEGER NOT NULL, finish_date INTEGER NOT NULL, stop_date INTEGER NOT NULL, building_function_id SMALLINT NOT NULL, mode INTEGER DEFAULT NULL, ship_id INTEGER DEFAULT NULL, CONSTRAINT FK_BEDCCA2F8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BEDCCA2F2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BEDCCA2F96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BEDCCA2FC256317D FOREIGN KEY (ship_id) REFERENCES stu_ship (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -436,6 +427,9 @@ final class Version20250711082254 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_commodity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, sort SMALLINT NOT NULL, "view" BOOLEAN NOT NULL, type SMALLINT NOT NULL, npc_commodity BOOLEAN NOT NULL, bound BOOLEAN NOT NULL)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX commodity_sort_idx ON stu_commodity (sort)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_construction_progress (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, station_id INTEGER NOT NULL, remaining_ticks INTEGER NOT NULL, CONSTRAINT FK_57D2AD0421BDB235 FOREIGN KEY (station_id) REFERENCES stu_station (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -931,6 +925,15 @@ final class Version20250711082254 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX planet_classes_idx ON stu_planets_commodity (planet_classes_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX planet_commodity_commodity_idx ON stu_planets_commodity (commodity_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX planet_commodity_count_idx ON stu_planets_commodity (count)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE UNIQUE INDEX planet_commodity_unique_idx ON stu_planets_commodity (planet_classes_id, commodity_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE stu_plots (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, description CLOB NOT NULL, start_date INTEGER NOT NULL, end_date INTEGER DEFAULT NULL, CONSTRAINT FK_D438967A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
