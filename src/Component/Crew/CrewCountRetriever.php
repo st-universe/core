@@ -30,7 +30,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         $count = $this->crewRepository
             ->getAmountByUserAndShipRumpCategory(
                 $user,
-                SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS
+                SpacecraftRumpCategoryEnum::ESCAPE_PODS
             );
 
         return $count + $this->shipCrewRepository->getAmountByUserAtTradeposts($user);

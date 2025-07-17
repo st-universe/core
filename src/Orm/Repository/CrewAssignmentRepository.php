@@ -158,7 +158,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             )
             ->setParameters([
                 'user' => $user,
-                'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value
+                'categoryId' => SpacecraftRumpCategoryEnum::ESCAPE_PODS->value
             ])
             ->getResult();
     }

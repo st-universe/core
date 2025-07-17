@@ -16,12 +16,12 @@ trait SpacecrafCharacteristicsTrait
 
     public function isShuttle(): bool
     {
-        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE;
+        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHUTTLE;
     }
 
     public function isConstruction(): bool
     {
-        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION;
+        return $this->getThis()->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::CONSTRUCTION;
     }
 
     public function hasEscapePods(): bool

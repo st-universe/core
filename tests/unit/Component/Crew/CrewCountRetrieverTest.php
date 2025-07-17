@@ -50,7 +50,7 @@ class CrewCountRetrieverTest extends StuTestCase
         $amount_debris = 42;
 
         $this->crewRepository->shouldReceive('getAmountByUserAndShipRumpCategory')
-            ->with($user, SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS)
+            ->with($user, SpacecraftRumpCategoryEnum::ESCAPE_PODS)
             ->once()
             ->andReturn($amount_debris);
 

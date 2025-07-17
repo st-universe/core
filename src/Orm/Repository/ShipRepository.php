@@ -137,7 +137,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 SpacecraftRump::class
             )
         )->setParameters([
-            'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value
+            'categoryId' => SpacecraftRumpCategoryEnum::ESCAPE_PODS->value
         ])->getResult();
     }
 
@@ -158,7 +158,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 CrewAssignment::class
             )
         )->setParameters([
-            'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS->value,
+            'categoryId' => SpacecraftRumpCategoryEnum::ESCAPE_PODS->value,
             'user' => $user
         ])->getResult();
     }

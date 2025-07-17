@@ -174,7 +174,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 SpacecraftRump::class
             )
         )->setParameters([
-            'catId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION->value,
+            'catId' => SpacecraftRumpCategoryEnum::CONSTRUCTION->value,
             'firstUserId' => UserConstants::USER_FIRST_ID
         ])
             ->getResult();
@@ -269,7 +269,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             )
             ->setParameters([
                 'userId' => $userId,
-                'categoryId' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value
+                'categoryId' => SpacecraftRumpCategoryEnum::STATION->value
             ])
             ->getResult();
     }
