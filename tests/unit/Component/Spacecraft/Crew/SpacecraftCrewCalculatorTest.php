@@ -74,40 +74,57 @@ class SpacecraftCrewCalculatorTest extends StuTestCase
     {
         $rump1 = $this->mock(SpacecraftRump::class);
         $rump2 = $this->mock(SpacecraftRump::class);
+        $rump3 = $this->mock(SpacecraftRump::class);
         $roleCrew1 = $this->mock(ShipRumpCategoryRoleCrew::class);
         $roleCrew2 = $this->mock(ShipRumpCategoryRoleCrew::class);
+        $roleCrew3 = $this->mock(ShipRumpCategoryRoleCrew::class);
 
         $category1 = SpacecraftRumpCategoryEnum::DESTROYER;
         $category2 = SpacecraftRumpCategoryEnum::CRUISER;
-        $role = SpacecraftRumpRoleEnum::PULSE_SHIP;
+        $roleA = SpacecraftRumpRoleEnum::PULSE_SHIP;
+        $roleB = SpacecraftRumpRoleEnum::GREAT_FREIGHTER;
 
         $rump1->shouldReceive('getRoleId')
             ->withNoArgs()
-            ->andReturn($role);
+            ->andReturn($roleA);
         $rump1->shouldReceive('getCategoryId')
             ->withNoArgs()
             ->andReturn($category1);
 
         $rump2->shouldReceive('getRoleId')
             ->withNoArgs()
-            ->andReturn($role);
+            ->andReturn($roleA);
         $rump2->shouldReceive('getCategoryId')
             ->withNoArgs()
             ->andReturn($category2);
 
+        $rump3->shouldReceive('getRoleId')
+            ->withNoArgs()
+            ->andReturn($roleB);
+        $rump3->shouldReceive('getCategoryId')
+            ->withNoArgs()
+            ->andReturn($category1);
+
         $this->shipRumpCategoryRoleCrewRepository->shouldReceive('getByShipRumpCategoryAndRole')
-            ->with($category1, $role)
+            ->with($category1, $roleA)
             ->once()
             ->andReturn($roleCrew1);
         $this->shipRumpCategoryRoleCrewRepository->shouldReceive('getByShipRumpCategoryAndRole')
-            ->with($category2, $role)
+            ->with($category2, $roleA)
             ->once()
             ->andReturn($roleCrew2);
+        $this->shipRumpCategoryRoleCrewRepository->shouldReceive('getByShipRumpCategoryAndRole')
+            ->with($category1, $roleB)
+            ->once()
+            ->andReturn($roleCrew3);
 
         $result1 = $this->subject->getCrewObj($rump1);
         $this->assertSame($roleCrew1, $result1);
 
         $result2 = $this->subject->getCrewObj($rump2);
         $this->assertSame($roleCrew2, $result2);
+
+        $result3 = $this->subject->getCrewObj($rump3);
+        $this->assertSame($roleCrew3, $result3);
     }
 }
