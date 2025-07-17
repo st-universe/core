@@ -88,7 +88,6 @@ enum SpacecraftSystemTypeEnum: int
         return match ($this) {
             self::ASTRO_LABORATORY,
             self::SHIELDS,
-            self::SUBSPACE_SCANNER,
             self::RPG_MODULE,
             self::TACHYON_SCANNER,
             self::CONSTRUCTION_HUB,
@@ -96,6 +95,7 @@ enum SpacecraftSystemTypeEnum: int
             self::WARPDRIVE,
             self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
             self::THOLIAN_WEB,
+            self::SUBSPACE_SCANNER,
             self::AGGREGATION_SYSTEM,
             self::BUSSARD_COLLECTOR => 'html/spacecraft/system/openSettingsWhenHealthy.twig',
             default => null

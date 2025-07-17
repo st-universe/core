@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
+use Stu\Component\Spacecraft\System\Data\SubSpaceSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -98,8 +99,9 @@ interface SpacecraftWrapperInterface
     public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData;
 
     public function getWarpDriveSystemData(): ?WarpDriveSystemData;
-
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData;
+
+    public function getSubSpaceSystemData(): ?SubSpaceSystemData;
 
     public function getReactorWrapper(): ?ReactorWrapperInterface;
 
