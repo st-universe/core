@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use RuntimeException;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -33,12 +35,9 @@ class PanelLayerConfiguration
     ): void {
 
         $spacecraft = $wrapper->get();
-
         if ($wrapper->get()->getSubspaceState()) {
             $panelLayerCreation->addSubspaceLayer($currentUser->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
-
-            // TODO @hux: hier einfügen, falls ein Target ausgewählt wurde etc.
-            //$panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
+            $this->checkAndAddSpacecraftSignature($wrapper, $spacecraft, $panelLayerCreation);
         }
 
         $isLssMalfunctioning = $spacecraft->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::LSS_MALFUNCTION);
@@ -86,7 +85,6 @@ class PanelLayerConfiguration
             );
         }
     }
-
     private function isUserMapActive(Layer $layer, User $currentUser): bool
     {
         if (!$currentUser->hasColony()) {
@@ -94,5 +92,65 @@ class PanelLayerConfiguration
         }
 
         return !$this->hasExplored($currentUser, $layer);
+    }
+
+    private function checkAndAddSpacecraftSignature(
+        SpacecraftWrapperInterface $wrapper,
+        Spacecraft $spacecraft,
+        PanelLayerCreationInterface $panelLayerCreation
+    ): void {
+
+        $hasSubspaceScanner = $spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if (!$hasSubspaceScanner) {
+            return;
+        }
+
+        $isSubspaceScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if (!$isSubspaceScannerHealthy) {
+            return;
+        }
+
+        $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if (!$isSubspaceScannerActive) {
+            return;
+        }
+        $hasMatrixScanner = $spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
+        if (!$hasMatrixScanner) {
+            return;
+        }
+
+        $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
+        if (!$isMatrixScannerHealthy) {
+            return;
+        }
+        $subspaceSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if ($subspaceSystem->getData() === null) {
+            return;
+        }
+
+        $subspaceSystemData = $wrapper->getSubSpaceSystemData();
+        if ($subspaceSystemData === null) {
+            return;
+        }
+
+        $analyzeTime = $subspaceSystemData->getAnalyzeTime();
+        if ($analyzeTime === null) {
+            return;
+        }
+
+        $currentTime = time();
+        $minTime = $analyzeTime + (3 * 60);
+        $maxTime = $analyzeTime + (10 * 60);
+
+        if (!($currentTime >= $minTime && $currentTime <= $maxTime)) {
+            return;
+        }
+
+        $spacecraftId = $subspaceSystemData->getSpacecraftId();
+        if ($spacecraftId === null) {
+            return;
+        }
+
+        $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
     }
 }

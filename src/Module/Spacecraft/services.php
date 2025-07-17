@@ -259,6 +259,7 @@ use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings
 use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\SystemSettingsProviderInterface;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\WebEmitterSystemSettings;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\SubspaceSensorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 
@@ -399,7 +400,8 @@ return [
     SystemSettingsProviderInterface::class => [
         SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregrationSystemSettings::class),
         SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR->value => autowire(BussardCollectorSystemSettings::class),
-        SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class)
+        SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class),
+        SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->value => autowire(SubspaceSensorSystemSettings::class)
     ],
     'SPACECRAFT_ACTIONS' => [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),

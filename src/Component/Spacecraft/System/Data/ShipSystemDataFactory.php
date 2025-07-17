@@ -45,6 +45,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
             SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR =>  new BussardCollectorSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM =>  new AggregationSystemSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::LSS =>  new LssSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::SUBSPACE_SCANNER => new SubSpaceSystemData($this->shipSystemRepository, $this->statusBarFactory),
 
             default => throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value))
         };

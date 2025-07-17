@@ -1,0 +1,9 @@
+{% set SPACECRAFT = WRAPPER.get %}
+{% set spacecraftId = SPACECRAFT.getId %}
+{% set name = 'SUBSPACE_SCANNER' %}
+
+{% set systemWrapper = getSpacecraftSystemWrapper(SPACECRAFT, name) %}
+
+{% if systemWrapper %}
+{% include 'html/spacecraft/system/systemWithOnOff.twig' %}
+{% endif %}
