@@ -15,8 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\BuildingCommodityRepository;
 
 #[Table(name: 'stu_buildings_commodity')]
-#[Index(name: 'building_commodity_building_idx', columns: ['buildings_id'])]
-#[Index(name: 'commodity_count_idx', columns: ['commodity_id', 'count'])]
+#[Index(name: 'building_commodity_count_idx', columns: ['count'])]
 #[Entity(repositoryClass: BuildingCommodityRepository::class)]
 class BuildingCommodity
 {
@@ -38,12 +37,9 @@ class BuildingCommodity
     #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Commodity $commodity;
 
-    /**
-     * @var Building
-     */
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingCommodities')]
     #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private $building;
+    private Building $building;
 
     public function getId(): int
     {

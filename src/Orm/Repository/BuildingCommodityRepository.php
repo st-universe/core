@@ -10,6 +10,7 @@ use Override;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\User;
@@ -38,13 +39,26 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         return $this->getEntityManager()
             ->createNativeQuery(
                 sprintf(
-                    'SELECT a.id as commodity_id, COALESCE(SUM(c.count), 0) as production, COALESCE(MAX(d.count),0) as pc
+                    'WITH production_data AS (
+                        SELECT c.commodity_id, SUM(c.count) AS production
+                        FROM stu_colonies_fielddata b
+                        JOIN stu_buildings_commodity c ON c.buildings_id = b.buildings_id
+                        WHERE b.%s = :hostId AND b.aktiv = :state
+                        GROUP BY c.commodity_id
+                    ),
+                    planet_class_data AS (
+                        SELECT commodity_id, count
+                        FROM stu_planets_commodity
+                        WHERE planet_classes_id = :colonyClassId
+                    )
+                    SELECT 
+                        a.id AS commodity_id,
+                        COALESCE(p.production, 0) AS production,
+                        COALESCE(pcd.count, 0) AS pc
                     FROM stu_commodity a
-                        LEFT JOIN stu_colonies_fielddata b ON b.%s = :hostId AND b.aktiv = :state
-                        LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
-                        LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = :colonyClassId
-                    WHERE c.count != 0 OR d.count != 0
-                    GROUP BY a.id
+                    LEFT JOIN production_data p ON p.commodity_id = a.id
+                    LEFT JOIN planet_class_data pcd ON pcd.commodity_id = a.id
+                    WHERE COALESCE(p.production, 0) != 0 OR COALESCE(pcd.count, 0) != 0
                     ORDER BY a.sort ASC',
                     $host->getHostType()->getPlanetFieldHostColumnIdentifier()
                 ),
