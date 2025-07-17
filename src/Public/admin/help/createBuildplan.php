@@ -61,7 +61,7 @@ Init::run(function (ContainerInterface $dic): void {
             SpacecraftModuleTypeEnum::SENSOR
         ];
 
-        if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
+        if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::STATION) {
             $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
         }
 

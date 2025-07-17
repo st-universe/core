@@ -64,7 +64,7 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        if ($station->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_CONSTRUCTION) {
+        if ($station->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::CONSTRUCTION) {
 
             $game->setView(ModuleEnum::STATION);
 

@@ -101,7 +101,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                 )
             )
             ->setParameters([
-                'category' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
+                'category' => SpacecraftRumpCategoryEnum::STATION->value,
                 'userId' => $userId
             ])
             ->getResult();
@@ -132,7 +132,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
                 )
             )
             ->setParameters([
-                'category' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION->value,
+                'category' => SpacecraftRumpCategoryEnum::STATION->value,
                 'userId' => $userId
             ])
             ->getResult();

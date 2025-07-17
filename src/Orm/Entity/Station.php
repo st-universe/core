@@ -178,7 +178,7 @@ class Station extends Spacecraft
         $count = 0;
 
         foreach ($this->getDockedShips() as $ships) {
-            if ($ships->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE) {
+            if ($ships->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHUTTLE) {
                 $count += 1;
             }
         }

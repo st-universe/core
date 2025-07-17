@@ -91,7 +91,7 @@ class SpacecraftNfsItem
     }
     public function isShuttle(): bool
     {
-        return $this->item->getRumpCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE->value;
+        return $this->item->getRumpCategoryId() === SpacecraftRumpCategoryEnum::SHUTTLE->value;
     }
     public function canBeTracked(): bool
     {

@@ -382,18 +382,18 @@ class SpacecraftRump
 
     public function isEscapePods(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_ESCAPE_PODS;
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::ESCAPE_PODS;
     }
 
     public function isShipyard(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::STATION
             && $this->getRoleId() === SpacecraftRumpRoleEnum::SHIPYARD;
     }
 
     public function isStation(): bool
     {
-        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION;
+        return $this->getCategoryId() === SpacecraftRumpCategoryEnum::STATION;
     }
 
     public function isWorkbee(): bool

@@ -7,16 +7,16 @@ namespace Stu\Component\Spacecraft;
 enum SpacecraftRumpCategoryEnum: int
 {
     // rump categories
-    case SHIP_CATEGORY_RUNABOUT = 1;
-    case SHIP_CATEGORY_FRIGATE = 2;
-    case SHIP_CATEGORY_ESCORT = 3;
-    case SHIP_CATEGORY_DESTROYER = 4;
-    case SHIP_CATEGORY_CRUISER = 5;
-    case SHIP_CATEGORY_FREIGHT = 6;
-    case SHIP_CATEGORY_WARSHIP = 8;
-    case SHIP_CATEGORY_ESCAPE_PODS = 9;
-    case SHIP_CATEGORY_SHUTTLE = 10;
-    case SHIP_CATEGORY_CONSTRUCTION = 11;
-    case SHIP_CATEGORY_STATION = 12;
-    case SHIP_CATEGORY_ENERGIENETZ = 13;
+    case RUNABOUT = 1;
+    case FRIGATE = 2;
+    case ESCORT = 3;
+    case DESTROYER = 4;
+    case CRUISER = 5;
+    case FREIGHT = 6;
+    case WARSHIP = 8;
+    case ESCAPE_PODS = 9;
+    case SHUTTLE = 10;
+    case CONSTRUCTION = 11;
+    case STATION = 12;
+    case ENERGIENETZ = 13;
 }

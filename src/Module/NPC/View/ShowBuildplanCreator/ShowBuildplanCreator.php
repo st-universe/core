@@ -81,7 +81,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                     SpacecraftModuleTypeEnum::SENSOR
                 ];
 
-                if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
+                if ($rump->getCategoryId() !== SpacecraftRumpCategoryEnum::STATION) {
                     $moduleTypes[] = SpacecraftModuleTypeEnum::WARPDRIVE;
                 }
 

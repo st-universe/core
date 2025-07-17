@@ -126,7 +126,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             )
             ->setParameters([
                 'state' => 1,
-                'ignoreCategory' => SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE->value,
+                'ignoreCategory' => SpacecraftRumpCategoryEnum::SHUTTLE->value,
                 'colonyId' => $colonyId
             ])
             ->getResult();

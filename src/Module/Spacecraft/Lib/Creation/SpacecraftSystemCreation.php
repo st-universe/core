@@ -44,14 +44,14 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         $systems = [];
 
         //default systems, that almost every ship should have
-        if ($spacecraft->getRump()->getCategoryId() !== SpacecraftRumpCategoryEnum::SHIP_CATEGORY_SHUTTLE) {
+        if ($spacecraft->getRump()->getCategoryId() !== SpacecraftRumpCategoryEnum::SHUTTLE) {
             $systems[SpacecraftSystemTypeEnum::DEFLECTOR->value] = null;
             $systems[SpacecraftSystemTypeEnum::TRACTOR_BEAM->value] = null;
         }
         $systems[SpacecraftSystemTypeEnum::LIFE_SUPPORT->value] = null;
         //TODO transporter
 
-        if ($spacecraft->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHIP_CATEGORY_STATION) {
+        if ($spacecraft->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::STATION) {
             $systems[SpacecraftSystemTypeEnum::BEAM_BLOCKER->value] = null;
         }
 

@@ -21,7 +21,7 @@ use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
  */
 final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterface
 {
-    /** @var array<int, ?ShipRumpCategoryRoleCrew>  */
+    /** @var array<string, ?ShipRumpCategoryRoleCrew>  */
     private array $shipRumpCategoryRoleCrewCache = [];
 
     /** @var array<int, int>  */
@@ -52,7 +52,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
             return null;
         }
 
-        $id = $rumpRole->value;
+        $id = sprintf('%s-%d', $shipRump->getCategoryId()->name, $rumpRole->name);
         if (!array_key_exists($id, $this->shipRumpCategoryRoleCrewCache)) {
             $this->shipRumpCategoryRoleCrewCache[$id] = $this->shipRumpCategoryRoleCrewRepository
                 ->getByShipRumpCategoryAndRole(
