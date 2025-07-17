@@ -35,11 +35,11 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
     public function getMaxCrewCountByRump(
         SpacecraftRump $shipRump
     ): int {
-        if ($this->getCrewObj($shipRump) === null) {
-            return $this->getBaseCrewCount($shipRump);
-        } else {
-            return $this->getBaseCrewCount($shipRump) + $this->getCrewObj($shipRump)->getCrewForPosition(CrewTypeEnum::CREWMAN);
-        }
+
+        $roleCrew = $this->getCrewObj($shipRump);
+
+        return $this->getBaseCrewCount($shipRump, $roleCrew)
+            + ($roleCrew?->getCrewForPosition(CrewTypeEnum::CREWMAN) ?? 0);
     }
 
     #[Override]
@@ -52,7 +52,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
             return null;
         }
 
-        $id = sprintf('%s-%d', $shipRump->getCategoryId()->name, $rumpRole->name);
+        $id = sprintf('%s-%s', $shipRump->getCategoryId()->name, $rumpRole->name);
         if (!array_key_exists($id, $this->shipRumpCategoryRoleCrewCache)) {
             $this->shipRumpCategoryRoleCrewCache[$id] = $this->shipRumpCategoryRoleCrewRepository
                 ->getByShipRumpCategoryAndRole(
@@ -95,13 +95,13 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         );
     }
 
-    private function getBaseCrewCount(SpacecraftRump $shipRump): int
+    private function getBaseCrewCount(SpacecraftRump $shipRump, ?ShipRumpCategoryRoleCrew $roleCrew): int
     {
         $key = $shipRump->getId();
         if (!array_key_exists($key, $this->baseCrewCountCache)) {
 
             $this->baseCrewCountCache[$key] = $shipRump->getBaseValues()->getBaseCrew()
-                + ($this->getCrewObj($shipRump)?->getCrewSumForPositionsExceptCrewman() ?? 0);
+                + ($roleCrew?->getCrewSumForPositionsExceptCrewman() ?? 0);
         }
 
         return $this->baseCrewCountCache[$key];
