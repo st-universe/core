@@ -54,7 +54,7 @@ final class ShowSystemSettings implements ViewControllerInterface
     {
         $settingsProvider = Init::getContainer()->getDefinedImplementationsOf(SystemSettingsProviderInterface::class)->get($type->value);
         if ($settingsProvider === null) {
-            throw new RuntimeException(sprintf('transfer strategy with typeValue %d does not exist', $type->value));
+            throw new RuntimeException(sprintf('system settings provider for %s does not exist', $type->name));
         }
 
         return $settingsProvider;
