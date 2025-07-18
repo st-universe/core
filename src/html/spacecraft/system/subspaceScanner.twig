@@ -57,19 +57,20 @@ updateSelectedSpacecraftId('{{ id }}');"
                 {% set spacecraft = entry[1] %}
                 <tr>
                     <td>
-                        <img src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}"
-                            class="ship-name-clickable" data-ship-id="{{ spacecraft.getId }}"
-                            data-ship-name="{{ flightSignature.getShipName|bbcode }}"
-                            data-flight-signature-id="{{ flightSignature.getId }}" />
-                        <span class="ship-name-clickable" data-ship-id="{{ spacecraft.getId }}"
-                            data-ship-name="{{ flightSignature.getShipName|bbcode }}"
-                            data-flight-signature-id="{{ flightSignature.getId }}">
+                        <img src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
+                        <span class="ship-name-clickable" data-info='{{ {
+  "shipId": spacecraft.getId,
+  "shipName": flightSignature.getShipName,
+  "flightSignatureId": flightSignature.getId
+}|json_encode|e("html_attr") }}'>
                             {{ flightSignature.getShipName|bbcode }}
                         </span>
+
                     </td>
                     <td>{{ flightSignature.getTime|stuDateTime }}</td>
                 </tr>
                 {% endfor %}
+
             </table>
             {% else %}
             <div class="center">Keine Raumschiff-Signaturen im Erfassungsbereich</div>
@@ -125,5 +126,9 @@ updateSelectedSpacecraftId('{{ id }}');"
         </div>
     </div>
 </div>
-
+<script>
+    const script = document.createElement('script');
+    script.src = '{{ JAVASCRIPTPATH }}/js/subspace.js';
+    document.head.appendChild(script);
+</script>
 {% endif %}

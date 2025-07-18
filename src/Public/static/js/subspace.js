@@ -36,13 +36,20 @@
         init() {
             document.addEventListener('click', (e) => {
                 if (e.target.classList.contains('ship-name-clickable')) {
-                    const shipId = e.target.dataset.shipId;
-                    const shipName = e.target.dataset.shipName;
-                    const flightSigId = e.target.dataset.flightSignatureId;
-                    this.openAnalysisView(shipId, shipName, flightSigId);
+                    const raw = e.target.dataset.info;
+                    if (!raw) return;
+                    let data;
+                    try {
+                        data = JSON.parse(raw);
+                    } catch (err) {
+                        console.error('Invalid JSON in data-info:', err);
+                        return;
+                    }
+                    this.openAnalysisView(data.shipId, data.shipName, data.flightSignatureId);
                 }
             });
-            this.checkForViews();
+
+
         }
 
         checkForViews() {
