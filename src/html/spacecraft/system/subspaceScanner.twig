@@ -58,20 +58,20 @@ updateSelectedSpacecraftId('{{ id }}');"
                 <tr>
                     <td>
                         <img src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
-                        <span class="ship-name-clickable" data-info='{{ {
-        "shipId": spacecraft.getId,
-        "shipName": flightSignature.getShipName,
-        "shipNameHtml": flightSignature.getShipName|bbcode,
-        "flightSignatureId": flightSignature.getId
-      }|json_encode|e("html_attr") }}'>
+                        <span class="ship-name-clickable" data-ship-id="{{ spacecraft.getId }}"
+                            data-flight-sig-id="{{ flightSignature.getId }}"
+                            data-ship-name="{{ flightSignature.getShipName|e('html_attr') }}">
                             {{ flightSignature.getShipName|bbcode }}
                         </span>
 
-
+                        <template id="ship-html-{{ spacecraft.getId }}" style="display:none;">
+                            {{ flightSignature.getShipName|bbcode }}
+                        </template>
                     </td>
                     <td>{{ flightSignature.getTime|stuDateTime }}</td>
                 </tr>
                 {% endfor %}
+
 
             </table>
             {% else %}

@@ -35,22 +35,18 @@
 
         init() {
             document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('ship-name-clickable')) {
-                    const raw = e.target.dataset.info;
-                    if (!raw) return;
+                const el = e.target.closest('.ship-name-clickable');
+                if (!el) return;
 
-                    let data;
-                    try {
-                        data = JSON.parse(raw);
-                    } catch (err) {
-                        console.error('Invalid JSON in data-info:', err);
-                        return;
-                    }
+                const shipId = el.dataset.shipId;
+                const shipName = el.dataset.shipName;
+                const flightSigId = el.dataset.flightSigId;
 
-                    this.openAnalysisView(data.shipId, data.shipName, data.flightSignatureId, data.shipNameHtml);
-                }
+                const template = document.getElementById(`ship-html-${shipId}`);
+                const shipNameHtml = template ? template.innerHTML : shipName;
+
+                this.openAnalysisView(shipId, shipName, flightSigId, shipNameHtml);
             });
-
 
         }
 
@@ -82,8 +78,6 @@
         }
 
         openAnalysisView(shipId, shipName, flightSigId, shipNameHtml) {
-
-
             this.gameState.targetShipId = shipId;
             this.gameState.targetShipName = shipName;
             this.gameState.targetFlightSigId = flightSigId;
@@ -93,8 +87,6 @@
             const flightSigIdEl = document.getElementById('flight-sig-id');
 
             if (targetNameEl) targetNameEl.innerHTML = shipNameHtml;
-
-
             if (shipIdEl) shipIdEl.value = shipId;
             if (flightSigIdEl) flightSigIdEl.value = flightSigId;
 
@@ -104,6 +96,7 @@
             this.showAnalysisView();
             this.startGame();
         }
+
 
         generateRandomValues(shipId) {
             const seed = shipId;
