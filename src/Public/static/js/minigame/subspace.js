@@ -96,33 +96,63 @@
 
 
         generateRandomValues(shipId) {
-            const seed = shipId;
-
+            const seed = parseInt(shipId);
+            if (isNaN(seed) || seed <= 0 || seed > 1000000) {
+                console.warn('Ungültige Schiff-ID:', shipId);
+                return;
+            }
             this.frequencyDeviation = ((seed * 7) % 71) - 35;
 
             const interferenceCount = 4 + (seed % 3);
             this.interferencePattern = [];
+
             for (let i = 0; i < interferenceCount; i++) {
                 let pos;
+                let tries = 0;
                 do {
-                    pos = (seed * (i + 13) * 17) % 16;
+                    pos = (seed * (i + 13 + tries) * 17) % 16;
+                    tries++;
+                    if (tries > 50) {
+                        for (let fallback = 0; fallback < 16; fallback++) {
+                            if (!this.interferencePattern.includes(fallback)) {
+                                pos = fallback;
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 } while (this.interferencePattern.includes(pos));
                 this.interferencePattern.push(pos);
             }
+
             this.isConstructive = (seed % 2) === 0;
             this.targetPhase = this.isConstructive ? 0 : 180;
+
             this.waveAmplitude = 30 + ((seed * 3) % 31);
 
             const signatureCount = 5 + (seed % 3);
             this.signaturePattern = [];
+
             for (let i = 0; i < signatureCount; i++) {
                 let pos;
+                let tries = 0;
                 do {
-                    pos = (seed * (i + 23) * 19) % 25;
+                    pos = (seed * (i + 23 + tries) * 19) % 25;
+                    tries++;
+                    if (tries > 50) {
+                        for (let fallback = 0; fallback < 25; fallback++) {
+                            if (!this.signaturePattern.includes(fallback)) {
+                                pos = fallback;
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 } while (this.signaturePattern.includes(pos));
                 this.signaturePattern.push(pos);
             }
         }
+
 
 
         showScannerView() {
