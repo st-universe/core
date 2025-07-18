@@ -64,9 +64,10 @@ updateSelectedSpacecraftId('{{ id }}');"
                             {{ flightSignature.getShipName|bbcode }}
                         </span>
 
-                        <template id="ship-html-{{ spacecraft.getId }}" style="display:none;">
-                            {{ flightSignature.getShipName|bbcode }}
+                        <template id="ship-bbcode-{{ spacecraft.getId }}">
+                            {{ flightSignature.getShipName|e('js') }}
                         </template>
+
                     </td>
                     <td>{{ flightSignature.getTime|stuDateTime }}</td>
                 </tr>

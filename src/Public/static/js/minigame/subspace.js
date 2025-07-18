@@ -42,8 +42,11 @@
                 const shipName = el.dataset.shipName;
                 const flightSigId = el.dataset.flightSigId;
 
-                const template = document.getElementById(`ship-html-${shipId}`);
-                const shipNameHtml = template ? template.innerHTML : shipName;
+                const bbcodeTemplate = document.getElementById(`ship-bbcode-${shipId}`);
+                const shipNameRaw = bbcodeTemplate ? bbcodeTemplate.textContent.trim() : shipName;
+
+                const shipNameHtml = window.bbcodeParser ? window.bbcodeParser(shipNameRaw) : shipNameRaw;
+
 
                 this.openAnalysisView(shipId, shipName, flightSigId, shipNameHtml);
             });
