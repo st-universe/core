@@ -7,9 +7,10 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
-class SubSpaceSystemData extends AbstractSystemData
+class SubspaceSystemData extends AbstractSystemData
 {
     public ?int $spacecraftId = null;
     public ?int $analyzeTime = null;
@@ -32,7 +33,7 @@ class SubSpaceSystemData extends AbstractSystemData
         return $this->spacecraftId ?? null;
     }
 
-    public function setSpacecraftId(?int $spacecraftId): SubSpaceSystemData
+    public function setSpacecraftId(?int $spacecraftId): SubspaceSystemData
     {
         $this->spacecraftId = $spacecraftId;
         return $this;
@@ -43,9 +44,42 @@ class SubSpaceSystemData extends AbstractSystemData
         return $this->analyzeTime ?? null;
     }
 
-    public function setAnalyzeTime(?int $analyzeTime): SubSpaceSystemData
+    public function setAnalyzeTime(?int $analyzeTime): SubspaceSystemData
     {
         $this->analyzeTime = $analyzeTime;
         return $this;
+    }
+
+    public function getHighlightedSpacecraftId(Spacecraft $spacecraft): ?int
+    {
+        $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if (!$isSubspaceScannerActive) {
+            return null;
+        }
+
+        $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
+        if (!$isMatrixScannerHealthy) {
+            return null;
+        }
+
+        $subspaceSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        if ($subspaceSystem->getData() === null) {
+            return null;
+        }
+
+        $analyzeTime = $this->getAnalyzeTime();
+        if ($analyzeTime === null) {
+            return null;
+        }
+
+        $currentTime = time();
+        $minTime = $analyzeTime + (3 * 60);
+        $maxTime = $analyzeTime + (10 * 60);
+
+        if (!($currentTime >= $minTime && $currentTime <= $maxTime)) {
+            return null;
+        }
+
+        return $this->getSpacecraftId();
     }
 }

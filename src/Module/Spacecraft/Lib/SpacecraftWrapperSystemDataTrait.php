@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
-use Stu\Component\Spacecraft\System\Data\SubSpaceSystemData;
+use Stu\Component\Spacecraft\System\Data\SubspaceSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -111,11 +111,11 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
     #[Override]
-    public function getSubSpaceSystemData(): ?SubSpaceSystemData
+    public function getSubspaceSystemData(): ?SubspaceSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::SUBSPACE_SCANNER,
-            SubSpaceSystemData::class
+            SubspaceSystemData::class
         );
     }
 }

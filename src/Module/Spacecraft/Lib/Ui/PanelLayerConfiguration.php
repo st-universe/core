@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use RuntimeException;
-use Stu\Orm\Entity\Spacecraft;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -37,7 +35,7 @@ class PanelLayerConfiguration
         $spacecraft = $wrapper->get();
         if ($wrapper->get()->getSubspaceState()) {
             $panelLayerCreation->addSubspaceLayer($currentUser->getId(), SubspaceLayerTypeEnum::IGNORE_USER);
-            $this->checkAndAddSpacecraftSignature($wrapper, $spacecraft, $panelLayerCreation);
+            $this->checkAndAddSpacecraftSignature($wrapper, $panelLayerCreation);
         }
 
         $isLssMalfunctioning = $spacecraft->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::LSS_MALFUNCTION);
@@ -96,61 +94,18 @@ class PanelLayerConfiguration
 
     private function checkAndAddSpacecraftSignature(
         SpacecraftWrapperInterface $wrapper,
-        Spacecraft $spacecraft,
         PanelLayerCreationInterface $panelLayerCreation
     ): void {
 
-        $hasSubspaceScanner = $spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if (!$hasSubspaceScanner) {
-            return;
-        }
-
-        $isSubspaceScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if (!$isSubspaceScannerHealthy) {
-            return;
-        }
-
-        $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if (!$isSubspaceScannerActive) {
-            return;
-        }
-        $hasMatrixScanner = $spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
-        if (!$hasMatrixScanner) {
-            return;
-        }
-
-        $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
-        if (!$isMatrixScannerHealthy) {
-            return;
-        }
-        $subspaceSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if ($subspaceSystem->getData() === null) {
-            return;
-        }
-
-        $subspaceSystemData = $wrapper->getSubSpaceSystemData();
+        $subspaceSystemData = $wrapper->getSubspaceSystemData();
         if ($subspaceSystemData === null) {
             return;
         }
 
-        $analyzeTime = $subspaceSystemData->getAnalyzeTime();
-        if ($analyzeTime === null) {
-            return;
+        $spacecraftId = $subspaceSystemData->getHighlightedSpacecraftId($wrapper->get());
+
+        if ($spacecraftId !== null) {
+            $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
         }
-
-        $currentTime = time();
-        $minTime = $analyzeTime + (3 * 60);
-        $maxTime = $analyzeTime + (10 * 60);
-
-        if (!($currentTime >= $minTime && $currentTime <= $maxTime)) {
-            return;
-        }
-
-        $spacecraftId = $subspaceSystemData->getSpacecraftId();
-        if ($spacecraftId === null) {
-            return;
-        }
-
-        $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
     }
 }
