@@ -14,6 +14,7 @@ class SubspaceSystemData extends AbstractSystemData
 {
     public ?int $spacecraftId = null;
     public ?int $analyzeTime = null;
+    public ?int $flightSigId = null;
 
     public function __construct(
         SpacecraftSystemRepositoryInterface $shipSystemRepository,
@@ -47,6 +48,17 @@ class SubspaceSystemData extends AbstractSystemData
     public function setAnalyzeTime(?int $analyzeTime): SubspaceSystemData
     {
         $this->analyzeTime = $analyzeTime;
+        return $this;
+    }
+
+    public function getFlightSigId(): ?int
+    {
+        return $this->flightSigId ?? null;
+    }
+
+    public function setFlightSigId(?int $flightSigId): SubspaceSystemData
+    {
+        $this->flightSigId = $flightSigId;
         return $this;
     }
 
