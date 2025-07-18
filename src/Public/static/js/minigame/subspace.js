@@ -42,13 +42,7 @@
                 const shipName = el.dataset.shipName;
                 const flightSigId = el.dataset.flightSigId;
 
-                const bbcodeTemplate = document.getElementById(`ship-bbcode-${shipId}`);
-                const shipNameRaw = bbcodeTemplate ? bbcodeTemplate.textContent.trim() : shipName;
-
-                const shipNameHtml = window.bbcodeParser ? window.bbcodeParser(shipNameRaw) : shipNameRaw;
-
-
-                this.openAnalysisView(shipId, shipName, flightSigId, shipNameHtml);
+                this.openAnalysisView(shipId, shipName, flightSigId);
             });
 
         }
@@ -80,7 +74,7 @@
             }
         }
 
-        openAnalysisView(shipId, shipName, flightSigId, shipNameHtml) {
+        openAnalysisView(shipId, shipName, flightSigId) {
             this.gameState.targetShipId = shipId;
             this.gameState.targetShipName = shipName;
             this.gameState.targetFlightSigId = flightSigId;
@@ -89,7 +83,7 @@
             const shipIdEl = document.getElementById('analysis-ship-id');
             const flightSigIdEl = document.getElementById('flight-sig-id');
 
-            if (targetNameEl) targetNameEl.innerHTML = shipNameHtml;
+            if (targetNameEl) targetNameEl.textContent = shipName;
             if (shipIdEl) shipIdEl.value = shipId;
             if (flightSigIdEl) flightSigIdEl.value = flightSigId;
 
