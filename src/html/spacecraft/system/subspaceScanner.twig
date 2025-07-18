@@ -1,8 +1,134 @@
+<head>
+    <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/subspace.css" />
+</head>
+{% macro onClickSpacecraftRefresh(spacecraft, systemWrapper) %}
+{% set id = spacecraft.getId %}
+{% set phpPage = spacecraft.getType.getModuleView.getPhpPage %}
+href="/{{ phpPage }}?SHOW_SPACECRAFT=1&id={{ id }}"
+onclick="if(event.button === 0) { {{ systemWrapper.getPreActionJs }}switchInnerContent('SHOW_SPACECRAFT', '{{
+spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '{{ phpPage }}'); {{ systemWrapper.getPostActionJs
+}}event.preventDefault(); }
+updateSelectedSpacecraftId('{{ id }}');"
+{% endmacro %}
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
 {% set name = 'SUBSPACE_SCANNER' %}
 
 {% include 'html/spacecraft/system/systemWithOnOff.twig' %}
 {% if systemWrapper.isActivated %}
-<span>TADAAAA</span>
+
+<div id="scanner-main-view">
+    <div class="box">
+        <div class="box_title">Subraum-Sensor Erfassung</div>
+        {% if SYSTEMWARNING %}
+        <div class="box_body">
+            <div>
+                <p>Zur Analyse der Subraumspuren sind aktive Matrixsensoren und Subraumfeldsensoren von nöten. Bitte
+                    überprüfen Sie die Systemintegrität</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="box_body">
+            {% if ANALYZE_TIME %}
+            <div id="analysis-status-container" class="box_body" data-analyze-time="{{ ANALYZE_TIME }}">
+                <div id="analysis-status-message" style="display: flex; align-items: center; gap: 10px;">
+                    {% if ANALYZED_SIGNATURE %}
+                    <img src="/assets/ships/{{ ANALYZED_SIGNATURE.getRump.getId }}.png"
+                        title="{{ ANALYZED_SIGNATURE.getRump.getName }}" />
+                    <span id="status-text">{{ ANALYZED_SIGNATURE.getShipName|bbcode }}</span>
+                    <span id="analysis-countdown"></span>
+                    <div id="refresh-button" style="display: none; position: absolute; visibility: hidden;">
+                        <a {{ _self.onClickSpacecraftRefresh(SPACECRAFT, systemWrapper) }}>
+                            <img src="/assets/buttons/update0.png" name="uship" />
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% if SIGNATURES is defined and SIGNATURES|length > 0 %}
+            <table class="tcal" id="subspace-signatures-table">
+                <tr>
+                    <th style="width: 300px;">Schiff</th>
+                    <th style="width: 200px;">Zuletzt Erfasst</th>
+                </tr>
+                {% for entry in SIGNATURES %}
+                {% set flightSignature = entry[0] %}
+                {% set spacecraft = entry[1] %}
+                <tr>
+                    <td>
+                        <img src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}"
+                            class="ship-name-clickable" data-ship-id="{{ spacecraft.getId }}"
+                            data-ship-name="{{ flightSignature.getShipName|bbcode }}"
+                            data-flight-signature-id="{{ flightSignature.getId }}" />
+                        <span class="ship-name-clickable" data-ship-id="{{ spacecraft.getId }}"
+                            data-ship-name="{{ flightSignature.getShipName|bbcode }}"
+                            data-flight-signature-id="{{ flightSignature.getId }}">
+                            {{ flightSignature.getShipName|bbcode }}
+                        </span>
+                    </td>
+                    <td>{{ flightSignature.getTime|stuDateTime }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <div class="center">Keine Raumschiff-Signaturen im Erfassungsbereich</div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div id="warp-analysis-view" style="display: none;">
+    <div class="box">
+        <div class="box_title">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>Warpspurenanalyse</span>
+                <secondary-button type="button" class="secondary-button" id="back-to-scanner">←
+                    Zurück</secondary-button>
+            </div>
+        </div>
+        <div class="box_body">
+            <div class="ship-info">
+                <strong>Zielschiff:</strong> <span id="target-ship-name"></span>
+            </div>
+
+            <div class="analysis-status">
+                <div class="status-bar">
+                    <div class="time-remaining">Verbleibende Zeit: <span id="analysis-time">180</span>s</div>
+                    <div class="progress-info">Fortschritt: <span id="game-progress">0</span>%</div>
+                </div>
+            </div>
+
+            <div id="warp-trace-game" class="warp-trace-game">
+                <div class="game-title">Harmonische Frequenzanalyse</div>
+                <div class="frequency-grid" id="frequency-grid">
+                </div>
+                <div class="game-stats">
+                    <div>Korrekte Sequenzen: <span id="correct-sequences">0</span></div>
+                    <div>Zeitersparnis: <span id="time-saved">0</span>s</div>
+                </div>
+            </div>
+
+
+            <form action="ship.php" method="post" id="analysis-form">
+                <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="hidden" name="ship_id" id="analysis-ship-id" value="" />
+                <input type="hidden" name="time" id="analysis-final-time" value="180" />
+                <input type="hidden" name="flight_sig_id" id="flight-sig-id" value="" />
+                <div class="button-row">
+                    <input type="button" class="button" value="Analyse starten"
+                        onclick="{{ systemWrapper.getPreActionJs }}actionToInnerContent('B_SET_SUBSPACE', 'id={{ SPACECRAFT.getId }}&ship_id=' + document.getElementById('analysis-ship-id').value + '&time=' + document.getElementById('analysis-final-time').value + '&flight_sig_id=' + document.getElementById('flight-sig-id').value + '&sstr={{ SESSIONSTRING }}');{{ systemWrapper.getPostActionJs }}" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const script = document.createElement('script');
+    script.src = '{{ JAVASCRIPTPATH }}/js/minigame/subspace.js';
+    document.head.appendChild(script);
+</script>
 {% endif %}

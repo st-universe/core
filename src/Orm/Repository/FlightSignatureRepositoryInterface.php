@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\Spacecraft;
 
 /**
  * @extends ObjectRepository<FlightSignature>
@@ -51,11 +52,15 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function getVisibleSignatures(int $locationId, int $ignoreId): array;
 
     public function deleteOldSignatures(int $threshold): void;
-
     /**
      * @return array<array{user_id: int, sc: int, factionid: null|int, shipc: int}>
      */
     public function getFlightsTop10(): array;
 
     public function getSignaturesForUser(User $user): int;
+
+    /**
+     * @return array<array{FlightSignature, Spacecraft}>
+     */
+    public function getSignaturesInSensorRange(int $user_id, int $cx, int $cy, int $location_id, int $sensorRange, int $timeThreshold): array;
 }

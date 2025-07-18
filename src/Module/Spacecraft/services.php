@@ -20,6 +20,7 @@ use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Spacecraft\Action\DeactivateSystem\DeactivateSystem;
 use Stu\Module\Spacecraft\Action\DeactivateTractorBeam\DeactivateTractorBeam;
+use Stu\Module\Spacecraft\Action\DoSubspaceAnalysis\DoSubspaceAnalysis;
 use Stu\Module\Spacecraft\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Spacecraft\Action\DropBuoy\DropBuoy;
 use Stu\Module\Spacecraft\Action\DumpForeignCrewman\DumpForeignCrewman;
@@ -406,6 +407,7 @@ return [
     'SPACECRAFT_ACTIONS' => [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
+        DoSubspaceAnalysis::ACTION_IDENTIFIER => autowire(DoSubspaceAnalysis::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
         OpenEasterEgg::ACTION_IDENTIFIER => autowire(OpenEasterEgg::class),
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
