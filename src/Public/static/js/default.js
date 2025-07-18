@@ -48,10 +48,16 @@ function kpListener(e) {
 }
 window.onkeydown = kpListener;
 
+var isAjaxMandatory = false;
+
+function setAjaxMandatory(isMandatory) {
+	isAjaxMandatory = isMandatory;
+}
+
 var isClosingAjaxWindow = false;
 
 function closeAjaxWindow() {
-	if (isClosingAjaxWindow) {
+	if (isClosingAjaxWindow || isAjaxMandatory) {
 		return;
 	}
 	isClosingAjaxWindow = true;
@@ -1220,19 +1226,19 @@ function actionToInnerContent(action, params, title, page) {
 }
 
 var isUpdateInProgress = false;
-function switchInnerContent(identifier, title, params, page, stateUrl) {
+function switchInnerContent(view, title, params, page, stateUrl) {
 	if (isUpdateInProgress) {
 		return;
 	}
+	isUpdateInProgress = true;
+
 	if (isTutorial) {
 		clearTutorial();
 	}
 
-	isUpdateInProgress = true;
-
 	closeAjaxWindow();
 
-	url = `?${identifier}=1`;
+	url = `?${view}=1`;
 	if (page) {
 		url = page + url;
 	}

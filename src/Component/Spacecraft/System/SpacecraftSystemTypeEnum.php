@@ -144,6 +144,14 @@ enum SpacecraftSystemTypeEnum: int
         };
     }
 
+    public function isReloadOnActivation(): bool
+    {
+        return match ($this) {
+            self::SUBSPACE_SCANNER => true,
+            default => false
+        };
+    }
+
     public function canBeDamaged(): bool
     {
         return match ($this) {
