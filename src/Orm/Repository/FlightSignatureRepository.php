@@ -11,7 +11,10 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 
 /**
@@ -238,5 +241,63 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 'userId' => $user->getId()
             ])
             ->getSingleScalarResult();
+    }
+    /**
+     * @return array<array{FlightSignature, Spacecraft}>
+     */
+    #[Override]
+    public function getSignaturesInSensorRange(
+        int $user_id,
+        int $cx,
+        int $cy,
+        int $layer_id,
+        int $sensorRange,
+        int $timeThreshold
+    ): array {
+
+        $flightSignatures = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT fs
+                FROM %s fs
+                JOIN %s m WITH fs.location_id = m.id
+                WHERE m.cx BETWEEN :minX AND :maxX
+                  AND m.cy BETWEEN :minY AND :maxY
+                  AND m.layer_id = :layerId
+                  AND fs.time >= :minTime
+                  AND fs.user_id != :userId
+                  AND fs.is_cloaked = false
+                ORDER BY fs.ship_id ASC, fs.time DESC',
+                    FlightSignature::class,
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'minX' => $cx - $sensorRange,
+                'maxX' => $cx + $sensorRange,
+                'minY' => $cy - $sensorRange,
+                'maxY' => $cy + $sensorRange,
+                'layerId' => $layer_id,
+                'minTime' => $timeThreshold,
+                'userId' => $user_id
+            ])
+            ->getResult();
+
+        $latestPerShip = [];
+        foreach ($flightSignatures as $flightSignature) {
+            $shipId = $flightSignature->getShipId();
+
+            if (!isset($latestPerShip[$shipId])) {
+                $spacecraft = $this->getEntityManager()
+                    ->getRepository(Spacecraft::class)
+                    ->find($shipId);
+
+                if ($spacecraft) {
+                    $latestPerShip[$shipId] = [$flightSignature, $spacecraft];
+                }
+            }
+        }
+
+        return array_values($latestPerShip);
     }
 }
