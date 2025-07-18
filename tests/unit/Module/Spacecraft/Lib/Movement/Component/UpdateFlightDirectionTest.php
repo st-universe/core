@@ -23,6 +23,21 @@ class UpdateFlightDirectionTest extends StuTestCase
         $this->subject = new UpdateFlightDirection();
     }
 
+    public function testUpdateExpectNoUpdateWhenNoComputer(): void
+    {
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $oldWaypoint = $this->mock(Map::class);
+        $waypoint = $this->mock(Map::class);
+
+        $wrapper->shouldReceive('get->hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->updateWhenTraversing($oldWaypoint, $waypoint, $wrapper);
+        $this->assertEquals(DirectionEnum::NON, $result);
+    }
+
     public static function provideTestUpdateData(): array
     {
         return [
@@ -52,6 +67,11 @@ class UpdateFlightDirectionTest extends StuTestCase
         $oldWaypoint = $this->mock(Map::class);
         $waypoint = $this->mock(Map::class);
         $computer = $this->mock(ComputerSystemData::class);
+
+        $wrapper->shouldReceive('get->hasComputer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $oldWaypoint->shouldReceive('getX')
             ->withNoArgs()

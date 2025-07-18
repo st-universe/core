@@ -20,6 +20,10 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
         SpacecraftWrapperInterface $wrapper
     ): DirectionEnum {
 
+        if (!$wrapper->get()->hasComputer()) {
+            return DirectionEnum::NON;
+        }
+
         $startX = $oldWaypoint->getX();
         $startY = $oldWaypoint->getY();
 
