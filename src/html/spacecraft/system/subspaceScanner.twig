@@ -128,7 +128,7 @@ updateSelectedSpacecraftId('{{ id }}');"
 
 <script>
     const script = document.createElement('script');
-    script.src = '/static/js/minigame/subspace.js';
+    script.src = '{{ JAVASCRIPTPATH }}/js/subspace.js';
     document.head.appendChild(script);
 </script>
 {% endif %}
