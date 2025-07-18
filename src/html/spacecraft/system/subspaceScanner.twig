@@ -59,12 +59,14 @@ updateSelectedSpacecraftId('{{ id }}');"
                     <td>
                         <img src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
                         <span class="ship-name-clickable" data-info='{{ {
-  "shipId": spacecraft.getId,
-  "shipName": flightSignature.getShipName,
-  "flightSignatureId": flightSignature.getId
-}|json_encode|e("html_attr") }}'>
+        "shipId": spacecraft.getId,
+        "shipName": flightSignature.getShipName,
+        "shipNameHtml": flightSignature.getShipName|bbcode,
+        "flightSignatureId": flightSignature.getId
+      }|json_encode|e("html_attr") }}'>
                             {{ flightSignature.getShipName|bbcode }}
                         </span>
+
 
                     </td>
                     <td>{{ flightSignature.getTime|stuDateTime }}</td>
@@ -128,7 +130,7 @@ updateSelectedSpacecraftId('{{ id }}');"
 </div>
 <script>
     const script = document.createElement('script');
-    script.src = '{{ JAVASCRIPTPATH }}/js/subspace.js';
+    script.src = '{{ JAVASCRIPTPATH }}/js/minigame/subspace.js';
     document.head.appendChild(script);
 </script>
 {% endif %}

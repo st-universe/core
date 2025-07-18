@@ -38,6 +38,7 @@
                 if (e.target.classList.contains('ship-name-clickable')) {
                     const raw = e.target.dataset.info;
                     if (!raw) return;
+
                     let data;
                     try {
                         data = JSON.parse(raw);
@@ -45,7 +46,8 @@
                         console.error('Invalid JSON in data-info:', err);
                         return;
                     }
-                    this.openAnalysisView(data.shipId, data.shipName, data.flightSignatureId);
+
+                    this.openAnalysisView(data.shipId, data.shipName, data.flightSignatureId, data.shipNameHtml);
                 }
             });
 
@@ -79,7 +81,8 @@
             }
         }
 
-        openAnalysisView(shipId, shipName, flightSigId) {
+        openAnalysisView(shipId, shipName, flightSigId, shipNameHtml) {
+
 
             this.gameState.targetShipId = shipId;
             this.gameState.targetShipName = shipName;
@@ -89,7 +92,9 @@
             const shipIdEl = document.getElementById('analysis-ship-id');
             const flightSigIdEl = document.getElementById('flight-sig-id');
 
-            if (targetNameEl) targetNameEl.textContent = shipName;
+            if (targetNameEl) targetNameEl.innerHTML = shipNameHtml;
+
+
             if (shipIdEl) shipIdEl.value = shipId;
             if (flightSigIdEl) flightSigIdEl.value = flightSigId;
 
