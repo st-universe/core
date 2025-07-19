@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Action\DoSubspaceAnalysis;
 
 use Override;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -20,8 +20,7 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader,
-        private SpacecraftSystemWrapperFactoryInterface $spacecraftSystemWrapperFactory
+        private SpacecraftLoaderInterface $spacecraftLoader
     ) {}
 
 
@@ -29,7 +28,6 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $game->setMacroInAjaxWindow('html/spacecraft/system/subspaceScanner.twig');
 
         $userId = $game->getUser()->getId();
 
@@ -76,13 +74,12 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
         $subspaceSystem->setAnalyzeTime(time() - (180 - $time))->update();
         $subspaceSystem->setFlightSigId($flightSigId)->update();
 
-        $game->setTemplateVar(
-            'systemWrapper',
-            $this->spacecraftSystemWrapperFactory->create($spacecraft, SpacecraftSystemTypeEnum::SUBSPACE_SCANNER)
-        );
-        $game->setTemplateVar('SPACECRAFT', $spacecraft);
-
         $game->addInformation(sprintf(_('Analyse gestartet. Fertigstellung in ~ %d Sekunden'), $time));
+
+        $game->addExecuteJS(
+            sprintf('showSystemSettingsWindow("%s");setAjaxMandatory(false);', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),
+            GameEnum::JS_EXECUTION_AFTER_RENDER
+        );
     }
 
     #[Override]

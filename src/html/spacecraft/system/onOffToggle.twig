@@ -5,7 +5,7 @@
     <img src="/assets/buttons/{{ icon }}1.png" name="{{ icon }}" /> {{ description }} deaktivieren</a>
 {% else %}
 <a href="javascript:void(0);"
-    onClick="{{ systemWrapper.getPreActionJs }}actionToInnerContent('B_ACTIVATE_SYSTEM', 'id={{ spacecraftId }}&type={{ name }}&sstr={{ SESSIONSTRING }}');{{ systemWrapper.getPostActionJs }}"
+    onClick="{{ systemWrapper.getPreActionJs }}actionToInnerContent('B_ACTIVATE_SYSTEM', 'id={{ spacecraftId }}&type={{ name }}&sstr={{ SESSIONSTRING }}');"
     onmouseover="cp('{{ icon }}','buttons/{{ icon }}1');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}2');">
     <img src="/assets/buttons/{{ icon }}2.png" name="{{ icon }}" /> {{ description }} aktivieren</a>
 {% endif %}

@@ -52,11 +52,4 @@ class SpacecraftSystemWrapper
             ? sprintf('setAjaxMandatory(true);')
             : null;
     }
-
-    public function getPostActionJs(): ?string
-    {
-        return $this->type->isReloadOnActivation()
-            ? sprintf('showSystemSettingsWindow("%s");setAjaxMandatory(false);', $this->type->name)
-            : null;
-    }
 }

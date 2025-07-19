@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Action\ActivateSystem;
 
 use Override;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,12 +23,20 @@ final class ActivateSystem implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $type = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
 
         $this->helper->activate(
             request::getIntFatal('id'),
-            SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type')),
+            $type,
             $game
         );
+
+        if ($type->isReloadOnActivation()) {
+            $game->addExecuteJS(
+                sprintf('showSystemSettingsWindow("%s");setAjaxMandatory(false);', $type->name),
+                GameEnum::JS_EXECUTION_AFTER_RENDER
+            );
+        }
     }
 
     #[Override]

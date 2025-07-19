@@ -6,8 +6,9 @@
 {% set phpPage = spacecraft.getType.getModuleView.getPhpPage %}
 href="/{{ phpPage }}?SHOW_SPACECRAFT=1&id={{ id }}"
 onclick="if(event.button === 0) { {{ systemWrapper.getPreActionJs }}switchInnerContent('SHOW_SPACECRAFT', '{{
-spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '{{ phpPage }}'); {{ systemWrapper.getPostActionJs
-}}event.preventDefault(); }
+spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '{{ phpPage }}');
+showSystemSettingsWindow("SUBSPACE_SCANNER");
+setAjaxMandatory(false); event.preventDefault(); }
 updateSelectedSpacecraftId('{{ id }}');"
 {% endmacro %}
 {% set SPACECRAFT = WRAPPER.get %}
@@ -120,7 +121,7 @@ updateSelectedSpacecraftId('{{ id }}');"
                 <input type="hidden" name="flight_sig_id" id="flight-sig-id" value="" />
                 <div class="button-row">
                     <input type="button" class="button" value="Analyse starten"
-                        onclick="{{ systemWrapper.getPreActionJs }}actionToInnerContent('B_SET_SUBSPACE', 'id={{ SPACECRAFT.getId }}&ship_id=' + document.getElementById('analysis-ship-id').value + '&time=' + document.getElementById('analysis-final-time').value + '&flight_sig_id=' + document.getElementById('flight-sig-id').value + '&sstr={{ SESSIONSTRING }}');{{ systemWrapper.getPostActionJs }}" />
+                        onclick="{{ systemWrapper.getPreActionJs }}actionToInnerContent('B_SET_SUBSPACE', 'id={{ SPACECRAFT.getId }}&ship_id=' + document.getElementById('analysis-ship-id').value + '&time=' + document.getElementById('analysis-final-time').value + '&flight_sig_id=' + document.getElementById('flight-sig-id').value + '&sstr={{ SESSIONSTRING }}');" />
                 </div>
             </form>
         </div>
