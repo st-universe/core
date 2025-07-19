@@ -74,6 +74,7 @@ function switchMenu(menu, id, func, fid, params, doPreserveResult) {
 	}
 }
 
+var buildmode = 0;
 var selectedbuilding = 0;
 
 function openBuildingInfo(buildingId) {
@@ -229,17 +230,6 @@ function showPodLocationWindow() {
 	elt = 'podlocations';
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
-}
-
-function toggleMaxEmpty(elem, max) {
-	var input = elem.up('tr').down('.commodityAmount');
-	var value = input.value;
-
-	if (value) {
-		input.value = '';
-	} else {
-		input.value = max;
-	}
 }
 
 function initBuildmenuMouseEvent() {
