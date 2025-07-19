@@ -45,6 +45,13 @@
                 this.openAnalysisView(shipId, shipName, flightSigId);
             });
 
+            document.addEventListener('click', (e) => {
+                const backBtn = e.target.closest('secondary-button#back-to-scanner');
+                if (backBtn) {
+                    this.showScannerView();
+                }
+            });
+
         }
 
         checkForViews() {
@@ -126,7 +133,8 @@
             }
 
             this.isConstructive = (seed % 2) === 0;
-            this.targetPhase = this.isConstructive ? 0 : 180;
+            this.initialPhase = 10 + ((seed * 13) % 161);
+            this.targetPhase = 180 - this.initialPhase;
 
             this.waveAmplitude = 30 + ((seed * 3) % 31);
 
@@ -152,8 +160,6 @@
                 this.signaturePattern.push(pos);
             }
         }
-
-
 
         showScannerView() {
             const scannerView = document.getElementById('scanner-main-view');
@@ -240,6 +246,7 @@
         createFrequencyCalibration(container) {
             const targetFreq = 2847.3;
             const startFreq = targetFreq + this.frequencyDeviation;
+            this.startBackgroundTimer(45);
 
             container.innerHTML = `
             <div class="analysis-panel">
@@ -268,6 +275,7 @@
         }
 
         createInterferenceElimination(container) {
+            this.startBackgroundTimer(30);
             container.innerHTML = `
             <div class="analysis-panel">
                 <div class="phase-title">Interferenzmuster-Elimination</div>
@@ -303,6 +311,7 @@
         }
 
         createSignatureExtraction(container) {
+            this.startBackgroundTimer(30);
             container.innerHTML = `
             <div class="analysis-panel">
                 <div class="phase-title">Warp-Signatur-Extraktion</div>
@@ -378,7 +387,6 @@
 
             const drawWaveforms = (phaseDegrees) => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
                 ctx.strokeStyle = '#1b1b1f';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -393,8 +401,10 @@
                     ctx.stroke();
                 }
 
-                ctx.lineWidth = 2;
+                const totalPhase = this.initialPhase + phaseDegrees;
+                const totalPhaseRadians = totalPhase * Math.PI / 180;
 
+                ctx.lineWidth = 2;
                 ctx.strokeStyle = '#4CAF50';
                 ctx.beginPath();
                 for (let x = 0; x < canvas.width; x++) {
@@ -406,9 +416,8 @@
 
                 ctx.strokeStyle = '#2196F3';
                 ctx.beginPath();
-                const phaseRadians = (phaseDegrees * Math.PI) / 180;
                 for (let x = 0; x < canvas.width; x++) {
-                    const y = 100 + this.waveAmplitude * Math.sin((x / 80) * 2 * Math.PI + phaseRadians);
+                    const y = 100 + this.waveAmplitude * Math.sin((x / 80) * 2 * Math.PI + totalPhaseRadians);
                     if (x === 0) ctx.moveTo(x, y);
                     else ctx.lineTo(x, y);
                 }
@@ -419,7 +428,7 @@
                 ctx.beginPath();
                 for (let x = 0; x < canvas.width; x++) {
                     const wave1 = this.waveAmplitude * Math.sin((x / 80) * 2 * Math.PI);
-                    const wave2 = this.waveAmplitude * Math.sin((x / 80) * 2 * Math.PI + phaseRadians);
+                    const wave2 = this.waveAmplitude * Math.sin((x / 80) * 2 * Math.PI + totalPhaseRadians);
                     const resultY = 100 + (wave1 + wave2);
                     if (x === 0) ctx.moveTo(x, resultY);
                     else ctx.lineTo(x, resultY);
@@ -434,18 +443,18 @@
                 ctx.fillStyle = '#ff6666';
                 ctx.fillText('Resultat', 10, 50);
 
-                const phaseDiff = Math.abs(phaseDegrees - this.targetPhase);
-                const amplitudeFactor = Math.abs(Math.cos(phaseRadians / 2));
+                ctx.fillStyle = '#2196F3';
+                ctx.fillText(`Initial: ${this.initialPhase}°`, 10, canvas.height - 45);
+                ctx.fillText(`Zusätzlich: ${phaseDegrees}°`, 10, canvas.height - 25);
+                ctx.fillText(`Gesamt: ${totalPhase}°`, 10, canvas.height - 5);
+
+                const phaseDiff = Math.abs(totalPhase - 180);
+                const amplitudeFactor = Math.abs(Math.cos(totalPhaseRadians / 2));
 
                 if (phaseDiff < 15) {
                     ctx.fillStyle = '#4CAF50';
-                    if (this.isConstructive) {
-                        ctx.fillText('✓ KONSTRUKTIVE', canvas.width - 120, 20);
-                        ctx.fillText('INTERFERENZ!', canvas.width - 120, 35);
-                    } else {
-                        ctx.fillText('✓ DESTRUKTIVE', canvas.width - 120, 20);
-                        ctx.fillText('INTERFERENZ!', canvas.width - 120, 35);
-                    }
+                    ctx.fillText('✓ DESTRUKTIVE', canvas.width - 120, 20);
+                    ctx.fillText('INTERFERENZ!', canvas.width - 120, 35);
                 } else {
                     ctx.fillStyle = '#ff6666';
                     ctx.fillText(`Δ ${phaseDiff.toFixed(1)}°`, canvas.width - 100, 20);
@@ -461,14 +470,17 @@
 
             document.getElementById('sync-waves').addEventListener('click', () => {
                 const currentPhase = parseInt(slider.value);
-                const phaseDiff = Math.abs(currentPhase - this.targetPhase);
+                const totalPhase = this.initialPhase + currentPhase;
+                const phaseDiff = Math.abs(totalPhase - 180);
+                const accuracy = Math.max(0, 1 - (phaseDiff / 15));
+                const adjustedReduction = Math.ceil(45 * accuracy);
 
                 if (phaseDiff < 15) {
                     const btn = document.getElementById('sync-waves');
                     btn.style.background = '#4CAF50';
-                    btn.textContent = this.isConstructive ? 'Verstärkung erreicht!' : 'Auslöschung erreicht!';
+                    btn.textContent = 'Auslöschung erreicht!';
                     setTimeout(() => {
-                        this.completePhase();
+                        this.completePhase(adjustedReduction);
                     }, 1000);
                 } else {
                     const btn = document.getElementById('sync-waves');
@@ -515,12 +527,16 @@
             this.createScientificInterface();
         }
 
-        completePhase() {
+        completePhase(timeReduction) {
+            if (this.backgroundTimer) {
+                clearInterval(this.backgroundTimer);
+                timeReduction = timeReduction || this.currentReduction;
+            }
             if (this.gameState.gameProgress >= 100) return;
 
             const currentPhase = this.phases[this.gameState.currentPhaseIndex];
 
-            this.gameState.timeSaved += currentPhase.timeReduction;
+            this.gameState.timeSaved += timeReduction || currentPhase.timeReduction;
             this.gameState.timeRemaining = Math.max(30, 180 - this.gameState.timeSaved);
             this.gameState.completedAnalyses++;
             this.gameState.gameProgress += 25;
@@ -754,6 +770,13 @@
                 clearInterval(this.availabilityCountdownInterval);
             }
             this.availabilityCountdownInterval = setInterval(updateAvailabilityCountdown, 1000);
+        }
+
+        startBackgroundTimer(initialReduction) {
+            this.currentReduction = initialReduction;
+            this.backgroundTimer = setInterval(() => {
+                this.currentReduction = Math.floor(Math.max(0, this.currentReduction - 0.4));
+            }, 1000);
         }
     }
 
