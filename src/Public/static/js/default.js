@@ -1332,9 +1332,18 @@ const loadScript = (FILE_URL, async = true, type = "text/javascript") => {
 		}
 	});
 };
+
+const loadedScripts = new Set();
+
 function appendJsAsync(path) {
+
+	if (loadedScripts.has(path)) {
+		return;
+	}
+
 	loadScript(path)
 		.then((data) => {
+			loadedScripts.add(path);
 			console.log(`Script '${path}' loaded successfully`, data);
 		})
 		.catch((err) => {
