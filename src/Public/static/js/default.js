@@ -1333,11 +1333,14 @@ const loadScript = (FILE_URL, async = true, type = "text/javascript") => {
 	});
 };
 
-const loadedScripts = new Set();
+var loadedScripts = new Set();
 
-function appendJsAsync(path) {
+function appendJsAsync(path, callback) {
 
 	if (loadedScripts.has(path)) {
+		if (callback) {
+			callback();
+		}
 		return;
 	}
 
@@ -1345,6 +1348,9 @@ function appendJsAsync(path) {
 		.then((data) => {
 			loadedScripts.add(path);
 			console.log(`Script '${path}' loaded successfully`, data);
+			if (callback) {
+				callback();
+			}
 		})
 		.catch((err) => {
 			console.error(err);

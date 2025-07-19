@@ -128,6 +128,6 @@ updateSelectedSpacecraftId('{{ id }}');"
     </div>
 </div>
 <script>
-    appendJsAsync('{{ JAVASCRIPTPATH }}/js/minigame/subspace.js');
+    appendJsAsync('{{ JAVASCRIPTPATH }}/js/minigame/subspace.js', () => initializeWarpTraceAnalyzer());
 </script>
 {% endif %}

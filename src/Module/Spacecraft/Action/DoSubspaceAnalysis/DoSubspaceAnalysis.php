@@ -74,10 +74,10 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
         $subspaceSystem->setAnalyzeTime(time() - (180 - $time))->update();
         $subspaceSystem->setFlightSigId($flightSigId)->update();
 
-        $game->addInformation(sprintf(_('Analyse gestartet. Fertigstellung in ~ %d Sekunden'), $time));
+        $game->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
 
         $game->addExecuteJS(
-            sprintf('showSystemSettingsWindow("%s");setAjaxMandatory(false);', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),
+            sprintf('showSystemSettingsWindow("%s"); setAjaxMandatory(false); initializeWarpTraceAnalyzer();', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),
             GameEnum::JS_EXECUTION_AFTER_RENDER
         );
     }
