@@ -8,6 +8,7 @@ use Stu\Module\Admin\Action\BlockUser;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
 use Stu\Module\Admin\Action\CreateMissingUserWards;
 use Stu\Module\Admin\Action\LockUser;
+use Stu\Module\Admin\Action\PostNews;
 use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
 use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegion;
 use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegionRequest;
@@ -114,6 +115,7 @@ return [
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
+        PostNews::ACTION_IDENTIFIER => autowire(PostNews::class),
         StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
         ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
         CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),

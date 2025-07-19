@@ -10,9 +10,7 @@ use Stu\Orm\Entity\News;
 
 final class NewsItem implements NewsItemInterface
 {
-    public function __construct(private ParserWithImageInterface $parserWithImage, private News $news)
-    {
-    }
+    public function __construct(private ParserWithImageInterface $parserWithImage, private News $news) {}
 
     #[Override]
     public function getSubject(): string
@@ -36,5 +34,11 @@ final class NewsItem implements NewsItemInterface
     public function getLinks(): array
     {
         return $this->news->getLinks();
+    }
+
+    #[Override]
+    public function isChangelog(): bool
+    {
+        return $this->news->isChangelog() ?? false;
     }
 }

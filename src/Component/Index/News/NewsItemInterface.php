@@ -14,4 +14,6 @@ interface NewsItemInterface
      * @return array<string>
      */
     public function getLinks(): array;
+
+    public function isChangelog(): bool;
 }
