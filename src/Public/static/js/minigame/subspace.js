@@ -1,6 +1,6 @@
 // Warp Trace Analysis Minigame
 
-(function () {
+function initializeWarpTraceAnalyzer() {
     if (window.WarpTraceAnalyzer) {
         if (window.currentAnalyzer) {
             window.currentAnalyzer.initializeAnalysisTimer();
@@ -638,7 +638,6 @@
             this.updateAnalysisStatus(analyzeTime, threeMinutes);
         }
 
-        Apply
         updateAnalysisStatus(analyzeTime, threeMinutes) {
             const now = new Date().getTime();
             const timePassed = now - analyzeTime;
@@ -782,4 +781,4 @@
 
     window.WarpTraceAnalyzer = WarpTraceAnalyzer;
     window.currentAnalyzer = new WarpTraceAnalyzer();
-})();
+};
