@@ -34,6 +34,10 @@ class News
     #[Column(type: 'text')]
     private string $refs = '';
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $is_changelog = null;
+
+
     public function getId(): int
     {
         return $this->id;
@@ -83,6 +87,18 @@ class News
     public function setRefs(string $refs): News
     {
         $this->refs = $refs;
+
+        return $this;
+    }
+
+    public function isChangelog(): ?bool
+    {
+        return $this->is_changelog;
+    }
+
+    public function setChangelog(?bool $isChangelog): News
+    {
+        $this->is_changelog = $isChangelog;
 
         return $this;
     }

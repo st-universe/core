@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250717092004 extends AbstractMigration
+final class Version20250719172239 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -873,7 +873,7 @@ final class Version20250717092004 extends AbstractMigration
             CREATE TABLE stu_names (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, count INTEGER DEFAULT NULL, type INTEGER NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE stu_news (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, subject VARCHAR(255) NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, refs CLOB NOT NULL)
+            CREATE TABLE stu_news (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, subject VARCHAR(255) NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, refs CLOB NOT NULL, is_changelog BOOLEAN DEFAULT NULL)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX news_date_idx ON stu_news (date)

@@ -171,6 +171,38 @@
         </div>
     </div>
 </form>
+<br>
+<form action="/admin/index.php" method="post" name="scriptform3" id="scriptform3">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div class="divhead">News</div>
+    <div class="divbody">
+        <div>
+            Titel:<br>
+            <input type="text" name="subject" style="width: 100%;">
+        </div>
+        <br>
+        <div>
+            Text:<br>
+            <textarea name="text" rows="10" style="width: 100%;"></textarea>
+        </div>
+        <br>
+        <div>
+            Referenzen (optional):<br>
+            <input type="text" name="refs" style="width: 100%;">
+        </div>
+        <br>
+        <div>
+            <label>
+                <input type="checkbox" name="is_changelog" value="1" checked>
+                Als Changelog markieren
+            </label>
+        </div>
+        <br>
+        <div>
+            <input type="submit" class="button" name="B_POST_NEWS" value="News erstellen">
+        </div>
+    </div>
+</form>
             </div>
             <div class="footer">
                                 Rendered in 4.203s - Memory usage: 42.77Mb
