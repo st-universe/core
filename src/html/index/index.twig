@@ -251,7 +251,7 @@
             {% endautoescape %}
         </strong>
         <div class="mb-3" style="font-size: 80%; color: #686868;">
-            vom {{ data.getDate|stuDateTime }}
+            vom {{ data.getDate|date('d.m.Y H:i') }}
         </div>
         <p>
             {% autoescape false %}
