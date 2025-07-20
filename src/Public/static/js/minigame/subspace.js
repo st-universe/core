@@ -685,6 +685,7 @@ function initializeWarpTraceAnalyzer() {
             }
         }
 
+
         startCountdown(timeRemaining) {
             const countdownElement = document.getElementById('analysis-countdown');
             if (!countdownElement) return;
@@ -696,20 +697,24 @@ function initializeWarpTraceAnalyzer() {
                     clearInterval(this.countdownInterval);
 
                     const statusText = document.getElementById('status-text');
-                    const shipName = statusText.textContent.replace('Warpspur von ', '').replace(' wird analysiert...', '');
-
                     if (statusText) {
+                        const shipName = statusText.textContent.replace('Warpspur von ', '').replace(' wird analysiert...', '');
                         statusText.textContent = `Warpspur von ${shipName} wurde analysiert`;
                     }
 
-                    const refreshLink = document.querySelector('#refresh-button a');
-                    if (refreshLink) {
-                        const clickEvent = new MouseEvent('click', {
-                            bubbles: true,
-                            cancelable: true,
-                            button: 0
-                        });
-                        refreshLink.dispatchEvent(clickEvent);
+                    const refreshButton = document.getElementById('refresh-button');
+                    if (refreshButton) {
+                        refreshButton.style.display = 'block';
+
+                        const refreshLink = refreshButton.querySelector('a');
+                        if (refreshLink) {
+                            const clickEvent = new MouseEvent('click', {
+                                bubbles: true,
+                                cancelable: true,
+                                button: 0
+                            });
+                            refreshLink.dispatchEvent(clickEvent);
+                        }
                     }
 
                     const availabilityTime = 10 * 60 * 1000;

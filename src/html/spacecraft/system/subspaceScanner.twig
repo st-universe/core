@@ -5,11 +5,15 @@
 {% set id = spacecraft.getId %}
 {% set phpPage = spacecraft.getType.getModuleView.getPhpPage %}
 href="/{{ phpPage }}?SHOW_SPACECRAFT=1&id={{ id }}"
-onclick="if(event.button === 0) { {{ systemWrapper.getPreActionJs }}switchInnerContent('SHOW_SPACECRAFT', '{{
+onclick="if(event.button === 0) {
+setAjaxMandatory(true);
+{{ systemWrapper.getPreActionJs }}switchInnerContent('SHOW_SPACECRAFT', '{{
 spacecraft.getName|bbcode2txt|htmlSafe }}', 'id={{ id }}', '{{ phpPage }}');
-showSystemSettingsWindow("SUBSPACE_SCANNER");
-setAjaxMandatory(false); event.preventDefault(); }
-updateSelectedSpacecraftId('{{ id }}');"
+showSystemSettingsWindow('SUBSPACE_SCANNER');
+setAjaxMandatory(false);
+event.preventDefault();
+updateSelectedSpacecraftId('{{ id }}');
+}"
 {% endmacro %}
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
