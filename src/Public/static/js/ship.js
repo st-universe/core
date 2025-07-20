@@ -4,13 +4,6 @@ function showAvailableShips(fleetid) {
 	ajax_update('elt', '?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
 }
 
-function showAstroEntryWindow(isSystem) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	isSystemParam = isSystem ? '&isSystem=1' : '&isSystem=0';
-	ajax_update('elt', 'ship.php?id=' + spacecraftid + '&SHOW_ASTRO_ENTRY=1' + isSystemParam);
-}
-
 function tradeMenuChoosePayment(postid) {
 	ajax_update('trademenucontent', 'ship.php?SHOW_TRADEMENU_CHOOSE_PAYMENT=1&id=' + spacecraftid + "&postid=" + postid);
 }
