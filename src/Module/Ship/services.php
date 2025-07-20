@@ -28,6 +28,7 @@ use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequestInterface;
 use Stu\Module\Ship\Action\DisplayNotOwner\DisplayNotOwner;
 use Stu\Module\Ship\Action\DockShip\DockShip;
 use Stu\Module\Ship\Action\EscapeTractorBeam\EscapeTractorBeam;
+use Stu\Module\Ship\Action\FakeWarpSignature\FakeWarpSignature;
 use Stu\Module\Ship\Action\FleetActivateCloak\FleetActivateCloak;
 use Stu\Module\Ship\Action\FleetActivateNbs\FleetActivateNbs;
 use Stu\Module\Ship\Action\FleetActivatePhaser\FleetActivatePhaser;
@@ -127,6 +128,7 @@ return [
         DeactivateTrackingDevice::ACTION_IDENTIFIER => autowire(DeactivateTrackingDevice::class),
         HideFleet::ACTION_IDENTIFIER => autowire(HideFleet::class),
         ShowFleet::ACTION_IDENTIFIER => autowire(ShowFleet::class),
+        FakeWarpSignature::ACTION_IDENTIFIER => autowire(FakeWarpSignature::class),
         FleetActivateNbs::ACTION_IDENTIFIER => autowire(FleetActivateNbs::class),
         FleetDeactivateNbs::ACTION_IDENTIFIER => autowire(FleetDeactivateNbs::class),
         FleetActivateShields::ACTION_IDENTIFIER => autowire(FleetActivateShields::class),

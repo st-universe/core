@@ -474,4 +474,29 @@ function initCommunicationObserver() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', initCommunicationObserver);
+function updateWarpSignatureCountdown() {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const remainingSeconds = Math.max(0, warpSignatureEndTime - currentTime);
+
+  if (remainingSeconds <= 0) {
+    document.getElementById('warpSignatureCountdown').textContent = "00:00";
+    return;
+  }
+
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedSeconds = seconds.toString().padStart(2, '0');
+
+  document.getElementById('warpSignatureCountdown').textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+  setTimeout(updateWarpSignatureCountdown, 1000);
+}
+document.addEventListener('DOMContentLoaded', function () {
+  initCommunicationObserver();
+
+  if (document.getElementById('warpSignatureCountdown')) {
+    updateWarpSignatureCountdown();
+  }
+});

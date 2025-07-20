@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Data;
 
 use Override;
+use Stu\Module\Control\StuTime;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Module\Control\GameController;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
+use Stu\Module\Template\StatusBarFactoryInterface;
 
 class WarpDriveSystemData extends AbstractSystemData
 {
@@ -15,6 +22,28 @@ class WarpDriveSystemData extends AbstractSystemData
     public int $maxwd = 0;
     public int $split = 100;
     public bool $autoCarryOver = false;
+    public int $warpsignature = 0;
+    public int $wstimer = 0;
+
+    private StuTime $stuTime;
+    private SpacecraftRumpRepositoryInterface $rumpRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
+    private GameController $game;
+
+    public function __construct(
+        SpacecraftSystemRepositoryInterface $shipSystemRepository,
+        StatusBarFactoryInterface $statusBarFactory,
+        StuTime $stuTime,
+        SpacecraftRumpRepositoryInterface $rumpRepository,
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        GameController $game
+    ) {
+        parent::__construct($shipSystemRepository, $statusBarFactory);
+        $this->stuTime = $stuTime;
+        $this->rumpRepository = $rumpRepository;
+        $this->databaseUserRepository = $databaseUserRepository;
+        $this->game = $game;
+    }
 
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
@@ -25,10 +54,33 @@ class WarpDriveSystemData extends AbstractSystemData
     #[Override]
     public function update(): void
     {
-        // Überprüfe und begrenze den Wert zwischen 0 und 100
         $this->split = max(0, min(100, $this->split));
 
         parent::update();
+    }
+
+    /**
+     * @return array<SpacecraftRump>
+     */
+    public function getAllPossibleRumps(): array
+    {
+        $userId = $this->game->getUser()->getId();
+
+        $allRumps = $this->rumpRepository->getList();
+
+        $possibleRumps = [];
+
+        foreach ($allRumps as $rump) {
+            if (!$rump->getIsNpc() && $rump->getDatabaseId() !== null && ($rump->getCategoryId()->value < 9)) {
+                if ($this->databaseUserRepository->exists($userId, $rump->getDatabaseId())) {
+                    $possibleRumps[$rump->getId()] = $rump;
+                }
+            }
+        }
+
+        ksort($possibleRumps);
+
+        return array_values($possibleRumps);
     }
 
     public function getWarpDrive(): int
@@ -126,5 +178,32 @@ class WarpDriveSystemData extends AbstractSystemData
         )
             ->setSizeModifier(1.6)
             ->render();
+    }
+
+    public function getWarpSignature(): int
+    {
+        return $this->warpsignature;
+    }
+
+    public function setWarpSignature(int $warpsignature): WarpDriveSystemData
+    {
+        $this->warpsignature = $warpsignature;
+        return $this;
+    }
+
+    public function getWarpSignatureTimer(): int
+    {
+        return $this->wstimer;
+    }
+
+    public function setWarpSignatureTimer(int $wstimer): WarpDriveSystemData
+    {
+        $this->wstimer = $wstimer;
+        return $this;
+    }
+
+    public function isWarpSignatureActive(): bool
+    {
+        return $this->getWarpSignature() > 0 && $this->getWarpSignatureTimer() + 300 >= $this->stuTime->time();
     }
 }
