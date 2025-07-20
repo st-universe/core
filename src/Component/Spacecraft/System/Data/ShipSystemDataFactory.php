@@ -7,11 +7,15 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Override;
 use Stu\Component\Spacecraft\System\Exception\InvalidSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Module\Control\GameController;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
@@ -19,7 +23,11 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         private readonly ShipRepositoryInterface $shipRepository,
         private readonly SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private readonly TholianWebRepositoryInterface $tholianWebRepository,
-        private readonly StatusBarFactoryInterface $statusBarFactory
+        private readonly StatusBarFactoryInterface $statusBarFactory,
+        private readonly StuTime $stuTime,
+        private readonly DatabaseUserRepositoryInterface $databaseUserRepository,
+        private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private readonly GameController $gameController
     ) {}
 
     #[Override]
@@ -35,7 +43,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
             SpacecraftSystemTypeEnum::COMPUTER =>  new ComputerSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::TRACKER =>  new TrackerSystemData($this->shipRepository, $spacecraftWrapperFactory, $this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::THOLIAN_WEB =>  new WebEmitterSystemData($this->shipSystemRepository, $this->tholianWebRepository, $this->statusBarFactory),
-            SpacecraftSystemTypeEnum::WARPDRIVE =>  new WarpDriveSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::WARPDRIVE =>  new WarpDriveSystemData($this->shipSystemRepository, $this->statusBarFactory, $this->stuTime, $this->spacecraftRumpRepository, $this->databaseUserRepository, $this->gameController),
             SpacecraftSystemTypeEnum::WARPCORE =>  new WarpCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::SINGULARITY_REACTOR =>  new SingularityCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::FUSION_REACTOR =>  new FusionCoreSystemData($this->shipSystemRepository, $this->statusBarFactory),

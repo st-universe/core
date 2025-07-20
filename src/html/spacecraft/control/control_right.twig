@@ -32,8 +32,12 @@
     </tr>
     {% if SPACECRAFT.hasWarpDrive %}
     {% set epssystem = wrapper.getEpsSystemData %}
-    {% set warpdriveSplit = wrapper.getWarpDriveSystemData.getWarpDriveSplit %}
-    {% set autoCarryOver = wrapper.getWarpDriveSystemData.getAutoCarryOver %}
+    {% set warpdriveSystem = wrapper.getWarpDriveSystemData %}
+    {% set warpdrivesigActive = warpdriveSystem.isWarpSignatureActive %}
+    {% set wstime = warpdriveSystem.getWarpSignatureTimer %}
+    {% set warpdrivesig = warpdriveSystem.getAllPossibleRumps %}
+    {% set warpdriveSplit = warpdriveSystem.getWarpDriveSplit %}
+    {% set autoCarryOver = warpdriveSystem.getAutoCarryOver %}
 
     <tr>
         <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" style="width: 20px;"
@@ -65,6 +69,34 @@
 
     {% if SPACECRAFT.isWarpPossible %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'WARPDRIVE'} %}
+
+    <tr>
+        <td colspan="3">
+            <select name="rumpid" id="rumpid">
+                {% for rump in warpdrivesig %}
+                <option value="{{ rump.getId }}">{{ rump.getName }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
+            <input type="submit" class="button" name="B_FAKE_WARP_SIGNATURE" value="Warp-Signatur fälschen" />
+        </td>
+    </tr>
+
+    {% if warpdrivesigActive %}
+    <tr>
+        <td colspan="3">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span>Aktive Warpsignatur:</span><img src="/assets/ships/{{ warpdriveSystem.getWarpSignature }}.png"
+                    style="max-height: 40px;" />
+                <span>(<span id="warpSignatureCountdown"></span>)</span>
+                <script>
+                    var warpSignatureEndTime = {{ warpdriveSystem.getWarpSignatureTimer() + 300 }};
+                    updateWarpSignatureCountdown();
+                </script>
+            </div>
+        </td>
+    </tr>
+    {% endif %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'WARPDRIVE_BOOSTER'} %}
     {% endif %}
     {% endif %}

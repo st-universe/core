@@ -6,19 +6,29 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
 use InvalidArgumentException;
 use Override;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 /**
  * Creates flight signatures for ship movements
  */
 final class FlightSignatureCreator implements FlightSignatureCreatorInterface
 {
-    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository) {}
+    public function __construct(
+        private FlightSignatureRepositoryInterface $flightSignatureRepository,
+        private StuTime $stuTime,
+        private ShipLoaderInterface $shipLoader,
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
+    ) {}
 
     #[Override]
     public function createSignatures(
@@ -63,10 +73,28 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
         $signature->setUserId($spacecraft->getUser()->getId());
         $signature->setShipId($spacecraft->getId());
         $signature->setSpacecraftName($spacecraft->getName());
-        $signature->setRump($spacecraft->getRump());
+        $signature->setRump($this->getWarpSignature($spacecraft));
         $signature->setIsCloaked($spacecraft->isCloaked());
         $signature->setTime(time());
 
         return $signature;
+    }
+
+    private function getWarpSignature(Spacecraft $spacecraft): SpacecraftRump
+    {
+        $rump = $spacecraft->getRump();
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+            $spacecraft->getId(),
+            $spacecraft->getUser()->getId()
+        );
+        $warpsystem = $wrapper->getWarpDriveSystemData();
+        $system =  $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
+        if ($system->getMode()->isActivated() && $warpsystem) {
+            $signaturetime = $warpsystem->getWarpSignatureTimer();
+            if ($signaturetime + 300 >= $this->stuTime->time() && $this->spacecraftRumpRepository->find($warpsystem->getWarpSignature())) {
+                $rump = $this->spacecraftRumpRepository->find($warpsystem->getWarpSignature());
+            }
+        }
+        return $rump;
     }
 }
