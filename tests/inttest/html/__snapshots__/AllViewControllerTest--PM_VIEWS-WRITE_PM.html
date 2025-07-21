@@ -92,7 +92,7 @@
     <tr>
         <td>
             <ul id="catlist" class="pm_categories">
-                <li id="item_4778" style="width: 100%; display: block;">
+                <li data-id="4778" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4778">Pers&ouml;nlich</a>
@@ -104,7 +104,7 @@
         </a>
     </div>
 </li>
-<li id="item_4779" style="width: 100%; display: block;">
+<li data-id="4779" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4779">Schiffe</a>
@@ -116,7 +116,7 @@
         </a>
     </div>
 </li>
-<li id="item_4780" style="width: 100%; display: block;">
+<li data-id="4780" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4780">Kolonien</a>
@@ -128,7 +128,7 @@
         </a>
     </div>
 </li>
-<li id="item_4781" style="width: 100%; display: block;">
+<li data-id="4781" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4781">Handel</a>
@@ -140,7 +140,7 @@
         </a>
     </div>
 </li>
-<li id="item_4782" style="width: 100%; display: block;">
+<li data-id="4782" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4782">Systemmeldungen</a>
@@ -152,7 +152,7 @@
         </a>
     </div>
 </li>
-<li id="item_4783" style="width: 100%; display: block;">
+<li data-id="4783" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4783">Postausgang</a>
@@ -164,7 +164,7 @@
         </a>
     </div>
 </li>
-<li id="item_4784" style="width: 100%; display: block;">
+<li data-id="4784" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
                 <a href="?pmcat=4784">Stationen</a>
@@ -178,7 +178,7 @@
 </li>
             </ul>
             <script defer>
-    Sortable.create('catlist', {
+    var pmCategoryList = Sortable.create($('catlist'), {
       tag: 'li',
       onUpdate: updateCategoryOrder,
     });
