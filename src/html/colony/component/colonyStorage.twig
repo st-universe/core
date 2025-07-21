@@ -14,7 +14,7 @@
     <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations({{ stor.commodity.getId }})">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, {{ stor.commodity.getId }});">
                     <img src="/assets/commodities/{{ stor.commodity.getId }}.png"
                         title="{{ stor.commodity.getName }}" />
                 </a>

@@ -1,7 +1,8 @@
-function showAvailableShips(fleetid) {
-	closeAjaxWindow();
-	openWindow('elt', 1, 300);
-	ajax_update('elt', '?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
+function showAvailableShips(element, fleetid) {
+	var pos = findObject(element);
+	updatePopup('?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid,
+		300, pos[0] - 300, pos[1]
+	);
 }
 
 function tradeMenuChoosePayment(postid) {
@@ -10,10 +11,8 @@ function tradeMenuChoosePayment(postid) {
 function payTradeLicense(postid, method, id) {
 	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENSE=1&id=' + spacecraftid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
 }
-function showColonization(colonyId) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?SHOW_COLONIZATION=1&id=' + spacecraftid + '&colid=' + colonyId);
+function showColonization(element, colonyId) {
+	updatePopupAtElement(element, 'ship.php?SHOW_COLONIZATION=1&id=' + spacecraftid + '&colid=' + colonyId);
 }
 
 function hideFleet(fleetid) {

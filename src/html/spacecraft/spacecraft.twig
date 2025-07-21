@@ -55,7 +55,7 @@
 			{% set epsUsageStyle = hasEpsUsage ? ' cursor: pointer;' : '' %}
 			<th style="text-align: center;{{ epsUsageStyle }}"
 				title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" {% if hasEpsUsage %}
-				onclick="showEpsUsage({{ spacecraftId }});" {% endif %}>
+				onclick="showEpsUsage(this, {{ spacecraftId }});" {% endif %}>
 				Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
 			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png"
@@ -63,19 +63,19 @@
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
 				{% if SPACECRAFT.isConstruction %}
-				<a href="javascript:void(0);" onclick="showScrapWindow();" onmouseover="cp('scrap','buttons/scrap2');"
-					onmouseout="cp('scrap','buttons/scrap1');">
+				<a href="javascript:void(0);" onclick="showScrapWindow(this);"
+					onmouseover="cp('scrap','buttons/scrap2');" onmouseout="cp('scrap','buttons/scrap1');">
 					<img src="/assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
 				</a>
 				{% else %}
-				<a href="javascript:void(0);" onclick="showSelfdestructWindow({{ spacecraftId }});"
+				<a href="javascript:void(0);" onclick="showSelfdestructWindow(this, {{ spacecraftId }});"
 					onmouseover="cp('selfdestruct','buttons/selfdes2');"
 					onmouseout="cp('selfdestruct','buttons/selfdes1');">
 					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
 				</a>
 				{% if WRAPPER.canBeScrapped %}
-				<a href="javascript:void(0);" onclick="showScrapWindow();" onmouseover="cp('scrap','buttons/scrap2');"
-					onmouseout="cp('scrap','buttons/scrap1');">
+				<a href="javascript:void(0);" onclick="showScrapWindow(this);"
+					onmouseover="cp('scrap','buttons/scrap2');" onmouseout="cp('scrap','buttons/scrap1');">
 					<img src="/assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />
 				</a>
 				{% endif %}
@@ -91,7 +91,7 @@
 			</td>
 			<td style="text-align: center;">
 				{% if SPACECRAFT.hasComputer %}
-				<a href="javascript:void(0);" onclick="showALvlWindow();"><img
+				<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img
 						src="/assets/buttons/alert{{ WRAPPER.getAlertState.value }}.png" title="Alarmstufe"
 						name="setalvl" /></a>
 				{% endif %}
@@ -150,16 +150,16 @@
 					onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
-				<a href="javascript:void(0);" onclick="showSpacecraftDetails({{ spacecraftId }});"
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails(this, {{ spacecraftId }});"
 					onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
 				</a>
-				<a href="javascript:void(0);" onclick="showCommunication({{ spacecraftId }});"
+				<a href="javascript:void(0);" onclick="showCommunication(this, {{ spacecraftId }});"
 					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
 				{% if SPACECRAFT.hasLss %}
-				<a href="javascript:void(0);" onclick="showLSSFilter();"
+				<a href="javascript:void(0);" onclick="showLSSFilter(this);"
 					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
 					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermenü öffnen" name="actlss" />
 				</a>
@@ -175,7 +175,7 @@
 					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown" />
 				</a>
 				{% if WRAPPER.canBeRepaired %}
-				<a href="javascript:void(0);" onclick="showRepairOptions({{ spacecraftId }});"
+				<a href="javascript:void(0);" onclick="showRepairOptions(this, {{ spacecraftId }});"
 					onmouseover="cp('selfrepair','buttons/rep2');" onmouseout="cp('selfrepair','buttons/rep1');">
 					<img src="/assets/buttons/rep1.png" style="height: 20px;" title="Reparaturoptionen anzeigen"
 						name="selfrepair" />
@@ -227,18 +227,18 @@
 							{% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
 							<div style="width: 70%; float: left;">
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, true);"
+									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1);"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
 									onmouseout="cp('beamfrom','buttons/b_down1')">
 									<img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu Schiff beamen" />
 								</a>
 								<a href="javascript:void(0);"
-									onclick="showTransfer({{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, false);"
+									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1);"
 									onmouseover="cp('beamto','buttons/b_up2')"
 									onmouseout="cp('beamto','buttons/b_up1')">
 									<img src="/assets/buttons/b_up1.png" name="beamto" title="Von Schiff beamen" />
 								</a>
-								<a href="javascript:void(0);" onclick="getShipList();" style="margin-left: 5px;">
+								<a href="javascript:void(0);" onclick="getShipList(this);" style="margin-left: 5px;">
 									<img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen" />
 								</a>
 								{% if CAN_MANAGE %}
@@ -252,7 +252,7 @@
 							</div>
 							{% endif %}
 							<div style="width: 30%; float: left;">
-								<a href="javascript:void(0);" onclick="showDockControl();"
+								<a href="javascript:void(0);" onclick="showDockControl(this);"
 									onmouseover="cp('dockPrivButton','buttons/dock2')"
 									onmouseout="cp('dockPrivButton','buttons/dock1')" title="Dockkontrolle bearbeiten">
 									<img src="/assets/buttons/dock1.png" name="dockPrivButton" />Dockkontrolle</a>

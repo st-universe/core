@@ -11,7 +11,7 @@
         ({{ cat.getCategoryCountNew }}/{{ cat.getCategoryCount }})
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow({{ catId }});"
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, {{ catId }});"
             onmouseover="cp('catedit{{ catId }}','buttons/knedit2', 'png')"
             onmouseout="cp('catedit{{ catId }}','buttons/knedit1', 'png')">
             <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit{{ catId }}" />

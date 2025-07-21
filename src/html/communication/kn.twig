@@ -113,7 +113,7 @@
                         {% for knCharacter in post.getCharacters %}
                         {% set character = knCharacter.getUserCharacter %}
                         <div class="character-name" style="cursor: pointer;"
-                            onclick="showKnCharacter({{ character.getId }});">
+                            onclick="showKnCharacter(this, {{ character.getId }});">
                             {{ character.getName }}
                         </div>
                         {% endfor %}
@@ -144,7 +144,8 @@
                         {% endif %}
                     </div>
                     <div class="segment">
-                        <a href="javascript:void(0);" onclick="showKnComments({{ postId }});">{{ post.getCommentCount }}
+                        <a href="javascript:void(0);" onclick="showKnComments(this, {{ postId }});">{{
+                            post.getCommentCount }}
                             <span>Kommentare</span></a>
                     </div>
                 </div>

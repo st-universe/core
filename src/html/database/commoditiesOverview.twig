@@ -7,7 +7,7 @@
     <tr>
         <td>{{ entry.getAmount }}</td>
         <td>
-            <a href="javascript:void(0);" onclick="getCommodityLocations({{ entry.getCommodityId }});">
+            <a href="javascript:void(0);" onclick="getCommodityLocations(this, {{ entry.getCommodityId }});">
                 <img style="vertical-align: middle" src="assets/commodities/{{ entry.getCommodityId }}.png"
                     title="{{ entry.getCommodity.getName }}" />
                 {{ entry.getCommodity.getName }}

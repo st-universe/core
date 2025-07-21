@@ -207,7 +207,7 @@
 <td style="width: 120px;">
     {% if nbsItem.isScanPossible %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow({{ spacecraftId }},{{ targetId }});"
+        <a href="javascript:void(0);" onclick="showScanWindow(this, {{ spacecraftId }},{{ targetId }});"
             onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')"
             onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
             <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}" title="{{ nameWithoutMarkup }} scannen" />
@@ -228,7 +228,7 @@
     {% if not nbsItem.isCloaked %}
     {% if nbsItem.isTransferPossible %}
     <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow({{ targetId }})"
+        <a href="javascript:void(0);" onclick="showETransferWindow(this, {{ targetId }});"
             onmouseover="cp('etr_{{ targetId }}','buttons/e_trans2')"
             onmouseout="cp('etr_{{ targetId }}','buttons/e_trans1')">
             <img src="/assets/buttons/e_trans1.png" name="etr_{{ targetId }}"
@@ -241,14 +241,14 @@
         {% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
         {% set targetEntityType = nbsItem.getTransferEntityType.value %}
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, true);"
+            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1);"
             onmouseover="cp('bto_{{ targetId }}','buttons/b_down2')"
             onmouseout="cp('bto_{{ targetId }}','buttons/b_down1')">
             <img src="/assets/buttons/b_down1.png" name="bto_{{ targetId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, false);"
+            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1);"
             onmouseover="cp('bfr_{{ targetId }}','buttons/b_up2')"
             onmouseout="cp('bfr_{{ targetId }}','buttons/b_up1')">
             <img src="/assets/buttons/b_up1.png" name="bfr_{{ targetId }}"
@@ -355,7 +355,7 @@
     </a>
     {% endif %}
     {% if not nbsItem.isCloaked %}
-    <a href="javascript:void(0);" onclick="showScanWindow({{ spacecraftId }},{{ targetId }});"
+    <a href="javascript:void(0);" onclick="showScanWindow(this, {{ spacecraftId }},{{ targetId }});"
         onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')" onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
         <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}"
             title="{{ nbsItem.getName|bbcode2txt }} scannen" />

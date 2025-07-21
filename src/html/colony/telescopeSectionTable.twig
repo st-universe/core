@@ -13,7 +13,7 @@
         {% for data in yrow.getFields %}
         <td class="starmap" style="{{ data.getFieldStyle }}" id="{{ data.getCx }}_{{ data.getCy }}">
             <div title="{{ data.getTitle }}" onmouseover="updateTelescopeEnergy({{ data.getCx }}, {{ data.getCy }});"
-                onclick="showTelescopeScan({{ data.getCx }}, {{ data.getCy }});" class="starmapInner"
+                onclick="showTelescopeScan(this, {{ data.getCx }}, {{ data.getCy }});" class="starmapInner"
                 style="cursor: auto ! important;">
                 {% if data.getIcon %}
                 <img src="/assets/map/{{ data.getIcon }}.png" style=" height: 28px; width: 28px;" />

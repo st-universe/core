@@ -2,7 +2,7 @@
 
 {# needs following variables: host, REPAIRABLE_SHIP_WRAPPERS) #}
 <table class="tcal" style="width: 40vw;">
-    {% set RepairoverlibText = "<table class='tcal' style='width:250px'>
+    {% set repairTooltip = "<table class='tcal' style='width:250px'>
         <tr>
             <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Reparatur </th>
         </tr>
@@ -19,8 +19,9 @@
         <th>Dauer in Ticks</th>
         <th>Insgesamt benötigte Teile</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank"
-                onmouseover="return overlib('{{ RepairoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ repairTooltip }}" data-tippy-allowHTML="true"><img
+                    src="/assets/buttons/info2.png" style="height:16px;" /></a>
+        </th>
     </tr>
     {% for wrapper in REPAIRABLE_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
@@ -67,8 +68,9 @@
         <th>Dauer in Ticks</th>
         <th>Insgesamt benötigte Teile</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank"
-                onmouseover="return overlib('{{ RepairoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ repairTooltip }}" data-tippy-allowHTML="true"><img
+                    src="/assets/buttons/info2.png" style="height:16px;" /></a>
+        </th>
     </tr>
     <tr class="responsive-show">
         <td>{{ wrapper.getRepairDurationPreview|bbcode }}</td>
@@ -94,3 +96,6 @@
     </tr>
     {% endfor %}
 </table>
+<script>
+  tippy('[data-tippy-content]');
+</script>

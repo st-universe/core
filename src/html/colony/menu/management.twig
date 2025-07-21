@@ -25,13 +25,13 @@
                 </div>
                 <div style="position: absolute; bottom: 5px; width: 100%;">
                     <a href="javascript:void(0);"
-                        onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 0);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1);"
                         onmouseover="cp('beamfromstation','buttons/b_down2')"
                         onmouseout="cp('beamfromstation','buttons/b_down1')">
                         <img src="/assets/buttons/b_down1.png" name="beamfromstation" title="Von Station beamen" />
                     </a>
                     <a href="javascript:void(0);"
-                        onclick="showTransfer({{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1);"
                         onmouseover="cp('beamtostation','buttons/b_up2')"
                         onmouseout="cp('beamtostation','buttons/b_up1')">
                         <img src="/assets/buttons/b_up1.png" name="beamtostation" title="Zu Station beamen" />
@@ -56,15 +56,15 @@
                 <div style="width: 100%;">
                     <br />
                     <a href="javascript:void(0);"
-                        onclick="showTransfer({{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1, 0);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1);"
                         onmouseover="cp('beamfrom','buttons/b_down2')"
                         onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
                             name="beamfrom" title="Von Schiff beamen" /></a>
                     <a href="javascript:void(0);"
-                        onclick="showTransfer({{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1, 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1);"
                         onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img
                             src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen" /></a>
-                    <a href="javascript:void(0);" onclick="getOrbitShipList({{ COLONY.getId }});"
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, {{ COLONY.getId }});"
                         style="margin-left: 5px;">
                         <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen" />
                     </a>
@@ -173,7 +173,7 @@
         <div class="box_body">
             <table class="tcal" style="width: 100%; table-layout: fixed;">
                 {% if SHIELDING_MANAGER.hasShielding %}
-                {% set ShieldoverlibText = "<table class='tcal' style='width:250px'>
+                {% set shieldTooltip = "<table class='tcal' style='width:250px'>
                     <tr>
                         <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Planetarer Schild </th>
                     </tr>
@@ -220,10 +220,12 @@
                             </a>
                             {% endif %}
                             <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
-                                onmouseover="return overlib('{{ ShieldoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                                onmouseout="return nd();"><img src="/assets/buttons/info2.png"
-                                    style="height:16px;" /></a>
+                                data-tippy-content="{{ shieldTooltip }}" data-tippy-allowHTML="true"><img
+                                    src="/assets/buttons/info2.png" style="height:16px;" /></a>
                         </div>
+                        <script>
+                          tippy('[data-tippy-content]');
+                        </script>
                     </td>
                 </tr>
                 <tr>

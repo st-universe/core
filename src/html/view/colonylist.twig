@@ -46,7 +46,7 @@
 		</td>
 		<td id="colonysignature" style="vertical-align: middle;">
 			{% if colony.getSignatureCount != 0 %}
-			<a href="javascript:void(0);" onclick="showColonySectorScanWindow({{ colonyId }});">
+			<a href="javascript:void(0);" onclick="showColonySectorScanWindow(this, {{ colonyId }});">
 				{{ colony.getSignatureCount }}
 			</a>
 			{% else %}

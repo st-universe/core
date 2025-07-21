@@ -27,16 +27,6 @@ function onmousewheel(element, callback) {
 		})(element.onmousewheel);
 }
 
-var closeAjaxCallbacks = new Array();
-var closeAjaxCallbacksMandatory = new Array();
-
-function closePopup() {
-	if (over) {
-		cClick();
-		over = null;
-	}
-}
-
 function kpListener(e) {
 	if (!e) e = window.event; // Drecks IE
 	if (e.keyCode == 27) {
@@ -45,255 +35,10 @@ function kpListener(e) {
 }
 window.onkeydown = kpListener;
 
-var isAjaxMandatory = false;
-
-function setAjaxMandatory(isMandatory) {
-	isAjaxMandatory = isMandatory;
-}
-
-var isClosingAjaxWindow = false;
-
-function closeAjaxWindow() {
-	if (isClosingAjaxWindow || isAjaxMandatory) {
-		return;
-	}
-	isClosingAjaxWindow = true;
-
-	for (index = 0; index < closeAjaxCallbacks.length; index++) {
-		closeAjaxCallbacks[index]();
-	}
-	for (index = 0; index < closeAjaxCallbacksMandatory.length; index++) {
-		closeAjaxCallbacksMandatory[index]();
-	}
-
-	clearAjaxCallbacks();
-	closeAjaxCallbacksMandatory = new Array();
-
-	closePopup();
-	isClosingAjaxWindow = false;
-}
-
-function clearAjaxCallbacks() {
-	closeAjaxCallbacks = new Array();
-}
-
 function ajaxrequest(url) {
 	new Ajax.Request(url);
 }
 
-function openWindow(elt, exclusive, width) {
-	if (width) {
-		if (exclusive) {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				WIDTH,
-				width,
-				BGCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				TEXTCOLOR,
-				"#8897cf",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		} else {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				WIDTH,
-				width,
-				BGCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				TEXTCOLOR,
-				"#8897cf",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				DRAGGABLE,
-				ALTCUT,
-				STICKY
-			);
-		}
-	} else {
-		if (exclusive) {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				BGCOLOR,
-				"#8897cf",
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		} else {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				BGCOLOR,
-				"#8897cf",
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				DRAGGABLE,
-				ALTCUT,
-				STICKY
-			);
-		}
-	}
-}
-function openWindowPosition(elt, exclusive, width, posx, posy, relative = true) {
-
-	var useX = posx;
-	var useY = posy;
-	if (relative) {
-		var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-		useX = posx - scrollLeft;
-		useY = posy - scrollTop;
-	}
-
-	if (width) {
-		if (exclusive) {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				WIDTH,
-				width,
-				RELX,
-				useX,
-				RELY,
-				useY,
-				BGCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				TEXTCOLOR,
-				"#8897cf",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		} else {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				WIDTH,
-				width,
-				RELX,
-				useX,
-				RELY,
-				useY,
-				BGCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				TEXTCOLOR,
-				"#8897cf",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				DRAGGABLE,
-				ALTCUT,
-				STICKY
-			);
-		}
-	} else {
-		if (exclusive) {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				BGCOLOR,
-				"#8897cf",
-				RELX,
-				useX,
-				RELY,
-				useY,
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		} else {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				BGCOLOR,
-				"#8897cf",
-				RELX,
-				useX,
-				RELY,
-				useY,
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				DRAGGABLE,
-				ALTCUT,
-				STICKY
-			);
-		}
-	}
-}
 function ignoreUser(obj, userid) {
 	ajax_update(obj, "/pm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid=" + userid);
 }
@@ -317,11 +62,9 @@ function addUserContact(obj, userid) {
 var clmodeswitchdiv = "";
 function showContactModeSwitcher(div, contactid) {
 	clmodeswitchdiv = div;
-	elt = "clmswitcher";
-	openWindow(elt, 0, 70);
-	ajax_update(
-		"clmswitcher",
-		"/pm.php?SHOW_CONTACT_MODESWITCH=1&contactid=" + contactid
+	updatePopup(
+		"/pm.php?SHOW_CONTACT_MODESWITCH=1&contactid=" + contactid,
+		70
 	);
 }
 function switchContactMode(contactid, mode) {
@@ -335,8 +78,9 @@ function switchContactMode(contactid, mode) {
 		clmodeswitchdiv
 	);
 	clmodeswitcdiv = "";
-	cClick();
+	hidePopup();
 }
+
 function startUp() {
 	startServerTimer();
 }
@@ -374,24 +118,20 @@ function findObject(obj) {
 }
 function openTopicSettings(obj, tid, bid) {
 	var pos = findObject(obj);
-	elt = "topicaction";
-	openWindowPosition(elt, 1, 200, pos[0] - 200, pos[1]);
-	ajax_update(
-		elt,
-		"alliance.php?SHOW_TOPIC_SETTINGS=1&topicid=" + tid + "&boardid=" + bid
+
+	updatePopup(
+		"alliance.php?SHOW_TOPIC_SETTINGS=1&topicid=" + tid + "&boardid=" + bid,
+		200, pos[0] - 200, pos[1]
 	);
 }
 function openBoardSettings(obj, bid) {
 	var pos = findObject(obj);
-	elt = "boardaction";
-	openWindowPosition(elt, 1, 200, pos[0] - 200, pos[1]);
-	ajax_update(elt, "alliance.php?SHOW_BOARD_SETTINGS=1&boardid=" + bid);
+	updatePopup("alliance.php?SHOW_BOARD_SETTINGS=1&boardid=" + bid,
+		200, pos[0] - 200, pos[1]
+	);
 }
 function openPmWindow(fromId, toId, fromType, toType) {
-	elt = "elt";
-	openWindowPosition(elt, 1, 600, 90, 60, false);
-	ajax_update(
-		elt,
+	updatePopup(
 		"/pm.php?SHOW_WRITE_QUICKPM=1&fromid=" +
 		fromId +
 		"&toid=" +
@@ -399,7 +139,8 @@ function openPmWindow(fromId, toId, fromType, toType) {
 		"&fromtype=" +
 		fromType +
 		"&totype=" +
-		toType
+		toType,
+		600, 90, 60
 	);
 }
 function sendQuickPM(userId) {
@@ -421,9 +162,7 @@ function ajaxPost(url, elements) {
 	});
 }
 function showResearchDetails(researchId) {
-	elt = "researchwin";
-	openWindow(elt);
-	ajax_update(elt, "/research.php?SHOW_RESEARCH=1&id=" + researchId);
+	updatePopup("/research.php?SHOW_RESEARCH=1&id=" + researchId);
 }
 function openNotes() {
 	str = "notes.php";
@@ -446,83 +185,6 @@ function toggleTableRowVisible(id) {
 		return;
 	}
 	$(id).style.display = "table-row";
-}
-function openPJsWin(elt, exclusive, width, offsety) {
-	if (width) {
-		var OLWIDTH = " WIDTH, " + width;
-	} else {
-		var OLWIDTH = "";
-	}
-	if (exclusive) {
-		if (offsety) {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				OLWIDTH,
-				BGCOLOR,
-				"#8897cf",
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				OFFSETY,
-				offsety,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		} else {
-			return overlib(
-				"<div id=" + elt + "></div>",
-				OLWIDTH,
-				BGCOLOR,
-				"#8897cf",
-				TEXTCOLOR,
-				"#8897cf",
-				FGCOLOR,
-				"#000000",
-				CELLPAD,
-				0,
-				0,
-				0,
-				0,
-				HAUTO,
-				VAUTO,
-				STICKY,
-				DRAGGABLE,
-				ALTCUT,
-				EXCLUSIVE
-			);
-		}
-	} else {
-		return overlib(
-			"<div id=" + elt + "></div>",
-			OLWIDTH,
-			BGCOLOR,
-			"#8897cf",
-			TEXTCOLOR,
-			"#8897cf",
-			FGCOLOR,
-			"#000000",
-			CELLPAD,
-			0,
-			0,
-			0,
-			0,
-			HAUTO,
-			VAUTO,
-			DRAGGABLE,
-			ALTCUT,
-			STICKY
-		);
-	}
 }
 function cp(obj, file, ending = "png") {
 	document.images[obj].src = gfx_path + "/" + file + "." + ending;
@@ -760,23 +422,18 @@ function switchInnerContent(view, title, params, page, stateUrl) {
 }
 
 function showTransfer(
+	element,
 	sourceId,
 	sourceType,
 	targetId,
 	targetType,
 	transferTypeValue,
-	isUnload,
-	isReplace
+	isUnload
 ) {
-	if (!isReplace) {
-		closeAjaxWindow();
-		openPJsWin("elt", 1);
-	}
-
 	isUnloadValue = isUnload ? 1 : 0;
 
-	ajax_update(
-		"elt",
+	updatePopupAtElement(
+		element,
 		`?SHOW_TRANSFER=1&id=${sourceId}&source_type=${sourceType}&target=${targetId}&target_type=${targetType}&transfer_type=${transferTypeValue}&is_unload=${isUnloadValue}`
 	);
 }

@@ -2,7 +2,7 @@
 
 {# needs following variables: host, RETROFIT_SHIP_WRAPPERS) #}
 <table class="tcal" style="width: 40vw;">
-    {% set RetrofitoverlibText = "<table class='tcal' style='width:250px'>
+    {% set retrofitTooltip = "<table class='tcal' style='width:250px'>
         <tr>
             <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Umrüstung </th>
         </tr>
@@ -19,8 +19,8 @@
         <th>Name</th>
         <th>Dauer</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
-                onmouseover="return overlib('{{ RetrofitoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ retrofitTooltip }}" data-tippy-allowHTML="true"><img
+                    src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
     </tr>
     {% for wrapper in RETROFIT_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
@@ -53,8 +53,8 @@
     <tr class="responsive-show">
         <th>Dauer</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
-                onmouseover="return overlib('{{ RetrofitoverlibText|e('js') }}', CAPTION, '',  CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);"
-                onmouseout="return nd();"><img src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ retrofitTooltip }}" data-tippy-allowHTML="true"><img
+                    src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
     </tr>
     <tr class="responsive-show">
         <td>{{ ship.getRump.getBuildtime|formatSeconds }}</td>
@@ -67,3 +67,6 @@
     </tr>
     {% endfor %}
 </table>
+<script>
+  tippy('[data-tippy-content]');
+</script>

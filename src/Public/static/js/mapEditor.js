@@ -241,10 +241,7 @@ var fieldevent = 0;
 var bordercolor = "";
 
 function openSystemFieldSelector(x, y, systemId) {
-	elt = "fieldselector";
-	openWindow(elt, 0);
-	ajax_update(
-		elt,
+	updatePopup(
 		`/admin/?SHOW_SYSTEM_EDITFIELD=1&systemid=${systemId}&x=${x}&y=${y}`
 	);
 }

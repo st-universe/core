@@ -1,7 +1,5 @@
-function showDockControl() {
-	elt = 'dockcontrol';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'station.php?SHOW_DOCK_CONTROL=1&id=' + spacecraftid);
+function showDockControl(element) {
+	updatePopupAtElement(element, 'station.php?SHOW_DOCK_CONTROL=1&id=' + spacecraftid);
 }
 function addDockPrivilege() {
 	var value = $('docktype').value;
@@ -14,30 +12,27 @@ function toggleDockPmAutoRead(sstr) {
 	ajaxrequest(`station.php?B_DOCK_PM_AUTO_READ=1&id=${spacecraftid}&sstr=${sstr}`);
 }
 function showStationCosts(obj, planid) {
-	closeAjaxWindow();
-
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] + 360, pos[1] - 180);
-	ajax_update('elt', 'station.php?SHOW_STATION_COSTS=1&id=' + spacecraftid + '&planid=' + planid);
+	updatePopup('station.php?SHOW_STATION_COSTS=1&id=' + spacecraftid + '&planid=' + planid,
+		200, pos[0] + 360, pos[1] - 180
+	);
 }
 function showStationInformation(obj, planid) {
-	closeAjaxWindow();
-
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] + 210, pos[1] - 180);
-	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&planid=' + planid);
+	updatePopup('station.php?SHOW_STATION_INFO=1&planid=' + planid,
+		200, pos[0] + 210, pos[1] - 180
+	);
 }
 
-function showScrapWindow() {
-	closeAjaxWindow();
-	openWindow('elt', 1, 300);
-	ajax_update('elt', 'station.php?id=' + spacecraftid + '&SHOW_SCRAP_AJAX=1');
+function showScrapWindow(element) {
+	var pos = findObject(obj);
+	updatePopup('station.php?id=' + spacecraftid + '&SHOW_SCRAP_AJAX=1',
+		300, pos[0] - 300, pos[1]
+	);
 }
 
-function getShipList() {
-	closeAjaxWindow();
-	openPJsWin('shiplist', 1);
-	ajax_update('shiplist', 'station.php?id=' + spacecraftid + '&SHOW_STATION_SHIPLIST=1');
+function getShipList(element) {
+	updatePopupAtElement(element, 'station.php?id=' + spacecraftid + '&SHOW_STATION_SHIPLIST=1');
 }
 
 currentTab = false;

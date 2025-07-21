@@ -45,7 +45,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
     {% if SPACECRAFT.isStation and SPACECRAFT.getUser.isNPC %}
     <tr>
         <td colspan="2">
-            <a href="javascript:void(0);" onclick="openWasteMenu();" onmouseover="cp('waste','buttons/repli')"
+            <a href="javascript:void(0);" onclick="openWasteMenu(this);" onmouseover="cp('waste','buttons/repli')"
                 onmouseout="cp('waste','buttons/repli2')">
                 <img src="/assets/buttons/repli2.png" title="Müllverbrennung" name="waste" />
                 Müllverbrennung
@@ -57,7 +57,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
     {% if tradePost %}
     <tr>
         <td colspan="2">
-            <a href="javascript:void(0);" onclick="openTradeMenu({{ tradePost.getId }});"
+            <a href="javascript:void(0);" onclick="openTradeMenu(this, {{ tradePost.getId }});"
                 onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
                 <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade" />
                 Warenkontotransfer
@@ -140,7 +140,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             </a>
             {% endif %}
             {% if SPACECRAFT.dockedOnTradepost %}
-            <a href="javascript:void(0);" onclick="openTradeMenu({{ dockedTo.getTradePost.getId }});"
+            <a href="javascript:void(0);" onclick="openTradeMenu(this, {{ dockedTo.getTradePost.getId }});"
                 onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
                 <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade" />
                 Handelstransferfenster öffnen
@@ -217,7 +217,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% set administratedRegion = location.getAdministratedRegion %}
             {% if administratedRegion %}
             <br />
-            <a href="javascript:void(0);" onclick="showRegionInfo({{ administratedRegion.getId }})"
+            <a href="javascript:void(0);" onclick="showRegionInfo(this, {{ administratedRegion.getId }});"
                 onmouseover="cp('adminRegionButton','buttons/info2')"
                 onmouseout="cp('adminRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="adminRegionButton" />
@@ -227,7 +227,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% set mapRegion = location.getMapRegion %}
             {% if mapRegion %}
             </br>
-            <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
+            <a href="javascript:void(0);" onclick="showRegionInfo(this, {{ mapRegion.getId }});"
                 onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="mapRegionButton" />
                 {{ mapRegion.getDescription }}
@@ -357,7 +357,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
                 {% set fromType = SPACECRAFT.isStation ? 4 : 2 %}
                 <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
                     onmouseout="cp('pm_to_colony','buttons/msg1', 'png');"
-                    onclick="closePopup();openPmWindow({{ spacecraftId }}, {{ colonyId }}, {{ fromType }},5);"><img
+                    onclick="hidePopup(); openPmWindow({{ spacecraftId }}, {{ colonyId }}, {{ fromType }},5);"><img
                         src="/assets/buttons/msg1.png" name="pm_to_colony" title="Nachricht an Kolonie senden" /></a>
                 {{ currentColony.getUser.getName|bbcode }}
                 {% endif %}
@@ -366,7 +366,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
         <td style="width: 50%;">
             {% if not ownsCurrentColony and SPACECRAFT.isMatrixScannerHealthy and not SPACECRAFT.isCloaked %}
             <div style="float: left; margin-top: 5px; margin-right: 5px;">
-                <a href="javascript:void(0);" onclick="showColonyScan();"
+                <a href="javascript:void(0);" onclick="showColonyScan(this);"
                     onmouseover="cp('coloScanButton','buttons/lupe2')"
                     onmouseout="cp('coloScanButton','buttons/lupe1')">
                     <img src="/assets/buttons/lupe1.png" name="coloScanButton" title="Kolonie-Oberfläche scannen" />
@@ -378,12 +378,12 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% set targetEntityType = currentColony.getTransferEntityType.value %}
             <div style="margin-top: 5px; margin-right: 20px; float: left;">
                 <a href="javascript:void(0);"
-                    onclick="showTransfer({{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, true);"
+                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1);"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
                     <img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
                 </a>
                 <a href="javascript:void(0);"
-                    onclick="showTransfer({{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, false);"
+                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1);"
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
                     <img src="/assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>
@@ -420,7 +420,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% if not ownsCurrentColony %}
             <img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
             {% if canColonize %}
-            <a onclick="showColonization({{ colonyId }});" href="javascript:void(0);">
+            <a onclick="showColonization(this, {{ colonyId }});" href="javascript:void(0);">
                 Kolonie gründen
             </a>
             {% endif %}
