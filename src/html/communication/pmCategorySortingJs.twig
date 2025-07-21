@@ -1,5 +1,5 @@
 <script defer="defer">
-    Sortable.create('catlist', {
+    var pmCategoryList = Sortable.create($('catlist'), {
       tag: 'li',
       onUpdate: updateCategoryOrder,
     });

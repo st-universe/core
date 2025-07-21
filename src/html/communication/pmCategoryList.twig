@@ -1,6 +1,6 @@
 {% for cat in PM_CATEGORIES %}
 {% set catId = cat.getId %}
-<li id="item_{{ catId }}" style="width: 100%; display: block;">
+<li data-id="{{ catId }}" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
         {% if markcat and catId == CATEGORY.getId %}

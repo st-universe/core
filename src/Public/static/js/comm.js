@@ -101,7 +101,7 @@ function deletePostingComment(knId, commentId) {
 	ajax_update('kncomments', `comm.php?B_DELETE_COMMENT=1&knid=${knId}&commentid=${commentId}`);
 }
 function updateCategoryOrder() {
-	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + Sortable.sequence('catlist').join(','));
+	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + pmCategoryList.toArray().join(','));
 }
 function movePm(pmId) {
 	$('move_pm').value = pmId;
