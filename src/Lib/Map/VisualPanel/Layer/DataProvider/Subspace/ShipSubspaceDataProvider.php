@@ -35,9 +35,7 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
     #[Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        $result = $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
-
-        return $result;
+        return $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
     }
 
     #[Override]
