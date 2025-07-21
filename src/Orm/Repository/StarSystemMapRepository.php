@@ -365,7 +365,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT sm.sx as x, sm.sy as y, mft.effects as effects,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.ship_id = :shipId
