@@ -121,7 +121,7 @@
 			</a>
 			{% else %}
 			<a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/menu_trade1');"
-				onmouseout="cp('{{ handle }}','buttons/menu_trade0');" onclick="takeTradeOffer({{ offerId }});">
+				onmouseout="cp('{{ handle }}','buttons/menu_trade0');" onclick="takeTradeOffer(this, {{ offerId }});">
 				<img src="assets/buttons/menu_trade0.png" name="{{ handle }}" title="Angebot annehmen" />
 			</a>
 			{% endif %}

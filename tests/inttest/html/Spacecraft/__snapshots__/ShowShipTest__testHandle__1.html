@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#121220">
     <script src="/static/js/prototype.js"></script>
     <script src="/static/js/lib/Sortable.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.js"></script>
     <script src="/static/js/default.js"></script>
     <script src="/static/js/colony.js"></script>
     <script src="/static/js/comm.js"></script>
@@ -22,16 +24,18 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <script src="/static/js/overlib.js"></script>
-    <script src="/static/js/drag.js"></script>
-    <script src="/static/js/overlib_exclusive.js"></script>
     <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
     <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
     <link rel="shortcut icon" href="/assets/favicon.ico">
 </head>
 
 <body onload="startUp();">
-    <div id="overDiv">...</div>
+    <div id="popupWindow" class="popup" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+<script>
+    appendJsAsync('/static/js/popup.js');
+</script>
     <div class="container">
                 <div class="header">
             <div id="GAME_USER_PROFILE">
@@ -120,10 +124,20 @@
         
 <div class="header_box header_box_col border_box">
                             
-        <a href="/colony.php?SHOW_COLONY=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }" style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action" onmouseover="return overlib('\u003Ctable\u0020class\u003D\u0027tcal\u0027\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Cth\u003EKolonieinformationen\u003A\u0020Stempor\u0027Arr\u00204\u003C\/th\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003C\/tr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctr\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003Ctd\u003EKoordinaten\u003A\u00207\u007C11\u003Cbr\u003ESystem\u003A\u0020Stempor\u0027Arr\u002DSystem\u0020\u00287\u007C8\u0029\u003Cbr\u003EEPS\u003A\u002096\/96\u003Cbr\u003ELager\u003A\u0020701\/1000\u003C\/td\u003E\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u003C\/tr\u003E\n\u0020\u0020\u0020\u0020\u003C\/table\u003E', CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4);" onmouseout="return nd();">
+        <a href="/colony.php?SHOW_COLONY=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', 'Stempor&amp;#039;Arr 4', 'id=42', '/colony.php'); event.preventDefault(); }" style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action" data-tippy-content="&lt;table class='tcal'&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Kolonieinformationen: Stempor'Arr 4&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Koordinaten: 7|11&lt;br&gt;System: Stempor'Arr-System (7|8)&lt;br&gt;EPS: 96/96&lt;br&gt;Lager: 701/1000&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;" data-tippy-allowhtml="true">
         <img src="/assets/planets/201.png">
     </a>
-        </div>
+    </div>
+<script>
+  tippy('[data-tippy-content]');
+</script>
     </div>
             <div id="GAME_NAGUS_POPUP">
             </div>
@@ -282,7 +296,7 @@
 						<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
 				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
-												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(42);">
+												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(this, 42);">
 				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
 			<th style="text-align: center;">Batterie</th>
@@ -290,7 +304,7 @@
 </th>
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showSelfdestructWindow(42);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
+								<a href="javascript:void(0);" onclick="showSelfdestructWindow(this, 42);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
 					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerst&ouml;rung">
 				</a>
 											</td>
@@ -303,7 +317,7 @@
 				</a>
 			</td>
 			<td style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
+								<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
 							</td>
 			<td style="text-align: center;">
 				7|8
@@ -343,13 +357,13 @@
 updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
 					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
 				</a>
-				<a href="javascript:void(0);" onclick="showSpacecraftDetails(42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails(this, 42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
 				</a>
-				<a href="javascript:void(0);" onclick="showCommunication(42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+				<a href="javascript:void(0);" onclick="showCommunication(this, 42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
 				</a>
-								<a href="javascript:void(0);" onclick="showLSSFilter();" onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
+								<a href="javascript:void(0);" onclick="showLSSFilter(this);" onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
 					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermen&uuml; &ouml;ffnen" name="actlss">
 				</a>
 												<a href="javascript:void(0);" onclick="openStarMap(this,42);" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
@@ -528,7 +542,7 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
 updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')" onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
                 <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" style="height: 20px;">
             </a>
-                                    <a href="javascript:void(0);" onclick="openTradeMenu(2);" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
+                                    <a href="javascript:void(0);" onclick="openTradeMenu(this, 2);" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
                 <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade">
                 Handelstransferfenster &ouml;ffnen
             </a>
@@ -552,7 +566,7 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
 
             
                                                                                                 
-            <a href="javascript:void(0);" onclick="showRegionInfo(134)" onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
+            <a href="javascript:void(0);" onclick="showRegionInfo(this, 134);" onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
                 <img src="/assets/buttons/info1.png" name="mapRegionButton">
                 Thalassanebel
             </a>
@@ -687,20 +701,20 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow(42,43);" onmouseover="cp('scn_43','buttons/lupe2')" onmouseout="cp('scn_43','buttons/lupe1')">
+        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,43);" onmouseover="cp('scn_43','buttons/lupe2')" onmouseout="cp('scn_43','buttons/lupe1')">
             <img src="/assets/buttons/lupe1.png" name="scn_43" title="Mighty AP scannen">
         </a>
     </div>
                         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow(43)" onmouseover="cp('etr_43','buttons/e_trans2')" onmouseout="cp('etr_43','buttons/e_trans1')">
+        <a href="javascript:void(0);" onclick="showETransferWindow(this, 43);" onmouseover="cp('etr_43','buttons/e_trans2')" onmouseout="cp('etr_43','buttons/e_trans1')">
             <img src="/assets/buttons/e_trans1.png" name="etr_43" title="Energie zur Mighty AP transferieren">
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-                        <a href="javascript:void(0);" onclick="showTransfer(42, 'ship', 43, 'station', 1, true);" onmouseover="cp('bto_43','buttons/b_down2')" onmouseout="cp('bto_43','buttons/b_down1')">
+                        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 43, 'station', 1);" onmouseover="cp('bto_43','buttons/b_down2')" onmouseout="cp('bto_43','buttons/b_down1')">
             <img src="/assets/buttons/b_down1.png" name="bto_43" title="Zur Mighty AP runterbeamen">
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer(42, 'ship', 43, 'station', 1, false);" onmouseover="cp('bfr_43','buttons/b_up2')" onmouseout="cp('bfr_43','buttons/b_up1')">
+        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 43, 'station', 1);" onmouseover="cp('bfr_43','buttons/b_up2')" onmouseout="cp('bfr_43','buttons/b_up1')">
             <img src="/assets/buttons/b_up1.png" name="bfr_43" title="Von der Mighty AP hochbeamen">
         </a>
     </div>
@@ -742,7 +756,7 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
 <td style="width: 30px; text-align: center;"></td>
 <td style="width: 120px;">
     <div style="float:left; margin-right:4px;">
-    <a href="javascript:void(0);" onclick="showTransfer(42, 'ship', 1, 'trumfield', 1, false);" onmouseover="cp('bfr_1','buttons/b_up2')" onmouseout="cp('bfr_1','buttons/b_up1')">
+    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 1, 'trumfield', 1);" onmouseover="cp('bfr_1','buttons/b_up2')" onmouseout="cp('bfr_1','buttons/b_up1')">
       <img src="/assets/buttons/b_up1.png" name="bfr_1" title="Vom Tr&uuml;mmerfeld hochbeamen">
     </a>
   </div>

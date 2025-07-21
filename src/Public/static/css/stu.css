@@ -559,10 +559,9 @@ a.linkbutton_red:hover {
   background-color: #b10000;
 }
 
-.ajaxwin {
+.popup {
   border: 1px solid var(--color-1);
   background-color: #000000;
-  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -852,6 +851,21 @@ div.module_selector_skipped {
   background-color: #ebc51e6b ! important;
 }
 
+.highlight {
+  animation: highlightFade 1s ease-out;
+  background-color: yellow;
+}
+
+@keyframes highlightFade {
+  from {
+    background-color: yellow;
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
 #recaptcha_response_field {
   color: #ffffff ! important;
 }
@@ -880,14 +894,17 @@ img.center {
   background-color: #3d0000 ! important;
 }
 
-#overDiv {
+#popupWindow {
   background-color: #000000 ! important;
   -moz-box-shadow: 0px 0px 8px #000000;
   -webkit-box-shadow: 0px 0px 8px #000000;
   box-shadow: 0px 0px 8px #000000;
   position: absolute;
-  visibility: hidden;
   z-index: 111111112;
+}
+
+#popup-drag {
+  cursor: grab;
 }
 
 .boxshadow {

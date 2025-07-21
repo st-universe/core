@@ -77,11 +77,8 @@ function switchMenu(menu, id, func, fid, params, doPreserveResult) {
 var buildmode = 0;
 var selectedbuilding = 0;
 
-function openBuildingInfo(buildingId) {
-	closeAjaxWindow();
-	elt = 'buildinginfo';
-	openPJsWin(elt);
-	ajax_update(elt, createHostUri('SHOW_BUILDING', '&buildingid=' + buildingId));
+function openBuildingInfo(element, buildingId) {
+	updatePopupAtElement(element, createHostUri('SHOW_BUILDING', '&buildingid=' + buildingId));
 	ajax_update('COLONY_SURFACE', createHostUri('SHOW_SURFACE', '&buildingid=' + buildingId));
 	buildmode = 1;
 	selectedbuilding = buildingId;
@@ -129,9 +126,9 @@ function fieldMouseOut(obj, fieldtype) {
 	document.body.style.cursor = 'auto';
 }
 
-function fieldMouseClick(obj, fieldId, buildingId, buildingName) {
+function fieldMouseClick(element, fieldId, buildingId, buildingName) {
 	if (buildmode == 1) {
-		if (obj.parentNode.className == 'cfb') {
+		if (element.parentNode.className == 'cfb') {
 			if (buildingId > 0) {
 				if (confirm(`Soll das Gebäude "${buildingName}" auf diesem Feld abgerissen werden?`)) {
 					buildOnField('B_BUILD', fieldId);
@@ -147,14 +144,12 @@ function fieldMouseClick(obj, fieldId, buildingId, buildingName) {
 				switchColonySubmenu(1);
 			});
 		}
-		showField(fieldId);
+		showField(element, fieldId);
 	}
 }
 
-function showField(fieldId) {
-	elt = 'fieldaction';
-	openPJsWin(elt);
-	ajax_update(elt, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
+function showField(element, fieldId) {
+	updatePopupAtElement(element, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
 }
 function buildOnField(action, fieldId, buildingId) {
 
@@ -177,7 +172,7 @@ function removeOnField(fieldId) {
 
 function performActionAndUpdateResult(action, params) {
 
-	cClick();
+	hidePopup();
 
 	new Ajax.Updater('result', '/colony.php', {
 		method: 'post',
@@ -214,22 +209,16 @@ function createHostUri(IDENTIFIER, extra) {
 	return uri;
 }
 
-function getOrbitShipList(colonyId) {
-	elt = 'shiplist';
-	openPJsWin(elt);
-	ajax_update(elt, 'colony.php?id=' + colonyId + '&SHOW_ORBIT_SHIPLIST=1');
+function getOrbitShipList(element, colonyId) {
+	updatePopupAtElement(element, 'colony.php?id=' + colonyId + '&SHOW_ORBIT_SHIPLIST=1');
 }
 
-function showColonySectorScanWindow(id) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');
+function showColonySectorScanWindow(element, id) {
+	updatePopupAtElement(element, 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');
 }
 
-function showPodLocationWindow() {
-	elt = 'podlocations';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
+function showPodLocationWindow(element) {
+	updatePopupAtElement(element, 'colony.php?SHOW_PODS_LOCATIONS=1');
 }
 
 function initBuildmenuMouseEvent() {
@@ -392,7 +381,8 @@ function enableShipBuildButton() {
 
 	if (isShipBuildPossible()) {
 		Form.Element.enable('buildbutton');
-		new Effect.Highlight($('buildbutton'));
+		$('buildbutton').classList.add('highlight');
+		setTimeout(() => $('buildbutton').classList.remove('highlight'), 1000);
 	} else {
 		Form.Element.disable('buildbutton');
 	}
@@ -434,15 +424,9 @@ function cp(elementName, imageName) {
 }
 
 function showGiveUpWindow(target) {
-	elt = 'giveup';
-	openWindow(elt, 1, 300);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_GIVEUP_AJAX=1&target=' + target);
-}
-
-function getCommodityLocations(commodityId) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'database.php?commodityid=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
+	updatePopup('colony.php?id=' + colonyid + '&SHOW_GIVEUP_AJAX=1&target=' + target,
+		300
+	);
 }
 
 var colonyMapX = null;
@@ -469,12 +453,10 @@ function updateTelescopeEnergy(cx, cy) {
 		$('needed_energy').style.color = '#dddddd';
 	}
 }
-function showTelescopeScan(cx, cy) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
+function showTelescopeScan(element, cx, cy) {
 
 	if (calculateScanCost(cx, cy) <= parseInt($('current_energy').innerHTML)) {
-		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&x=' + cx + '&y=' + cy);
+		updatePopupAtElement(element, 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&x=' + cx + '&y=' + cy);
 	}
 
 	//refresh current colony eps
@@ -661,10 +643,8 @@ function showModuleLevel(module) {
 	document.getElementById(`module-level-${type}-${level}`).style.display = 'block';
 }
 
-function showNewSandboxWindow() {
-	elt = 'elt'
-	openPJsWin(elt, 1);
-	ajax_update(elt, '?SHOW_NEW_SANDBOX=1');
+function showNewSandboxWindow(element) {
+	updatePopupAtElement(element, '?SHOW_NEW_SANDBOX=1');
 }
 
 function createNewSandbox(sstr) {

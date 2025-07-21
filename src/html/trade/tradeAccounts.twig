@@ -29,7 +29,7 @@
 				</div>
 				{% for stor in data.getStorage %}
 				<div style="float: left; width: 100px;">
-					<a href="javascript:void(0);" onclick="showTradeOfferMenu({{ stor.getId }});"
+					<a href="javascript:void(0);" onclick="showTradeOfferMenu(this, {{ stor.getId }});"
 						style="display: block; padding: 4px;" class="tradebutton">
 						<img src="assets/commodities/{{ stor.getCommodity.getId }}.png"
 							title="{{ stor.getCommodity.getName }}" /> {{ stor.getAmount }}
@@ -44,7 +44,7 @@
 				{% for stor in data.getOfferStorage %}
 				<div style="float: left; width: 100px;">
 					<a href="javascript:void(0);"
-						onclick="showTradeOfferByCommodity({{ data.getId }}, {{ stor.commodity_id }});"
+						onclick="showTradeOfferByCommodity(this, {{ data.getId }}, {{ stor.commodity_id }});"
 						style="display: block; padding: 4px;" class="tradebutton">
 						<img src="assets/commodities/{{ stor.commodity_id }}.png" title="{{ stor.commodity_name }}" />
 						{{ stor.amount }}

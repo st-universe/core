@@ -9,7 +9,7 @@
     <td colspan="3">
         {% if TRANSFER_INFO.isCommodityTransferPossible %}
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 1, {{ isUnload }}, true);"
+            onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 1, {{ isUnload }});"
             onmouseover="cp('commoditybeamtrigger','buttons/lager_2');"
             onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
             <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
@@ -17,7 +17,7 @@
         {% endif %}
         {% if TRANSFER_INFO.isCrewTransferPossible %}
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 2, {{ isUnload }}, true);"
+            onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 2, {{ isUnload }});"
             onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
             <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
         </a>
@@ -25,7 +25,7 @@
         {% if TRANSFER_INFO.isTorpedoTransferPossible %}
         {% if TRANSFER_INFO.isFriend %}
         <a href="javascript:void(0);"
-            onclick="showTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 3, {{ isUnload }}, true);"
+            onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 3, {{ isUnload }});"
             onmouseover="cp('torpedobeamtrigger','buttons/act_torp1');"
             onmouseout="cp('torpedobeamtrigger','buttons/torp');">
             <img src="assets/buttons/torp.png" name="torpedobeamtrigger" title="Torpedos beamen" />

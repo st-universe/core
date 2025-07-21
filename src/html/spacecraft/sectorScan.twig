@@ -23,26 +23,26 @@
                 </tr>
                 {% set effects = fieldType.getEffects %}
                 {% if effects %}
-                    {% set hasDescription = false %}
-                    {% for effect in effects %}
+                {% set hasDescription = false %}
+                {% for effect in effects %}
+                {% if effect.getDescription %}
+                {% set hasDescription = true %}
+                {% endif %}
+                {% endfor %}
+
+                {% if hasDescription %}
+                <tr>
+                    <td>Effekte:</td>
+                    <td>
+                        {% for effect in effects %}
                         {% if effect.getDescription %}
-                            {% set hasDescription = true %}
+                        {{ effect.getDescription }}
+                        <br />
                         {% endif %}
-                    {% endfor %}
-                    
-                    {% if hasDescription %}
-                    <tr>
-                        <td>Effekte:</td>
-                        <td>
-                            {% for effect in effects %}
-                                {% if effect.getDescription %}
-                                {{ effect.getDescription }}
-                                <br />
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
                 {% endif %}
             </table>
         </td>
@@ -122,7 +122,7 @@
             </a>
         </td>
         <td>
-            <a href="javascript:void(0);" onclick="analysebuoy({{ buoy.getId }});"
+            <a href="javascript:void(0);" onclick="analyseBuoy(this, {{ buoy.getId }});"
                 onmouseover="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_2.png';"
                 onmouseout="this.getElementsByTagName('img')[0].src='assets/buttons/analyse_buoy_1.png';"
                 title="Boje Analysieren" class="fabutton">

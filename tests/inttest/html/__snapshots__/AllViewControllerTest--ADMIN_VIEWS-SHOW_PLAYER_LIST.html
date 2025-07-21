@@ -14,16 +14,18 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <script src="/static/js/overlib.js"></script>
-    <script src="/static/js/drag.js"></script>
-    <script src="/static/js/overlib_exclusive.js"></script>
     <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
     <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
     <link rel="shortcut icon" href="/assets/favicon.ico">
 </head>
 
 <body onload="startUp();">
-    <div id="overDiv">...</div>
+    <div id="popupWindow" class="popup" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+<script>
+    appendJsAsync('/static/js/popup.js');
+</script>
     <div class="container">
         <div class="header">
             <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
@@ -138,7 +140,7 @@
         </div>
         <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
-                    <a href="javascript:void(0);" onclick="showUserLock(101);" onmouseover="cp('lock101','buttons/block1', 'png');" onmouseout="cp('lock101','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock101" title="Spielersperre setzen"></a>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 101);" onmouseover="cp('lock101','buttons/block1', 'png');" onmouseout="cp('lock101','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock101" title="Spielersperre setzen"></a>
                     <a href="/admin/?B_BLOCK_USER=1&amp;uid=101&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/selfdes2.png" name="block101" title="Spieler blockieren"></a>
         </div>
       </div>
@@ -166,7 +168,7 @@
         <img src="/assets/rassen/1s.png">
         <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
 
-        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="closePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
 
       </div>
       <div class="userBoxDetailAddendum">
@@ -176,7 +178,7 @@
         </div>
         <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
-                    <a href="javascript:void(0);" onclick="showUserLock(102);" onmouseover="cp('lock102','buttons/block1', 'png');" onmouseout="cp('lock102','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock102" title="Spielersperre setzen"></a>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 102);" onmouseover="cp('lock102','buttons/block1', 'png');" onmouseout="cp('lock102','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock102" title="Spielersperre setzen"></a>
                     <a href="/admin/?B_BLOCK_USER=1&amp;uid=102&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/selfdes2.png" name="block102" title="Spieler blockieren"></a>
         </div>
       </div>

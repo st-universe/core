@@ -1170,7 +1170,7 @@
         <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(2)">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, 2);">
                     <img src="/assets/commodities/2.png" title="Baumaterial">
                 </a>
             </div>
@@ -1186,7 +1186,7 @@
         <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(4)">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, 4);">
                     <img src="/assets/commodities/4.png" title="Transparentes Aluminium">
                 </a>
             </div>
@@ -1202,7 +1202,7 @@
         <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(5)">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, 5);">
                     <img src="/assets/commodities/5.png" title="Deuterium">
                 </a>
             </div>
@@ -1218,7 +1218,7 @@
         <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(21)">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, 21);">
                     <img src="/assets/commodities/21.png" title="Duranium">
                 </a>
             </div>
@@ -1234,7 +1234,7 @@
         <tr class="row">
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(20062)">
+                <a href="javascript:void(0);" onclick="getCommodityLocations(this, 20062);">
                     <img src="/assets/commodities/20062.png" title="Workbee">
                 </a>
             </div>
@@ -1305,9 +1305,9 @@ updateSelectedSpacecraftId('77');"></a>
                                     </ul>
                                                 <div style="width: 100%;">
                     <br>
-                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 0);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="showTransfer(42, 'colony', document.getElementById('selshipid').value, 'ship', 1, 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="getOrbitShipList(42);" style="margin-left: 5px;">
+                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, 42);" style="margin-left: 5px;">
                         <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen">
                     </a>
                 </div>

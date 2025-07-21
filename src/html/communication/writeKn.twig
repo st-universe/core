@@ -77,7 +77,7 @@
 						</div>
 
 						<div style="flex-grow: 1; text-align: right;">
-							{% set KNoverlibText = "<table class='tcal' style='width:350px'>
+							{% set knTooltip = "<table class='tcal' style='width:350px'>
 								<tr>
 									<th style='text-align: left'><img src='/assets/buttons/info2.png' /> Ein KN
 										schreiben</th>
@@ -94,11 +94,12 @@
 								</tr>
 							</table>" %}
 							<a href="https://wiki.stuniverse.de/index.php?title=KN-Leitfaden" target="_blank"
-								onmouseover="return overlib('{{ KNoverlibText|e('js') }};', LEFT, OFFSETX, 225, CAPTION, '', CLOSETEXT, 'X', CLOSECOLOR, '#8897cf', TEXTCOLOR, '#000000', CELLPAD, 4, ABOVE);"
-								onmouseout="return nd();"><img src="/assets/buttons/info2.png"
-									style="height:16px;" /></a>
-
+								data-tippy-content="{{ knTooltip }}" data-tippy-allowHTML="true"><img
+									src="/assets/buttons/info2.png" style="height:16px;" /></a>
 						</div>
+						<script>
+						  tippy('[data-tippy-content]');
+						</script>
 					</div>
 				</div>
 			</td>

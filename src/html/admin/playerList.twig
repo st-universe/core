@@ -37,7 +37,7 @@
         <div>STATUS:
           <span style="color: {{ listEntry.getUserStateColor }};">{{ listEntry.getUserStateDescription }}</span>
           {% if user.isLocked %}
-          <a href="javascript:void(0);" onclick="showUserLock({{ userId }});"
+          <a href="javascript:void(0);" onclick="showUserLock(this, {{ userId }});"
             onmouseover="cp('lock{{ userId }}','buttons/block1', 'png');"
             onmouseout="cp('lock{{ userId }}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
               name="lock{{ userId }}" title="Spielersperre editieren" /></a>
@@ -46,7 +46,7 @@
             onmouseout="cp('activate{{ userId }}','buttons/update0', 'png');"><img src="/assets/buttons/update0.png"
               name="activate{{ userId }}" title="Spieler entsperren" /></a>
           {% else %}
-          <a href="javascript:void(0);" onclick="showUserLock({{ userId }});"
+          <a href="javascript:void(0);" onclick="showUserLock(this, {{ userId }});"
             onmouseover="cp('lock{{ userId }}','buttons/block1', 'png');"
             onmouseout="cp('lock{{ userId }}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
               name="lock{{ userId }}" title="Spielersperre setzen" /></a>

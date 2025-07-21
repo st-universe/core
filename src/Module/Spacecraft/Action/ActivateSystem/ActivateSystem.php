@@ -33,7 +33,7 @@ final class ActivateSystem implements ActionControllerInterface
 
         if ($type->isReloadOnActivation()) {
             $game->addExecuteJS(
-                sprintf('showSystemSettingsWindow("%s");setAjaxMandatory(false);', $type->name),
+                sprintf('showSystemSettingsWindow(null, "%s");setAjaxMandatory(false);', $type->name),
                 GameEnum::JS_EXECUTION_AFTER_RENDER
             );
         }

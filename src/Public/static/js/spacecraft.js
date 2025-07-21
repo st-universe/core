@@ -37,41 +37,30 @@ function blurNavApplet() {
   document.shipform.navapp.value = lastPosition;
 }
 
-function showALvlWindow() {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?id=" + spacecraftid + "&SHOW_ALVL=1");
+function showALvlWindow(element) {
+  updatePopupAtElement(element, "?id=" + spacecraftid + "&SHOW_ALVL=1");
 }
 
-function showETransferWindow(target) {
-  closeAjaxWindow();
-  openWindow("elt", 1);
-  ajax_update(
-    "elt",
+function showETransferWindow(element, target) {
+  updatePopupAtElement(element,
     "?id=" + spacecraftid + "&SHOW_ETRANSFER=1&target=" + target
   );
 }
 
-function showSelfdestructWindow(target) {
-  closeAjaxWindow();
-  openWindow("elt", 1, 300);
-  ajax_update(
-    "elt",
-    "?id=" + spacecraftid + "&SHOW_SELFDESTRUCT_AJAX=1&target=" + target
+function showSelfdestructWindow(element, target) {
+  var pos = findObject(element);
+  updatePopup(
+    "?id=" + spacecraftid + "&SHOW_SELFDESTRUCT_AJAX=1&target=" + target,
+    300, pos[0] - 300, pos[1]
   );
 }
-function showScanWindow(spacecraftid, target) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?id=" + spacecraftid + "&SHOW_SCAN=1&target=" + target);
+function showScanWindow(element, spacecraftid, target) {
+  updatePopupAtElement(element, "?id=" + spacecraftid + "&SHOW_SCAN=1&target=" + target);
 }
 function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
-  closeAjaxWindow();
   var pos = findObject(obj);
-  openWindowPosition("elt", 1, 800, pos[0] - 250, pos[1] - 250);
   if (x && y) {
-    ajax_update(
-      "elt",
+    updatePopup(
       "station.php?id=" +
       spacecraftid +
       "&SHOW_SENSOR_SCAN=1&x=" +
@@ -79,7 +68,8 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
       "&y=" +
       y +
       "&systemid=" +
-      sysid
+      sysid,
+      800, pos[0] - 250, pos[1] - 250
     );
     if (loadSystemSensorScan) {
       ajax_update(
@@ -93,48 +83,42 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
       );
     }
   } else {
-    ajax_update("elt", "?id=" + spacecraftid + "&SHOW_SECTOR_SCAN=1");
+    updatePopup("?id=" + spacecraftid + "&SHOW_SECTOR_SCAN=1",
+      800, pos[0] - 250, pos[1] - 250
+    );
   }
 }
 function openStarMap(obj, id) {
-  closeAjaxWindow();
   var pos = findObject(obj);
-  openWindowPosition("elt", 1, 700, pos[0], pos[1]);
-  ajax_update("elt", "starmap.php?SHOW_STARMAP_POSITION=1&id=" + id);
+  updatePopup("starmap.php?SHOW_STARMAP_POSITION=1&id=" + id,
+    700, pos[0], pos[1]
+  );
 }
 
 storageTimer = null;
-function openStorageInit(obj, id) {
-  closeAjaxWindow();
-  storageTimer = setTimeout("openStorage(" + id + ")", 1000); //wait 1 second
+function openStorageInit(element, id) {
+  storageTimer = setTimeout(() => openStorage(element, id), 1000); //wait 1 second
   closeAjaxCallbacks.push(() => {
     clearTimeout(storageTimer);
   });
-  obj.onmouseout = function () {
+  element.onmouseout = function () {
     clearTimeout(storageTimer);
   }; //remove timer
 }
-function openStorage(id) {
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_SPACECRAFTSTORAGE=1&id=" + id);
+function openStorage(element, id) {
+  updatePopupAtElement(element, "?SHOW_SPACECRAFTSTORAGE=1&id=" + id);
 }
 function closeStorage() {
   closeAjaxWindow();
 }
-function showSpacecraftDetails(id) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
+function showSpacecraftDetails(element, id) {
+  updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
 }
-function showEpsUsage(id) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_EPS_USAGE=1&id=" + id);
+function showEpsUsage(element, id) {
+  updatePopupAtElement(element, "?SHOW_EPS_USAGE=1&id=" + id);
 }
-function showCommunication(id) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_SPACECRAFT_COMMUNICATION=1&id=" + id, function () {
+function showCommunication(element, id) {
+  updatePopupAtElement(element, "?SHOW_SPACECRAFT_COMMUNICATION=1&id=" + id, function () {
     // Nach dem AJAX-Update initialisieren
     var emergencyTextElement = document.getElementById('emergencytext');
     if (emergencyTextElement) {
@@ -145,19 +129,13 @@ function showCommunication(id) {
     }
   });
 }
-function openTradeMenu(postid) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update(
-    "elt",
+function openTradeMenu(element, postid) {
+  updatePopupAtElement(element,
     "?SHOW_TRADEMENU=1&id=" + spacecraftid + "&postid=" + postid
   );
 }
-function openWasteMenu() {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update(
-    "elt",
+function openWasteMenu(element) {
+  updatePopupAtElement(element,
     "?SHOW_WASTEMENU=1&id=" + spacecraftid
   );
 }
@@ -224,33 +202,24 @@ function switchScanToLogbook() {
   document.getElementById("scanlogbook").style.display = "";
   document.getElementById("scandetails").style.display = "none";
 }
-function showRegionInfo(region) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update(
-    "elt",
+function showRegionInfo(element, region) {
+  updatePopupAtElement(element,
     "?SHOW_REGION_INFO=1&id=" + spacecraftid + "&regionid=" + region
   );
 }
-function showColonyScan() {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?SHOW_COLONY_SCAN=1&id=" + spacecraftid);
+function showColonyScan(element) {
+  updatePopupAtElement(element, "?SHOW_COLONY_SCAN=1&id=" + spacecraftid);
 }
-function showRepairOptions(spacecraftid) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", "?id=" + spacecraftid + "&SHOW_REPAIR_OPTIONS=1");
+function showRepairOptions(element, spacecraftid) {
+  updatePopupAtElement(element, "?id=" + spacecraftid + "&SHOW_REPAIR_OPTIONS=1");
 }
 
-function analysebuoy(buoyId) {
-  closeAjaxWindow();
-  openPJsWin("elt", 1);
-  ajax_update("elt", `?SHOW_ANALYSE_BUOY=1&id=${spacecraftid}&buoyid=${buoyId}`);
+function analyseBuoy(element, buoyId) {
+  updatePopupAtElement(element, `?SHOW_ANALYSE_BUOY=1&id=${spacecraftid}&buoyid=${buoyId}`);
 }
-function showFightLog() {
-  openPJsWin("fightresult_content", 1);
-  $("fightresult_content").innerHTML = $("fightlog").innerHTML;
+function showFightLog(element) {
+  updatePopupAtElement(element, null);
+  $("popupContent").innerHTML = $("fightlog").innerHTML;
 }
 function showRenameCrew(obj, crew_id) {
   obj.hide();
@@ -413,15 +382,13 @@ function toggleTransferMessage(type) {
   }
 }
 
-function showSystemSettingsWindow(name) {
-  closeAjaxWindow();
-  openWindow('elt', 1, 300);
-  ajax_update('elt', `?SHOW_SYSTEM_SETTINGS_AJAX=1&id=${spacecraftid}&system=${name}`);
+function showSystemSettingsWindow(element, name) {
+  updatePopupAtElement(element, `?SHOW_SYSTEM_SETTINGS_AJAX=1&id=${spacecraftid}&system=${name}`,
+    400
+  );
 }
-function showLSSFilter() {
-  elt = 'lssmode';
-  openPJsWin(elt, 1);
-  ajax_update(elt, '?SHOW_LSS_FILTER=1&id=' + spacecraftid);
+function showLSSFilter(element) {
+  updatePopupAtElement(element, '?SHOW_LSS_FILTER=1&id=' + spacecraftid);
 }
 
 function selectLssMode(mode) {

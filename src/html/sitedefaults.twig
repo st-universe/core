@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#121220" />
     <script src="{{ JAVASCRIPTPATH }}/js/prototype.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/lib/Sortable.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/default.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/colony.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/comm.js"></script>
@@ -22,16 +24,13 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <script src="{{ JAVASCRIPTPATH }}/js/overlib.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/drag.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/overlib_exclusive.js"></script>
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/{{ USER.getCss }}.css" />
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/stu.css" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 </head>
 
 <body onload="startUp();">
-    <div id="overDiv">...</div>
+    {% include 'html/popupWindow.twig' %}
     <div class="container">
         {% from 'html/macros.twig' import component %}
         <div class="header">

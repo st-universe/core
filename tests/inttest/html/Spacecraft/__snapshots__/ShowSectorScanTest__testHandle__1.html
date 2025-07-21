@@ -8,7 +8,7 @@
   <div class="ajaxwin">
         <table class="tcal">
       <tr>
-        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Sektor Scan</th>
+        <th id="popup-drag">Sektor Scan</th>
         <th style="width: 18px;">
           <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
             <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
@@ -37,23 +37,24 @@
                         <img src="/assets/buttons/info2.png" style="height:16px;" title="Direkter Einflugschaden (Schaden bei Deflektorausfall)">
                     </td>
                 </tr>
-                                                                                                                                                                                                                                                                                            
-                                        <tr>
-                        <td>Effekte:</td>
-                        <td>
-                                                                                            Ausfall der Tarnung
-                                <br>
-                                                                                                                            Leck am Warpantrieb
-                                <br>
-                                                                                    </td>
-                    </tr>
-                                                </table>
+                                                                                                                                                                                                
+                                <tr>
+                    <td>Effekte:</td>
+                    <td>
+                                                                        Ausfall der Tarnung
+                        <br>
+                                                                                                Leck am Warpantrieb
+                        <br>
+                                                                    </td>
+                </tr>
+                                            </table>
         </td>
     </tr>
 </table>
 <script>
     appendJsAsync('/static/js/buoy.js');
-</script>      </div>
+</script>
+      </div>
   </body>
 
 </html>

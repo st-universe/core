@@ -1,7 +1,5 @@
-function openNewCatWindow() {
-	elt = 'newcatwin';
-	openPJsWin(elt, 300);
-	ajax_update(elt, "/pm.php?SHOW_NEW_CAT=1");
+function openNewCatWindow(element) {
+	updatePopupAtElement(element, "/pm.php?SHOW_NEW_CAT=1", 300);
 }
 
 function addNewCategory() {
@@ -11,7 +9,7 @@ function addNewCategory() {
 		return;
 	}
 	ajax_update('catlist', '/pm.php?B_ADD_PMCATEGORY=1&' + Form.Element.serialize('catname'));
-	cClick();
+	hidePopup();
 }
 
 function changeCategoryName() {
@@ -22,7 +20,7 @@ function changeCategoryName() {
 	}
 	catid = document.forms['editcat'].elements['pmcat'].value;
 	ajax_update('catlist', '/pm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat=' + catid + '&' + Form.Element.serialize('catname'));
-	cClick();
+	hidePopup();
 }
 
 function deleteAllMarkedPMs() {
@@ -71,10 +69,10 @@ function unMarkAllContacts() {
 	}
 }
 
-function showPMCategoryWindow(catid) {
-	elt = 'cateditwin';
-	openWindow(elt, 1, 300);
-	ajax_update(elt, "/pm.php?SHOW_EDIT_CAT=1&pmcat=" + catid);
+function showPMCategoryWindow(element, catid) {
+	updatePopupAtElement(element, "/pm.php?SHOW_EDIT_CAT=1&pmcat=" + catid,
+		300
+	);
 }
 
 function updateRecipient() {
@@ -87,11 +85,10 @@ function updateRecipient() {
 	}
 }
 
-function showKnComments(knId) {
-	closeAjaxWindow();
-	elt = 'kncomments';
-	openWindow(elt, 1, 450);
-	ajax_update(elt, "comm.php?SHOW_KN_COMMENTS=1&knid=" + knId);
+function showKnComments(element, knId) {
+	updatePopupAtElement(element, "comm.php?SHOW_KN_COMMENTS=1&knid=" + knId,
+		450
+	);
 }
 function postComment(knId) {
 	comment = Form.Element.serialize('comment');
@@ -134,25 +131,22 @@ function searchKn(view) {
 	switchInnerContent(view, 'KommNet - Suche', `search=${search}`);
 }
 
-function showKnCharacter(characterId) {
-	closeAjaxWindow();
-	var elt = 'kncharacter';
-	openWindow(elt, 1, 450);
-	ajax_update(elt, "comm.php?SHOW_KN_CHARACTER=1&character=" + characterId);
-
+function showKnCharacter(element, characterId) {
+	updatePopupAtElement(element, "comm.php?SHOW_KN_CHARACTER=1&character=" + characterId,
+		450
+	);
 }
 
 function showAdminDelete(postid) {
-	var elt = 'admindelete';
-	openWindow(elt, 1, 450);
-	ajax_update(elt, "comm.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid);
+	updatePopup("comm.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid,
+		450
+	);
 }
 
 function showKnArchiveComments(knId) {
-	closeAjaxWindow();
-	elt = 'knarchivecomments';
-	openWindow(elt, 1, 450);
-	ajax_update(elt, "comm.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId);
+	updatePopup("comm.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId,
+		450
+	);
 }
 
 function searchKnArchive(action) {

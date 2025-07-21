@@ -8,7 +8,7 @@
   <div class="ajaxwin">
         <table class="tcal">
       <tr>
-        <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">Crew von Schiff transferieren</th>
+        <th id="popup-drag">Crew von Schiff transferieren</th>
         <th style="width: 18px;">
           <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
             <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;&#159;en">
@@ -30,7 +30,7 @@
         <tr>
     
                         <td colspan="3">
-                <a href="javascript:void(0);" onclick="showTransfer(43, 'station', 42, 'ship', 1, 0, true);" onmouseover="cp('commoditybeamtrigger','buttons/lager_2');" onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
+                <a href="javascript:void(0);" onclick="showTransfer(null, 43, 'station', 42, 'ship', 1, 0);" onmouseover="cp('commoditybeamtrigger','buttons/lager_2');" onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
             <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen">
         </a>
                                 <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
@@ -81,7 +81,7 @@
     </tr>
     <tr>
                                                                 <td style="text-align: center; height: 10%;">
-            <a href="javascript:void(0);" onclick="showTransfer(43, 'station', 42, 'ship', 2, 1, true);" title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+            <a href="javascript:void(0);" onclick="showTransfer(null, 43, 'station', 42, 'ship', 2, 1);" title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
                 <img src="assets/buttons/b_up1.png" name="beamtrigger">
             </a>
         </td>

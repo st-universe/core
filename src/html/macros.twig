@@ -60,7 +60,7 @@
 {% if USER.getId != id %}
 <a href="javascript:void(0);" onmouseover="cp('{{ handle }}','buttons/msg2', 'png');"
     onmouseout="cp('{{ handle }}','buttons/msg1', 'png');"
-    onclick="closePopup(); openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
+    onclick="hidePopup(); openPmWindow({{ USER.getId }}, {{ id }}, 1,1);"><img src="/assets/buttons/msg1.png"
         name="{{ handle }}" title="Nachricht senden" /></a>
 {% endif %}
 {% endmacro %}

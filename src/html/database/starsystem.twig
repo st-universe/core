@@ -61,7 +61,7 @@
         {% set colony = csl.getColony %}
         <tr id="colonyScan_{{ scanId }}">
             <td>
-                <a href="javascript:void(0);" onclick="showColonySurface({{ scanId }});">
+                <a href="javascript:void(0);" onclick="showColonySurface(this, {{ scanId }});">
                     <img src="assets/planets/{{ colony.getColonyClass.getId }}.png" />
                 </a>
             </td>

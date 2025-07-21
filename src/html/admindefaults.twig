@@ -14,16 +14,13 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <script src="{{ JAVASCRIPTPATH }}/js/overlib.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/drag.js"></script>
-    <script src="{{ JAVASCRIPTPATH }}/js/overlib_exclusive.js"></script>
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/{{ USER.getCss }}.css" />
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/stu.css" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 </head>
 
 <body onload="startUp();">
-    <div id="overDiv">...</div>
+    {% include 'html/popupWindow.twig' %}
     <div class="container">
         <div class="header">
             <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">

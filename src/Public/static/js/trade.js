@@ -1,17 +1,11 @@
-function openTradepostInfo(postId) {
-	var elt = 'tradepostinfo';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?postid=' + postId + '&SHOW_TRADEPOST_INFO=1');
+function openTradepostInfo(element, postId) {
+	updatePopupAtElement(element, 'trade.php?postid=' + postId + '&SHOW_TRADEPOST_INFO=1');
 }
-function showTradeOfferByCommodity(postId, commodityId) {
-	var elt = 'tradecommodityinfo';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?postid=' + postId + '&SHOW_OFFER_COMMODITY=1&commodityid=' + commodityId);
+function showTradeOfferByCommodity(element, postId, commodityId) {
+	updatePopupAtElement(element, 'trade.php?postid=' + postId + '&SHOW_OFFER_COMMODITY=1&commodityid=' + commodityId);
 }
-function showTradeOfferMenu(storid) {
-	var elt = 'tradeoffermenu';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?SHOW_OFFER_MENU=1&storid=' + storid);
+function showTradeOfferMenu(element, storid) {
+	updatePopupAtElement(element, 'trade.php?SHOW_OFFER_MENU=1&storid=' + storid);
 }
 function showOfferMenuNewOffer(storid) {
 	ajax_update('tradeoffermenucontent', 'trade.php?SHOW_OFFER_MENU_NEW_OFFER=1&storid=' + storid);
@@ -24,19 +18,17 @@ function showOfferMenuTransfer(storid) {
 	$('tradeoffermenunewoffer').removeClassName('selected');
 }
 function showLicenseMenu(postId) {
-	var elt = 'tradelicensemenu';
-	openWindowPosition(elt, 1, 300, 90, 250, 400, false);
-	ajax_update(elt, 'trade.php?SHOW_LICENSE_MENU=1&postid=' + postId);
+	updatePopup('trade.php?SHOW_LICENSE_MENU=1&postid=' + postId,
+		300, 90, 250, false
+	);
 }
 function showLicenseInfo(postId) {
-	var elt = 'tradelicenseinfo';
-	openWindowPosition(elt, 1, 300, 90, 250, false);
-	ajax_update(elt, 'trade.php?SHOW_LICENSE_INFO=1&postid=' + postId);
+	updatePopup('trade.php?SHOW_LICENSE_INFO=1&postid=' + postId,
+		300, 90, 250, false
+	);
 }
-function takeTradeOffer(offerid) {
-	var elt = 'tradeoffer';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?SHOW_TAKE_OFFER=1&offerid=' + offerid);
+function takeTradeOffer(element, offerid) {
+	updatePopupAtElement(element, 'trade.php?SHOW_TAKE_OFFER=1&offerid=' + offerid);
 }
 function changeSearchCommodity(id) {
 	document.getElementById('commoditySelect').value = id;
@@ -45,21 +37,21 @@ function changeSearchTradepost(id) {
 	document.getElementById('tradepostSelect').value = id;
 }
 function showTradeLicenseList(obj, postId) {
-	var elt = 'licenselist';
-	openWindowPosition(elt, 1, 300, 300, 250, false);
-	ajax_update(elt, 'trade.php?SHOW_LICENSE_LIST=1&postid=' + postId);
+	updatePopup('trade.php?SHOW_LICENSE_LIST=1&postid=' + postId,
+		300, 300, 250, false
+	);
 }
 function openShoutbox(networkid) {
-	var elt = 'shoutbox';
-	openWindowPosition(elt, 1, 800, 90, 60, false);
-	ajax_update(elt, 'trade.php?SHOW_SHOUTBOX=1&network=' + networkid);
+	updatePopup('trade.php?SHOW_SHOUTBOX=1&network=' + networkid,
+		800, 90, 60, false
+	);
 	setTimeout('refreshShoutbox()', 5000);
 	setTimeout('startKeyObserver()', 1000);
 }
 function openShiplist(tradepostid) {
-	var elt = 'shiplist';
-	openWindowPosition(elt, 1, 300, 300, 250, false);
-	ajax_update(elt, 'trade.php?SHOW_SHIPLIST=1&postid=' + tradepostid);
+	updatePopup('trade.php?SHOW_SHIPLIST=1&postid=' + tradepostid,
+		300, 300, 250, false
+	);
 }
 function startKeyObserver() {
 	if (!$('shoutboxentry')) {

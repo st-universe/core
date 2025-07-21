@@ -1,5 +1,3 @@
-function showUserLock(userid) {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', '/admin/?SHOW_USER_LOCK=1&id=' + userid);
+function showUserLock(element, userid) {
+	updatePopupAtElement(element, '/admin/?SHOW_USER_LOCK=1&id=' + userid);
 }
