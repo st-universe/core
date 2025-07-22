@@ -8,12 +8,24 @@ use Mockery;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
+use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
+use Stu\StuMocks;
 use Stu\TwigTestCase;
 
 class ShowShipTest extends TwigTestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
+            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
+            ->registerStubbedComponent(GameComponentEnum::PM)
+            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
+            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
+            ->registerStubbedComponent(GameComponentEnum::USER);
+    }
+
     #[Override]
     public function tearDown(): void
     {
