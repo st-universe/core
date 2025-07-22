@@ -66,56 +66,72 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     {
         $conversationInfo = new ConversationInfo();
 
-        switch ($fromType) {
-            case self::TYPE_USER:
-                $from = $this->userRepository->find($fromId);
-                if ($from === null || $from !== $user) {
-                    return null;
-                }
-                $conversationInfo->setFrom($from);
-                $conversationInfo->setShowTemplateText(false);
-                break;
-            case self::TYPE_SHIP:
-                $from = $this->shipRepository->find($fromId);
-                if ($from === null || $from->getUser() !== $user) {
-                    return null;
-                }
-                $conversationInfo->setWhoText(_('Die'));
-                $conversationInfo->setFrom($from);
-                $conversationInfo->setSectorString($from->getSectorString());
-                break;
-            case self::TYPE_FLEET:
-                $from = $this->fleetRepository->find($fromId);
-                if ($from === null || $from->getUser() !== $user) {
-                    return null;
-                }
-                $conversationInfo->setWhoText(_('Die Flotte'));
-                $conversationInfo->setFrom($from);
-                $conversationInfo->setSectorString($from->getLeadShip()->getSectorString());
-                break;
-            case self::TYPE_STATION:
-                $from = $this->stationRepository->find($fromId);
-                if ($from === null || $from->getUser() !== $user) {
-                    return null;
-                }
-                $conversationInfo->setWhoText(_('Die Station'));
-                $conversationInfo->setFrom($from);
-                $conversationInfo->setSectorString($from->getSectorString());
-                break;
-            case self::TYPE_COLONY:
-                $from = $this->colonyRepository->find($fromId);
-                if ($from === null || $from->getUser() !== $user) {
-                    return null;
-                }
-                $conversationInfo->setWhoText(_('Die Kolonie'));
-                $conversationInfo->setFrom($from);
-                $conversationInfo->setSectorString($from->getSectorString());
-                break;
+        return match ($fromType) {
+            self::TYPE_USER => $this->setFromUser($conversationInfo, $user, $fromId),
+            self::TYPE_SHIP => $this->setFromShip($conversationInfo, $user, $fromId),
+            self::TYPE_FLEET => $this->setFromFleet($conversationInfo, $user, $fromId),
+            self::TYPE_STATION => $this->setFromStation($conversationInfo, $user, $fromId),
+            self::TYPE_COLONY => $this->setFromColony($conversationInfo, $user,  $fromId),
+            default => throw new InvalidArgumentException('fromtype has invalid value')
+        };
+    }
 
-            default:
-                throw new InvalidArgumentException('fromtype has invalid value');
+    private function setFromUser(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
+    {
+        $from = $this->userRepository->find($fromId);
+        if ($from === null || $from !== $user) {
+            return null;
         }
+        $conversationInfo->setFrom($from);
+        $conversationInfo->setShowTemplateText(false);
+        return $conversationInfo;
+    }
 
+    private function setFromShip(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
+    {
+        $from = $this->shipRepository->find($fromId);
+        if ($from === null || $from->getUser() !== $user) {
+            return null;
+        }
+        $conversationInfo->setWhoText('Die');
+        $conversationInfo->setFrom($from);
+        $conversationInfo->setSectorString($from->getSectorString());
+        return $conversationInfo;
+    }
+
+    private function setFromFleet(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
+    {
+        $from = $this->fleetRepository->find($fromId);
+        if ($from === null || $from->getUser() !== $user) {
+            return null;
+        }
+        $conversationInfo->setWhoText(_('Die Flotte'));
+        $conversationInfo->setFrom($from);
+        $conversationInfo->setSectorString($from->getLeadShip()->getSectorString());
+        return $conversationInfo;
+    }
+
+    private function setFromStation(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
+    {
+        $from = $this->stationRepository->find($fromId);
+        if ($from === null || $from->getUser() !== $user) {
+            return null;
+        }
+        $conversationInfo->setWhoText(_('Die Station'));
+        $conversationInfo->setFrom($from);
+        $conversationInfo->setSectorString($from->getSectorString());
+        return $conversationInfo;
+    }
+
+    private function setFromColony(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
+    {
+        $from = $this->colonyRepository->find($fromId);
+        if ($from === null || $from->getUser() !== $user) {
+            return null;
+        }
+        $conversationInfo->setWhoText(_('Die Kolonie'));
+        $conversationInfo->setFrom($from);
+        $conversationInfo->setSectorString($from->getSectorString());
         return $conversationInfo;
     }
 
