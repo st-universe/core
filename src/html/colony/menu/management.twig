@@ -25,13 +25,13 @@
                 </div>
                 <div style="position: absolute; bottom: 5px; width: 100%;">
                     <a href="javascript:void(0);"
-                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, false);"
                         onmouseover="cp('beamfromstation','buttons/b_down2')"
                         onmouseout="cp('beamfromstation','buttons/b_down1')">
                         <img src="/assets/buttons/b_down1.png" name="beamfromstation" title="Von Station beamen" />
                     </a>
                     <a href="javascript:void(0);"
-                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', {{ stationId }}, '{{ station.getTransferEntityType.value }}', 1, true);"
                         onmouseover="cp('beamtostation','buttons/b_up2')"
                         onmouseout="cp('beamtostation','buttons/b_up1')">
                         <img src="/assets/buttons/b_up1.png" name="beamtostation" title="Zu Station beamen" />
@@ -56,12 +56,12 @@
                 <div style="width: 100%;">
                     <br />
                     <a href="javascript:void(0);"
-                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1, false);"
                         onmouseover="cp('beamfrom','buttons/b_down2')"
                         onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
                             name="beamfrom" title="Von Schiff beamen" /></a>
                     <a href="javascript:void(0);"
-                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1);"
+                        onclick="showTransfer(this, {{ COLONY.getId }}, 'colony', document.getElementById('selshipid').value, '{{ targetEntity.getTransferEntityType.value }}', 1, true);"
                         onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img
                             src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen" /></a>
                     <a href="javascript:void(0);" onclick="getOrbitShipList(this, {{ COLONY.getId }});"

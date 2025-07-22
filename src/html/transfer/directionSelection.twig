@@ -16,7 +16,7 @@
         {% set isUnload = TRANSFER_INFO.isUnload ? 0 : 1 %}
         <td style="text-align: center; height: 10%;">
             <a href="javascript:void(0);"
-                onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', {{ transferType }}, {{ isUnload }});"
+                onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', {{ transferType }}, {{ isUnload }}, true);"
                 title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/{{ icon }}2');"
                 onmouseout="cp('beamtrigger','buttons/{{ icon }}1');">
                 <img src="assets/buttons/{{ icon }}1.png" name="beamtrigger" />
