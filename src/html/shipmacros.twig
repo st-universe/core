@@ -241,14 +241,14 @@
         {% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
         {% set targetEntityType = nbsItem.getTransferEntityType.value %}
         <a href="javascript:void(0);"
-            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1);"
+            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, true);"
             onmouseover="cp('bto_{{ targetId }}','buttons/b_down2')"
             onmouseout="cp('bto_{{ targetId }}','buttons/b_down1')">
             <img src="/assets/buttons/b_down1.png" name="bto_{{ targetId }}"
                 title="Zur {{ nameWithoutMarkup }} runterbeamen" />
         </a>
         <a href="javascript:void(0);"
-            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1);"
+            onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ targetId }}, '{{ targetEntityType }}', 1, false);"
             onmouseover="cp('bfr_{{ targetId }}','buttons/b_up2')"
             onmouseout="cp('bfr_{{ targetId }}','buttons/b_up1')">
             <img src="/assets/buttons/b_up1.png" name="bfr_{{ targetId }}"

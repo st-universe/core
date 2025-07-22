@@ -378,12 +378,12 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% set targetEntityType = currentColony.getTransferEntityType.value %}
             <div style="margin-top: 5px; margin-right: 20px; float: left;">
                 <a href="javascript:void(0);"
-                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1);"
+                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, true);"
                     onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
                     <img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
                 </a>
                 <a href="javascript:void(0);"
-                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1);"
+                    onclick="showTransfer(this, {{ spacecraftId }}, '{{sourceEntityType}}', {{ colonyId }}, '{{ targetEntityType }}', 1, false);"
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
                     <img src="/assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>

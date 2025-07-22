@@ -432,9 +432,18 @@ function showTransfer(
 ) {
 	isUnloadValue = isUnload ? 1 : 0;
 
-	updatePopupAtElement(
-		element,
-		`?SHOW_TRANSFER=1&id=${sourceId}&source_type=${sourceType}&target=${targetId}&target_type=${targetType}&transfer_type=${transferTypeValue}&is_unload=${isUnloadValue}`
+	var posX = null;
+	var posY = null;
+
+	if (element) {
+		var pos = findObject(element);
+		posX = pos[0];
+		posY = pos[1];
+	}
+
+	updatePopup(
+		`?SHOW_TRANSFER=1&id=${sourceId}&source_type=${sourceType}&target=${targetId}&target_type=${targetType}&transfer_type=${transferTypeValue}&is_unload=${isUnloadValue}`,
+		null, posX, posY, false, element !== null
 	);
 }
 

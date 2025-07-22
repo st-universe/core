@@ -227,13 +227,13 @@
 							{% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
 							<div style="width: 70%; float: left;">
 								<a href="javascript:void(0);"
-									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1);"
+									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, true);"
 									onmouseover="cp('beamfrom','buttons/b_down2')"
 									onmouseout="cp('beamfrom','buttons/b_down1')">
 									<img src="/assets/buttons/b_down1.png" name="beamfrom" title="Zu Schiff beamen" />
 								</a>
 								<a href="javascript:void(0);"
-									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1);"
+									onclick="showTransfer(this, {{spacecraftId }}, '{{ sourceEntityType }}', document.getElementById('selshipid').value, 'ship', 1, false);"
 									onmouseover="cp('beamto','buttons/b_up2')"
 									onmouseout="cp('beamto','buttons/b_up1')">
 									<img src="/assets/buttons/b_up1.png" name="beamto" title="Von Schiff beamen" />

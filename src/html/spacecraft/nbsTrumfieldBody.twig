@@ -9,7 +9,7 @@
   {% if SPACECRAFT.displayNbsActions %}
   <div style="float:left; margin-right:4px;">
     <a href="javascript:void(0);"
-      onclick="showTransfer(this, {{ sourceId }}, '{{sourceEntityType}}', {{ trumfieldId }}, '{{ targetEntityType }}', 1);"
+      onclick="showTransfer(this, {{ sourceId }}, '{{sourceEntityType}}', {{ trumfieldId }}, '{{ targetEntityType }}', 1, false);"
       onmouseover="cp('bfr_{{ trumfieldId }}','buttons/b_up2')"
       onmouseout="cp('bfr_{{ trumfieldId }}','buttons/b_up1')">
       <img src="/assets/buttons/b_up1.png" name="bfr_{{ trumfieldId }}" title="Vom Trümmerfeld hochbeamen" />
