@@ -1,7 +1,7 @@
 function showAvailableShips(element, fleetid) {
 	var pos = findObject(element);
 	updatePopup('?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid,
-		300, pos[0] - 300, pos[1]
+		300, pos[0] - 300, pos[1], false
 	);
 }
 
