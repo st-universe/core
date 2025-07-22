@@ -88,8 +88,7 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
             $spacecraft->getUser()->getId()
         );
         $warpsystem = $wrapper->getWarpDriveSystemData();
-        $system =  $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
-        if ($system->getMode()->isActivated() && $warpsystem) {
+        if ($warpsystem !== null && $spacecraft->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE)) {
             $signaturetime = $warpsystem->getWarpSignatureTimer();
             if ($signaturetime + 300 >= $this->stuTime->time() && $this->spacecraftRumpRepository->find($warpsystem->getWarpSignature())) {
                 $rump = $this->spacecraftRumpRepository->find($warpsystem->getWarpSignature());

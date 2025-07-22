@@ -12,14 +12,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\SpacecraftSystem;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -133,15 +130,6 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(null);
-        $system = $this->mock(SpacecraftSystem::class);
-        $system->shouldReceive('getMode')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
-        $ship->shouldReceive('getSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
-            ->twice()
-            ->andReturn($system);
 
         $fromSignature->shouldReceive('setLocation')
             ->with($currentField)
@@ -263,15 +251,6 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(null);
-        $system = $this->mock(SpacecraftSystem::class);
-        $system->shouldReceive('getMode')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
-        $ship->shouldReceive('getSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::WARPDRIVE)
-            ->twice()
-            ->andReturn($system);
 
         $fromSignature->shouldReceive('setLocation')
             ->with($currentField)
