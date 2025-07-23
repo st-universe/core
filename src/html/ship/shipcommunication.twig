@@ -85,13 +85,12 @@
 </div>
 {% if SHIP.hasComputer %}
 <div class="box" id="emergency" style="width: 500px; display: none;">
-  {% set isInEmergency = WRAPPER.getComputerSystemData.isInEmergency %}
   <div class="box_title">Notruf</div>
   <div class="box_body">
     <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
       <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-      <table class="tcal" {% if isInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if EMERGENCYTEXT %}style="display: none;" {% endif %}>
         <tr>
           <th colspan="2">Sende Notrufsignal</th>
         </tr>
@@ -108,7 +107,7 @@
               value="Notruf senden" /></td>
         </tr>
       </table>
-      <table class="tcal" {% if not isInEmergency %}style="display: none;" {% endif %}>
+      <table class="tcal" {% if not EMERGENCYTEXT %}style="display: none;" {% endif %}>
         <tr>
           <th>Aktuelles Notrufsignal</th>
         </tr>
