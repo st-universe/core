@@ -1,17 +1,17 @@
 {% block body %}
-    <form method="post" action="alliance.php">
-        <input type="hidden" name="boardid" value="{{ BOARD_ID }}" />
-        <input type="hidden" name="sstr" value="{{ this.getSessionString }}" />
-        <div class="divhead">Thema</div>
-        <div class="divbody">
-            <input type="text" style="width: 500px" name="tname" />
-        </div>
-        <br />
-        <div class="divhead">Text</div>
-        <div class="divbody">
-            <textarea name="ttext" style="width: 100%; height: 300px"></textarea>
-        </div>
-        <br />
-        <input type="submit" class="button" value="Thema erstellen" name="B_CREATE_TOPIC" />
-    </form>
+<form method="post" action="alliance.php">
+    <input type="hidden" name="boardid" value="{{ BOARD_ID }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">Thema</div>
+    <div class="divbody">
+        <input type="text" style="width: 500px" name="tname" />
+    </div>
+    <br />
+    <div class="divhead">Text</div>
+    <div class="divbody">
+        <textarea name="ttext" style="width: 100%; height: 300px"></textarea>
+    </div>
+    <br />
+    <input type="submit" class="button" value="Thema erstellen" name="B_CREATE_TOPIC" />
+</form>
 {% endblock %}
