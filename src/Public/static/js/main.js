@@ -4,13 +4,13 @@ var varcheck = 0;
 function toggleFaction(fid) {
   if (faction === fid) {
     // Falls dieselbe Fraktion erneut geklickt wird -> schließen und zurücksetzen
-    Effect.SlideUp("facinfo_" + faction);
+    $("facinfo_" + faction).classList.add('hidden');
     faction = 0;
   } else {
     if (faction !== 0) {
-      Effect.SlideUp("facinfo_" + faction);
+      $("facinfo_" + faction).classList.add('hidden');
     }
-    Effect.SlideDown("facinfo_" + fid);
+    $("facinfo_" + fid).classList.remove('hidden');
     faction = fid;
   }
 }
