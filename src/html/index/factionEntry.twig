@@ -4,7 +4,7 @@
     ({{ faction.getPlayerCount }}/{{ faction.getPlayerLimit }})
     {% endif %}
 </div>
-<div id="facinfo_{{ factionId }}" style="display: none;">
+<div id="facinfo_{{ factionId }}" class="facinfo hidden">
     {% if not faction.hasFreePlayerSlots %}
     <div style="font-weight: bold"><br />Diese Fraktion kann nicht
         ausgewählt werden da alle vorgesehen Spielerslots belegt sind</div>
