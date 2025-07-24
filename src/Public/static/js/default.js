@@ -224,7 +224,7 @@ function showAchievement(text) {
 	$(close).addClassName("closebutton");
 	$(close).innerHTML = "X";
 	$(close).observe("click", function () {
-		Effect.Fade(this.up());
+		this.up().classList.add('fade-out');
 	});
 	$(close).addClassName("action");
 	$(elem).appendChild(close);
