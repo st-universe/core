@@ -10,6 +10,7 @@ config.json.backup
 config.intttest.json
 src/Public/assets
 src/Public/version_*
+src/Public/robots.txt
 backup
 *.sqlite
 build
