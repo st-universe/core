@@ -57,10 +57,13 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 
         return $flightDirection;
     }
-
     #[Override]
     public function updateWhenSystemExit(SpacecraftWrapperInterface $wrapper, StarSystemMap $starsystemMap): void
     {
+        if ($wrapper->get()->getRump()->isEscapePods()) {
+            return;
+        }
+
         $system = $starsystemMap->getSystem();
 
         $shipX = $starsystemMap->getSx();
