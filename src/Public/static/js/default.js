@@ -100,10 +100,16 @@ function startServerTimer() {
 	$("servertime").innerHTML = dispTime;
 	$("servertime").show();
 	setTimeout("startServerTimer()", 1000);
-}
-
-function ajax_update(elt, url) {
-	new Ajax.Updater(elt, url, { method: "get", evalScripts: true });
+} function ajax_update(elt, url) {
+	new Ajax.Updater(elt, url, {
+		method: "get",
+		evalScripts: true,
+		onComplete: function () {
+			if (typeof initTooltips === 'function') {
+				initTooltips();
+			}
+		}
+	});
 }
 
 function findObject(obj) {
@@ -375,8 +381,7 @@ function actionToInnerContent(action, params, title, page) {
 	switchInnerContent(action, title, params, page);
 }
 
-var isUpdateInProgress = false;
-function switchInnerContent(view, title, params, page, stateUrl) {
+var isUpdateInProgress = false; function switchInnerContent(view, title, params, page, stateUrl) {
 	if (isUpdateInProgress) {
 		return;
 	}
@@ -415,6 +420,11 @@ function switchInnerContent(view, title, params, page, stateUrl) {
 			if (page) {
 				window.scrollTo(0, 0);
 			}
+
+			if (typeof initTooltips === 'function') {
+				initTooltips();
+			}
+
 		},
 		method: "get",
 		evalScripts: true,
@@ -501,7 +511,6 @@ function appendJsAsync(path, callback) {
 	loadScript(path)
 		.then((data) => {
 			loadedScripts.add(path);
-			console.log(`Script '${path}' loaded successfully`, data);
 			if (callback) {
 				callback();
 			}
@@ -509,4 +518,53 @@ function appendJsAsync(path, callback) {
 		.catch((err) => {
 			console.error(err);
 		});
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	initTooltips();
+}); function initTooltips() {
+	const existingElements = document.querySelectorAll('[data-tippy-initialized="true"]');
+	existingElements.forEach(element => {
+		if (element._tippy) {
+			element._tippy.destroy();
+		}
+		element.removeAttribute('data-tippy-initialized');
+	});
+
+	let lastInstance = null;
+
+	const instances = tippy('[data-tippy-content]:not([data-tippy-initialized])', {
+		allowHTML: true,
+		interactive: true,
+		arrow: true,
+		followCursor: true,
+		placement: 'bottom',
+		theme: 'light-border',
+		delay: [0, 0],
+		duration: [0, 0],
+		moveTransition: '',
+		onShow(instance) {
+			if (lastInstance && lastInstance !== instance) {
+				lastInstance.hide();
+			}
+			lastInstance = instance;
+		},
+		popperOptions: {
+			modifiers: [
+				{
+					name: 'offset',
+					options: {
+						offset: [0, 20],
+					},
+				},
+			],
+		}
+	});
+
+	instances.forEach(instance => {
+		instance.reference.setAttribute('data-tippy-initialized', 'true');
+		instance.reference.addEventListener('mouseleave', () => {
+			instance.hide();
+		});
+	});
 }

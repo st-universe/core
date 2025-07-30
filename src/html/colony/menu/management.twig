@@ -220,12 +220,9 @@
                             </a>
                             {% endif %}
                             <a href="https://wiki.stuniverse.de/index.php?title=Schildgenerator" target="_blank"
-                                data-tippy-content="{{ shieldTooltip }}" data-tippy-allowHTML="true"><img
+                                data-tippy-content="{{ shieldTooltip|e('html_attr') }}"><img
                                     src="/assets/buttons/info2.png" style="height:16px;" /></a>
                         </div>
-                        <script>
-                          tippy('[data-tippy-content]');
-                        </script>
                     </td>
                 </tr>
                 <tr>

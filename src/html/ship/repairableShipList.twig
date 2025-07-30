@@ -1,8 +1,8 @@
-{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
-
-{# needs following variables: host, REPAIRABLE_SHIP_WRAPPERS) #}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}{# needs following variables: host,
+REPAIRABLE_SHIP_WRAPPERS) #}
 <table class="tcal" style="width: 40vw;">
-    {% set repairTooltip = "<table class='tcal' style='width:250px'>
+    {% set repairTooltip %}
+    <table class='tcal' style='width:250px'>
         <tr>
             <th style='text-align: left'><img src='/assets/buttons/info2.png' /> Reparatur </th>
         </tr>
@@ -11,7 +11,7 @@
                 Reparaturstation kann den Prozess beschleunigen und günstiger machen.</br>Klicke auf das <img
                     style='height:16px' src='/assets/buttons/info2.png' /> für mehr Infos.</td>
         </tr>
-    </table>" %}
+    </table> {% endset %}
 
     <tr class="responsive-hide">
         <th>Klasse</th>
@@ -19,11 +19,10 @@
         <th>Dauer in Ticks</th>
         <th>Insgesamt benötigte Teile</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank"
-                data-tippy-content="{{ repairTooltip }}" data-tippy-allowHTML="true"><img
-                    src="/assets/buttons/info2.png" style="height:16px;" /></a>
+                data-tippy-content="{{ repairTooltip|e('html_attr') }}"><img src=" /assets/buttons/info2.png"
+                    style="height:16px;" /></a>
         </th>
-    </tr>
-    {% for wrapper in REPAIRABLE_SHIP_WRAPPERS %}
+    </tr>{% for wrapper in REPAIRABLE_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
     <tr class="row responsive-hide">
         <td>
@@ -39,8 +38,7 @@
                     <td>{{ cost.getAmount }}</td>
                     <td><img src="assets/commodities/{{ cost.getCommodityId }}.png"
                             title="{{ cost.getCommodityName }}" /></td>
-                </tr>
-                {% endfor %}
+                </tr>{% endfor %}
             </table>
         </td>
         <td>
@@ -68,8 +66,8 @@
         <th>Dauer in Ticks</th>
         <th>Insgesamt benötigte Teile</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank"
-                data-tippy-content="{{ repairTooltip }}" data-tippy-allowHTML="true"><img
-                    src="/assets/buttons/info2.png" style="height:16px;" /></a>
+                data-tippy-content="{{ repairTooltip|e('html_attr') }}"><img src="/assets/buttons/info2.png"
+                    style="height:16px;" /></a>
         </th>
     </tr>
     <tr class="responsive-show">
@@ -96,6 +94,3 @@
     </tr>
     {% endfor %}
 </table>
-<script>
-  tippy('[data-tippy-content]');
-</script>
