@@ -70,7 +70,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
         $game->setTemplateVar('INFOS', $this->locationRepository->getRumpCategoryInfo($layer, $cx, $cy));
 
-        $changeable->lowerEps(-$scanCost);
+        $changeable->lowerEps($scanCost);
         $this->colonyRepository->save($colony);
 
         $game->setPageTitle(sprintf(_('Subraum Teleskop Scan %d|%d'), $cx, $cy));
