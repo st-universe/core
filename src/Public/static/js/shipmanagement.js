@@ -8,26 +8,28 @@ function shipSelectorHoverEnd(obj) {
 	obj.style.backgroundColor = selbg;
 	obj.style.cursor = 'auto';
 	selbg = '';
-}
-function switchToShip(obj) {
+} function switchToShip(obj) {
 	link = Element.select(obj, 'a');
 	if (link.length == 0) {
 		return;
 	}
 	link[0].click();
-}
-function shipSelectorChoose(obj) {
-	shiplist = document.getElementById("shiplist");
-	if (!shiplist) {
+} function shipSelectorChoose(obj) {
+
+	let isInPopup = document.getElementById("popupContent").contains(obj);
+
+	if (!isInPopup) {
 		switchToShip(obj);
 		return;
 	}
+
 	shipSelectorHoverEnd(obj);
-	sel = $('shipselector');
-	sel.innerHTML = '';
-	sel.appendChild(obj.parentNode);
+	let sel = $('shipselector');
+	if (sel) {
+		sel.innerHTML = '';
+		sel.appendChild(obj.parentNode);
+	}
 	closeAjaxWindow();
-	Element.remove($('shiplist'));
 }
 
 function decreaseShuttleAmount(cid) {
