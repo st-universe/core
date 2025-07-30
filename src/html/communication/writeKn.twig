@@ -76,7 +76,7 @@
 								placeholder="Character ID's" style="width: 150px;" value="{{ CHARACTER_IDS_STRING }}" />
 						</div>
 
-						<div style="flex-grow: 1; text-align: right;">
+						<div style="flex-grow: 1; text-align: left;">
 							{% set knTooltip = "<table class='tcal' style='width:350px'>
 								<tr>
 									<th style='text-align: left'><img src='/assets/buttons/info2.png' /> Ein KN
@@ -94,12 +94,9 @@
 								</tr>
 							</table>" %}
 							<a href="https://wiki.stuniverse.de/index.php?title=KN-Leitfaden" target="_blank"
-								data-tippy-content="{{ knTooltip }}" data-tippy-allowHTML="true"><img
-									src="/assets/buttons/info2.png" style="height:16px;" /></a>
+								data-tippy-content="{{ knTooltip|e('html_attr') }}"><img src="/assets/buttons/info2.png"
+									style="height:16px;" /></a>
 						</div>
-						<script>
-						  tippy('[data-tippy-content]');
-						</script>
 					</div>
 				</div>
 			</td>

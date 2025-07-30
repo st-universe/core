@@ -2184,3 +2184,22 @@ label.linkbutton:hover {
     left: 100%;
   }
 }
+
+
+.tippy-box[data-theme~="light-border"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  line-height: 1.4;
+  padding: 4px;
+
+}
+
+.tippy-box[data-theme~="light-border"] .tippy-arrow {
+  display: none !important;
+}
+
+.tippy-box .tippy-close {
+  display: none !important;
+}

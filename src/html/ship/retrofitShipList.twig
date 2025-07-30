@@ -19,8 +19,8 @@
         <th>Name</th>
         <th>Dauer</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
-                data-tippy-content="{{ retrofitTooltip }}" data-tippy-allowHTML="true"><img
-                    src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ retrofitTooltip|e('html_attr') }}"><img src="/assets/buttons/info2.png"
+                    style="height:16px;" /></a></th>
     </tr>
     {% for wrapper in RETROFIT_SHIP_WRAPPERS %}
     {% set ship = wrapper.get %}
@@ -53,8 +53,8 @@
     <tr class="responsive-show">
         <th>Dauer</th>
         <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Schiffsumrüstung" target="_blank"
-                data-tippy-content="{{ retrofitTooltip }}" data-tippy-allowHTML="true"><img
-                    src="/assets/buttons/info2.png" style="height:16px;" /></a></th>
+                data-tippy-content="{{ retrofitTooltip|e('html_attr') }}"><img src="/assets/buttons/info2.png"
+                    style="height:16px;" /></a></th>
     </tr>
     <tr class="responsive-show">
         <td>{{ ship.getRump.getBuildtime|formatSeconds }}</td>
@@ -67,6 +67,3 @@
     </tr>
     {% endfor %}
 </table>
-<script>
-  tippy('[data-tippy-content]');
-</script>
