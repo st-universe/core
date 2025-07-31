@@ -22,10 +22,8 @@ function showStationInformation(obj, planid) {
 	updatePopup('station.php?SHOW_STATION_INFO=1&planid=' + planid,
 		200, pos[0] + 210, pos[1] - 180
 	);
-}
-
-function showScrapWindow(element) {
-	var pos = findObject(obj);
+} function showScrapWindow(element) {
+	var pos = findObject(element);
 	updatePopup('station.php?id=' + spacecraftid + '&SHOW_SCRAP_AJAX=1',
 		300, pos[0] - 300, pos[1]
 	);
