@@ -370,22 +370,22 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 WHERE fs1.location_id = l.id
                 AND fs1.ship_id = :shipId
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-                AND fs1.time > :timeThreshold) as d1c,
+                AND fs1.time > :timeThreshold AND fs1.is_cloaked = :false) as d1c,
             (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                 WHERE fs2.location_id = l.id
                 AND fs2.ship_id = :shipId
                 AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
-                AND fs2.time > :timeThreshold) as d2c,
+                AND fs2.time > :timeThreshold AND fs2.is_cloaked = :false) as d2c,
             (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                 WHERE fs3.location_id = l.id
                 AND fs3.ship_id = :shipId
                 AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
-                AND fs3.time > :timeThreshold) as d3c,
+                AND fs3.time > :timeThreshold AND fs3.is_cloaked = :false) as d3c,
             (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                 WHERE fs4.location_id = l.id
                 AND fs4.ship_id = :shipId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-                AND fs4.time > :timeThreshold) as d4c 
+                AND fs4.time > :timeThreshold AND fs4.is_cloaked = :false) as d4c 
             FROM stu_sys_map sm
                 JOIN stu_location l
                 ON sm.id = l.id
@@ -401,7 +401,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'yEnd' => $boundaries->getMaxY(),
             'systemId' => $boundaries->getParentId(),
             'shipId' => $shipId,
-            'timeThreshold' => $maxAge
+            'timeThreshold' => $maxAge,
+            'false' => false
         ])->getResult();
     }
 

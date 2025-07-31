@@ -124,9 +124,8 @@ interface MapRepositoryInterface extends ObjectRepository
 
     /** @return array<CellDataInterface> */
     public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array;
-
     /** @return array<CellDataInterface> */
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array;
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, bool $cloaked_check = false): array;
 
     /** @return array<int> */
     public function getUniqueInfluenceAreaIds(int $layerId): array;
