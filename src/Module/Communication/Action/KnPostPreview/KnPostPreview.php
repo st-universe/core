@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\KnPostPreview;
 
 use Override;
 use request;
-use Stu\Component\Communication\Kn\KnBbCodeParser;
+use Stu\Lib\Request\CustomControllerHelperTrait;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,11 +14,12 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class KnPostPreview implements ActionControllerInterface
 {
+    use CustomControllerHelperTrait;
+
     public const string ACTION_IDENTIFIER = 'B_PREVIEW_KN';
 
     public function __construct(
-        private AddKnPostRequestInterface $request,
-        private KnBbCodeParser $bbcodeParser
+        private AddKnPostRequestInterface $request
     ) {}
 
     #[Override]
@@ -34,7 +35,7 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setTemplateVar('PLOT_ID', $plotId);
         $game->setTemplateVar('MARK', $mark);
         $game->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
-        $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($text)->getAsHTML());
+        $game->setTemplateVar('PREVIEW', $this->tidyString($text));
 
         $game->addInformation(_('Vorschau wurde erstellt'));
 
