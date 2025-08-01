@@ -792,10 +792,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $cloaked_condition3 = $cloaked_check ? 'AND fs3.is_cloaked = :false' : '';
         $cloaked_condition4 = $cloaked_check ? 'AND fs4.is_cloaked = :false' : '';
 
-        $rumpId_condition = $rumpId ? 'AND fs1.rump_id = :rumpId' : '';
-        $rumpId_condition2 = $rumpId ? 'AND fs2.rump_id = :rumpId' : '';
-        $rumpId_condition3 = $rumpId ? 'AND fs3.rump_id = :rumpId' : '';
-        $rumpId_condition4 = $rumpId ? 'AND fs4.rump_id = :rumpId' : '';
+        $rumpId_condition = $rumpId !== null ? 'AND fs1.rump_id = :rumpId' : '';
+        $rumpId_condition2 = $rumpId !== null ? 'AND fs2.rump_id = :rumpId' : '';
+        $rumpId_condition3 = $rumpId !== null ? 'AND fs3.rump_id = :rumpId' : '';
+        $rumpId_condition4 = $rumpId !== null ? 'AND fs4.rump_id = :rumpId' : '';
 
         $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -835,7 +835,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ),
             $rsm
         );
-
         $parameters = [
             'xStart' => $boundaries->getMinX(),
             'xEnd' => $boundaries->getMaxX(),
@@ -849,7 +848,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             $parameters['false'] = false;
         }
 
-        if ($rumpId) {
+        if ($rumpId !== null) {
             $parameters['rumpId'] = $rumpId;
         }
 

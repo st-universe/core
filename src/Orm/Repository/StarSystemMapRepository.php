@@ -362,10 +362,10 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
-        $rumpId_condition = $rumpId ? 'AND fs1.rump_id = :rumpId' : '';
-        $rumpId_condition2 = $rumpId ? 'AND fs2.rump_id = :rumpId' : '';
-        $rumpId_condition3 = $rumpId ? 'AND fs3.rump_id = :rumpId' : '';
-        $rumpId_condition4 = $rumpId ? 'AND fs4.rump_id = :rumpId' : '';
+        $rumpId_condition = $rumpId !== null ? 'AND fs1.rump_id = :rumpId' : '';
+        $rumpId_condition2 = $rumpId !== null ? 'AND fs2.rump_id = :rumpId' : '';
+        $rumpId_condition3 = $rumpId !== null ? 'AND fs3.rump_id = :rumpId' : '';
+        $rumpId_condition4 = $rumpId !== null ? 'AND fs4.rump_id = :rumpId' : '';
 
         $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -404,7 +404,6 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ),
             $rsm
         );
-
         $parameters = [
             'xStart' => $boundaries->getMinX(),
             'xEnd' => $boundaries->getMaxX(),
@@ -416,7 +415,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'false' => false
         ];
 
-        if ($rumpId) {
+        if ($rumpId !== null) {
             $parameters['rumpId'] = $rumpId;
         }
 
