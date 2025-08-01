@@ -86,8 +86,14 @@ function startUp() {
 }
 var servertime = 0;
 function startServerTimer() {
+
+	element = $("servertime");
+	if (!element) {
+		return;
+	}
+
 	if (servertime == 0) {
-		servertime = new Date($("servertime").innerHTML);
+		servertime = new Date(element.innerHTML);
 	}
 	var hours = servertime.getHours();
 	var minutes = servertime.getMinutes();
@@ -97,8 +103,8 @@ function startServerTimer() {
 	if (minutes <= 9) minutes = "0" + minutes;
 	if (seconds <= 9) seconds = "0" + seconds;
 	dispTime = hours + ":" + minutes + ":" + seconds;
-	$("servertime").innerHTML = dispTime;
-	$("servertime").show();
+	element.innerHTML = dispTime;
+	element.show();
 	setTimeout("startServerTimer()", 1000);
 } function ajax_update(elt, url) {
 	new Ajax.Updater(elt, url, {
@@ -523,6 +529,11 @@ function appendJsAsync(path, callback) {
 document.addEventListener('DOMContentLoaded', () => {
 	initTooltips();
 }); function initTooltips() {
+
+	if (typeof tippy !== "function") {
+		return;
+	}
+
 	const existingElements = document.querySelectorAll('[data-tippy-initialized="true"]');
 	existingElements.forEach(element => {
 		if (element._tippy) {
