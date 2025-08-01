@@ -87,7 +87,8 @@
             </div>
         </div>
     </div>
-    {% include 'html/executeJavascriptAfterRender.twig' %}
+    {% from 'html/executeJavascript.twig' import executeJs %}
+    {{ executeJs(EXECUTEJSAFTERRENDER) }}
 </body>
 
 </html>

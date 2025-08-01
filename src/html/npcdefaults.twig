@@ -1,3 +1,5 @@
+{% from 'html/executeJavascript.twig' import executeJs %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
@@ -82,7 +84,7 @@
             </div>
         </div>
     </div>
-    {% include 'html/executeJavascriptAfterRender.twig' %}
+    {{ executeJs(EXECUTEJSAFTERRENDER) }}
 </body>
 
 </html>

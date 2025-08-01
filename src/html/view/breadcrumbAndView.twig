@@ -1,3 +1,5 @@
+{% from 'html/executeJavascript.twig' import executeJs %}
+
 <html>
 
 <head>
@@ -7,6 +9,6 @@
 {% include 'html/breadcrumb.twig' %}
 {% include VIEW_TEMPLATE %}
 {% include 'html/benchmark.twig' %}
-{% include 'html/executeJavascriptAfterRender.twig' %}
+{{ executeJs(EXECUTEJSAFTERRENDER) }}
 
 </html>

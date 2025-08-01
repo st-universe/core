@@ -1,6 +1,7 @@
 {% embed "html/colony/menu/submenuForm.twig" %}
-{% block containment %}
+{% from 'html/executeJavascript.twig' import executeJs %}
 
+{% block containment %}
 <div class="box" style="width: 40vw;">
     <input type="hidden" name="func" id="func" value="{{ FUNC.getFunction.value }}" />
     <input type="hidden" id="colony-id" value="{{ HOST.getId }}" />
@@ -164,7 +165,7 @@
     </div>
 
 </div>
-{% include 'html/executeJavascriptAfterRender.twig' %}
+{{ executeJs(EXECUTEJSAFTERRENDER) }}
 <style>
     .level-box button.active {
         background-color: #d3d3d3;

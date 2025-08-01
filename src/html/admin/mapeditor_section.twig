@@ -1,4 +1,5 @@
 {% extends "html/admindefaults.twig" %}
+{% from 'html/executeJavascript.twig' import executeJs %}
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
@@ -428,5 +429,5 @@
 		</div>
 	</div>
 </div>
-{% include 'html/executeJavascriptAjaxUpdate.twig' %}
+{{ executeJs(EXECUTEJSAJAXUPDATE) }}
 {% endblock %}

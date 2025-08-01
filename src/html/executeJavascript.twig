@@ -1,9 +1,11 @@
-{% if EXECUTEJSBEFORERENDER %}
+{% macro executeJs(jsArray) %}
+{% if jsArray %}
 <script>
-    {% for item in EXECUTEJSBEFORERENDER %}
+    {% for item in jsArray %}
     {% autoescape false %}
     {{ item }}
     {% endautoescape %}
     {% endfor %}
 </script>
 {% endif %}
+{% endmacro %}
