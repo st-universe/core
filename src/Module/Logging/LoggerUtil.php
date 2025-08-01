@@ -14,14 +14,14 @@ final class LoggerUtil implements LoggerUtilInterface
 {
     private ?Logger $logger = null;
 
-    private int $level;
+    private LogLevelEnum $level;
 
     private bool $doLog = false;
 
     public function __construct(private StuConfigInterface $stuConfig) {}
 
     #[Override]
-    public function init(string $channel = 'stu', int $level = LoggerEnum::LEVEL_INFO): void
+    public function init(string $channel = 'stu', LogLevelEnum $level = LogLevelEnum::INFO): void
     {
         $this->level = $level;
 
@@ -39,7 +39,7 @@ final class LoggerUtil implements LoggerUtilInterface
     {
         $threshold = $this->stuConfig->getDebugSettings()->getLoglevel();
 
-        $this->doLog = $threshold <= $this->level;
+        $this->doLog = $threshold <= $this->level->value;
 
         return $this->doLog;
     }
@@ -58,8 +58,7 @@ final class LoggerUtil implements LoggerUtilInterface
                 throw new RuntimeException('logger has not been initialized');
             }
 
-            $method = LoggerEnum::LEVEL_METHODS[$this->level];
-            $this->logger->$method($message);
+            $this->level->log($message, $this->logger);
         }
     }
 

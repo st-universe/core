@@ -22,7 +22,7 @@ final class CreateLicense implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('trade', LogLevelEnum::ERROR);
 
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
 

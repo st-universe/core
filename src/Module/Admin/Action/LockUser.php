@@ -10,7 +10,7 @@ use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\User;
@@ -35,7 +35,7 @@ final class LockUser implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('admin', LogLevelEnum::ERROR);
         $game->setView(Playerlist::VIEW_IDENTIFIER);
 
         $this->loggerUtil->log('A');

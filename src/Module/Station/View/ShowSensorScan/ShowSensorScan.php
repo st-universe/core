@@ -51,7 +51,7 @@ final class ShowSensorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),

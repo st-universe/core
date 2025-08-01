@@ -8,7 +8,7 @@ use Cache\Adapter\Common\CacheItem;
 use Override;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\PlanetField;
@@ -63,7 +63,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         $result = $this->cache->getItem(self::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
 
         if ($result === null) {
-            $this->loggerUtil->init('CACHE', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('CACHE', LogLevelEnum::ERROR);
             $this->loggerUtil->log(sprintf('could not retrieve category for fieldTypeId: %s', $fieldTypeId));
         }
 

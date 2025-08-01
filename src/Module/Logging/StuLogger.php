@@ -13,8 +13,7 @@ class StuLogger
 
     public static function log(string $message): void
     {
-        $method = LoggerEnum::LEVEL_METHODS[LoggerEnum::LEVEL_INFO];
-        self::getLogger()->$method($message);
+        LogLevelEnum::INFO->log($message, self::getLogger());
     }
 
     /** @param string|int|float $args */

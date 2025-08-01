@@ -46,7 +46,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
 
     private function getAstroState(Ship $ship, GameControllerInterface $game, bool $isSystem): AstroStateWrapper
     {
-        //$this->loggerUtil->init('SS', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('SS', LogLevelEnum::ERROR);
 
         $databaseEntry = $this->getDatabaseEntryForShipLocation($ship, $isSystem);
 

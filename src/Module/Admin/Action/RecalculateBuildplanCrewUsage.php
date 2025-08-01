@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\BuildplanModule;
@@ -30,7 +30,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
     ) {
         $this->logger = $loggerUtilFactory->getLoggerUtil();
 
-        $this->logger->init('CREW', LoggerEnum::LEVEL_ERROR);
+        $this->logger->init('CREW', LogLevelEnum::ERROR);
     }
 
     #[Override]

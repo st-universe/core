@@ -13,8 +13,7 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
     public function __construct(
         private StuConfigInterface $config,
         private Parser $parser
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function getLoggerUtil(bool $doDefaultInit = false): LoggerUtilInterface
@@ -24,7 +23,7 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
         );
 
         if ($doDefaultInit) {
-            $loggerUtil->init('STU', LoggerEnum::LEVEL_ERROR);
+            $loggerUtil->init('STU', LogLevelEnum::ERROR);
         }
 
         return $loggerUtil;

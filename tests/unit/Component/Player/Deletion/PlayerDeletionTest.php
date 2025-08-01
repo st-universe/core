@@ -11,7 +11,7 @@ use Override;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\User;
@@ -66,7 +66,7 @@ class PlayerDeletionTest extends StuTestCase
             ->andReturn(4242424242);
 
         $this->loggerUtil->shouldReceive('init')
-            ->with('DEL', LoggerEnum::LEVEL_ERROR)
+            ->with('DEL', LogLevelEnum::ERROR)
             ->once();
 
         $this->userRepository->shouldReceive('getIdleRegistrations')

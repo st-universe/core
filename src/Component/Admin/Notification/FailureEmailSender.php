@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -36,7 +36,7 @@ final class FailureEmailSender implements FailureEmailSenderInterface
         try {
             $mail->send();
         } catch (RuntimeException) {
-            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
             $this->loggerUtil->log(sprintf(
                 "Error while sending failure E-Mail to admin! Subject: %s, Message: %s",
                 $subject,

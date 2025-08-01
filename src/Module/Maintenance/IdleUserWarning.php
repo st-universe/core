@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -47,7 +47,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
     #[Override]
     public function handle(): void
     {
-        $this->loggerUtil->init('DEL', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('DEL', LogLevelEnum::ERROR);
 
         $notifiedEmails = [];
 
@@ -79,7 +79,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 $mail->send();
                 $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
-                $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
                 $this->loggerUtil->log($e->getMessage());
             }
         }
@@ -133,7 +133,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 $mail->send();
                 $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
-                $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
                 $this->loggerUtil->log($e->getMessage());
             }
         }
@@ -171,7 +171,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 $mail->send();
                 $notifiedEmails[] = $registration->getEmail();
             } catch (RuntimeException $e) {
-                $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
                 $this->loggerUtil->log($e->getMessage());
             }
         }
@@ -227,7 +227,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
                 try {
                     $mail->send();
                 } catch (RuntimeException $e) {
-                    $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                    $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
                     $this->loggerUtil->log($e->getMessage());
                 }
             }

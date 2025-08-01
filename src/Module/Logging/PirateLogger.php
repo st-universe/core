@@ -38,10 +38,7 @@ final class PirateLogger implements PirateLoggerInterface
             throw new RuntimeException('logger has not been initialized');
         }
 
-        $method = LoggerEnum::LEVEL_METHODS[LoggerEnum::LEVEL_INFO];
-        $this->logger->$method(
-            $this->parser->parse($message)->getAsText()
-        );
+        LogLevelEnum::INFO->log($this->parser->parse($message)->getAsText(), $this->logger);
     }
 
     #[Override]
