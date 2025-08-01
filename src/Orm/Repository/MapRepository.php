@@ -784,57 +784,63 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'userId' => $userId
         ])->getResult();
     }
+    /**
+     * @return array<int, string>
+     */
+    private function getDynamicQueryConditions(bool $cloaked_check, ?int $rumpId): array
+    {
+        $conditions = ['', '', '', ''];
+
+        if ($cloaked_check) {
+            $conditions[0] = 'AND fs1.is_cloaked = :false';
+            $conditions[1] = 'AND fs2.is_cloaked = :false';
+            $conditions[2] = 'AND fs3.is_cloaked = :false';
+            $conditions[3] = 'AND fs4.is_cloaked = :false';
+        }
+
+        if ($rumpId !== null) {
+            $conditions[0] .= ' AND fs1.rump_id = :rumpId';
+            $conditions[1] .= ' AND fs2.rump_id = :rumpId';
+            $conditions[2] .= ' AND fs3.rump_id = :rumpId';
+            $conditions[3] .= ' AND fs4.rump_id = :rumpId';
+        }
+
+        return $conditions;
+    }
     #[Override]
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, bool $cloaked_check = false, ?int $rumpId = null): array
     {
-        $cloaked_condition = $cloaked_check ? 'AND fs1.is_cloaked = :false' : '';
-        $cloaked_condition2 = $cloaked_check ? 'AND fs2.is_cloaked = :false' : '';
-        $cloaked_condition3 = $cloaked_check ? 'AND fs3.is_cloaked = :false' : '';
-        $cloaked_condition4 = $cloaked_check ? 'AND fs4.is_cloaked = :false' : '';
-
-        $rumpId_condition = $rumpId !== null ? 'AND fs1.rump_id = :rumpId' : '';
-        $rumpId_condition2 = $rumpId !== null ? 'AND fs2.rump_id = :rumpId' : '';
-        $rumpId_condition3 = $rumpId !== null ? 'AND fs3.rump_id = :rumpId' : '';
-        $rumpId_condition4 = $rumpId !== null ? 'AND fs4.rump_id = :rumpId' : '';
+        $conditions = $this->getDynamicQueryConditions($cloaked_check, $rumpId);
 
         $query = $this->getEntityManager()->createNativeQuery(
-            sprintf(
-                'SELECT l.cx as x, l.cy as y,
+            'SELECT l.cx as x, l.cy as y,
                 (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                     WHERE fs1.location_id = l.id
                     AND fs1.ship_id = :shipId
-                    %s %s
+                    ' . $conditions[0] . '
                     AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
                 (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                     WHERE fs2.location_id = l.id
                     AND fs2.ship_id = :shipId
-                    %s %s
+                    ' . $conditions[1] . '
                     AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
                 (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                     WHERE fs3.location_id = l.id
                     AND fs3.ship_id = :shipId
-                    %s %s
+                    ' . $conditions[2] . '
                     AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
                 (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                     WHERE fs4.location_id = l.id
                     AND fs4.ship_id = :shipId
-                    %s %s
+                    ' . $conditions[3] . '
                     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
                 AND l.cy BETWEEN :yStart AND :yEnd
                 AND l.layer_id = :layerId',
-                $cloaked_condition,
-                $rumpId_condition,
-                $cloaked_condition2,
-                $rumpId_condition2,
-                $cloaked_condition3,
-                $rumpId_condition3,
-                $cloaked_condition4,
-                $rumpId_condition4
-            ),
             $rsm
         );
+
         $parameters = [
             'xStart' => $boundaries->getMinX(),
             'xEnd' => $boundaries->getMaxX(),
