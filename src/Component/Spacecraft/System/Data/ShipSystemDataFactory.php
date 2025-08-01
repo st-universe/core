@@ -15,6 +15,7 @@ use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Module\Control\GameController;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
@@ -27,6 +28,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         private readonly StuTime $stuTime,
         private readonly DatabaseUserRepositoryInterface $databaseUserRepository,
         private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private readonly FlightSignatureRepositoryInterface $flightSignatureRepository,
         private readonly GameController $gameController
     ) {}
 
@@ -53,7 +55,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
             SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR =>  new BussardCollectorSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM =>  new AggregationSystemSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::LSS =>  new LssSystemData($this->shipSystemRepository, $this->statusBarFactory),
-            SpacecraftSystemTypeEnum::SUBSPACE_SCANNER => new SubspaceSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::SUBSPACE_SCANNER => new SubspaceSystemData($this->shipSystemRepository, $this->statusBarFactory, $this->flightSignatureRepository),
 
             default => throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType->value))
         };

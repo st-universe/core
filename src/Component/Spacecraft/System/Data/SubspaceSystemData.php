@@ -7,8 +7,10 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 class SubspaceSystemData extends AbstractSystemData
 {
@@ -18,7 +20,8 @@ class SubspaceSystemData extends AbstractSystemData
 
     public function __construct(
         SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        StatusBarFactoryInterface $statusBarFactory
+        StatusBarFactoryInterface $statusBarFactory,
+        private readonly FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         parent::__construct($shipSystemRepository, $statusBarFactory);
     }
@@ -62,7 +65,7 @@ class SubspaceSystemData extends AbstractSystemData
         return $this;
     }
 
-    public function getHighlightedSpacecraftId(Spacecraft $spacecraft): ?int
+    public function getHighlightedFlightSig(Spacecraft $spacecraft): ?FlightSignature
     {
         $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
         if (!$isSubspaceScannerActive) {
@@ -92,6 +95,12 @@ class SubspaceSystemData extends AbstractSystemData
             return null;
         }
 
-        return $this->getSpacecraftId();
+        $flightSigId = $this->getFlightSigId();
+        if ($flightSigId) {
+            $flightSig = $this->flightSignatureRepository->find($flightSigId);
+            return $flightSig;
+        } else {
+            return null;
+        }
     }
 }

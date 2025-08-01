@@ -81,12 +81,11 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 
         return $this;
     }
-
     #[Override]
-    public function addSpacecraftSignatureLayer(int $spacecraftId): PanelLayerCreationInterface
+    public function addSpacecraftSignatureLayer(int $spacecraftId, ?int $rumpId = null): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = new SubspaceLayerRenderer(PanelLayerEnum::SPACECRAFT_SIGNATURE->value, true);
-        $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = $this->subspaceDataProviderFactory->getDataProvider($spacecraftId, SubspaceLayerTypeEnum::SPACECRAFT_ONLY);
+        $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = $this->subspaceDataProviderFactory->getDataProvider($spacecraftId, SubspaceLayerTypeEnum::SPACECRAFT_ONLY, $rumpId);
 
         return $this;
     }

@@ -26,6 +26,8 @@ use Stu\Orm\Entity\StarSystemMap;
  */
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
+
+
     #[Override]
     public function getAmountByLayer(Layer $layer): int
     {
@@ -783,12 +785,17 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         ])->getResult();
     }
     #[Override]
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, bool $cloaked_check = false): array
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, bool $cloaked_check = false, ?int $rumpId = null): array
     {
         $cloaked_condition = $cloaked_check ? 'AND fs1.is_cloaked = :false' : '';
         $cloaked_condition2 = $cloaked_check ? 'AND fs2.is_cloaked = :false' : '';
         $cloaked_condition3 = $cloaked_check ? 'AND fs3.is_cloaked = :false' : '';
         $cloaked_condition4 = $cloaked_check ? 'AND fs4.is_cloaked = :false' : '';
+
+        $rumpId_condition = $rumpId ? 'AND fs1.rump_id = :rumpId' : '';
+        $rumpId_condition2 = $rumpId ? 'AND fs2.rump_id = :rumpId' : '';
+        $rumpId_condition3 = $rumpId ? 'AND fs3.rump_id = :rumpId' : '';
+        $rumpId_condition4 = $rumpId ? 'AND fs4.rump_id = :rumpId' : '';
 
         $query = $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -796,31 +803,35 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                     WHERE fs1.location_id = l.id
                     AND fs1.ship_id = :shipId
-                    %s
+                    %s %s
                     AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
                 (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                     WHERE fs2.location_id = l.id
                     AND fs2.ship_id = :shipId
-                    %s
+                    %s %s
                     AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
                 (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                     WHERE fs3.location_id = l.id
                     AND fs3.ship_id = :shipId
-                    %s
+                    %s %s
                     AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
                 (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                     WHERE fs4.location_id = l.id
                     AND fs4.ship_id = :shipId
-                    %s
+                    %s %s
                     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
                 AND l.cy BETWEEN :yStart AND :yEnd
                 AND l.layer_id = :layerId',
                 $cloaked_condition,
+                $rumpId_condition,
                 $cloaked_condition2,
+                $rumpId_condition2,
                 $cloaked_condition3,
-                $cloaked_condition4
+                $rumpId_condition3,
+                $cloaked_condition4,
+                $rumpId_condition4
             ),
             $rsm
         );
@@ -836,6 +847,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         if ($cloaked_check) {
             $parameters['false'] = false;
+        }
+
+        if ($rumpId) {
+            $parameters['rumpId'] = $rumpId;
         }
 
         return $query->setParameters($parameters)->getResult();
