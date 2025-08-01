@@ -60,6 +60,10 @@ class AnomalyCreationTest extends StuTestCase
         $map->shouldReceive('addAnomaly')
             ->with($anomaly)
             ->once();
+        $map->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
 
         $anomalyType->shouldReceive('getLifespanInTicks')
             ->withNoArgs()
@@ -119,6 +123,10 @@ class AnomalyCreationTest extends StuTestCase
         $map->shouldReceive('addAnomaly')
             ->with($anomaly)
             ->once();
+        $map->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
 
         $parent->shouldReceive('getChildren->set')
             ->with(123456, $anomaly)

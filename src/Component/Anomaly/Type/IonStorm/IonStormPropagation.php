@@ -14,9 +14,9 @@ use Stu\Orm\Repository\AnomalyRepositoryInterface;
 class IonStormPropagation
 {
     public function __construct(
-        private AnomalyRepositoryInterface $anomalyRepository,
-        private AnomalyCreationInterface $anomalyCreation,
-        private StuRandom $stuRandom
+        private readonly AnomalyRepositoryInterface $anomalyRepository,
+        private readonly AnomalyCreationInterface $anomalyCreation,
+        private readonly StuRandom $stuRandom
     ) {}
 
     public function propagateStorm(Anomaly $root, LocationPool $locationPool): void
