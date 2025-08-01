@@ -7,14 +7,16 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
 class IonStormMovement
 {
     public function __construct(
-        private AnomalyRepositoryInterface $anomalyRepository,
-        private StuRandom $stuRandom
+        private readonly AnomalyRepositoryInterface $anomalyRepository,
+        private readonly StuRandom $stuRandom
     ) {}
 
     public function moveStorm(Anomaly $root, IonStormData $ionStormData, LocationPool $locationPool): void
@@ -51,12 +53,19 @@ class IonStormMovement
             || $newLocation->isAnomalyForbidden()
         ) {
             $this->anomalyRepository->delete($child);
+            StuLogger::log(sprintf('deleted ionstorm at %s', $currentLocation->getSectorString()), LogTypeEnum::ANOMALY);
             return;
         }
 
         $currentLocation->getAnomalies()->removeElement($child);
         $child->setLocation($newLocation);
         $newLocation->addAnomaly($child);
+
+        StuLogger::log(sprintf(
+            'moved ionstorm from %s to %s',
+            $currentLocation->getSectorString(),
+            $newLocation->getSectorString()
+        ), LogTypeEnum::ANOMALY);
 
         $this->anomalyRepository->save($child);
     }

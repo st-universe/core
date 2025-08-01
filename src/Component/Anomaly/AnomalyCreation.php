@@ -7,6 +7,8 @@ namespace Stu\Component\Anomaly;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
@@ -15,8 +17,8 @@ use Stu\Orm\Repository\AnomalyTypeRepositoryInterface;
 final class AnomalyCreation implements AnomalyCreationInterface
 {
     public function __construct(
-        private AnomalyRepositoryInterface $anomalyRepository,
-        private AnomalyTypeRepositoryInterface $anomalyTypeRepository
+        private readonly AnomalyRepositoryInterface $anomalyRepository,
+        private readonly AnomalyTypeRepositoryInterface $anomalyTypeRepository
     ) {}
 
     #[Override]
@@ -49,6 +51,9 @@ final class AnomalyCreation implements AnomalyCreationInterface
         }
 
         if ($location !== null) {
+
+            StuLogger::log(sprintf('created %s at %s', $type->name, $location->getSectorString()), LogTypeEnum::ANOMALY);
+
             $location->addAnomaly($anomaly);
         }
 

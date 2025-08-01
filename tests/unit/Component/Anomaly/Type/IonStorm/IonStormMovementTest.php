@@ -109,6 +109,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(2);
+        $childLocation->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
         $childOnBorderLocation->shouldReceive('getX')
             ->withNoArgs()
             ->once()
@@ -117,6 +121,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(4);
+        $childOnBorderLocation->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR_BORDER_CHILD');
         $child2Location->shouldReceive('getX')
             ->withNoArgs()
             ->once()
@@ -125,6 +133,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(6);
+        $child2Location->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR_CHILD2');
 
         $locationPool->shouldReceive('getLocation')
             ->with(4, 5)
@@ -150,6 +162,11 @@ class IonStormMovementTest extends StuTestCase
         $newLocation->shouldReceive('addAnomaly')
             ->with($child)
             ->once();
+        $newLocation->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('NEW_SECTOR');
+
         $locationWithIonStorm->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::ION_STORM)
             ->once()
@@ -205,6 +222,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(8);
+        $childWithForbiddenTargetLocation->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
 
         $locationPool->shouldReceive('getLocation')
             ->with(10, 11)
