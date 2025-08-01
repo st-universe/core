@@ -1,3 +1,5 @@
+{% from 'html/executeJavascript.twig' import executeJs %}
+
 <html lang="de">
 
 <head>
@@ -28,7 +30,7 @@
     {% endblock %}
     {% endif %}
   </div>
-  {% include 'html/executeJavascriptAfterRender.twig' %}
+  {{ executeJs(EXECUTEJSAFTERRENDER) }}
 </body>
 
 </html>

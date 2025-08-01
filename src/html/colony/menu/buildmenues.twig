@@ -1,4 +1,6 @@
 {% embed "html/colony/menu/submenuForm.twig" %}
+
+{% from 'html/executeJavascript.twig' import executeJs %}
 {% block containment %}
 <div>
     <table cellpading="0" cellspacing="0" style="text-align: center;">
@@ -14,6 +16,6 @@
         </tr>
     </table>
 </div>
-{% include 'html/executeJavascriptAjaxUpdate.twig' %}
+{{ executeJs(EXECUTEJSAJAXUPDATE) }}
 {% endblock %}
 {% endembed %}

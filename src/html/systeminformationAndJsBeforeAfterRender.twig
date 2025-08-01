@@ -1,3 +1,5 @@
-{% include 'html/executeJavascript.twig' %}
+{% from 'html/executeJavascript.twig' import executeJs %}
+
+{{ executeJs(EXECUTEJSBEFORERENDER) }}
 {% include 'html/systeminformation.twig' %}
-{% include 'html/executeJavascriptAfterRender.twig' %}
+{{ executeJs(EXECUTEJSAFTERRENDER) }}
