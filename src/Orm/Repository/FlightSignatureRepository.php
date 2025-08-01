@@ -267,7 +267,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                   AND fs.time >= :minTime
                   AND fs.user_id != :userId
                   AND fs.is_cloaked = false
-                ORDER BY fs.ship_id ASC, fs.time DESC',
+                ORDER BY fs.ship_id ASC, fs.rump_id ASC, fs.time DESC',
                     FlightSignature::class,
                     Map::class
                 )
@@ -283,21 +283,27 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ])
             ->getResult();
 
-        $latestPerShip = [];
+        $latestPerShipAndRump = [];
         foreach ($flightSignatures as $flightSignature) {
             $shipId = $flightSignature->getShipId();
+            $rumpId = $flightSignature->getRump()->getId();
+            $key = $shipId . '_' . $rumpId;
 
-            if (!isset($latestPerShip[$shipId])) {
+            if (!isset($latestPerShipAndRump[$key])) {
                 $spacecraft = $this->getEntityManager()
                     ->getRepository(Spacecraft::class)
                     ->find($shipId);
 
                 if ($spacecraft) {
-                    $latestPerShip[$shipId] = [$flightSignature, $spacecraft];
+                    $latestPerShipAndRump[$key] = [$flightSignature, $spacecraft];
                 }
             }
         }
 
-        return array_values($latestPerShip);
+        uasort($latestPerShipAndRump, function ($a, $b) {
+            return $b[0]->getTime() - $a[0]->getTime();
+        });
+
+        return array_values($latestPerShipAndRump);
     }
 }
