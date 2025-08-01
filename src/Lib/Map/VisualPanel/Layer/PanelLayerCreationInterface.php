@@ -22,7 +22,7 @@ interface PanelLayerCreationInterface
 
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface;
 
-    public function addSpacecraftSignatureLayer(int $spacecraftId): PanelLayerCreationInterface;
+    public function addSpacecraftSignatureLayer(int $spacecraftId, ?int $rumpId = null): PanelLayerCreationInterface;
 
     public function addBorderLayer(?SpacecraftWrapperInterface $currentWrapper, ?bool $isOnShipLevel): PanelLayerCreationInterface;
 

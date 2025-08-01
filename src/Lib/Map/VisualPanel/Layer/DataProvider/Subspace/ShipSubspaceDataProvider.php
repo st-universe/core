@@ -17,7 +17,8 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
         private int $shipId,
         LocationRepositoryInterface $locationRepository,
         MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        private ?int $rumpId = null
     ) {
         parent::__construct(
             $locationRepository,
@@ -32,15 +33,13 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
         return SpacecraftSignatureData::class;
     }
 
-    #[Override]
-    protected function provideDataForMap(PanelBoundaries $boundaries): array
+    #[Override] protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
-        return $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping(), true);
+        return $this->mapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping(), true, $this->rumpId);
     }
 
-    #[Override]
-    protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
+    #[Override] protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
-        return $this->starSystemMapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping());
+        return $this->starSystemMapRepository->getShipSubspaceLayerData($boundaries, $this->shipId, $this->createResultSetMapping(), $this->rumpId);
     }
 }

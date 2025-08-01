@@ -8,5 +8,5 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 
 interface SubspaceDataProviderFactoryInterface
 {
-    public function getDataProvider(int $id, SubspaceLayerTypeEnum $type): AbstractPanelLayerDataProvider;
+    public function getDataProvider(int $id, SubspaceLayerTypeEnum $type, ?int $rumpId = null): AbstractPanelLayerDataProvider;
 }

@@ -21,7 +21,6 @@ use Stu\Orm\Entity\StarSystemMap;
  */
 final class StarSystemMapRepository extends EntityRepository implements StarSystemMapRepositoryInterface
 {
-    #[Override]
     public function getBySystemOrdered(int $starSystemId): array
     {
         return $this->findBy(
@@ -358,32 +357,37 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'timeThreshold' => $maxAge
         ])->getResult();
     }
-
     #[Override]
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm): array
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, ?int $rumpId = null): array
     {
         $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT sm.sx as x, sm.sy as y, mft.effects as effects,
+        $rumpId_condition = $rumpId ? 'AND fs1.rump_id = :rumpId' : '';
+        $rumpId_condition2 = $rumpId ? 'AND fs2.rump_id = :rumpId' : '';
+        $rumpId_condition3 = $rumpId ? 'AND fs3.rump_id = :rumpId' : '';
+        $rumpId_condition4 = $rumpId ? 'AND fs4.rump_id = :rumpId' : '';
+
+        $query = $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT sm.sx as x, sm.sy as y, mft.effects as effects,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
-                AND fs1.ship_id = :shipId
+                AND fs1.ship_id = :shipId %s
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
                 AND fs1.time > :timeThreshold AND fs1.is_cloaked = :false) as d1c,
             (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                 WHERE fs2.location_id = l.id
-                AND fs2.ship_id = :shipId
+                AND fs2.ship_id = :shipId %s
                 AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
                 AND fs2.time > :timeThreshold AND fs2.is_cloaked = :false) as d2c,
             (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                 WHERE fs3.location_id = l.id
-                AND fs3.ship_id = :shipId
+                AND fs3.ship_id = :shipId %s
                 AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
                 AND fs3.time > :timeThreshold AND fs3.is_cloaked = :false) as d3c,
             (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                 WHERE fs4.location_id = l.id
-                AND fs4.ship_id = :shipId
+                AND fs4.ship_id = :shipId %s
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
                 AND fs4.time > :timeThreshold AND fs4.is_cloaked = :false) as d4c 
             FROM stu_sys_map sm
@@ -393,8 +397,15 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 ON l.field_id = mft.id
                 WHERE sm.systems_id = :systemId
                 AND sm.sx BETWEEN :xStart AND :xEnd AND sm.sy BETWEEN :yStart AND :yEnd',
+                $rumpId_condition,
+                $rumpId_condition2,
+                $rumpId_condition3,
+                $rumpId_condition4
+            ),
             $rsm
-        )->setParameters([
+        );
+
+        $parameters = [
             'xStart' => $boundaries->getMinX(),
             'xEnd' => $boundaries->getMaxX(),
             'yStart' => $boundaries->getMinY(),
@@ -403,7 +414,13 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'shipId' => $shipId,
             'timeThreshold' => $maxAge,
             'false' => false
-        ])->getResult();
+        ];
+
+        if ($rumpId) {
+            $parameters['rumpId'] = $rumpId;
+        }
+
+        return $query->setParameters($parameters)->getResult();
     }
 
     #[Override]

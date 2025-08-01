@@ -102,10 +102,11 @@ class PanelLayerConfiguration
             return;
         }
 
-        $spacecraftId = $subspaceSystemData->getHighlightedSpacecraftId($wrapper->get());
-
-        if ($spacecraftId !== null) {
-            $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId);
+        $flightSig = $subspaceSystemData->getHighlightedFlightSig($wrapper->get());
+        if ($flightSig) {
+            $spacecraftId = $flightSig->getShipId();
+            $rumpId = $flightSig->getRump()->getId();
+            $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId, $rumpId);
         }
     }
 }
