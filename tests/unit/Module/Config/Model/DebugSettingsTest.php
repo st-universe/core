@@ -36,19 +36,6 @@ class DebugSettingsTest extends StuTestCase
         $this->assertTrue($isDebugMode);
     }
 
-    public function testGetLogfilePath(): void
-    {
-        $this->settingsCore->shouldReceive('getStringConfigValue')
-            ->with('logfile_path')
-            ->once()
-            ->andReturn('/foo/bar');
-
-        $path = $this->subject->getLogfilePath();
-
-        $this->assertEquals('/foo/bar', $path);
-    }
-
-
     public function testGetLoglevel(): void
     {
         $this->settingsCore->shouldReceive('getIntegerConfigValue')

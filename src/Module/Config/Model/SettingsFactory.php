@@ -42,6 +42,11 @@ class SettingsFactory implements SettingsFactoryInterface
                 $this->createSettingsCore($type, $parent),
                 $settingsCache
             ),
+            StuConfigSettingEnum::LOGGING => new LoggingSettings(
+                $parent,
+                $this->createSettingsCore($type, $parent),
+                $settingsCache
+            ),
             StuConfigSettingEnum::GAME => new GameSettings(
                 $parent,
                 $this->createSettingsCore($type, $parent),

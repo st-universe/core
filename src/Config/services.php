@@ -10,9 +10,6 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Level;
-use Monolog\Logger;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -34,6 +31,8 @@ use Stu\Module\Control\ControllerDiscovery;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Ubench;
 
 use function DI\autowire;
@@ -61,23 +60,9 @@ return [
             return new ArrayCachePool();
         }
     },
-    SqlLogger::class => function (StuConfigInterface $stuConfig): SqlLogger {
-        $logger = new Logger(
-            'SqlLogger',
-            [
-                new RotatingFileHandler(
-                    sprintf(
-                        '%s/sql.log',
-                        $stuConfig->getDebugSettings()->getSqlLoggingSettings()->getLogDirectory(),
-                    ),
-                    10,
-                    Level::Info,
-                ),
-            ]
-        );
-
+    SqlLogger::class => function (): SqlLogger {
         return new SqlLogger(
-            $logger
+            StuLogger::getLogger(LogTypeEnum::DBAL)
         );
     },
     GameControllerInterface::class => autowire(GameController::class)

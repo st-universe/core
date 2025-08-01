@@ -30,15 +30,13 @@
   },
   "debug": {
     "debug_mode": true,
-    "logfile_path": "pathtodebug.log",
     "loglevel": 7,
     "logging": {
       "log_dir": "pathtologfiles",
       "game_request_logging_adapter": "logfile"
     },
     "sqlLogging": {
-      "isActive": false,
-      "logDirectory": "/path/to/logfiles"
+      "isActive": false
     }
   },
   "security": {
@@ -94,8 +92,7 @@
       "encryptionKey": "the key to encrypt map data"
     },
     "pirates": {
-      "doPirateTick": true,
-      "logfilePath": "pathToRotatingPirate.log"
+      "doPirateTick": true
     },
     "useSemaphores": false,
     "imprint": {

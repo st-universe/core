@@ -35,16 +35,4 @@ class SqlLoggingSettingsTest extends StuTestCase
 
         $this->assertTrue($result);
     }
-
-    public function testGetLogDirectoryExpectConfigValueWhenPresent(): void
-    {
-        $this->settingsCore->shouldReceive('getStringConfigValue')
-            ->with('logDirectory')
-            ->once()
-            ->andReturn('/foo/bar');
-
-        $path = $this->subject->getLogDirectory();
-
-        $this->assertEquals('/foo/bar', $path);
-    }
 }

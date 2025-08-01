@@ -4,7 +4,7 @@ namespace Stu\Module\Logging;
 
 interface PirateLoggerInterface
 {
-    public function initRotating(): void;
+    public function init(): void;
 
     public function log(string $message): void;
 
