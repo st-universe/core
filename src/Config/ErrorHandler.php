@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use Doctrine\DBAL\Connection;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Throwable;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -92,10 +92,7 @@ final class ErrorHandler
 
     private function logfileHandler(): callable
     {
-        $logger = new Logger('stu');
-        $logger->pushHandler(
-            new StreamHandler($this->stuConfig->getDebugSettings()->getLogfilePath())
-        );
+        $logger = StuLogger::getLogger(LogTypeEnum::DEFAULT);
 
         return function (Throwable $e) use ($logger): void {
             $logger->error(

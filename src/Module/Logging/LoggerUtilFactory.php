@@ -33,11 +33,10 @@ final class LoggerUtilFactory implements LoggerUtilFactoryInterface
     public function getPirateLogger(): PirateLoggerInterface
     {
         $loggerUtil = new PirateLogger(
-            $this->config,
             $this->parser
         );
 
-        $loggerUtil->initRotating();
+        $loggerUtil->init();
 
         return $loggerUtil;
     }

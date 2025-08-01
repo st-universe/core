@@ -9,6 +9,7 @@ use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\Model\DebugSettingsInterface;
 use Stu\Module\Config\Model\EmailSettingsInterface;
 use Stu\Module\Config\Model\GameSettingsInterface;
+use Stu\Module\Config\Model\LoggingSettingsInterface;
 use Stu\Module\Config\Model\MapSettingsInterface;
 use Stu\Module\Config\Model\PirateSettingsInterface;
 use Stu\Module\Config\Model\ResetSettingsInterface;
@@ -22,6 +23,7 @@ enum StuConfigSettingEnum: string
     case COLONY = ColonySettingsInterface::class;
     case DB = DbSettingsInterface::class;
     case DEBUG = DebugSettingsInterface::class;
+    case LOGGING = LoggingSettingsInterface::class;
     case GAME = GameSettingsInterface::class;
     case MAP = MapSettingsInterface::class;
     case RESET = ResetSettingsInterface::class;
@@ -38,6 +40,7 @@ enum StuConfigSettingEnum: string
             self::MAP,
             self::EMAIL,
             self::PIRATES,
+            self::LOGGING,
             self::SQL_LOGGING => self::DEBUG,
             default => null
         };
@@ -51,6 +54,7 @@ enum StuConfigSettingEnum: string
             self::COLONY => 'colony',
             self::DB => 'db',
             self::DEBUG => 'debug',
+            self::LOGGING => 'logging',
             self::GAME => 'game',
             self::MAP => 'map',
             self::RESET => 'reset',

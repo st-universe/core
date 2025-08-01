@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Logging;
 
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Override;
 use RuntimeException;
@@ -26,12 +25,7 @@ final class LoggerUtil implements LoggerUtilInterface
         $this->level = $level;
 
         if ($this->checkDoLog()) {
-            $this->logger = new Logger($channel);
-            $this->logger->pushHandler(
-                new StreamHandler(
-                    $this->stuConfig->getDebugSettings()->getLogfilePath()
-                ),
-            );
+            $this->logger = StuLogger::getLogger(LogTypeEnum::DEFAULT);
         }
     }
 

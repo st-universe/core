@@ -35,16 +35,4 @@ class PirateSettingsTest extends StuTestCase
 
         $this->assertTrue($result);
     }
-
-    public function testGetPirateLogfilePath(): void
-    {
-        $this->settingsCore->shouldReceive('getStringConfigValue')
-            ->with('logfilePath')
-            ->once()
-            ->andReturn('/foo/bar');
-
-        $path = $this->subject->getPirateLogfilePath();
-
-        $this->assertEquals('/foo/bar', $path);
-    }
 }

@@ -5,30 +5,22 @@ declare(strict_types=1);
 namespace Stu\Module\Logging;
 
 use JBBCode\Parser;
-use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Override;
 use RuntimeException;
-use Stu\Module\Config\StuConfigInterface;
 
 final class PirateLogger implements PirateLoggerInterface
 {
     private ?Logger $logger = null;
 
     public function __construct(
-        private StuConfigInterface $stuConfig,
         private Parser $parser
     ) {}
 
     #[Override]
-    public function initRotating(): void
+    public function init(): void
     {
-        $this->logger = new Logger('KAZON');
-        $this->logger->pushHandler(
-            new RotatingFileHandler(
-                $this->stuConfig->getGameSettings()->getPirateSettings()->getPirateLogfilePath()
-            ),
-        );
+        $this->logger = StuLogger::getLogger(LogTypeEnum::PIRATE);
     }
 
     #[Override]
