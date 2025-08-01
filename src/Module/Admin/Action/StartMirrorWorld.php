@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -42,7 +42,7 @@ final class StartMirrorWorld implements ActionControllerInterface
             return;
         }
 
-        $this->loggerUtil->init('mirror', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('mirror', LogLevelEnum::ERROR);
 
         $this->cleanup();
 

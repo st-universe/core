@@ -10,7 +10,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSender;
@@ -47,7 +47,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     #[Override]
     public function handleDeleteable(): void
     {
-        $this->loggerUtil->init('DEL', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('DEL', LogLevelEnum::ERROR);
 
         $time = $this->stuTime->time();
 

@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\User;
@@ -40,7 +40,7 @@ final class EmailNotificationSender implements EmailNotificationSenderInterface
         try {
             $mail->send();
         } catch (RuntimeException $e) {
-            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
             $this->loggerUtil->log($e->getMessage());
         }
     }

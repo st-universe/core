@@ -11,7 +11,7 @@ use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -57,7 +57,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
                 'COLOTICK_%dof%d',
                 $batchGroup,
                 $batchGroupCount
-            ), LoggerEnum::LEVEL_WARNING);
+            ), LogLevelEnum::WARNING);
             $this->logBenchmarkResult($entityCount);
         } finally {
             $this->clearLock($batchGroup);

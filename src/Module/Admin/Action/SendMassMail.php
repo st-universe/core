@@ -11,7 +11,7 @@ use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -80,7 +80,7 @@ final class SendMassMail implements ActionControllerInterface
                     ->send();
                 $count++;
             } catch (RuntimeException) {
-                $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->init("mail", LogLevelEnum::ERROR);
                 $this->loggerUtil->log(sprintf(
                     "Error while sending Mass-Mail to user-ID %d! Subject: %s",
                     $user->getId(),

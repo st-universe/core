@@ -48,7 +48,7 @@ final class DockFleet implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();

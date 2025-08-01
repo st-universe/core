@@ -31,7 +31,7 @@ final class MapSectionHelper
         bool $isMapEditor = false,
         ?DirectionEnum $direction = null
     ): int {
-        //$this->loggerUtil->init('MSH', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('MSH', LogLevelEnum::ERROR);
 
         $section = $this->getSection($currentSection, $direction, $layer);
 

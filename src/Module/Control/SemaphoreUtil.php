@@ -7,7 +7,7 @@ use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use SysvSemaphore;
@@ -79,14 +79,14 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     private function release(SysvSemaphore $semaphore, bool $doRemove): void
     {
         if (!sem_release($semaphore)) {
-            $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('semaphores', LogLevelEnum::ERROR);
             $this->loggerUtil->log("Error releasing Semaphore!");
             return;
             //throw new SemaphoreException("Error releasing Semaphore!");
         }
 
         if ($doRemove && !sem_remove($semaphore)) {
-            $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('semaphores', LogLevelEnum::ERROR);
             $this->loggerUtil->log("Error removing Semaphore!");
             //throw new SemaphoreException("Error removing Semaphore!");
         }
