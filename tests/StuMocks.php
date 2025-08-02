@@ -10,6 +10,7 @@ use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
+use Stu\Module\Logging\StuLogger;
 
 class StuMocks
 {
@@ -50,6 +51,7 @@ class StuMocks
         $this->getStuContainer()
             ->get(ComponentLoaderInterface::class)
             ->resetStubbedComponents();
+        StuLogger::setMock(null);
     }
 
     private function getStuContainer(): StuContainer

@@ -7,7 +7,7 @@ on:
     branches:
       - dev
 
-name: Main Workflow
+name: Sonarcloud
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.3.17'
           extensions: redis
           coverage: xdebug
 

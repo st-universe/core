@@ -6,6 +6,7 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\LocationMiningRepositoryInterface;
@@ -13,8 +14,9 @@ use Stu\Orm\Repository\LocationMiningRepositoryInterface;
 class BussardCollectorHandler implements SpacecraftTickHandlerInterface
 {
     public function __construct(
-        private LocationMiningRepositoryInterface $locationMiningRepository,
-        private StorageManagerInterface $storageManager
+        private readonly LocationMiningRepositoryInterface $locationMiningRepository,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly StuRandom $stuRandom
     ) {}
 
     #[Override]
@@ -46,9 +48,9 @@ class BussardCollectorHandler implements SpacecraftTickHandlerInterface
 
             if ($module !== null) {
                 if ($module->getFactionId() == null) {
-                    $gathercount =  (int) min(min(round(mt_rand(95, 105)), $actualAmount), $freeStorage);
+                    $gathercount =  (int) min(min(round($this->stuRandom->rand(95, 105)), $actualAmount), $freeStorage);
                 } else {
-                    $gathercount = (int) min(min(round(mt_rand(190, 220)), $actualAmount), $freeStorage);
+                    $gathercount = (int) min(min(round($this->stuRandom->rand(190, 220)), $actualAmount), $freeStorage);
                 }
             }
 
