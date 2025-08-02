@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         backupGlobals="false"
          bootstrap="tests/Bootstrap.php"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.2/phpunit.xsd"
+         cacheDirectory="build/.phpunit.cache"
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
@@ -16,17 +15,11 @@
     <php>
         <server name="APP_ENV" value="testing"/>
     </php>
-    <listeners>
-        <listener class="\Mockery\Adapter\Phpunit\TestListener"/>
-    </listeners>
-    <logging>
-        <log type="coverage-html" target="build/coverage" lowUpperBound="35" highLowerBound="70"/>
-    </logging>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src/Component</directory>
-            <directory suffix=".php">src/Module</directory>
             <directory suffix=".php">src/Lib</directory>
+            <directory suffix=".php">src/Module</directory>
             <directory suffix=".php">src/Orm</directory>
             <exclude>
               <directory suffix="services.php">src</directory>
