@@ -28,7 +28,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Tests & Coverage
-        run: XDEBUG_MODE=coverage ./vendor/bin/phpunit -c phpunit-coverage.xml --coverage-clover build/coverage-clover.xml tests
+        run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.3.0

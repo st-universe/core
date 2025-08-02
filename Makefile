@@ -1,5 +1,5 @@
 # DEFAULT
-PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs migrateDatabase
+PHONY=init init-production tests update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs migrateDatabase
 
 SUITE=
 
@@ -16,9 +16,6 @@ init-production:force
 
 tests:force
 	./vendor/bin/phpunit tests $$SUITE
-
-coverage:force
-	./vendor/bin/phpunit -c phpunit-coverage.xml tests $$SUITE
 
 update:force
 	composer update
