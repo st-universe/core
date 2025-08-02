@@ -63,14 +63,14 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
         ], $mode2Commodities);
 
         if ($module && $module->getFactionId() == FactionEnum::FACTION_FERENGI) {
-            foreach ($mode1Commodities as &$entry) {
-                $entry[2] *= 2;
-                $entry[3] *= 2;
+            foreach (array_keys($mode1Commodities) as $key) {
+                $mode1Commodities[$key][2] *= 2;
+                $mode1Commodities[$key][3] *= 2;
             }
 
-            foreach ($mode2Commodities as &$entry) {
-                $entry[2] *= 2;
-                $entry[3] *= 2;
+            foreach (array_keys($mode2Commodities) as $key) {
+                $mode2Commodities[$key][2] *= 2;
+                $mode2Commodities[$key][3] *= 2;
             }
         }
 

@@ -17,11 +17,11 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
     #[Override]
     public function damageCapturedShip(
         Ship $ship,
-        SpacecraftWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $targetWrapper,
         InformationInterface $informations
     ): void {
 
-        $ship = $wrapper->get();
+        $capturedSpacecraft = $targetWrapper->get();
 
         $informations->addInformation(sprintf(
             "Das Energienetz um die %s in Sektor %s ist implodiert",
@@ -30,16 +30,16 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         ));
 
         $damage_wrapper = new DamageWrapper(
-            (int)ceil(random_int(65, 85) * $wrapper->get()->getMaxHull() / 100)
+            (int)ceil(random_int(65, 85) * $capturedSpacecraft->getMaxHull() / 100)
         );
         $damage_wrapper->setCrit(random_int(0, 3) === 0);
         $damage_wrapper->setIsPhaserDamage(true);
 
-        $this->applyDamage->damage($damage_wrapper, $wrapper, $informations);
+        $this->applyDamage->damage($damage_wrapper, $targetWrapper, $informations);
 
         $this->checkForSpacecraftDestruction(
             $ship,
-            $wrapper,
+            $targetWrapper,
             SpacecraftDestructionCauseEnum::THOLIAN_WEB_IMPLOSION,
             $informations
         );

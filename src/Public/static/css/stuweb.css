@@ -337,8 +337,8 @@ input.form-control:focus {
 }
 
 #main #faq .card .card-header .btn-header-link:after {
-	content: "\f107";
-	font-family: 'Font Awesome 5 Free';
+	content: "\f007";
+	font-family: 'Font Awesome\ 5 Free';
 	font-weight: 900;
 	float: right;
 	border-radius: 0px !important;
