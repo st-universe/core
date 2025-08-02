@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - dev
+
+name: Main Workflow
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: redis
+          coverage: xdebug
+
+      - name: Installieren
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Tests & Coverage
+        run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.3.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
