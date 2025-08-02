@@ -3,131 +3,155 @@ body {
     color: #8897cf;
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
     font-size: 10pt;
-    margin-left : 0px;
-    margin-right : 0px;
-    margin-top : 0px;
-    margin-bottom : 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
+
 input.text {
     background-color: #111;
     color: #8897cf;
     border: 1px solid #4c4c4c;
 }
+
 a.linkbutton {
     padding: 3px;
     background-color: #1b1b1f;
     border: 1px solid #7c85a8;
     color: #8897cf;
 }
+
 a.linkbutton:hover {
     text-decoration: none;
 }
+
 a:link {
     COLOR: #8897cf;
     TEXT-DECORATION: none;
 }
+
 a:visited {
-    COLOR: #8897cf; TEXT-DECORATION: none
+    COLOR: #8897cf;
+    TEXT-DECORATION: none
 }
+
 a:hover {
     COLOR: #c2b942;
     TEXT-DECORATION: underline
 }
+
 a:active {
-    COLOR: #8897cf; TEXT-DECORATION: none
+    COLOR: #8897cf;
+    TEXT-DECORATION: none
 }
+
 .al {
     color: #c2b942;
 }
+
 .tdh {
-    background-color : #262323;
-    color : #8897cf;
-    font-size : 9pt;
+    background-color: #262323;
+    color: #8897cf;
+    font-size: 9pt;
     text-align: center;
-    font-weight : bold;
+    font-weight: bold;
 }
+
 td.ml {
-    background-color : #262323;
-    color : #8897cf;
-    font-size : 9pt;
-    margin-left : 3px;
-    margin-bottom : 3px;
-    margin-right : 3px;
-    margin-top : 3px;
-    height : 20px;
+    background-color: #262323;
+    color: #8897cf;
+    font-size: 9pt;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    height: 20px;
 }
+
 td.ms {
-    bnkackground-color : #262323;
-    color : #8897cf;
-    font-size : 8pt;
-    margin-left : 3px;
-    margin-bottom : 3px;
-    margin-right : 3px;
-    margin-top : 3px;
-    height : 20px;
+    background-color: #262323;
+    color: #8897cf;
+    font-size: 8pt;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    height: 20px;
 }
+
 td.mr {
-    background-color : #262323;
-    color : #8897cf;
-    font-size : 9pt;
-    margin-left : 3px;
-    margin-bottom : 3px;
-    margin-right : 3px;
-    margin-top : 3px;
-    height : 20px;
-    text-align : right;
+    background-color: #262323;
+    color: #8897cf;
+    font-size: 9pt;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    height: 20px;
+    text-align: right;
 }
+
 .tdf {
     background-color: #000000;
     padding-left: 1px;
     padding-right: 1px;
 }
+
 .mf {
-    background-color : #262323;
-    width:100%;
+    background-color: #262323;
+    width: 100%;
 }
+
 td.m {
-    background-color : #000000;
-    font-size : 9pt;
-    vertical-align : top;
-    width : 140px;
+    background-color: #000000;
+    font-size: 9pt;
+    vertical-align: top;
+    width: 140px;
 }
+
 td {
     background-color: #000000;
-    color : #8897cf;
-    font-size : 9pt;
+    color: #8897cf;
+    font-size: 9pt;
 }
+
 table.mtab {
     background-color: #000000;
     width: 800px;
     border-collapse: separate;
     border-spacing: 1px;
 }
+
 table.totab {
     background-color: #262323;
     width: 800px;
     border-spacing: 0px;
-    margin : 2px;
+    margin: 2px;
 }
+
 table.botab {
     background-color: #262323;
     width: 500px;
     border-collapse: separate;
     border-spacing: 1px;
-    margin : 2px;
+    margin: 2px;
 }
+
 table.tcal {
     background-color: #262323;
     width: 100%;
     border-collapse: separate;
     border-spacing: 1px;
 }
+
 th {
-    background-color : #262323;
-    color : #8897cf;
-    font-size : 9pt;
+    background-color: #262323;
+    color: #8897cf;
+    font-size: 9pt;
     text-align: left;
 }
+
 textarea {
     background-color: #262323;
     color: #8897cf;
@@ -135,25 +159,28 @@ textarea {
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
     font-size: 8pt;
 }
+
 select {
     background-color: #000000;
     color: #8897cf;
     border: 1px outset #262323;
 }
+
 input.text {
     font-size: 8pt;
     background-color: #1b1b1f;
     border: 1px solid #7c85a8;
     color: #8897cf;
 }
+
 .button {
     background-color: #1b1b1f;
     border: 1px solid #7c85a8;
     color: #8897cf;
     font-size: 8pt;
 }
-.topnav a
-{
+
+.topnav a {
     background: #000000;
     text-align: center;
     width: 91px;
@@ -162,8 +189,8 @@ input.text {
     text-decoration: none;
     padding: 2px 1px 2px 2px;
 }
-#chlog_link
-{
+
+#chlog_link {
     background: #000000;
     text-align: center;
     width: 100%;
@@ -171,29 +198,29 @@ input.text {
     display: block;
     text-decoration: none;
 }
-#culink
-{
+
+#culink {
     background: #262323;
     text-align: center;
     width: 100px;
     border: 1px solid #2d3243;
 }
-#link:hover
-{
+
+#link:hover {
     background: #262323;
 }
-#chlog_link:hover
-{
+
+#chlog_link:hover {
     background: #262323;
 }
-#banner
-{
+
+#banner {
     width: 100%;
     margin: auto;
     text-align: center;
 }
-#gamestate_1
-{
+
+#gamestate_1 {
     background: #277e00;
     color: #FFFFFF;
     text-align: center;
@@ -202,8 +229,8 @@ input.text {
     text-decoration: none;
     padding: 2px 2px 2px 4px;
 }
-#gamestate_2
-{
+
+#gamestate_2 {
     background: #dfdc00;
     color: #000000;
     text-align: center;
@@ -212,8 +239,9 @@ input.text {
     text-decoration: none;
     padding: 2px 2px 2px 4px;
 }
-#gamestate_3, #gamestate_5
-{
+
+#gamestate_3,
+#gamestate_5 {
     background: #c30000;
     color: #FFFFFF;
     text-align: center;
@@ -222,8 +250,8 @@ input.text {
     text-decoration: none;
     padding: 2px 2px 2px 4px;
 }
-#gamestate_4
-{
+
+#gamestate_4 {
     background: #0069c3;
     color: #FFFFFF;
     text-align: center;
@@ -232,17 +260,20 @@ input.text {
     text-decoration: none;
     padding: 2px 2px 2px 4px;
 }
+
 .divhead {
-    background-color : #262323;
-    color : #8897cf;
+    background-color: #262323;
+    color: #8897cf;
     text-align: left;
     padding: 3px;
     font-weight: bold;
 }
+
 .divbody {
     border: 1px solid #262323;
     padding: 3px;
 }
+
 .sidebar_box_header {
     padding: 2px 2px 2px 2px;
     width: 200px;
@@ -256,6 +287,7 @@ input.text {
     position: relative;
     z-index: 1000;
 }
+
 .sidebar_box_content {
     padding: 20px 2px 2px 3px;
     margin-left: 15px;
@@ -266,6 +298,7 @@ input.text {
     top: -10px;
     position: relative;
 }
+
 .mainbar_box_header {
     padding: 2px 2px 2px 2px;
     width: 820px;
@@ -279,6 +312,7 @@ input.text {
     position: relative;
     z-index: 1000;
 }
+
 .mainbar_box_content {
     margin-left: 15px;
     width: 804px;
@@ -286,13 +320,16 @@ input.text {
     top: -5px;
     position: relative;
 }
+
 .mainbar_box_content_border {
     border: 1px solid #2d3243;
     background: #000000;
 }
+
 .lostpassword {
     font-size: 80%;
 }
+
 input {
     color: #8897cf;
     padding: 2px;

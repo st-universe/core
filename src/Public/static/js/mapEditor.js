@@ -354,9 +354,7 @@ function fieldEventSelector(type) {
 function createOverlay(cell, backgroundColor) {
 	removeOverlay(cell);
 
-	var divbody = cell.classList.contains('starmap') ?
-		cell.querySelector(".divbody") :
-		cell.querySelector(".divbody");
+	var divbody = cell.querySelector(".divbody");
 
 	if (!divbody) return null;
 
@@ -375,9 +373,7 @@ function createOverlay(cell, backgroundColor) {
 }
 
 function removeOverlay(cell) {
-	var overlay = cell.classList.contains('starmap') ?
-		cell.querySelector(".overlay") :
-		cell.querySelector(".overlay");
+	let overlay = cell.querySelector(".overlay");
 
 	if (overlay) {
 		overlay.remove();

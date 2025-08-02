@@ -53,7 +53,7 @@ class DockConsequence extends AbstractFlightConsequence implements FlightStartCo
 
             if ($ship->isTractored()) {
                 //TODO andockschleuse schrotten, wenn passiv
-                $message->add(sprintf('Die %s wurde abgedockt', $ship->getName()));
+                $message->add(sprintf('Die %s wurde gewalttätig abgedockt', $ship->getName()));
             } else {
                 $message->add(sprintf('Die %s wurde abgedockt', $ship->getName()));
             }

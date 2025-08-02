@@ -195,7 +195,7 @@ class DockConsequenceTest extends StuTestCase
             ->andReturn($message);
 
         $message->shouldReceive('add')
-            ->with('Die SHIP wurde abgedockt')
+            ->with('Die SHIP wurde gewalttätig abgedockt')
             ->once();
 
         $this->subject->trigger(

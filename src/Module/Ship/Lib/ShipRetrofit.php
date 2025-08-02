@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -24,10 +25,11 @@ use Stu\Orm\Entity\SpacecraftSystem;
 final class ShipRetrofit implements ShipRetrofitInterface
 {
     public function __construct(
-        private SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private StorageManagerInterface $storageManager,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private readonly SpacecraftSystemRepositoryInterface $shipSystemRepository,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly StuRandom $stuRandom
     ) {}
 
     #[Override]
@@ -108,7 +110,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         if ($oldModule->getType() != SpacecraftModuleTypeEnum::HULL) {
 
             $system = $this->getSystemByModule($oldModule, $ship);
-            if ($system->getStatus() >= 100 && mt_rand(1, 100) <= 25) {
+            if ($system->getStatus() >= 100 && $this->stuRandom->rand(1, 100) <= 25) {
                 $returnedmodules[] = $oldModule;
             }
             $this->shipSystemRepository->delete($system);

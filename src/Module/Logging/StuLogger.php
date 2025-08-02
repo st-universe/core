@@ -14,6 +14,8 @@ class StuLogger
     /** @var array<string, Logger> */
     private static array $loggers = [];
 
+    private static ?Logger $loggerMock = null;
+
     public static function log(string $message, LogTypeEnum $type = LogTypeEnum::DEFAULT): void
     {
         LogLevelEnum::INFO->log($message, self::getLogger($type));
@@ -30,6 +32,10 @@ class StuLogger
 
     public static function getLogger(LogTypeEnum $type): Logger
     {
+        if (self::$loggerMock !== null) {
+            return self::$loggerMock;
+        }
+
         if (!array_key_exists($type->value, self::$loggers)) {
 
             $logPath = $type->getLogfilePath(Init::getContainer()->get(StuConfigInterface::class)
@@ -53,5 +59,10 @@ class StuLogger
         }
 
         return self::$loggers[$type->value];
+    }
+
+    public static function setMock(?Logger $mock): void
+    {
+        self::$loggerMock = $mock;
     }
 }

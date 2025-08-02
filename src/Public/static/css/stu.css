@@ -19,7 +19,6 @@ body {
   margin: 2px 2px 2px 2px;
   scrollbar-arrow-color: var(--color-1);
   scrollbar-base-color: #000000;
-  scrollbar-3dlight-color: #000000;
   scrollbar-face-color: #262323;
   scrollbar-highlight-color: #000000;
 }
@@ -338,7 +337,6 @@ input[disabled] {
 
 ul.menu {
   list-style: none;
-  margin: 0;
   padding: 0;
   border: 1px solid #262323;
   width: 100%;
@@ -459,7 +457,6 @@ div.arrow:hover {
 
 .lss_current {
   background-repeat: no-repeat;
-  padding-top: 8px;
   padding: 0 ! important;
   color: #FFFFFF;
   text-align: center;
