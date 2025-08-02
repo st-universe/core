@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use Mockery\MockInterface;
+use Monolog\Logger;
 use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\IonStorm\IonStormData;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\Map;
@@ -20,7 +22,6 @@ use Stu\StuTestCase;
 class AnomalyCreationTest extends StuTestCase
 {
     private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
-
     private MockInterface&AnomalyTypeRepositoryInterface $anomalyTypeRepository;
 
     private AnomalyCreationInterface $subject;
@@ -28,6 +29,8 @@ class AnomalyCreationTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
+        StuLogger::setMock(new Logger('test'));
+
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);
         $this->anomalyTypeRepository = $this->mock(AnomalyTypeRepositoryInterface::class);
 
