@@ -43,8 +43,8 @@ class PlayerCreator implements PlayerCreatorInterface
         $mobileWithDoubleZero = str_replace('+', '00', $mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
-        $randomSmsHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
-        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomSmsHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomEmailHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $player = $this->createPlayer(
             $loginName,
