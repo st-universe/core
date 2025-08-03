@@ -66,7 +66,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $founderJob = $alliance->getFounder();
 
-        if ($founderJob->getUserId() === $promotedPlayerId) {
+        if ($founderJob->getUser() === $promotedPlayer) {
             throw new AccessViolationException();
         }
 
@@ -83,7 +83,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $promotedPlayerId, $text);
 
-        $game->addInformation(_('Das Mitglied wurde befördert'));
+        $game->addInformation('Das Mitglied wurde befördert');
     }
 
     private function setFounder(AllianceJob $founderJob, User $promotedPlayer, GameControllerInterface $game): string
@@ -100,7 +100,7 @@ final class PromotePlayer implements ActionControllerInterface
         $game->setView(ModuleEnum::ALLIANCE);
 
         return sprintf(
-            _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
+            'Du wurdest zum neuen Präsidenten der Allianz %s ernannt',
             $founderJob->getAlliance()->getName()
         );
     }
@@ -118,7 +118,7 @@ final class PromotePlayer implements ActionControllerInterface
         );
 
         return sprintf(
-            _('Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt'),
+            'Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt',
             $alliance->getName()
         );
     }
