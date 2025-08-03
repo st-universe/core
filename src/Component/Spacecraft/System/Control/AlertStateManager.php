@@ -6,7 +6,6 @@ namespace Stu\Component\Spacecraft\System\Control;
 
 use BadMethodCallException;
 use Override;
-use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
