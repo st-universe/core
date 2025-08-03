@@ -12,6 +12,7 @@ use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
@@ -29,6 +30,7 @@ final class EmailManagement implements
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private RegistrationEmailSenderInterface $registrationEmailSender,
+        private readonly StuHashInterface $stuHash,
         private EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -67,7 +69,7 @@ final class EmailManagement implements
     private function resendActivationEmail(User $user): void
     {
         $registration = $user->getRegistration();
-        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomEmailHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
         $registration->setEmailCode($randomEmailHash);
 
         $this->registrationEmailSender->send($user, $randomEmailHash);
@@ -90,7 +92,7 @@ final class EmailManagement implements
             throw new AccountNotVerifiedException('Diese E-Mail-Adresse ist bereits registriert');
         }
 
-        $randomEmailHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomEmailHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $registration = $user->getRegistration();
         $registration->setEmail($newEmail);

@@ -76,7 +76,7 @@ final class SmsManagement implements
             return;
         }
 
-        $this->updateMobileAndSend($user, $newMobile, $game);
+        $this->updateMobileAndSend($user, $newMobile);
     }
 
     private function processMobileInput(string $input, string $countryCode): string
@@ -105,7 +105,7 @@ final class SmsManagement implements
     private function resendSmsCode(User $user): void
     {
         $registration = $user->getRegistration();
-        $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
         $registration->setSmsCode($randomHash);
         $registration->setSmsSended($registration->getSmsSended() + 1);
@@ -122,7 +122,7 @@ final class SmsManagement implements
         throw new AccountNotVerifiedException('Der SMS-Verifikationscode wurde erneut versendet');
     }
 
-    private function updateMobileAndSend(User $user, string $newMobile, GameControllerInterface $game): void
+    private function updateMobileAndSend(User $user, string $newMobile): void
     {
         if (!$this->isMobileNumberCountryAllowed($newMobile)) {
             throw new AccountNotVerifiedException('Nur deutsche (+49), österreichische (+43) und schweizer (+41) Nummern werden unterstützt');
@@ -150,7 +150,7 @@ final class SmsManagement implements
 
         $this->loggerUtil->log('Mobilnummer wurde gespeichert: ' . $newMobile);
 
-        $randomHash = substr(md5(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
+        $randomHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
         $registration->setSmsCode($randomHash);
         $this->userRepository->save($user);
         $this->entityManager->flush();

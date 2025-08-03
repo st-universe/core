@@ -23,7 +23,7 @@ final class SessionDestruction implements SessionDestructionInterface
             $this->destroyLoginCookies();
             $sessionName = session_name();
             if ($sessionName) {
-                setcookie($sessionName, '', ['expires' => time() - 42000]);
+                setcookie($sessionName, '', time() - 42000, "", "", true);
             }
             if (@session_destroy() === false) {
                 throw new RuntimeException('The session could not be destroyed');
@@ -35,6 +35,6 @@ final class SessionDestruction implements SessionDestructionInterface
 
     private function destroyLoginCookies(): void
     {
-        setcookie('sstr');
+        setcookie('sstr', "", 0, "", "", true);
     }
 }
