@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\DoSubspaceAnalysis;
 
 use Override;
 use request;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -78,7 +78,7 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
         $game->addExecuteJS(
             sprintf('showSystemSettingsWindow(null, "%s"); setAjaxMandatory(false); initializeWarpTraceAnalyzer();', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),
-            GameEnum::JS_EXECUTION_AFTER_RENDER
+            JavascriptExecutionTypeEnum::AFTER_RENDER
         );
     }
 

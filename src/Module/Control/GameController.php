@@ -2,13 +2,14 @@
 
 namespace Stu\Module\Control;
 
+use BadMethodCallException;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
-use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\GameStateEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
@@ -49,6 +50,8 @@ use Ubench;
 final class GameController implements GameControllerInterface
 {
     public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
+
+    private const string REDIRECT_TO_DOMAIN_ROOT = 'Location: /';
 
     private GameData $gameData;
 
@@ -294,29 +297,26 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getExecuteJS(int $when): ?array
+    public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array
     {
-        if (!array_key_exists($when, $this->gameData->execjs)) {
+        if (!array_key_exists($when->value, $this->gameData->execjs)) {
             return null;
         }
 
-        return $this->gameData->execjs[$when];
+        return $this->gameData->execjs[$when->value];
     }
 
     #[Override]
-    public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void
+    public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
     {
-        switch ($when) {
-            case GameEnum::JS_EXECUTION_BEFORE_RENDER:
-                $this->gameData->execjs[$when][] = $value;
-                break;
-            case GameEnum::JS_EXECUTION_AFTER_RENDER:
-                $this->gameData->execjs[$when][] = $value;
-                break;
-            case GameEnum::JS_EXECUTION_AJAX_UPDATE:
-                $this->gameData->execjs[$when][] = $value;
-                break;
-        }
+        match ($when) {
+            JavascriptExecutionTypeEnum::BEFORE_RENDER =>
+            $this->gameData->execjs[$when->value][] = $value,
+            JavascriptExecutionTypeEnum::AFTER_RENDER =>
+            $this->gameData->execjs[$when->value][] = $value,
+            JavascriptExecutionTypeEnum::ON_AJAX_UPDATE =>
+            $this->gameData->execjs[$when->value][] = $value
+        };
     }
 
     #[Override]
@@ -335,7 +335,7 @@ final class GameController implements GameControllerInterface
         if ($this->gameData->currentRound === null) {
             $this->gameData->currentRound = $this->gameTurnRepository->getCurrent();
             if ($this->gameData->currentRound === null) {
-                throw new RuntimeException('no current round existing');
+                throw new BadMethodCallException('no current round existing');
             }
         }
         return $this->gameData->currentRound;
@@ -387,7 +387,7 @@ final class GameController implements GameControllerInterface
         $this->session->createSession(true);
 
         if (!$this->isAdmin()) {
-            header('Location: /');
+            header(self::REDIRECT_TO_DOMAIN_ROOT);
         }
     }
 
@@ -436,12 +436,12 @@ final class GameController implements GameControllerInterface
             }
 
             if ($module === ModuleEnum::NPC && (!$this->isNpc() && !$this->isAdmin())) {
-                header('Location: /');
+                header(self::REDIRECT_TO_DOMAIN_ROOT);
                 exit;
             }
 
             if ($module === ModuleEnum::ADMIN && !$this->isAdmin()) {
-                header('Location: /');
+                header(self::REDIRECT_TO_DOMAIN_ROOT);
                 exit;
             }
 
@@ -478,7 +478,7 @@ final class GameController implements GameControllerInterface
             if (request::isAjaxRequest()) {
                 header('HTTP/1.0 400');
             } else {
-                header('Location: /');
+                header(self::REDIRECT_TO_DOMAIN_ROOT);
             }
             return;
         } catch (FallbackRouteException $e) {
@@ -492,13 +492,19 @@ final class GameController implements GameControllerInterface
             StuLogger::log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
         }
 
+        $this->componentSetup->setup($this);
+
+        $this->render();
+
+        $this->gameRequestSaver->save($gameRequest);
+    }
+
+    private function render(): void
+    {
         $user = $this->hasUser()
             ? $this->getUser()
             : null;
 
-        $this->componentSetup->setup($this);
-
-        // RENDER!
         $startTime = hrtime(true);
         $renderResult = $this->gameTwigRenderer->render($this, $user);
         $renderMs = hrtime(true) - $startTime;
@@ -508,9 +514,7 @@ final class GameController implements GameControllerInterface
         ob_end_flush();
 
         // SAVE META DATA
-        $gameRequest->setRenderMs((int)$renderMs / 1_000_000);
-
-        $this->gameRequestSaver->save($gameRequest);
+        $this->getGameRequest()->setRenderMs((int)$renderMs / 1_000_000);
     }
 
     private function checkUserLock(GameRequest $gameRequest): void

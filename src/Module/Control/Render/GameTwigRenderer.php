@@ -6,7 +6,7 @@ namespace Stu\Module\Control\Render;
 
 use Noodlehaus\ConfigInterface;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
@@ -51,9 +51,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('INFORMATION', $game->getInformation());
         $this->twigPage->setVar('TARGET_LINK', $game->getTargetLink());
         $this->twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
-        $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_BEFORE_RENDER));
-        $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(GameEnum::JS_EXECUTION_AFTER_RENDER));
-        $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(GameEnum::JS_EXECUTION_AJAX_UPDATE));
+        $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $game->getExecuteJS(JavascriptExecutionTypeEnum::BEFORE_RENDER));
+        $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $game->getExecuteJS(JavascriptExecutionTypeEnum::AFTER_RENDER));
+        $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $game->getExecuteJS(JavascriptExecutionTypeEnum::ON_AJAX_UPDATE));
         $this->twigPage->setVar('JAVASCRIPTPATH', $this->getJavascriptPath(), true);
         $this->twigPage->setVar('IS_NPC', $game->isNpc());
         $this->twigPage->setVar('IS_ADMIN', $game->isAdmin());

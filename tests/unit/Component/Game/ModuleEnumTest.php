@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Game;
 
-use RuntimeException;
+use BadMethodCallException;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\StuTestCase;
 
@@ -26,7 +26,7 @@ class ModuleEnumTest extends StuTestCase
 
     public function testGetComponentEnumExpectExceptionWhenModuleNotSupported(): void
     {
-        static::expectException(RuntimeException::class);
+        static::expectException(BadMethodCallException::class);
         static::expectExceptionMessage('no components in this module view');
 
         ModuleEnum::STARMAP->getComponentEnum('WRONG');

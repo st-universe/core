@@ -5,7 +5,7 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -21,9 +21,9 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
     ): void {
         $fieldType = $this->getFieldType();
         if ($fieldType !== null) {
-            $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+            $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
         } else {
-            $game->addExecuteJS('fieldType = null;', GameEnum::JS_EXECUTION_AJAX_UPDATE);
+            $game->addExecuteJS('fieldType = null;', JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
         }
 
         foreach (BuildMenuEnum::cases() as $menu) {

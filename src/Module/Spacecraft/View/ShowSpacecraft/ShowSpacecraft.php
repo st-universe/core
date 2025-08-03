@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
@@ -49,7 +49,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
 
     private LoggerUtilInterface $loggerUtil;
 
-    /** 
+    /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader
      */
     public function __construct(
@@ -87,7 +87,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
 
         $spacecraftTypeShowStrategy = Init::getContainer()->getDefinedImplementationsOf(SpacecraftTypeShowStragegyInterface::class)->get($spacecraft->getType()->value);
         if ($spacecraftTypeShowStrategy === null) {
-            throw new RuntimeException('this should not happen');
+            throw new InvalidArgumentException('this should not happen');
         }
 
         $this->viewContext = $spacecraftTypeShowStrategy
@@ -226,11 +226,11 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
                 $epsSystem->getMaxEps() - $epsSystem->getEps(),
                 $warpDriveSystem->getWarpDrive(),
                 $warpDriveSystem->getMaxWarpDrive()
-            ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+            ), JavascriptExecutionTypeEnum::AFTER_RENDER);
             $game->addExecuteJS(sprintf(
                 'updateReactorValues(%d);',
                 $warpDriveSystem->getWarpDriveSplit(),
-            ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+            ), JavascriptExecutionTypeEnum::AFTER_RENDER);
         }
     }
 

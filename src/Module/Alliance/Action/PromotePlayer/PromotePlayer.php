@@ -13,6 +13,9 @@ use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -43,11 +46,10 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $playerId = $this->promotePlayerRequest->getPlayerId();
+        $promotedPlayerId = $this->promotePlayerRequest->getPlayerId();
+        $promotedPlayer = $this->userRepository->find($promotedPlayerId);
 
-        $player = $this->userRepository->find($playerId);
-
-        if ($player === null || $player->getAlliance() !== $alliance) {
+        if ($promotedPlayer === null || $promotedPlayer->getAlliance() !== $alliance) {
             throw new AccessViolationException();
         }
 
@@ -64,71 +66,79 @@ final class PromotePlayer implements ActionControllerInterface
 
         $founderJob = $alliance->getFounder();
 
-        if ($founderJob->getUserId() === $playerId) {
+        if ($founderJob->getUserId() === $promotedPlayerId) {
             throw new AccessViolationException();
         }
 
-        $this->allianceJobRepository->truncateByUser($playerId);
+        $this->allianceJobRepository->truncateByUser($promotedPlayerId);
         $alliance->getJobs()->remove($type->value);
 
-        $text = '';
-        $view = Management::VIEW_IDENTIFIER;
+        $game->setView(Management::VIEW_IDENTIFIER);
 
-        switch ($type) {
-            case AllianceJobTypeEnum::FOUNDER:
-                if ($founderJob->getUserId() !== $userId) {
-                    throw new AccessViolationException();
-                }
-                $this->allianceActionManager->setJobForUser(
-                    $alliance,
-                    $player,
-                    AllianceJobTypeEnum::FOUNDER
-                );
-                $text = sprintf(
-                    _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
-                    $alliance->getName()
-                );
-                $view = ModuleEnum::ALLIANCE;
-                break;
-            case AllianceJobTypeEnum::SUCCESSOR:
-                if ($userId === $playerId) {
-                    throw new AccessViolationException();
-                }
+        $text = match ($type) {
+            AllianceJobTypeEnum::FOUNDER => $this->setFounder($founderJob, $promotedPlayer, $game),
+            AllianceJobTypeEnum::SUCCESSOR => $this->setSuccessor($user, $alliance, $promotedPlayer),
+            AllianceJobTypeEnum::DIPLOMATIC => $this->setDiplomatic($user, $alliance, $promotedPlayer),
+        };
 
-                $this->allianceActionManager->setJobForUser(
-                    $alliance,
-                    $player,
-                    AllianceJobTypeEnum::SUCCESSOR
-                );
-
-                $text = sprintf(
-                    _('Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt'),
-                    $alliance->getName()
-                );
-                break;
-            case AllianceJobTypeEnum::DIPLOMATIC:
-                if ($userId === $playerId) {
-                    throw new AccessViolationException();
-                }
-
-                $this->allianceActionManager->setJobForUser(
-                    $alliance,
-                    $player,
-                    AllianceJobTypeEnum::DIPLOMATIC
-                );
-
-                $text = sprintf(
-                    'Du wurdest zum neuen Außenminister der Allianz %s ernannt',
-                    $alliance->getName()
-                );
-                break;
-        }
-
-        $this->privateMessageSender->send($userId, $playerId, $text);
-
-        $game->setView($view);
+        $this->privateMessageSender->send($userId, $promotedPlayerId, $text);
 
         $game->addInformation(_('Das Mitglied wurde befördert'));
+    }
+
+    private function setFounder(AllianceJob $founderJob, User $promotedPlayer, GameControllerInterface $game): string
+    {
+        if ($founderJob->getUser() !== $game->getUser()) {
+            throw new AccessViolationException();
+        }
+        $this->allianceActionManager->setJobForUser(
+            $founderJob->getAlliance(),
+            $promotedPlayer,
+            AllianceJobTypeEnum::FOUNDER
+        );
+
+        $game->setView(ModuleEnum::ALLIANCE);
+
+        return sprintf(
+            _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
+            $founderJob->getAlliance()->getName()
+        );
+    }
+
+    private function setSuccessor(User $user, Alliance $alliance, User $promotedPlayer): string
+    {
+        if ($user === $promotedPlayer) {
+            throw new AccessViolationException();
+        }
+
+        $this->allianceActionManager->setJobForUser(
+            $alliance,
+            $promotedPlayer,
+            AllianceJobTypeEnum::SUCCESSOR
+        );
+
+        return sprintf(
+            _('Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt'),
+            $alliance->getName()
+        );
+    }
+
+    private function setDiplomatic(User $user, Alliance $alliance, User $promotedPlayer): string
+    {
+        if ($user === $promotedPlayer) {
+            throw new AccessViolationException();
+        }
+
+        $this->allianceActionManager->setJobForUser(
+            $alliance,
+            $promotedPlayer,
+            AllianceJobTypeEnum::DIPLOMATIC
+        );
+
+        return sprintf(
+            'Du wurdest zum neuen Außenminister der Allianz %s ernannt',
+            $alliance->getName()
+        );
     }
 
     #[Override]

@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\ActivateSystem;
 
 use Override;
 use request;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -34,7 +34,7 @@ final class ActivateSystem implements ActionControllerInterface
         if ($type->isReloadOnActivation()) {
             $game->addExecuteJS(
                 sprintf('showSystemSettingsWindow(null, "%s");setAjaxMandatory(false);', $type->name),
-                GameEnum::JS_EXECUTION_AFTER_RENDER
+                JavascriptExecutionTypeEnum::AFTER_RENDER
             );
         }
     }

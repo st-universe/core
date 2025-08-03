@@ -22,5 +22,8 @@ final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements Mo
     }
 
     #[Override]
-    public function apply(SpacecraftWrapperInterface $wrapper): void {}
+    public function apply(SpacecraftWrapperInterface $wrapper): void
+    {
+        // nothing to do here
+    }
 }

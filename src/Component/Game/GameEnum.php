@@ -17,9 +17,4 @@ final class GameEnum
 
     //commnet stuff
     public const int KN_PER_SITE = 6;
-
-    // javascript execution
-    public const int JS_EXECUTION_BEFORE_RENDER = 1;
-    public const int JS_EXECUTION_AFTER_RENDER = 2;
-    public const int JS_EXECUTION_AJAX_UPDATE = 3;
 }

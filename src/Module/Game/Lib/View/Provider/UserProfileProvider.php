@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Override;
 use request;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
@@ -76,7 +76,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             )
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     private function hasTranslation(User $user): bool

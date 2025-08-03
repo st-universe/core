@@ -16,6 +16,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 {
+    private const string ORPHANED_TRADEPOST_NAME = 'Verlassener Handelsposten';
+
     public function __construct(
         private TradePostRepositoryInterface $tradePostRepository,
         private SpacecraftRepositoryInterface $spacecraftRepository,
@@ -57,13 +59,13 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
             //transfer tradepost to noone user
             $tradepost->setUser($fallbackUser);
-            $tradepost->setName('Verlassener Handelsposten');
-            $tradepost->setDescription('Verlassener Handelsposten');
+            $tradepost->setName(self::ORPHANED_TRADEPOST_NAME);
+            $tradepost->setDescription(self::ORPHANED_TRADEPOST_NAME);
             $tradepost->setTradeNetwork(UserConstants::USER_NOONE);
             $this->tradePostRepository->save($tradepost);
 
             $station->setUser($fallbackUser);
-            $station->setName('Verlassener Handelsposten');
+            $station->setName(self::ORPHANED_TRADEPOST_NAME);
             $station->getCondition()->setDisabled(true);
             $this->spacecraftRepository->save($station);
 

@@ -10,8 +10,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 
 class AggregationSystemShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    public function __construct() {}
-
     #[Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {

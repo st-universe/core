@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowWritePm;
 
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -93,6 +93,6 @@ final class ShowWritePm implements ViewControllerInterface
         );
 
         $this->componentRegistration->addComponentUpdate(GameComponentEnum::PM);
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 }
