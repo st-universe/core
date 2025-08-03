@@ -61,7 +61,7 @@ final class SessionLogin implements SessionLoginInterface
 
         if (!$this->userSettingsProvider->isSaveLogin($user)) {
             $cookieString = $this->buildCookieString($user);
-            setcookie('sstr', $cookieString, time() + TimeConstants::TWO_DAYS_IN_SECONDS, "", "", true);
+            setcookie('sstr', $cookieString, time() + TimeConstants::TWO_DAYS_IN_SECONDS, "", "", true, true);
         }
 
         // register login
@@ -167,7 +167,7 @@ final class SessionLogin implements SessionLoginInterface
 
     private function destroyLoginCookies(): void
     {
-        setcookie('sstr', "", 0, "", "", true);
+        setcookie('sstr', "", 0, "", "", true, true);
     }
 
     private function performCookieLogin(int $uid, string $sstr): void
