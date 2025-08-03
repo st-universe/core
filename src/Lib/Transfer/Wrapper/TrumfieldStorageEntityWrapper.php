@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Wrapper;
 
+use BadMethodCallException;
 use Override;
-use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Orm\Entity\Location;
@@ -56,7 +56,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getBeamFactor(): int
     {
-        throw new RuntimeException('this should not happen');
+        throw new BadMethodCallException();
     }
 
     #[Override]
@@ -65,7 +65,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
         StorageEntityWrapperInterface $target,
         InformationInterface $information
     ): void {
-        throw new RuntimeException('this should not happen');
+        throw new BadMethodCallException();
     }
 
     // CREW
@@ -94,7 +94,10 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void {}
+    public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
+    {
+        // nothing to do
+    }
 
     // TORPEDOS
 
@@ -107,7 +110,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getTorpedoCount(): int
     {
-        return 0;
+        return $this->getMaxTorpedos();
     }
 
     #[Override]
@@ -131,6 +134,6 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
-        throw new RuntimeException('this should not happen');
+        throw new BadMethodCallException();
     }
 }

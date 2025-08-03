@@ -57,7 +57,7 @@ class EntityReset
         }
     }
 
-    /** 
+    /**
      * @param class-string $className
      */
     private function createReflectionEntry(string $className): EntityReflectionEntry
@@ -70,10 +70,10 @@ class EntityReset
         );
     }
 
-    /** 
+    /**
      * @param class-string $className
-     * 
-     * @return ReflectionClass<object> 
+     *
+     * @return ReflectionClass<object>
      */
     public function createReflectionClass(string $className): ReflectionClass
     {
