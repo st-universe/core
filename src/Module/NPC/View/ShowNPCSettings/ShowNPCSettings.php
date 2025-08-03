@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\View\ShowNPCSettings;
 
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -36,6 +36,6 @@ final class ShowNPCSettings implements ViewControllerInterface
         $game->setTemplateVar('FACTION', $faction);
         $game->setTemplateVar('HAS_TRANSLATION', $hasTranslation);
 
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use RuntimeException;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -62,7 +62,7 @@ final class MapSectionHelper
             'updateSectionAndLayer(%d, %d);',
             $section,
             $layer->getId()
-        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+        ), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
 
         $this->enableNavOptions($xCoordinate, $yCoordinate, $layer, $game);
 
@@ -146,7 +146,7 @@ final class MapSectionHelper
             $xCoordinate * MapEnum::FIELDS_PER_SECTION < $layerWidth,
             $yCoordinate > 1,
             $yCoordinate * MapEnum::FIELDS_PER_SECTION < $layerHeight
-        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+        ), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
     }
 
     private function getSection(

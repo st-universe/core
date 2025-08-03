@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -43,12 +43,12 @@ final class ShowMapOverall implements ViewControllerInterface
         $height = $layer->getHeight() * 15;
 
         if ($width < 1 || $height < 1) {
-            throw new RuntimeException('Ungültige Dimensionen für die Bilderstellung');
+            throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
         $img = imagecreatetruecolor($width, $height);
         if ($img === false) {
-            throw new RuntimeException('Fehler bei Erstellung von true color image');
+            throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
         }
 
         // mapfields
@@ -67,7 +67,7 @@ final class ShowMapOverall implements ViewControllerInterface
                 $var = $borderType->getColor();
 
                 if (!preg_match('/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/', $var, $matches)) {
-                    throw new RuntimeException(sprintf('Invalid color format: %s', $var));
+                    throw new InvalidArgumentException(sprintf('Invalid color format: %s', $var));
                 }
 
                 $red = (int) hexdec($matches[1]);
@@ -79,12 +79,12 @@ final class ShowMapOverall implements ViewControllerInterface
                     || $green < 0 || $green > 255
                     || $blue < 0 || $blue > 255
                 ) {
-                    throw new RuntimeException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
+                    throw new InvalidArgumentException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
                 }
                 $border = imagecreatetruecolor(15, 15);
                 $col = imagecolorallocate($border, $red, $green, $blue);
                 if (!$col) {
-                    throw new RuntimeException(sprintf('color range exception, col: %d', $col));
+                    throw new InvalidArgumentException(sprintf('color range exception, col: %d', $col));
                 }
                 imagefill($border, 0, 0, $col);
                 imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
@@ -95,7 +95,7 @@ final class ShowMapOverall implements ViewControllerInterface
             $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType());
             $partialImage = imagecreatefrompng($imagePath);
             if ($partialImage === false) {
-                throw new RuntimeException('error creating partial image');
+                throw new InvalidArgumentException('error creating partial image');
             }
             $types[$data->getFieldId()] = $partialImage;
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);

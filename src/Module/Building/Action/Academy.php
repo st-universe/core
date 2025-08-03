@@ -21,8 +21,14 @@ final class Academy implements BuildingActionHandlerInterface
     }
 
     #[Override]
-    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void {}
+    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
+    {
+        // nothing to do here
+    }
 
     #[Override]
-    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void {}
+    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
+    {
+        // nothing to do here
+    }
 }

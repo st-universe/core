@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Control;
 
+use BadMethodCallException;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -66,7 +67,7 @@ final class AlertStateManager implements AlertStateManagerInterface
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
-            throw new RuntimeException('ship not in fleet');
+            throw new BadMethodCallException('ship not in fleet');
         }
 
         $success = false;
@@ -121,17 +122,14 @@ final class AlertStateManager implements AlertStateManagerInterface
             return false;
         }
 
-        switch ($alertState) {
-            case SpacecraftAlertStateEnum::ALERT_RED:
-                $this->setAlertRed($wrapper);
-                break;
-            case SpacecraftAlertStateEnum::ALERT_YELLOW:
-                $this->setAlertYellow($wrapper);
-                break;
-            case SpacecraftAlertStateEnum::ALERT_GREEN:
-                $this->setAlertGreen($wrapper);
-                break;
-        }
+        match ($alertState) {
+            SpacecraftAlertStateEnum::ALERT_RED =>
+            $this->setAlertRed($wrapper),
+            SpacecraftAlertStateEnum::ALERT_YELLOW =>
+            $this->setAlertYellow($wrapper),
+            SpacecraftAlertStateEnum::ALERT_GREEN =>
+            $this->setAlertGreen($wrapper)
+        };
 
         $this->spacecraftRepository->save($ship);
 

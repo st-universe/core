@@ -16,9 +16,7 @@ final class ShowMapEditor implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
-    public function __construct(private LayerRepositoryInterface $layerRepository, private StarSystemRepositoryInterface $starSystemRepository)
-    {
-    }
+    public function __construct(private LayerRepositoryInterface $layerRepository, private StarSystemRepositoryInterface $starSystemRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void

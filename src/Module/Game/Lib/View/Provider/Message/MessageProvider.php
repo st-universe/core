@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider\Message;
 
 use Override;
 use request;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,6 +47,6 @@ final class MessageProvider implements ViewComponentProviderInterface
         );
 
         $this->componentRegistration->addComponentUpdate(GameComponentEnum::PM);
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 }

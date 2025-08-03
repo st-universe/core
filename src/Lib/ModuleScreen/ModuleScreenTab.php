@@ -6,6 +6,8 @@ use Stu\Orm\Entity\Module;
 
 class ModuleScreenTab
 {
+    private const string UNSELECTED_CLASS = ' module_selector_unselected';
+
     public function __construct(private ModuleSelectorInterface $moduleSelector) {}
 
     public function getTabTitle(): string
@@ -26,7 +28,7 @@ class ModuleScreenTab
             if ($this->moduleSelector->isEmptySlot()) {
                 $class .= ' module_selector_skipped';
             } elseif (!$this->moduleSelector->hasSelectedModule()) {
-                $class .= ' module_selector_unselected';
+                $class .= self::UNSELECTED_CLASS;
             }
         }
 
@@ -35,7 +37,7 @@ class ModuleScreenTab
             $buildplan = $this->moduleSelector->getBuildplan();
 
             if (!$this->moduleSelector->hasSelectedModule()) {
-                $class .= ' module_selector_unselected';
+                $class .= self::UNSELECTED_CLASS;
             } elseif ($buildplan !== null) {
 
                 /** @var Module $mod */
@@ -44,7 +46,7 @@ class ModuleScreenTab
 
                 $stor = $this->moduleSelector->getHost()->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {
-                    $class .= ' module_selector_unselected';
+                    $class .= self::UNSELECTED_CLASS;
                 }
             }
         }

@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchive;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPost;
@@ -102,7 +103,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('AVAILABLE_ARCHIVE_VERSIONS', $formattedVersions);
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', ShowKnArchive::VIEW_IDENTIFIER);
 
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     private function getMarkedKnId(User $user): ?int

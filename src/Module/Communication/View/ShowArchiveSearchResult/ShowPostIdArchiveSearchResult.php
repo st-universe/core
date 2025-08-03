@@ -6,12 +6,9 @@ namespace Stu\Module\Communication\View\ShowArchiveSearchResult;
 
 use Override;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
-use Stu\Component\Communication\Kn\KnArchiveItemInterface;
-use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 
 final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
@@ -70,6 +67,6 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
         $game->setTemplateVar('ARCHIVE_VERSION', $version);
         $game->setTemplateVar('TOTAL_POSTS', $this->knPostArchivRepository->getAmountByVersion($version));
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', 'SHOW_KN_ARCHIVE');
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 }

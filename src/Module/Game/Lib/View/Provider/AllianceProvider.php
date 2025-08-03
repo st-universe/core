@@ -8,9 +8,9 @@ use Override;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
@@ -48,7 +48,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $this->setTemplateVariablesForAlliance($alliance, $game);
         }
 
-        $game->addExecuteJS("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER);
+        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     private function setTemplateVariablesForAlliance(Alliance $alliance, GameControllerInterface $game): void

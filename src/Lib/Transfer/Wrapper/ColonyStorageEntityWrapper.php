@@ -91,7 +91,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
             $information->addInformation("Keine Waren zum Beamen vorhanden");
             return;
         }
-        if (count($commodities) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || $gcount === []) {
             $information->addInformation("Es wurden keine Waren zum Beamen ausgewählt");
             return;
         }
@@ -162,7 +162,10 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[Override]
-    public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void {}
+    public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
+    {
+        // nothing to do here
+    }
 
     // TORPEDOS
 

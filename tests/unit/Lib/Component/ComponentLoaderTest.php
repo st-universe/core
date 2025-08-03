@@ -7,7 +7,7 @@ namespace Stu\Lib\Component;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -52,7 +52,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->game->shouldReceive('addExecuteJS')
             ->with(
                 "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID');",
-                GameEnum::JS_EXECUTION_AFTER_RENDER
+                JavascriptExecutionTypeEnum::AFTER_RENDER
             )
             ->once();
 
@@ -79,7 +79,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->game->shouldReceive('addExecuteJS')
             ->with(
                 "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID', 60000);",
-                GameEnum::JS_EXECUTION_AFTER_RENDER
+                JavascriptExecutionTypeEnum::AFTER_RENDER
             )
             ->once();
 
@@ -96,7 +96,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->game->shouldReceive('addExecuteJS')
             ->with(
                 "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID');",
-                GameEnum::JS_EXECUTION_AFTER_RENDER
+                JavascriptExecutionTypeEnum::AFTER_RENDER
             )
             ->once();
 
@@ -120,7 +120,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->game->shouldReceive('addExecuteJS')
             ->with(
                 "updateComponent('ID', '/game.php?SHOW_COMPONENT=1&component=ID&hosttype=1&id=42');",
-                GameEnum::JS_EXECUTION_AFTER_RENDER
+                JavascriptExecutionTypeEnum::AFTER_RENDER
             )
             ->once();
 

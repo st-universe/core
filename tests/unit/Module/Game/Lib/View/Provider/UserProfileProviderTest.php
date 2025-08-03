@@ -9,7 +9,7 @@ use JBBCode\Parser;
 use Mockery\MockInterface;
 use Override;
 use request;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
@@ -189,7 +189,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturn([$friend]);
 
         $game->shouldReceive('addExecuteJS')
-            ->with("initTranslations();", GameEnum::JS_EXECUTION_AFTER_RENDER)
+            ->with("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER)
             ->once();
 
         $colonyScan->shouldReceive('getColonyUserId')

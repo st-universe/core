@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use BadMethodCallException;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -45,7 +46,7 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     #[Override]
     public function getSecondValue(?Module $module = null): int
     {
-        throw new RuntimeException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
+        throw new BadMethodCallException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
     }
 
     #[Override]

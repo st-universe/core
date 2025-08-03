@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -64,7 +64,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             ModuleEnum::STARMAP->value,
             RefreshSection::VIEW_IDENTIFIER,
             'html/colony/telescopeSectionTable.twig'
-        ), GameEnum::JS_EXECUTION_AJAX_UPDATE);
+        ), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
 
         $game->addExecuteJS(
             sprintf(
@@ -72,7 +72,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
                 $system->getCx(),
                 $system->getCy()
             ),
-            GameEnum::JS_EXECUTION_AJAX_UPDATE
+            JavascriptExecutionTypeEnum::ON_AJAX_UPDATE
         );
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Component;
 
+use OutOfBoundsException;
 use Override;
 use RuntimeException;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
 use Stu\Lib\Component\ComponentInterface;
@@ -68,7 +69,7 @@ final class ComponentLoader implements ComponentLoaderInterface
             $id,
             $componentUpdate->getComponentParameters() ?? '',
             $refreshParam
-        ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+        ), JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     #[Override]
@@ -87,7 +88,7 @@ final class ComponentLoader implements ComponentLoaderInterface
                     ->get(sprintf('%s_COMPONENTS', $moduleId));
 
                 if (!array_key_exists($componentEnum->getValue(), $moduleComponents)) {
-                    throw new RuntimeException(sprintf('component with follwing id does not exist: %s', $id));
+                    throw new OutOfBoundsException(sprintf('component with follwing id does not exist: %s', $id));
                 }
 
                 $component = $moduleComponents[$componentEnum->getValue()];

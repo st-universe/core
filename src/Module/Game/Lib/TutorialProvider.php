@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Game\Lib;
 
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Orm\Entity\TutorialStep;
@@ -44,7 +44,7 @@ final class TutorialProvider
             "initTutorialSteps('%s', %d);",
             json_encode($payloadArray),
             $userTutorial->getTutorialStep()->getId()
-        ), GameEnum::JS_EXECUTION_AFTER_RENDER);
+        ), JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     /** @return array<string, mixed> */

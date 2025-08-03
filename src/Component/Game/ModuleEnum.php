@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Game;
 
-use RuntimeException;
+use BadMethodCallException;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
@@ -78,10 +78,10 @@ enum ModuleEnum: string
             self::DATABASE => 'html/view/database.twig',
             self::HISTORY => 'html/view/history.twig',
             self::STARMAP => 'html/view/map.twig',
-            self::NOTES => 'not needed',
             self::OPTIONS => 'html/view/options.twig',
             self::USERPROFILE => 'html/view/userprofile.twig',
-            self::ADMIN => 'not needed',
+            self::NOTES,
+            self::ADMIN,
             self::NPC => 'not needed'
         };
     }
@@ -91,7 +91,7 @@ enum ModuleEnum: string
         $result =  match ($this) {
             self::GAME => GameComponentEnum::tryFrom($value),
             self::COLONY => ColonyComponentEnum::tryFrom($value),
-            default => throw new RuntimeException('no components in this module view')
+            default => throw new BadMethodCallException('no components in this module view')
         };
 
         return $result ?? GameComponentEnum::OUTDATED;

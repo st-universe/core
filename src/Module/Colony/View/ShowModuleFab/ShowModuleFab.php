@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\BuildingFunction;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
@@ -55,21 +58,81 @@ final class ShowModuleFab implements ViewControllerInterface
             return;
         }
 
-        $moduleBuildingFunctions = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
-            $func->getFunction(),
-            $userId
-        );
-
         $template = match ($func->getFunction()) {
             BuildingFunctionEnum::FABRICATION_HALL => ColonyMenuEnum::MENU_FAB_HALL->getTemplate(),
             BuildingFunctionEnum::TECH_CENTER => ColonyMenuEnum::MENU_TECH_CENTER->getTemplate(),
             default => ColonyMenuEnum::MENU_MODULEFAB->getTemplate(),
         };
 
-        /** @var array<int, array<int, array<int, ModuleFabricationListItem>>> $sortedModules */
-        $sortedModules = [];
         /** @var array<int, ModuleFabricationListItem> $allModules */
         $allModules = [];
+
+        $rumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
+
+        $this->setModules($colony, $func, $game);
+        $this->setRumpModules($colony, $rumps, $allModules);
+        $this->setModuleTypes($game);
+        $this->setBuildplans($rumps, $allModules, $game);
+
+        $game->showMacro($template);
+
+        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
+        $game->setTemplateVar('HOST', $colony);
+        $game->setTemplateVar('FUNC', $func);
+        $game->setTemplateVar('SHIP_RUMPS', $rumps);
+
+        $game->addExecuteJS('clearModuleInputs();', JavascriptExecutionTypeEnum::AFTER_RENDER);
+    }
+
+    private function setModuleTypes(GameControllerInterface $game): void
+    {
+        $moduleTypes = [];
+        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
+            $moduleTypes[$moduleType->value] = [
+                'name' => $moduleType->getDescription(),
+                'image' => "/assets/buttons/modul_screen_{$moduleType->value}.png"
+            ];
+        }
+
+        $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
+    }
+
+    /**
+     * @param array<SpacecraftRump> $rumps
+     * @param array<int, ModuleFabricationListItem> $allModules
+     */
+    private function setBuildplans(array $rumps, array &$allModules, GameControllerInterface $game): void
+    {
+        $buildplans = [];
+        foreach ($rumps as $rump) {
+            $rumpId = $rump->getId();
+            $rumpBuildplans = $this->spacecraftBuildplanRepository->getByUserAndRump($game->getUser()->getId(), $rumpId);
+            $buildplans[$rumpId] = $rumpBuildplans;
+
+            foreach ($rumpBuildplans as $buildplan) {
+
+                foreach ($buildplan->getModules() as $buildplanModule) {
+                    $moduleId = $buildplanModule->getModule()->getId();
+
+                    if (array_key_exists($moduleId, $allModules)) {
+                        $allModules[$moduleId]->addBuildplan($buildplan);
+                    }
+                }
+            }
+        }
+
+        $game->setTemplateVar('BUILDPLANS', $buildplans);
+    }
+
+    private function setModules(Colony $colony, BuildingFunction $func, GameControllerInterface $game): void
+    {
+        /** @var array<int, array<int, array<int, ModuleFabricationListItem>>> $sortedModules */
+        $sortedModules = [];
+
+        $moduleBuildingFunctions = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
+            $func->getFunction(),
+            $game->getUser()->getId()
+        );
 
         foreach ($moduleBuildingFunctions as $moduleBuildingFunction) {
             $module = $moduleBuildingFunction->getModule();
@@ -92,23 +155,22 @@ final class ShowModuleFab implements ViewControllerInterface
             $allModules[$module->getId()] = $moduleFabricationListItem;
         }
 
-        $shipRumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
+        $game->setTemplateVar('MODULES_BY_TYPE_AND_LEVEL', $sortedModules);
+    }
 
-        $moduleTypes = [];
-        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
-            $moduleTypes[$moduleType->value] = [
-                'name' => $moduleType->getDescription(),
-                'image' => "/assets/buttons/modul_screen_{$moduleType->value}.png"
-            ];
-        }
-
-        foreach ($shipRumps as $rump) {
+    /**
+     * @param array<SpacecraftRump> $rumps
+     * @param array<int, ModuleFabricationListItem> $allModules
+     */
+    private function setRumpModules(Colony $colony, array $rumps, array &$allModules): void
+    {
+        foreach ($rumps as $rump) {
             $rumpId = $rump->getId();
             $rumpRoleId = $rump->getRoleId();
 
             $shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($rump);
             if ($shipRumpModuleLevel === null) {
-                throw new RuntimeException('this should not happen');
+                throw new InvalidArgumentException('this should not happen');
             }
 
             foreach ($allModules as $listItem) {
@@ -147,37 +209,5 @@ final class ShowModuleFab implements ViewControllerInterface
                 }
             }
         }
-
-        $buildplans = [];
-        foreach ($shipRumps as $rump) {
-            $rumpId = $rump->getId();
-            $rumpBuildplans = $this->spacecraftBuildplanRepository->getByUserAndRump($userId, $rumpId);
-            $buildplans[$rumpId] = $rumpBuildplans;
-
-            foreach ($rumpBuildplans as $buildplan) {
-
-                foreach ($buildplan->getModules() as $buildplanModule) {
-                    $moduleType = $buildplanModule->getModuleType()->value;
-                    $moduleLevel = $buildplanModule->getModule()->getLevel();
-                    $moduleId = $buildplanModule->getModule()->getId();
-
-                    if (array_key_exists($moduleId, $allModules)) {
-                        $allModules[$moduleId]->addBuildplan($buildplan);
-                    }
-                }
-            }
-        }
-
-        $game->showMacro($template);
-        $game->setTemplateVar('CURRENT_MENU', ColonyMenuEnum::MENU_MODULEFAB);
-
-        $game->setTemplateVar('HOST', $colony);
-        $game->setTemplateVar('FUNC', $func);
-        $game->setTemplateVar('SHIP_RUMPS', $shipRumps);
-        $game->setTemplateVar('MODULE_TYPES', $moduleTypes);
-        $game->setTemplateVar('BUILDPLANS', $buildplans);
-        $game->setTemplateVar('MODULES_BY_TYPE_AND_LEVEL', $sortedModules);
-
-        $game->addExecuteJS('clearModuleInputs();', GameEnum::JS_EXECUTION_AFTER_RENDER);
     }
 }

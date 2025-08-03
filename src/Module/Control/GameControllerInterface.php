@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Control;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\GameStateEnum;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -75,9 +75,9 @@ interface GameControllerInterface extends InformationInterface
     public function setPageTitle(string $title): void;
 
     /** @return array<string>|null */
-    public function getExecuteJS(int $when): ?array;
+    public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array;
 
-    public function addExecuteJS(string $value, int $when = GameEnum::JS_EXECUTION_BEFORE_RENDER): void;
+    public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void;
 
     public function redirectTo(string $href): void;
 

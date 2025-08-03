@@ -43,7 +43,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
+                    AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
                                                                 WHERE :hostIdColumnName = :hostId))
                     AND m.id IN (SELECT module_id
@@ -124,8 +124,8 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND level IN (:levelList)
-					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
+                    AND level IN (:levelList)
+                    AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
                                                                 WHERE colony_id = :colonyId))
                     ORDER BY m.level ASC, m.id ASC
@@ -163,7 +163,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND level IN (:levelList)
+                    AND level IN (:levelList)
                 ',
                 $this->getResultSetMapping()
             )

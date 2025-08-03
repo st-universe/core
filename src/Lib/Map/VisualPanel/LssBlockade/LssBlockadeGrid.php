@@ -68,11 +68,15 @@ class LssBlockadeGrid
 
     public function isVisible(int $x, int $y): bool
     {
-        if (!$this->inRange($x, $y)) return false;
+        if (!$this->inRange($x, $y)) {
+            return false;
+        }
 
         $ixT = $this->idxX($x);
         $iyT = $this->idxY($y);
-        if (!empty($this->blocked[$ixT][$iyT])) return false;
+        if (!empty($this->blocked[$ixT][$iyT])) {
+            return false;
+        }
 
         $dx = $x - $this->obsX;
         $dy = $y - $this->obsY;
@@ -103,10 +107,14 @@ class LssBlockadeGrid
             if ($cx !== $nx && $cy !== $ny) {
                 $side1Blocked = !empty($this->blocked[$this->idxX($cx)][$this->idxY($ny)]);
                 $side2Blocked = !empty($this->blocked[$this->idxX($nx)][$this->idxY($cy)]);
-                if ($side1Blocked || $side2Blocked) return false;
+                if ($side1Blocked || $side2Blocked) {
+                    return false;
+                }
             }
 
-            if (!empty($this->blocked[$this->idxX($nx)][$this->idxY($ny)])) return false;
+            if (!empty($this->blocked[$this->idxX($nx)][$this->idxY($ny)])) {
+                return false;
+            }
 
             $cx = $nx;
             $cy = $ny;
