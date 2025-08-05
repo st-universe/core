@@ -54,6 +54,7 @@ final class ShowColonyScan implements ViewControllerInterface
         if ($ship->isCloaked()) {
             return;
         }
+        //
 
         $starsystemMap = $ship->getStarsystemMap();
         if ($starsystemMap === null) {
