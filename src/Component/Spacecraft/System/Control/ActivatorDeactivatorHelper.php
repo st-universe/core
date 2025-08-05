@@ -65,7 +65,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         $success = false;
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-            if ($this->systemActivation->activateIntern($wrapper, $type, $game, false)) {
+            if ($this->systemActivation->activateIntern($wrapper, $type, $game->getInfo(), false)) {
                 $success = true;
             }
         }
@@ -100,7 +100,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     #[Override]
     public function deactivateFleet(
-        ShipWrapperInterface|int $target,
+        SpacecraftWrapperInterface|int $target,
         spacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool {

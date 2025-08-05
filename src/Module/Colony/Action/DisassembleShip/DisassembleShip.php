@@ -77,7 +77,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $this->moduleRecycling->retrieveSomeModules($ship, $colony, $game);
+        $this->moduleRecycling->retrieveSomeModules($ship, $colony, $game->getInfo());
         $this->retrieveReactorLoad($wrapper, $colony, $game);
         $this->retrieveLoadedTorpedos($wrapper, $colony, $game);
 

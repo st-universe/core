@@ -57,7 +57,7 @@ final class Shutdown implements ActionControllerInterface
 
         if ($triggerAlertRed) {
             //Alarm-Rot check for ship
-            $this->alertReactionFacade->doItAll($wrapper, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game->getInfo());
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {

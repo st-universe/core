@@ -6,7 +6,6 @@ use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -34,7 +33,7 @@ interface ActivatorDeactivatorHelperInterface
     ): bool;
 
     public function deactivateFleet(
-        ShipWrapperInterface|int $target,
+        SpacecraftWrapperInterface|int $target,
         spacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool;

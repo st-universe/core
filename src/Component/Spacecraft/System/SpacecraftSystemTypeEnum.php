@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System;
 
-use RuntimeException;
+use BadMethodCallException;
+use InvalidArgumentException;
 
 enum SpacecraftSystemTypeEnum: int
 {
@@ -140,7 +141,7 @@ enum SpacecraftSystemTypeEnum: int
             self::BUSSARD_COLLECTOR => 'bussard',
             self::UPLINK => 'uplink',
             self::WARPDRIVE => 'warp',
-            default => throw new RuntimeException(sprintf('no icon defined for system type: %s', $this->name))
+            default => throw new BadMethodCallException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }
 
@@ -168,6 +169,6 @@ enum SpacecraftSystemTypeEnum: int
             }
         }
 
-        throw new RuntimeException(sprintf('unknown spacecraft system type name: %s', $name));
+        throw new InvalidArgumentException(sprintf('unknown spacecraft system type name: %s', $name));
     }
 }
