@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use InvalidArgumentException;
 use Mockery\MockInterface;
 use Monolog\Logger;
 use Override;
-use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\IonStorm\IonStormData;
 use Stu\Module\Logging\StuLogger;
@@ -43,7 +43,7 @@ class AnomalyCreationTest extends StuTestCase
     public function testCreateExpectExceptionWhenAnomalyTypeUnknown(): void
     {
         static::expectExceptionMessage('no anomaly in database for type: 1');
-        static::expectException(RuntimeException::class);
+        static::expectException(InvalidArgumentException::class);
 
         $this->anomalyTypeRepository->shouldReceive('find')
             ->with(1)

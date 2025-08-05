@@ -6,8 +6,8 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use JsonMapper\JsonMapperInterface;
 use Override;
-use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
+use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Game\TimeConstants;
@@ -125,7 +125,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         foreach ($root->getChildren() as $child) {
             $location = $child->getLocation();
             if ($location === null) {
-                throw new RuntimeException('this should not happen');
+                throw new AnomalyException('this should not happen');
             }
 
             foreach ($location->getSpacecraftsWithoutVacation() as $spacecraft) {
@@ -178,7 +178,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
     {
         $data = $root->getData();
         if ($data === null) {
-            throw new RuntimeException('this should not happen');
+            throw new AnomalyException('this should not happen');
         }
 
         return $this->jsonMapper->mapObjectFromString(

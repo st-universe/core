@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Message;
 use Override;
 use Stu\Lib\Information\InformationInterface;
 
-final class Message implements MessageInterface
+class Message implements MessageInterface
 {
     /**
      * @param array<string> $msg

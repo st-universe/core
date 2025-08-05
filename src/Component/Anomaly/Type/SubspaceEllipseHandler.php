@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type;
 
 use Override;
-use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
+use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -24,21 +23,20 @@ use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
-//TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
     public const int MASS_CALCULATION_THRESHOLD = 33_333_333;
 
     public function __construct(
-        private LocationRepositoryInterface $locationRepository,
-        private AnomalyCreationInterface $anomalyCreation,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private SystemDamageInterface $systemDamage,
-        private PrivateMessageSenderInterface $privateMessageSender,
-        private DistributedMessageSenderInterface $distributedMessageSender,
-        private StuRandom $stuRandom,
-        private MessageFactoryInterface $messageFactory
+        private readonly LocationRepositoryInterface $locationRepository,
+        private readonly AnomalyCreationInterface $anomalyCreation,
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly SystemDamageInterface $systemDamage,
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly DistributedMessageSenderInterface $distributedMessageSender,
+        private readonly StuRandom $stuRandom,
+        private readonly MessageFactoryInterface $messageFactory
     ) {}
 
     #[Override]
@@ -68,23 +66,13 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     {
         $location = $anomaly->getLocation();
         if ($location === null) {
-            throw new RuntimeException('this should not happen');
+            throw new AnomalyException('this should not happen');
         }
-
-        $spacecrafts = $location->getSpacecraftsWithoutVacation();
 
         $messagesForShips = $this->messageFactory->createMessageCollection();
         $messagesForBases = $this->messageFactory->createMessageCollection();
 
-        $intro = $this->messageFactory->createMessage(
-            UserConstants::USER_NOONE,
-            null
-        );
-
-        $messagesForShips->add($intro);
-        $messagesForBases->add($intro);
-
-        foreach ($spacecrafts as $spacecraft) {
+        foreach ($location->getSpacecraftsWithoutVacation() as $spacecraft) {
 
             if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
                 continue;
@@ -100,12 +88,12 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                 continue;
             }
 
-            $message = $this->messageFactory->createMessage(UserConstants::USER_NOONE, $spacecraft->getUser()->getId());
-            $message->add($spacecraft->getName());
-
             if ($shieldSystem->getMode()->isActivated()) {
                 $shieldSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
+
+            $messageCollection = $spacecraft->isStation() ? $messagesForBases : $messagesForShips;
+            $message = $messageCollection->addMessageBy($spacecraft->getName(), $spacecraft->getUser()->getId());
 
             if ($condition->getShield() > 0) {
                 $condition->setShield(0);
@@ -115,21 +103,15 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             if ($shieldSystem->getStatus() > 0) {
                 $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
-                $informations = new InformationWrapper();
                 $this->systemDamage->damageShipSystem(
                     $wrapper,
                     $shieldSystem,
                     $this->stuRandom->rand(1, 50, true),
-                    $informations
+                    $message
                 );
-                $message->addMessageMerge($informations->getInformations());
             }
 
-            if ($spacecraft->isStation()) {
-                $messagesForBases->add($message);
-            } else {
-                $messagesForShips->add($message);
-            }
+            $messageCollection->add($message);
 
             $this->spacecraftRepository->save($spacecraft);
         }
@@ -144,7 +126,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     #[Override]
     public function letAnomalyDisappear(Anomaly $anomaly): void
     {
-        //TODO
+        // nothing to do here
     }
 
     private function informSpacecraftOwnersAboutCreation(Anomaly $anomaly): void
@@ -153,7 +135,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         $location = $anomaly->getLocation();
         if ($location === null) {
-            throw new RuntimeException('this should not happen');
+            throw new AnomalyException('this should not happen');
         }
 
         $spacecrafts = $location->getSpacecrafts();
@@ -182,19 +164,23 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $sectorString
         );
 
-        $this->distributedMessageSender->distributeMessageCollection(
-            $messageCollectionForShips,
-            UserConstants::USER_NOONE,
-            PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-            $header
-        );
+        if (!$messageCollectionForShips->isEmpty()) {
+            $this->distributedMessageSender->distributeMessageCollection(
+                $messageCollectionForShips,
+                UserConstants::USER_NOONE,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+                $header
+            );
+        }
 
-        $this->distributedMessageSender->distributeMessageCollection(
-            $messageCollectionForBases,
-            UserConstants::USER_NOONE,
-            PrivateMessageFolderTypeEnum::SPECIAL_STATION,
-            $header
-        );
+        if (!$messageCollectionForBases->isEmpty()) {
+            $this->distributedMessageSender->distributeMessageCollection(
+                $messageCollectionForBases,
+                UserConstants::USER_NOONE,
+                PrivateMessageFolderTypeEnum::SPECIAL_STATION,
+                $header
+            );
+        }
     }
 
     #[Override]
