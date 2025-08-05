@@ -12,7 +12,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -31,7 +30,6 @@ class SpacecraftLoaderTest extends StuTestCase
     private MockInterface&SemaphoreUtilInterface $semaphoreUtil;
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
     private MockInterface&LockManagerInterface $lockManager;
-    private MockInterface&GameControllerInterface $game;
 
     private MockInterface&Spacecraft $spacecraft;
     private MockInterface&SpacecraftWrapperInterface $wrapper;
@@ -50,7 +48,6 @@ class SpacecraftLoaderTest extends StuTestCase
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->semaphoreUtil = $this->mock(SemaphoreUtilInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
 
@@ -67,7 +64,6 @@ class SpacecraftLoaderTest extends StuTestCase
             $this->spacecraftRepository,
             $this->crewAssignmentRepository,
             $this->semaphoreUtil,
-            $this->game,
             $this->spacecraftWrapperFactory,
             $this->lockManager
         );
@@ -220,7 +216,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->game->shouldReceive('isSemaphoreAlreadyAcquired')
+        $this->semaphoreUtil->shouldReceive('isSemaphoreAlreadyAcquired')
             ->with($this->userId)
             ->once()
             ->andReturn(false);
@@ -256,7 +252,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->spacecraft);
-        $this->game->shouldReceive('isSemaphoreAlreadyAcquired')
+        $this->semaphoreUtil->shouldReceive('isSemaphoreAlreadyAcquired')
             ->with($this->userId)
             ->once()
             ->andReturn(false);

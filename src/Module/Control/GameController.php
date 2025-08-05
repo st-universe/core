@@ -34,7 +34,6 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use SysvSemaphore;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -473,18 +472,6 @@ final class GameController implements GameControllerInterface
         }
 
         return $this->getUser()->isNpc();
-    }
-
-    #[Override]
-    public function isSemaphoreAlreadyAcquired(int $key): bool
-    {
-        return array_key_exists($key, $this->gameData->semaphores);
-    }
-
-    #[Override]
-    public function addSemaphore(int $key, SysvSemaphore $semaphore): void
-    {
-        $this->gameData->semaphores[$key] = $semaphore;
     }
 
     private function executeCallback(ModuleEnum $module, GameRequest $gameRequest): void

@@ -92,10 +92,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function isAdmin(): bool;
 
-    public function isSemaphoreAlreadyAcquired(int $key): bool;
-
-    public function addSemaphore(int $key, SysvSemaphore $semaphore): void;
-
     /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
     public function getGameStats(): array;
 

@@ -12,6 +12,7 @@ use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Module\Control\JavascriptExecution;
+use Stu\Module\Control\SemaphoreUtil;
 use Stu\Module\Logging\StuLogger;
 
 class StuMocks
@@ -54,6 +55,7 @@ class StuMocks
         StuLogger::setMock(null);
         AchievementManager::reset();
         JavascriptExecution::reset();
+        SemaphoreUtil::reset();
     }
 
     private function getStuContainer(): StuContainer

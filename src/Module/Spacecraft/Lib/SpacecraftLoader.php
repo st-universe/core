@@ -12,7 +12,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappers;
@@ -29,12 +28,11 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 final class SpacecraftLoader implements SpacecraftLoaderInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private SemaphoreUtilInterface $semaphoreUtil,
-        private GameControllerInterface $game,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private LockManagerInterface $lockManager
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private readonly SemaphoreUtilInterface $semaphoreUtil,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly LockManagerInterface $lockManager
     ) {}
 
     #[Override]
@@ -165,7 +163,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
      */
     private function acquireSemaphores(Spacecraft $spacecraft, ?int $targetId): SourceAndTargetWrappersInterface
     {
-        if ($targetId === null && $this->game->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())) {
+        if ($targetId === null && $this->semaphoreUtil->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())) {
             return new SourceAndTargetWrappers($this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
         }
 
