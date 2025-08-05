@@ -19,9 +19,6 @@ final class GameData
     public string $pagetitle = '';
     public string $macro = '';
 
-    /** @var array<int, array<string>> */
-    public array $execjs = [];
-
     public ?GameTurn $currentRound = null;
 
     /** @var array<string> */
