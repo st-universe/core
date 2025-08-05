@@ -34,7 +34,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
-            $game->addInformation(sprintf('layerId %d does not exist', $layerId));
+            $game->getInfo()->addInformation(sprintf('layerId %d does not exist', $layerId));
             return;
         }
 

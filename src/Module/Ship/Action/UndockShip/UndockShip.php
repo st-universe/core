@@ -79,31 +79,31 @@ final class UndockShip implements ActionControllerInterface
 
                 $this->shipRepository->save($ship);
             }
-            $game->addInformationMerge($msg);
+            $game->getInfo()->addInformationArray($msg, true);
             return;
         }
         if (!$ship->hasEnoughCrew()) {
-            $game->addInformation(_('Nicht genügend Crew vorhanden'));
+            $game->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation('Zum Abdocken wird 1 Energie benötigt');
+            $game->getInfo()->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->addInformation("Die Reparatur wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->addInformation("Die Umrüstung wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo(null);
 
         $this->shipRepository->save($ship);
 
-        $game->addInformation('Abdockvorgang abgeschlossen');
+        $game->getInfo()->addInformation('Abdockvorgang abgeschlossen');
     }
 
     #[Override]

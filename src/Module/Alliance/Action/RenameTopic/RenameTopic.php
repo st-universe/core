@@ -35,14 +35,14 @@ final class RenameTopic implements ActionControllerInterface
         $game->setView(Board::VIEW_IDENTIFIER);
 
         if (mb_strlen($name) < 1) {
-            $game->addInformation(_('Es wurde kein Themenname eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
             return;
         }
 
         $topic->setName($name);
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->addInformation(_('Das Thema wurde umbenannt'));
+        $game->getInfo()->addInformation(_('Das Thema wurde umbenannt'));
     }
 
     #[Override]

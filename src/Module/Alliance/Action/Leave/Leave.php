@@ -53,7 +53,7 @@ final class Leave implements ActionControllerInterface
 
         $game->setView(ModuleEnum::ALLIANCE);
 
-        $game->addInformation(_('Du hast die Allianz verlassen'));
+        $game->getInfo()->addInformation(_('Du hast die Allianz verlassen'));
     }
 
     #[Override]

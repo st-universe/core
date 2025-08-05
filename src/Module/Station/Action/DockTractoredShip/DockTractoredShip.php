@@ -56,12 +56,12 @@ final class DockTractoredShip implements ActionControllerInterface
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
-            $game->addInformationf('Zum Andocken wird %d Energie benötigt', Spacecraft::SYSTEM_ECOST_DOCK);
+            $game->getInfo()->addInformationf('Zum Andocken wird %d Energie benötigt', Spacecraft::SYSTEM_ECOST_DOCK);
             return;
         }
         //check for free dock slots
         if (!$station->hasFreeDockingSlots()) {
-            $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
+            $game->getInfo()->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
 
@@ -69,12 +69,12 @@ final class DockTractoredShip implements ActionControllerInterface
 
         // check for fleet state
         if ($tractoredShip->getFleet() !== null && $tractoredShip->getFleet()->getShipCount() > 1) {
-            $game->addInformation("Aktion nicht möglich. Das Ziel befindet sich in einer Flotte.");
+            $game->getInfo()->addInformation("Aktion nicht möglich. Das Ziel befindet sich in einer Flotte.");
             return;
         }
         // check for alert green
         if (!$tractoredShipWrapper->isUnalerted()) {
-            $game->addInformation("Aktion nicht möglich. Das Ziel ist nicht auf Alarm Grün.");
+            $game->getInfo()->addInformation("Aktion nicht möglich. Das Ziel ist nicht auf Alarm Grün.");
             return;
         }
 
@@ -85,8 +85,8 @@ final class DockTractoredShip implements ActionControllerInterface
         $this->stationLoader->save($station);
         $this->spacecraftRepository->save($tractoredShip);
 
-        $game->addInformation('Andockvorgang abgeschlossen');
-        $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game);
+        $game->getInfo()->addInformation('Andockvorgang abgeschlossen');
+        $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());
 
         $this->privateMessageSender->send(
             $userId,

@@ -70,7 +70,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
         if ($field->isUnderConstruction()) {
-            $game->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
+            $game->getInfo()->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
             return;
         }
 
@@ -107,14 +107,14 @@ final class UpgradeBuilding implements ActionControllerInterface
         if ($host instanceof ColonySandbox) {
             $this->buildingManager->finish($field);
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s wurde gebaut'),
                 $building->getName()
             );
         } else {
             $field->setActive(time() + $building->getBuildtime());
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s wird durchgeführt - Fertigstellung: %s'),
                 $upgrade->getDescription(),
                 date('d.m.Y H:i', $field->getBuildtime())
@@ -132,7 +132,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
             $storage = $storages->get($obj->getCommodityId());
             if ($storage === null) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName()
@@ -140,7 +140,7 @@ final class UpgradeBuilding implements ActionControllerInterface
                 return false;
             }
             if ($obj->getAmount() > $storage->getAmount()) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
@@ -153,7 +153,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $upgrade->getEnergyCost()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $upgrade->getEnergyCost(),
                 $changeable->getEps()

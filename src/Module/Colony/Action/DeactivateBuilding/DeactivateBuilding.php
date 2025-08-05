@@ -14,9 +14,7 @@ final class DeactivateBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEACTIVATE';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,7 +26,7 @@ final class DeactivateBuilding implements ActionControllerInterface
 
         if ($field->isUnderConstruction()) {
             $field->setActivateAfterBuild(false);
-            $game->addInformation("Gebäude wird nach Bau deaktiviert");
+            $game->getInfo()->addInformation("Gebäude wird nach Bau deaktiviert");
         } else {
             $this->buildingAction->deactivate(
                 $field,

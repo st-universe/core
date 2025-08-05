@@ -40,7 +40,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         if (!$ship->isTractoring()) {
             return;
         }
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());
     }
 
     #[Override]

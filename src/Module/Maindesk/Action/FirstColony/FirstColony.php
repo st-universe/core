@@ -41,7 +41,7 @@ final class FirstColony implements ActionControllerInterface
         $user = $game->getUser();
 
         if ($user->getState() !== UserStateEnum::UNCOLONIZED) {
-            $game->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
+            $game->getInfo()->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
             return;
         }
 
@@ -50,7 +50,7 @@ final class FirstColony implements ActionControllerInterface
         $colony = $this->colonyRepository->find($planetId);
 
         if ($colony === null || !$colony->isFree()) {
-            $game->addInformation(_('Dieser Planet wurde bereits besiedelt'));
+            $game->getInfo()->addInformation(_('Dieser Planet wurde bereits besiedelt'));
             return;
         }
         $colonyList = $this->colonyRepository->getStartingByFaction($user->getFactionId());

@@ -45,7 +45,7 @@ final class KnPostPreview implements ActionControllerInterface
 
         $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($safeText)->getAsHTML());
 
-        $game->addInformation(_('Vorschau wurde erstellt'));
+        $game->getInfo()->addInformation(_('Vorschau wurde erstellt'));
 
         $game->setView(ShowWriteKn::VIEW_IDENTIFIER);
     }

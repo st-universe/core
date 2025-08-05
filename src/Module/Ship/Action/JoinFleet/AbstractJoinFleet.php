@@ -38,17 +38,17 @@ abstract class AbstractJoinFleet
         }
 
         if ($ship->getFleet() !== null) {
-            $game->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.'), $ship->getName());
+            $game->getInfo()->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.'), $ship->getName());
             return;
         }
 
         if ($ship->getTakeoverPassive() !== null) {
-            $game->addInformationf(_('%s: Schiffsübernahme verhindert den Beitritt.'), $ship->getName());
+            $game->getInfo()->addInformationf(_('%s: Schiffsübernahme verhindert den Beitritt.'), $ship->getName());
             return;
         }
 
         if ($this->isTholianWebPreventing($fleet->getLeadShip(), $ship)) {
-            $game->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
+            $game->getInfo()->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
             return;
         }
 
@@ -63,7 +63,7 @@ abstract class AbstractJoinFleet
             return;
         }
         if ($ship->isTractored()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s: Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
                 $ship->getName(),
             );
@@ -71,7 +71,7 @@ abstract class AbstractJoinFleet
         }
         $newCrewAmount = $fleet->getCrewSum() + ($ship->getBuildplan()?->getCrew() ?? 0);
         if ($newCrewAmount > GameEnum::CREW_PER_FLEET) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 _('%s: Es sind maximal %d Crew pro Flotte möglich'),
                 $ship->getName(),
                 GameEnum::CREW_PER_FLEET
@@ -84,7 +84,7 @@ abstract class AbstractJoinFleet
 
         $this->shipLoader->save($ship);
 
-        $game->addInformation(sprintf(
+        $game->getInfo()->addInformation(sprintf(
             _('Die %s ist der Flotte %s beigetreten'),
             $ship->getName(),
             $fleet->getName()

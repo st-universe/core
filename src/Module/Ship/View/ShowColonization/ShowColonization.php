@@ -54,11 +54,11 @@ final class ShowColonization implements ViewControllerInterface
         if ($layer) {
             if ($layer->isNoobzone()) {
                 if ($game->getUser()->getRegistration()->getCreationDate() < time() - self::USER_COLONIZATION_TIME) {
-                    $game->addInformation(sprintf(_('Im %s kann man nur eine Kolonie gründen <br>solang das Siedlerpatent nicht älter als 5 Monate ist. <br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
+                    $game->getInfo()->addInformation(sprintf(_('Im %s kann man nur eine Kolonie gründen <br>solang das Siedlerpatent nicht älter als 5 Monate ist. <br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
                     return;
                 }
                 if ($colocount >= 4) {
-                    $game->addInformation(sprintf(_('Im %s können nur maximal 4 Kolonien gegründet werden.<br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
+                    $game->getInfo()->addInformation(sprintf(_('Im %s können nur maximal 4 Kolonien gegründet werden.<br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
                     return;
                 }
             }

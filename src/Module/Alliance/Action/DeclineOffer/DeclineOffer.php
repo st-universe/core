@@ -54,7 +54,7 @@ final class DeclineOffer implements ActionControllerInterface
 
         $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
 
-        $game->addInformation(_('Das Angebot wurden abgelehnt'));
+        $game->getInfo()->addInformation(_('Das Angebot wurden abgelehnt'));
     }
 
     #[Override]

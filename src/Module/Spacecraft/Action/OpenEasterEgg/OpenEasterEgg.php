@@ -80,12 +80,12 @@ final class OpenEasterEgg implements ActionControllerInterface
             $this->createOpenedAdventDoor($user);
             return;
         } elseif ($openedDoors > 1) {
-            $game->addInformation("Du hast bereits alle Ostereier erhalten");
+            $game->getInfo()->addInformation("Du hast bereits alle Ostereier erhalten");
             return;
         }
 
         if ($ship->getStorageSum() === $ship->getMaxStorage()) {
-            $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
 
@@ -94,7 +94,7 @@ final class OpenEasterEgg implements ActionControllerInterface
         $commodity = $this->commodityCache->get(CommodityTypeConstants::COMMODITY_EASTER_EGG);
         $this->storageManager->upperStorage($ship, $commodity, 1);
 
-        $game->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
+        $game->getInfo()->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
         $this->easterEggHandler->handleSpacecraftTick($anomaly);
     }
 
@@ -109,7 +109,7 @@ final class OpenEasterEgg implements ActionControllerInterface
             time()
         );
 
-        $game->addInformation("Du hast " . $msg);
+        $game->getInfo()->addInformation("Du hast " . $msg);
     }
 
     private function createOpenedAdventDoor(User $user): void

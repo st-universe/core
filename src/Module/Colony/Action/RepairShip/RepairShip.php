@@ -57,7 +57,7 @@ final class RepairShip implements ActionControllerInterface
 
         $target = $this->shipRepository->find(request::indInt('ship_id'));
         if ($target === null) {
-            $game->addInformation('Das Schiff existiert nicht');
+            $game->getInfo()->addInformation('Das Schiff existiert nicht');
             return;
         }
 
@@ -71,7 +71,7 @@ final class RepairShip implements ActionControllerInterface
         );
 
         if ($field === null || $field->getBuilding() === null) {
-            $game->addInformation('Es ist keine Werft vorhanden');
+            $game->getInfo()->addInformation('Es ist keine Werft vorhanden');
             return;
         }
 
@@ -97,17 +97,17 @@ final class RepairShip implements ActionControllerInterface
         }
 
         if (!array_key_exists($target->getId(), $repairableShipWrappers)) {
-            $game->addInformation('Das Schiff kann nicht repariert werden.');
+            $game->getInfo()->addInformation('Das Schiff kann nicht repariert werden.');
             return;
         }
 
         if ($colony->isBlocked()) {
-            $game->addInformation('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird');
+            $game->getInfo()->addInformation('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird');
             return;
         }
 
         if ($target->getState() == SpacecraftStateEnum::ASTRO_FINALIZING) {
-            $game->addInformation('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.');
+            $game->getInfo()->addInformation('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.');
             return;
         }
 
@@ -127,7 +127,7 @@ final class RepairShip implements ActionControllerInterface
         );
 
         if (count($jobs) > 1) {
-            $game->addInformation('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt');
+            $game->getInfo()->addInformation('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt');
             return;
         }
 
@@ -139,7 +139,7 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $activemsg = $field->isActive() ? '' : ', nach aktivierung der Werft';
-        $game->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
+        $game->getInfo()->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
 
         $this->privateMessageSender->send(
             $userId,

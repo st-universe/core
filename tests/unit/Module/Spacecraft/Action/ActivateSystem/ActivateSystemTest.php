@@ -12,6 +12,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Spacecraft\Action\ActivateSystem\ActivateSystem;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 class ActivateSystemTest extends ActionControllerTestCase
@@ -31,6 +32,8 @@ class ActivateSystemTest extends ActionControllerTestCase
 
     public function testHandle(): void
     {
+        $info = $this->mock(InformationWrapper::class);
+
         request::setMockVars([
             'id' => 42,
             'type' => SpacecraftSystemTypeEnum::SHIELDS->name
@@ -39,9 +42,13 @@ class ActivateSystemTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($info);
 
         $this->helper->shouldReceive('activate')
-            ->with(42, SpacecraftSystemTypeEnum::SHIELDS, $this->game)
+            ->with(42, SpacecraftSystemTypeEnum::SHIELDS, $info)
             ->once();
 
         $this->subject->handle($this->game);

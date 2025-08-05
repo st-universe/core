@@ -41,7 +41,7 @@ final class LockUser implements ActionControllerInterface
         $this->loggerUtil->log('A');
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -50,7 +50,7 @@ final class LockUser implements ActionControllerInterface
         $remainingTicks = request::postInt('ticks');
 
         if ($remainingTicks === 0) {
-            $game->addInformation(_('Bitte Anzahl Ticks angeben'));
+            $game->getInfo()->addInformation(_('Bitte Anzahl Ticks angeben'));
             return;
         }
 
@@ -74,7 +74,7 @@ final class LockUser implements ActionControllerInterface
         //create user lock
 
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
+        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
     }
 
     private function setUserLock(User $user, int $remainingTicks): void

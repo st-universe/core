@@ -35,13 +35,13 @@ final class CreateTopic implements ActionControllerInterface
 
         if (mb_strlen($name) < 1) {
             $game->setView("SHOW_NEW_TOPIC");
-            $game->addInformation(_('Es wurde kein Themenname eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
             return;
         }
 
         if (mb_strlen($text) < 1) {
             $game->setView("SHOW_NEW_TOPIC");
-            $game->addInformation(_('Es wurde kein Text eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
             return;
         }
 
@@ -77,7 +77,7 @@ final class CreateTopic implements ActionControllerInterface
 
         $game->setView(Board::VIEW_IDENTIFIER);
 
-        $game->addInformation(_('Das Thema wurde erstellt'));
+        $game->getInfo()->addInformation(_('Das Thema wurde erstellt'));
     }
 
     #[Override]

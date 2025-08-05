@@ -78,7 +78,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         //enough energy?
         if ($epsSystem === null || $epsSystem->getEps() < 20) {
-            $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
+            $game->getInfo()->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
@@ -134,7 +134,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $tractoringShip
         );
 
-        $game->addInformation(_('Der Fluchtversuch ist gelungen'));
+        $game->getInfo()->addInformation(_('Der Fluchtversuch ist gelungen'));
 
         //Alarm-Rot check
         if ($isTractoringShipWarped) {
@@ -153,7 +153,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $system = $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::DEFLECTOR);
         $this->systemDamage->damageShipSystem($wrapper, $system, random_int(5, 25), $informations);
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
@@ -173,9 +173,9 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $otherUserId = $tractoringSpacecraft->getUser()->getId();
         $shipName = $ship->getName();
 
-        $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
+        $game->getInfo()->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
-        $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game);
+        $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * random_int(10, 25) / 100)), $wrapper, $game->getInfo());
 
         if ($ship->getCondition()->isDestroyed()) {
 
@@ -183,7 +183,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $tractoringSpacecraft,
                 $wrapper,
                 SpacecraftDestructionCauseEnum::ESCAPE_TRACTOR,
-                $game
+                $game->getInfo()
             );
 
             $this->privateMessageSender->send(

@@ -10,7 +10,7 @@ class UplinkFallbackHandler implements FallbackHandlerInterface
 {
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
-        $game->addInformation('Diese Aktion ist per Uplink nicht möglich!');
+        $game->getInfo()->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
         if (request::isAjaxRequest() && !request::has('switch')) {
             $game->setMacroInAjaxWindow('html/systeminformation.twig');

@@ -53,11 +53,11 @@ final class TransferToAccount implements ActionControllerInterface
         }
 
         if ($spacecraft->isCloaked()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($spacecraft->isWarped()) {
-            $game->addInformation("Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
@@ -67,7 +67,7 @@ final class TransferToAccount implements ActionControllerInterface
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
+            $game->getInfo()->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
             return;
         }
         $commodities = request::postArray('commodities');
@@ -76,14 +76,14 @@ final class TransferToAccount implements ActionControllerInterface
         $shipStorage = $spacecraft->getStorage();
 
         if ($shipStorage->isEmpty()) {
-            $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
         if (count($commodities) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
+            $game->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
-        $game->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
+        $game->getInfo()->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
 
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
@@ -103,14 +103,14 @@ final class TransferToAccount implements ActionControllerInterface
                 continue;
             }
             if (!$commodity->isBeamable()) {
-                $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
+                $game->getInfo()->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
             $count = min($count, $storage->getAmount());
             if ($storageManager->getStorageSum() + $count > $tradepost->getStorage()) {
                 $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
-            $game->addInformationf(_('%d %s'), $count, $commodity->getName());
+            $game->getInfo()->addInformationf(_('%d %s'), $count, $commodity->getName());
             $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
             $storageManager->upperStorage((int) $value, $count);
         }

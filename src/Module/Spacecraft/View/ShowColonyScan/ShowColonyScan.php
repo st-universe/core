@@ -76,7 +76,7 @@ final class ShowColonyScan implements ViewControllerInterface
 
 
         if ($epsSystem->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
-            $game->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
+            $game->getInfo()->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
             $game->setMacroInAjaxWindow('');
             return;
         }
@@ -88,7 +88,7 @@ final class ShowColonyScan implements ViewControllerInterface
             ->setCheckTypes([
                 InteractionCheckType::EXPECT_TARGET_NO_VACATION
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             $game->setMacroInAjaxWindow('');
             return;
         }

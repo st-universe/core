@@ -63,7 +63,7 @@ class ManualColonyTickTest extends StuTestCase
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
 
-        $this->game->shouldReceive('addInformation')
+        $this->game->shouldReceive('getInfo->addInformation')
             ->once();
 
         $this->subject->handle($this->game);
@@ -94,7 +94,7 @@ class ManualColonyTickTest extends StuTestCase
             ->with(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT)
             ->once();
 
-        $this->game->shouldReceive('addInformation')
+        $this->game->shouldReceive('getInfo->addInformation')
             ->with('Der Kolonie-Tick für alle Kolonien wurde durchgeführt!')
             ->once();
 
@@ -134,7 +134,7 @@ class ManualColonyTickTest extends StuTestCase
             ->with($groupId, $groupCount)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->game->shouldReceive('getInfo->addInformationf')
             ->with('Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!', $groupId, $groupCount)
             ->once();
 
@@ -164,7 +164,7 @@ class ManualColonyTickTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->game->shouldReceive('addInformationf')
+        $this->game->shouldReceive('getInfo->addInformationf')
             ->with('Keine Kolonie mit der ID %d vorhanden!', $colonyId)
             ->once();
 
@@ -199,7 +199,7 @@ class ManualColonyTickTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('addInformationf')
+        $this->game->shouldReceive('getInfo->addInformationf')
             ->with('Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!', $colonyId)
             ->once();
 

@@ -9,7 +9,7 @@ class ItemNotFoundFallbackHandler implements FallbackHandlerInterface
 {
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
-        $game->addInformation('Das angeforderte Item wurde nicht gefunden');
+        $game->getInfo()->addInformation('Das angeforderte Item wurde nicht gefunden');
         $game->setViewTemplate('html/empty.twig');
     }
 }

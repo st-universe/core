@@ -182,16 +182,16 @@ final class CreateModules implements ActionControllerInterface
         }
 
         if ($moduleAdded) {
-            $game->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt:'));
+            $game->getInfo()->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt:'));
             foreach ($prod as $msg) {
-                $game->addInformation($msg);
+                $game->getInfo()->addInformation($msg);
             }
         } elseif ($prod !== []) {
             foreach ($prod as $msg) {
-                $game->addInformation($msg);
+                $game->getInfo()->addInformation($msg);
             }
         } else {
-            $game->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
+            $game->getInfo()->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
         }
     }
 

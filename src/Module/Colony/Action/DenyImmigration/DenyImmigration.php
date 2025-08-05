@@ -35,7 +35,7 @@ final class DenyImmigration implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $game->addInformation(_('Die Einwanderung wurde verboten'));
+        $game->getInfo()->addInformation(_('Die Einwanderung wurde verboten'));
     }
 
     #[Override]

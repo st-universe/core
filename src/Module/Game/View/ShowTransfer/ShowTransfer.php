@@ -54,7 +54,7 @@ final class ShowTransfer implements ViewControllerInterface
             );
         } catch (TransferEntityNotFoundException) {
             $game->setMacroInAjaxWindow('');
-            $game->addInformation('Das Ziel konnte nicht gefunden werden');
+            $game->getInfo()->addInformation('Das Ziel konnte nicht gefunden werden');
             return;
         }
 
@@ -74,7 +74,7 @@ final class ShowTransfer implements ViewControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             $game->setMacroInAjaxWindow('');
             return;
         }

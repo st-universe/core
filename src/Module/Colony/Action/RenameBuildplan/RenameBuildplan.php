@@ -34,17 +34,17 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
         if ($newName !== $nameWithoutUnicode) {
-            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($newName) > 255) {
-            $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
             return;
         }
 
         if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $newName) !== null) {
-            $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            $game->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             return;
         }
 
@@ -57,7 +57,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $this->spacecraftBuildplanRepository->save($plan);
 
-        $game->addInformation(_('Der Name des Bauplans wurde geändert'));
+        $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
     #[Override]

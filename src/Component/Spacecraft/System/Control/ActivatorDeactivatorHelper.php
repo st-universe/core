@@ -75,7 +75,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return;
         }
 
-        $game->addInformation(sprintf(
+        $game->getInfo()->addInformation(sprintf(
             _('Flottenbefehl ausgeführt: System %s aktiviert'),
             $type->getDescription()
         ));
@@ -168,9 +168,9 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $lss->setMode($lssMode)->update();
 
         if ($lssMode->isBorderMode()) {
-            $game->addInformationf("%s für die Langstreckensensoren aktiviert", $lssMode->getDescription());
+            $game->getInfo()->addInformationf("%s für die Langstreckensensoren aktiviert", $lssMode->getDescription());
         } else {
-            $game->addInformation("Filter für Langstreckensensoren wurde deaktiviert");
+            $game->getInfo()->addInformation("Filter für Langstreckensensoren wurde deaktiviert");
         }
     }
 }

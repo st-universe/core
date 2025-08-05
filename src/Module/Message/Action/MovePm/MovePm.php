@@ -23,7 +23,7 @@ final class MovePm implements ActionControllerInterface
 
         $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
         if ($pm === null || $pm->getRecipientId() !== $userId) {
-            $game->addInformation(_('Diese Nachricht existiert nicht'));
+            $game->getInfo()->addInformation(_('Diese Nachricht existiert nicht'));
             return;
         }
 
@@ -34,14 +34,14 @@ final class MovePm implements ActionControllerInterface
 
         $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
         if ($destination === null || $destination->getUserId() !== $userId) {
-            $game->addInformation(_('Dieser Ordner existiert nicht'));
+            $game->getInfo()->addInformation(_('Dieser Ordner existiert nicht'));
             return;
         }
         $pm->setCategory($destination);
 
         $this->privateMessageRepository->save($pm);
 
-        $game->addInformation(_('Die Nachricht wurde verschoben'));
+        $game->getInfo()->addInformation(_('Die Nachricht wurde verschoben'));
     }
 
     #[Override]

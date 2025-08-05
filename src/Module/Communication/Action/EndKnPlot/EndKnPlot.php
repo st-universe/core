@@ -13,9 +13,7 @@ final class EndKnPlot implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_END_PLOT';
 
-    public function __construct(private EndKnPlotRequestInterface $endKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private EndKnPlotRequestInterface $endKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,7 +29,7 @@ final class EndKnPlot implements ActionControllerInterface
 
         $this->rpgPlotRepository->save($plot);
 
-        $game->addInformation(_('Der Plot wurde beendet'));
+        $game->getInfo()->addInformation(_('Der Plot wurde beendet'));
     }
 
     #[Override]

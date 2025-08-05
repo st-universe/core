@@ -80,12 +80,12 @@ final class DockShip implements ActionControllerInterface
         }
 
         if ($ship->isTractored()) {
-            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+            $game->getInfo()->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
             return;
         }
 
         if ($target->isShielded()) {
-            $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
+            $game->getInfo()->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;
         }
 
@@ -104,7 +104,7 @@ final class DockShip implements ActionControllerInterface
                 $target
             );
 
-            $game->addInformation('Das Andocken wurde verweigert');
+            $game->getInfo()->addInformation('Das Andocken wurde verweigert');
             return;
         }
 
@@ -116,15 +116,15 @@ final class DockShip implements ActionControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
-            $game->addInformation('Zum Andocken wird 1 Energie benötigt');
+            $game->getInfo()->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
         if (!$target->hasFreeDockingSlots()) {
-            $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
+            $game->getInfo()->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
         if ($ship->isCloaked()) {
-            $game->addInformation("Das Schiff ist getarnt");
+            $game->getInfo()->addInformation("Das Schiff ist getarnt");
             return;
         }
 
@@ -134,10 +134,10 @@ final class DockShip implements ActionControllerInterface
         }
 
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->addInformation("Die Reparatur wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->addInformation("Die Umrüstung wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo($target);
@@ -152,7 +152,7 @@ final class DockShip implements ActionControllerInterface
             $target,
             $this->isAutoReadOnDock($target)
         );
-        $game->addInformation('Andockvorgang abgeschlossen');
+        $game->getInfo()->addInformation('Andockvorgang abgeschlossen');
     }
 
     private function fleetDock(
@@ -228,7 +228,7 @@ final class DockShip implements ActionControllerInterface
             $target,
             $this->isAutoReadOnDock($target)
         );
-        $game->addInformationMerge($msg);
+        $game->getInfo()->addInformationArray($msg, true);
     }
 
     private function isAutoReadOnDock(Station $target): bool

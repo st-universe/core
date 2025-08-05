@@ -26,13 +26,13 @@ final class DeleteBuildplan implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $buildplanId = request::postIntFatal('planid');
         if ($buildplanId == null) {
-            $game->addInformation('Es wurde kein Bauplan ausgewählt');
+            $game->getInfo()->addInformation('Es wurde kein Bauplan ausgewählt');
             return;
         }
 
         $buildplan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($buildplan === null || $buildplan->getUserId() !== $userId) {
-            $game->addInformation('Der Bauplan konnte nicht gelöscht werden');
+            $game->getInfo()->addInformation('Der Bauplan konnte nicht gelöscht werden');
             return;
         }
 
@@ -54,7 +54,7 @@ final class DeleteBuildplan implements ActionControllerInterface
             $this->createLogEntry($logText, $userId);
         }
 
-        $game->addInformation('Der Bauplan wurde gelöscht');
+        $game->getInfo()->addInformation('Der Bauplan wurde gelöscht');
     }
 
     private function createLogEntry(string $text, int $userId): void

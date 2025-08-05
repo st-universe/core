@@ -37,18 +37,18 @@ final class ShowPostArchiveSearchResult implements ViewControllerInterface
 
         if ($version === '') {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Ungültige Archiv-Version!');
+            $game->getInfo()->addInformation('Ungültige Archiv-Version!');
             return;
         }
 
         if (strlen($searchString) < self::MINIMUM_SEARCH_WORD_LENGTH) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', self::MINIMUM_SEARCH_WORD_LENGTH));
+            $game->getInfo()->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', self::MINIMUM_SEARCH_WORD_LENGTH));
             return;
         }
 
         $posts = $this->knPostArchivRepository->searchByContentAndVersion($searchString, $version);
-        $game->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
 
         $plotIds = [];
         foreach ($posts as $post) {

@@ -78,12 +78,12 @@ final class OpenAdventDoor implements ActionControllerInterface
             $this->createOpenedAdventDoor($user);
             return;
         } elseif ($openedDoors > 0) {
-            $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
+            $game->getInfo()->addInformation("Du hast heute bereits ein Türchen geöffnet");
             return;
         }
 
         if ($ship->getStorageSum() === $ship->getMaxStorage()) {
-            $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
 
@@ -92,7 +92,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $commodity = $this->commodityCache->get(CommodityTypeConstants::COMMODITY_ADVENT_POINT);
         $this->storageManager->upperStorage($ship, $commodity, 1);
 
-        $game->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
+        $game->getInfo()->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
     }
 
     private function nicholasPresent(GameControllerInterface $game): void
@@ -106,7 +106,7 @@ final class OpenAdventDoor implements ActionControllerInterface
             time()
         );
 
-        $game->addInformation("Du hast " . $msg);
+        $game->getInfo()->addInformation("Du hast " . $msg);
     }
 
     private function createOpenedAdventDoor(User $user): void

@@ -44,11 +44,11 @@ final class AlertStateManager implements AlertStateManagerInterface
         }
 
         if ($alertState === SpacecraftAlertStateEnum::ALERT_RED) {
-            $this->game->addInformation("Die Alarmstufe wurde auf [b][color=red]Rot[/color][/b] geändert");
+            $this->game->getInfo()->addInformation("Die Alarmstufe wurde auf [b][color=red]Rot[/color][/b] geändert");
         } elseif ($alertState === SpacecraftAlertStateEnum::ALERT_YELLOW) {
-            $this->game->addInformation("Die Alarmstufe wurde auf [b][color=yellow]Gelb[/color][/b] geändert");
+            $this->game->getInfo()->addInformation("Die Alarmstufe wurde auf [b][color=yellow]Gelb[/color][/b] geändert");
         } elseif ($alertState === SpacecraftAlertStateEnum::ALERT_GREEN) {
-            $this->game->addInformation("Die Alarmstufe wurde auf [b][color=green]Grün[/color][/b] geändert");
+            $this->game->getInfo()->addInformation("Die Alarmstufe wurde auf [b][color=green]Grün[/color][/b] geändert");
         }
     }
 
@@ -80,11 +80,11 @@ final class AlertStateManager implements AlertStateManagerInterface
         }
 
         if ($alertState === SpacecraftAlertStateEnum::ALERT_RED) {
-            $this->game->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=red]Rot[/color][/b]'));
+            $this->game->getInfo()->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=red]Rot[/color][/b]'));
         } elseif ($alertState === SpacecraftAlertStateEnum::ALERT_YELLOW) {
-            $this->game->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=yellow]Gelb[/color][/b]'));
+            $this->game->getInfo()->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=yellow]Gelb[/color][/b]'));
         } elseif ($alertState === SpacecraftAlertStateEnum::ALERT_GREEN) {
-            $this->game->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=green]Grün[/color][/b]'));
+            $this->game->getInfo()->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=green]Grün[/color][/b]'));
         }
     }
 
@@ -94,18 +94,18 @@ final class AlertStateManager implements AlertStateManagerInterface
 
         // station constructions can't change alert state
         if ($ship->isConstruction()) {
-            $this->game->addInformationf('%s: [b][color=#ff2626]Konstrukte können die Alarmstufe nicht ändern[/color][/b]', $ship->getName());
+            $this->game->getInfo()->addInformationf('%s: [b][color=#ff2626]Konstrukte können die Alarmstufe nicht ändern[/color][/b]', $ship->getName());
             return false;
         }
 
         // can only change when there is enough crew
         if (!$ship->hasEnoughCrew()) {
-            $this->game->addInformationf('%s: [b][color=#ff2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]', $ship->getName());
+            $this->game->getInfo()->addInformationf('%s: [b][color=#ff2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]', $ship->getName());
             return false;
         }
 
         if ($alertState === SpacecraftAlertStateEnum::ALERT_RED && $ship->isCloaked()) {
-            $this->game->addInformationf('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]', $ship->getName());
+            $this->game->getInfo()->addInformationf('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]', $ship->getName());
             return false;
         }
 
@@ -114,10 +114,10 @@ final class AlertStateManager implements AlertStateManagerInterface
             $this->spacecraftRepository->save($ship);
 
             if ($alertMsg !== null) {
-                $this->game->addInformationf('%s: [b][color=FAFA03]%s[/color][/b]', $ship->getName(), $alertMsg);
+                $this->game->getInfo()->addInformationf('%s: [b][color=FAFA03]%s[/color][/b]', $ship->getName(), $alertMsg);
             }
         } catch (InsufficientEnergyException $e) {
-            $this->game->addInformationf('%s: [b][color=#ff2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]', $ship->getName(), $e->getNeededEnergy());
+            $this->game->getInfo()->addInformationf('%s: [b][color=#ff2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]', $ship->getName(), $e->getNeededEnergy());
             return false;
         }
 
@@ -145,7 +145,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         ];
 
         foreach ($alertSystems as $type) {
-            $this->systemActivation->activateIntern($wrapper, $type, $this->game, false);
+            $this->systemActivation->activateIntern($wrapper, $type, $this->game->getInfo(), false);
         }
     }
 
@@ -156,7 +156,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         ];
 
         foreach ($alertSystems as $type) {
-            $this->systemActivation->activateIntern($wrapper, $type, $this->game, false);
+            $this->systemActivation->activateIntern($wrapper, $type, $this->game->getInfo(), false);
         }
     }
 
@@ -170,7 +170,7 @@ final class AlertStateManager implements AlertStateManagerInterface
 
         foreach ($deactivateSystems as $type) {
             if ($wrapper->get()->hasSpacecraftSystem($type)) {
-                $this->systemDeactivation->deactivateIntern($wrapper, $type, $this->game);
+                $this->systemDeactivation->deactivateIntern($wrapper, $type, $this->game->getInfo());
             }
         }
     }

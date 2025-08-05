@@ -39,7 +39,7 @@ final class DeletionConfirmation implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Dein Account wurde endgültig zur Löschung vorgesehen. Ein Login ist nicht mehr möglich.'));
+        $game->getInfo()->addInformation(_('Dein Account wurde endgültig zur Löschung vorgesehen. Ein Login ist nicht mehr möglich.'));
     }
 
     #[Override]

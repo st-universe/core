@@ -31,7 +31,7 @@ final class StartResearch implements ActionControllerInterface
 
         $research = $this->techlistRetriever->canResearch($user, $this->startResearchRequest->getResearchId());
         if ($research === null) {
-            $game->addInformation('Kann aktuell nicht erforscht werden');
+            $game->getInfo()->addInformation('Kann aktuell nicht erforscht werden');
             return;
         }
 
@@ -49,9 +49,9 @@ final class StartResearch implements ActionControllerInterface
         $this->researchedRepository->save($researched);
 
         if ($researches === []) {
-            $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
+            $game->getInfo()->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
         } else {
-            $game->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));
+            $game->getInfo()->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));
         }
 
         $game->setView(GameController::DEFAULT_VIEW);

@@ -18,9 +18,7 @@ final class DoManualProcessTick implements ActionControllerInterface
     /**
      * @param list<ProcessTickHandlerInterface> $tickHandler
      */
-    public function __construct(private EntityManagerInterface $entityManager, private array $tickHandler)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager, private array $tickHandler) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +27,7 @@ final class DoManualProcessTick implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -39,7 +37,7 @@ final class DoManualProcessTick implements ActionControllerInterface
 
         $this->entityManager->flush();
 
-        $game->addInformation("Der Process-Tick wurde durchgeführt!");
+        $game->getInfo()->addInformation("Der Process-Tick wurde durchgeführt!");
     }
 
     #[Override]

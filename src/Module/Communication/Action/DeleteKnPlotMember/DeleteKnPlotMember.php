@@ -14,9 +14,7 @@ final class DeleteKnPlotMember implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEL_PLOTMEMBER';
 
-    public function __construct(private DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,14 +27,14 @@ final class DeleteKnPlotMember implements ActionControllerInterface
         $recipientId = $this->deleteKnPlotMemberRequest->getRecipientId();
 
         if ($plot->getUserId() === $recipientId) {
-            $game->addInformation(_('Du kannst Dich nicht selbst entfernen'));
+            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst entfernen'));
             return;
         }
         $item = $this->rpgPlotMemberRepository->getByPlotAndUser($plot->getId(), $recipientId);
         if ($item !== null) {
             $this->rpgPlotMemberRepository->delete($item);
 
-            $game->addInformation(_('Der Spieler wurde entfernt'));
+            $game->getInfo()->addInformation(_('Der Spieler wurde entfernt'));
         }
     }
 

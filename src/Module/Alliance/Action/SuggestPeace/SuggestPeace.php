@@ -42,7 +42,7 @@ final class SuggestPeace implements ActionControllerInterface
             $opponentId
         );
         if ($rel !== null) {
-            $game->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
+            $game->getInfo()->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
             return;
         }
 
@@ -72,7 +72,7 @@ final class SuggestPeace implements ActionControllerInterface
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
-        $game->addInformation(_('Der Frieden wurde angeboten'));
+        $game->getInfo()->addInformation(_('Der Frieden wurde angeboten'));
     }
 
     #[Override]

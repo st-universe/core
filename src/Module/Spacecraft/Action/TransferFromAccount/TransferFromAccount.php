@@ -54,11 +54,11 @@ final class TransferFromAccount implements ActionControllerInterface
         }
 
         if ($spacecraft->isCloaked()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($spacecraft->isWarped()) {
-            $game->addInformation("Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
@@ -72,15 +72,15 @@ final class TransferFromAccount implements ActionControllerInterface
         $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
-            $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
         if (count($commodities) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
+            $game->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
 
-        $game->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
+        $game->getInfo()->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
         foreach ($commodities as $key => $value) {
             if (!array_key_exists($key, $gcount)) {
                 continue;
@@ -97,7 +97,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $commodity = $curCommodities[$value]->getCommodity();
 
             if (!$commodity->isBeamable()) {
-                $game->addInformation($commodity->getName() . " ist nicht beambar");
+                $game->getInfo()->addInformation($commodity->getName() . " ist nicht beambar");
                 continue;
             }
             if ($count > $curCommodities[$value]->getAmount()) {
@@ -110,7 +110,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $storageManager->lowerStorage((int) $value, $count);
             $this->storageManager->upperStorage($spacecraft, $commodity, $count);
 
-            $game->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
+            $game->getInfo()->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }
     }
 

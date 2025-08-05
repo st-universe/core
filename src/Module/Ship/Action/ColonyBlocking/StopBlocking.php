@@ -55,7 +55,7 @@ final class StopBlocking implements ActionControllerInterface
         $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Flotte %s hat die Blockierung der Kolonie %s aufgehoben'), $fleet->getName(), $currentColony->getName());
-        $game->addInformation($text);
+        $game->getInfo()->addInformation($text);
 
         if (!$currentColony->isFree()) {
             $this->privateMessageSender->send(

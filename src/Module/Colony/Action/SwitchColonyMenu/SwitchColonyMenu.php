@@ -29,7 +29,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         $menu = ColonyMenuEnum::getFor(request::getIntFatal('menu'));
 
         if (!$host->isMenuAllowed($menu)) {
-            $game->addInformation('Dieses Menü ist nicht für die Sandbox geeignet');
+            $game->getInfo()->addInformation('Dieses Menü ist nicht für die Sandbox geeignet');
             $game->setView($host->getDefaultViewIdentifier());
             return;
         }

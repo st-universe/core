@@ -56,7 +56,7 @@ final class DisassembleShip implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < 20) {
-            $game->addInformation('Zur Demontage des Schiffes wird 20 Energie benötigt');
+            $game->getInfo()->addInformation('Zur Demontage des Schiffes wird 20 Energie benötigt');
             return;
         }
 
@@ -69,7 +69,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $ship = $wrapper->get();
         if ($ship->getCrewCount() > $freeAssignmentCount) {
-            $game->addInformation('Nicht genügend Platz für die Crew auf der Kolonie');
+            $game->getInfo()->addInformation('Nicht genügend Platz für die Crew auf der Kolonie');
             return;
         }
 
@@ -85,7 +85,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $this->spacecraftRemover->remove($ship);
 
-        $game->addInformation('Das Schiff wurde demontiert');
+        $game->getInfo()->addInformation('Das Schiff wurde demontiert');
     }
 
     private function transferCrewToColony(Ship $ship, Colony $colony): void
@@ -113,7 +113,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         foreach ($reactor->getLoadCost() as $commodityId => $loadCost) {
             if ($colony->getStorageSum() >= $maxStorage) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     'Kein Lagerraum frei um %s-Mix zu sichern!',
                     $reactor->getSystemType()->getDescription()
                 );
@@ -135,7 +135,7 @@ final class DisassembleShip implements ActionControllerInterface
                 $amount
             );
 
-            $game->addInformationf('%d Einheiten folgender Ware konnten recycelt werden: %s', $amount, $commodity->getName());
+            $game->getInfo()->addInformationf('%d Einheiten folgender Ware konnten recycelt werden: %s', $amount, $commodity->getName());
         }
     }
 
@@ -151,7 +151,7 @@ final class DisassembleShip implements ActionControllerInterface
         $maxStorage = $colony->getMaxStorage();
 
         if ($colony->getStorageSum() >= $maxStorage) {
-            $game->addInformation('Kein Lagerraum frei um geladene Torpedos zu sichern!');
+            $game->getInfo()->addInformation('Kein Lagerraum frei um geladene Torpedos zu sichern!');
             return;
         }
 
@@ -169,7 +169,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $this->clearTorpedo->clearTorpedoStorage($wrapper);
 
-        $game->addInformationf('%d Einheiten folgender Ware konnten recycelt werden: %s', $amount, $commodity->getName());
+        $game->getInfo()->addInformationf('%d Einheiten folgender Ware konnten recycelt werden: %s', $amount, $commodity->getName());
     }
 
     #[Override]

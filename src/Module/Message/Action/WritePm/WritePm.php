@@ -33,26 +33,26 @@ final class WritePm implements ActionControllerInterface
 
         $recipient = $this->userRepository->find($recipientId);
         if ($recipient === null) {
-            $game->addInformation("Dieser Siedler existiert nicht");
+            $game->getInfo()->addInformation("Dieser Siedler existiert nicht");
             return;
         }
         if ($recipient->getId() === $userId) {
-            $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
+            $game->getInfo()->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
         if ($this->ignoreListRepository->exists($recipient->getId(), $userId)) {
-            $game->addInformation("Der Siedler ignoriert Dich");
+            $game->getInfo()->addInformation("Der Siedler ignoriert Dich");
             return;
         }
 
         if (strlen($text) < 5) {
-            $game->addInformation("Der Text ist zu kurz");
+            $game->getInfo()->addInformation("Der Text ist zu kurz");
             return;
         }
 
         $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderTypeEnum::SPECIAL_MAIN);
 
-        $game->addInformation(_('Die Nachricht wurde abgeschickt'));
+        $game->getInfo()->addInformation(_('Die Nachricht wurde abgeschickt'));
         $game->setView(ModuleEnum::PM);
     }
 

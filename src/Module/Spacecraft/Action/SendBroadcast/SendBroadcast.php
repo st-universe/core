@@ -45,14 +45,14 @@ final class SendBroadcast implements ActionControllerInterface
         $this->searchBroadcastableStationsInRange($ship, $usersToBroadcast);
 
         if ($usersToBroadcast->toArray() == []) {
-            $game->addInformation(_("Keine Ziele in Reichweite"));
+            $game->getInfo()->addInformation(_("Keine Ziele in Reichweite"));
         } else {
             $this->privateMessageSender->sendBroadcast(
                 $ship->getUser(),
                 $usersToBroadcast->toArray(),
                 $text
             );
-            $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
+            $game->getInfo()->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
         }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);

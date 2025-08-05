@@ -16,8 +16,7 @@ final class DeletePms implements ActionControllerInterface
     public function __construct(
         private DeletePmsRequestInterface $deletePmsRequest,
         private PrivateMessageRepositoryInterface $privateMessageRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +34,7 @@ final class DeletePms implements ActionControllerInterface
             $pm->setDeleted($timestamp);
             $this->privateMessageRepository->save($pm);
         }
-        $game->addInformation(_('Die Nachrichten wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die Nachrichten wurden gelöscht'));
     }
 
     #[Override]

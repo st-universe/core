@@ -28,7 +28,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
 
         // only Admins or NPC can trigger
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
@@ -39,7 +39,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
         $layer = request::postIntFatal('layer');
 
         if (($x !== 0 && $y === 0) || ($x === 0 && $y !== 0)) {
-            $game->addInformation("X und Y Koordinaten müssen beide gesetzt oder beide leer sein");
+            $game->getInfo()->addInformation("X und Y Koordinaten müssen beide gesetzt oder beide leer sein");
             return;
         }
 
@@ -54,17 +54,17 @@ final class CreateHistoryEntry implements ActionControllerInterface
         }
 
         if ($historyType === null) {
-            $game->addInformation("Ungültiger Kategorie-Typ ausgewählt");
+            $game->getInfo()->addInformation("Ungültiger Kategorie-Typ ausgewählt");
             return;
         }
 
         if ($game->getUser()->isNpc() && $reason === '') {
-            $game->addInformation("Grund fehlt");
+            $game->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
         if ($historyText === '' || !$historyText) {
-            $game->addInformation("Es wurde kein Text ausgewählt");
+            $game->getInfo()->addInformation("Es wurde kein Text ausgewählt");
             return;
         }
 
@@ -83,7 +83,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
             $this->createReasonEntry($text, $user->getId());
         }
 
-        $game->addInformation("History Eintrag wurde hinzugefügt");
+        $game->getInfo()->addInformation("History Eintrag wurde hinzugefügt");
     }
 
     private function createReasonEntry(

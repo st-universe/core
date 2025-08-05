@@ -78,7 +78,7 @@ final class DumpForeignCrewman implements ActionControllerInterface
             )
         );
 
-        $game->addInformation($survivalMessage);
+        $game->getInfo()->addInformation($survivalMessage);
     }
 
     #[Override]

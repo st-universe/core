@@ -22,16 +22,16 @@ final class ChangeEmail implements ActionControllerInterface
     {
         $value = trim($this->changeEmailRequest->getEmailAddress());
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            $game->addInformation(_('Die E-Mailadresse ist ungültig'));
+            $game->getInfo()->addInformation(_('Die E-Mailadresse ist ungültig'));
             return;
         }
 
         if ($this->userRepository->getByEmail($value) !== null) {
-            $game->addInformation(_('Die E-Mailadresse wird bereits verwendet'));
+            $game->getInfo()->addInformation(_('Die E-Mailadresse wird bereits verwendet'));
             return;
         }
         if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value)) !== null) {
-            $game->addInformation(_('Die E-Mailadresse ist blockiert'));
+            $game->getInfo()->addInformation(_('Die E-Mailadresse ist blockiert'));
             return;
         }
 
@@ -41,7 +41,7 @@ final class ChangeEmail implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Deine E-Mailadresse wurde geändert'));
+        $game->getInfo()->addInformation(_('Deine E-Mailadresse wurde geändert'));
     }
 
     #[Override]

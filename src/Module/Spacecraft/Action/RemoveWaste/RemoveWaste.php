@@ -44,13 +44,13 @@ final class RemoveWaste implements ActionControllerInterface
         $reason = request::postString('reason');
 
         if ($commodities === []) {
-            $game->addInformation(_('Es wurden keine Waren ausgewählt'));
+            $game->getInfo()->addInformation(_('Es wurden keine Waren ausgewählt'));
             return;
         }
 
 
         if ($game->getUser()->isNpc() && ($reason === '' || $reason == null)) {
-            $game->addInformation("Grund fehlt");
+            $game->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
@@ -82,9 +82,9 @@ final class RemoveWaste implements ActionControllerInterface
             $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
-        $game->addInformation(_('Die folgenden Waren wurden entsorgt:'));
+        $game->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
         foreach ($wasted as $msg) {
-            $game->addInformation($msg);
+            $game->getInfo()->addInformation($msg);
         }
 
         if ($game->getUser()->isNpc()) {

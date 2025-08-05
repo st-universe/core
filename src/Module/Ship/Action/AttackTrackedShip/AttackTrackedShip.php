@@ -63,12 +63,12 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         if (!$spacecraft->hasActiveWeapon()) {
-            $game->addInformation(_('Waffen sind offline'));
+            $game->getInfo()->addInformation(_('Waffen sind offline'));
             return;
         }
 
         if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
@@ -81,11 +81,11 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->addInformation(_('Keine Energie vorhanden'));
+            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
         if ($spacecraft->getCondition()->isDisabled()) {
-            $game->addInformation(_('Das Schiff ist kampfunfähig'));
+            $game->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
 
@@ -129,16 +129,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         if ($spacecraft->getCondition()->isDestroyed()) {
-            $game->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($informations);
             return;
         }
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($fleet) {
-            $game->addInformation(_("Angriff durchgeführt"));
+            $game->getInfo()->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($informations);
         }
     }
 

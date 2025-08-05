@@ -27,7 +27,7 @@ final class SaveWelcomeMessage implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
@@ -54,7 +54,7 @@ final class SaveWelcomeMessage implements ActionControllerInterface
             $this->createLogEntry($oldMessage, $welcomeMessage, $userId, $game->getUser()->getName(), $faction->getName());
         }
 
-        $game->addInformation(_('Die Willkommensnachricht wurde gespeichert'));
+        $game->getInfo()->addInformation(_('Die Willkommensnachricht wurde gespeichert'));
     }
 
     private function createLogEntry(string $oldMessage, string $newMessage, int $userId, string $userName, string $factionName): void

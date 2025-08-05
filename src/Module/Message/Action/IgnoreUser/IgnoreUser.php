@@ -14,9 +14,7 @@ final class IgnoreUser implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_IGNORE_USER';
 
-    public function __construct(private IgnoreUserRequestInterface $ignoreUserRequest, private IgnoreListRepositoryInterface $ignoreListRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private IgnoreUserRequestInterface $ignoreUserRequest, private IgnoreListRepositoryInterface $ignoreListRepository, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -26,15 +24,15 @@ final class IgnoreUser implements ActionControllerInterface
         $recipient = $this->userRepository->find($this->ignoreUserRequest->getRecipientId());
 
         if ($recipient === null) {
-            $game->addInformation(_('Dieser Spieler existiert nicht'));
+            $game->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
         if ($recipient->getId() === $userId) {
-            $game->addInformation(_('Du kannst Dich nicht selbst ignorieren'));
+            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst ignorieren'));
             return;
         }
         if ($this->ignoreListRepository->exists($userId, $recipient->getId()) === true) {
-            $game->addInformation(_('Der Spieler befindet sich bereits auf Deiner Ignoreliste'));
+            $game->getInfo()->addInformation(_('Der Spieler befindet sich bereits auf Deiner Ignoreliste'));
             return;
         }
         $ignore = $this->ignoreListRepository->prototype();
@@ -44,7 +42,7 @@ final class IgnoreUser implements ActionControllerInterface
 
         $this->ignoreListRepository->save($ignore);
 
-        $game->addInformation(_('Der Spieler wird ignoriert'));
+        $game->getInfo()->addInformation(_('Der Spieler wird ignoriert'));
     }
 
     #[Override]

@@ -63,13 +63,13 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
         if ($licenseInfo === null) {
-            $game->addInformation('Keine Lizenz verfügbar');
+            $game->getInfo()->addInformation('Keine Lizenz verfügbar');
             return;
         }
         $commodity = $licenseInfo->getCommodity();

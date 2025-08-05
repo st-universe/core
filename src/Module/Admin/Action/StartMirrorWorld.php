@@ -38,7 +38,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -59,7 +59,7 @@ final class StartMirrorWorld implements ActionControllerInterface
             return;
         }
 
-        $game->addInformation('die Spiegelwelt wurde erstellt');
+        $game->getInfo()->addInformation('die Spiegelwelt wurde erstellt');
     }
 
     private function cleanup(): void
@@ -94,7 +94,7 @@ final class StartMirrorWorld implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('dropDatabase: %s', $cmd));
 
         if (!system($cmd)) {
-            $game->addInformation('drop database failed');
+            $game->getInfo()->addInformation('drop database failed');
             //return false;
         }
 
@@ -114,7 +114,7 @@ final class StartMirrorWorld implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('createDatabase: %s', $cmd));
 
         if (!system($cmd)) {
-            $game->addInformation('create database failed');
+            $game->getInfo()->addInformation('create database failed');
             //return false;
         }
 
@@ -136,7 +136,7 @@ final class StartMirrorWorld implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('backupDatabase: %s', $cmd));
 
         if (!system($cmd)) {
-            $game->addInformation('backup failed');
+            $game->getInfo()->addInformation('backup failed');
             //return false;
         }
 
@@ -159,7 +159,7 @@ final class StartMirrorWorld implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('restoreDatabase: %s', $cmd));
 
         if (!system($cmd)) {
-            $game->addInformation('restore failed');
+            $game->getInfo()->addInformation('restore failed');
             //return false;
         }
 

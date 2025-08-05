@@ -54,7 +54,7 @@ final class BuildStation implements ActionControllerInterface
         $wantedPlanId = request::postInt('plan_select');
 
         if ($wantedPlanId === 0) {
-            $game->addInformation('Bitte Stationstyp auswählen');
+            $game->getInfo()->addInformation('Bitte Stationstyp auswählen');
             return;
         }
 
@@ -72,20 +72,20 @@ final class BuildStation implements ActionControllerInterface
         // check if the limit is reached
         $limit = $role->getBuildLimit();
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
-            $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
         $location = $role->getPossibleBuildLocations();
         if (!$this->isLocationAllowed($station, $location)) {
-            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location->value));
+            $game->getInfo()->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location->value));
             return;
         }
 
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $rump)) {
-            $game->addInformation('Nicht genügend Workbees angedockt');
+            $game->getInfo()->addInformation('Nicht genügend Workbees angedockt');
             return;
         }
 
@@ -106,14 +106,14 @@ final class BuildStation implements ActionControllerInterface
 
         // try to consume needed commodities
         if (!$this->consumeNeededModules($station, $plan, $wantedSpecialModules)) {
-            $game->addInformation('Nicht alle erforderlichen Module geladen');
+            $game->getInfo()->addInformation('Nicht alle erforderlichen Module geladen');
             return;
         }
 
         // transform construction
         $this->startTransformation($station, $plan, $wantedSpecialModules);
 
-        $game->addInformation(sprintf(
+        $game->getInfo()->addInformation(sprintf(
             _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),
             $rump->getName(),
             $rump->getBuildtime()

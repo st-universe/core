@@ -42,7 +42,7 @@ final class WarpdriveActivationSubscriber
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
         if (
             $tractoredShipWrapper !== null
-            && $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShipWrapper->get(), $this->game)
+            && $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShipWrapper->get(), $this->game->getInfo())
         ) {
             $this->spacecraftStateChanger->changeState($tractoredShipWrapper, SpacecraftStateEnum::NONE);
         }

@@ -33,7 +33,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $basicTrade = $this->basicTradeRepository->getByUniqId($uniqId);
 
         if ($game->getUser()->getId() < 100) {
-            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
@@ -44,7 +44,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
         if (!$isNewest) {
-            $game->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht gekauft werden");
+            $game->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht gekauft werden");
             return;
         }
 
@@ -57,7 +57,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
+            $game->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
 
             return;
         }
@@ -66,7 +66,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $latinumStorage = $storageManager->getStorage()->get(CommodityTypeConstants::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage->getAmount() < 1) {
-            $game->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
+            $game->getInfo()->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
 
             return;
         }
@@ -101,7 +101,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $storageManager->upperStorage($basicTrade->getCommodity()->getId(), $amount);
         $storageManager->lowerStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
 
-        $game->addInformation('Die Waren wurden gekauft');
+        $game->getInfo()->addInformation('Die Waren wurden gekauft');
     }
 
     #[Override]

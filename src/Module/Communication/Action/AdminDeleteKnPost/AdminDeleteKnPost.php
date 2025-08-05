@@ -44,7 +44,7 @@ final class AdminDeleteKnPost implements ActionControllerInterface
 
         $post->setDeleted(time());
         $this->knPostRepository->save($post);
-        $game->addInformation(_('Der Beitrag wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     private function sendPm(string $text, User $user): void

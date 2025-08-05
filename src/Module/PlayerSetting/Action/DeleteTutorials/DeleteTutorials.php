@@ -23,7 +23,7 @@ final class DeleteTutorials implements ActionControllerInterface
         $this->userTutorialRepository->truncateByUser($user);
 
 
-        $game->addInformation(_('Tutorial wurden deaktiviert'));
+        $game->getInfo()->addInformation(_('Tutorial wurden deaktiviert'));
     }
 
 

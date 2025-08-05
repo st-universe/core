@@ -32,14 +32,14 @@ final class ShowPostSearchResult implements ViewControllerInterface
 
         if (strlen($this->showSearchResultRequest->getSearchString()) < self::MINIMUM_SEARCH_WORD_LENGTH) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', self::MINIMUM_SEARCH_WORD_LENGTH));
+            $game->getInfo()->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', self::MINIMUM_SEARCH_WORD_LENGTH));
 
             return;
         }
 
         $posts = $this->knPostRepository->searchByContent($this->showSearchResultRequest->getSearchString());
 
-        $game->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
 
         $game->setTemplateVar(
             'KN_POSTINGS',

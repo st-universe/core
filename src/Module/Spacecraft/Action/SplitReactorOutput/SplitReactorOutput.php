@@ -76,7 +76,7 @@ final class SplitReactorOutput implements ActionControllerInterface
 
     private function addGameInfo(bool $isFleet, int $warpsplit, bool $autoCarryOver, GameControllerInterface $game): void
     {
-        $game->addInformation(sprintf(
+        $game->getInfo()->addInformation(sprintf(
             _('%sReaktorleistung geht zu %d Prozent in den Warpantrieb (Übertrag %s)'),
             $isFleet ? 'Flottenbefehl ausgeführt: ' : '',
             100 - $warpsplit,

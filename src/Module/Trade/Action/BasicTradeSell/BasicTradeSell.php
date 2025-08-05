@@ -41,12 +41,12 @@ final class BasicTradeSell implements ActionControllerInterface
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
         if ($userId < 100) {
-            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
         if (!$isNewest) {
-            $game->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
+            $game->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
             return;
         }
 
@@ -59,7 +59,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
+            $game->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
             return;
         }
 
@@ -68,7 +68,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $sellValue = (int)($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE * BasicTradeItem::BASIC_TRADE_SELL_BUY_ALPHA);
 
         if ($commodityStorage === null || $commodityStorage->getAmount() < $sellValue) {
-            $game->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
+            $game->getInfo()->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
             return;
         }
 
@@ -100,7 +100,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $storageManager->upperStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
         $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), $sellValue);
 
-        $game->addInformation('Die Waren wurden verkauft');
+        $game->getInfo()->addInformation('Die Waren wurden verkauft');
     }
 
     #[Override]

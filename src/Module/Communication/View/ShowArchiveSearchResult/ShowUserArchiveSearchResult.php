@@ -35,18 +35,18 @@ final class ShowUserArchiveSearchResult implements ViewControllerInterface
 
         if ($version === '') {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Ungültige Archiv-Version!');
+            $game->getInfo()->addInformation('Ungültige Archiv-Version!');
             return;
         }
 
         if ($searchId == 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Bitte eine Spieler-ID angeben!');
+            $game->getInfo()->addInformation('Bitte eine Spieler-ID angeben!');
             return;
         }
 
         $posts = $this->knPostArchivRepository->getByUserAndVersion($searchId, $version);
-        $game->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
 
         $plotIds = [];
         foreach ($posts as $post) {

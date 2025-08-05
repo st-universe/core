@@ -50,19 +50,16 @@ final class TransformResources implements ActionControllerInterface
 
         $commodityId = request::postInt('chosen');
 
-
-
         if ($commodityId === 0) {
             if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)) {
-                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game);
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game->getInfo());
                 $aggregationsystem->setCommodityId($commodityId)->update();
             }
-            return;
         } else {
 
             if (
                 !$ship->getSystemState(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)
-                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game)
+                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game->getInfo())
             ) {
                 return;
             }
@@ -81,13 +78,13 @@ final class TransformResources implements ActionControllerInterface
             }
 
             if (!$canProduce) {
-                $game->addInformation("Diese Ressource kann nicht produziert werden");
+                $game->getInfo()->addInformation("Diese Ressource kann nicht produziert werden");
                 return;
             }
 
             $aggregationsystem->setCommodityId($commodityId)->update();
             if ($sourceCommodity &&  $targetCommodity) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     sprintf(
                         "%s wird in %s umgewandelt",
                         $sourceCommodity->getName(),

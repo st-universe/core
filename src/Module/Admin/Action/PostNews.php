@@ -27,7 +27,7 @@ final class PostNews implements ActionControllerInterface
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin[/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin[/color][/b]'));
             return;
         }
 
@@ -37,7 +37,7 @@ final class PostNews implements ActionControllerInterface
         $refs = request::postString('refs');
 
         if ($subject === false || $text === false || $subject === '' || $text === '') {
-            $game->addInformation(_('Bitte fülle alle Felder aus'));
+            $game->getInfo()->addInformation(_('Bitte fülle alle Felder aus'));
             return;
         }
 
@@ -51,7 +51,7 @@ final class PostNews implements ActionControllerInterface
 
         $this->newsRepository->save($news);
 
-        $game->addInformation(_('Die News wurde gespeichert'));
+        $game->getInfo()->addInformation(_('Die News wurde gespeichert'));
     }
 
     #[Override]

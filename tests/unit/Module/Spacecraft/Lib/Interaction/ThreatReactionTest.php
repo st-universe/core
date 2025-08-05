@@ -298,7 +298,7 @@ class ThreatReactionTest extends StuTestCase
             ->once()
             ->andReturn('INFOS');
 
-        $this->game->shouldReceive('addInformationWrapper')
+        $this->game->shouldReceive('getInfo->addInformationWrapper')
             ->with($informations)
             ->once();
 

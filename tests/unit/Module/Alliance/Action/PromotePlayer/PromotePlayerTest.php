@@ -107,7 +107,7 @@ class PromotePlayerTest extends StuTestCase
         $game->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Mitglied wurde befördert')
             ->once();
         $game->shouldReceive('setView')

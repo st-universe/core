@@ -30,7 +30,7 @@ final class DeleteBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->delete($board);
 
-        $game->addInformation(_('Das Forum wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Das Forum wurde gelöscht'));
 
         $game->setView(Boards::VIEW_IDENTIFIER);
     }

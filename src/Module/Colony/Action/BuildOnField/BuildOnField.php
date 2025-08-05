@@ -87,7 +87,7 @@ final class BuildOnField implements ActionControllerInterface
             $building->hasLimitColony() &&
             $this->planetFieldRepository->getCountByHostAndBuilding($host, $buildingId) >= $building->getLimitColony()
         ) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Dieses Gebäude kann auf dieser Kolonie nur %d mal gebaut werden'),
                 $building->getLimitColony()
             );
@@ -98,7 +98,7 @@ final class BuildOnField implements ActionControllerInterface
             && $building->hasLimit()
             && $this->planetFieldRepository->getCountByBuildingAndUser($buildingId, $userId) >= $building->getLimit()
         ) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Dieses Gebäude kann insgesamt nur %d mal gebaut werden'),
                 $building->getLimit()
             );
@@ -124,7 +124,7 @@ final class BuildOnField implements ActionControllerInterface
                 if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
                     return;
                 } elseif ($changeable->getEps() < $building->getEpsCost()) {
-                    $game->addInformationf(
+                    $game->getInfo()->addInformationf(
                         _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                         $building->getEpsCost(),
                         $changeable->getEps()
@@ -134,7 +134,7 @@ final class BuildOnField implements ActionControllerInterface
                     $changeable->getEps() > $host->getMaxEps() - $currentBuilding->getEpsStorage()
                     && $host->getMaxEps() - $currentBuilding->getEpsStorage() < $building->getEpsCost()
                 ) {
-                    $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
+                    $game->getInfo()->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
                     return;
                 }
             }
@@ -166,14 +166,14 @@ final class BuildOnField implements ActionControllerInterface
         if ($host instanceof ColonySandbox) {
             $this->buildingManager->finish($field);
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s wurde gebaut'),
                 $building->getName()
             );
         } else {
             $this->planetFieldRepository->save($field);
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s wird gebaut - Fertigstellung: %s'),
                 $building->getName(),
                 date('d.m.Y H:i', $field->getActive())
@@ -191,7 +191,7 @@ final class BuildOnField implements ActionControllerInterface
             $this->planetFieldTypeRetriever->isOrbitField($field)
             && $colony->isBlocked()
         ) {
-            $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
+            $game->getInfo()->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
             return false;
         }
 
@@ -203,7 +203,7 @@ final class BuildOnField implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $building->getEpsCost()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $building->getEpsCost(),
                 $changeable->getEps()
@@ -248,7 +248,7 @@ final class BuildOnField implements ActionControllerInterface
                     !$storages->containsKey($commodityId) &&
                     $result === []
                 ) {
-                    $game->addInformationf(
+                    $game->getInfo()->addInformationf(
                         _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                         $cost->getAmount(),
                         $cost->getCommodity()->getName()
@@ -257,7 +257,7 @@ final class BuildOnField implements ActionControllerInterface
                     continue;
                 }
             } elseif (!$storages->containsKey($commodityId)) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName()
@@ -277,7 +277,7 @@ final class BuildOnField implements ActionControllerInterface
                 }
             }
             if ($cost->getAmount() > $amount) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName(),

@@ -35,7 +35,7 @@ final class AllowImmigration implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $game->addInformation(_('Die Einwanderung wurde erlaubt'));
+        $game->getInfo()->addInformation(_('Die Einwanderung wurde erlaubt'));
     }
 
     #[Override]

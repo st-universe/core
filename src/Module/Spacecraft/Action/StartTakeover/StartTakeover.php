@@ -83,7 +83,7 @@ final class StartTakeover implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
@@ -93,12 +93,12 @@ final class StartTakeover implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->addInformation(_('Keine Energie vorhanden'));
+            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
 
         if (!$target->getCrewAssignments()->isEmpty()) {
-            $game->addInformation(_('Aktion nicht möglich, das Ziel ist bemannt'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, das Ziel ist bemannt'));
             return;
         }
 
@@ -109,13 +109,13 @@ final class StartTakeover implements ActionControllerInterface
             ColonizationShip::CARD_COL_BUILDPLAN,
             ColonizationShip::FERG_COL_BUILDPLAN
         ])) {
-            $game->addInformation(_('Dieses Schiff ist nicht zur Übernahme geeignet'));
+            $game->getInfo()->addInformation(_('Dieses Schiff ist nicht zur Übernahme geeignet'));
             return;
         }
 
 
         if ($target->getTakeoverPassive() !== null) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 'Aktion nicht möglich, das Ziel ist bereits im Begriff von der %s übernommen zu werden',
                 $target->getTakeoverPassive()->getSourceSpacecraft()->getName()
             );
@@ -124,7 +124,7 @@ final class StartTakeover implements ActionControllerInterface
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForTakeover($target);
         if ($user->getPrestige() < $neededPrestige) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 'Nicht genügend Prestige vorhanden, benötigt wird: %d',
                 $neededPrestige
             ));
@@ -134,7 +134,7 @@ final class StartTakeover implements ActionControllerInterface
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::ACTIVE_TAKEOVER);
         $this->shipTakeoverManager->startTakeover($spacecraft, $target, $neededPrestige);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             'Übernahme der %s wurde gestartet. Fertigstellung in %d Runden.',
             $target->getName(),
             ShipTakeoverManagerInterface::TURNS_TO_TAKEOVER

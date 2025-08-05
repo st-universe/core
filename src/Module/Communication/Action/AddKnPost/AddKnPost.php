@@ -49,7 +49,7 @@ final class AddKnPost implements ActionControllerInterface
         $mark = $this->addKnPostRequest->getPostMark();
 
         if (mb_strlen($text) < 50) {
-            $game->addInformation(_('Der Text ist zu kurz (mindestens 50 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Text ist zu kurz (mindestens 50 Zeichen)'));
             return;
         }
 
@@ -62,12 +62,12 @@ final class AddKnPost implements ActionControllerInterface
             }
         } else {
             if (mb_strlen($title) < 6) {
-                $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+                $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
                 return;
             }
 
             if (mb_strlen($title) > 80) {
-                $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+                $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
                 return;
             }
         }
@@ -97,7 +97,7 @@ final class AddKnPost implements ActionControllerInterface
         foreach ($validIds as $id) {
             $userCharacter = $this->userCharactersRepository->find($id);
             if ($userCharacter === null) {
-                $game->addInformation(_("Kein Character mit der ID $id gefunden."));
+                $game->getInfo()->addInformation(_("Kein Character mit der ID $id gefunden."));
                 continue;
             }
 
@@ -113,7 +113,7 @@ final class AddKnPost implements ActionControllerInterface
             $this->newKnPostNotificator->notify($post, $plot);
         }
 
-        $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
 
         if ($mark !== 0) {
             $user->setKNMark($post->getId());

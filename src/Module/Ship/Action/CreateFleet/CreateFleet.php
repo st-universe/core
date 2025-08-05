@@ -31,18 +31,18 @@ final class CreateFleet implements ActionControllerInterface
             return;
         }
         if ($spacecraft->getCondition()->isUnderRetrofit()) {
-            $game->addInformation(_('Aktion nicht möglich, da das Schiff umgerüstet wird.'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, da das Schiff umgerüstet wird.'));
             return;
         }
         if ($spacecraft->isTractored()) {
-            $game->addInformation(
+            $game->getInfo()->addInformation(
                 _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
             );
             return;
         }
 
         if ($spacecraft->getTakeoverPassive() !== null) {
-            $game->addInformation(
+            $game->getInfo()->addInformation(
                 _('Aktion nicht möglich, da Schiff im Begriff ist übernommen zu werden.'),
             );
             return;
@@ -64,7 +64,7 @@ final class CreateFleet implements ActionControllerInterface
 
         $this->shipLoader->save($spacecraft);
 
-        $game->addInformation(_('Die Flotte wurde erstellt'));
+        $game->getInfo()->addInformation(_('Die Flotte wurde erstellt'));
     }
 
     #[Override]

@@ -77,7 +77,7 @@ final class RemoveTholianWeb implements ActionControllerInterface
         //unlink targets
         $this->tholianWebUtil->releaseAllShips($web, $wrapper->getSpacecraftWrapperFactory());
 
-        $game->addInformation("Das Energienetz wurde aufgelöst");
+        $game->getInfo()->addInformation("Das Energienetz wurde aufgelöst");
 
         $this->loggerUtil->log('10');
 

@@ -6,14 +6,17 @@ namespace Stu\Module\Spacecraft\Action\DeactivateSystem;
 
 use Override;
 use request;
+use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Ship;
 
 final class DeactivateSystem implements ActionControllerInterface
 {
@@ -34,24 +37,39 @@ final class DeactivateSystem implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
+        $isFleet = request::getInt('isfleet');
         $systemType = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
 
-        $success = $this->helper->deactivate(
-            $wrapper,
-            $systemType,
-            $game
-        );
+        if ($isFleet) {
+            $success = $this->helper->deactivateFleet(
+                $wrapper,
+                $systemType,
+                $game->getInfo()
+            );
+        } else {
+            $success = $this->helper->deactivate(
+                $wrapper,
+                $systemType,
+                $game->getInfo()
+            );
+        }
 
         if ($success && $this->isAlertReactionCheckNeeded($systemType)) {
             $spacecraft = $wrapper->get();
             $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
             //Alarm-Rot check for ship
-            $this->alertReactionFacade->doItAll($wrapper, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game->getInfo());
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {
-                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game, $spacecraft);
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game->getInfo(), $spacecraft);
+            }
+
+            $tractoredShips = $this->getTractoredShipWrappers($wrapper);
+            //Alarm-Rot check for tractored ships
+            foreach ($tractoredShips as [$tractoringShipWrapper, $tractoredShipWrapper]) {
+                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $game->getInfo(), $tractoringShipWrapper);
             }
 
             if ($spacecraft->getCondition()->isDestroyed()) {
@@ -69,6 +87,28 @@ final class DeactivateSystem implements ActionControllerInterface
             SpacecraftSystemTypeEnum::WARPDRIVE => true,
             default => false
         };
+    }
+
+    /** @return array<int, array{0: Ship, 1: ShipWrapperInterface}> */
+    private function getTractoredShipWrappers(ShipWrapperInterface $leader): array
+    {
+        /** @var array<int, array{0: Ship, 1: ShipWrapperInterface}> */
+        $result = [];
+
+        $fleetWrapper = $leader->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+
+            $tractoredWrapper = $wrapper->getTractoredShipWrapper();
+            if ($tractoredWrapper !== null) {
+                $result[] = [$wrapper->get(), $tractoredWrapper];
+            }
+        }
+
+        return $result;
     }
 
     #[Override]

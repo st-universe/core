@@ -26,30 +26,30 @@ final class CreateCharacter implements ActionControllerInterface
         $avatarFile = $this->request->getAvatar();
 
         if ($name === '' || $name === '0') {
-            $game->addInformation(_('Der Charaktername darf nicht leer sein.'));
+            $game->getInfo()->addInformation(_('Der Charaktername darf nicht leer sein.'));
             return;
         }
 
         if ($description === '' || $description === '0') {
-            $game->addInformation(_('Die Beschreibung darf nicht leer sein.'));
+            $game->getInfo()->addInformation(_('Die Beschreibung darf nicht leer sein.'));
             return;
         }
 
         if (empty($avatarFile['name'])) {
-            $game->addInformation(_('Ein Bild muss hochgeladen werden.'));
+            $game->getInfo()->addInformation(_('Ein Bild muss hochgeladen werden.'));
             return;
         }
 
         if ($avatarFile['type'] !== 'image/png') {
-            $game->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
         if ($avatarFile['size'] > 1000000) {
-            $game->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
+            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
             return;
         }
         if ($avatarFile['size'] === 0) {
-            $game->addInformation(_('Die Datei ist leer'));
+            $game->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
@@ -70,7 +70,7 @@ final class CreateCharacter implements ActionControllerInterface
         }
 
         if (!move_uploaded_file($avatarFile['tmp_name'], $uploadPath)) {
-            $game->addInformation(_('Fehler beim Speichern des Avatars.'));
+            $game->getInfo()->addInformation(_('Fehler beim Speichern des Avatars.'));
             return;
         }
 
@@ -83,7 +83,7 @@ final class CreateCharacter implements ActionControllerInterface
 
         $this->userCharactersRepository->save($character);
 
-        $game->addInformation(_('Der Charakter wurde erfolgreich erstellt.'));
+        $game->getInfo()->addInformation(_('Der Charakter wurde erfolgreich erstellt.'));
     }
 
     #[Override]

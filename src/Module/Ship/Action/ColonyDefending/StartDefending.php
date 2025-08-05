@@ -56,12 +56,12 @@ final class StartDefending implements ActionControllerInterface
         }
 
         if ($currentColony->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         if ($currentColony->isBlocked()) {
-            $game->addInformation(_('Aktion nicht möglich, die Kolonie wird blockiert!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird blockiert!'));
             return;
         }
 
@@ -69,7 +69,7 @@ final class StartDefending implements ActionControllerInterface
         $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s verteidigt'), $currentColony->getName(), $fleet->getName());
-        $game->addInformation($text);
+        $game->getInfo()->addInformation($text);
 
         $this->privateMessageSender->send(
             $userId,

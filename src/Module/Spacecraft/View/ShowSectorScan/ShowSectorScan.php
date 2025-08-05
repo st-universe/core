@@ -55,13 +55,13 @@ final class ShowSectorScan implements ViewControllerInterface
         $ship = $wrapper->get();
 
         if (!$ship->getNbs()) {
-            $game->addInformation("Die Nahbereichssensoren sind nicht aktiv");
+            $game->getInfo()->addInformation("Die Nahbereichssensoren sind nicht aktiv");
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
+            $game->getInfo()->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
 

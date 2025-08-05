@@ -71,24 +71,24 @@ final class Transwarp extends AbstractDirectedMovement
         $cy = request::postInt('transwarpcy');
 
         if (!$cx || !$cy) {
-            $game->addInformation(_('Zielkoordinaten müssen angegeben werden'));
+            $game->getInfo()->addInformation(_('Zielkoordinaten müssen angegeben werden'));
             return true;
         }
 
         $ship = $wrapper->get();
 
         if ($ship->getSystem() !== null) {
-            $game->addInformation(_('Transwarp kann nur außerhalb von Systemen genutzt werden'));
+            $game->getInfo()->addInformation(_('Transwarp kann nur außerhalb von Systemen genutzt werden'));
             return true;
         }
 
         if (!$ship->getWarpDriveState()) {
-            $game->addInformation(_('Der Warpantrieb muss aktiviert sein'));
+            $game->getInfo()->addInformation(_('Der Warpantrieb muss aktiviert sein'));
             return true;
         }
 
         if ($ship->isTractoring()) {
-            $game->addInformation(_('Transwarpflug nicht möglich bei aktiviertem Traktorstrahl'));
+            $game->getInfo()->addInformation(_('Transwarpflug nicht möglich bei aktiviertem Traktorstrahl'));
             return true;
         }
 
@@ -97,13 +97,13 @@ final class Transwarp extends AbstractDirectedMovement
             && $ship->getFleet() !== null
             && $ship->getFleet()->getShipCount() > 1
         ) {
-            $game->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
+            $game->getInfo()->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
             return true;
         }
 
         $map = $this->mapRepository->getByCoordinates($userLayer->getLayer(), $cx, $cy);
         if ($map === null) {
-            $game->addInformation(_('Zielkoordinaten existieren nicht'));
+            $game->getInfo()->addInformation(_('Zielkoordinaten existieren nicht'));
             return true;
         }
 
@@ -117,7 +117,7 @@ final class Transwarp extends AbstractDirectedMovement
         }
 
         if (!$map->getFieldType()->getPassable()) {
-            $game->addInformation(_('Zielkoordinaten können nicht angeflogen werden'));
+            $game->getInfo()->addInformation(_('Zielkoordinaten können nicht angeflogen werden'));
             return true;
         }
 

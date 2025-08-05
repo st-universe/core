@@ -32,12 +32,12 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $game->setView(ShowLottery::VIEW_IDENTIFIER);
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
-            $game->addInformation(_('Um Lotterielose zu kaufen wird eine Handelslizenz bei der goldenen Kugel benötigt'));
+            $game->getInfo()->addInformation(_('Um Lotterielose zu kaufen wird eine Handelslizenz bei der goldenen Kugel benötigt'));
             return;
         }
 
         if ($userId < 100) {
-            $game->addInformation(_('NPCs können keine Lose kaufen'));
+            $game->getInfo()->addInformation(_('NPCs können keine Lose kaufen'));
             return;
         }
 
@@ -54,7 +54,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         );
 
         if ($storage === null || $storage->getAmount() < $amount) {
-            $game->addInformation(_('Es befindet sich nicht genügend Latinum auf diesem Handelsposten'));
+            $game->getInfo()->addInformation(_('Es befindet sich nicht genügend Latinum auf diesem Handelsposten'));
             return;
         }
 
@@ -74,7 +74,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
             $this->lotteryFacade->createLotteryTicket($user, false);
         }
 
-        $game->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
+        $game->getInfo()->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
     }
 
     #[Override]

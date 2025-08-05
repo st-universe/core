@@ -24,7 +24,7 @@ final class DeleteCharacter implements ActionControllerInterface
         $fallbackUser = $this->userRepository->getFallbackUser();
 
         if (!$character || $character->getUser() !== $game->getUser()) {
-            $game->addInformation(_('Charakter nicht gefunden oder kein Zugriff.'));
+            $game->getInfo()->addInformation(_('Charakter nicht gefunden oder kein Zugriff.'));
             return;
         }
 
@@ -32,7 +32,7 @@ final class DeleteCharacter implements ActionControllerInterface
         $character->setFormerUserId($game->getUser()->getId());
         $this->userCharactersRepository->save($character);
 
-        $game->addInformation(_('Der Charakter wurde erfolgreich entfernt.'));
+        $game->getInfo()->addInformation(_('Der Charakter wurde erfolgreich entfernt.'));
     }
 
     #[Override]

@@ -35,7 +35,7 @@ final class CancelResearch extends AuthenticatedActionController
         foreach ($currentResearch as $researched) {
             if ($researched->getId() === $id) {
                 $this->researchedRepository->delete($researched);
-                $game->addInformation('Die laufende Forschung wurde abgebrochen');
+                $game->getInfo()->addInformation('Die laufende Forschung wurde abgebrochen');
 
                 $this->componentRegistration->addComponentUpdate(GameComponentEnum::RESEARCH);
             }

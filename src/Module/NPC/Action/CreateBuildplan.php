@@ -64,7 +64,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
@@ -79,7 +79,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         if (count($moduleList) < $mod_level->getMandatoryModulesCount()) {
-            $game->addInformation('Nicht alle benötigten Module wurden ausgewählt');
+            $game->getInfo()->addInformation('Nicht alle benötigten Module wurden ausgewählt');
             return;
         }
 
@@ -168,7 +168,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $reason = request::postString('reason');
 
             if ($reason === '') {
-                $game->addInformation("Grund fehlt");
+                $game->getInfo()->addInformation("Grund fehlt");
                 return;
             }
 
@@ -187,9 +187,9 @@ final class CreateBuildplan implements ActionControllerInterface
                 $this->createLogEntry($logText, $game->getUser()->getId());
             }
 
-            $game->addInformation('Bauplan wurde erstellt');
+            $game->getInfo()->addInformation('Bauplan wurde erstellt');
         } else {
-            $game->addInformation('Bauplan existiert bereits');
+            $game->getInfo()->addInformation('Bauplan existiert bereits');
         }
     }
 

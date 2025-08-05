@@ -13,9 +13,7 @@ final class ChangeDescription implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_DESCRIPTION';
 
-    public function __construct(private ChangeDescriptionRequestInterface $changeDescriptionRequest, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private ChangeDescriptionRequestInterface $changeDescriptionRequest, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,7 +26,7 @@ final class ChangeDescription implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Deine Beschreibung wurde geändert'));
+        $game->getInfo()->addInformation(_('Deine Beschreibung wurde geändert'));
     }
 
     #[Override]

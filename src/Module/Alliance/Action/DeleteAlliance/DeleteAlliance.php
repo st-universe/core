@@ -64,7 +64,7 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Die Allianz wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Die Allianz wurde gelöscht'));
     }
 
     #[Override]

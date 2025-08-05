@@ -81,31 +81,31 @@ final class StoreShuttle implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_SAME_USER,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
         // check if ship got shuttle ramp
         if (!$spacecraft->hasShuttleRamp()) {
-            $game->addInformation(_("Das Schiff verfügt über keine Shuttle-Rampe"));
+            $game->getInfo()->addInformation(_("Das Schiff verfügt über keine Shuttle-Rampe"));
             return;
         }
 
         // check if shuttle ramp is healthy
         if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
+            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
 
         // check if shuttle slot available
         if (!$this->hasFreeShuttleSpace($spacecraft)) {
-            $game->addInformation(_("Die Shuttle-Rampe ist belegt"));
+            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist belegt"));
             return;
         }
 
         // check if troop quarter free
         if ($this->troopTransferUtility->getFreeQuarters($spacecraft) < $shuttle->getCrewCount()) {
-            $game->addInformation(_('Nicht genügend Crew-Quartiere frei'));
+            $game->getInfo()->addInformation(_('Nicht genügend Crew-Quartiere frei'));
             return;
         }
 
@@ -119,7 +119,7 @@ final class StoreShuttle implements ActionControllerInterface
         // land shuttle and transfer crew
         $this->storeShuttle($spacecraft, $shuttle);
 
-        $game->addInformation("Shuttle erfolgreich eingesammelt");
+        $game->getInfo()->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
     private function storeShuttle(Spacecraft $spacecraft, Spacecraft $shuttle): void

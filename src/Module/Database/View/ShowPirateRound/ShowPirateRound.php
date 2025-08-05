@@ -49,7 +49,7 @@ final class ShowPirateRound implements ViewControllerInterface
         $lastRound = $this->getLastPirateRound();
 
         if ($lastRound === null) {
-            $game->addInformation('Keine Piraten-Runde gefunden');
+            $game->getInfo()->addInformation('Keine Piraten-Runde gefunden');
             return;
         }
 

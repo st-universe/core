@@ -38,10 +38,10 @@ final class ChangeFleetFixation implements ActionControllerInterface
 
         if (request::postString('fleetfixed') !== false) {
             $fleet->setIsFleetFixed(true);
-            $game->addInformation(_('Die Flotte ist nun fixiert'));
+            $game->getInfo()->addInformation(_('Die Flotte ist nun fixiert'));
         } else {
             $fleet->setIsFleetFixed(false);
-            $game->addInformation(_('Die Flotte ist nun nicht mehr fixiert'));
+            $game->getInfo()->addInformation(_('Die Flotte ist nun nicht mehr fixiert'));
         }
 
         $this->fleetRepository->save($fleet);

@@ -18,9 +18,7 @@ final class ManualColonyTick implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_COLONY_TICK';
 
-    public function __construct(private ManualColonyTickRequestInterface $request, private ColonyTickManagerInterface $colonyTickManager, private ColonyTickInterface $colonyTick, private ColonyRepositoryInterface $colonyRepository, private StuConfigInterface $config)
-    {
-    }
+    public function __construct(private ManualColonyTickRequestInterface $request, private ColonyTickManagerInterface $colonyTickManager, private ColonyTickInterface $colonyTick, private ColonyRepositoryInterface $colonyRepository, private StuConfigInterface $config) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +27,7 @@ final class ManualColonyTick implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -51,10 +49,10 @@ final class ManualColonyTick implements ActionControllerInterface
             $groupCount = $this->getGroupCount();
             $this->colonyTickManager->work($groupId, $groupCount);
 
-            $game->addInformationf("Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!", $groupId, $groupCount);
+            $game->getInfo()->addInformationf("Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!", $groupId, $groupCount);
         } else {
             $this->colonyTickManager->work(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT);
-            $game->addInformation("Der Kolonie-Tick für alle Kolonien wurde durchgeführt!");
+            $game->getInfo()->addInformation("Der Kolonie-Tick für alle Kolonien wurde durchgeführt!");
         }
     }
 
@@ -68,13 +66,13 @@ final class ManualColonyTick implements ActionControllerInterface
         $colony = $this->colonyRepository->find($colonyId);
 
         if ($colony === null) {
-            $game->addInformationf("Keine Kolonie mit der ID %d vorhanden!", $colonyId);
+            $game->getInfo()->addInformationf("Keine Kolonie mit der ID %d vorhanden!", $colonyId);
             return;
         }
 
         $this->colonyTick->work($colony);
 
-        $game->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
+        $game->getInfo()->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
     }
 
     #[Override]

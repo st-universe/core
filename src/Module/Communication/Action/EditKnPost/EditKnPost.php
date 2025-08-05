@@ -37,7 +37,7 @@ final class EditKnPost implements ActionControllerInterface
             throw new AccessViolationException();
         }
         if ($post->getDate() < time() - self::EDIT_TIME && !$game->isAdmin()) {
-            $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
+            $game->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
 
@@ -45,11 +45,11 @@ final class EditKnPost implements ActionControllerInterface
 
         $title = $this->editKnPostRequest->getTitle();
         if ($plotId === 0 && mb_strlen($title) < 6) {
-            $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
         if (mb_strlen($title) > 80) {
-            $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
             return;
         }
 
@@ -67,7 +67,7 @@ final class EditKnPost implements ActionControllerInterface
         $post->setText($text);
 
         if (mb_strlen($text) < 10) {
-            $game->addInformation(_('Der Text ist zu kurz'));
+            $game->getInfo()->addInformation(_('Der Text ist zu kurz'));
             return;
         }
 
@@ -177,7 +177,7 @@ final class EditKnPost implements ActionControllerInterface
             );
         }
 
-        $game->addInformation(_('Der Beitrag wurde editiert'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
     #[Override]

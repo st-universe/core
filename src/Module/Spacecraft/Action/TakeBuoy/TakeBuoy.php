@@ -45,31 +45,31 @@ final class TakeBuoy implements ActionControllerInterface
 
         $buoy = $ship->getLocation()->getBuoys()->get(request::indInt('buoyid'));
         if ($buoy === null) {
-            $game->addInformation("Die Boje existiert nicht");
+            $game->getInfo()->addInformation("Die Boje existiert nicht");
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->isCloaked()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->isWarped()) {
-            $game->addInformation("Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->isShielded()) {
-            $game->addInformation(_("Die Schilde sind aktiviert"));
+            $game->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
 
         if ($epsSystem->getEps() < 1) {
-            $game->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
+            $game->getInfo()->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
             return;
         }
 
@@ -102,7 +102,7 @@ final class TakeBuoy implements ActionControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        $game->addInformation('Die Boje wurde erfolgreich eingesammelt');
+        $game->getInfo()->addInformation('Die Boje wurde erfolgreich eingesammelt');
     }
 
     #[Override]

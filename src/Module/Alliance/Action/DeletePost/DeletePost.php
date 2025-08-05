@@ -45,14 +45,14 @@ final class DeletePost implements ActionControllerInterface
 
             $this->allianceBoardTopicRepository->delete($post->getTopic());
 
-            $game->addInformation(_('Das Thema wurde gelöscht'));
+            $game->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
             return;
         }
 
         $game->setView(Topic::VIEW_IDENTIFIER);
 
 
-        $game->addInformation(_('Der Beitrag wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     #[Override]

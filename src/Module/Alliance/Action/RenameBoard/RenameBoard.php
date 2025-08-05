@@ -35,7 +35,7 @@ final class RenameBoard implements ActionControllerInterface
         $game->setView(Boards::VIEW_IDENTIFIER);
 
         if (mb_strlen($name) < 1) {
-            $game->addInformation(_('Es wurde kein Forumname eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein Forumname eingegeben'));
             return;
         }
 
@@ -43,7 +43,7 @@ final class RenameBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->save($board);
 
-        $game->addInformation(_('Das Forum wurde umbenannt'));
+        $game->getInfo()->addInformation(_('Das Forum wurde umbenannt'));
     }
 
     #[Override]

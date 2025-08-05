@@ -62,7 +62,7 @@ final class TransferCommodities implements ActionControllerInterface
         $freeTransferCapacity = $tradepost->getTransferCapacity() - $usedTransferCapacity;
 
         if ($freeTransferCapacity <= 0) {
-            $game->addInformation(_('Du hast an diesem Posten derzeit keine freie Transferkapaziztät'));
+            $game->getInfo()->addInformation(_('Du hast an diesem Posten derzeit keine freie Transferkapaziztät'));
             return;
         }
 
@@ -100,7 +100,7 @@ final class TransferCommodities implements ActionControllerInterface
 
         $this->tradeTransferRepository->save($transfer);
 
-        $game->addInformation(
+        $game->getInfo()->addInformation(
             sprintf(
                 _('Es wurde %d %s zum %s transferiert'),
                 $amount,

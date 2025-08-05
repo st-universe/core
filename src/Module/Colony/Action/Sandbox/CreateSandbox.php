@@ -76,7 +76,7 @@ final class CreateSandbox implements
             $sandbox->getPlanetFields()->set($fieldId, $sandboxField);
         }
 
-        $game->addInformationf(_('Sandbox %s wurde erstellt'), $sandboxName);
+        $game->getInfo()->addInformationf(_('Sandbox %s wurde erstellt'), $sandboxName);
 
         $game->setViewContext(ViewContextTypeEnum::HOST, $sandbox);
     }

@@ -48,13 +48,13 @@ final class DoTachyonScan implements ActionControllerInterface
 
         // scanner needs to be present
         if (!$ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TACHYON_SCANNER)) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, kein Tachyon-Scanner installiert![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, kein Tachyon-Scanner installiert![/color][/b]'));
             return;
         }
 
         // scanner needs to be active
         if (!$ship->getTachyonState()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, der Tachyon-Scanner muss aktiviert sein![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, der Tachyon-Scanner muss aktiviert sein![/color][/b]'));
             return;
         }
 
@@ -62,7 +62,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         // scanner needs to be active
         if ($epsSystem === null || $epsSystem->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {
-            $game->addInformation(sprintf(_('[b][color=#ff2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), TachyonScannerShipSystem::SCAN_EPS_COST));
+            $game->getInfo()->addInformation(sprintf(_('[b][color=#ff2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), TachyonScannerShipSystem::SCAN_EPS_COST));
             return;
         }
 
@@ -78,7 +78,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED, true);
-        $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
+        $game->getInfo()->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
     #[Override]

@@ -15,9 +15,7 @@ final class GenerateEmptySystems implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'GENERATE_EMPTY_SYSTEMS';
 
-    public function __construct(private GenerateEmptySystemsInterface $generateEmptySystems)
-    {
-    }
+    public function __construct(private GenerateEmptySystemsInterface $generateEmptySystems) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -26,7 +24,7 @@ final class GenerateEmptySystems implements ActionControllerInterface
 
         $count = $this->generateEmptySystems->generate(request::getInt('layerid'), $game);
 
-        $game->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
     }
 
     #[Override]

@@ -40,7 +40,7 @@ final class ShowRepairOptions implements ViewControllerInterface
         $game->setPageTitle("Reparatur Optionen");
 
         if (!$spacecraft->hasEnoughCrew()) {
-            $game->addInformation("Nicht genügend Crew vorhanden");
+            $game->getInfo()->addInformation("Nicht genügend Crew vorhanden");
             $game->setMacroInAjaxWindow('');
             return;
         }

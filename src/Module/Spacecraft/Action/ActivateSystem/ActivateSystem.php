@@ -28,7 +28,7 @@ final class ActivateSystem implements ActionControllerInterface
         $this->helper->activate(
             request::getIntFatal('id'),
             $type,
-            $game
+            $game->getInfo()
         );
 
         if ($type->isReloadOnActivation()) {

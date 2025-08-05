@@ -55,7 +55,7 @@ final class CancelOffer implements ActionControllerInterface
             $this->privateMessageSender->send(UserConstants::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
 
-        $game->addInformation(_('Das Angebot wurde zurückgezogen'));
+        $game->getInfo()->addInformation(_('Das Angebot wurde zurückgezogen'));
     }
 
     #[Override]

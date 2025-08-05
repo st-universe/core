@@ -16,9 +16,7 @@ final class PirateProtection implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_PIRATE_PROTECTION';
 
-    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PirateWrathManagerInterface $pirateWrathManager, private PirateProtectionRequestInterface $pirateProtectionRequest)
-    {
-    }
+    public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PirateWrathManagerInterface $pirateWrathManager, private PirateProtectionRequestInterface $pirateProtectionRequest) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -30,12 +28,12 @@ final class PirateProtection implements ActionControllerInterface
         $prestige = $this->pirateProtectionRequest->getPrestige();
 
         if ($prestige < 1) {
-            $game->addInformation(_('Mindestens 1 Prestige ist erforderlich'));
+            $game->getInfo()->addInformation(_('Mindestens 1 Prestige ist erforderlich'));
             return;
         }
 
         if ($prestige > $user->getPrestige()) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 _('Nicht genügend Prestige vorhanden. Du hast nur %d Prestige'),
                 $user->getPrestige()
             ));

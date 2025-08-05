@@ -80,7 +80,7 @@ final class SalvageCrew implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
@@ -93,14 +93,14 @@ final class SalvageCrew implements ActionControllerInterface
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->addInformationf('Zum Bergen der Crew wird %d Energie benötigt', 1);
+            $game->getInfo()->addInformationf('Zum Bergen der Crew wird %d Energie benötigt', 1);
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->addInformation("Die Reparatur wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->addInformation("Die Umrüstung wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
         $crewToTransfer = min(
@@ -110,12 +110,13 @@ final class SalvageCrew implements ActionControllerInterface
 
         if (
             $ship->getCrewCount() + $crewToTransfer > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
-            && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game)
+            && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF
+            && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game->getInfo())
         ) {
             return;
         }
 
-        $game->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
 
         foreach ($tradepost->getCrewAssignments() as $crewAssignment) {
             if ($crewToTransfer === 0) {

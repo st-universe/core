@@ -48,13 +48,13 @@ final class LeaveWormhole extends AbstractDirectedMovement
                 }
             }
             if ($restriction->getUser() === $ship->getUser() && $restriction->getMode() === self::MODE_DENIED) {
-                $game->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
+                $game->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
                 return true;
             }
         }
 
         if ($hasAllowedEntry) {
-            $game->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
+            $game->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
             return true;
         }
 

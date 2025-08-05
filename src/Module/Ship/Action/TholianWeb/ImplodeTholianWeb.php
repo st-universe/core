@@ -73,7 +73,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedSpacecrafts())));
         $this->loggerUtil->log('6');
 
-        $game->addInformation("Das Energienetz ist implodiert");
+        $game->getInfo()->addInformation("Das Energienetz ist implodiert");
 
         //damage captured targets
         foreach ($web->getCapturedSpacecrafts() as $target) {
@@ -101,7 +101,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
                 $isTargetBase ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
 
-            $game->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($informations);
         }
 
 

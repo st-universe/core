@@ -15,9 +15,7 @@ final class RenameFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_CHANGE_NAME';
 
-    public function __construct(private RenameFleetRequestInterface $renameFleetRequest, private FleetRepositoryInterface $fleetRepository)
-    {
-    }
+    public function __construct(private RenameFleetRequestInterface $renameFleetRequest, private FleetRepositoryInterface $fleetRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -25,7 +23,7 @@ final class RenameFleet implements ActionControllerInterface
         $text = $this->renameFleetRequest->getNewName();
 
         if (!CleanTextUtils::checkBBCode($text)) {
-            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
             return;
         }
 
@@ -36,12 +34,12 @@ final class RenameFleet implements ActionControllerInterface
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
         if ($newName !== $nameWithoutUnicode) {
-            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($newName) > 200) {
-            $game->addInformation(_('Der Name ist zu lang (Maximum: 200 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 200 Zeichen)'));
             return;
         }
 
@@ -55,7 +53,7 @@ final class RenameFleet implements ActionControllerInterface
 
         $this->fleetRepository->save($fleet);
 
-        $game->addInformation(_('Der Name der Flotte wurde geändert'));
+        $game->getInfo()->addInformation(_('Der Name der Flotte wurde geändert'));
     }
 
     #[Override]

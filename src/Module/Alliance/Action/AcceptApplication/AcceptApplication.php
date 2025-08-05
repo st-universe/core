@@ -63,7 +63,7 @@ final class AcceptApplication implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $applicant->getId(), $text);
 
-        $game->addInformation(_('Die Bewerbung wurde angenommen'));
+        $game->getInfo()->addInformation(_('Die Bewerbung wurde angenommen'));
     }
 
     /** @param array<AllianceJob> $applications */

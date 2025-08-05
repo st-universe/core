@@ -69,12 +69,12 @@ final class AttackBuilding implements ActionControllerInterface
         $field = $this->planetFieldRepository->find($fieldId);
         $colony = $this->colonyRepository->find($colonyId);
         if ($field === null || $colony === null) {
-            $game->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
         if ($field->getFieldId() >= 80) {
-            $game->addInformation(_('Der Untergrund kann nicht attackiert werden'));
+            $game->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
         }
 
@@ -85,18 +85,18 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         if ($colony->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation(_('Keine Energie vorhanden'));
+            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
         if ($ship->getCondition()->isDisabled()) {
-            $game->addInformation(_('Das Schiff ist kampfunfähig'));
+            $game->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
 
@@ -213,16 +213,16 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->getCondition()->isDestroyed()) {
-            $game->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($informations);
             return;
         }
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($isFleetAttack) {
-            $game->addInformation(_("Angriff durchgeführt"));
+            $game->getInfo()->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($informations);
         }
     }
 

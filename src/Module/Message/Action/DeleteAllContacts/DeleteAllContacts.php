@@ -14,9 +14,7 @@ final class DeleteAllContacts implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALL_CONTACTS';
 
-    public function __construct(private ContactRepositoryInterface $contactRepository)
-    {
-    }
+    public function __construct(private ContactRepositoryInterface $contactRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -25,7 +23,7 @@ final class DeleteAllContacts implements ActionControllerInterface
 
         $this->contactRepository->truncateByUser($game->getUser()->getId());
 
-        $game->addInformation(_('Die Kontakte wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
     }
 
     #[Override]

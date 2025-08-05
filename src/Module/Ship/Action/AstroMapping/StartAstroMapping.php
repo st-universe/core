@@ -61,13 +61,13 @@ final class StartAstroMapping implements ActionControllerInterface
         }
 
         if ($ship->getCondition()->isUnderRepair()) {
-            $game->addInformation(_('Kartographieren nicht möglich. Das Schiff wird derzeit repariert.'));
+            $game->getInfo()->addInformation(_('Kartographieren nicht möglich. Das Schiff wird derzeit repariert.'));
             return;
         }
 
         // system needs to be active
         if (!$ship->getAstroState()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
             return;
         }
 
@@ -75,7 +75,7 @@ final class StartAstroMapping implements ActionControllerInterface
 
         // check for energy
         if ($epsSystem === null || $epsSystem->getEps() < AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST) {
-            $game->addInformation(sprintf(_('[b][color=#ff2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST));
+            $game->getInfo()->addInformation(sprintf(_('[b][color=#ff2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST));
             return;
         }
 
@@ -94,7 +94,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $this->shipRepository->save($ship);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $game->addInformation(sprintf(_("Die Kartographierung %s wird finalisiert"), $message));
+        $game->getInfo()->addInformation(sprintf(_("Die Kartographierung %s wird finalisiert"), $message));
     }
 
 

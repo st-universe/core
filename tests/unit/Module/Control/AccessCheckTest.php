@@ -200,7 +200,7 @@ class AccessCheckTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->game->shouldReceive('addInformation')
+        $this->game->shouldReceive('getInfo->addInformation')
             ->with('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]')
             ->once();
 

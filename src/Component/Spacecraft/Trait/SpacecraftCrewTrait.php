@@ -36,7 +36,7 @@ trait SpacecraftCrewTrait
 
         if ($buildplan === null) {
             if ($game !== null) {
-                $game->addInformation(_("Keine Crew vorhanden"));
+                $game->getInfo()->addInformation(_("Keine Crew vorhanden"));
             }
             return false;
         }
@@ -45,7 +45,7 @@ trait SpacecraftCrewTrait
             || $this->getCrewCount() >= $buildplan->getCrew();
 
         if (!$result && $game !== null) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $buildplan->getCrew()
             );

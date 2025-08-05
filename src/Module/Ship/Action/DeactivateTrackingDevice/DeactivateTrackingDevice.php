@@ -37,7 +37,7 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
         if ($tracker === null || $tracker->targetId === null) {
             return;
         }
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACKER, $game);
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACKER, $game->getInfo());
     }
 
     #[Override]

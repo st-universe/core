@@ -79,9 +79,9 @@ final class RemoveWaste implements ActionControllerInterface
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
         $this->colonyRepository->save($colony);
-        $game->addInformation(_('Die folgenden Waren wurden entsorgt:'));
+        $game->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
         foreach ($wasted as $msg) {
-            $game->addInformation($msg);
+            $game->getInfo()->addInformation($msg);
         }
     }
 

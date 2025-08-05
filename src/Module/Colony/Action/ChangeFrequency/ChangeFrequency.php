@@ -34,18 +34,18 @@ final class ChangeFrequency implements ActionControllerInterface
         $frequency = request::postStringFatal('frequency');
 
         if (!is_numeric($frequency)) {
-            $game->addInformation(_('Nur ganze Zahlen erlaubt'));
+            $game->getInfo()->addInformation(_('Nur ganze Zahlen erlaubt'));
             return;
         }
 
         if (mb_strlen($frequency) > 6) {
-            $game->addInformation(_('Unerlaubte Frequenz (Maximum: 6 Zeichen)'));
+            $game->getInfo()->addInformation(_('Unerlaubte Frequenz (Maximum: 6 Zeichen)'));
             return;
         }
         $colony->getChangeable()->setShieldFrequency((int)$frequency);
         $this->colonyRepository->save($colony);
 
-        $game->addInformation(_('Die Schildfrequenz wurde geändert'));
+        $game->getInfo()->addInformation(_('Die Schildfrequenz wurde geändert'));
     }
 
     #[Override]

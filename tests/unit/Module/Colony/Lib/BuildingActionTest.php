@@ -79,7 +79,7 @@ class BuildingActionTest extends StuTestCase
             ->with($this->field, false)
             ->once();
 
-        $game->shouldReceive('addInformationf')
+        $game->shouldReceive('getInfo->addInformationf')
             ->with(
                 '%s auf Feld %d wurde demontiert',
                 'BUILDING',

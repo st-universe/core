@@ -52,7 +52,7 @@ final class Signup implements ActionControllerInterface
             $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 
-        $game->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
+        $game->getInfo()->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
     }
 
     #[Override]

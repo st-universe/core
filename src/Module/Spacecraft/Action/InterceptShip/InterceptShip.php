@@ -77,16 +77,16 @@ final class InterceptShip implements ActionControllerInterface
 
         //check if target still on position
         if ($target->getLocation() !== $ship->getLocation()) {
-            $game->addInformationf('Das Ziel ist geflüchtet');
+            $game->getInfo()->addInformationf('Das Ziel ist geflüchtet');
             return;
         }
 
         if ($ship instanceof Ship && $ship->getDockedTo() !== null) {
-            $game->addInformation('Das Schiff hat abgedockt');
+            $game->getInfo()->addInformation('Das Schiff hat abgedockt');
             $ship->setDockedTo(null);
         }
 
-        $this->interceptShipCore->intercept($wrapper, $targetWrapper, $game);
+        $this->interceptShipCore->intercept($wrapper, $targetWrapper, $game->getInfo());
 
         $this->pirateReaction->checkForPirateReaction(
             $target,

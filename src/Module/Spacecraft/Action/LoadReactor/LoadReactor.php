@@ -57,7 +57,7 @@ final class LoadReactor implements ActionControllerInterface
                 $reactor = $wrapper->getReactorWrapper();
 
                 if ($reactor === null) {
-                    $game->addInformation(sprintf(
+                    $game->getInfo()->addInformation(sprintf(
                         _('%s: Kein Reaktor vorhanden'),
                         $ship->getName()
                     ));
@@ -65,7 +65,7 @@ final class LoadReactor implements ActionControllerInterface
                 }
 
                 if (!$ship->hasEnoughCrew()) {
-                    $game->addInformation(sprintf(
+                    $game->getInfo()->addInformation(sprintf(
                         _('%s: Nicht genügend Crew vorhanden'),
                         $ship->getName()
                     ));
@@ -79,10 +79,10 @@ final class LoadReactor implements ActionControllerInterface
                     $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
                     if ($loadMessage !== null) {
-                        $game->addInformation($loadMessage);
+                        $game->getInfo()->addInformation($loadMessage);
                     }
                 } else {
-                    $game->addInformation(sprintf(
+                    $game->getInfo()->addInformation(sprintf(
                         _('%s: Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
                         $ship->getName(),
                         $reactor->get()->getSystemType()->getDescription()
@@ -90,32 +90,32 @@ final class LoadReactor implements ActionControllerInterface
 
                     foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                         $commodity = $this->commodityCache->get($commodityId);
-                        $game->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
+                        $game->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
                     }
                     continue;
                 }
             }
-            $game->addInformationMerge($msg);
+            $game->getInfo()->addInformationArray($msg, true);
             return;
         }
 
         $reactor = $wrapper->getReactorWrapper();
 
         if ($reactor === null) {
-            $game->addInformation(_('Kein Reaktor vorhanden'));
+            $game->getInfo()->addInformation(_('Kein Reaktor vorhanden'));
             return;
         }
 
         $ship = $wrapper->get();
         if (!$ship->hasEnoughCrew()) {
-            $game->addInformation(_('Nicht genügend Crew vorhanden'));
+            $game->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
 
         $systemName = $reactor->get()->getSystemType()->getDescription();
 
         if ($reactor->getLoad() >= $reactor->getCapacity()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Der %s ist bereits vollständig geladen'),
                 $systemName
             );
@@ -125,17 +125,17 @@ final class LoadReactor implements ActionControllerInterface
             $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
             if ($loadMessage !== null) {
-                $game->addInformation($loadMessage);
+                $game->getInfo()->addInformation($loadMessage);
             }
         } else {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
                 $systemName
             );
 
             foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                 $commodity = $this->commodityCache->get($commodityId);
-                $game->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
+                $game->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
             }
         }
     }

@@ -33,7 +33,7 @@ final class CreatePost implements ActionControllerInterface
 
         if (mb_strlen($text) < 1) {
             $game->setView(NewPost::VIEW_IDENTIFIER);
-            $game->addInformation(_('Es wurde kein Text eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
             return;
         }
 
@@ -57,7 +57,7 @@ final class CreatePost implements ActionControllerInterface
 
         $game->setView(Topic::VIEW_IDENTIFIER);
 
-        $game->addInformation(_('Der Beitrag wurde erstellt'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde erstellt'));
     }
 
     #[Override]

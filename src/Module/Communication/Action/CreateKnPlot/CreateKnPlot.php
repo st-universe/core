@@ -25,12 +25,12 @@ final class CreateKnPlot implements ActionControllerInterface
         $user = $game->getUser();
 
         if (mb_strlen($title) < 6) {
-            $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
 
         if (mb_strlen($title) > 80) {
-            $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
             return;
         }
 
@@ -50,7 +50,7 @@ final class CreateKnPlot implements ActionControllerInterface
 
         $plot->getMembers()->add($member);
 
-        $game->addInformation(_('Der Plot wurde erstellt'));
+        $game->getInfo()->addInformation(_('Der Plot wurde erstellt'));
 
         $game->setView(ShowPlotList::VIEW_IDENTIFIER);
     }

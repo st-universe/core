@@ -20,9 +20,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CORRUPT_BBCODES';
 
-    public function __construct(private UserRepositoryInterface $userRepository, private ShipRepositoryInterface $shipRepository, private FleetRepositoryInterface $fleetRepository, private ColonyRepositoryInterface $colonyRepository, private AllianceRepositoryInterface $allianceRepository, private Parser $bbCodeParser)
-    {
-    }
+    public function __construct(private UserRepositoryInterface $userRepository, private ShipRepositoryInterface $shipRepository, private FleetRepositoryInterface $fleetRepository, private ColonyRepositoryInterface $colonyRepository, private AllianceRepositoryInterface $allianceRepository, private Parser $bbCodeParser) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -31,16 +29,16 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
         //USERS
-        $game->addInformation("USERS:");
+        $game->getInfo()->addInformation("USERS:");
         $allUsers = $this->userRepository->findAll();
         foreach ($allUsers as $user) {
             if (!CleanTextUtils::checkBBCode($user->getName())) {
-                $game->addInformationf(_("user_id: %d, name: %s"), $user->getId(), $user->getName());
+                $game->getInfo()->addInformationf(_("user_id: %d, name: %s"), $user->getId(), $user->getName());
 
                 $textOnly = $this->bbCodeParser->parse($user->getName())->getAsText();
 
@@ -48,14 +46,14 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $this->userRepository->save($user);
             }
         }
-        $game->addInformation("Usernamen wurde bereinigt!");
+        $game->getInfo()->addInformation("Usernamen wurde bereinigt!");
 
         //SHIPS
-        $game->addInformation("SHIPS:");
+        $game->getInfo()->addInformation("SHIPS:");
         $allShips = $this->shipRepository->findAll();
         foreach ($allShips as $ship) {
             if (!CleanTextUtils::checkBBCode($ship->getName())) {
-                $game->addInformationf(_("ship_id: %d, name: %s"), $ship->getId(), $ship->getName());
+                $game->getInfo()->addInformationf(_("ship_id: %d, name: %s"), $ship->getId(), $ship->getName());
 
                 $textOnly = $this->bbCodeParser->parse($ship->getName())->getAsText();
 
@@ -63,14 +61,14 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $this->shipRepository->save($ship);
             }
         }
-        $game->addInformation("Schiffsnamen wurde bereinigt!");
+        $game->getInfo()->addInformation("Schiffsnamen wurde bereinigt!");
 
         //FLEETS
-        $game->addInformation("FLEETS:");
+        $game->getInfo()->addInformation("FLEETS:");
         $allFleets = $this->fleetRepository->findAll();
         foreach ($allFleets as $fleet) {
             if (!CleanTextUtils::checkBBCode($fleet->getName())) {
-                $game->addInformationf(_("fleet_id: %d, name: %s"), $fleet->getId(), $fleet->getName());
+                $game->getInfo()->addInformationf(_("fleet_id: %d, name: %s"), $fleet->getId(), $fleet->getName());
 
                 $textOnly = $this->bbCodeParser->parse($fleet->getName())->getAsText();
 
@@ -78,14 +76,14 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $this->fleetRepository->save($fleet);
             }
         }
-        $game->addInformation("Flottennamen wurde bereinigt!");
+        $game->getInfo()->addInformation("Flottennamen wurde bereinigt!");
 
         //COLONIES
-        $game->addInformation("COLONIES:");
+        $game->getInfo()->addInformation("COLONIES:");
         $allColonies = $this->colonyRepository->findAll();
         foreach ($allColonies as $colony) {
             if (!CleanTextUtils::checkBBCode($colony->getName())) {
-                $game->addInformationf(_("colony_id: %d, name: %s"), $colony->getId(), $colony->getName());
+                $game->getInfo()->addInformationf(_("colony_id: %d, name: %s"), $colony->getId(), $colony->getName());
 
                 $textOnly = $this->bbCodeParser->parse($colony->getName())->getAsText();
 
@@ -93,14 +91,14 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $this->colonyRepository->save($colony);
             }
         }
-        $game->addInformation("Kolonienamen wurde bereinigt!");
+        $game->getInfo()->addInformation("Kolonienamen wurde bereinigt!");
 
         //ALLIANCES
-        $game->addInformation("ALLIANCES:");
+        $game->getInfo()->addInformation("ALLIANCES:");
         $allAllys = $this->allianceRepository->findAll();
         foreach ($allAllys as $ally) {
             if (!CleanTextUtils::checkBBCode($ally->getName())) {
-                $game->addInformationf(_("alliance_id: %d, name: %s"), $ally->getId(), $ally->getName());
+                $game->getInfo()->addInformationf(_("alliance_id: %d, name: %s"), $ally->getId(), $ally->getName());
 
                 $textOnly = $this->bbCodeParser->parse($ally->getName())->getAsText();
 
@@ -108,7 +106,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $this->allianceRepository->save($ally);
             }
         }
-        $game->addInformation("Allianznamen wurde bereinigt!");
+        $game->getInfo()->addInformation("Allianznamen wurde bereinigt!");
     }
 
     #[Override]

@@ -44,14 +44,14 @@ final class EditDetails implements ActionControllerInterface
 
         $name = $this->editDetailsRequest->getName();
         if (!CleanTextUtils::checkBBCode($name)) {
-            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
             return;
         }
 
         $name = CleanTextUtils::clearEmojis($this->editDetailsRequest->getName());
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($name);
         if ($name !== $nameWithoutUnicode) {
-            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
@@ -94,23 +94,23 @@ final class EditDetails implements ActionControllerInterface
         }
 
         if (mb_strlen(trim($this->bbcodeParser->parse($name)->getAsText())) < 5) {
-            $game->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
+            $game->getInfo()->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
             return;
         }
 
         if (mb_strlen($homepage) > 0 && strpos($homepage, 'http') !== 0) {
-            $game->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
+            $game->getInfo()->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
             return;
         }
 
         if (strlen($rgbCode) > 0) {
             if (strlen($rgbCode) != 7) {
-                $game->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
+                $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
                 return;
             }
 
             if (!$this->validHex($rgbCode)) {
-                $game->addInformation(_('Der RGB-Code ist ungültig!'));
+                $game->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
                 return;
             }
 
@@ -132,7 +132,7 @@ final class EditDetails implements ActionControllerInterface
             $foundersetting->setValue($founderdescription);
             $this->allianceSettingsRepository->save($foundersetting);
         } else {
-            $game->addInformation(_('Die Beschreibung des Präsidenten muss mindestens 3 Zeichen lang sein'));
+            $game->getInfo()->addInformation(_('Die Beschreibung des Präsidenten muss mindestens 3 Zeichen lang sein'));
         }
 
         if (strlen($successordescription) > 2) {
@@ -150,7 +150,7 @@ final class EditDetails implements ActionControllerInterface
             $successorsetting->setValue($successordescription);
             $this->allianceSettingsRepository->save($successorsetting);
         } else {
-            $game->addInformation(_('Die Beschreibung des Vize-Präsidenten muss mindestens 3 Zeichen lang sein'));
+            $game->getInfo()->addInformation(_('Die Beschreibung des Vize-Präsidenten muss mindestens 3 Zeichen lang sein'));
         }
 
         if (strlen($diplomatdescription) > 2) {
@@ -168,7 +168,7 @@ final class EditDetails implements ActionControllerInterface
             $diplomatsetting->setValue($diplomatdescription);
             $this->allianceSettingsRepository->save($diplomatsetting);
         } else {
-            $game->addInformation(_('Die Beschreibung des Außenministers muss mindestens 3 Zeichen lang sein'));
+            $game->getInfo()->addInformation(_('Die Beschreibung des Außenministers muss mindestens 3 Zeichen lang sein'));
         }
 
         $alliance->setName($name);
@@ -177,7 +177,7 @@ final class EditDetails implements ActionControllerInterface
 
         $this->allianceRepository->save($alliance);
 
-        $game->addInformation(_('Die Allianz wurde editiert'));
+        $game->getInfo()->addInformation(_('Die Allianz wurde editiert'));
     }
 
     private function validHex(string $hex): int|bool

@@ -49,7 +49,7 @@ final class DeclineApplication implements ActionControllerInterface
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 
-        $game->addInformation(_('Die Bewerbung wurde abgelehnt'));
+        $game->getInfo()->addInformation(_('Die Bewerbung wurde abgelehnt'));
     }
 
     #[Override]

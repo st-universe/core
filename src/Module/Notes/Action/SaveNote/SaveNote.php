@@ -41,7 +41,7 @@ final class SaveNote implements ActionControllerInterface
         }
 
         if (mb_strlen($title) > 200) {
-            $game->addInformation(_('Der Titel ist zu lang (maximal 200 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 200 Zeichen)'));
             return;
         }
 
@@ -52,7 +52,7 @@ final class SaveNote implements ActionControllerInterface
 
         $this->noteRepository->save($note);
 
-        $game->addInformation(_('Die Notiz wurde gespeichert'));
+        $game->getInfo()->addInformation(_('Die Notiz wurde gespeichert'));
     }
 
     #[Override]

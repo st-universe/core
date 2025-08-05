@@ -59,7 +59,7 @@ final class LoadShields implements ActionControllerInterface
         $changeable->setShields($changeable->getShields() + $load);
 
         $this->colonyRepository->save($colony);
-        $game->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
+        $game->getInfo()->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
     }
 
     #[Override]

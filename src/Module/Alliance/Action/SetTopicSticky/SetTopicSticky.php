@@ -35,7 +35,7 @@ final class SetTopicSticky implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->addInformation(_('Das Thema wurde als wichtig markiert'));
+        $game->getInfo()->addInformation(_('Das Thema wurde als wichtig markiert'));
 
         $game->setView(Topic::VIEW_IDENTIFIER);
     }

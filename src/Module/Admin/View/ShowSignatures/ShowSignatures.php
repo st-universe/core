@@ -17,15 +17,13 @@ final class ShowSignatures implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'ADMIN_SHOW_SIGNATURES';
 
-    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private LoggerUtilFactoryInterface $loggerUtilFactory, private PanelLayerCreationInterface $panelLayerCreation, private LayerRepositoryInterface $layerRepository)
-    {
-    }
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private LoggerUtilFactoryInterface $loggerUtilFactory, private PanelLayerCreationInterface $panelLayerCreation, private LayerRepositoryInterface $layerRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -40,7 +38,7 @@ final class ShowSignatures implements ViewControllerInterface
 
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
-            $game->addInformation(sprintf('layerId %d existiert nicht', $layerId));
+            $game->getInfo()->addInformation(sprintf('layerId %d existiert nicht', $layerId));
             return;
         }
 

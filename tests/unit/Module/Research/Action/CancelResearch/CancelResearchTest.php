@@ -79,7 +79,7 @@ class CancelResearchTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Die laufende Forschung wurde abgebrochen')
             ->once();
         $game->shouldReceive('getUser')

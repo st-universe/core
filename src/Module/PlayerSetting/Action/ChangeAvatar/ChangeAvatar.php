@@ -30,15 +30,15 @@ final class ChangeAvatar implements ActionControllerInterface
     {
         $file = $_FILES['avatar'];
         if ($file['type'] !== 'image/png') {
-            $game->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
         if ($file['size'] > 200000) {
-            $game->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
+            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
             return;
         }
         if ($file['size'] === 0) {
-            $game->addInformation(_('Die Datei ist leer'));
+            $game->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
@@ -64,12 +64,12 @@ final class ChangeAvatar implements ActionControllerInterface
         try {
             $img = imagecreatefrompng($file['tmp_name']);
         } catch (Exception) {
-            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (!$img) {
-            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
@@ -92,7 +92,7 @@ final class ChangeAvatar implements ActionControllerInterface
             $imageName
         );
 
-        $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
+        $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
     #[Override]

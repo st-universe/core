@@ -55,7 +55,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         $databaseId = $rump->getDatabaseId();
 
         if (!$databaseId) {
-            $game->addInformation("Aktion nicht möglich, da der Rumpf keine Datenbankeinträge hat");
+            $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf keine Datenbankeinträge hat");
             return;
         }
 
@@ -65,7 +65,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         }
 
         if (!($database->getCategoryId() == DatabaseCategoryTypeEnum::SHIPRUMP->value)) {
-            $game->addInformation("Aktion nicht möglich, da der Rumpf kein Schiffsrumpf ist");
+            $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf kein Schiffsrumpf ist");
             return;
         }
 
@@ -73,13 +73,13 @@ final class FakeWarpSignature implements ActionControllerInterface
             $databaseId,
             $userId
         )) {
-            $game->addInformation("Aktion nicht möglich, da der Rumpf noch nicht entdeckt wurde");
+            $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf noch nicht entdeckt wurde");
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null) {
-            $game->addInformation(_("Kein EPS-System vorhanden"));
+            $game->getInfo()->addInformation(_("Kein EPS-System vorhanden"));
             return;
         }
 
@@ -87,7 +87,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         $warpsystem = $wrapper->getWarpDriveSystemData();
 
         if ($ship->getRumpId() == $rumpId) {
-            $game->addInformation("Aktion nicht möglich, da das Schiff bereits diesen Rumpf hat");
+            $game->getInfo()->addInformation("Aktion nicht möglich, da das Schiff bereits diesen Rumpf hat");
             return;
         }
 
@@ -96,7 +96,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         }
 
         if (!$ship->isWarped()) {
-            $game->addInformation("Aktion nicht möglich, Schiff befindet sich nicht im Warp");
+            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich nicht im Warp");
             return;
         }
 
@@ -106,13 +106,13 @@ final class FakeWarpSignature implements ActionControllerInterface
                 $rump
             );
             if ($rumpModule === null) {
-                $game->addInformation("Aktion nicht möglich, da der Rumpf keine Warp-Signatur hat");
+                $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf keine Warp-Signatur hat");
                 return;
             }
             $defaultLevel = $rumpModule->getDefaultLevel(SpacecraftModuleTypeEnum::WARPDRIVE);
             $energy = 25 * $defaultLevel;
             if ($epsSystem->getEps() < $energy) {
-                $game->addInformationF('Es wird %s Energie zum ändern der Warp-Signatur benötigt', $energy);
+                $game->getInfo()->addInformationF('Es wird %s Energie zum ändern der Warp-Signatur benötigt', $energy);
                 return;
             }
             $epsSystem->lowerEps($energy)->update();
@@ -120,7 +120,7 @@ final class FakeWarpSignature implements ActionControllerInterface
             $warpsystem->setWarpSignatureTimer($this->stuTime->time())->update();
         }
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             'Die %s emittiert nun für 5 Minuten eine Warp-Signatur des Rumpfes %s',
             $ship->getName(),
             $rump->getName()

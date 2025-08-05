@@ -46,7 +46,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
         // only Admins can trigger this
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -110,7 +110,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
 
-        $game->addInformation("Influence Areas wurden randomisiert verteilt");
+        $game->getInfo()->addInformation("Influence Areas wurden randomisiert verteilt");
     }
 
     private function spreadInCircle(Map $map, StarSystem $system): void

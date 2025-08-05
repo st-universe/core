@@ -37,7 +37,7 @@ final class ChangeTorpedoType implements ActionControllerInterface
         if ($torpedoId !== 0) {
             $availableTorpedos = $this->torpedoTypeRepository->getForUser($game->getUser()->getId());
             if (!array_key_exists($torpedoId, $availableTorpedos)) {
-                $game->addInformation(_('Unerlaubter Torpedo-Typ'));
+                $game->getInfo()->addInformation(_('Unerlaubter Torpedo-Typ'));
                 return;
             }
 
@@ -47,7 +47,7 @@ final class ChangeTorpedoType implements ActionControllerInterface
         }
         $this->colonyRepository->save($colony);
 
-        $game->addInformation(_('Die Torpedo-Sorte wurde geändert'));
+        $game->getInfo()->addInformation(_('Die Torpedo-Sorte wurde geändert'));
     }
 
     #[Override]

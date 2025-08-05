@@ -14,9 +14,7 @@ final class EditKnPlot implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_PLOT';
 
-    public function __construct(private EditKnPlotRequestInterface $editKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository)
-    {
-    }
+    public function __construct(private EditKnPlotRequestInterface $editKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -32,13 +30,13 @@ final class EditKnPlot implements ActionControllerInterface
         $plot->setTitle($title);
         $plot->setDescription($description);
         if (mb_strlen($title) < 6) {
-            $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
 
         $this->rpgPlotRepository->save($plot);
 
-        $game->addInformation(_('Der Plot wurde editiert'));
+        $game->getInfo()->addInformation(_('Der Plot wurde editiert'));
 
         $game->setView(ShowKnPlot::VIEW_IDENTIFIER);
     }

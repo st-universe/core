@@ -27,14 +27,14 @@ final class DeleteKnPost implements ActionControllerInterface
             throw new AccessViolationException();
         }
         if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
-            $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
+            $game->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
 
         $post->setDeleted(time());
         $this->knPostRepository->save($post);
 
-        $game->addInformation(_('Der Beitrag wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     #[Override]
