@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -14,15 +13,11 @@ use SysvSemaphore;
 
 interface GameControllerInterface extends InformationInterface
 {
-    public const int CONFIG_GAMESTATE = 1;
-
     public function setView(ModuleEnum|string $view): void;
 
     public function getViewContext(ViewContextTypeEnum $type): mixed;
 
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void;
-
-    public function getGameState(): GameStateEnum;
 
     public function setViewTemplate(string $viewTemplate): void;
 
@@ -108,8 +103,6 @@ interface GameControllerInterface extends InformationInterface
     public function isSemaphoreAlreadyAcquired(int $key): bool;
 
     public function addSemaphore(int $key, SysvSemaphore $semaphore): void;
-
-    public function triggerEvent(object $event): void;
 
     /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
     public function getGameStats(): array;

@@ -7,9 +7,8 @@ namespace Stu\Module\Tick;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\GameStateEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Throwable;
@@ -19,9 +18,9 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
     private LoggerUtilInterface $logger;
 
     public function __construct(
-        private FailureEmailSenderInterface $failureEmailSender,
-        private GameControllerInterface $game,
-        private EntityManagerInterface $entityManager,
+        private readonly FailureEmailSenderInterface $failureEmailSender,
+        private readonly GameStateInterface $gameState,
+        private readonly EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
@@ -79,6 +78,6 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
     #[Override]
     public function isGameStateReset(): bool
     {
-        return $this->game->getGameState() === GameStateEnum::RESET;
+        return $this->gameState->getGameState() === GameStateEnum::RESET;
     }
 }

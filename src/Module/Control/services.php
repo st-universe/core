@@ -31,13 +31,14 @@ use function DI\autowire;
 
 return [
     AccessCheckInterface::class => autowire(AccessCheck::class),
+    BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
+    ComponentSetupInterface::class => autowire(ComponentSetup::class),
+    GameStateInterface::class => autowire(GameState::class),
+    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
     StuTime::class => autowire(StuTime::class),
-    StuRandom::class => autowire(StuRandom::class),
     StuHashInterface::class => autowire(StuHash::class),
-    BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
-    GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
-    ComponentSetupInterface::class => autowire(ComponentSetup::class),
+    StuRandom::class => autowire(StuRandom::class),
     FallbackRouterInterface::class => autowire(FallbackRouter::class)
         ->constructorParameter(
             'handlers',

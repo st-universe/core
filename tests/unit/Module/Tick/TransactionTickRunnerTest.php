@@ -9,15 +9,14 @@ use InvalidArgumentException;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\GameStateEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\StuTestCase;
 
 class TransactionTickRunnerTest extends StuTestCase
 {
     private MockInterface&FailureEmailSenderInterface $failureEmailSender;
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&GameStateInterface $gameState;
     private MockInterface&EntityManagerInterface $entityManager;
 
     private TransactionTickRunnerInterface $subject;
@@ -26,12 +25,12 @@ class TransactionTickRunnerTest extends StuTestCase
     protected function setUp(): void
     {
         $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->gameState = $this->mock(GameStateInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new TransactionTickRunner(
             $this->failureEmailSender,
-            $this->game,
+            $this->gameState,
             $this->entityManager,
             $this->initLoggerUtil()
         );
@@ -39,7 +38,7 @@ class TransactionTickRunnerTest extends StuTestCase
 
     public function testRunWithResetCheckExpectNothingWhenGameInResetState(): void
     {
-        $this->game->shouldReceive('getGameState')
+        $this->gameState->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
             ->andReturn(GameStateEnum::RESET);
@@ -56,7 +55,7 @@ class TransactionTickRunnerTest extends StuTestCase
             throw new InvalidArgumentException('foo');
         };
 
-        $this->game->shouldReceive('getGameState')
+        $this->gameState->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
             ->andReturn(GameStateEnum::ONLINE);
@@ -88,7 +87,7 @@ class TransactionTickRunnerTest extends StuTestCase
             $checkVar2 = $batchGroupCount;
         };
 
-        $this->game->shouldReceive('getGameState')
+        $this->gameState->shouldReceive('getGameState')
             ->withNoArgs()
             ->once()
             ->andReturn(GameStateEnum::ONLINE);

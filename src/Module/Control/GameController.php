@@ -5,18 +5,12 @@ namespace Stu\Module\Control;
 use BadMethodCallException;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
-use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
-use Stu\Exception\MaintenanceGameStateException;
-use Stu\Exception\RelocationGameStateException;
-use Stu\Exception\ResetGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\Information\InformationInterface;
@@ -35,12 +29,10 @@ use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Twig\TwigPageInterface;
-use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -64,7 +56,6 @@ final class GameController implements GameControllerInterface
         private readonly DatabaseUserRepositoryInterface $databaseUserRepository,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly GameConfigRepositoryInterface $gameConfigRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepositoryInterface $userRepository,
         private readonly ComponentSetupInterface $componentSetup,
@@ -74,9 +65,9 @@ final class GameController implements GameControllerInterface
         private readonly GameTwigRendererInterface $gameTwigRenderer,
         private readonly FallbackRouterInterface $fallbackRouter,
         private readonly UuidGeneratorInterface $uuidGenerator,
-        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly GameRequestSaverInterface $gameRequestSaver,
         private readonly GameSetupInterface $gameSetup,
+        private readonly GameStateInterface $gameState,
         private readonly TutorialProvider $tutorialProvider,
         private readonly SessionStringFactoryInterface $sessionStringFactory,
         private readonly BenchmarkResultInterface $benchmarkResult
@@ -108,12 +99,6 @@ final class GameController implements GameControllerInterface
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
     {
         $this->gameData->viewContext[$type->value] = $value;
-    }
-
-    #[Override]
-    public function getGameState(): GameStateEnum
-    {
-        return GameStateEnum::from($this->getGameConfig()[self::CONFIG_GAMESTATE]->getValue());
     }
 
     #[Override]
@@ -242,21 +227,6 @@ final class GameController implements GameControllerInterface
     public function hasUser(): bool
     {
         return $this->session->getUser() !== null;
-    }
-
-    /**
-     * @return array<int, GameConfig>
-     */
-    private function getGameConfig(): array
-    {
-        if ($this->gameData->gameConfig === null) {
-            $this->gameData->gameConfig = [];
-
-            foreach ($this->gameConfigRepository->findAll() as $item) {
-                $this->gameData->gameConfig[$item->getOption()] = $item;
-            }
-        }
-        return $this->gameData->gameConfig;
     }
 
     #[Override]
@@ -446,7 +416,7 @@ final class GameController implements GameControllerInterface
             }
 
             $this->checkUserLock($gameRequest);
-            $this->checkGameState();
+            $this->gameState->checkGameState($this->isAdmin());
 
             // log action & view and time they took
             $startTime = hrtime(true);
@@ -535,23 +505,6 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function checkGameState(): void
-    {
-        $gameState = $this->getGameState();
-
-        if ($gameState === GameStateEnum::MAINTENANCE && !$this->isAdmin()) {
-            throw new MaintenanceGameStateException();
-        }
-
-        if ($gameState === GameStateEnum::RESET) {
-            throw new ResetGameStateException();
-        }
-
-        if ($gameState === GameStateEnum::RELOCATION) {
-            throw new RelocationGameStateException();
-        }
-    }
-
     #[Override]
     public function isAdmin(): bool
     {
@@ -586,15 +539,6 @@ final class GameController implements GameControllerInterface
     public function addSemaphore(int $key, SysvSemaphore $semaphore): void
     {
         $this->gameData->semaphores[$key] = $semaphore;
-    }
-
-    /**
-     * Triggers a certain event
-     */
-    #[Override]
-    public function triggerEvent(object $event): void
-    {
-        $this->eventDispatcher->dispatch($event);
     }
 
     private function executeCallback(ModuleEnum $module, GameRequest $gameRequest): void
@@ -665,12 +609,13 @@ final class GameController implements GameControllerInterface
     public function getGameStats(): array
     {
         if ($this->gameData->gameStats === null) {
+            $gameState = $this->gameState->getGameState();
             $this->gameData->gameStats = [
                 'currentTurn' => $this->getCurrentRound()->getTurn(),
                 'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
-                'gameState' => $this->getGameState()->value,
-                'gameStateTextual' => $this->getGameState()->getDescription()
+                'gameState' => $gameState->value,
+                'gameStateTextual' => $gameState->getDescription()
             ];
         }
         return $this->gameData->gameStats;
