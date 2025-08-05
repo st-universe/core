@@ -7,6 +7,7 @@ namespace Stu\Module\Maindesk\Action\FirstColony;
 use InvalidArgumentException;
 use Override;
 use RuntimeException;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -23,7 +24,16 @@ final class FirstColony implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
-    public function __construct(private FirstColonyRequestInterface $firstColonyRequest, private BuildingRepositoryInterface $buildingRepository, private PlanetColonizationInterface $planetColonization, private ColonyRepositoryInterface $colonyRepository, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private FirstColonyRequestInterface $firstColonyRequest,
+        private BuildingRepositoryInterface $buildingRepository,
+        private PlanetColonizationInterface $planetColonization,
+        private ColonyRepositoryInterface $colonyRepository,
+        private StorageManagerInterface $storageManager,
+        private CommodityRepositoryInterface $commodityRepository,
+        private UserRepositoryInterface $userRepository,
+        private readonly AchievementManagerInterface $achievementManager
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -87,7 +97,7 @@ final class FirstColony implements ActionControllerInterface
         $this->userRepository->save($user);
 
         // Database entries for colonyclass
-        $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
+        $this->achievementManager->checkDatabaseItem($colony->getColonyClass()->getDatabaseId(), $user);
 
         $game->redirectTo('./colony.php?id=' . $colony->getId());
     }

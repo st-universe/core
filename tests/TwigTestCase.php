@@ -21,6 +21,7 @@ use Override;
 use request;
 use RuntimeException;
 use Spatie\Snapshots\MatchesSnapshots;
+use Stu\Component\Database\AchievementManager;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
@@ -30,6 +31,7 @@ use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\JavascriptExecution;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
@@ -67,6 +69,8 @@ abstract class TwigTestCase extends StuTestCase
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(TwigPageInterface::class)->resetVariables();
         $dic->get(ComponentRegistrationInterface::class)->resetComponents();
+        AchievementManager::reset();
+        JavascriptExecution::reset();
     }
 
     public static function tearDownAfterClass(): void

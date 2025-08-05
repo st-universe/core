@@ -24,7 +24,6 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\Router\FallbackRouteException;
 use Stu\Module\Control\Router\FallbackRouterInterface;
-use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\StuLogger;
@@ -32,7 +31,6 @@ use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -53,14 +51,12 @@ final class GameController implements GameControllerInterface
         private readonly SessionInterface $session,
         private readonly SessionLoginInterface $sessionLogin,
         private readonly TwigPageInterface $twigPage,
-        private readonly DatabaseUserRepositoryInterface $databaseUserRepository,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepositoryInterface $userRepository,
         private readonly ComponentSetupInterface $componentSetup,
         private readonly Ubench $benchmark,
-        private readonly CreateDatabaseEntryInterface $createDatabaseEntry,
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
         private readonly GameTwigRendererInterface $gameTwigRenderer,
         private readonly FallbackRouterInterface $fallbackRouter,
@@ -293,40 +289,6 @@ final class GameController implements GameControllerInterface
             }
         }
         return $this->gameData->currentRound;
-    }
-
-    #[Override]
-    public function checkDatabaseItem(?int $databaseEntryId): void
-    {
-        if (
-            $databaseEntryId === null
-            || $databaseEntryId === 0
-        ) {
-            return;
-        }
-
-        $userId = $this->getUser()->getId();
-
-        if (
-            $databaseEntryId > 0
-            && !$this->databaseUserRepository->exists($userId, $databaseEntryId)
-        ) {
-            $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($this->getUser(), $databaseEntryId);
-
-            if ($entry !== null) {
-                $this->gameData->achievements[] = sprintf(
-                    _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
-                    $entry->getDescription(),
-                    $entry->getCategory()->getPoints()
-                );
-            }
-        }
-    }
-
-    #[Override]
-    public function getAchievements(): array
-    {
-        return $this->gameData->achievements;
     }
 
     #[Override]

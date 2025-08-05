@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowTradeMenu;
 
 use Override;
 use request;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -27,11 +28,12 @@ final class ShowTradeMenu implements ViewControllerInterface
      */
     public function __construct(
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
+        private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
         private TradeLibFactoryInterface $tradeLibFactory,
         private TradePostRepositoryInterface $tradePostRepository,
         private InteractionCheckerInterface $interactionChecker,
-        private SpacecraftLoaderInterface $spaceCraftLoader
+        private SpacecraftLoaderInterface $spaceCraftLoader,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
@@ -59,10 +61,8 @@ final class ShowTradeMenu implements ViewControllerInterface
 
         $databaseEntryId = $tradepost->getStation()->getDatabaseId();
 
-        if ($databaseEntryId > 0) {
-            $game->checkDatabaseItem($databaseEntryId);
-        }
-        $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
+        $this->achievementManager->checkDatabaseItem($databaseEntryId, $game->getUser());
+        $licenseInfo = $this->tradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
 
         if ($licenseInfo !== null) {
             $commodity = $licenseInfo->getCommodity();

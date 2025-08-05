@@ -13,4 +13,6 @@ interface JavascriptExecutionInterface
         string $value,
         JavascriptExecutionTypeEnum $when
     ): void;
+
+    public static function reset(): void;
 }
