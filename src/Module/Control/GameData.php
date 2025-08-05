@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use SysvSemaphore;
@@ -36,9 +35,6 @@ final class GameData
 
     /** @var array<int, SysvSemaphore> */
     public array $semaphores = [];
-
-    /** @var GameConfig[]|null */
-    public ?array $gameConfig = null;
 
     public ?GameRequest $gameRequest = null;
 

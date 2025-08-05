@@ -7,11 +7,11 @@ namespace Stu\Component\Spacecraft\System\Type;
 use Mockery;
 use Mockery\MockInterface;
 use Override;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -23,7 +23,7 @@ use Stu\StuTestCase;
 //TODO@hux test handleDamage + handleDestruction
 class WarpdriveShipSystemTest extends StuTestCase
 {
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private MockInterface&SpacecraftSystemManagerInterface $managerMock;
 
@@ -35,7 +35,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
 
         $this->managerMock = $this->mock(SpacecraftSystemManagerInterface::class);
 
@@ -48,7 +48,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->system = new WarpdriveShipSystem(
-            $this->game
+            $this->eventDispatcher
         );
     }
 
@@ -237,7 +237,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         /** @var WarpdriveActivationEvent|null */
         $event = null;
-        $this->game->shouldReceive('triggerEvent')
+        $this->eventDispatcher->shouldReceive('dispatch')
             ->with(Mockery::on(function ($arg) use (&$event): bool {
                 $event = $arg;
                 return true;

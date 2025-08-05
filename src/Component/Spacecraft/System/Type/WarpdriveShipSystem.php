@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use BadMethodCallException;
 use Override;
-use RuntimeException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 
 final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
     public function __construct(
-        private GameControllerInterface $game
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[Override]
@@ -49,7 +49,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
 
         $reactor = $wrapper->getReactorWrapper();
         if ($reactor === null) {
-            throw new RuntimeException('this should not happen, warpdrive should only be installed with potent reactor');
+            throw new BadMethodCallException('this should not happen, warpdrive should only be installed with potent reactor');
         }
 
         if (!$reactor->isHealthy()) {
@@ -69,7 +69,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         }
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
 
-        $this->game->triggerEvent(new WarpdriveActivationEvent($wrapper));
+        $this->eventDispatcher->dispatch(new WarpdriveActivationEvent($wrapper));
     }
 
     #[Override]
@@ -77,7 +77,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
     {
         $systemData = $wrapper->getWarpDriveSystemData();
         if ($systemData === null) {
-            throw new RuntimeException('this should not happen');
+            throw new BadMethodCallException('this should not happen');
         }
 
         $systemData->setWarpDrive(0)->update();
@@ -88,7 +88,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
     {
         $systemData = $wrapper->getWarpDriveSystemData();
         if ($systemData === null) {
-            throw new RuntimeException('this should not happen');
+            throw new BadMethodCallException('this should not happen');
         }
 
         if ($systemData->getWarpDrive() > $systemData->getMaxWarpDrive()) {

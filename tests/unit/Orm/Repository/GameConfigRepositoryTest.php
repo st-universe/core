@@ -13,7 +13,7 @@ use Doctrine\ORM\UnitOfWork;
 use Mockery\MockInterface;
 use Override;
 use Stu\Component\Game\GameStateEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Entity\GameConfig;
 use Stu\StuTestCase;
 
@@ -103,7 +103,7 @@ class GameConfigRepositoryTest extends StuTestCase
                     'value' => $state->value
                 ],
                 [
-                    'option' => GameControllerInterface::CONFIG_GAMESTATE
+                    'option' => GameStateInterface::CONFIG_GAMESTATE
                 ],
                 [
                     'value' => ParameterType::INTEGER

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use Override;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
@@ -19,7 +20,13 @@ final class CreateRelation implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
-    public function __construct(private CreateRelationRequestInterface $createRelationRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository) {}
+    public function __construct(
+        private readonly CreateRelationRequestInterface $createRelationRequest,
+        private readonly AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private readonly AllianceActionManagerInterface $allianceActionManager,
+        private readonly AllianceRepositoryInterface $allianceRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -69,7 +76,7 @@ final class CreateRelation implements ActionControllerInterface
         }
 
         if ($relationType === AllianceRelationTypeEnum::WAR) {
-            $game->triggerEvent(new WarDeclaredEvent(
+            $this->eventDispatcher->dispatch(new WarDeclaredEvent(
                 $alliance,
                 $counterpart,
                 $user
@@ -79,7 +86,7 @@ final class CreateRelation implements ActionControllerInterface
                 sprintf('Der Allianz %s wurde der Krieg erklärt', $counterpart->getName())
             );
         } else {
-            $game->triggerEvent(new DiplomaticRelationProposedEvent(
+            $this->eventDispatcher->dispatch(new DiplomaticRelationProposedEvent(
                 $alliance,
                 $counterpart,
                 $relationType

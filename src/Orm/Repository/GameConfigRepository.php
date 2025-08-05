@@ -9,7 +9,7 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Game\GameStateEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Entity\GameConfig;
 
 /**
@@ -43,7 +43,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
                 'value' => $state->value
             ],
             [
-                'option' => GameControllerInterface::CONFIG_GAMESTATE
+                'option' => GameStateInterface::CONFIG_GAMESTATE
             ],
             [
                 'value' => ParameterType::INTEGER
