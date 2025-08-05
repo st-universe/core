@@ -9,6 +9,8 @@ use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\MatrixScannerShipSystem;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -30,7 +32,8 @@ final class ShowColonyScan implements ViewControllerInterface
         private SpacecraftLoaderInterface $spacecraftLoader,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ColonyScanRepositoryInterface $colonyScanRepository,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[Override]
@@ -74,6 +77,18 @@ final class ShowColonyScan implements ViewControllerInterface
 
         if ($epsSystem->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
             $game->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
+            $game->setMacroInAjaxWindow('');
+            return;
+        }
+
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($colony)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_TARGET_NO_VACATION
+            ])
+            ->check($game)) {
             $game->setMacroInAjaxWindow('');
             return;
         }
