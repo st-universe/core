@@ -35,6 +35,7 @@ return [
     ComponentSetupInterface::class => autowire(ComponentSetup::class),
     GameStateInterface::class => autowire(GameState::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
+    JavascriptExecutionInterface::class => autowire(JavascriptExecution::class),
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
     StuTime::class => autowire(StuTime::class),
     StuHashInterface::class => autowire(StuHash::class),

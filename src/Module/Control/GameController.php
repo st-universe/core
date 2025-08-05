@@ -68,6 +68,7 @@ final class GameController implements GameControllerInterface
         private readonly GameRequestSaverInterface $gameRequestSaver,
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
+        private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly TutorialProvider $tutorialProvider,
         private readonly SessionStringFactoryInterface $sessionStringFactory,
         private readonly BenchmarkResultInterface $benchmarkResult
@@ -267,26 +268,9 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array
-    {
-        if (!array_key_exists($when->value, $this->gameData->execjs)) {
-            return null;
-        }
-
-        return $this->gameData->execjs[$when->value];
-    }
-
-    #[Override]
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
     {
-        match ($when) {
-            JavascriptExecutionTypeEnum::BEFORE_RENDER =>
-            $this->gameData->execjs[$when->value][] = $value,
-            JavascriptExecutionTypeEnum::AFTER_RENDER =>
-            $this->gameData->execjs[$when->value][] = $value,
-            JavascriptExecutionTypeEnum::ON_AJAX_UPDATE =>
-            $this->gameData->execjs[$when->value][] = $value
-        };
+        $this->javascriptExecution->addExecuteJS($value, $when);
     }
 
     #[Override]

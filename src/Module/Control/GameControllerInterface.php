@@ -69,9 +69,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function setPageTitle(string $title): void;
 
-    /** @return array<string>|null */
-    public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array;
-
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void;
 
     public function redirectTo(string $href): void;
