@@ -91,24 +91,24 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
     </tr>
     <tr>
         <td>
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_NBS', spacecraftId, 'kss1', 'Nahbereichssensoren aktivieren') }}
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_SHIELDS', spacecraftId, 'shldac1', 'Schilde aktivieren') }}
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_PHASER', spacecraftId, 'act_phaser1', 'Strahlenwaffen aktivieren') }}
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_TORPEDO', spacecraftId, 'act_torp1', 'Torpedobänke aktivieren') }}
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_CLOAK', spacecraftId, 'tarn1', 'Tarnung aktivieren') }}
+            {{ _self.fleetActivate('NBS', spacecraftId, 'kss1', 'Nahbereichssensoren aktivieren') }}
+            {{ _self.fleetActivate('SHIELDS',spacecraftId, 'shldac1', 'Schilde aktivieren') }}
+            {{ _self.fleetActivate('PHASER',spacecraftId, 'act_phaser1', 'Strahlenwaffen aktivieren') }}
+            {{ _self.fleetActivate('TORPEDO',spacecraftId, 'act_torp1', 'Torpedobänke aktivieren') }}
+            {{ _self.fleetActivate('CLOAK',spacecraftId, 'tarn1', 'Tarnung aktivieren') }}
             {% if SPACECRAFT.isWarpPossible %}
-            {{ _self.fleetAction('B_FLEET_ACTIVATE_WARP', spacecraftId, 'warp1', 'Warpantrieb aktivieren') }}
+            {{ _self.fleetActivate('WARPDRIVE',spacecraftId, 'warp1', 'Warpantrieb aktivieren') }}
             {% endif %}
         </td>
         <td>
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_NBS', spacecraftId, 'kss2', 'Nahbereichssensoren deaktivieren') }}
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_SHIELDS', spacecraftId, 'shldac2', 'Schilde deaktivieren') }}
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_PHASER', spacecraftId, 'act_phaser2', 'Strahlenwaffen
+            {{ _self.fleetDeactivate('NBS',spacecraftId, 'kss2', 'Nahbereichssensoren deaktivieren') }}
+            {{ _self.fleetDeactivate('SHIELDS',spacecraftId, 'shldac2', 'Schilde deaktivieren') }}
+            {{ _self.fleetDeactivate('PHASER',spacecraftId, 'act_phaser2', 'Strahlenwaffen
             deaktivieren') }}
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_TORPEDO', spacecraftId, 'act_torp2', 'Torpedobänke deaktivieren')
+            {{ _self.fleetDeactivate('TORPEDO',spacecraftId, 'act_torp2', 'Torpedobänke deaktivieren')
             }}
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_CLOAK', spacecraftId, 'tarn2', 'Tarnung deaktivieren') }}
-            {{ _self.fleetAction('B_FLEET_DEACTIVATE_WARP', spacecraftId, 'warp2', 'Warpantrieb deaktivieren') }}
+            {{ _self.fleetDeactivate('CLOAK',spacecraftId, 'tarn2', 'Tarnung deaktivieren') }}
+            {{ _self.fleetDeactivate('WARPDRIVE',spacecraftId, 'warp2', 'Warpantrieb deaktivieren') }}
         </td>
         <td>
             {{ _self.fleetAction('B_FLEET_ALERT_GREEN', spacecraftId, 'alert1_1', 'Flotte: Alarmstufe Grün') }}
@@ -437,9 +437,17 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
 {% endif %}
 {% endmacro %}
 
-{% macro fleetAction(action, shipId, icon, title) %}
+{% macro fleetActivate(type, shipId, icon, title) %}
+{{ _self.fleetAction('B_ACTIVATE_SYSTEM', shipId, icon, title, type) }}
+{% endmacro %}
+
+{% macro fleetDeactivate(type, shipId, icon, title) %}
+{{ _self.fleetAction('B_DEACTIVATE_SYSTEM', shipId, icon, title, type) }}
+{% endmacro %}
+
+{% macro fleetAction(action, shipId, icon, title, type) %}
 <a href="javascript:void(0);"
-    onClick="actionToInnerContent('{{ action }}', 'id={{ shipId }}&sstr={{ SESSIONSTRING }}');">
+    onClick="actionToInnerContent('{{ action }}', 'id={{ shipId }}&isfleet=1&type={{ type }}&sstr={{ SESSIONSTRING }}');">
     <img src="/assets/buttons/{{ icon }}.png" name="fl_{{ icon }}" title="{{ title }}" />
 </a>
 {% endmacro %}

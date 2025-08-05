@@ -29,21 +29,9 @@ use Stu\Module\Ship\Action\DisplayNotOwner\DisplayNotOwner;
 use Stu\Module\Ship\Action\DockShip\DockShip;
 use Stu\Module\Ship\Action\EscapeTractorBeam\EscapeTractorBeam;
 use Stu\Module\Ship\Action\FakeWarpSignature\FakeWarpSignature;
-use Stu\Module\Ship\Action\FleetActivateCloak\FleetActivateCloak;
-use Stu\Module\Ship\Action\FleetActivateNbs\FleetActivateNbs;
-use Stu\Module\Ship\Action\FleetActivatePhaser\FleetActivatePhaser;
-use Stu\Module\Ship\Action\FleetActivateShields\FleetActivateShields;
-use Stu\Module\Ship\Action\FleetActivateTorpedo\FleetActivateTorpedo;
-use Stu\Module\Ship\Action\FleetActivateWarp\FleetActivateWarp;
 use Stu\Module\Ship\Action\FleetAlertGreen\FleetAlertGreen;
 use Stu\Module\Ship\Action\FleetAlertRed\FleetAlertRed;
 use Stu\Module\Ship\Action\FleetAlertYellow\FleetAlertYellow;
-use Stu\Module\Ship\Action\FleetDeactivateCloak\FleetDeactivateCloak;
-use Stu\Module\Ship\Action\FleetDeactivateNbs\FleetDeactivateNbs;
-use Stu\Module\Ship\Action\FleetDeactivatePhaser\FleetDeactivatePhaser;
-use Stu\Module\Ship\Action\FleetDeactivateShields\FleetDeactivateShields;
-use Stu\Module\Ship\Action\FleetDeactivateTorpedo\FleetDeactivateTorpedo;
-use Stu\Module\Ship\Action\FleetDeactivateWarp\FleetDeactivateWarp;
 use Stu\Module\Ship\Action\HideFleet\HideFleet;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleetFromNbs;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleetInShiplist;
@@ -129,18 +117,6 @@ return [
         HideFleet::ACTION_IDENTIFIER => autowire(HideFleet::class),
         ShowFleet::ACTION_IDENTIFIER => autowire(ShowFleet::class),
         FakeWarpSignature::ACTION_IDENTIFIER => autowire(FakeWarpSignature::class),
-        FleetActivateNbs::ACTION_IDENTIFIER => autowire(FleetActivateNbs::class),
-        FleetDeactivateNbs::ACTION_IDENTIFIER => autowire(FleetDeactivateNbs::class),
-        FleetActivateShields::ACTION_IDENTIFIER => autowire(FleetActivateShields::class),
-        FleetDeactivateShields::ACTION_IDENTIFIER => autowire(FleetDeactivateShields::class),
-        FleetActivatePhaser::ACTION_IDENTIFIER => autowire(FleetActivatePhaser::class),
-        FleetDeactivatePhaser::ACTION_IDENTIFIER => autowire(FleetDeactivatePhaser::class),
-        FleetActivateTorpedo::ACTION_IDENTIFIER => autowire(FleetActivateTorpedo::class),
-        FleetDeactivateTorpedo::ACTION_IDENTIFIER => autowire(FleetDeactivateTorpedo::class),
-        FleetActivateCloak::ACTION_IDENTIFIER => autowire(FleetActivateCloak::class),
-        FleetDeactivateCloak::ACTION_IDENTIFIER => autowire(FleetDeactivateCloak::class),
-        FleetActivateWarp::ACTION_IDENTIFIER => autowire(FleetActivateWarp::class),
-        FleetDeactivateWarp::ACTION_IDENTIFIER => autowire(FleetDeactivateWarp::class),
         FleetAlertGreen::ACTION_IDENTIFIER => autowire(FleetAlertGreen::class),
         FleetAlertYellow::ACTION_IDENTIFIER => autowire(FleetAlertYellow::class),
         FleetAlertRed::ACTION_IDENTIFIER => autowire(FleetAlertRed::class),

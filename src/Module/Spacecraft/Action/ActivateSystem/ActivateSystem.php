@@ -25,11 +25,19 @@ final class ActivateSystem implements ActionControllerInterface
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $type = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
 
-        $this->helper->activate(
-            request::getIntFatal('id'),
-            $type,
-            $game->getInfo()
-        );
+        if (request::getInt('isfleet')) {
+            $this->helper->activateFleet(
+                request::getIntFatal('id'),
+                $type,
+                $game
+            );
+        } else {
+            $this->helper->activate(
+                request::getIntFatal('id'),
+                $type,
+                $game->getInfo()
+            );
+        }
 
         if ($type->isReloadOnActivation()) {
             $game->addExecuteJS(

@@ -138,7 +138,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         //Alarm-Rot check
         if ($isTractoringShipWarped) {
-            $this->alertReactionFacade->doItAll($wrapper, $game);
+            $this->alertReactionFacade->doItAll($wrapper, $game->getInfo());
         }
     }
 
