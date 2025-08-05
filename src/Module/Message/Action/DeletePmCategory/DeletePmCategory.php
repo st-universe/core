@@ -18,8 +18,7 @@ final class DeletePmCategory implements ActionControllerInterface
         private DeletePmCategoryRequestInterface $deletePmCategoryRequest,
         private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private PrivateMessageRepositoryInterface $privateMessageRepository
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,7 +38,7 @@ final class DeletePmCategory implements ActionControllerInterface
         $folder->setDeleted($timestamp);
         $this->privateMessageFolderRepository->save($folder);
 
-        $game->addInformation(_('Der Ordner wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Der Ordner wurde gelöscht'));
     }
 
     #[Override]

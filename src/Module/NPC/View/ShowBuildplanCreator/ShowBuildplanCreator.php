@@ -62,7 +62,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
                 }
 
                 if (!$isRumpInFiltered) {
-                    $game->addInformation('Dieser Rumpf darf nicht gebaut werden!');
+                    $game->getInfo()->addInformation('Dieser Rumpf darf nicht gebaut werden!');
                     return;
                 }
 

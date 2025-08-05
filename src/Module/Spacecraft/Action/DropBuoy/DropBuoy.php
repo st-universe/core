@@ -41,40 +41,40 @@ final class DropBuoy implements ActionControllerInterface
         $ship = $wrapper->get();
 
         if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO)) {
-            $game->addInformation(_("Keine nutzbare Torpedorampe vorhanden"));
+            $game->getInfo()->addInformation(_("Keine nutzbare Torpedorampe vorhanden"));
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->isCloaked()) {
-            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->isWarped()) {
-            $game->addInformation("Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->isShielded()) {
-            $game->addInformation(_("Die Schilde sind aktiviert"));
+            $game->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
         if (count($this->buoyRepository->findByUserId($userId)) >= 16) {
-            $game->addInformation(_("Es können nicht mehr als 16 Bojen platziert werden"));
+            $game->getInfo()->addInformation(_("Es können nicht mehr als 16 Bojen platziert werden"));
             return;
         }
 
         $text = request::postString('text');
 
         if ($text === false || mb_strlen($text) > 60) {
-            $game->addInformation(_("Der Text darf nicht länger als 60 Zeichen sein"));
+            $game->getInfo()->addInformation(_("Der Text darf nicht länger als 60 Zeichen sein"));
             return;
         }
 
         if ($text === '' || $text === '0') {
-            $game->addInformation(_("Der Text darf nicht leer sein"));
+            $game->getInfo()->addInformation(_("Der Text darf nicht leer sein"));
             return;
         }
 
@@ -82,14 +82,14 @@ final class DropBuoy implements ActionControllerInterface
 
         $commodity = $this->commodityRepository->find(CommodityTypeConstants::BASE_ID_BUOY);
         if ($commodity !== null && !$storage->containsKey($commodity->getId())) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es wird eine Boje benötigt')
             );
             return;
         }
 
         if ($epsSystem->getEps() < 1) {
-            $game->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
+            $game->getInfo()->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
             return;
         }
 
@@ -110,7 +110,7 @@ final class DropBuoy implements ActionControllerInterface
         $this->buoyRepository->save($buoy);
         $epsSystem->lowerEps(1)->update();
 
-        $game->addInformation(_('Die Boje wurde erfolgreich platziert'));
+        $game->getInfo()->addInformation(_('Die Boje wurde erfolgreich platziert'));
     }
 
     #[Override]

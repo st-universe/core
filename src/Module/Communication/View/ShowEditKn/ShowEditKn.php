@@ -42,7 +42,7 @@ final class ShowEditKn implements ViewControllerInterface
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME && !$game->isAdmin()) {
-            $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
+            $game->getInfo()->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(
                 sprintf('comm.php?%s=1&knid=%d', self::VIEW_IDENTIFIER, $post->getId()),

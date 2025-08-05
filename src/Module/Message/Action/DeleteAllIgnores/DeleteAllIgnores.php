@@ -13,16 +13,14 @@ final class DeleteAllIgnores implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALL_IGNORES';
 
-    public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository)
-    {
-    }
+    public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
         $this->ignoreListRepository->truncateByUser($game->getUser()->getId());
 
-        $game->addInformation(_('Die Einträge wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die Einträge wurden gelöscht'));
     }
 
     #[Override]

@@ -34,7 +34,7 @@ final class ToggleBatteryReload implements ActionControllerInterface
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $game->addInformationf('Die automatische Ladung der Ersatzbatterie ist nun %s', $epsSystem->reloadBattery() ? 'aktiv' : 'inaktiv');
+        $game->getInfo()->addInformationf('Die automatische Ladung der Ersatzbatterie ist nun %s', $epsSystem->reloadBattery() ? 'aktiv' : 'inaktiv');
     }
 
     #[Override]

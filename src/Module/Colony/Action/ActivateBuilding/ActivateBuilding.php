@@ -14,9 +14,7 @@ final class ActivateBuilding implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACTIVATE';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -28,7 +26,7 @@ final class ActivateBuilding implements ActionControllerInterface
 
         if ($field->isUnderConstruction()) {
             $field->setActivateAfterBuild(true);
-            $game->addInformation("Gebäude wird nach Bau aktiviert");
+            $game->getInfo()->addInformation("Gebäude wird nach Bau aktiviert");
         } else {
             $this->buildingAction->activate(
                 $field,

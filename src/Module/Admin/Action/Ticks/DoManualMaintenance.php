@@ -19,9 +19,7 @@ final class DoManualMaintenance implements ActionControllerInterface
     /**
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
-    public function __construct(private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory, private array $handlerList)
-    {
-    }
+    public function __construct(private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory, private array $handlerList) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -30,7 +28,7 @@ final class DoManualMaintenance implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
+            $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
             return;
         }
 
@@ -38,13 +36,13 @@ final class DoManualMaintenance implements ActionControllerInterface
         $maintenance = $this->maintenanceTickRunnerFactory->createMaintenanceTickRunner(
             array_filter(
                 $this->handlerList,
-                fn (MaintenanceHandlerInterface $handler): bool => !($handler instanceof DatabaseBackup)
+                fn(MaintenanceHandlerInterface $handler): bool => !($handler instanceof DatabaseBackup)
             )
         );
 
         $maintenance->run(1, 1);
 
-        $game->addInformation('Der Wartungs-Tick wurde durchgeführt!');
+        $game->getInfo()->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
 
     #[Override]

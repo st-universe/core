@@ -111,7 +111,7 @@ class StopEmergencyTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Notrufsignal wurde beendet')
             ->once();
 

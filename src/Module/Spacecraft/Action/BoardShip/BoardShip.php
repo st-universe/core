@@ -102,7 +102,7 @@ final class BoardShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
@@ -111,7 +111,7 @@ final class BoardShip implements ActionControllerInterface
         }
 
         if ($spacecraft->getCrewCount() === 0) {
-            $game->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
             return;
         }
 
@@ -120,7 +120,7 @@ final class BoardShip implements ActionControllerInterface
             $lastTakeover !== null
             && time() < $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS
         ) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 'Enterkommando kann erst wieder um %s entsendet werden',
                 date('H:i', $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS)
             ));
@@ -129,14 +129,14 @@ final class BoardShip implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->addInformation(_('Keine Energie vorhanden'));
+            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
 
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForBoardingAttempt($target);
         if ($user->getPrestige() < $neededPrestige) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 'Nicht genügend Prestige vorhanden, benötigt wird: %d',
                 $neededPrestige
             ));
@@ -222,7 +222,7 @@ final class BoardShip implements ActionControllerInterface
 
         $informations = $messages->getInformationDump();
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
     }
 
     private function sendPms(

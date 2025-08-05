@@ -84,7 +84,7 @@ final class DockFleet implements ActionControllerInterface
         }
 
         if ($station->isShielded()) {
-            $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
+            $game->getInfo()->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;
         }
 
@@ -129,11 +129,13 @@ final class DockFleet implements ActionControllerInterface
             try {
                 $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
             } catch (SpacecraftSystemException) {
+                // nothing to do
             }
 
             try {
                 $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             } catch (SpacecraftSystemException) {
+                // nothing to do
             }
 
             $ship->setDockedTo($station);
@@ -149,7 +151,7 @@ final class DockFleet implements ActionControllerInterface
             $epsSystem->update();
         }
 
-        $game->addInformationMerge($msg);
+        $game->getInfo()->addInformationArray($msg, true);
     }
 
     #[Override]

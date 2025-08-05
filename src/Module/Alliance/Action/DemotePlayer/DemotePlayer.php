@@ -27,8 +27,7 @@ final class DemotePlayer implements ActionControllerInterface
         private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Demotes a player
@@ -72,7 +71,7 @@ final class DemotePlayer implements ActionControllerInterface
 
         $game->setView(Management::VIEW_IDENTIFIER);
 
-        $game->addInformation('Das Mitglied wurde von seinem Posten enthoben');
+        $game->getInfo()->addInformation('Das Mitglied wurde von seinem Posten enthoben');
     }
 
     #[Override]

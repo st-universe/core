@@ -78,7 +78,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
@@ -90,25 +90,25 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $targetName = $target->getName();
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo())) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
 
         if (!$target instanceof Ship) {
-            $game->addInformation("Das Ziel kann nicht erfasst werden");
+            $game->getInfo()->addInformation("Das Ziel kann nicht erfasst werden");
             $this->abort($wrapper, $game);
             return;
         }
 
         $tractoringShip = $target->getTractoringSpacecraft();
         if ($tractoringShip !== null) {
-            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $tractoringShip->getName() . " gehalten");
+            $game->getInfo()->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $tractoringShip->getName() . " gehalten");
             $this->abort($wrapper, $game);
             return;
         }
         if ($target->getHoldingWeb() !== null && $target->getHoldingWeb()->isFinished()) {
-            $game->addInformation("Ziel kann nicht erfasst werden, da es in einem Energienetz gefangen ist");
+            $game->getInfo()->addInformation("Ziel kann nicht erfasst werden, da es in einem Energienetz gefangen ist");
             $this->abort($wrapper, $game);
             return;
         }
@@ -117,7 +117,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             && $ship instanceof Ship
             && $target->getFleetId() == $ship->getFleetId()
         ) {
-            $game->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);
+            $game->getInfo()->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);
             $this->abort($wrapper, $game);
             return;
         }
@@ -142,25 +142,25 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         //is tractor beam system still healthy?
         if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::TRACTOR_BEAM)) {
-            $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
+            $game->getInfo()->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
             return;
         }
         if ($target->getCondition()->isDestroyed()) {
-            $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
+            $game->getInfo()->addInformation("Das Ziel wurde bei dem Angriff zerstört");
             $this->abort($wrapper, $game);
             return;
         }
 
         //is nbs system still healthy?
         if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::NBS)) {
-            $game->addInformation("Abbruch, die Nahbereichssensoren wurden bei dem Angriff zerstört");
+            $game->getInfo()->addInformation("Abbruch, die Nahbereichssensoren wurden bei dem Angriff zerstört");
             $this->abort($wrapper, $game);
             return;
         }
 
 
         if ($target->isShielded()) {
-            $game->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
+            $game->getInfo()->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
             $this->abort($wrapper, $game);
             return;
         }
@@ -182,17 +182,17 @@ final class ActivateTractorBeam implements ActionControllerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
             $target
         );
-        $game->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);
+        $game->getInfo()->addInformationf("Der Traktorstrahl wurde auf die %s gerichtet", $targetName);
 
         if ($this->tractorMassPayloadUtil->isTractorSystemStressed($wrapper, $target)) {
-            $game->addInformation("[color=yellow]Die Traktoremitter sind überaus beansprucht und könnten beschädigt werden[/color]");
+            $game->getInfo()->addInformation("[color=yellow]Die Traktoremitter sind überaus beansprucht und könnten beschädigt werden[/color]");
         }
     }
 
     private function abort(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         //deactivate system
-        if (!$this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game)) {
+        if (!$this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo())) {
             throw new SystemNotDeactivatableException('TRACTOR ERROR');
         }
 

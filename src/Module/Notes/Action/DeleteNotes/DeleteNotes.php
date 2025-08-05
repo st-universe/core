@@ -42,7 +42,7 @@ final class DeleteNotes implements ActionControllerInterface
             $this->noteRepository->delete($obj);
         }
 
-        $game->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
     }
 
     #[Override]

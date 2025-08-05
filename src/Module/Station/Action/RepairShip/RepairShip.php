@@ -77,12 +77,12 @@ final class RepairShip implements ActionControllerInterface
         }
 
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
+            $game->getInfo()->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
 
         if ($ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
-            $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
+            $game->getInfo()->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
 
@@ -100,13 +100,13 @@ final class RepairShip implements ActionControllerInterface
         );
 
         if (count($jobs) > 1) {
-            $game->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt'));
+            $game->getInfo()->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt'));
             return;
         }
 
         $wrapper = $repairableShiplist[$ship->getId()];
         $ticks = $wrapper->getRepairDuration();
-        $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
+        $game->getInfo()->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
         $this->privateMessageSender->send(
             $userId,

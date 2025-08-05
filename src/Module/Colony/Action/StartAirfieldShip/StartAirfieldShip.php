@@ -87,7 +87,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE) &&
             $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, SpacecraftRump::SPECIAL_ABILITY_COLONIZE) > 0
         ) {
-            $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
+            $game->getInfo()->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
 
@@ -97,14 +97,14 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
 
         if ($hangar->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
-            $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
+            $game->getInfo()->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
 
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $hangar->getStartEnergyCosts()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $hangar->getStartEnergyCosts(),
                 $changeable->getEps()
@@ -114,7 +114,7 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $storages = $colony->getStorage();
         if (!$storages->containsKey($commodity->getId())) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
                 $commodity->getName()
@@ -158,7 +158,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $databaseEntry = $colony->getSystem()->getSystemType()->getDatabaseEntry();
         $this->achievementManager->checkDatabaseItem($databaseEntry?->getId(), $user);
         $this->achievementManager->checkDatabaseItem($rump->getDatabaseId(), $user);
-        $game->addInformation(_('Das Schiff wurde gestartet'));
+        $game->getInfo()->addInformation(_('Das Schiff wurde gestartet'));
     }
 
     /**

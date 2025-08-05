@@ -44,7 +44,7 @@ final class StationRepair implements ActionControllerInterface
         }
 
         if ($station->getCondition()->isUnderRepair()) {
-            $game->addInformation(_('Die Station wird bereits repariert.'));
+            $game->getInfo()->addInformation(_('Die Station wird bereits repariert.'));
             return;
         }
 
@@ -54,7 +54,7 @@ final class StationRepair implements ActionControllerInterface
 
         $duration = $this->repairUtil->getRepairDuration($wrapper);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             'Die Station wird repariert. Fertigstellung in %s Ticks.',
             $duration
         );

@@ -79,36 +79,36 @@ final class LandShuttle implements ActionControllerInterface
         }
 
         if ($target->isWarped()) {
-            $game->addInformation(_("Das Ziel befindet sich im Warp"));
+            $game->getInfo()->addInformation(_("Das Ziel befindet sich im Warp"));
             return;
         }
 
         if ($target->isShielded()) {
-            $game->addInformation(_("Das Ziel hat die Schilde aktiviert"));
+            $game->getInfo()->addInformation(_("Das Ziel hat die Schilde aktiviert"));
             return;
         }
 
         // check if target got shuttle ramp
         if (!$target->hasShuttleRamp()) {
-            $game->addInformation(_("Das Ziel verfügt über keine Shuttle-Rampe"));
+            $game->getInfo()->addInformation(_("Das Ziel verfügt über keine Shuttle-Rampe"));
             return;
         }
 
         // check if target shuttle ramp is healthy
         if (!$target->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->addInformation(_("Die Shuttle-Rampe des Zieles ist zerstört"));
+            $game->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist zerstört"));
             return;
         }
 
         // check if shuttle slot available
         if (!$this->hasFreeShuttleSpace($target)) {
-            $game->addInformation(_("Die Shuttle-Rampe des Zieles ist belegt"));
+            $game->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist belegt"));
             return;
         }
 
         // check if troop quarter free
         if ($this->troopTransferUtility->getFreeQuarters($target) < $shuttle->getCrewCount()) {
-            $game->addInformation(_('Das Ziel verfügt nicht über genügend Crew-Quartiere'));
+            $game->getInfo()->addInformation(_('Das Ziel verfügt nicht über genügend Crew-Quartiere'));
             return;
         }
 
@@ -122,7 +122,7 @@ final class LandShuttle implements ActionControllerInterface
         // land shuttle and transfer crew
         $this->landShuttle($shuttle, $target);
 
-        $game->addInformation("Shuttle erfolgreich gelandet");
+        $game->getInfo()->addInformation("Shuttle erfolgreich gelandet");
     }
 
     private function landShuttle(Ship $shuttle, Spacecraft $target): void

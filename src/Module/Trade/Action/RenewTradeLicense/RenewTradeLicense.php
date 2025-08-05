@@ -72,13 +72,13 @@ final class RenewTradeLicense implements ActionControllerInterface
         try {
             $this->payLicenseViaAccount($activeLicense, $licenseInfo);
         } catch (CommodityMissingException) {
-            $game->addInformation('Dein Warenkonto verfügt nicht über ausreichend Waren');
+            $game->getInfo()->addInformation('Dein Warenkonto verfügt nicht über ausreichend Waren');
             return;
         }
 
         $this->renewLicense($activeLicense, $licenseInfo);
 
-        $game->addInformation('Handelslizenz wurde erteilt');
+        $game->getInfo()->addInformation('Handelslizenz wurde erteilt');
 
         $this->privateMessageSender->send(
             $userId,

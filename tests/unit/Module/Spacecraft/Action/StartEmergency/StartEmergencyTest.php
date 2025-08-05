@@ -104,7 +104,7 @@ class StartEmergencyTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('addInformationf')
+        $game->shouldReceive('getInfo->addInformationf')
             ->with(
                 'Maximal %d Zeichen erlaubt',
                 250
@@ -163,7 +163,7 @@ class StartEmergencyTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Notrufsignal wurde gestartet')
             ->once();
 

@@ -57,7 +57,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             $wrapper,
             $this->getFlightRoute($wrapper)
         );
-        $game->addInformationWrapper($messages->getInformationDump());
+        $game->getInfo()->addInformationWrapper($messages->getInformationDump());
 
 
         $this->distributedMessageSender->distributeMessageCollection(
@@ -87,14 +87,14 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         }
 
         if ($spacecraft->getHoldingWeb() !== null && $spacecraft->getHoldingWeb()->isFinished()) {
-            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
+            $game->getInfo()->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
             return true;
         }
 
         if ($spacecraft instanceof Ship) {
 
             if ($spacecraft->isTractored()) {
-                $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+                $game->getInfo()->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
                 return true;
             }
 
@@ -106,7 +106,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
                 && $spacecraft->isFleetLeader()
                 && $fleet->getDefendedColony() !== null
             ) {
-                $game->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
+                $game->getInfo()->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
 
                 return true;
             }
@@ -116,7 +116,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
                 && $spacecraft->isFleetLeader()
                 && $fleet->getBlockedColony() !== null
             ) {
-                $game->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
+                $game->getInfo()->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
 
                 return true;
             }

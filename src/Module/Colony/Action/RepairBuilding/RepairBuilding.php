@@ -54,7 +54,7 @@ final class RepairBuilding implements ActionControllerInterface
             $this->planetFieldTypeRetriever->isOrbitField($field)
             && $colony->isBlocked()
         ) {
-            $game->addInformation(_('Gebäude im Orbit können nicht repariert werden während die Kolonie blockiert wird'));
+            $game->getInfo()->addInformation(_('Gebäude im Orbit können nicht repariert werden während die Kolonie blockiert wird'));
             return;
         }
 
@@ -72,7 +72,7 @@ final class RepairBuilding implements ActionControllerInterface
             $eps = $changeable->getEps();
         }
         if ($eps > $changeable->getEps()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
                 $eps,
                 $changeable->getEps()
@@ -90,7 +90,7 @@ final class RepairBuilding implements ActionControllerInterface
 
             $storage = $storages->get($commodityId);
             if ($storage === null) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $amount,
                     $cost->getCommodity()->getName()
@@ -98,7 +98,7 @@ final class RepairBuilding implements ActionControllerInterface
                 return;
             }
             if ($amount > $storage->getAmount()) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $amount,
                     $cost->getCommodity()->getName(),
@@ -122,7 +122,7 @@ final class RepairBuilding implements ActionControllerInterface
 
         $this->planetFieldRepository->save($field);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('%s auf Feld %d wurde repariert'),
             $building->getName(),
             $field->getFieldId()

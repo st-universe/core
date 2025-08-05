@@ -43,30 +43,30 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
         $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
         if (!$isSubspaceScannerActive) {
-            $game->addInformation(_("Das Subraum-Sensorsystem ist nicht aktiv"));
+            $game->getInfo()->addInformation(_("Das Subraum-Sensorsystem ist nicht aktiv"));
             return;
         }
 
         $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
         if (!$isMatrixScannerHealthy) {
-            $game->addInformation(_("Die Matrixsensoren sind nicht betriebsbereit"));
+            $game->getInfo()->addInformation(_("Die Matrixsensoren sind nicht betriebsbereit"));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null) {
-            $game->addInformation(_("Kein EPS-System vorhanden"));
+            $game->getInfo()->addInformation(_("Kein EPS-System vorhanden"));
             return;
         }
         if ($epsSystem->getEps() < 100) {
-            $game->addInformation(sprintf(_('Es wird 100 Energie für die Analyse benötigt')));
+            $game->getInfo()->addInformation(sprintf(_('Es wird 100 Energie für die Analyse benötigt')));
             return;
         }
         $epsSystem->lowerEps(100)->update();
         $subspaceSystem = $wrapper->getSubspaceSystemData();
 
         if ($subspaceSystem === null) {
-            $game->addInformation(_("Kein Subraumfeldsystem vorhanden"));
+            $game->getInfo()->addInformation(_("Kein Subraumfeldsystem vorhanden"));
             return;
         }
 
@@ -74,7 +74,7 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
         $subspaceSystem->setAnalyzeTime(time() - (180 - $time))->update();
         $subspaceSystem->setFlightSigId($flightSigId)->update();
 
-        $game->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
+        $game->getInfo()->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
 
         $game->addExecuteJS(
             sprintf('showSystemSettingsWindow(null, "%s"); setAjaxMandatory(false); initializeWarpTraceAnalyzer();', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),

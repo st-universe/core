@@ -14,9 +14,7 @@ final class EditContactComment implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_EDIT_CONTACT_COMMENT';
     public const int CHARACTER_LIMIT = 50;
 
-    public function __construct(private EditContactCommentRequestInterface $editContactCommentRequest, private ContactRepositoryInterface $contactRepository)
-    {
-    }
+    public function __construct(private EditContactCommentRequestInterface $editContactCommentRequest, private ContactRepositoryInterface $contactRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +27,7 @@ final class EditContactComment implements ActionControllerInterface
         $text = $this->editContactCommentRequest->getText();
 
         if (mb_strlen($text) > self::CHARACTER_LIMIT) {
-            $game->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), self::CHARACTER_LIMIT));
+            $game->getInfo()->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), self::CHARACTER_LIMIT));
             return;
         }
 
@@ -37,7 +35,7 @@ final class EditContactComment implements ActionControllerInterface
 
         $this->contactRepository->save($contact);
 
-        $game->addInformation(_('Kommentar wurde editiert'));
+        $game->getInfo()->addInformation(_('Kommentar wurde editiert'));
     }
 
     #[Override]

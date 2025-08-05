@@ -35,13 +35,13 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
 
         if ($version === '') {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Ungültige Archiv-Version!');
+            $game->getInfo()->addInformation('Ungültige Archiv-Version!');
             return;
         }
 
         if ($searchId == 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Bitte eine Original-ID angeben!');
+            $game->getInfo()->addInformation('Bitte eine Original-ID angeben!');
             return;
         }
 
@@ -49,7 +49,7 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
 
         if ($post === null) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation(sprintf('Es existiert kein Beitrag mit der Original-ID %d in Version %s', $searchId, $version));
+            $game->getInfo()->addInformation(sprintf('Es existiert kein Beitrag mit der Original-ID %d in Version %s', $searchId, $version));
             return;
         }
 

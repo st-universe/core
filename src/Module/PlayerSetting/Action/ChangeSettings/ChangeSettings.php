@@ -39,7 +39,7 @@ final class ChangeSettings implements ActionControllerInterface
             }
         }
 
-        $game->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
+        $game->getInfo()->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
     }
 
     #[Override]

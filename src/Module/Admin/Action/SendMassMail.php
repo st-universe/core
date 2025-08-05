@@ -47,7 +47,7 @@ final class SendMassMail implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -58,7 +58,7 @@ final class SendMassMail implements ActionControllerInterface
             $count = $this->sendMassPm($text, $subject);
         }
 
-        $game->addInformationf(_('Die Massen-Mail wurde an %d Spieler verschickt.'), $count);
+        $game->getInfo()->addInformationf(_('Die Massen-Mail wurde an %d Spieler verschickt.'), $count);
     }
 
     private function sendMassEmails(string $text, string $subject): int

@@ -32,7 +32,7 @@ final class DeleteTopic implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->delete($topic);
 
-        $game->addInformation(_('Das Thema wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
 
         $game->setView(Board::VIEW_IDENTIFIER);
     }

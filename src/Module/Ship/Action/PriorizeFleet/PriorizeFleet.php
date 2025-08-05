@@ -14,9 +14,7 @@ final class PriorizeFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_UP';
 
-    public function __construct(private PriorizeFleetRequestInterface $priorizeFleetRequest, private FleetRepositoryInterface $fleetRepository)
-    {
-    }
+    public function __construct(private PriorizeFleetRequestInterface $priorizeFleetRequest, private FleetRepositoryInterface $fleetRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -30,7 +28,7 @@ final class PriorizeFleet implements ActionControllerInterface
 
         $this->fleetRepository->save($fleet);
 
-        $game->addInformation(_('Die Flotte wurde nach oben sortiert'));
+        $game->getInfo()->addInformation(_('Die Flotte wurde nach oben sortiert'));
     }
 
     #[Override]

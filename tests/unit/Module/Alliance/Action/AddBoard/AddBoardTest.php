@@ -93,7 +93,7 @@ class AddBoardTest extends StuTestCase
         $game->shouldReceive('setView')
             ->with(Boards::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Der Name muss mindestens 5 Zeichen lang sein')
             ->once();
 
@@ -131,7 +131,7 @@ class AddBoardTest extends StuTestCase
         $game->shouldReceive('setView')
             ->with(Boards::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Forum wurde erstellt')
             ->once();
 

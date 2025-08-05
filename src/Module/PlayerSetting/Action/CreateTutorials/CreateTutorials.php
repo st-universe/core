@@ -34,7 +34,7 @@ final class CreateTutorials implements ActionControllerInterface
         }
 
 
-        $game->addInformation(_('Tutorial wurde neu gestartet'));
+        $game->getInfo()->addInformation(_('Tutorial wurde neu gestartet'));
     }
 
 

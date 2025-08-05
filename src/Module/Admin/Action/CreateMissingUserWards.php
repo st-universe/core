@@ -25,13 +25,13 @@ final class CreateMissingUserWards implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
         $this->createMissingUserAwards->handle();
 
-        $game->addInformation('Fehlende User Awards wurden hinzugefügt');
+        $game->getInfo()->addInformation('Fehlende User Awards wurden hinzugefügt');
     }
 
     #[Override]

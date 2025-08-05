@@ -13,7 +13,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
-use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\Session\SessionInterface;
@@ -138,54 +137,9 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function addInformationf(string $text, ...$args): InformationInterface
+    public function getInfo(): InformationWrapper
     {
-        $this->addInformation(vsprintf(
-            $text,
-            $args
-        ));
-
-        return $this;
-    }
-
-    #[Override]
-    public function addInformation(?string $information): InformationInterface
-    {
-        $this->gameData->gameInformations->addInformation($information);
-
-        return $this;
-    }
-
-    #[Override]
-    public function addInformationMerge(array $info): void
-    {
-        $this->gameData->gameInformations->addInformationArray($info, true);
-    }
-
-    /** @param array<string> $info */
-    private function addInformationMergeDown(array $info): void
-    {
-        $this->gameData->gameInformations->addInformationArray($info);
-    }
-
-    #[Override]
-    public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void
-    {
-        if ($informations === null) {
-            return;
-        }
-
-        if ($isHead) {
-            $this->addInformationMerge($informations->getInformations());
-        } else {
-            $this->addInformationMergeDown($informations->getInformations());
-        }
-    }
-
-    #[Override]
-    public function getInformation(): array
-    {
-        return $this->gameData->gameInformations->getInformations();
+        return $this->gameData->gameInformations;
     }
 
     #[Override]
@@ -370,7 +324,7 @@ final class GameController implements GameControllerInterface
             } catch (SanityCheckException $e) {
                 $gameRequest->addError($e);
             } catch (EntityLockedException $e) {
-                $this->addInformation($e->getMessage());
+                $this->getInfo()->addInformation($e->getMessage());
             }
             $actionMs = hrtime(true) - $startTime;
 
@@ -380,7 +334,7 @@ final class GameController implements GameControllerInterface
             } catch (SanityCheckException $e) {
                 $gameRequest->addError($e);
             } catch (EntityLockedException $e) {
-                $this->addInformation($e->getMessage());
+                $this->getInfo()->addInformation($e->getMessage());
                 $this->setMacroInAjaxWindow('');
             }
             $viewMs = hrtime(true) - $startTime;

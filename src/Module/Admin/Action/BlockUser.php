@@ -41,7 +41,7 @@ final class BlockUser implements ActionControllerInterface
         $this->loggerUtil->log('A');
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -52,13 +52,13 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser = $this->blockedUserRepository->find($userIdToBlock);
 
         if ($userToBlock === null) {
-            $game->addInformation(_('Der User konnte nicht gefunden werden!'));
+            $game->getInfo()->addInformation(_('Der User konnte nicht gefunden werden!'));
             return;
         }
 
         if ($blockedUser !== null) {
             $this->loggerUtil->log('D');
-            $game->addInformation(_('Dieser User ist bereits blockiert!'));
+            $game->getInfo()->addInformation(_('Dieser User ist bereits blockiert!'));
             return;
         }
 
@@ -82,7 +82,7 @@ final class BlockUser implements ActionControllerInterface
 
         $this->loggerUtil->log('E');
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
+        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
     }
 
     #[Override]

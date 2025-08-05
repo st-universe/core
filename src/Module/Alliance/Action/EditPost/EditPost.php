@@ -39,7 +39,7 @@ final class EditPost implements ActionControllerInterface
 
         $this->allianceBoardPostRepository->save($post);
 
-        $game->addInformation(_('Der Beitrag wurde editiert'));
+        $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
     #[Override]

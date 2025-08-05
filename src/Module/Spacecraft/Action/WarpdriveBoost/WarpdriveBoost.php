@@ -37,7 +37,7 @@ final class WarpdriveBoost implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER, $game);
+        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER, $game->getInfo());
         if ($activated) {
             $warpdrive = $wrapper->getWarpDriveSystemData();
             if ($warpdrive === null) {
@@ -52,7 +52,7 @@ final class WarpdriveBoost implements ActionControllerInterface
             );
             $warpdrive->setWarpDrive($newValue)->update();
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 'Der Warpdrive wurde um %d Einheiten aufgeladen',
                 $newValue - $currentValue
             );

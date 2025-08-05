@@ -27,7 +27,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
         if ($layer->isFinished()) {
             if ($game !== null) {
-                $game->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
+                $game->getInfo()->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
             }
             return 0;
         }
@@ -45,7 +45,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
             if (!array_key_exists($count, $randomNames)) {
                 if ($game !== null) {
-                    $game->addInformation('Keine freien Systemnamen mehr verfügbar!');
+                    $game->getInfo()->addInformation('Keine freien Systemnamen mehr verfügbar!');
                 }
 
                 break;

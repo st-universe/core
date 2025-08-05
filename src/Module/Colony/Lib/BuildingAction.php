@@ -30,7 +30,7 @@ final class BuildingAction implements BuildingActionInterface
             return;
         }
         if ($field->hasHighDamage()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Das Gebäude (%s) kann aufgrund zu starker Beschädigung nicht aktiviert werden'),
                 $building->getName()
             );
@@ -42,7 +42,7 @@ final class BuildingAction implements BuildingActionInterface
             $host instanceof Colony
             && $host->getChangeable()->getWorkless() < $building->getWorkers()
         ) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Zum Aktivieren des Gebäudes (%s) werden %s Arbeiter benötigt'),
                 $building->getName(),
                 $building->getWorkers()
@@ -52,7 +52,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $this->buildingManager->activate($field);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('%s auf Feld %s wurde aktiviert'),
             $building->getName(),
             $field->getFieldId()
@@ -75,7 +75,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $this->buildingManager->deactivate($field);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('%s auf Feld %s wurde deaktiviert'),
             $building->getName(),
             $field->getFieldId()
@@ -100,7 +100,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $this->buildingManager->remove($field, $isDueToUpgrade);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('%s auf Feld %d wurde demontiert'),
             $building->getName(),
             $field->getFieldId()
@@ -112,7 +112,7 @@ final class BuildingAction implements BuildingActionInterface
             return;
         }
 
-        $game->addInformation(_('Es konnten folgende Waren recycled werden'));
+        $game->getInfo()->addInformation(_('Es konnten folgende Waren recycled werden'));
 
         foreach ($building->getCosts() as $value) {
             $halfAmount = $value->getHalfAmount();
@@ -122,12 +122,12 @@ final class BuildingAction implements BuildingActionInterface
                 $amount = $halfAmount;
             }
             if ($amount <= 0) {
-                $game->addInformation(_('[b][color=#ff2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
+                $game->getInfo()->addInformation(_('[b][color=#ff2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
             $this->storageManager->upperStorage($host, $value->getCommodity(), $amount);
 
-            $game->addInformationf('%d %s', $amount, $value->getCommodity()->getName());
+            $game->getInfo()->addInformationf('%d %s', $amount, $value->getCommodity()->getName());
         }
     }
 }

@@ -83,7 +83,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $promotedPlayerId, $text);
 
-        $game->addInformation('Das Mitglied wurde befördert');
+        $game->getInfo()->addInformation('Das Mitglied wurde befördert');
     }
 
     private function setFounder(AllianceJob $founderJob, User $promotedPlayer, GameControllerInterface $game): string

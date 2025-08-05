@@ -79,7 +79,7 @@ final class Terraform implements ActionControllerInterface
         } else {
             $field->setFieldType($terraforming->getToFieldTypeId());
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('%s wurde durchgeführt'),
                 $terraforming->getDescription()
             );
@@ -105,7 +105,7 @@ final class Terraform implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($terraforming->getEnergyCosts() > $changeable->getEps()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
                 $terraforming->getEnergyCosts(),
                 $changeable->getEps()
@@ -123,7 +123,7 @@ final class Terraform implements ActionControllerInterface
             $commodityId = $obj->getCommodityId();
             $storage = $storages->get($obj->getCommodityId());
             if ($storage === null) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName()
@@ -132,7 +132,7 @@ final class Terraform implements ActionControllerInterface
             }
 
             if ($obj->getAmount() > $storage->getAmount()) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
@@ -168,7 +168,7 @@ final class Terraform implements ActionControllerInterface
 
         $field->setTerraforming($terraforming);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
             $terraforming->getDescription(),
             date('d.m.Y H:i', $time)

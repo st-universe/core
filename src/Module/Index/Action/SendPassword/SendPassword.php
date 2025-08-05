@@ -34,12 +34,12 @@ final class SendPassword implements ActionControllerInterface
         $emailAddress = $this->sendPasswordRequest->getEmailAddress();
 
         if (mb_strlen($emailAddress) == 0) {
-            $game->addInformation(_('Die eMail-Adresse ist nicht gültig'));
+            $game->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
         $user = $this->userRepository->getByEmail($emailAddress);
         if ($user === null) {
-            $game->addInformation(_('Die eMail-Adresse ist nicht gültig'));
+            $game->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
 
@@ -71,10 +71,10 @@ Das Star Trek Universe Team\n
         try {
             $mail->send();
         } catch (RuntimeException) {
-            $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
+            $game->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
             return;
         }
-        $game->addInformation(_('Die eMail wurde verschickt'));
+        $game->getInfo()->addInformation(_('Die eMail wurde verschickt'));
     }
 
     #[Override]

@@ -183,7 +183,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
 
 
-        $game->addInformation(sprintf(
+        $game->getInfo()->addInformation(sprintf(
             _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s Uhr aushandeln'),
             $this->stuTime->transformToStuDateTime($timestamp)
         ));

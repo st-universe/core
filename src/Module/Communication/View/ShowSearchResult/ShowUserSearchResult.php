@@ -30,14 +30,14 @@ final class ShowUserSearchResult implements ViewControllerInterface
 
         if ($this->showSearchResultRequest->getSearchId() == 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Bitte eine Spieler-ID angeben!');
+            $game->getInfo()->addInformation('Bitte eine Spieler-ID angeben!');
 
             return;
         }
 
         $posts = $this->knPostRepository->getByUser($this->showSearchResultRequest->getSearchId());
 
-        $game->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
+        $game->getInfo()->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
 
         $game->setTemplateVar(
             'KN_POSTINGS',

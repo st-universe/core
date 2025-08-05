@@ -199,7 +199,7 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($allianceName);
 
-        $this->game->shouldReceive('addInformation')
+        $this->game->shouldReceive('getInfo->addInformation')
             ->with('Das Mitglied wurde von seinem Posten enthoben')
             ->once();
         $this->game->shouldReceive('setView')

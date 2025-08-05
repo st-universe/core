@@ -31,14 +31,14 @@ final class DeleteBuildPlan implements ActionControllerInterface
             || $spacecraftBuildplan->getUserId() !== $userId
             || $this->buildPlanDeleter->isDeletable($spacecraftBuildplan) === false
         ) {
-            $game->addInformation('Der Bauplan konnte nicht gelöscht werden');
+            $game->getInfo()->addInformation('Der Bauplan konnte nicht gelöscht werden');
 
             return;
         }
 
         $this->buildPlanDeleter->delete($spacecraftBuildplan);
 
-        $game->addInformation('Der Bauplan wurde gelöscht');
+        $game->getInfo()->addInformation('Der Bauplan wurde gelöscht');
     }
 
     #[Override]

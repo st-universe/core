@@ -69,7 +69,7 @@ final class PlanAstroMapping implements ActionControllerInterface
 
         // system needs to be active
         if (!$ship->getAstroState()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
             return;
         }
 
@@ -87,7 +87,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $game->addInformation("Kartographie-Messpunkte wurden ermittelt");
+        $game->getInfo()->addInformation("Kartographie-Messpunkte wurden ermittelt");
     }
 
 

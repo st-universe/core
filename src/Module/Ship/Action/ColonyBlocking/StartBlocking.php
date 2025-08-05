@@ -58,12 +58,12 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         if ($currentColony->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         if ($currentColony->isDefended()) {
-            $game->addInformation(_('Aktion nicht möglich, die Kolonie wird verteidigt!'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird verteidigt!'));
             return;
         }
 
@@ -72,7 +72,7 @@ final class StartBlocking implements ActionControllerInterface
             || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::PARTICLE_PHALANX)
             || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::ANTI_PARTICLE)
         ) {
-            $game->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
+            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
             return;
         }
 
@@ -80,7 +80,7 @@ final class StartBlocking implements ActionControllerInterface
         $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s blockiert'), $currentColony->getName(), $fleet->getName());
-        $game->addInformation($text);
+        $game->getInfo()->addInformation($text);
 
         $this->privateMessageSender->send(
             $userId,

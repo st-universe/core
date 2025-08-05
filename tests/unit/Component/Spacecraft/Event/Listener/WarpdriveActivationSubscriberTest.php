@@ -9,6 +9,7 @@ use Override;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
@@ -84,6 +85,12 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
         $event = $this->mock(WarpdriveActivationEvent::class);
         $traktoredShipWrapper = $this->mock(ShipWrapperInterface::class);
         $traktoredShip = $this->mock(Ship::class);
+        $info = $this->mock(InformationWrapper::class);
+
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($info);
 
         $event->shouldReceive('getWrapper')
             ->withNoArgs()
@@ -109,7 +116,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
             ->once();
 
         $this->tractorMassPayloadUtil->shouldReceive('tryToTow')
-            ->with($this->wrapper, $traktoredShip, $this->game)
+            ->with($this->wrapper, $traktoredShip, $info)
             ->once()
             ->andReturnFalse();
 
@@ -121,6 +128,12 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
         $event = $this->mock(WarpdriveActivationEvent::class);
         $traktoredShipWrapper = $this->mock(ShipWrapperInterface::class);
         $traktoredShip = $this->mock(Ship::class);
+        $info = $this->mock(InformationWrapper::class);
+
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($info);
 
         $event->shouldReceive('getWrapper')
             ->withNoArgs()
@@ -149,7 +162,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
             ->once();
 
         $this->tractorMassPayloadUtil->shouldReceive('tryToTow')
-            ->with($this->wrapper, $traktoredShip, $this->game)
+            ->with($this->wrapper, $traktoredShip, $info)
             ->once()
             ->andReturnTrue();
 

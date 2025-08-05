@@ -18,9 +18,7 @@ final class DeleteAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_AVATAR';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -58,7 +56,7 @@ final class DeleteAvatar implements ActionControllerInterface
             $this->allianceRepository->save($alliance);
         }
 
-        $game->addInformation(_('Das Bild wurde gelöscht'));
+        $game->getInfo()->addInformation(_('Das Bild wurde gelöscht'));
     }
 
     #[Override]

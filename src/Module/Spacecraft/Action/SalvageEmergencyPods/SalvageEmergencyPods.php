@@ -75,24 +75,24 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
         if ($target->getCrewCount() == 0) {
-            $game->addInformation('Keine Rettungskapseln vorhanden');
+            $game->getInfo()->addInformation('Keine Rettungskapseln vorhanden');
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->addInformationf('Zum Bergen der Rettungskapseln wird %d Energie benötigt', 1);
+            $game->getInfo()->addInformationf('Zum Bergen der Rettungskapseln wird %d Energie benötigt', 1);
             return;
         }
         if ($this->cancelRepair->cancelRepair($spacecraft)) {
-            $game->addInformation("Die Reparatur wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($spacecraft instanceof Ship && $this->cancelRetrofit->cancelRetrofit($spacecraft)) {
-            $game->addInformation("Die Umrüstung wurde abgebrochen");
+            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
@@ -102,7 +102,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($spacecraft->getLocation());
         if ($closestTradepost === null) {
-            $game->addInformation('Kein Handelposten in der Nähe, an den die Crew überstellt werden könnte');
+            $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die Crew überstellt werden könnte');
             return;
         }
 
@@ -175,7 +175,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     }
                 }
                 if (!$sentGameInfoForForeignCrew) {
-                    $game->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
+                    $game->getInfo()->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
                     $sentGameInfoForForeignCrew = true;
                 }
             } elseif ($this->gotEnoughFreeTroopQuarters($spacecraft, $count)) {
@@ -186,9 +186,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                         $this->shipCrewRepository->save($crewAssignment);
                     }
                 }
-                $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
+                $game->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
             } else {
-                $game->addInformation($this->transferToClosestLocation->transfer(
+                $game->getInfo()->addInformation($this->transferToClosestLocation->transfer(
                     $spacecraft,
                     $target,
                     $count,

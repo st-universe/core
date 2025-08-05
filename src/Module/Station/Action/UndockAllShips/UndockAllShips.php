@@ -33,7 +33,7 @@ final class UndockAllShips implements ActionControllerInterface
         $dockedShipsCount = $station->getDockedShipCount();
         $this->shipUndocking->undockAllDocked($station);
 
-        $game->addInformationf('Alle %d Schiffe wurden erfolgreich abgedockt', $dockedShipsCount);
+        $game->getInfo()->addInformationf('Alle %d Schiffe wurden erfolgreich abgedockt', $dockedShipsCount);
     }
 
     #[Override]

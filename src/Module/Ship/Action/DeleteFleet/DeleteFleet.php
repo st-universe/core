@@ -35,7 +35,7 @@ final class DeleteFleet implements ActionControllerInterface
         $informations = new InformationWrapper();
         $this->cancelColonyBlockOrDefend->work($ship, $informations);
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
 
         foreach ($fleet->getShips() as $fleetShip) {
             $fleetShip->setFleet(null);
@@ -46,7 +46,7 @@ final class DeleteFleet implements ActionControllerInterface
 
         $this->fleetRepository->delete($fleet);
 
-        $game->addInformation(_('Die Flotte wurde aufgelöst'));
+        $game->getInfo()->addInformation(_('Die Flotte wurde aufgelöst'));
     }
 
     #[Override]

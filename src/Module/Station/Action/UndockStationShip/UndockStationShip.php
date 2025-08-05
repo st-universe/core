@@ -55,7 +55,7 @@ final class UndockStationShip implements ActionControllerInterface
 
         $this->shipUndocking->undockShip($station, $target);
 
-        $game->addInformationf('Die %s wurde erfolgreich abgedockt', $target->getName());
+        $game->getInfo()->addInformationf('Die %s wurde erfolgreich abgedockt', $target->getName());
     }
 
     #[Override]

@@ -32,12 +32,12 @@ final class DeleteSpacecraft implements ActionControllerInterface
 
         // only Admins or NPC can trigger
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid')) {
-            $game->addInformation("Es wurde kein Spacecraft ausgewählt");
+            $game->getInfo()->addInformation("Es wurde kein Spacecraft ausgewählt");
             return;
         } else {
             $spacecraftIdInput = request::postString('spacecraftid');
@@ -47,12 +47,12 @@ final class DeleteSpacecraft implements ActionControllerInterface
             $reason = $reason === false ? '' : $reason;
 
             if ($game->getUser()->isNpc() && $reason === '') {
-                $game->addInformation("Grund fehlt");
+                $game->getInfo()->addInformation("Grund fehlt");
                 return;
             }
 
             if (!preg_match('/^[\d\s,]+$/', $spacecraftIdInput)) {
-                $game->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
+                $game->getInfo()->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
                 return;
             }
 
@@ -67,7 +67,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
             );
 
             if ($spacecraftIds === []) {
-                $game->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
+                $game->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
                 return;
             }
 
@@ -76,14 +76,14 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 $wrapper = $this->spacecraftLoader->find((int)$spacecraftId);
 
                 if ($wrapper === null) {
-                    $game->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
+                    $game->getInfo()->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
                     continue;
                 }
 
                 $spacecraft = $wrapper->get();
 
                 if ($spacecraft->isStation()) {
-                    $game->addInformation("Stationen können nicht gelöscht werden");
+                    $game->getInfo()->addInformation("Stationen können nicht gelöscht werden");
                     continue;
                 }
 
@@ -107,9 +107,9 @@ final class DeleteSpacecraft implements ActionControllerInterface
             }
 
             if ($deletedCount > 0) {
-                $game->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
+                $game->getInfo()->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
             } else {
-                $game->addInformation("Es wurden keine Schiffe gelöscht");
+                $game->getInfo()->addInformation("Es wurden keine Schiffe gelöscht");
             }
         }
     }

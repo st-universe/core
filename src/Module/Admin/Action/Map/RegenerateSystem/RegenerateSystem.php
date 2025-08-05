@@ -43,7 +43,7 @@ final class RegenerateSystem implements ActionControllerInterface
         }
 
         if ($layer->isFinished()) {
-            $game->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
+            $game->getInfo()->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
             return;
         }
 
@@ -54,7 +54,7 @@ final class RegenerateSystem implements ActionControllerInterface
 
         $this->starSystemCreation->recreateStarSystem($map, $systemName->getName());
 
-        $game->addInformation('Das System wurde neu generiert.');
+        $game->getInfo()->addInformation('Das System wurde neu generiert.');
     }
 
     #[Override]

@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Control\SystemActivation;
 use Stu\Component\Spacecraft\System\Control\SystemDeactivation;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -79,6 +80,11 @@ class AlertStateManagerTest extends StuTestCase
         string $expectedInfo
     ): void {
         $spacecraft = $this->mock(Spacecraft::class);
+        $info = $this->mock(InformationWrapper::class);
+
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $this->target->shouldReceive('get')
             ->withNoArgs()
@@ -103,7 +109,7 @@ class AlertStateManagerTest extends StuTestCase
 
         foreach ($expectedActivations as $expectedActivation) {
             $this->systemActivation->shouldReceive('activateIntern')
-                ->with($this->target, $expectedActivation, $this->game, false)
+                ->with($this->target, $expectedActivation, $info, false)
                 ->once();
         }
         foreach ($expectedDeactivations as $expectedDectivation) {
@@ -112,7 +118,7 @@ class AlertStateManagerTest extends StuTestCase
                 ->once()
                 ->andReturnTrue();
             $this->systemDeactivation->shouldReceive('deactivateIntern')
-                ->with($this->target, $expectedDectivation, $this->game)
+                ->with($this->target, $expectedDectivation, $info)
                 ->once();
         }
 
@@ -120,7 +126,7 @@ class AlertStateManagerTest extends StuTestCase
             ->with($spacecraft)
             ->times(2);
 
-        $this->game->shouldReceive('addInformation')
+        $info->shouldReceive('addInformation')
             ->with($expectedInfo)
             ->once();
 

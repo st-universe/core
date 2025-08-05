@@ -14,9 +14,7 @@ final class ResetCaches implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_RESET_CACHES';
 
-    public function __construct(private CacheItemPoolInterface $cache)
-    {
-    }
+    public function __construct(private CacheItemPoolInterface $cache) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -25,13 +23,13 @@ final class ResetCaches implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
         $this->cache->clear();
 
-        $game->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
+        $game->getInfo()->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
     }
 
     #[Override]

@@ -34,7 +34,7 @@ final class LeaveFleet implements ActionControllerInterface
 
             $this->entferneSchiffAusFlotte($ship, $game);
         } catch (EntityLockedException $e) {
-            $game->addInformation($e->getMessage());
+            $game->getInfo()->addInformation($e->getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ final class LeaveFleet implements ActionControllerInterface
 
         $this->shipLoader->save($ship);
 
-        $game->addInformation(
+        $game->getInfo()->addInformation(
             sprintf(_('Die %s hat die Flotte verlassen'), $ship->getName())
         );
     }

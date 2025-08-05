@@ -34,7 +34,7 @@ final class ActivateVacation implements ActionControllerInterface
 
             $game->redirectTo(sprintf('/%s.php', ModuleEnum::INDEX->value));
         } else {
-            $game->addInformation(
+            $game->getInfo()->addInformation(
                 _('Urlaubsmodus ist noch gesperrt. Letzte Aktivierung ist weniger als eine Woche her!')
             );
         }

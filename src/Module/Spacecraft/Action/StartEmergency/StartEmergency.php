@@ -48,12 +48,12 @@ final class StartEmergency implements ActionControllerInterface
         $text = $this->startEmergencyRequest->getEmergencyText();
 
         if (mb_strlen(trim($text)) < 1) {
-            $game->addInformation('Nachricht leer oder unzulässige Zeichen verwendet.');
+            $game->getInfo()->addInformation('Nachricht leer oder unzulässige Zeichen verwendet.');
             return;
         }
 
         if (mb_strlen($text) > self::CHARACTER_LIMIT) {
-            $game->addInformationf('Maximal %d Zeichen erlaubt', self::CHARACTER_LIMIT);
+            $game->getInfo()->addInformationf('Maximal %d Zeichen erlaubt', self::CHARACTER_LIMIT);
             return;
         }
 
@@ -64,7 +64,7 @@ final class StartEmergency implements ActionControllerInterface
         $this->spacecraftEmergencyRepository->save($emergency);
         $wrapper->getComputerSystemDataMandatory()->setIsInEmergency(true)->update();
 
-        $game->addInformation('Das Notrufsignal wurde gestartet');
+        $game->getInfo()->addInformation('Das Notrufsignal wurde gestartet');
     }
 
     #[Override]

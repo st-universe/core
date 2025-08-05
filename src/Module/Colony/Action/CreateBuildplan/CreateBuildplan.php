@@ -89,7 +89,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 && $moduleLevels->isMandatory($moduleType)
                 && count($module) == 0
             ) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     $moduleType->getDescription()
                 );
@@ -110,7 +110,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 }
 
                 if ($specialCount > $rump->getBaseValues()->getSpecialSlots()) {
-                    $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $game->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
                     $this->exitOnError($game);
                     $error = true;
                 }
@@ -141,7 +141,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
-            $game->addInformation(_('Crew-Maximum wurde überschritten'));
+            $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
             $this->exitOnError($game);
             return;
         }
@@ -156,13 +156,13 @@ final class CreateBuildplan implements ActionControllerInterface
             $planname = CleanTextUtils::clearEmojis($plannameFromRequest);
             $nameWithoutUnicode = CleanTextUtils::clearUnicode($planname);
             if ($planname !== $nameWithoutUnicode) {
-                $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+                $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
                 $this->exitOnError($game);
                 return;
             }
 
             if (mb_strlen($planname) > 255) {
-                $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+                $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
                 $this->exitOnError($game);
                 return;
             }
@@ -176,7 +176,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
 
         if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $planname) !== null) {
-            $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            $game->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             $this->exitOnError($game);
             return;
         }
@@ -185,13 +185,13 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $existingPlan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($existingPlan !== null) {
-            $game->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
+            $game->getInfo()->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
             $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $existingPlan->getId());
 
             return;
         }
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('Lege neuen Bauplan an: %s'),
             $planname
         );

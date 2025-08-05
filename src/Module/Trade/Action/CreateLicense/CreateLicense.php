@@ -44,12 +44,12 @@ final class CreateLicense implements ActionControllerInterface
         $days = $this->createLicenseRequest->getLicenseDays();
 
         if ($days < 1 || $days > 365) {
-            $game->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
+            $game->getInfo()->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
             return;
         }
 
         if ($giveAmount < 1 || $commodityId < 1) {
-            $game->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
+            $game->getInfo()->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
             return;
         }
 
@@ -68,7 +68,7 @@ final class CreateLicense implements ActionControllerInterface
         $this->TradeLicenseInfoRepository->save($setLicense);
 
 
-        $game->addInformation('Handelslizenz geändert');
+        $game->getInfo()->addInformation('Handelslizenz geändert');
     }
 
     #[Override]

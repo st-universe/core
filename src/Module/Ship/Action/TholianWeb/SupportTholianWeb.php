@@ -79,12 +79,12 @@ final class SupportTholianWeb implements ActionControllerInterface
         }
 
         if ($ship->isWarped()) {
-            $game->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game->getInfo())) {
             return;
         }
 
@@ -115,7 +115,7 @@ final class SupportTholianWeb implements ActionControllerInterface
             );
         }
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             "Der Aufbau des Energienetz wird unterstützt, Fertigstellung: %s",
             $finishTimeString
         );

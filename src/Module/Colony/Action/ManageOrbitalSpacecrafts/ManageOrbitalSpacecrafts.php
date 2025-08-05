@@ -46,7 +46,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
 
         $spacecraftIds = request::postArray('spacecrafts');
         if (count($spacecraftIds) == 0) {
-            $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
+            $game->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
         $msg = [];
@@ -66,7 +66,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         }
         $this->colonyRepository->save($colony);
 
-        $game->addInformationMerge($msg);
+        $game->getInfo()->addInformationArray($msg, true);
     }
 
     /**

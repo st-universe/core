@@ -40,10 +40,10 @@ final class SetPopulationLimit implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         if ($limit > 0) {
-            $game->addInformationf(_('Das Bevölkerungslimit wurde auf %d gesetzt'), $limit);
+            $game->getInfo()->addInformationf(_('Das Bevölkerungslimit wurde auf %d gesetzt'), $limit);
         }
         if ($limit == 0) {
-            $game->addInformation(_('Das Bevölkerungslimit wurde aufgehoben'));
+            $game->getInfo()->addInformation(_('Das Bevölkerungslimit wurde aufgehoben'));
         }
     }
 

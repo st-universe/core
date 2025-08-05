@@ -21,9 +21,7 @@ final class AddBoard implements ActionControllerInterface
 
     private const int NAME_LENGTH_CONSTRAINT = 5;
 
-    public function __construct(private AddBoardRequestInterface $addBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private AddBoardRequestInterface $addBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     /**
      * @throws AccessViolationException
@@ -49,7 +47,7 @@ final class AddBoard implements ActionControllerInterface
         $name = $this->addBoardRequest->getBoardName();
 
         if (mb_strlen($name) < self::NAME_LENGTH_CONSTRAINT) {
-            $game->addInformation(_('Der Name muss mindestens 5 Zeichen lang sein'));
+            $game->getInfo()->addInformation(_('Der Name muss mindestens 5 Zeichen lang sein'));
             return;
         }
 
@@ -59,7 +57,7 @@ final class AddBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->save($board);
 
-        $game->addInformation(_('Das Forum wurde erstellt'));
+        $game->getInfo()->addInformation(_('Das Forum wurde erstellt'));
     }
 
     #[Override]

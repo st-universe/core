@@ -65,31 +65,31 @@ final class EpsTransfer implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
         $eps = $wrapper->getEpsSystemData();
 
         if ($eps === null || $eps->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
 
         $load = request::postInt('ecount');
         if ($load < 1) {
-            $game->addInformation(_("Es wurde keine Energiemenge angegeben"));
+            $game->getInfo()->addInformation(_("Es wurde keine Energiemenge angegeben"));
             return;
         }
 
         $targetEps = $targetWrapper->getEpsSystemData();
 
         if ($targetEps === null) {
-            $game->addInformation(sprintf(_('Die %s hat kein Energiesystem installiert'), $target->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Die %s hat kein Energiesystem installiert'), $target->getName()));
             return;
         }
         if ($targetEps->getBattery() >= $targetEps->getMaxBattery()) {
-            $game->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
             return;
         }
         if ($load * 3 > $eps->getEps()) {
@@ -107,7 +107,7 @@ final class EpsTransfer implements ActionControllerInterface
             "Die " . $ship->getName() . " transferiert in Sektor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
-        $game->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
+        $game->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
     #[Override]

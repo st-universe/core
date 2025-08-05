@@ -34,7 +34,7 @@ final class UnsetTopicSticky implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->addInformation(_('Die Markierung des Themas wurde entfernt'));
+        $game->getInfo()->addInformation(_('Die Markierung des Themas wurde entfernt'));
 
         $game->setView(Topic::VIEW_IDENTIFIER);
     }

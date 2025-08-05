@@ -140,7 +140,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
         }
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
 
         if ($isForeignShip && $informations->getInformations() !== []) {
             $pm = sprintf(

@@ -18,8 +18,7 @@ final class DeleteContacts implements ActionControllerInterface
         private DeleteContactsRequestInterface $deleteContactsRequest,
         private ContactRepositoryInterface $contactRepository,
         private PrivateMessageSenderInterface $privateMessageSender
-    ) {
-    }
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -42,7 +41,7 @@ final class DeleteContacts implements ActionControllerInterface
 
             $this->contactRepository->delete($contact);
         }
-        $game->addInformation(_('Die Kontakte wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
     }
 
     #[Override]

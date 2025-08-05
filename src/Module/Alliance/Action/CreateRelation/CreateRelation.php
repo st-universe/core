@@ -59,7 +59,7 @@ final class CreateRelation implements ActionControllerInterface
 
         $cnt = $this->allianceRelationRepository->getPendingCountByAlliances($allianceId, $counterpartId);
         if ($cnt >= 2) {
-            $game->addInformation('Es gibt bereits ein Angebot für diese Allianz');
+            $game->getInfo()->addInformation('Es gibt bereits ein Angebot für diese Allianz');
             return;
         }
 
@@ -82,7 +82,7 @@ final class CreateRelation implements ActionControllerInterface
                 $user
             ));
 
-            $game->addInformation(
+            $game->getInfo()->addInformation(
                 sprintf('Der Allianz %s wurde der Krieg erklärt', $counterpart->getName())
             );
         } else {
@@ -92,7 +92,7 @@ final class CreateRelation implements ActionControllerInterface
                 $relationType
             ));
 
-            $game->addInformation('Das Abkommen wurde angeboten');
+            $game->getInfo()->addInformation('Das Abkommen wurde angeboten');
         }
     }
 

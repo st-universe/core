@@ -4,14 +4,12 @@ namespace Stu\Module\Control;
 
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
-use SysvSemaphore;
 
-interface GameControllerInterface extends InformationInterface
+interface GameControllerInterface
 {
     public function setView(ModuleEnum|string $view): void;
 
@@ -29,13 +27,7 @@ interface GameControllerInterface extends InformationInterface
 
     public function getMacro(): string;
 
-    /** @param array<string> $info */
-    public function addInformationMerge(array $info): void;
-
-    public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void;
-
-    /** @return array<string> */
-    public function getInformation(): array;
+    public function getInfo(): InformationWrapper;
 
     public function getTargetLink(): ?TargetLink;
 

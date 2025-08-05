@@ -84,11 +84,11 @@ final class RetrofitShip implements ActionControllerInterface
 
         if ($ship->getBuildplan()) {
             if ($ship->getBuildplan() != $oldplan) {
-                $game->addInformation(_('Das Schiff hat einen anderen Bauplan'));
+                $game->getInfo()->addInformation(_('Das Schiff hat einen anderen Bauplan'));
                 return;
             }
             if ($ship->getBuildplan()->getUser() !== $user) {
-                $game->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
+                $game->getInfo()->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
             }
         }
 
@@ -99,25 +99,25 @@ final class RetrofitShip implements ActionControllerInterface
             }
         }
         if ($building_function === null) {
-            $game->addInformation(_('Die Werft ist nicht aktiviert'));
+            $game->getInfo()->addInformation(_('Die Werft ist nicht aktiviert'));
             return;
         }
         $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
-            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
+            $game->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
             return;
         }
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 2) > 0) {
-            $game->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
+            $game->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
             return;
         }
 
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $rump->getEpsCost()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Zur Umrüstung wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
                 $changeable->getEps()
@@ -126,7 +126,7 @@ final class RetrofitShip implements ActionControllerInterface
         }
 
         if ($colony->isBlocked()) {
-            $game->addInformation(_('Schiffsumrüstung ist nicht möglich während die Kolonie blockiert wird'));
+            $game->getInfo()->addInformation(_('Schiffsumrüstung ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
 
@@ -152,7 +152,7 @@ final class RetrofitShip implements ActionControllerInterface
                 && $moduleLevels->isMandatory($moduleType)
                 && count($module) == 0
             ) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     $moduleType->getDescription()
                 );
@@ -171,7 +171,7 @@ final class RetrofitShip implements ActionControllerInterface
                 }
 
                 if ($specialCount > $rump->getBaseValues()->getSpecialSlots()) {
-                    $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $game->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
                     return;
                 }
                 continue;
@@ -196,7 +196,7 @@ final class RetrofitShip implements ActionControllerInterface
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
-            $game->addInformation(_('Crew-Maximum wurde überschritten'));
+            $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
 
@@ -209,7 +209,7 @@ final class RetrofitShip implements ActionControllerInterface
 
             if ($isNewModule) {
                 if (!$storage->containsKey($module->getCommodityId())) {
-                    $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
+                    $game->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                     return;
                 }
                 $selector = $this->colonyLibFactory->createModuleSelector(
@@ -237,7 +237,7 @@ final class RetrofitShip implements ActionControllerInterface
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
         $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan == $oldplan) {
-            $game->addInformation(_('Es wurden keine Änderungen ausgewählt'));
+            $game->getInfo()->addInformation(_('Es wurden keine Änderungen ausgewählt'));
             return;
         }
         if ($plan === null) {
@@ -258,7 +258,7 @@ final class RetrofitShip implements ActionControllerInterface
                     date('d.m.Y H:i')
                 );
             }
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Lege neuen Bauplan an: %s'),
                 $planname
             );
@@ -282,7 +282,7 @@ final class RetrofitShip implements ActionControllerInterface
                 $this->buildplanModuleRepository->save($mod);
             }
         } else {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Benutze verfügbaren Bauplan: %s'),
                 $plan->getName()
             );
@@ -309,7 +309,7 @@ final class RetrofitShip implements ActionControllerInterface
         $this->shipRepository->save($ship);
 
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             _('Die %s wird umgerüstet - Fertigstellung: %s'),
             $ship->getName(),
             date("d.m.Y H:i", (time() + $plan->getBuildtime()))

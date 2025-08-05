@@ -44,7 +44,7 @@ class AccessCheck implements AccessCheckInterface
             return true;
         }
 
-        $game->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
+        $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
 
         return false;
     }

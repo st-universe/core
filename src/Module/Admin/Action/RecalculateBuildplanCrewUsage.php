@@ -40,7 +40,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -66,7 +66,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
             }
         }
 
-        $game->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
+        $game->getInfo()->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
     }
 
     private function updateBuildplanCrew(SpacecraftBuildplan $buildplan, int $crewUsage): void

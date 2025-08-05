@@ -60,7 +60,7 @@ final class Scrapping implements ActionControllerInterface
 
         $trimmedCode = trim($code);
         if ($trimmedCode !== substr(md5($station->getName()), 0, 6)) {
-            $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
+            $game->getInfo()->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }
 
@@ -73,12 +73,12 @@ final class Scrapping implements ActionControllerInterface
                 $this->constructionProgressRepository->delete($progress);
             }
             $this->spacecraftRemover->remove($station);
-            $game->addInformation(_('Konstrukt wurde entfernt'));
+            $game->getInfo()->addInformation(_('Konstrukt wurde entfernt'));
             return;
         }
 
         if ($station->getCrewCount() > 0) {
-            $game->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
+            $game->getInfo()->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
             return;
         }
 
@@ -86,7 +86,7 @@ final class Scrapping implements ActionControllerInterface
 
         $this->startScrapping($station);
 
-        $game->addInformation(_('Das Demontieren hat begonnen'));
+        $game->getInfo()->addInformation(_('Das Demontieren hat begonnen'));
     }
 
     private function startScrapping(Station $station): void

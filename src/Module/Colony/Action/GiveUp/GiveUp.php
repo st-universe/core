@@ -49,7 +49,7 @@ final class GiveUp implements ActionControllerInterface
         $trimmedCode = trim($code);
 
         if ($trimmedCode !== substr(md5($colony->getName()), 0, 6)) {
-            $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
+            $game->getInfo()->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }
 
@@ -64,7 +64,7 @@ final class GiveUp implements ActionControllerInterface
 
         $this->componentRegistration->addComponentUpdate(GameComponentEnum::COLONIES);
 
-        $game->addInformation(_('Die Kolonie wurde aufgegeben'));
+        $game->getInfo()->addInformation(_('Die Kolonie wurde aufgegeben'));
     }
 
     #[Override]

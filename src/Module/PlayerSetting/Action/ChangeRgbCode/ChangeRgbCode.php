@@ -22,12 +22,12 @@ final class ChangeRgbCode implements ActionControllerInterface
     {
         $value = request::postStringFatal('rgb_code');
         if (strlen($value) != 7) {
-            $game->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
+            $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
             return;
         }
 
         if (!$this->validHex($value)) {
-            $game->addInformation(_('Der RGB-Code ist ungültig!'));
+            $game->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
             return;
         }
 
@@ -37,7 +37,7 @@ final class ChangeRgbCode implements ActionControllerInterface
             $value
         );
 
-        $game->addInformation(_('Dein RGB-Code wurde geändert'));
+        $game->getInfo()->addInformation(_('Dein RGB-Code wurde geändert'));
     }
 
     private function validHex(string $hex): int|bool

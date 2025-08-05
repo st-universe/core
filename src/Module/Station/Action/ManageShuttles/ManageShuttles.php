@@ -125,7 +125,7 @@ final class ManageShuttles implements ActionControllerInterface
             }
         }
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
 
         if ($isForeignShip && !$informations->isEmpty()) {
             $pm = sprintf(

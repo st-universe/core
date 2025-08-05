@@ -28,7 +28,7 @@ final class DeleteIgnores implements ActionControllerInterface
 
             $this->ignoreListRepository->delete($contact);
         }
-        $game->addInformation(_('Die Einträge wurden gelöscht'));
+        $game->getInfo()->addInformation(_('Die Einträge wurden gelöscht'));
     }
 
     #[Override]

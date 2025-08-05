@@ -75,7 +75,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         if ($ship->isWarped()) {
-            $game->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
             return;
         }
 
@@ -90,12 +90,12 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         if ($possibleCatches === []) {
-            $game->addInformation("Es konnten keine Ziele erfasst werden");
+            $game->getInfo()->addInformation("Es konnten keine Ziele erfasst werden");
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game->getInfo())) {
             return;
         }
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::WEB_SPINNING);
@@ -137,7 +137,7 @@ final class CreateTholianWeb implements ActionControllerInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             "Es wird ein Energienetz um %d Ziele gespannt, Fertigstellung: %s",
             count($possibleCatches),
             $this->stuTime->transformToStuDateTime($finishedTime)
@@ -153,11 +153,11 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
-            $game->addInformationf(_('%s: Ziel nicht gefunden'), $target->getName());
+            $game->getInfo()->addInformationf(_('%s: Ziel nicht gefunden'), $target->getName());
             return null;
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformationf(_('%s: Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'), $target->getName());
+            $game->getInfo()->addInformationf(_('%s: Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'), $target->getName());
             return null;
         }
 

@@ -14,9 +14,7 @@ final class SetKnMark implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SET_KNMARK';
 
-    public function __construct(private SetKnMarkRequestInterface $setKnMarkRequest, private KnPostRepositoryInterface $knPostRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private SetKnMarkRequestInterface $setKnMarkRequest, private KnPostRepositoryInterface $knPostRepository, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -33,7 +31,7 @@ final class SetKnMark implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Das Lesezeichen wurde gesetzt'));
+        $game->getInfo()->addInformation(_('Das Lesezeichen wurde gesetzt'));
     }
 
     #[Override]

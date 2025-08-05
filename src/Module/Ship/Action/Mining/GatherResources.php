@@ -53,7 +53,7 @@ final class GatherResources implements ActionControllerInterface
         }
 
         if ($ship->isWarped()) {
-            $game->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
+            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
             return;
         }
 
@@ -61,16 +61,15 @@ final class GatherResources implements ActionControllerInterface
 
         if ($chosenLocationId === 0) {
             if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)) {
-                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game);
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game->getInfo());
             }
 
             $miningQueue = $this->miningQueueRepository->getByShip($ship->getId());
             if ($miningQueue !== null) {
                 $this->miningQueueRepository->truncateByShipId($ship->getId());
-                $game->addInformation("Es werden keine Ressourcen mehr gesammelt");
+                $game->getInfo()->addInformation("Es werden keine Ressourcen mehr gesammelt");
             }
             $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::NONE);
-            return;
         } else {
 
             $locationMining = $this->locationMiningRepository->findById($chosenLocationId);
@@ -80,7 +79,7 @@ final class GatherResources implements ActionControllerInterface
 
 
             if (!$ship->getSystemState(SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR)) {
-                if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game)) {
+                if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR, $game->getInfo())) {
                     return;
                 }
             } else {
@@ -99,7 +98,7 @@ final class GatherResources implements ActionControllerInterface
 
             $this->entityManager->flush();
 
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 sprintf('%s wird gesammelt', $locationMining->getCommodity()->getName()),
             );
         }

@@ -41,18 +41,18 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
 
         $post = $this->knPostRepository->find($postId);
         if ($post === null) {
-            $game->addInformation(_('Dieser Beitrag existiert nicht'));
+            $game->getInfo()->addInformation(_('Dieser Beitrag existiert nicht'));
             return;
         }
         if ($post->getPlotId() !== null) {
-            $game->addInformation(_('Dieser Beitrag ist bereits einem Plot zugewiesen'));
+            $game->getInfo()->addInformation(_('Dieser Beitrag ist bereits einem Plot zugewiesen'));
             return;
         }
 
         $application = $this->knPostToPlotApplicationRepository->getByPostAndPlot($post->getId(), $plot->getId());
 
         if ($application !== null) {
-            $game->addInformation(_('Diese Aktion wurde bereits beantragt'));
+            $game->getInfo()->addInformation(_('Diese Aktion wurde bereits beantragt'));
             return;
         }
 
@@ -64,7 +64,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
 
             $this->notifyPlotMembers($post, $plot);
 
-            $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
+            $game->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
         } else {
             $application = $this->knPostToPlotApplicationRepository->prototype();
             $application->setKnPost($post);
@@ -88,7 +88,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                 $href
             );
 
-            $game->addInformation(_('Es wurde beantragt den Beitrag hinzuzufügen'));
+            $game->getInfo()->addInformation(_('Es wurde beantragt den Beitrag hinzuzufügen'));
         }
     }
 

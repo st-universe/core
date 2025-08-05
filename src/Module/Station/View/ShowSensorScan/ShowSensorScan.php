@@ -69,7 +69,7 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
-            $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
+            $game->getInfo()->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
             $game->setPageTitle(sprintf(_('Sensor Scan %d|%d fehlgeschlagen'), $cx, $cy));
             $game->setMacroInAjaxWindow('');
             return;

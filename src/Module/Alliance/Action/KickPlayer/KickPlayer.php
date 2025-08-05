@@ -72,7 +72,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $game->setView(Management::VIEW_IDENTIFIER);
 
-        $game->addInformation(_('Der Siedler wurde rausgeworfen'));
+        $game->getInfo()->addInformation(_('Der Siedler wurde rausgeworfen'));
     }
 
     #[Override]

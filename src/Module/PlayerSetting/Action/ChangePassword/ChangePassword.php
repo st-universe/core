@@ -27,11 +27,11 @@ final class ChangePassword implements ActionControllerInterface
         $currentPassword = $this->changePasswordRequest->getCurrentPassword();
 
         if ($currentPassword === '') {
-            $game->addInformation(_('Das alte Passwort wurde nicht angegeben'));
+            $game->getInfo()->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
         if (!password_verify($currentPassword, $user->getRegistration()->getPassword())) {
-            $game->addInformation(_('Das alte Passwort ist falsch'));
+            $game->getInfo()->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
 
@@ -39,22 +39,22 @@ final class ChangePassword implements ActionControllerInterface
         $newPasswordReEntered = $this->changePasswordRequest->getNewPasswordReEntered();
 
         if ($newPassword === '') {
-            $game->addInformation(_('Es wurde kein neues Passwort eingegeben'));
+            $game->getInfo()->addInformation(_('Es wurde kein neues Passwort eingegeben'));
             return;
         }
         if (!preg_match(self::PASSWORD_REGEX, $newPassword)) {
-            $game->addInformation(_('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein'));
+            $game->getInfo()->addInformation(_('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein'));
             return;
         }
         if ($newPassword !== $newPasswordReEntered) {
-            $game->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
+            $game->getInfo()->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
             return;
         }
         $user->getRegistration()->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
 
         $this->userRepository->save($user);
 
-        $game->addInformation(_('Das Passwort wurde geändert'));
+        $game->getInfo()->addInformation(_('Das Passwort wurde geändert'));
     }
 
     #[Override]

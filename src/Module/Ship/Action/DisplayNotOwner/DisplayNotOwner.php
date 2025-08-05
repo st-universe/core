@@ -16,7 +16,7 @@ final class DisplayNotOwner implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->addInformation(_('Du bist nicht Besitzer dieses Schiffes'));
+        $game->getInfo()->addInformation(_('Du bist nicht Besitzer dieses Schiffes'));
 
         $game->setView(GameController::DEFAULT_VIEW);
     }

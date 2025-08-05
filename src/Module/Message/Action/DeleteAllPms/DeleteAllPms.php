@@ -14,9 +14,7 @@ final class DeleteAllPms implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_ALL_PMS';
 
-    public function __construct(private DeleteAllPmsRequestInterface $deleteAllPmsRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository)
-    {
-    }
+    public function __construct(private DeleteAllPmsRequestInterface $deleteAllPmsRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +27,7 @@ final class DeleteAllPms implements ActionControllerInterface
         }
         $this->privateMessageRepository->setDeleteTimestampByFolder($folder->getId(), $timestamp);
 
-        $game->addInformation(_('Der Ordner wurde geleert'));
+        $game->getInfo()->addInformation(_('Der Ordner wurde geleert'));
     }
 
     #[Override]

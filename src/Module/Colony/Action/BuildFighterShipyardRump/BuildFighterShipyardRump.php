@@ -67,9 +67,9 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         if ($amount < $wantedAmount) {
-            $game->addInformationf(_('Es wurden daher nur %d Stück %s-Klasse gebaut'), $amount, $rump->getName());
+            $game->getInfo()->addInformationf(_('Es wurden daher nur %d Stück %s-Klasse gebaut'), $amount, $rump->getName());
         } else {
-            $game->addInformationf(_('%d Stück %s-Klasse wurden gebaut'), $amount, $rump->getName());
+            $game->getInfo()->addInformationf(_('%d Stück %s-Klasse wurden gebaut'), $amount, $rump->getName());
         }
     }
 
@@ -78,7 +78,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($rump->getEpsCost() > $changeable->getEps()) {
-            $game->addInformationf(
+            $game->getInfo()->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $rump->getEpsCost(),
                 $changeable->getEps()
@@ -90,7 +90,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
             $stor = $storage[$cost->getCommodityId()] ?? null;
 
             if ($stor === null) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es wird %d %s benötigt'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName()
@@ -98,7 +98,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
                 return false;
             }
             if ($stor->getAmount() < $cost->getAmount()) {
-                $game->addInformationf(
+                $game->getInfo()->addInformationf(
                     _('Es wird %d %s benötigt - Vorhanden ist nur %d'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName(),

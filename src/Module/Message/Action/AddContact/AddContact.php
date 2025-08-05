@@ -17,9 +17,7 @@ final class AddContact implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADD_CONTACT';
 
-    public function __construct(private AddContactRequestInterface $addContactRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private AddContactRequestInterface $addContactRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -34,25 +32,25 @@ final class AddContact implements ActionControllerInterface
         $recipiendIdString = trim($this->addContactRequest->getRecipientId());
 
         if (!is_numeric($recipiendIdString) || ((int)$recipiendIdString) < 1) {
-            $game->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
+            $game->getInfo()->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
             return;
         }
 
         $recipient = $this->userRepository->find((int)$recipiendIdString);
         if ($recipient === null) {
-            $game->addInformation(_('Dieser Spieler existiert nicht'));
+            $game->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
         if ($recipient->isContactable() === false) {
-            $game->addInformation(_('Dieser Spieler kann nicht hinzugefügt werden'));
+            $game->getInfo()->addInformation(_('Dieser Spieler kann nicht hinzugefügt werden'));
             return;
         }
         if ($recipient->getId() === $userId) {
-            $game->addInformation(_('Du kannst Dich nicht selbst auf die Kontaktliste setzen'));
+            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst auf die Kontaktliste setzen'));
             return;
         }
         if ($this->contactRepository->getByUserAndOpponent($userId, $recipient->getId()) !== null) {
-            $game->addInformation(_('Dieser Spieler befindet sich bereits auf Deiner Kontaktliste'));
+            $game->getInfo()->addInformation(_('Dieser Spieler befindet sich bereits auf Deiner Kontaktliste'));
             return;
         }
 
@@ -76,7 +74,7 @@ final class AddContact implements ActionControllerInterface
                 _('Der Spieler betrachtet Dich von nun an als Feind')
             );
         }
-        $game->addInformation(_('Der Spieler wurde hinzugefügt'));
+        $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
 
         $game->setTemplateVar('contact', $contact);
     }

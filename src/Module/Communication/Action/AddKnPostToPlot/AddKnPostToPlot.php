@@ -37,7 +37,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         $application = $this->knPostToPlotApplicationRepository->getByPostAndPlot($postId, $plotId);
 
         if ($application === null || $application->getTime() < time() - self::MAXIMUM_APPLICATION_TIME) {
-            $game->addInformation('Diese Aktion ist nicht mehr möglich');
+            $game->getInfo()->addInformation('Diese Aktion ist nicht mehr möglich');
             return;
         }
 
@@ -57,7 +57,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
         if ($post->getPlotId() !== null) {
             $this->knPostToPlotApplicationRepository->delete($application);
-            $game->addInformation('Dieser Beitrag ist bereits einem Plot zugewiesen');
+            $game->getInfo()->addInformation('Dieser Beitrag ist bereits einem Plot zugewiesen');
             return;
         }
 
@@ -67,7 +67,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
         $this->notifyPlotMembers($post, $plot);
 
-        $game->addInformation('Der Beitrag wurde hinzugefügt');
+        $game->getInfo()->addInformation('Der Beitrag wurde hinzugefügt');
     }
 
     private function notifyPlotMembers(KnPost $post, RpgPlot $plot): void

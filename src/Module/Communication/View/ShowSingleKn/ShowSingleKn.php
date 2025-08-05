@@ -39,7 +39,7 @@ final class ShowSingleKn implements ViewControllerInterface
                 $user
             );
         } else {
-            $game->addInformation('Dieser Beitrag existiert nicht mehr');
+            $game->getInfo()->addInformation('Dieser Beitrag existiert nicht mehr');
         }
 
         $game->setTemplateVar('KN_POSTINGS', $knPostings);

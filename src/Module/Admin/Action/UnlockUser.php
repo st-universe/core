@@ -29,7 +29,7 @@ final class UnlockUser implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -53,7 +53,7 @@ final class UnlockUser implements ActionControllerInterface
         $lock->setFormerUserId($user->getId());
         $this->userLockRepository->save($lock);
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
+        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
     }
 
     #[Override]

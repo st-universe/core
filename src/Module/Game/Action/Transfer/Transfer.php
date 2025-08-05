@@ -62,7 +62,7 @@ final class Transfer implements ActionControllerInterface
                 true
             );
         } catch (TransferEntityNotFoundException) {
-            $game->addInformation('Das Ziel konnte nicht gefunden werden');
+            $game->getInfo()->addInformation('Das Ziel konnte nicht gefunden werden');
             return;
         }
 
@@ -71,7 +71,7 @@ final class Transfer implements ActionControllerInterface
 
         $game->setView($source->getTransferEntityType()->getViewIdentifier());
 
-        if (!$transferInformation->getSourceWrapper()->canTransfer($game)) {
+        if (!$transferInformation->getSourceWrapper()->canTransfer($game->getInfo())) {
             return;
         }
 
@@ -93,7 +93,7 @@ final class Transfer implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
@@ -149,7 +149,7 @@ final class Transfer implements ActionControllerInterface
             ));
         }
 
-        $game->addInformationWrapper($informations);
+        $game->getInfo()->addInformationWrapper($informations);
     }
 
     private function sanityCheck(TransferInformation $transferInformation): void

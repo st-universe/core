@@ -35,14 +35,14 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
+            $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
             return;
         }
 
         //check if single or all ships
         if (!request::getVarByMethod(request::postvars(), 'spacecrafttickid')) {
             $this->spacecraftTickManager->work();
-            $game->addInformation("Der Spacecraft-Tick für alle Spacecrafts wurde durchgeführt!");
+            $game->getInfo()->addInformation("Der Spacecraft-Tick für alle Spacecrafts wurde durchgeführt!");
         } else {
             $shipId = request::postInt('spacecrafttickid');
             $wrapper = $this->spacecraftLoader->find($shipId);
@@ -54,7 +54,7 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
             $this->spacecraftTick->workSpacecraft($wrapper);
             $this->entityManager->flush();
 
-            $game->addInformation("Der Spacecraft-Tick für dieses Spacecraft wurde durchgeführt!");
+            $game->getInfo()->addInformation("Der Spacecraft-Tick für dieses Spacecraft wurde durchgeführt!");
         }
     }
 

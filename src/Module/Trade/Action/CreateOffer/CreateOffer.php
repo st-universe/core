@@ -35,7 +35,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $storage = $this->storageRepository->find($this->createOfferRequest->getStorageId());
         if ($storage === null) {
-            $game->addInformation(_('Waren zum Erstellen des Angebots nicht gefunden'));
+            $game->getInfo()->addInformation(_('Waren zum Erstellen des Angebots nicht gefunden'));
             return;
         }
         if ($storage->getUserId() !== $userId) {
@@ -48,7 +48,7 @@ final class CreateOffer implements ActionControllerInterface
         }
 
         if ($tradePost->getUserId() === UserConstants::USER_NOONE) {
-            $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
+            $game->getInfo()->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }
 
@@ -59,21 +59,21 @@ final class CreateOffer implements ActionControllerInterface
         $offerAmount = $this->createOfferRequest->getOfferAmount();
 
         if ($giveCommodityId === $wantedCommodityId) {
-            $game->addInformation("Es kann nicht die gleiche Ware eingetauscht werden");
+            $game->getInfo()->addInformation("Es kann nicht die gleiche Ware eingetauscht werden");
             return;
         }
         if ($giveAmount < 1) {
-            $game->addInformation("Es wurde keine angebotene Menge angeben");
+            $game->getInfo()->addInformation("Es wurde keine angebotene Menge angeben");
             return;
         }
 
         if ($wantedAmount < 1) {
-            $game->addInformation("Es wurde keine verlangte Menge");
+            $game->getInfo()->addInformation("Es wurde keine verlangte Menge");
             return;
         }
 
         if ($offerAmount < 1) {
-            $game->addInformation("Es wurde keine Anzahl an Angeboten angegeben");
+            $game->getInfo()->addInformation("Es wurde keine Anzahl an Angeboten angegeben");
             return;
         }
 
@@ -87,7 +87,7 @@ final class CreateOffer implements ActionControllerInterface
         }
 
         if ($offeredCommodity->isBoundToAccount()) {
-            $game->addInformation("Diese Ware kann nicht gehandelt werden");
+            $game->getInfo()->addInformation("Diese Ware kann nicht gehandelt werden");
             return;
         }
 
@@ -105,14 +105,14 @@ final class CreateOffer implements ActionControllerInterface
             $wantedCommodityId,
             $wantedAmount
         )) {
-            $game->addInformation("Du hast auf diesem Handelsposten bereits ein vergleichbares Angebot");
+            $game->getInfo()->addInformation("Du hast auf diesem Handelsposten bereits ein vergleichbares Angebot");
             return;
         }
 
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
+            $game->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
             return;
         }
 
@@ -141,7 +141,7 @@ final class CreateOffer implements ActionControllerInterface
         $storageManager->lowerStorage($giveCommodityId, $offerAmount * $giveAmount);
 
 
-        $game->addInformation('Das Angebot wurde erstellt');
+        $game->getInfo()->addInformation('Das Angebot wurde erstellt');
     }
 
     private function saveOffer(

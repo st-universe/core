@@ -47,7 +47,7 @@ final class AddShipLog implements ActionControllerInterface
         $spacecraft->getLogbook()->add($shipLog);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $game->addInformation('Logbucheintrag wurde hinzugefügt');
+        $game->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');
     }
 
     #[Override]

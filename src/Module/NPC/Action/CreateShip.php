@@ -36,7 +36,7 @@ final class CreateShip implements ActionControllerInterface
         $game->setView(ShowShipCreator::VIEW_IDENTIFIER);
 
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
@@ -51,7 +51,7 @@ final class CreateShip implements ActionControllerInterface
         $crewAmount = request::postInt('crew_input');
 
         if ($game->getUser()->isNpc() && $reason === '') {
-            $game->addInformation("Grund fehlt");
+            $game->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
@@ -72,7 +72,7 @@ final class CreateShip implements ActionControllerInterface
 
         $field = $this->mapRepository->getByCoordinates($layer, $cx, $cy);
         if ($field === null) {
-            $game->addInformation(sprintf(
+            $game->getInfo()->addInformation(sprintf(
                 'Die Position %s|%d|%d existiert nicht!',
                 $layer->getName(),
                 $cx,
@@ -118,7 +118,7 @@ final class CreateShip implements ActionControllerInterface
             $this->createLogEntry($logText, $game->getUser()->getId());
         }
 
-        $game->addInformation(sprintf('%d Schiff(e) wurden erstellt', $shipCount));
+        $game->getInfo()->addInformation(sprintf('%d Schiff(e) wurden erstellt', $shipCount));
     }
 
     private function createLogEntry(string $text, int $userId): void

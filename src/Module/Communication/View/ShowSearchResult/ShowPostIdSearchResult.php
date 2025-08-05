@@ -31,7 +31,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $id = $this->showSearchResultRequest->getSearchId();
         if ($id == 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation('Bitte eine Beitrag-ID angeben!');
+            $game->getInfo()->addInformation('Bitte eine Beitrag-ID angeben!');
 
             return;
         }
@@ -40,7 +40,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
 
         if ($post === null) {
             $game->setTemplateVar('KN_POSTINGS', null);
-            $game->addInformation(sprintf('Es existiert kein Beitrag mit der ID %d', $id));
+            $game->getInfo()->addInformation(sprintf('Es existiert kein Beitrag mit der ID %d', $id));
 
             return;
         }

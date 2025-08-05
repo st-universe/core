@@ -54,7 +54,7 @@ final class StopEmergency implements ActionControllerInterface
         }
 
 
-        $game->addInformation('Das Notrufsignal wurde beendet');
+        $game->getInfo()->addInformation('Das Notrufsignal wurde beendet');
     }
 
     #[Override]

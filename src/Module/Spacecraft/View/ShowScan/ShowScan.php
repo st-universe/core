@@ -64,13 +64,13 @@ final class ShowScan implements ViewControllerInterface
         $game->setPageTitle(_('Scan'));
         $game->setMacroInAjaxWindow('html/ship/showshipscan.twig');
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
-            $game->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
+            $game->getInfo()->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
+            $game->getInfo()->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
 

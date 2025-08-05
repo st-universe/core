@@ -60,7 +60,7 @@ final class ThreatReaction implements ThreatReactionInterface
         }
 
         $informations = $messageCollection->getInformationDump();
-        $this->game->addInformationWrapper($informations);
+        $this->game->getInfo()->addInformationWrapper($informations);
 
         $this->privateMessageSender->send(
             $user->getId(),

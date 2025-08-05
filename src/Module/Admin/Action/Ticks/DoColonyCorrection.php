@@ -14,9 +14,7 @@ final class DoColonyCorrection implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_COLONY_CORRECTION';
 
-    public function __construct(private ColonyCorrectorInterface $colonyCorrector)
-    {
-    }
+    public function __construct(private ColonyCorrectorInterface $colonyCorrector) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -25,13 +23,13 @@ final class DoColonyCorrection implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
         $this->colonyCorrector->correct();
 
-        $game->addInformation("Korrektur der Kolonien wurde durchgeführt!");
+        $game->getInfo()->addInformation("Korrektur der Kolonien wurde durchgeführt!");
     }
 
     #[Override]

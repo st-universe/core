@@ -28,7 +28,7 @@ final class ShowResearchTree implements ViewControllerInterface
     {
         // only Admins can show it
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
@@ -37,7 +37,7 @@ final class ShowResearchTree implements ViewControllerInterface
         $factionId = request::postIntFatal('factionid');
         $faction = $this->factionRepository->find($factionId);
         if ($faction === null) {
-            $game->addInformationf('Faction with following id does not exist: %d', $factionId);
+            $game->getInfo()->addInformationf('Faction with following id does not exist: %d', $factionId);
             return;
         }
 

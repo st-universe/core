@@ -70,7 +70,7 @@ final class TrackShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game)) {
+            ->check($game->getInfo())) {
             return;
         }
 
@@ -81,12 +81,12 @@ final class TrackShip implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
         if ($eps === null || $eps->getEps() === 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $game)) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $game->getInfo())) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
@@ -95,7 +95,7 @@ final class TrackShip implements ActionControllerInterface
             ->setRemainingTicks(self::MAXIMUM_TICKS)
             ->update();
 
-        $game->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
+        $game->getInfo()->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
     }
 
     #[Override]

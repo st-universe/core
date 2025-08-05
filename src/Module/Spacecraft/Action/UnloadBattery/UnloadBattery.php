@@ -52,11 +52,11 @@ final class UnloadBattery implements ActionControllerInterface
             foreach ($ship->getFleet()?->getShips() ?? [] as $ship) {
                 $msg[] = $this->unloadBattery($ship, $load);
             }
-            $game->addInformationMerge($msg);
+            $game->getInfo()->addInformationArray($msg, true);
             return;
         }
 
-        $game->addInformation($this->unloadBattery($ship, $load));
+        $game->getInfo()->addInformation($this->unloadBattery($ship, $load));
     }
 
     private function unloadBattery(Spacecraft $ship, int $load): string

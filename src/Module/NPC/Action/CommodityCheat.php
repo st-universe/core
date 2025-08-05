@@ -34,12 +34,12 @@ final class CommodityCheat implements ActionControllerInterface
 
         // only Admins or NPC can trigger
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
-            $game->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
+            $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;
         } else {
             $spacecraftId = request::postInt('spacecraftid');
@@ -49,7 +49,7 @@ final class CommodityCheat implements ActionControllerInterface
             $reason = request::postString('reason');
 
             if ($spacecraftId != null && $colonyId != null) {
-                $game->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
+                $game->getInfo()->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
                 return;
             }
 
@@ -67,19 +67,19 @@ final class CommodityCheat implements ActionControllerInterface
             }
 
             if ($amount < 1) {
-                $game->addInformation("Anzahl muss größer als 0 sein");
+                $game->getInfo()->addInformation("Anzahl muss größer als 0 sein");
                 return;
             }
 
             if ($game->getUser()->isNpc() && $reason === '') {
-                $game->addInformation("Grund fehlt");
+                $game->getInfo()->addInformation("Grund fehlt");
                 return;
             }
 
             $commodity = $this->commodityRepository->find($commodityId);
 
             if ($commodity === null) {
-                $game->addInformation("Ungültige Ware");
+                $game->getInfo()->addInformation("Ungültige Ware");
                 return;
             }
 
@@ -123,7 +123,7 @@ final class CommodityCheat implements ActionControllerInterface
             if ($game->getUser()->isNpc()) {
                 $this->createEntry($text, $user->getId());
             }
-            $game->addInformation("Waren hinzugefügt");
+            $game->getInfo()->addInformation("Waren hinzugefügt");
         }
     }
 

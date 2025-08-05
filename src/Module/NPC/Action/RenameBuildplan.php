@@ -28,7 +28,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
             return;
         }
 
@@ -41,12 +41,12 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
         if ($newName !== $nameWithoutUnicode) {
-            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($newName) > 255) {
-            $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+            $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
             return;
         }
 
@@ -64,7 +64,7 @@ final class RenameBuildplan implements ActionControllerInterface
             $this->createLogEntry($oldName, $newName, $userId, $game->getUser()->getName(), $plan->getUser()->getName());
         }
 
-        $game->addInformation(_('Der Name des Bauplans wurde geändert'));
+        $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
     private function createLogEntry(string $oldName, string $newName, int $userId, string $userName, string $planuser): void

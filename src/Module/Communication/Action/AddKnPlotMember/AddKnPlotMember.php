@@ -34,15 +34,15 @@ final class AddKnPlotMember implements ActionControllerInterface
 
         $recipient = $this->userRepository->find($this->addKnPlotMemberRequest->getRecipientId());
         if ($recipient === null) {
-            $game->addInformation(_('Dieser Spieler existiert nicht'));
+            $game->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
         if ($plot->getUserId() === $recipient->getId()) {
-            $game->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
+            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
             return;
         }
         if ($this->rpgPlotMemberRepository->getByPlotAndUser($plot->getId(), $recipient->getId()) !== null) {
-            $game->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
+            $game->getInfo()->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
             return;
         }
 
@@ -58,7 +58,7 @@ final class AddKnPlotMember implements ActionControllerInterface
             sprintf(_('Du wurdest dem RPG-Plot \'%s\' als Schreiber hinzugefügt'), $plot->getTitle())
         );
 
-        $game->addInformation(_('Der Spieler wurde hinzugefügt'));
+        $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
     }
 
     #[Override]

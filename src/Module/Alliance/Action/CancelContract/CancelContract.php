@@ -89,7 +89,7 @@ final class CancelContract implements ActionControllerInterface
             );
         }
 
-        $game->addInformation(_('Das Abkommen wurde aufgelöst'));
+        $game->getInfo()->addInformation(_('Das Abkommen wurde aufgelöst'));
     }
 
     #[Override]

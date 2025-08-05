@@ -46,7 +46,7 @@ final class ResetPassword implements ActionControllerInterface
         $this->userRepository->save($user);
 
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
-        $game->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
+        $game->getInfo()->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 
         $body = <<<EOT
             Hallo.\n\n
@@ -69,7 +69,7 @@ final class ResetPassword implements ActionControllerInterface
         try {
             $mail->send();
         } catch (RuntimeException) {
-            $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
+            $game->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
         }
     }
 

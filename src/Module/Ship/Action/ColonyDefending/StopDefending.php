@@ -55,7 +55,7 @@ final class StopDefending implements ActionControllerInterface
         $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Flotte %s hat die Verteidigung der Kolonie %s beendet'), $fleet->getName(), $currentColony->getName());
-        $game->addInformation($text);
+        $game->getInfo()->addInformation($text);
 
         if (!$currentColony->isFree()) {
             $this->privateMessageSender->send(

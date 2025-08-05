@@ -167,7 +167,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationWrapper')
+        $game->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
         $game->shouldReceive('setView')
@@ -268,7 +268,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Schiff wird von einem Traktorstrahl gehalten')
             ->once();
         $game->shouldReceive('setView')
@@ -328,7 +328,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Das Schiff ist in einem Energienetz gefangen')
             ->once();
         $game->shouldReceive('setView')
@@ -397,7 +397,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Flug während Kolonie-Verteidigung nicht möglich')
             ->once();
         $game->shouldReceive('setView')
@@ -468,7 +468,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformation')
+        $game->shouldReceive('getInfo->addInformation')
             ->with('Flug während Kolonie-Blockierung nicht möglich')
             ->once();
         $game->shouldReceive('setView')
@@ -590,7 +590,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationWrapper')
+        $game->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
         $game->shouldReceive('setView')
@@ -704,7 +704,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('addInformationWrapper')
+        $game->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
         $game->shouldReceive('setView')

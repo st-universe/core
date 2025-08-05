@@ -70,7 +70,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
 
         $this->tholianWebUtil->releaseWebHelper($wrapper);
 
-        $game->addInformation("Die Unterstützung des Energienetz wurde abgebrochen");
+        $game->getInfo()->addInformation("Die Unterstützung des Energienetz wurde abgebrochen");
     }
 
     #[Override]

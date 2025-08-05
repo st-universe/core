@@ -87,7 +87,7 @@ final class AccountVerification implements
 
         $game->setView(GameController::DEFAULT_VIEW);
 
-        $game->addInformation('Dein Account wurde erfolgreich freigeschaltet');
+        $game->getInfo()->addInformation('Dein Account wurde erfolgreich freigeschaltet');
     }
 
     #[Override]

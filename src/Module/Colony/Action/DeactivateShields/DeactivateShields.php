@@ -49,7 +49,7 @@ final class DeactivateShields implements ActionControllerInterface
             $game
         );
 
-        $game->addInformation("Die Schilde wurden bei der Deaktivierung komplett entladen");
+        $game->getInfo()->addInformation("Die Schilde wurden bei der Deaktivierung komplett entladen");
     }
 
     #[Override]

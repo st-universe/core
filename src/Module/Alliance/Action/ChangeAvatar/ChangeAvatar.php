@@ -19,9 +19,7 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,17 +39,17 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $file = $_FILES['avatar'];
         if ($file['type'] != 'image/png') {
-            $game->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
 
         if ($file['size'] > 200000) {
-            $game->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
+            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
             return;
         }
 
         if ($file['size'] == 0) {
-            $game->addInformation(_('Die Datei ist leer'));
+            $game->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
@@ -60,22 +58,22 @@ final class ChangeAvatar implements ActionControllerInterface
         try {
             $img = imagecreatefrompng($file['tmp_name']);
         } catch (Exception) {
-            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (!$img) {
-            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (imagesx($img) > 600) {
-            $game->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
+            $game->getInfo()->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
             return;
         }
 
         if (imagesy($img) > 150) {
-            $game->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
+            $game->getInfo()->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
             return;
         }
 
@@ -113,7 +111,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $this->allianceRepository->save($alliance);
 
-        $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
+        $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
     #[Override]

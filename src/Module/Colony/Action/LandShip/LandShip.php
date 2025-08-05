@@ -53,7 +53,7 @@ final class LandShip implements ActionControllerInterface
             return;
         }
         if ($colony->getMaxStorage() <= $colony->getStorageSum()) {
-            $game->addInformation(_('Kein Lagerraum verfügbar'));
+            $game->getInfo()->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
 
@@ -62,7 +62,7 @@ final class LandShip implements ActionControllerInterface
         )->getFreeAssignmentCount();
 
         if ($ship->getCrewCount() > $freeAssignmentCount) {
-            $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
+            $game->getInfo()->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
             return;
         }
 
@@ -88,7 +88,7 @@ final class LandShip implements ActionControllerInterface
 
         $this->spacecraftRemover->remove($ship);
 
-        $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
+        $game->getInfo()->addInformationf(_('Die %s ist gelandet'), $ship->getName());
     }
 
     private function transferCrewToColony(Ship $ship, Colony $colony): void
@@ -110,7 +110,7 @@ final class LandShip implements ActionControllerInterface
         $maxStorage = $colony->getMaxStorage();
 
         if ($colony->getStorageSum() >= $maxStorage) {
-            $game->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
+            $game->getInfo()->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
             return;
         }
 
@@ -128,7 +128,7 @@ final class LandShip implements ActionControllerInterface
 
         $this->clearTorpedo->clearTorpedoStorage($wrapper);
 
-        $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
+        $game->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
     #[Override]

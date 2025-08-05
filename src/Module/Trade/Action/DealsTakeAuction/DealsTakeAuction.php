@@ -44,12 +44,12 @@ final class DealsTakeAuction implements ActionControllerInterface
         $auction = $this->dealsRepository->find($dealId);
 
         if ($auction === null) {
-            $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            $game->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
         if ($userId < 100) {
-            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
@@ -84,7 +84,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         //check if enough space in storage
 
         if ($neededStorageSpace > $freeStorage) {
-            /*$game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            /*$game->getInfo()->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
             
             return; */
         }
@@ -103,12 +103,12 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $currentMaxAmount - $currentBidAmount
                 );
                 $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
-                $game->addInformation(sprintf(
+                $game->getInfo()->addInformation(sprintf(
                     _('Dir wurden %d Prestige gutgeschrieben'),
                     $currentMaxAmount - $currentBidAmount,
                 ));
             } elseif ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
-                $game->addInformation(sprintf(
+                $game->getInfo()->addInformation(sprintf(
                     _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
                     $currentMaxAmount - $currentBidAmount,
                     $wantedCommodity->getName()
@@ -119,7 +119,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $wantedCommodity->getId(),
                     $currentMaxAmount - $currentBidAmount
                 );
-                $game->addInformation(sprintf(
+                $game->getInfo()->addInformation(sprintf(
                     _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
                     $currentMaxAmount - $currentBidAmount,
                     $wantedCommodity->getName()
@@ -134,20 +134,20 @@ final class DealsTakeAuction implements ActionControllerInterface
                 (int) $auction->getGiveCommodityAmount()
             );
 
-            $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getGiveCommodityAmount(), $givenCommodity->getName()));
+            $game->getInfo()->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getGiveCommodityAmount(), $givenCommodity->getName()));
         }
 
         $buildplan = $auction->getBuildplan();
         if ($buildplan !== null) {
             if ($auction->getShip() == true) {
                 $this->createShip($buildplan, $tradePost, $userId);
-                $game->addInformation(_('Du hast dein Schiff erhalten'));
+                $game->getInfo()->addInformation(_('Du hast dein Schiff erhalten'));
             }
 
             if ($auction->getShip() == false) {
                 $this->copyBuildplan($buildplan, $user);
 
-                $game->addInformation(_('Du hast deinen Bauplan erhalten'));
+                $game->getInfo()->addInformation(_('Du hast deinen Bauplan erhalten'));
             }
         }
 

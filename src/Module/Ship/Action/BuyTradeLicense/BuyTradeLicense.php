@@ -72,7 +72,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         $this->buyLicense($ship, $tradePost, $targetId, $licenseInfo, $user);
 
-        $game->addInformation('Handelslizenz wurde erteilt');
+        $game->getInfo()->addInformation('Handelslizenz wurde erteilt');
 
         $this->privateMessageSender->send(
             $userId,

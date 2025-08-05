@@ -47,7 +47,7 @@ final class StopTakeover implements ActionControllerInterface
 
         $this->shipTakeoverManager->cancelTakeover($takeover);
 
-        $game->addInformationf(
+        $game->getInfo()->addInformationf(
             'Übernahme der %s wurde abgebrochen',
             $takeover->getTargetSpacecraft()->getName()
         );
