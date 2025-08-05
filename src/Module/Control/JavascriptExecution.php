@@ -8,16 +8,16 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 final class JavascriptExecution implements JavascriptExecutionInterface
 {
     /** @var array<int, array<string>> */
-    private array $execjs = [];
+    private static array $execjs = [];
 
     #[Override]
     public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array
     {
-        if (!array_key_exists($when->value, $this->execjs)) {
+        if (!array_key_exists($when->value, self::$execjs)) {
             return null;
         }
 
-        return $this->execjs[$when->value];
+        return self::$execjs[$when->value];
     }
 
     #[Override]
@@ -25,11 +25,17 @@ final class JavascriptExecution implements JavascriptExecutionInterface
     {
         match ($when) {
             JavascriptExecutionTypeEnum::BEFORE_RENDER =>
-            $this->execjs[$when->value][] = $value,
+            self::$execjs[$when->value][] = $value,
             JavascriptExecutionTypeEnum::AFTER_RENDER =>
-            $this->execjs[$when->value][] = $value,
+            self::$execjs[$when->value][] = $value,
             JavascriptExecutionTypeEnum::ON_AJAX_UPDATE =>
-            $this->execjs[$when->value][] = $value
+            self::$execjs[$when->value][] = $value
         };
+    }
+
+    #[Override]
+    public static function reset(): void
+    {
+        self::$execjs = [];
     }
 }

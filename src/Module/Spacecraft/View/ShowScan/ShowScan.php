@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowScan;
 
 use Override;
 use request;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,7 +27,8 @@ final class ShowScan implements ViewControllerInterface
         private SpacecraftLoaderInterface $spacecraftLoader,
         private InteractionCheckerInterface $interactionChecker,
         private PirateReactionInterface $pirateReaction,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
@@ -74,8 +76,8 @@ final class ShowScan implements ViewControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        $game->checkDatabaseItem($target->getDatabaseId());
-        $game->checkDatabaseItem($target->getRump()->getDatabaseId());
+        $this->achievementManager->checkDatabaseItem($target->getDatabaseId(), $user);
+        $this->achievementManager->checkDatabaseItem($target->getRump()->getDatabaseId(), $user);
 
         $this->privateMessageSender->send(
             $game->getUser()->getId(),

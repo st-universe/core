@@ -75,11 +75,6 @@ interface GameControllerInterface extends InformationInterface
 
     public function getCurrentRound(): GameTurn;
 
-    public function checkDatabaseItem(?int $databaseEntryId): void;
-
-    /** @return array<string> */
-    public function getAchievements(): array;
-
     public function getSessionString(): string;
 
     public function sessionAndAdminCheck(): void;

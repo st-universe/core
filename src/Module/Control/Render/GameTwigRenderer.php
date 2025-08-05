@@ -6,6 +6,7 @@ namespace Stu\Module\Control\Render;
 
 use Noodlehaus\ConfigInterface;
 use Override;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
@@ -26,7 +27,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly StuConfigInterface $stuConfig,
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly JavascriptExecutionInterface $javascriptExecution
+        private readonly JavascriptExecutionInterface $javascriptExecution,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
@@ -52,7 +54,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('PAGETITLE', $game->getPageTitle());
         $this->twigPage->setVar('INFORMATION', $game->getInformation());
         $this->twigPage->setVar('TARGET_LINK', $game->getTargetLink());
-        $this->twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
+        $this->twigPage->setVar('ACHIEVEMENTS', $this->achievementManager->getAchievements());
         $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::BEFORE_RENDER));
         $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::AFTER_RENDER));
         $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::ON_AJAX_UPDATE));

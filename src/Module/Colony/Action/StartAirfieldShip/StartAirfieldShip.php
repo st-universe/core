@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -48,7 +49,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository,
         private ShipRepositoryInterface $shipRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private ShipTorpedoManagerInterface $shipTorpedoManager
+        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
@@ -152,16 +154,10 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $databaseEntry = $colony->getSystem()->getDatabaseEntry();
-        if ($databaseEntry !== null) {
-            $game->checkDatabaseItem($databaseEntry->getId());
-        }
+        $this->achievementManager->checkDatabaseItem($databaseEntry?->getId(), $user);
         $databaseEntry = $colony->getSystem()->getSystemType()->getDatabaseEntry();
-        if ($databaseEntry !== null) {
-            $game->checkDatabaseItem($databaseEntry->getId());
-        }
-        if ($rump->getDatabaseId()) {
-            $game->checkDatabaseItem($rump->getDatabaseId());
-        }
+        $this->achievementManager->checkDatabaseItem($databaseEntry?->getId(), $user);
+        $this->achievementManager->checkDatabaseItem($rump->getDatabaseId(), $user);
         $game->addInformation(_('Das Schiff wurde gestartet'));
     }
 

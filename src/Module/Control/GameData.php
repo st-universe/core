@@ -21,9 +21,6 @@ final class GameData
 
     public ?GameTurn $currentRound = null;
 
-    /** @var array<string> */
-    public array $achievements = [];
-
     /** @var array<int, mixed> $viewContext */
     public array $viewContext = [];
 

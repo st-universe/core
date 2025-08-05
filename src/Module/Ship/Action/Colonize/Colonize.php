@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\Colonize;
 use InvalidArgumentException;
 use Override;
 use request;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
@@ -50,7 +51,8 @@ final class Colonize implements ActionControllerInterface
         private SpacecraftRemoverInterface $spacecraftRemover,
         private InteractionCheckerInterface $interactionChecker,
         private ColonizationCheckerInterface $colonizationChecker,
-        private TroopTransferUtilityInterface $troopTransferUtility
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
@@ -146,7 +148,7 @@ final class Colonize implements ActionControllerInterface
 
         $this->spacecraftRemover->remove($ship);
 
-        $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
+        $this->achievementManager->checkDatabaseItem($colony->getColonyClass()->getDatabaseId(), $user);
 
         $game->redirectTo(sprintf(
             '/colony.php?%s=1&id=%d',

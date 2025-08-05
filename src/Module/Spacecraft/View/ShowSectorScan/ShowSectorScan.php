@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowSectorScan;
 
 use Override;
 use request;
+use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
@@ -16,6 +17,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
@@ -32,13 +34,15 @@ final class ShowSectorScan implements ViewControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
-        private EncodedMapInterface $encodedMap
+        private EncodedMapInterface $encodedMap,
+        private readonly AchievementManagerInterface $achievementManager
     ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -68,10 +72,8 @@ final class ShowSectorScan implements ViewControllerInterface
         $mapField = $ship->getLocation();
 
         $colonyClass = $mapField->getFieldType()->getColonyClass();
-        if ($colonyClass !== null) {
-            $game->checkDatabaseItem($colonyClass->getDatabaseId());
-        }
-        $this->checkDatabaseItemForMap($mapField, $game);
+        $this->achievementManager->checkDatabaseItem($colonyClass?->getDatabaseId(), $user);
+        $this->checkDatabaseItemForMap($mapField, $user);
 
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', $this->fadedSignaturesUncloaked === [] ? null : count($this->fadedSignaturesUncloaked));
@@ -81,7 +83,7 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('BUOYS', $ship->getLocation()->getBuoys());
     }
 
-    private function checkDatabaseItemForMap(Location $location, GameControllerInterface $game): void
+    private function checkDatabaseItemForMap(Location $location, User $user): void
     {
         if (!$location instanceof Map) {
             return;
@@ -92,7 +94,7 @@ final class ShowSectorScan implements ViewControllerInterface
             $system !== null
             && $location->getFieldType()->getIsSystem()
         ) {
-            $game->checkDatabaseItem($system->getSystemType()->getDatabaseEntryId());
+            $this->achievementManager->checkDatabaseItem($system->getSystemType()->getDatabaseEntryId(), $user);
         }
     }
 
