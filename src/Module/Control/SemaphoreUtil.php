@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use Override;
-use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
 use Stu\Module\Config\StuConfigInterface;
@@ -14,14 +13,22 @@ use SysvSemaphore;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
 {
+    /** @var array<int, SysvSemaphore> */
+    public static array $semaphores = [];
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private GameControllerInterface $game,
-        private StuConfigInterface $stuConfig,
+        private readonly StuConfigInterface $stuConfig,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+    }
+
+    #[Override]
+    public function isSemaphoreAlreadyAcquired(int $key): bool
+    {
+        return array_key_exists($key, self::$semaphores);
     }
 
     #[Override]
@@ -33,12 +40,12 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
         $semaphore = $this->getSemaphore($key);
 
-        if ($this->game->isSemaphoreAlreadyAcquired($key)) {
+        if ($this->isSemaphoreAlreadyAcquired($key)) {
             return null;
         }
 
         $this->acquire($semaphore);
-        $this->game->addSemaphore($key, $semaphore);
+        self::$semaphores[$key] = $semaphore;
 
         return $semaphore;
     }
@@ -53,7 +60,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         );
 
         if ($semaphore === false) {
-            throw new RuntimeException('Error getting semaphore');
+            throw new SemaphoreException('Error getting semaphore');
         }
 
         return $semaphore;
@@ -95,5 +102,10 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     private function isSemaphoreUsageActive(): bool
     {
         return $this->stuConfig->getGameSettings()->useSemaphores();
+    }
+
+    public static function reset(): void
+    {
+        self::$semaphores = [];
     }
 }

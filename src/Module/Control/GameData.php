@@ -5,7 +5,6 @@ namespace Stu\Module\Control;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
-use SysvSemaphore;
 
 final class GameData
 {
@@ -26,9 +25,6 @@ final class GameData
 
     /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
     public ?array $gameStats = null;
-
-    /** @var array<int, SysvSemaphore> */
-    public array $semaphores = [];
 
     public ?GameRequest $gameRequest = null;
 
