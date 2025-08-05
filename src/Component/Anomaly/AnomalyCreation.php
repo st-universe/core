@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use InvalidArgumentException;
 use Override;
-use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
@@ -31,7 +31,7 @@ final class AnomalyCreation implements AnomalyCreationInterface
 
         $anomalyType = $this->anomalyTypeRepository->find($type->value);
         if ($anomalyType === null) {
-            throw new RuntimeException(sprintf('no anomaly in database for type: %d', $type->value));
+            throw new InvalidArgumentException(sprintf('no anomaly in database for type: %d', $type->value));
         }
 
         $anomaly = $this->anomalyRepository

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
-use RuntimeException;
+use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LogTypeEnum;
@@ -39,7 +39,7 @@ class IonStormMovement
     {
         $currentLocation = $child->getLocation();
         if ($currentLocation === null) {
-            throw new RuntimeException('this should not happen');
+            throw new AnomalyException('this should not happen');
         }
 
         $newLocation = $locationPool->getLocation(

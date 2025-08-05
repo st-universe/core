@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly;
 
+use OutOfBoundsException;
 use Override;
-use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -71,7 +71,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         $type = $anomaly->getAnomalyType()->getId();
 
         if (!array_key_exists($type, $this->handlerList)) {
-            throw new RuntimeException(sprintf('no handler defined for type: %d', $type));
+            throw new OutOfBoundsException(sprintf('no handler defined for type: %d', $type));
         }
 
         return $this->handlerList[$type];

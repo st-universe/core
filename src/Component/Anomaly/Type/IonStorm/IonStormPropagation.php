@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
-use RuntimeException;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
+use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Orm\Entity\Anomaly;
@@ -54,7 +54,7 @@ class IonStormPropagation
 
         $location = $anomaly->getLocation();
         if ($location === null) {
-            throw new RuntimeException('this should not happen');
+            throw new AnomalyException('this should not happen');
         }
 
         $neighbours = $locationPool->getNeighbours($location);
