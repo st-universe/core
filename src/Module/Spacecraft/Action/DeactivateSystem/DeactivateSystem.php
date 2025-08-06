@@ -6,11 +6,12 @@ namespace Stu\Module\Spacecraft\Action\DeactivateSystem;
 
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -54,27 +55,8 @@ final class DeactivateSystem implements ActionControllerInterface
         }
 
         if ($success && $this->isAlertReactionCheckNeeded($systemType)) {
-            $spacecraft = $wrapper->get();
-
-            if ($fleetWrapper === null) {
-                $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
-
-                //Alarm-Rot check for ship
-                $this->alertReactionFacade->doItAll($wrapper, $game->getInfo());
-
-                //Alarm-Rot check for traktor ship
-                if ($traktoredShipWrapper !== null) {
-                    $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game->getInfo(), $spacecraft);
-                }
-            } else {
-                $tractoredShips = $this->getTractoredShipWrappers($wrapper);
-                //Alarm-Rot check for tractored ships
-                foreach ($tractoredShips as [$tractoringShipWrapper, $tractoredShipWrapper]) {
-                    $this->alertReactionFacade->doItAll($tractoredShipWrapper, $game->getInfo(), $tractoringShipWrapper);
-                }
-            }
-
-            if ($spacecraft->getCondition()->isDestroyed()) {
+            $this->triggerAlertReaction($fleetWrapper, $wrapper, $game->getInfo());
+            if ($wrapper->get()->getCondition()->isDestroyed()) {
                 return;
             }
         }
@@ -91,16 +73,34 @@ final class DeactivateSystem implements ActionControllerInterface
         };
     }
 
+    private function triggerAlertReaction(?FleetWrapperInterface $fleetWrapper, SpacecraftWrapperInterface $wrapper, InformationInterface $info): void
+    {
+        $spacecraft = $wrapper->get();
+
+        if ($fleetWrapper === null) {
+            $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
+
+            //Alarm-Rot check for ship
+            $this->alertReactionFacade->doItAll($wrapper, $info);
+
+            //Alarm-Rot check for traktor ship
+            if ($traktoredShipWrapper !== null) {
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $info, $spacecraft);
+            }
+        } else {
+            $tractoredShips = $this->getTractoredShipWrappers($fleetWrapper);
+            //Alarm-Rot check for tractored ships
+            foreach ($tractoredShips as [$tractoringShipWrapper, $tractoredShipWrapper]) {
+                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringShipWrapper);
+            }
+        }
+    }
+
     /** @return array<int, array{0: Ship, 1: SpacecraftWrapperInterface}> */
-    private function getTractoredShipWrappers(SpacecraftWrapperInterface $leader): array
+    private function getTractoredShipWrappers(FleetWrapperInterface $fleetWrapper): array
     {
         /** @var array<int, array{0: Ship, 1: SpacecraftWrapperInterface}> */
         $result = [];
-
-        $fleetWrapper = $leader->getFleetWrapper();
-        if ($fleetWrapper === null) {
-            throw new RuntimeException('this should not happen');
-        }
 
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
 
