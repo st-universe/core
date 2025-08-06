@@ -23,9 +23,6 @@ final class GameData
     /** @var array<int, mixed> $viewContext */
     public array $viewContext = [];
 
-    /** @var array{currentTurn:int, player:int, playeronline:int, gameState:int, gameStateTextual:string} */
-    public ?array $gameStats = null;
-
     public ?GameRequest $gameRequest = null;
 
     public function __construct()

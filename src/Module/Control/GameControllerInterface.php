@@ -60,8 +60,6 @@ interface GameControllerInterface
 
     public function getGameRequest(): GameRequest;
 
-    public function getGameRequestId(): string;
-
     public function main(
         ModuleEnum $view,
         bool $session_check = true,
@@ -70,9 +68,6 @@ interface GameControllerInterface
     ): void;
 
     public function isAdmin(): bool;
-
-    /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
-    public function getGameStats(): array;
 
     public function resetGameData(): void;
 

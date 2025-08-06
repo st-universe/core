@@ -64,7 +64,7 @@ final class ErrorHandler
 
                 echo str_replace(
                     '$REQUESTID',
-                    $this->game->getGameRequestId(),
+                    $this->game->getGameRequest()->getRequestId(),
                     (string) file_get_contents(__DIR__ . '/../html/error.html')
                 );
             };
