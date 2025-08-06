@@ -10,8 +10,6 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
-use Stu\Exception\EntityLockedException;
-use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionStringFactoryInterface;
@@ -20,11 +18,12 @@ use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\Component\CallbackExecution;
+use Stu\Module\Control\Component\ViewExecution;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\Router\FallbackRouteException;
 use Stu\Module\Control\Router\FallbackRouterInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
-use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameRequest;
@@ -44,10 +43,10 @@ final class GameController implements GameControllerInterface
     private GameData $gameData;
 
     public function __construct(
-        private readonly ControllerDiscovery $controllerDiscovery,
-        private readonly AccessCheckInterface $accessCheck,
         private readonly SessionInterface $session,
         private readonly SessionLoginInterface $sessionLogin,
+        private readonly CallbackExecution $callbackExecution,
+        private readonly ViewExecution $viewExecution,
         private readonly TwigPageInterface $twigPage,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
@@ -63,7 +62,6 @@ final class GameController implements GameControllerInterface
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
         private readonly JavascriptExecutionInterface $javascriptExecution,
-        private readonly TutorialProvider $tutorialProvider,
         private readonly SessionStringFactoryInterface $sessionStringFactory,
         private readonly BenchmarkResultInterface $benchmarkResult
     ) {
@@ -317,30 +315,8 @@ final class GameController implements GameControllerInterface
             $this->checkUserLock($gameRequest);
             $this->gameState->checkGameState($this->isAdmin());
 
-            // log action & view and time they took
-            $startTime = hrtime(true);
-            try {
-                $this->executeCallback($module, $gameRequest);
-            } catch (SanityCheckException $e) {
-                $gameRequest->addError($e);
-            } catch (EntityLockedException $e) {
-                $this->getInfo()->addInformation($e->getMessage());
-            }
-            $actionMs = hrtime(true) - $startTime;
-
-            $startTime = hrtime(true);
-            try {
-                $this->executeView($module, $gameRequest);
-            } catch (SanityCheckException $e) {
-                $gameRequest->addError($e);
-            } catch (EntityLockedException $e) {
-                $this->getInfo()->addInformation($e->getMessage());
-                $this->setMacroInAjaxWindow('');
-            }
-            $viewMs = hrtime(true) - $startTime;
-
-            $gameRequest->setActionMs((int)$actionMs / 1_000_000);
-            $gameRequest->setViewMs((int)$viewMs / 1_000_000);
+            $this->callbackExecution->execute($module, $this);
+            $this->viewExecution->execute($module, $this);
         } catch (SessionInvalidException) {
             session_destroy();
 
@@ -426,70 +402,6 @@ final class GameController implements GameControllerInterface
         }
 
         return $this->getUser()->isNpc();
-    }
-
-    private function executeCallback(ModuleEnum $module, GameRequest $gameRequest): void
-    {
-        $actions = $this->controllerDiscovery->getControllers($module, false);
-
-        foreach ($actions as $actionIdentifier => $controller) {
-            if (!request::has($actionIdentifier)) {
-                continue;
-            }
-
-            $gameRequest->setAction($actionIdentifier);
-
-            if ($this->accessCheck->checkUserAccess($controller, $this)) {
-                $controller->handle($this);
-                $this->entityManager->flush();
-            }
-            break;
-        }
-    }
-
-    private function executeView(ModuleEnum $module, GameRequest $gameRequest): void
-    {
-        $viewFromContext = $this->getViewContext(ViewContextTypeEnum::VIEW);
-
-        $views = $this->controllerDiscovery->getControllers($module, true);
-
-        foreach ($views as $viewIdentifier => $controller) {
-            if (
-                request::has($viewIdentifier)
-                || $viewIdentifier === $viewFromContext
-            ) {
-                $gameRequest->setView($viewIdentifier);
-
-                if ($this->accessCheck->checkUserAccess($controller, $this)) {
-                    $this->handleView($controller);
-                    return;
-                }
-                break;
-            }
-        }
-
-        $view = $views[self::DEFAULT_VIEW] ?? null;
-
-        if (
-            $view !== null
-            && $this->accessCheck->checkUserAccess($view, $this)
-        ) {
-            $this->handleView($view);
-        }
-    }
-
-    private function handleView(ControllerInterface $view): void
-    {
-        $view->handle($this);
-
-        if ($view instanceof ViewWithTutorialInterface) {
-            $this->tutorialProvider->setTemplateVariables(
-                $view->getViewContext(),
-                $this
-            );
-        }
-
-        $this->entityManager->flush();
     }
 
     #[Override]

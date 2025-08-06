@@ -1,11 +1,12 @@
 <?php
 
-namespace Stu\Module\Control;
+namespace Stu\Module\Control\Component;
 
 use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
+use Stu\Module\Control\ControllerInterface;
 
-class ControllerDiscovery
+class ControllerDiscovery implements ControllerDiscoveryInterface
 {
     /**
      * @return array<string, ControllerInterface>
