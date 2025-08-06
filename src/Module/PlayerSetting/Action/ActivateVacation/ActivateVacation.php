@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 
 use Override;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\RedirectionException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -32,7 +33,7 @@ final class ActivateVacation implements ActionControllerInterface
 
             $this->session->logout();
 
-            $game->redirectTo(sprintf('/%s.php', ModuleEnum::INDEX->value));
+            throw new RedirectionException(sprintf('/%s.php', ModuleEnum::INDEX->value));
         } else {
             $game->getInfo()->addInformation(
                 _('Urlaubsmodus ist noch gesperrt. Letzte Aktivierung ist weniger als eine Woche her!')

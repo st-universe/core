@@ -25,13 +25,9 @@ interface GameControllerInterface
 
     public function showMacro(string $macro): void;
 
-    public function getMacro(): string;
+    public function getGameData(): GameData;
 
     public function getInfo(): InformationWrapper;
-
-    public function getTargetLink(): ?TargetLink;
-
-    public function setTargetLink(TargetLink $targetLink): GameControllerInterface;
 
     public function setTemplateVar(string $key, mixed $variable): void;
 
@@ -52,18 +48,9 @@ interface GameControllerInterface
 
     public function appendNavigationPart(string $url, string $title): void;
 
-    /**
-     * @return array<string, string>
-     */
-    public function getNavigation(): array;
-
-    public function getPageTitle(): string;
-
     public function setPageTitle(string $title): void;
 
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void;
-
-    public function redirectTo(string $href): void;
 
     public function getCurrentRound(): GameTurn;
 

@@ -6,6 +6,7 @@ namespace Stu\Module\Game\Action\Logout;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
@@ -28,6 +29,9 @@ class LogoutTest extends StuTestCase
 
     public function testHandleDoesNothingIfUserNotAvailable(): void
     {
+        static::expectException(RedirectionException::class);
+        static::expectExceptionMessage('/index.php');
+
         $game = $this->mock(GameControllerInterface::class);
 
         $game->shouldReceive('hasUser')
@@ -35,26 +39,21 @@ class LogoutTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $game->shouldReceive('redirectTo')
-            ->with('/index.php')
-            ->once();
-
         $this->subject->handle($game);
     }
 
 
     public function testHandleLogsOut(): void
     {
+        static::expectException(RedirectionException::class);
+        static::expectExceptionMessage('/index.php');
+
         $game = $this->mock(GameControllerInterface::class);
 
         $game->shouldReceive('hasUser')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-
-        $game->shouldReceive('redirectTo')
-            ->with('/index.php')
-            ->once();
 
         $this->session->shouldReceive('logout')
             ->withNoArgs()

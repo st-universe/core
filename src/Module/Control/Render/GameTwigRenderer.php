@@ -49,11 +49,13 @@ final class GameTwigRenderer implements GameTwigRendererInterface
 
     private function setGameVariables(GameControllerInterface $game): void
     {
-        $this->twigPage->setVar('MACRO', $game->getMacro());
-        $this->twigPage->setVar('NAVIGATION', $game->getNavigation());
-        $this->twigPage->setVar('PAGETITLE', $game->getPageTitle());
+        $gameData = $game->getGameData();
+
+        $this->twigPage->setVar('MACRO', $gameData->macro);
+        $this->twigPage->setVar('NAVIGATION', $gameData->siteNavigation);
+        $this->twigPage->setVar('PAGETITLE', $gameData->pagetitle);
         $this->twigPage->setVar('INFORMATION', $game->getInfo()->getInformations());
-        $this->twigPage->setVar('TARGET_LINK', $game->getTargetLink());
+        $this->twigPage->setVar('TARGET_LINK', $game->getGameData()->targetLink);
         $this->twigPage->setVar('ACHIEVEMENTS', $this->achievementManager->getAchievements());
         $this->twigPage->setVar('EXECUTEJSBEFORERENDER', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::BEFORE_RENDER));
         $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::AFTER_RENDER));

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Login;
 
 use Override;
+use Stu\Component\Game\RedirectionException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionLoginInterface;
@@ -34,7 +35,7 @@ final class Login implements ActionControllerInterface
 
         if ($success) {
             $view = $this->userSettingsProvider->getDefaultView($game->getUser());
-            $game->redirectTo(sprintf('/%s', $view->getPhpPage()));
+            throw new RedirectionException(sprintf('/%s', $view->getPhpPage()));
         }
     }
 

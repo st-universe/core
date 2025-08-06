@@ -8,6 +8,8 @@ use InvalidArgumentException;
 use Override;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
+use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
@@ -150,8 +152,9 @@ final class Colonize implements ActionControllerInterface
 
         $this->achievementManager->checkDatabaseItem($colony->getColonyClass()->getDatabaseId(), $user);
 
-        $game->redirectTo(sprintf(
-            '/colony.php?%s=1&id=%d',
+        throw new RedirectionException(sprintf(
+            '/%s.php?%s=1&id=%d',
+            ModuleEnum::COLONY->value,
             ShowColony::VIEW_IDENTIFIER,
             $colony->getId()
         ));
