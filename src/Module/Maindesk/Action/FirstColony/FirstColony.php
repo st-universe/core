@@ -6,8 +6,9 @@ namespace Stu\Module\Maindesk\Action\FirstColony;
 
 use InvalidArgumentException;
 use Override;
-use RuntimeException;
 use Stu\Component\Database\AchievementManagerInterface;
+use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -63,7 +64,7 @@ final class FirstColony implements ActionControllerInterface
 
         $startingBuilding =  $this->buildingRepository->find($faction->getStartBuildingId());
         if ($startingBuilding === null) {
-            throw new RuntimeException(sprintf('buildingId %d not found', $faction->getStartBuildingId()));
+            throw new InvalidArgumentException(sprintf('buildingId %d not found', $faction->getStartBuildingId()));
         }
         $this->planetColonization->colonize(
             $colony,
@@ -99,7 +100,7 @@ final class FirstColony implements ActionControllerInterface
         // Database entries for colonyclass
         $this->achievementManager->checkDatabaseItem($colony->getColonyClass()->getDatabaseId(), $user);
 
-        $game->redirectTo('./colony.php?id=' . $colony->getId());
+        throw new RedirectionException(sprintf('/%s.php?id=%d', ModuleEnum::COLONY->value, $colony->getId()));
     }
 
     private function getCommodity(int $commodityId): Commodity

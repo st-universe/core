@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Override;
 use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Orm\Entity\Alliance;
 
 /**
@@ -53,8 +54,9 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         Alliance $alliance
     ): string {
         return sprintf(
-            '%s/alliance.php?id=%d',
+            '%s/%s?id=%d',
             $this->config->get('game.base_url'),
+            ModuleEnum::ALLIANCE->getPhpPage(),
             $alliance->getId()
         );
     }

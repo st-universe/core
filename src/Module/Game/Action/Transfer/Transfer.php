@@ -143,10 +143,10 @@ final class Transfer implements ActionControllerInterface
         );
 
         if ($target->getUser() === $source->getUser()) {
-            $game->setTargetLink(new TargetLink(
+            $game->getGameData()->targetLink = new TargetLink(
                 $target->getHref(),
                 sprintf('Zu Ziel-%s wechseln', $target->getTransferEntityType()->getName())
-            ));
+            );
         }
 
         $game->getInfo()->addInformationWrapper($informations);

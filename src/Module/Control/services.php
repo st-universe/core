@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Stu\Component\Game\RedirectionException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\ResetGameStateException;
@@ -24,6 +25,7 @@ use Stu\Module\Control\Router\Handler\AccountNotVerifiedFallbackHandler;
 use Stu\Module\Control\Router\Handler\ItemNotFoundFallbackHandler;
 use Stu\Module\Control\Router\Handler\LoginErrorFallbackHandler;
 use Stu\Module\Control\Router\Handler\MaintenanceFallbackHandler;
+use Stu\Module\Control\Router\Handler\RedirectionFallbackHandler;
 use Stu\Module\Control\Router\Handler\RelocationFallbackHandler;
 use Stu\Module\Control\Router\Handler\ResetFallbackHandler;
 use Stu\Module\Control\Router\Handler\SpacecraftNotFoundFallbackHandler;
@@ -58,6 +60,7 @@ return [
                 SpacecraftDoesNotExistException::class => autowire(SpacecraftNotFoundFallbackHandler::class),
                 ItemNotFoundException::class => autowire(ItemNotFoundFallbackHandler::class),
                 UnallowedUplinkOperationException::class => autowire(UplinkFallbackHandler::class),
+                RedirectionException::class => autowire(RedirectionFallbackHandler::class),
             ]
         )
 ];

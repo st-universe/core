@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\ColonizationShip;
 
+use BadMethodCallException;
 use InvalidArgumentException;
 use Override;
-use RuntimeException;
+use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\RedirectionException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -40,7 +42,7 @@ final class ColonizationShip implements ActionControllerInterface
 
         $startMap = $faction->getStartMap();
         if ($startMap === null) {
-            throw new RuntimeException('faction has no start map');
+            throw new BadMethodCallException('faction has no start map');
         }
 
         $wrapper = $this->shipCreator->createBy(
@@ -65,7 +67,7 @@ final class ColonizationShip implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
         if ($eps === null) {
-            throw new RuntimeException('no eps installed');
+            throw new BadMethodCallException('no eps installed');
         }
 
         $eps->setEps((int)floor($eps->getTheoreticalMaxEps() * 5))->update();
@@ -80,7 +82,7 @@ final class ColonizationShip implements ActionControllerInterface
         $user->setState(UserStateEnum::COLONIZATION_SHIP);
         $this->userRepository->save($user);
 
-        $game->redirectTo('./ship.php');
+        throw new RedirectionException(sprintf('/%s.php', ModuleEnum::SHIP->value));
     }
 
     private function getRumpId(int $factionId): int
@@ -90,27 +92,14 @@ final class ColonizationShip implements ActionControllerInterface
 
     private function getBuildplanId(int $factionId): int
     {
-        if ($factionId == 1) {
-            return self::FED_COL_BUILDPLAN;
-        }
-
-        if ($factionId == 2) {
-            return self::ROM_COL_BUILDPLAN;
-        }
-
-        if ($factionId == 3) {
-            return self::KLING_COL_BUILDPLAN;
-        }
-
-        if ($factionId == 4) {
-            return self::CARD_COL_BUILDPLAN;
-        }
-
-        if ($factionId == 5) {
-            return self::FERG_COL_BUILDPLAN;
-        }
-
-        throw new InvalidArgumentException('faction is not configured');
+        return match ($factionId) {
+            1 => self::FED_COL_BUILDPLAN,
+            2 => self::ROM_COL_BUILDPLAN,
+            3 => self::KLING_COL_BUILDPLAN,
+            4 => self::CARD_COL_BUILDPLAN,
+            5 => self::FERG_COL_BUILDPLAN,
+            default => throw new InvalidArgumentException('faction is not configured')
+        };
     }
 
     #[Override]

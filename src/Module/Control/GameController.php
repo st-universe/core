@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use BadMethodCallException;
-use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
@@ -50,7 +49,6 @@ final class GameController implements GameControllerInterface
         private readonly TwigPageInterface $twigPage,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly EntityManagerInterface $entityManager,
         private readonly UserRepositoryInterface $userRepository,
         private readonly ComponentSetupInterface $componentSetup,
         private readonly Ubench $benchmark,
@@ -129,29 +127,15 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getMacro(): string
+    public function getGameData(): GameData
     {
-        return $this->gameData->macro;
+        return $this->gameData;
     }
 
     #[Override]
     public function getInfo(): InformationWrapper
     {
         return $this->gameData->gameInformations;
-    }
-
-    #[Override]
-    public function getTargetLink(): ?TargetLink
-    {
-        return $this->gameData->targetLink;
-    }
-
-    #[Override]
-    public function setTargetLink(TargetLink $targetLink): GameControllerInterface
-    {
-        $this->gameData->targetLink = $targetLink;
-
-        return $this;
     }
 
     #[Override]
@@ -197,18 +181,6 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getNavigation(): array
-    {
-        return $this->gameData->siteNavigation;
-    }
-
-    #[Override]
-    public function getPageTitle(): string
-    {
-        return $this->gameData->pagetitle;
-    }
-
-    #[Override]
     public function setPageTitle(string $title): void
     {
         $this->gameData->pagetitle = $title;
@@ -218,16 +190,6 @@ final class GameController implements GameControllerInterface
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
     {
         $this->javascriptExecution->addExecuteJS($value, $when);
-    }
-
-    #[Override]
-    public function redirectTo(string $href): void
-    {
-        $this->gameRequestSaver->save($this->getGameRequest());
-        $this->entityManager->flush();
-        $this->entityManager->commit();
-        header('Location: ' . $href);
-        exit;
     }
 
     #[Override]

@@ -3,6 +3,7 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Override;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
@@ -135,7 +136,8 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             $allInformations,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             sprintf(
-                'colony.php?%s=1&id=%d',
+                '%s?%s=1&id=%d',
+                ModuleEnum::COLONY->getPhpPage(),
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             )
