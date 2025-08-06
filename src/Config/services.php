@@ -27,10 +27,10 @@ use Stu\Module\Config\Model\SettingsFactory;
 use Stu\Module\Config\Model\SettingsFactoryInterface;
 use Stu\Module\Config\StuConfig;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\ControllerDiscovery;
+use Stu\Module\Control\Component\CallbackExecution;
+use Stu\Module\Control\Component\ViewExecution;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Game\Lib\TutorialProvider;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Ubench;
@@ -66,8 +66,8 @@ return [
         );
     },
     GameControllerInterface::class => autowire(GameController::class)
-        ->constructorParameter('controllerDiscovery', autowire(ControllerDiscovery::class))
-        ->constructorParameter('tutorialProvider', autowire(TutorialProvider::class)),
+        ->constructorParameter('callbackExecution', autowire(CallbackExecution::class))
+        ->constructorParameter('viewExecution', autowire(ViewExecution::class)),
     Parser::class => function (): Parser {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());

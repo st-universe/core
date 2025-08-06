@@ -12,6 +12,9 @@ use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
+use Stu\Module\Control\Component\ControllerDiscovery;
+use Stu\Module\Control\Component\ControllerDiscoveryInterface;
+use Stu\Module\Control\Component\TutorialProvider;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTwigRenderer;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
@@ -34,12 +37,14 @@ return [
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     ComponentSetupInterface::class => autowire(ComponentSetup::class),
     GameStateInterface::class => autowire(GameState::class),
+    ControllerDiscoveryInterface::class => autowire(ControllerDiscovery::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
     JavascriptExecutionInterface::class => autowire(JavascriptExecution::class),
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
     StuTime::class => autowire(StuTime::class),
     StuHashInterface::class => autowire(StuHash::class),
     StuRandom::class => autowire(StuRandom::class),
+    TutorialProvider::class => autowire(TutorialProvider::class),
     FallbackRouterInterface::class => autowire(FallbackRouter::class)
         ->constructorParameter(
             'handlers',

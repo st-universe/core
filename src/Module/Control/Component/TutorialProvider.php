@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Game\Lib;
+namespace Stu\Module\Control\Component;
 
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -9,7 +9,7 @@ use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
-final class TutorialProvider
+class TutorialProvider
 {
     public function __construct(
         private UserTutorialRepositoryInterface $userTutorialRepository,

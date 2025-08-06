@@ -16,6 +16,11 @@ class StuTime
         return time();
     }
 
+    public function hrtime(): int
+    {
+        return hrtime(true);
+    }
+
     public function date(string $format): string
     {
         return date($format);
