@@ -12,20 +12,24 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\JavascriptExecutionInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class GameTwigRenderer implements GameTwigRendererInterface
 {
     private const string GAME_VERSION_DEV = 'dev';
 
     public function __construct(
+        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GameStateInterface $gameState,
         private readonly TwigPageInterface $twigPage,
         private readonly ConfigInterface $config,
         private readonly StuConfigInterface $stuConfig,
-        private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly AchievementManagerInterface $achievementManager
@@ -64,7 +68,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('IS_NPC', $game->isNpc());
         $this->twigPage->setVar('IS_ADMIN', $game->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
-        $this->twigPage->setVar('GAME_STATS', $game->getGameStats());
+        $this->twigPage->setVar('GAME_STATS', $this->getGameStats($game));
 
         if ($game->hasUser()) {
             $this->twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
@@ -111,5 +115,19 @@ final class GameTwigRenderer implements GameTwigRendererInterface
             '/version_%s/static',
             $gameVersion
         );
+    }
+
+    /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
+    private function getGameStats(GameControllerInterface $game): array
+    {
+        $gameState = $this->gameState->getGameState();
+
+        return [
+            'currentTurn' => $game->getCurrentRound()->getTurn(),
+            'player' => $this->userRepository->getActiveAmount(),
+            'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
+            'gameState' => $gameState->value,
+            'gameStateTextual' => $gameState->getDescription()
+        ];
     }
 }

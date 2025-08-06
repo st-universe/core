@@ -13,9 +13,7 @@ use Stu\Orm\Entity\GameRequest;
  */
 final class GameRequestSaver implements GameRequestSaverInterface
 {
-    public function __construct(private ParameterSanitizerInterface $parameterSanitizer, private GameRequestLoggerInterface $gameRequstLogger)
-    {
-    }
+    public function __construct(private ParameterSanitizerInterface $parameterSanitizer, private GameRequestLoggerInterface $gameRequstLogger) {}
 
     #[Override]
     public function save(

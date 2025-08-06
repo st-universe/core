@@ -30,7 +30,6 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -49,7 +48,6 @@ final class GameController implements GameControllerInterface
         private readonly TwigPageInterface $twigPage,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly UserRepositoryInterface $userRepository,
         private readonly ComponentSetupInterface $componentSetup,
         private readonly Ubench $benchmark,
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
@@ -221,12 +219,6 @@ final class GameController implements GameControllerInterface
     }
 
     #[Override]
-    public function getGameRequestId(): string
-    {
-        return $this->getGameRequest()->getRequestId();
-    }
-
-    #[Override]
     public function getGameRequest(): GameRequest
     {
         if ($this->gameData->gameRequest === null) {
@@ -364,22 +356,6 @@ final class GameController implements GameControllerInterface
         }
 
         return $this->getUser()->isNpc();
-    }
-
-    #[Override]
-    public function getGameStats(): array
-    {
-        if ($this->gameData->gameStats === null) {
-            $gameState = $this->gameState->getGameState();
-            $this->gameData->gameStats = [
-                'currentTurn' => $this->getCurrentRound()->getTurn(),
-                'player' => $this->userRepository->getActiveAmount(),
-                'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
-                'gameState' => $gameState->value,
-                'gameStateTextual' => $gameState->getDescription()
-            ];
-        }
-        return $this->gameData->gameStats;
     }
 
     #[Override]
