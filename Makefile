@@ -5,6 +5,8 @@ SUITE=
 
 all:init dirs
 
+local-setup:init dev-create-db migrateDatabase resetGame dev-serve
+
 dirs:force
 	for a in src/admin/backup src/Public/avatare/user src/Public/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
@@ -49,5 +51,8 @@ generateMigrations:force
 migrateDatabase:force
 	vendor/bin/doctrine-migrations migrate --all-or-nothing --allow-no-migration --quiet -vv
 	bin/doctrine orm:generate-proxies
+
+resetGame:force
+	bin/cli game:reset
 
 force:
