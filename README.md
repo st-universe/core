@@ -10,11 +10,7 @@ Benötigte Software: Linux (geht u.U. auch unter macOS) docker, php 8.3, compose
 
 - Repository forken und das Source-Code auschecken
 - config.dist.json nach config.json kopieren und anpassen
-- make init
-- make dev-create-db
-- make migrateDatabase
-- ./bin/cli game:reset
-- make dev-serve
+- make local-setup
 - Use the cli command to create a new user `./bin/cli user:create --help`
 
 Danach sollte die Software via <http://localhost:1337> erreichbar sein, ggf. kann
