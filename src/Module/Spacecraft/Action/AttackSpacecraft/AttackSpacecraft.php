@@ -38,6 +38,7 @@ final class AttackSpacecraft implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
+        $info = $game->getInfo();
         $userId = $game->getUser()->getId();
 
         $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
@@ -68,13 +69,13 @@ final class AttackSpacecraft implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_UNWARPED
             ])
-            ->check($game->getInfo())) {
+            ->check($info)) {
             return;
         }
 
         if ($target->getCondition()->isDestroyed()) {
             $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-            $game->getInfo()->addInformation(_('Das Ziel ist bereits zerstört'));
+            $info->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
         }
 
@@ -84,7 +85,7 @@ final class AttackSpacecraft implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
+            $info->addInformation(_('Keine Energie vorhanden'));
             return;
         }
 
@@ -93,9 +94,14 @@ final class AttackSpacecraft implements ActionControllerInterface
         }
 
         $isFleetFight = false;
-        $informations = new InformationWrapper();
+        $fightInfos = new InformationWrapper();
 
-        $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, false, $isFleetFight, $informations);
+        $stillAlive = $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, false, $isFleetFight, $fightInfos);
+
+        if (!$stillAlive) {
+            $info->addInformationWrapper($fightInfos);
+            return;
+        }
 
         $this->pirateReaction->checkForPirateReaction(
             $target,
@@ -104,16 +110,16 @@ final class AttackSpacecraft implements ActionControllerInterface
         );
 
         if ($spacecraft->getCondition()->isDestroyed()) {
-            $game->getInfo()->addInformationWrapper($informations);
+            $info->addInformationWrapper($fightInfos);
             return;
         }
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($isFleetFight) {
             $game->getInfo()->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
+            $game->setTemplateVar('FIGHT_RESULTS', $fightInfos->getInformations());
         } else {
-            $game->getInfo()->addInformationWrapper($informations);
+            $game->getInfo()->addInformationWrapper($fightInfos);
         }
     }
 

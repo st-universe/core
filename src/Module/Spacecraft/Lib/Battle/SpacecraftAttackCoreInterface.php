@@ -15,5 +15,5 @@ interface SpacecraftAttackCoreInterface
         bool $isAttackingShieldsOnly,
         bool &$isFleetFight,
         InformationWrapper $informations
-    ): void;
+    ): bool;
 }
