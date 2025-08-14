@@ -91,8 +91,8 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
             throw new BadMethodCallException('this should not happen');
         }
 
-        if ($systemData->getWarpDrive() > $systemData->getMaxWarpDrive()) {
-            $systemData->setWarpDrive($systemData->getMaxWarpDrive())->update();
+        if ($systemData->getWarpDrive() > $systemData->getMaxWarpdrive()) {
+            $systemData->setWarpDrive($systemData->getMaxWarpdrive())->update();
         }
     }
 }

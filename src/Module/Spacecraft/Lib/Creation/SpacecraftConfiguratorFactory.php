@@ -5,6 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Creation;
 use Override;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -18,7 +19,8 @@ class SpacecraftConfiguratorFactory implements SpacecraftConfiguratorFactoryInte
         private readonly CrewCreatorInterface $crewCreator,
         private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
-        private readonly AlertStateManagerInterface $alertStateManager
+        private readonly AlertStateManagerInterface $alertStateManager,
+        private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
     #[Override]
@@ -31,7 +33,8 @@ class SpacecraftConfiguratorFactory implements SpacecraftConfiguratorFactoryInte
             $this->crewCreator,
             $this->shipCrewRepository,
             $this->spacecraftRepository,
-            $this->alertStateManager
+            $this->alertStateManager,
+            $this->spacecraftStartup
         );
     }
 }

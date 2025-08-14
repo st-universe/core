@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Wrapper;
 
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
@@ -13,6 +12,7 @@ use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -22,12 +22,12 @@ use Stu\Orm\Entity\User;
 class SpacecraftStorageCrewLogic
 {
     public function __construct(
-        private TroopTransferUtilityInterface $troopTransferUtility,
-        private DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        private ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private SpacecraftShutdownInterface $spacecraftShutdown
+        private readonly TroopTransferUtilityInterface $troopTransferUtility,
+        private readonly DockPrivilegeUtilityInterface $dockPrivilegeUtility,
+        private readonly ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
+        private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private readonly SpacecraftShutdownInterface $spacecraftShutdown,
+        private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
     public function getMaxTransferrableCrew(Spacecraft $spacecraft, bool $isTarget, User $user): int
@@ -181,16 +181,7 @@ class SpacecraftStorageCrewLogic
             $this->activatorDeactivatorHelper->deactivate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $information);
         }
 
-        if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
-            return;
-        }
-
-        if (
-            $spacecraft->getCrewCount() > 0
-            && !$spacecraft->getSystemState(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
-        ) {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
-        }
+        $this->spacecraftStartup->startup($wrapper);
     }
 
     private function sendUplinkMessage(bool $hasForeigners, InformationInterface $information, bool $state, bool $enoughOwnCrew): void

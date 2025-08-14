@@ -112,11 +112,11 @@ class ManagerProviderColonyTest extends StuTestCase
         $this->assertEquals(123, $this->subject->getFreeCrewAmount());
     }
 
-    public function testCreateCrewAssignment(): void
+    public function testCreateCrewAssignments(): void
     {
         $ship = $this->mock(Ship::class);
 
-        $this->crewCreator->shouldReceive('createCrewAssignment')
+        $this->crewCreator->shouldReceive('createCrewAssignments')
             ->with($ship, $this->colony, 42)
             ->once()
             ->andReturn(123);

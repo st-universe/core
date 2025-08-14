@@ -55,4 +55,10 @@ final class LifeSupportShipSystem extends AbstractSpacecraftSystemType implement
     {
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }
+
+    #[Override]
+    public function canBeActivatedWithInsufficientCrew(): bool
+    {
+        return true;
+    }
 }

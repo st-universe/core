@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
-use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
@@ -114,7 +114,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     {
         $reactor = $this->reactorWrapper;
         if ($reactor === null) {
-            throw new RuntimeException('this should not happen');
+            throw new BadMethodCallException('this should not happen');
         }
 
         return $this->getEpsUsage() + $reactor->getUsage();
@@ -312,7 +312,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     {
         $takeover ??= $this->spacecraft->getTakeoverActive();
         if ($takeover === null) {
-            throw new RuntimeException('should not call when active takeover is null');
+            throw new BadMethodCallException('should not call when active takeover is null');
         }
 
         $currentTurn = $this->game->getCurrentRound()->getTurn();

@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -39,17 +37,15 @@ final class StartAirfieldShip implements ActionControllerInterface
     private const int FULLY_LOADED_START = 2;
 
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private ColonyLoaderInterface $colonyLoader,
-        private BuildplanHangarRepositoryInterface $buildplanHangarRepository,
-        private CrewCreatorInterface $crewCreator,
-        private ShipCreatorInterface $shipCreator,
-        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
-        private StorageManagerInterface $storageManager,
-        private ColonyRepositoryInterface $colonyRepository,
-        private ShipRepositoryInterface $shipRepository,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private ShipTorpedoManagerInterface $shipTorpedoManager,
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly ColonyLoaderInterface $colonyLoader,
+        private readonly BuildplanHangarRepositoryInterface $buildplanHangarRepository,
+        private readonly ShipCreatorInterface $shipCreator,
+        private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private readonly StorageManagerInterface $storageManager,
+        private readonly ColonyRepositoryInterface $colonyRepository,
+        private readonly ShipRepositoryInterface $shipRepository,
+        private readonly ShipTorpedoManagerInterface $shipTorpedoManager,
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
@@ -75,12 +71,12 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $rump = $this->spacecraftRumpRepository->find($rumpid);
         if ($rump === null) {
-            throw new RuntimeException(sprintf('rumpId %d does not exist', $rumpid));
+            throw new InvalidArgumentException(sprintf('rumpId %d does not exist', $rumpid));
         }
 
         $commodity = $rump->getCommodity();
         if ($commodity === null) {
-            throw new RuntimeException(sprintf('rumpId %d does not have commodity', $rumpid));
+            throw new BadMethodCallException(sprintf('rumpId %d does not have commodity', $rumpid));
         }
 
         if (
@@ -132,22 +128,17 @@ final class StartAirfieldShip implements ActionControllerInterface
             $userId,
             $rumpid,
             $hangar->getBuildplanId()
-        )->setLocation($colony->getStarsystemMap());
+        )
+            ->transferCrew($colony)
+            ->setLocation($colony->getStarsystemMap());
 
         if ($rump->hasSpecialAbility(self::FULLY_LOADED_START)) {
             $shipConfigurator->maxOutSystems();
         }
 
         $wrapper = $shipConfigurator->finishConfiguration();
-        $ship = $wrapper->get();
 
-        $this->crewCreator->createCrewAssignment($ship, $colony);
         $this->loadTorpedos($hangar, $storages, $wrapper, $colony);
-
-        if ($hangar->getBuildplan()->getCrew() > 0) {
-            $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
-            $this->shipRepository->save($ship);
-        }
 
         $changeable->lowerEps($hangar->getStartEnergyCosts());
 

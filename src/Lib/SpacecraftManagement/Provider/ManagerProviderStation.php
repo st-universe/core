@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Provider;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
 use Override;
-use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -48,7 +48,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         $eps = $this->wrapper->getEpsSystemData();
 
         if ($eps === null) {
-            throw new RuntimeException('can not lower eps without eps system');
+            throw new BadMethodCallException('can not lower eps without eps system');
         }
 
         $eps->lowerEps($amount)->update();
@@ -83,7 +83,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     #[Override]
     public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void
     {
-        $this->crewCreator->createCrewAssignment($spacecraft, $this->wrapper->get(), $amount);
+        $this->crewCreator->createCrewAssignments($spacecraft, $this->wrapper->get(), $amount);
     }
 
     #[Override]

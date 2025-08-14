@@ -7,7 +7,6 @@ namespace Stu\Lib\SpacecraftManagement\Manager;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
@@ -16,6 +15,7 @@ use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Spacecraft;
@@ -23,12 +23,12 @@ use Stu\Orm\Entity\Spacecraft;
 class ManageCrew implements ManagerInterface
 {
     public function __construct(
-        private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private TroopTransferUtilityInterface $troopTransferUtility,
-        private SpacecraftShutdownInterface $spacecraftShutdown,
-        private SpacecraftLeaverInterface $spacecraftLeaver,
-        private ActivatorDeactivatorHelperInterface $helper
+        private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
+        private readonly TroopTransferUtilityInterface $troopTransferUtility,
+        private readonly SpacecraftShutdownInterface $spacecraftShutdown,
+        private readonly SpacecraftLeaverInterface $spacecraftLeaver,
+        private readonly ActivatorDeactivatorHelperInterface $helper,
+        private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
     #[Override]
@@ -131,9 +131,7 @@ class ManageCrew implements ManagerInterface
                 $additionalCrew
             );
 
-            if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)) {
-                $this->spacecraftSystemManager->activate($wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
-            }
+            $this->spacecraftStartup->startup($wrapper);
         }
     }
 

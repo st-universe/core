@@ -148,7 +148,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
             throw new AlreadyActiveException();
         }
 
-        if (!$ship->hasEnoughCrew()) {
+        if (!$ship->hasEnoughCrew() && !$system->canBeActivatedWithInsufficientCrew()) {
             throw new InsufficientCrewException();
         }
 

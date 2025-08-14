@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BuildConstruction;
 
+use BadMethodCallException;
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
@@ -20,7 +21,6 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
@@ -56,12 +56,12 @@ final class BuildConstruction implements ActionControllerInterface
         private readonly ShipCreatorInterface $shipCreator,
         private readonly SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private readonly StorageManagerInterface $storageManager,
-        private readonly TroopTransferUtilityInterface $troopTransferUtility,
         private readonly SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private readonly ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         private readonly CommodityRepositoryInterface $commodityRepository,
         private readonly DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        private readonly SpacecraftFactoryInterface $spacecraftFactory
+        private readonly SpacecraftFactoryInterface $spacecraftFactory,
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
     #[Override]
@@ -212,7 +212,7 @@ final class BuildConstruction implements ActionControllerInterface
             $commodity = $this->commodityRepository->find($key);
 
             if ($commodity === null) {
-                throw new RuntimeException('commodity not existent');
+                throw new InvalidArgumentException('commodity not existent');
             }
 
             $this->storageManager->lowerStorage(
@@ -249,22 +249,17 @@ final class BuildConstruction implements ActionControllerInterface
         )
             ->setLocation($ship->getLocation())
             ->loadEps(100)
+            ->transferCrew($ship)
             ->finishConfiguration();
 
         $workbee = $workbeeWrapper->get();
 
+        $this->spacecraftSystemManager->activate($workbeeWrapper, SpacecraftSystemTypeEnum::NBS, true);
+
         $workbeeEps = $workbeeWrapper->getEpsSystemData();
 
         if ($workbeeEps === null) {
-            throw new RuntimeException('workbee has not eps system installed');
-        }
-
-        $workbee->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
-        $workbee->getSpacecraftSystem(SpacecraftSystemTypeEnum::NBS)->setMode(SpacecraftSystemModeEnum::MODE_ON);
-
-        $shipCrewArray = $ship->getCrewAssignments()->getValues();
-        for ($i = 0; $i < $plan->getCrew(); $i++) {
-            $this->troopTransferUtility->assignCrew($shipCrewArray[$i], $workbee);
+            throw new BadMethodCallException('workbee has no eps system installed');
         }
 
         //lower ship eps
@@ -281,12 +276,12 @@ final class BuildConstruction implements ActionControllerInterface
         $rump = $this->spacecraftRumpRepository->find($rumpId);
 
         if ($rump === null) {
-            throw new RuntimeException('rump does not exist');
+            throw new InvalidArgumentException('rump does not exist');
         }
 
         $construction = $this->spacecraftFactory->create($rump);
         if (!$construction instanceof Station) {
-            throw new RuntimeException(sprintf('rumpId %d is not a station', $rumpId));
+            throw new BadMethodCallException(sprintf('rumpId %d is not a station', $rumpId));
         }
 
         $baseHull = $rump->getBaseValues()->getBaseHull();

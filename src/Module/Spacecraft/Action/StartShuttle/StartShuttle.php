@@ -8,12 +8,10 @@ use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -34,7 +32,6 @@ final class StartShuttle implements ActionControllerInterface
         private ShipCreatorInterface $shipCreator,
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private StorageManagerInterface $storageManager,
-        private TroopTransferUtilityInterface $troopTransferUtility,
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
@@ -142,6 +139,7 @@ final class StartShuttle implements ActionControllerInterface
         )
             ->setLocation($ship->getLocation())
             ->loadWarpdrive(100)
+            ->transferCrew($ship)
             ->finishConfiguration();
 
         $shuttleEps = $shuttleWrapper->getEpsSystemData();
@@ -149,16 +147,6 @@ final class StartShuttle implements ActionControllerInterface
             $shuttleEps->setEps($shuttleEps->getMaxEps())->update();
             $epsSystem->lowerEps($shuttleEps->getMaxEps())->update();
         }
-
-        $shuttle = $shuttleWrapper->get();
-        $shuttle->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
-
-        $shipCrewArray = $ship->getCrewAssignments()->getValues();
-        for ($i = 0; $i < $plan->getCrew(); $i++) {
-            $this->troopTransferUtility->assignCrew($shipCrewArray[$i], $shuttle);
-        }
-
-        $this->spacecraftRepository->save($shuttle);
 
         if (
             $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)

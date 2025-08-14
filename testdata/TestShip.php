@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu;
 
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Orm\Entity\LocationInterface;
+use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -39,7 +39,7 @@ class TestShip extends AbstractTestData
         ?int $systemId,
         $x,
         $y
-    ): LocationInterface {
+    ): Location {
 
         if ($systemId === null) {
             $layerRepository = $this->dic->get(LayerRepositoryInterface::class);

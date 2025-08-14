@@ -173,7 +173,7 @@ class SpacecraftSystemManagerTest extends StuTestCase
         $this->manager->activate($this->wrapper, $this->system_id);
     }
 
-    public function testActivateFailsOnInsufficientCrew(): void
+    public function testActivateFailsOnInsufficientCrewWhenInsufficientCrewNotAllowed(): void
     {
         $this->expectException(InsufficientCrewException::class);
 
@@ -196,11 +196,15 @@ class SpacecraftSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(100);
-
         $this->shipSystem->shouldReceive('getMode')
             ->withNoArgs()
             ->once()
             ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
+
+        $this->systemType->shouldReceive('canBeActivatedWithInsufficientCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $this->stuTimeMock->shouldReceive('time')
             ->withNoArgs()
@@ -239,8 +243,12 @@ class SpacecraftSystemManagerTest extends StuTestCase
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturnFalse();
 
+        $this->systemType->shouldReceive('canBeActivatedWithInsufficientCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
         $this->systemType->shouldReceive('getEnergyUsageForActivation')
             ->withNoArgs()
             ->twice()

@@ -37,7 +37,7 @@ class ReloadMinimalEps implements ReloadMinimalEpsInterface
             $warpdrive !== null
             && $warpdrive->getWarpdrivePercentage() < $minimalPercentage
         ) {
-            $warpdrive->setWarpDrive((int)($warpdrive->getMaxWarpDrive() * $minimalPercentage / 100))->update();
+            $warpdrive->setWarpDrive((int)($warpdrive->getMaxWarpdrive() * $minimalPercentage / 100))->update();
         }
     }
 }

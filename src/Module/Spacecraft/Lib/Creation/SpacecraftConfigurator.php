@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
+use InvalidArgumentException;
 use Override;
-use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
@@ -18,7 +18,7 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 /**
  * @template T of SpacecraftWrapperInterface
- * 
+ *
  * @implements SpacecraftConfiguratorInterface<T>
  */
 class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
@@ -33,7 +33,8 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         private readonly CrewCreatorInterface $crewCreator,
         private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
-        private readonly AlertStateManagerInterface $alertStateManager
+        private readonly AlertStateManagerInterface $alertStateManager,
+        private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
     #[Override]
@@ -114,22 +115,41 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     #[Override]
     public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface
     {
+        $spacecraft = $this->wrapper->get();
+
+        $buildplan = $spacecraft->getBuildplan();
+        if ($buildplan === null) {
+            return $this;
+        }
+
+        $crewAmount = $amount !== null && $amount >= 0 ? $amount : $buildplan->getCrew();
+
+        for ($j = 1; $j <= $crewAmount; $j++) {
+            $crewAssignment = $this->crewCreator->create($spacecraft->getUser()->getId());
+            $crewAssignment->setSpacecraft($spacecraft);
+            $this->shipCrewRepository->save($crewAssignment);
+
+            $spacecraft->getCrewAssignments()->add($crewAssignment);
+        }
+
+        $this->spacecraftStartup->startup($this->wrapper);
+
+        return $this;
+    }
+
+    #[Override]
+    public function transferCrew(EntityWithCrewAssignmentsInterface $provider): SpacecraftConfiguratorInterface
+    {
         $ship = $this->wrapper->get();
 
         $buildplan = $ship->getBuildplan();
-        if ($buildplan !== null) {
-            $crewAmount = $amount !== null && $amount >= 0 ? $amount : $buildplan->getCrew();
-            for ($j = 1; $j <= $crewAmount; $j++) {
-                $crewAssignment = $this->crewCreator->create($ship->getUser()->getId());
-                $crewAssignment->setSpacecraft($ship);
-                $this->shipCrewRepository->save($crewAssignment);
-
-                $ship->getCrewAssignments()->add($crewAssignment);
-            }
-            if ($crewAmount > 0) {
-                $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT)->setMode(SpacecraftSystemModeEnum::MODE_ALWAYS_ON);
-            }
+        if ($buildplan === null) {
+            return $this;
         }
+
+        $this->crewCreator->createCrewAssignments($ship, $provider, $buildplan->getCrew());
+
+        $this->spacecraftStartup->startup($this->wrapper);
 
         return $this;
     }
@@ -148,34 +168,27 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     #[Override]
     public function setTorpedo(?int $torpedoTypeId = null): SpacecraftConfiguratorInterface
     {
-        $ship = $this->wrapper->get();
-        if ($ship->getMaxTorpedos() === 0) {
+        $spacecraft = $this->wrapper->get();
+        if ($spacecraft->getMaxTorpedos() === 0) {
             return $this;
         }
-
-        $ship = $this->wrapper->get();
 
         if ($torpedoTypeId !== null) {
             $torpedoType = $this->torpedoTypeRepository->find($torpedoTypeId);
             if ($torpedoType === null) {
-                throw new RuntimeException(sprintf('torpedoTypeId %d does not exist', $torpedoTypeId));
+                throw new InvalidArgumentException(sprintf('torpedoTypeId %d does not exist', $torpedoTypeId));
             }
         } else {
-            $torpedoLevel = $ship->getRump()->getTorpedoLevel();
-            if ($torpedoLevel === 0) {
-                return $this;
-            }
-
-            $torpedoTypes = $this->torpedoTypeRepository->getByLevel($torpedoLevel);
+            $torpedoTypes = $this->torpedoTypeRepository->getByLevel($spacecraft->getRump()->getTorpedoLevel());
             if ($torpedoTypes === []) {
                 return $this;
             }
-            shuffle($torpedoTypes);
 
+            shuffle($torpedoTypes);
             $torpedoType = current($torpedoTypes);
         }
 
-        $this->torpedoManager->changeTorpedo($this->wrapper, $ship->getMaxTorpedos(), $torpedoType);
+        $this->torpedoManager->changeTorpedo($this->wrapper, $spacecraft->getMaxTorpedos(), $torpedoType);
 
         return $this;
     }
@@ -183,8 +196,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     #[Override]
     public function setSpacecraftName(string $name): SpacecraftConfiguratorInterface
     {
-        $ship = $this->wrapper->get();
-        $ship->setName($name);
+        $this->wrapper->get()->setName($name);
 
         return $this;
     }

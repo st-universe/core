@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
+use InvalidArgumentException;
 use Override;
 use request;
-use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -57,17 +57,17 @@ final class CreateShip implements ActionControllerInterface
 
         $user = $this->userRepository->find($userId);
         if ($user === null) {
-            throw new RuntimeException(sprintf('userId %d does not exist', $userId));
+            throw new InvalidArgumentException(sprintf('userId %d does not exist', $userId));
         }
 
         $buildplan = $this->buildplanRepository->find($buildplanId);
         if ($buildplan === null) {
-            throw new RuntimeException(sprintf('buildplanId %d does not exist', $buildplanId));
+            throw new InvalidArgumentException(sprintf('buildplanId %d does not exist', $buildplanId));
         }
 
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
-            throw new RuntimeException(sprintf('layerId %d does not exist', $layerId));
+            throw new InvalidArgumentException(sprintf('layerId %d does not exist', $layerId));
         }
 
         $field = $this->mapRepository->getByCoordinates($layer, $cx, $cy);
