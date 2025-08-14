@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 
@@ -28,6 +29,9 @@ interface SpacecraftConfiguratorInterface
 
     /** @return SpacecraftConfiguratorInterface<T> */
     public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface;
+
+    /** @return SpacecraftConfiguratorInterface<T> */
+    public function transferCrew(EntityWithCrewAssignmentsInterface $provider): SpacecraftConfiguratorInterface;
 
     /** @return SpacecraftConfiguratorInterface<T> */
     public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftConfiguratorInterface;

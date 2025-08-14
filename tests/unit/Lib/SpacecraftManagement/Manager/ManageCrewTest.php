@@ -12,7 +12,6 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
@@ -20,6 +19,7 @@ use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
@@ -32,16 +32,11 @@ use Stu\StuTestCase;
 class ManageCrewTest extends StuTestCase
 {
     private MockInterface&SpacecraftCrewCalculatorInterface $shipCrewCalculator;
-
-    private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
-
     private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
-
     private MockInterface&SpacecraftShutdownInterface $spacecraftShutdown;
-
     private MockInterface&SpacecraftLeaverInterface $spacecraftLeaver;
-
     private MockInterface&ActivatorDeactivatorHelperInterface $helper;
+    private MockInterface&SpacecraftStartupInterface $spacecraftStartup;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -61,11 +56,11 @@ class ManageCrewTest extends StuTestCase
     protected function setUp(): void
     {
         $this->shipCrewCalculator = $this->mock(SpacecraftCrewCalculatorInterface::class);
-        $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->spacecraftShutdown = $this->mock(SpacecraftShutdownInterface::class);
         $this->spacecraftLeaver = $this->mock(SpacecraftLeaverInterface::class);
         $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);
+        $this->spacecraftStartup = $this->mock(SpacecraftStartupInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(Ship::class);
@@ -75,11 +70,11 @@ class ManageCrewTest extends StuTestCase
 
         $this->subject = new ManageCrew(
             $this->shipCrewCalculator,
-            $this->spacecraftSystemManager,
             $this->troopTransferUtility,
             $this->spacecraftShutdown,
             $this->spacecraftLeaver,
-            $this->helper
+            $this->helper,
+            $this->spacecraftStartup
         );
     }
 
@@ -355,11 +350,6 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn($shipSystemMock);
 
-        $this->ship->shouldReceive('hasSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
-            ->once()
-            ->andReturn(true);
-
         $this->buildplan->shouldReceive('getCrew')
             ->withNoArgs()
             ->andReturn(25);
@@ -369,8 +359,8 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
+        $this->spacecraftStartup->shouldReceive('startup')
+            ->with($this->wrapper);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 
@@ -445,11 +435,6 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn($shipSystemMock);
 
-        $this->ship->shouldReceive('hasSpacecraftSystem')
-            ->with(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
-            ->once()
-            ->andReturn(true);
-
         $this->buildplan->shouldReceive('getCrew')
             ->withNoArgs()
             ->andReturn(20);
@@ -459,8 +444,8 @@ class ManageCrewTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $this->spacecraftSystemManager->shouldReceive('activate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::LIFE_SUPPORT, true);
+        $this->spacecraftStartup->shouldReceive('startup')
+            ->with($this->wrapper);
 
         $msg = $this->subject->manage($this->wrapper, $values, $this->managerProvider);
 

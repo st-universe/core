@@ -92,7 +92,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         $warpdrive = $this->wrapper->getWarpDriveSystemData();
 
         $missingEps = $epsSystem === null ? 0 : $epsSystem->getMaxEps() - $epsSystem->getEps();
-        $missingWarpdrive = $warpdrive === null ? 0 : $warpdrive->getMaxWarpDrive() - $warpdrive->getWarpDrive();
+        $missingWarpdrive = $warpdrive === null ? 0 : $warpdrive->getMaxWarpdrive() - $warpdrive->getWarpDrive();
 
         $potential = $this->getOutputCappedByLoad();
         $potential -= $this->wrapper->getEpsUsage();

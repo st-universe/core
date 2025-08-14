@@ -118,7 +118,7 @@
                 {% if ship.hasWarpDrive %}
                 <td style="background-color: transparent !important;">
                     {% set warpdrivesystem = wrapper.getWarpDriveSystemData %}
-                    {{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpDrive }}
+                    {{ warpdrivesystem.getWarpDrive }}/{{ warpdrivesystem.getMaxWarpdrive }}
                     <span>{{ reactor.getEffectiveWarpDriveProduction|addPlusCharacter }}</span>
                 </td>
                 {% endif %}

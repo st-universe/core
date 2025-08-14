@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Provider;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Override;
-use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -90,7 +90,7 @@ class ManagerProviderStationTest extends StuTestCase
     public function testLowerEpsExpectErrorWhenNoEpsInstalled(): void
     {
         static::expectExceptionMessage('can not lower eps without eps system');
-        static::expectException(RuntimeException::class);
+        static::expectException(BadMethodCallException::class);
 
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
@@ -159,11 +159,11 @@ class ManagerProviderStationTest extends StuTestCase
         $this->assertEquals(123, $this->subject->getFreeCrewAmount());
     }
 
-    public function testCreateCrewAssignment(): void
+    public function testCreateCrewAssignments(): void
     {
         $ship = $this->mock(Ship::class);
 
-        $this->crewCreator->shouldReceive('createCrewAssignment')
+        $this->crewCreator->shouldReceive('createCrewAssignments')
             ->with($ship, $this->station, 42)
             ->once()
             ->andReturn(123);

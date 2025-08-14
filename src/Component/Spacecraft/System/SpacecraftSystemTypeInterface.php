@@ -7,6 +7,8 @@ use Stu\Orm\Entity\Spacecraft;
 
 interface SpacecraftSystemTypeInterface
 {
+    public function getSystemType(): SpacecraftSystemTypeEnum;
+
     public function setSpacecraft(Spacecraft $spacecraft): void;
 
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool;
@@ -28,4 +30,6 @@ interface SpacecraftSystemTypeInterface
     public function getDefaultMode(): SpacecraftSystemModeEnum;
 
     public function getCooldownSeconds(): ?int;
+
+    public function canBeActivatedWithInsufficientCrew(): bool;
 }

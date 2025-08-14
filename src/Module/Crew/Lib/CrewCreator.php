@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
+use InvalidArgumentException;
 use Override;
-use RuntimeException;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Exception\SanityCheckException;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
@@ -35,7 +36,7 @@ final class CrewCreator implements CrewCreatorInterface
         $user = $this->userRepository->find($userId);
 
         if ($user === null) {
-            throw new RuntimeException('user not found1');
+            throw new InvalidArgumentException('user not found1');
         }
 
         $arr = [];
@@ -81,9 +82,9 @@ final class CrewCreator implements CrewCreatorInterface
     }
 
     #[Override]
-    public function createCrewAssignment(
+    public function createCrewAssignments(
         Spacecraft $spacecraft,
-        Colony|Spacecraft $crewProvider,
+        EntityWithCrewAssignmentsInterface $crewProvider,
         ?int $amount = null
     ): void {
         $crewToSetup = $amount ?? $spacecraft->getBuildPlan()?->getCrew() ?? 0;
@@ -99,7 +100,7 @@ final class CrewCreator implements CrewCreatorInterface
                 $shipRumpRole->getId()
             );
             if ($config === null) {
-                throw new RuntimeException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'no rump category role crew for rumpCategoryId: %d, rumpRoleId: %d',
                     $spacecraft->getRump()->getShipRumpCategory()->getId()->value,
                     $shipRumpRole->getId()->value
@@ -135,7 +136,7 @@ final class CrewCreator implements CrewCreatorInterface
 
     private function getCrewByType(
         CrewTypeEnum $crewType,
-        Colony|Spacecraft $crewProvider
+        EntityWithCrewAssignmentsInterface $crewProvider
     ): ?CrewAssignment {
 
         foreach ($crewProvider->getCrewAssignments() as $crewAssignment) {
@@ -150,7 +151,7 @@ final class CrewCreator implements CrewCreatorInterface
         return null;
     }
 
-    private function getCrew(Colony|Spacecraft $crewProvider): ?CrewAssignment
+    private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider): ?CrewAssignment
     {
         $crewAssignments = $crewProvider->getCrewAssignments();
 

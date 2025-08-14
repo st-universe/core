@@ -114,7 +114,7 @@ class WarpDriveSystemData extends AbstractSystemData
     /**
      * proportional to warpdrive system status
      */
-    public function getMaxWarpDrive(): int
+    public function getMaxWarpdrive(): int
     {
         return (int) (ceil($this->maxwd
             * $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus() / 100));
@@ -145,7 +145,7 @@ class WarpDriveSystemData extends AbstractSystemData
     public function getWarpdrivePercentage(): int
     {
         $currentWarpdrive = $this->getWarpDrive();
-        $maxWarpdrive = $this->getMaxWarpDrive();
+        $maxWarpdrive = $this->getMaxWarpdrive();
 
         if ($currentWarpdrive === 0) {
             return 0;
@@ -162,7 +162,7 @@ class WarpDriveSystemData extends AbstractSystemData
         return $this->getStatusBar(
             _('Warpantrieb'),
             $this->getWarpDrive(),
-            $this->getMaxWarpDrive(),
+            $this->getMaxWarpdrive(),
             StatusBarColorEnum::BLUE
         )
             ->render();
@@ -173,7 +173,7 @@ class WarpDriveSystemData extends AbstractSystemData
         return $this->getStatusBar(
             _('Warpantrieb'),
             $this->getWarpDrive(),
-            $this->getMaxWarpDrive(),
+            $this->getMaxWarpdrive(),
             StatusBarColorEnum::BLUE
         )
             ->setSizeModifier(1.6)

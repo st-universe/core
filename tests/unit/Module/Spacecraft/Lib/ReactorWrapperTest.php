@@ -187,7 +187,7 @@ class ReactorWrapperTest extends StuTestCase
         $warpdrive->shouldReceive('getWarpDrive')
             ->withNoArgs()
             ->andReturn(90);
-        $warpdrive->shouldReceive('getMaxWarpDrive')
+        $warpdrive->shouldReceive('getMaxWarpdrive')
             ->withNoArgs()
             ->andReturn(100);
         $warpdrive->shouldReceive('getAutoCarryOver')
@@ -243,7 +243,7 @@ class ReactorWrapperTest extends StuTestCase
         $warpdrive->shouldReceive('getWarpDrive')
             ->withNoArgs()
             ->andReturn(90);
-        $warpdrive->shouldReceive('getMaxWarpDrive')
+        $warpdrive->shouldReceive('getMaxWarpdrive')
             ->withNoArgs()
             ->andReturn(100);
         $warpdrive->shouldReceive('getAutoCarryOver')
@@ -294,7 +294,7 @@ class ReactorWrapperTest extends StuTestCase
         $warpdrive->shouldReceive('getWarpDriveSplit')
             ->withNoArgs()
             ->andReturn(50);
-        $warpdrive->shouldReceive('getMaxWarpDrive')
+        $warpdrive->shouldReceive('getMaxWarpdrive')
             ->withNoArgs()
             ->andReturn(42);
         $warpdrive->shouldReceive('getWarpDrive')

@@ -44,7 +44,7 @@ final class WarpdriveBoost implements ActionControllerInterface
                 throw new RuntimeException('this should not happen');
             }
 
-            $maxWarpdrive = $warpdrive->getMaxWarpDrive();
+            $maxWarpdrive = $warpdrive->getMaxWarpdrive();
             $currentValue = $warpdrive->getWarpDrive();
             $newValue = min(
                 $maxWarpdrive,

@@ -225,7 +225,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
                 $ship->getRump()->getFlightEcost(),
                 $epsSystem->getMaxEps() - $epsSystem->getEps(),
                 $warpDriveSystem->getWarpDrive(),
-                $warpDriveSystem->getMaxWarpDrive()
+                $warpDriveSystem->getMaxWarpdrive()
             ), JavascriptExecutionTypeEnum::AFTER_RENDER);
             $game->addExecuteJS(sprintf(
                 'updateReactorValues(%d);',
