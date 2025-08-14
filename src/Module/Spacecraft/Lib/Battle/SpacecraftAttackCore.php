@@ -40,7 +40,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
         bool $isAttackingShieldsOnly,
         bool &$isFleetFight,
         InformationWrapper $informations
-    ): void {
+    ): bool {
         $wrapper = $sourceWrapper instanceof SpacecraftWrapperInterface ? $sourceWrapper : $sourceWrapper->getLeadWrapper();
         $ship = $wrapper->get();
 
@@ -78,6 +78,8 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
                 $this->alertReactionFacade->doItAll($targetWrapper, $informations);
             }
         }
+
+        return !$ship->getCondition()->isDestroyed();
     }
 
     private function isActiveTractorShipWarped(Spacecraft $spacecraft, Spacecraft $target): bool

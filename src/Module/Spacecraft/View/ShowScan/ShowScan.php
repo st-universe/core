@@ -94,6 +94,16 @@ final class ShowScan implements ViewControllerInterface
             $target
         );
 
+        $this->pirateReaction->checkForPirateReaction(
+            $target,
+            PirateReactionTriggerEnum::ON_SCAN,
+            $ship
+        );
+
+        if ($ship->getCondition()->isDestroyed()) {
+            return;
+        }
+
         $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($targetWrapper));
@@ -106,12 +116,6 @@ final class ShowScan implements ViewControllerInterface
             $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
         }
         $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
-
-        $this->pirateReaction->checkForPirateReaction(
-            $target,
-            PirateReactionTriggerEnum::ON_SCAN,
-            $ship
-        );
     }
 
     private function calculateShieldPercentage(Spacecraft $target): int
