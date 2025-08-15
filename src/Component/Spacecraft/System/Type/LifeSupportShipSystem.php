@@ -26,12 +26,6 @@ final class LifeSupportShipSystem extends AbstractSpacecraftSystemType implement
     }
 
     #[Override]
-    public function dummy(): void
-    {
-        return;
-    }
-
-    #[Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
