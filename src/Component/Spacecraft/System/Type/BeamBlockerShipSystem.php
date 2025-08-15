@@ -28,6 +28,7 @@ final class BeamBlockerShipSystem extends AbstractSpacecraftSystemType implement
     #[Override]
     public function getDefaultMode(): SpacecraftSystemModeEnum
     {
+        $testvalue = 0;
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }
 
