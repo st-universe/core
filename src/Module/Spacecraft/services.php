@@ -55,7 +55,7 @@ use Stu\Module\Spacecraft\Action\SetLSSModeBorder\SetLSSModeBorder;
 use Stu\Module\Spacecraft\Action\SetLSSMode\SetLSSMode;
 use Stu\Module\Spacecraft\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Spacecraft\Action\SetYellowAlert\SetYellowAlert;
-use Stu\Module\Spacecraft\Action\Shutdown\Shutdown;
+use Stu\Module\Spacecraft\Action\StandBy\StandBy;
 use Stu\Module\Spacecraft\Action\SplitReactorOutput\SplitReactorOutput;
 use Stu\Module\Spacecraft\Action\StartEmergency\StartEmergency;
 use Stu\Module\Spacecraft\Action\StartEmergency\StartEmergencyRequest;
@@ -449,7 +449,7 @@ return [
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
         DropBuoy::ACTION_IDENTIFIER => autowire(DropBuoy::class),
-        Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class),
+        StandBy::ACTION_IDENTIFIER => autowire(StandBy::class),
         Transfer::ACTION_IDENTIFIER => get(Transfer::class),
         SplitReactorOutput::ACTION_IDENTIFIER => autowire(SplitReactorOutput::class),
         StartShuttle::ACTION_IDENTIFIER => autowire(StartShuttle::class),
