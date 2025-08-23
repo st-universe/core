@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Spacecraft\Action\Shutdown;
+namespace Stu\Module\Spacecraft\Action\StandBy;
 
 use Override;
 use request;
@@ -16,9 +16,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
-final class Shutdown implements ActionControllerInterface
+final class StandBy implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_SHUTDOWN';
+    public const string ACTION_IDENTIFIER = 'B_STANDBY';
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
@@ -41,16 +41,16 @@ final class Shutdown implements ActionControllerInterface
 
         $triggerAlertRed = $spacecraft->getWarpDriveState() || $spacecraft->isCloaked();
 
+        //set alert to green
+        if ($spacecraft->hasComputer()) {
+            $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
+        }
+
         //deactivate all systems that can be deactivated
         foreach ($this->spacecraftSystemManager->getActiveSystems($spacecraft) as $system) {
             if ($system->getMode() !== SpacecraftSystemModeEnum::MODE_ALWAYS_ON) {
                 $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $game->getInfo());
             }
-        }
-
-        //set alert to green
-        if ($spacecraft->hasComputer()) {
-            $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
         }
 
         $game->getInfo()->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
