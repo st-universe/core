@@ -69,7 +69,7 @@ final class ShowModuleFab implements ViewControllerInterface
 
         $rumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
 
-        $this->setModules($colony, $func, $game);
+        $this->setModules($colony, $func, $game, $allModules);
         $this->setRumpModules($colony, $rumps, $allModules);
         $this->setModuleTypes($game);
         $this->setBuildplans($rumps, $allModules, $game);
@@ -124,7 +124,10 @@ final class ShowModuleFab implements ViewControllerInterface
         $game->setTemplateVar('BUILDPLANS', $buildplans);
     }
 
-    private function setModules(Colony $colony, BuildingFunction $func, GameControllerInterface $game): void
+    /**
+     * @param array<int, ModuleFabricationListItem> $allModules
+     */
+    private function setModules(Colony $colony, BuildingFunction $func, GameControllerInterface $game, array &$allModules): void
     {
         /** @var array<int, array<int, array<int, ModuleFabricationListItem>>> $sortedModules */
         $sortedModules = [];
