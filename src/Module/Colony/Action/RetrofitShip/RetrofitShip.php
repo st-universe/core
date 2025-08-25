@@ -299,7 +299,7 @@ final class RetrofitShip implements ActionControllerInterface
         $queue->setMode(2);
         $queue->setShip($ship);
 
-        $changeable->lowerEps(-$rump->getEpsCost());
+        $changeable->lowerEps($rump->getEpsCost());
 
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
