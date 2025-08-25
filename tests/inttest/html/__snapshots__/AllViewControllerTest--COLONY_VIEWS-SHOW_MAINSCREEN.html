@@ -1237,12 +1237,13 @@
     <div style="width: 40vw;">
         <div class="">
                 <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
-            <div class="box_title">Schiffe im Orbit</div>
+                        <input type="hidden" id="selshipid" value="77">
+                        <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
                 <ul id="shipselector" style="max-width: 100%;">
                                                             
 <li>
-  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, 77);">
     <tr>
       <td class="darkbg" colspan="5">
                 <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
@@ -1279,7 +1280,6 @@ updateSelectedSpacecraftId('77');"></a>
                       </td>
     </tr>
   </table>
-  <input type="hidden" id="selshipid" value="77">
 </li>
                                     </ul>
                                                 <div style="width: 100%;">

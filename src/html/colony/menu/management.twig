@@ -41,6 +41,9 @@
         </div>
         {% endif %}
         <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
+            {% if FIRST_ORBIT_SPACECRAFT %}
+            <input type="hidden" id="selshipid" value="{{ FIRST_ORBIT_SPACECRAFT.get.getId }}" />
+            {% endif %}
             <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
                 <ul id="shipselector" style="max-width: 100%;">
