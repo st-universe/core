@@ -14,7 +14,9 @@ function shipSelectorHoverEnd(obj) {
 		return;
 	}
 	link[0].click();
-} function shipSelectorChoose(obj) {
+}
+
+function shipSelectorChoose(obj, spacecraftId) {
 
 	let isInPopup = document.getElementById("popupContent").contains(obj);
 
@@ -23,6 +25,7 @@ function shipSelectorHoverEnd(obj) {
 		return;
 	}
 
+	updateSelectedSpacecraftId(spacecraftId);
 	shipSelectorHoverEnd(obj);
 	let sel = $('shipselector');
 	if (sel) {

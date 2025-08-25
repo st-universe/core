@@ -6,7 +6,7 @@
 {% set shipId = ship.getId %}
 <li>
   <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);"
-    onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this);">
+    onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, {{ shipId }});">
     <tr>
       <td class="darkbg" colspan="5">
         {% if wrapper.isSelectable %}
@@ -94,5 +94,4 @@
       </td>
     </tr>
   </table>
-  <input type="hidden" id="selshipid" value="{{ shipId }}" />
 </li>
