@@ -248,7 +248,7 @@ final class BuildShip implements ActionControllerInterface
         $queue->setBuildingFunction($building_function->getBuildingFunction());
         $queue->setMode(1);
 
-        $changeable->lowerEps(-$rump->getEpsCost());
+        $changeable->lowerEps($rump->getEpsCost());
 
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
