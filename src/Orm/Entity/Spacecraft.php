@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -185,10 +186,14 @@ abstract class Spacecraft implements
         $this->logbook = new ArrayCollection();
     }
 
+    abstract public function getType(): SpacecraftTypeEnum;
+
+    abstract public function getFleet(): ?Fleet;
+
     public function getId(): int
     {
         if ($this->id === null) {
-            throw new RuntimeException(sprintf('entity "%s" not yet persisted', $this->getName()));
+            throw new BadMethodCallException(sprintf('entity "%s" not yet persisted', $this->getName()));
         }
 
         return $this->id;
@@ -196,7 +201,7 @@ abstract class Spacecraft implements
 
     public function getCondition(): SpacecraftCondition
     {
-        return $this->condition ?? throw new LogicException('Spacecraft has no condition');;
+        return $this->condition ?? throw new LogicException('Spacecraft has no condition');
     }
 
     public function setCondition(SpacecraftCondition $condition): Spacecraft
@@ -205,10 +210,6 @@ abstract class Spacecraft implements
 
         return $this;
     }
-
-    public abstract function getType(): SpacecraftTypeEnum;
-
-    public abstract function getFleet(): ?Fleet;
 
     public function getUserId(): int
     {

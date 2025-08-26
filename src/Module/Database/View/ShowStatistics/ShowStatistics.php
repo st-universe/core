@@ -23,6 +23,8 @@ final class ShowStatistics implements ViewControllerInterface
 
     private const int ENTRY_COUNT = 10;
 
+    private const string YELLOW_TRANSPARENT = 'yellow@0.5';
+
     private const array PERIODS = [
         [
             'divisor' => 1,
@@ -60,21 +62,21 @@ final class ShowStatistics implements ViewControllerInterface
         $graphInfos = [
             new GraphInfo('Spieleranzahl', [
                 new PlotInfo('getUserCount'),
-                new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h')
+                new PlotInfo('getLogins24h', 'yellow', self::YELLOW_TRANSPARENT, 'aktiv letzte 24h')
             ], true),
             new GraphInfo('Inaktive Spieler', [
                 new PlotInfo('getInactiveCount'),
-                new PlotInfo('getVacationCount', 'yellow', 'yellow@0.5', 'im Urlaub')
+                new PlotInfo('getVacationCount', 'yellow', self::YELLOW_TRANSPARENT, 'im Urlaub')
             ], true),
             new GraphInfo('Schiffanzahl', [
                 new PlotInfo('getShipCount'),
-                new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt'),
+                new PlotInfo('getShipCountManned', 'yellow', self::YELLOW_TRANSPARENT, 'bemannt'),
                 new PlotInfo('getShipCountNpc', 'green', 'green@0.5', 'NPC')
             ], true),
             new GraphInfo('KN-Beiträge', [new PlotInfo('getKnCount')]),
             new GraphInfo('Geflogene Felder letzte 24h', [
                 new PlotInfo('getFlightSig24h'),
-                new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')
+                new PlotInfo('getFlightSigSystem24h', 'yellow', self::YELLOW_TRANSPARENT, 'System')
             ], true),
             new GraphInfo('Erhaltene Privatnachrichten', [new PlotInfo('getNewPmCount')]),
         ];
@@ -100,7 +102,7 @@ final class ShowStatistics implements ViewControllerInterface
 
     /**
      * @param GraphInfo[] $graphInfos
-     * 
+     *
      * @return array<string>
      */
     private function createImagesSources(array $graphInfos, int $divisor): array
@@ -163,9 +165,9 @@ final class ShowStatistics implements ViewControllerInterface
         return $this->imageCreation->graphInSrc($graph);
     }
 
-    /** 
-     * @param GameTurnStats[] $stats 
-     * 
+    /**
+     * @param GameTurnStats[] $stats
+     *
      * @return array<int, int>
      * */
     private function createDataX(array $stats): array
@@ -179,8 +181,8 @@ final class ShowStatistics implements ViewControllerInterface
         return $datax;
     }
 
-    /** @param GameTurnStats[] $stats 
-     * 
+    /** @param GameTurnStats[] $stats
+     *
      * @return array<int, int>
      */
     private function createDataY(string $method, array $stats): array
@@ -202,7 +204,7 @@ final class ShowStatistics implements ViewControllerInterface
      * @param array<int, int> $datax
      * @param PlotInfo[] $plotInfos
      * @param GameTurnStats[] $stats
-     * 
+     *
      * @return array<LinePlot>
      */
     private function createPlots(array $datax, array $plotInfos, array $stats): array
@@ -229,8 +231,8 @@ final class ShowStatistics implements ViewControllerInterface
         return $plots;
     }
 
-    /** 
-     * @param GameTurnStats[] $stats 
+    /**
+     * @param GameTurnStats[] $stats
      * */
     private function configureXAxis(Graph $graph, array $stats): void
     {
