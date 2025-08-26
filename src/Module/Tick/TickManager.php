@@ -2,11 +2,10 @@
 
 namespace Stu\Module\Tick;
 
+use BadMethodCallException;
 use Override;
-use RuntimeException;
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
@@ -17,26 +16,21 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TickManager implements TickManagerInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly UserLockRepositoryInterface $userLockRepository,
         private readonly GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly KnPostRepositoryInterface $knPostRepository,
-        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository
+    ) {}
 
     #[Override]
     public function work(): void
     {
         $oldTurn = $this->gameTurnRepository->getCurrent();
         if ($oldTurn === null) {
-            throw new RuntimeException('no current turn existent');
+            throw new BadMethodCallException('no current turn existent');
         }
 
         $this->endTurn($oldTurn);
@@ -89,7 +83,7 @@ final class TickManager implements TickManagerInterface
     {
         $stats = $this->gameTurnStatsRepository->prototype();
 
-        $this->loggerUtil->log('setting stats values');
+        StuLogger::log('setting stats values');
 
         $stats->setTurn($newTurn);
         $stats->setUserCount($this->userRepository->getActiveAmount());
@@ -105,6 +99,6 @@ final class TickManager implements TickManagerInterface
         $stats->setNewPmCount($this->privateMessageRepository->getAmountSince($oldTurn->getStart()));
 
         $this->gameTurnStatsRepository->save($stats);
-        $this->loggerUtil->log('saved stats');
+        StuLogger::log('saved stats');
     }
 }

@@ -12,7 +12,6 @@ use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
 
@@ -63,11 +62,14 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(s) FROM %s s
-                JOIN %s r WITH s.rump_id = r.id
-                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.spacecraft = s)
+                JOIN s.rump r
+                JOIN r.baseValues rbv
+                WHERE rbv.base_crew <= (SELECT count(c.id)
+                                        FROM %s ca
+                                        JOIN ca.crew c
+                                        WHERE ca.spacecraft = s)
                 AND s.user_id != :noOne',
                 Spacecraft::class,
-                SpacecraftRump::class,
                 CrewAssignment::class
             )
         )->setParameter('noOne', UserConstants::USER_NOONE)
