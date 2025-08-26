@@ -202,18 +202,18 @@ abstract class Location
         return $this->signatures;
     }
 
-    public abstract function getLayer(): ?Layer;
+    abstract public function getLayer(): ?Layer;
 
-    public abstract function getX(): int;
+    abstract public function getX(): int;
 
-    public abstract function getY(): int;
+    abstract public function getY(): int;
 
-    public abstract function getSectorString(): string;
+    abstract public function getSectorString(): string;
 
     /**
      * @return Collection<int, WormholeEntry>
      */
-    protected abstract function getWormholeEntries(): Collection;
+    abstract protected function getWormholeEntries(): Collection;
 
     public function getRandomWormholeEntry(): ?WormholeEntry
     {
