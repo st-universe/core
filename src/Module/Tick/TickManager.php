@@ -5,6 +5,7 @@ namespace Stu\Module\Tick;
 use BadMethodCallException;
 use Override;
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -83,7 +84,7 @@ final class TickManager implements TickManagerInterface
     {
         $stats = $this->gameTurnStatsRepository->prototype();
 
-        StuLogger::log('setting stats values');
+        StuLogger::log('setting stats values', LogTypeEnum::TICK);
 
         $stats->setTurn($newTurn);
         $stats->setUserCount($this->userRepository->getActiveAmount());
@@ -99,6 +100,6 @@ final class TickManager implements TickManagerInterface
         $stats->setNewPmCount($this->privateMessageRepository->getAmountSince($oldTurn->getStart()));
 
         $this->gameTurnStatsRepository->save($stats);
-        StuLogger::log('saved stats');
+        StuLogger::log('saved stats', LogTypeEnum::TICK);
     }
 }

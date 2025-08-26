@@ -12,8 +12,6 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Logging\LogLevelEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -26,8 +24,6 @@ use Ubench;
 
 final class ColonyTickManager extends AbstractTickManager implements ColonyTickManagerInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         private ColonyTickInterface $colonyTick,
         private CrewCreatorInterface $crewCreator,
@@ -39,11 +35,8 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         private CrewLimitCalculatorInterface $crewLimitCalculator,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private LockManagerInterface $lockManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
         private Ubench $benchmark
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+    ) {}
 
     #[Override]
     public function work(int $batchGroup, int $batchGroupCount): void
@@ -53,11 +46,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
             $entityCount = $this->colonyLoop($batchGroup, $batchGroupCount);
             $this->proceedCrewTraining($batchGroup, $batchGroupCount);
 
-            $this->loggerUtil->init(sprintf(
-                'COLOTICK_%dof%d',
-                $batchGroup,
-                $batchGroupCount
-            ), LogLevelEnum::WARNING);
             $this->logBenchmarkResult($entityCount);
         } finally {
             $this->clearLock($batchGroup);
@@ -70,7 +58,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
 
         $entityCount = 0;
         foreach ($colonyList as $colony) {
-            //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";
 
             //handle colony only if vacation mode not active
             if (!$colony->getUser()->isVacationRequestOldEnough()) {
@@ -156,11 +143,5 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
     protected function getBenchmark(): Ubench
     {
         return $this->benchmark;
-    }
-
-    #[Override]
-    protected function getLoggerUtil(): LoggerUtilInterface
-    {
-        return $this->loggerUtil;
     }
 }
