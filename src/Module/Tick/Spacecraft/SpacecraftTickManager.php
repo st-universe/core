@@ -8,26 +8,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Module\Control\SemaphoreUtilInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\ManagerComponentInterface;
 
 final class SpacecraftTickManager implements SpacecraftTickManagerInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
     /** @param array<ManagerComponentInterface> $components */
     public function __construct(
         private SemaphoreUtilInterface $semaphoreUtil,
         private LockManagerInterface $lockManager,
         private EntityManagerInterface $entityManager,
-        private array $components,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
-    }
+        private array $components
+    ) {}
 
     #[Override]
     public function work(bool $doCommit = false): void
@@ -39,10 +34,8 @@ final class SpacecraftTickManager implements SpacecraftTickManagerInterface
                 $startTime = microtime(true);
                 $component->work();
 
-                if ($this->loggerUtil->doLog()) {
-                    $endTime = microtime(true);
-                    $this->loggerUtil->log(sprintf("\t\t%s, seconds: %F", get_class($component), $endTime - $startTime));
-                }
+                $endTime = microtime(true);
+                StuLogger::log(sprintf("\t\t%s, seconds: %F", get_class($component), $endTime - $startTime), LogTypeEnum::TICK);
             }
 
             if ($doCommit) {

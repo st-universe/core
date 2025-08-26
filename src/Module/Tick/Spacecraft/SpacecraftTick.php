@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Spacecraft;
 use Override;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -82,12 +83,12 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
 
             $classParts = explode('\\', get_class($handler));
 
-            StuLogger::logf(
+            StuLogger::log(sprintf(
                 "\t\t\t%d: %s, seconds: %F",
                 $spacecraft->getId(),
                 end($classParts),
                 $endTime - $startTime
-            );
+            ), LogTypeEnum::TICK);
         }
     }
 
