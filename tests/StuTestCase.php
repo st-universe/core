@@ -13,6 +13,7 @@ use request;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
+use Stu\Module\Logging\StuLogger;
 
 abstract class StuTestCase extends MockeryTestCase
 {
@@ -20,6 +21,7 @@ abstract class StuTestCase extends MockeryTestCase
     protected function tearDown(): void
     {
         request::setMockVars(null);
+        StuLogger::setMock(null);
     }
 
     /**
