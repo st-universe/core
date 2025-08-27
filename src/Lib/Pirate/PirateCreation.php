@@ -281,7 +281,6 @@ class PirateCreation implements PirateCreationInterface
                     $shipName = "Pirate Ship";
                 }
 
-
                 $result[] = $this->shipCreator
                     ->createBy(
                         UserConstants::USER_NPC_KAZON,

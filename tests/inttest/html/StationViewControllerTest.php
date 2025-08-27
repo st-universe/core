@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Game\Component\GameComponentEnum;
+use Stu\StuMocks;
 use Stu\TwigTestCase;
 
 class StationViewControllerTest extends TwigTestCase
@@ -29,6 +31,16 @@ class StationViewControllerTest extends TwigTestCase
     {
         return (new ReflectionClass($this))->getShortName() . '--' .
             $this->snapshotKey;
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
+            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
+            ->registerStubbedComponent(GameComponentEnum::PM)
+            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
+            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
+            ->registerStubbedComponent(GameComponentEnum::USER);
     }
 
     public static function getAllViewControllerDataProvider(): array
