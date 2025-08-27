@@ -5,6 +5,7 @@ namespace Stu\Module\Tick;
 use BadMethodCallException;
 use Override;
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\GameTurn;
@@ -23,7 +24,8 @@ final class TickManager implements TickManagerInterface
         private readonly GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly KnPostRepositoryInterface $knPostRepository,
-        private readonly PrivateMessageRepositoryInterface $privateMessageRepository
+        private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
+        private readonly StuTime $stuTime
     ) {}
 
     #[Override]
@@ -34,23 +36,25 @@ final class TickManager implements TickManagerInterface
             throw new BadMethodCallException('no current turn existent');
         }
 
-        $this->endTurn($oldTurn);
+        $time = $this->stuTime->time();
+
+        $this->endTurn($oldTurn, $time);
         $this->reduceUserLocks();
-        $newTurn = $this->startTurn($oldTurn);
+        $newTurn = $this->startTurn($oldTurn, $time);
         $this->createGameTurnStats($oldTurn, $newTurn);
     }
 
-    private function endTurn(GameTurn $turn): void
+    private function endTurn(GameTurn $turn, int $time): void
     {
-        $turn->setEnd(time());
+        $turn->setEnd($time);
 
         $this->gameTurnRepository->save($turn);
     }
 
-    private function startTurn(GameTurn $oldTurn): GameTurn
+    private function startTurn(GameTurn $oldTurn, int $time): GameTurn
     {
         $obj = $this->gameTurnRepository->prototype();
-        $obj->setStart(time());
+        $obj->setStart($time);
         $obj->setEnd(0);
         $obj->setTurn($oldTurn->getTurn() + 1);
 

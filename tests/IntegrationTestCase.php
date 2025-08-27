@@ -10,25 +10,24 @@ use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Mockery;
 use Override;
-use RuntimeException;
 use Stu\Component\Database\AchievementManager;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
-use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\JavascriptExecution;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Twig\TwigPageInterface;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Transaction\ReopeningEntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 
@@ -38,15 +37,17 @@ abstract class IntegrationTestCase extends StuTestCase
 
     protected static ?TestSession $testSession = null;
 
+    protected static bool $isSchemaInitializationNeeded = true;
     private static bool $areProxiesInitialized = false;
-    private static bool $isMocksSetup = false;
     private static ?StuContainer $INTTEST_CONTAINER = null;
 
     #[Override]
     public function setUp(): void
     {
         $this->initializeProxies();
-        $this->setupMocks();
+        $this->initializeSchemaAndTestdataIfNeeded();
+        $this->setupTestSession();
+        $this->setupServiceMocks();
     }
 
     #[Override]
@@ -54,33 +55,24 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         $dic = $this->getContainer();
         $dic->get(GameControllerInterface::class)->resetGameData();
-        $dic->get(TwigPageInterface::class)->resetVariables();
-        $dic->get(ComponentRegistrationInterface::class)->resetComponents();
         AchievementManager::reset();
-        JavascriptExecution::reset();
     }
 
     public static function tearDownAfterClass(): void
     {
         StuMocks::get()->reset();
-    }
-
-    private function setupMocks(): void
-    {
-        if (!self::$isMocksSetup) {
-            $this->setupTestSession();
-            $this->setupServiceMocks();
-            self::$isMocksSetup = true;
-        }
+        StuLogger::log('STUMOCKS RESETTED');
     }
 
     private function setupTestSession(): void
     {
+        $dic = $this->getContainer();
+
         if (self::$testSession === null) {
-            $dic = $this->getContainer();
+            StuLogger::log('NEW TEST SESSION');
             self::$testSession = new TestSession($dic->get(UserRepositoryInterface::class));
-            $dic->setAdditionalService(SessionInterface::class, self::$testSession);
         }
+        $dic->setAdditionalService(SessionInterface::class, self::$testSession);
     }
 
     private function setupServiceMocks(): IntegrationTestCase
@@ -141,7 +133,29 @@ abstract class IntegrationTestCase extends StuTestCase
         return $this;
     }
 
-    protected function initializeTestData(): IntegrationTestCase
+    private function initializeSchemaAndTestdataIfNeeded(): void
+    {
+        if (self::$isSchemaInitializationNeeded) {
+
+            /** @var ReopeningEntityManager */
+            $em = $this->getContainer()->get(EntityManagerInterface::class);
+            $em->reset();
+
+            $this->dropSchema();
+            $this->initializeSchemaAndTestData();
+
+            StuLogger::log('SCHEMA INITIALIZED');
+
+            self::$isSchemaInitializationNeeded = false;
+        }
+    }
+
+    private function dropSchema(): void
+    {
+        $this->runCommand(DropCommand::class, "orm:schema-tool:drop --force --full-database");
+    }
+
+    private function initializeSchemaAndTestData(): IntegrationTestCase
     {
         $this->runCommandWithDependencyFactory(
             MigrateCommand::class,
@@ -158,7 +172,7 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         if (!self::$areProxiesInitialized) {
             $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies --quiet");
-
+            StuLogger::log('PROXIES INITIALIZED');
             self::$areProxiesInitialized = true;
         }
     }
@@ -177,7 +191,7 @@ abstract class IntegrationTestCase extends StuTestCase
         $exitCode = $application->run(new StringInput($input));
 
         if ($exitCode != 0) {
-            throw new RuntimeException(sprintf('Could not execute %s!', $input));
+            throw new TestExecutionException(sprintf('Could not execute %s!', $input));
         }
     }
 
@@ -201,7 +215,7 @@ abstract class IntegrationTestCase extends StuTestCase
 
             $application->setAutoExit(false);
             if ($application->run($input) != 0) {
-                throw new RuntimeException(sprintf('Could not execute %s!', $command));
+                throw new TestExecutionException(sprintf('Could not execute %s!', $command));
             }
         });
     }

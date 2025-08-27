@@ -183,7 +183,9 @@ final class CrewLimitations implements ManagerComponentInterface
         $doAlertRedCheck = $randomSpacecraft->getWarpDriveState() || $randomSpacecraft->isCloaked();
         //deactivate ship
         $this->spacecraftSystemManager->deactivateAll($wrapper);
-        $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
+        if ($randomSpacecraft->hasComputer()) {
+            $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
+        }
 
         $this->spacecraftRepository->save($randomSpacecraft);
 
