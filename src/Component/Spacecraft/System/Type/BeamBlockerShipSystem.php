@@ -30,7 +30,6 @@ final class BeamBlockerShipSystem extends AbstractSpacecraftSystemType implement
     {
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }
-    //tesct
 
     #[Override]
     public function getEnergyUsageForActivation(): int
