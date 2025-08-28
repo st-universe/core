@@ -40,7 +40,18 @@ final class VersionTestCrewAssign extends AbstractMigration
                        (81, 22, NULL, 101, NULL, NULL, NULL),
                        (81, 23, NULL, 101, NULL, NULL, NULL),
                        (81, 24, NULL, 101, NULL, NULL, NULL),
-                       (81, 25, NULL, 101, NULL, NULL, NULL);
+                       (81, 25, NULL, 101, NULL, NULL, NULL),
+                       (77, 26, NULL, 101, NULL, NULL, NULL),
+                       (77, 27, NULL, 101, NULL, NULL, NULL),
+                       (77, 28, NULL, 101, NULL, NULL, NULL),
+                       (77, 29, NULL, 101, NULL, NULL, NULL),
+                       (77, 30, NULL, 101, NULL, NULL, NULL),
+                       (77, 31, NULL, 101, NULL, NULL, NULL),
+                       (77, 32, NULL, 101, NULL, NULL, NULL),
+                       (77, 33, NULL, 101, NULL, NULL, NULL),
+                       (77, 34, NULL, 101, NULL, NULL, NULL),
+                       (77, 35, NULL, 101, NULL, NULL, NULL),
+                       (77, 36, NULL, 101, NULL, NULL, NULL);
         ');
     }
 }
