@@ -25,7 +25,7 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
         return $location->getSpacecraftsWithoutVacation()
             ->filter(
                 fn(Spacecraft $spacecraft): bool =>
-                $spacecraft->getUser() !== $user
+                $spacecraft->getUser()->getId() !== $user->getId()
                     && ($spacecraft->getFleet() === null || !$spacecraft instanceof Ship || $spacecraft->isFleetLeader())
                     && !$spacecraft->isWarped()
                     && !$spacecraft->isCloaked()

@@ -46,7 +46,7 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
         $shipId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('shipid');
 
         $plan = $this->spacecraftBuildplanRepository->find($planId);
-        if ($plan === null || $plan->getUser() !== $user) {
+        if ($plan === null || $plan->getUser()->getId() !== $user->getId()) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
 

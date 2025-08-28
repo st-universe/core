@@ -420,7 +420,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             {% if not ownsCurrentColony %}
             <img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
             {% if canColonize %}
-            <a onclick="showColonization(this, {{ colonyId }});" href="javascript:void(0);">
+            <a onclick="showColonization(this);" href="javascript:void(0);">
                 Kolonie gründen
             </a>
             {% endif %}

@@ -8,23 +8,14 @@ use Mockery;
 use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
-use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
-use Stu\StuMocks;
+use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 
 class ShowShipTest extends TwigTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
-            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
-            ->registerStubbedComponent(GameComponentEnum::PM)
-            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
-            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
-            ->registerStubbedComponent(GameComponentEnum::USER);
-    }
+    use StubGameComponentsTrait;
 
     #[Override]
     public function tearDown(): void
@@ -35,6 +26,8 @@ class ShowShipTest extends TwigTestCase
 
     public function testHandle(): void
     {
+        $this->stubGameComponents();
+
         PanelLayerCreation::$skippedLayers[] = PanelLayerEnum::ANOMALIES->value;
 
         $anomalyRepositoryMock = $this->mock(AnomalyRepositoryInterface::class);

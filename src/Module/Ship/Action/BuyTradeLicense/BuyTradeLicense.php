@@ -119,7 +119,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
 
         $targetShip = $this->shipRepository->find($targetId);
-        if ($targetShip === null || $targetShip->getUser() !== $ship->getUser()) {
+        if ($targetShip === null || $targetShip->getUser()->getId() !== $ship->getUser()->getId()) {
             throw new SanityCheckException('target ship belongs to someone else');
         }
         if (!$this->interactionChecker->checkPosition($tradePost->getStation(), $targetShip)) {

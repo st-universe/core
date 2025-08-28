@@ -70,6 +70,16 @@ class PromotePlayerTest extends StuTestCase
         $founderJob = $this->mock(AllianceJob::class);
         $game = $this->mock(GameControllerInterface::class);
 
+        $alliance->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(555);
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $promotedPlayer->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
+
         $alliance->shouldReceive('getName')
             ->withNoArgs()
             ->once()
@@ -86,10 +96,6 @@ class PromotePlayerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
 
         $promotedPlayer->shouldReceive('getAlliance')
             ->withNoArgs()

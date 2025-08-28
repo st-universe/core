@@ -25,13 +25,9 @@ use Stu\StuTestCase;
 class ThreatReactionTest extends StuTestCase
 {
     private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
-
     private MockInterface&SpacecraftAttackCycleInterface $spacecraftAttackCycle;
-
     private MockInterface&BattlePartyFactoryInterface $battlePartyFactory;
-
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
-
     private MockInterface&GameControllerInterface $game;
 
     private MockInterface&Ship $ship;
@@ -96,6 +92,10 @@ class ThreatReactionTest extends StuTestCase
     {
         $user = $this->mock(User::class);
 
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
@@ -123,6 +123,13 @@ class ThreatReactionTest extends StuTestCase
     {
         $user = $this->mock(User::class);
         $user2 = $this->mock(User::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $user2->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
@@ -158,6 +165,13 @@ class ThreatReactionTest extends StuTestCase
         $messages = $this->mock(MessageCollectionInterface::class);
         $attackingBattleParty = $this->mock(AttackingBattleParty::class);
         $attackedBattleParty = $this->mock(SingletonBattleParty::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $user2->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
@@ -241,11 +255,9 @@ class ThreatReactionTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(42);
         $user2->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(666);
 
         $this->targetWrapper->shouldReceive('isUnalerted')

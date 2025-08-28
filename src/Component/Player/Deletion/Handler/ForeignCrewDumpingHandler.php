@@ -26,7 +26,7 @@ final class ForeignCrewDumpingHandler implements PlayerDeletionHandlerInterface
             foreach ($station->getCrewAssignments() as $crewAssignment) {
 
                 $crew = $crewAssignment->getCrew();
-                if ($crew->getUser() === $station->getUser()) {
+                if ($crew->getUser()->getId() === $station->getUser()->getId()) {
                     continue;
                 }
 

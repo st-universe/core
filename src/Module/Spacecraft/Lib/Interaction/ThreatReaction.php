@@ -37,7 +37,7 @@ final class ThreatReaction implements ThreatReactionInterface
 
         $ship = $wrapper->get();
         $user = $ship->getUser();
-        if ($target->getUser() === $user) {
+        if ($target->getUser()->getId() === $user->getId()) {
             return false;
         }
 

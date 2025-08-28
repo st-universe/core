@@ -79,7 +79,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     private function setFromUser(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
     {
         $from = $this->userRepository->find($fromId);
-        if ($from === null || $from !== $user) {
+        if ($from === null || $from->getId() !== $user->getId()) {
             return null;
         }
         $conversationInfo->setFrom($from);
@@ -90,7 +90,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     private function setFromShip(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
     {
         $from = $this->shipRepository->find($fromId);
-        if ($from === null || $from->getUser() !== $user) {
+        if ($from === null || $from->getUser()->getId() !== $user->getId()) {
             return null;
         }
         $conversationInfo->setWhoText('Die');
@@ -102,7 +102,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     private function setFromFleet(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
     {
         $from = $this->fleetRepository->find($fromId);
-        if ($from === null || $from->getUser() !== $user) {
+        if ($from === null || $from->getUser()->getId() !== $user->getId()) {
             return null;
         }
         $conversationInfo->setWhoText(_('Die Flotte'));
@@ -114,7 +114,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     private function setFromStation(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
     {
         $from = $this->stationRepository->find($fromId);
-        if ($from === null || $from->getUser() !== $user) {
+        if ($from === null || $from->getUser()->getId() !== $user->getId()) {
             return null;
         }
         $conversationInfo->setWhoText(_('Die Station'));
@@ -126,7 +126,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     private function setFromColony(ConversationInfo $conversationInfo, User $user, int $fromId): ?ConversationInfo
     {
         $from = $this->colonyRepository->find($fromId);
-        if ($from === null || $from->getUser() !== $user) {
+        if ($from === null || $from->getUser()->getId() !== $user->getId()) {
             return null;
         }
         $conversationInfo->setWhoText(_('Die Kolonie'));

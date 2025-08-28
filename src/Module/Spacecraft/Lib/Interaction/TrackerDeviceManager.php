@@ -59,7 +59,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
 
     private function sendDeactivationPMs(Spacecraft $spacecraft, Ship $target, bool $sendPmToTargetOwner): void
     {
-        if ($target->getUser() !== $spacecraft->getUser()) {
+        if ($target->getUser()->getId() !== $spacecraft->getUser()->getId()) {
 
             //send pm to target owner
             if ($sendPmToTargetOwner) {

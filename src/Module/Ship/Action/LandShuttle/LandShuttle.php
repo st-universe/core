@@ -44,7 +44,7 @@ final class LandShuttle implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $shuttleId = request::indInt('shuttle');
+        $shuttleId = request::getIntFatal('shuttle');
         $targetId = request::getIntFatal('id');
 
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
@@ -65,7 +65,7 @@ final class LandShuttle implements ActionControllerInterface
         if (!$this->interactionChecker->checkPosition($shuttle, $target)) {
             return;
         }
-        if ($target->getUser() !== $shuttle->getUser()) {
+        if ($target->getUser()->getId() !== $shuttle->getUser()->getId()) {
             return;
         }
 

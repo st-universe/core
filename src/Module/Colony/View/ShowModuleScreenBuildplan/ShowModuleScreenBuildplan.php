@@ -42,7 +42,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
 
         $plan = $this->spacecraftBuildplanRepository->find($planId);
-        if ($plan === null || $plan->getUser() !== $user) {
+        if ($plan === null || $plan->getUser()->getId() !== $user->getId()) {
             throw new SanityCheckException('This buildplan belongs to someone else', null, self::VIEW_IDENTIFIER);
         }
 

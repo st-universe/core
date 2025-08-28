@@ -26,7 +26,7 @@ final class UnsetTopicSticky implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->unsetTopicStickyRequest->getTopicId());
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

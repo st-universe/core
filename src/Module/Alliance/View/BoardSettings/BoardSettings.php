@@ -28,7 +28,7 @@ final class BoardSettings implements ViewControllerInterface
         }
 
         $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 

@@ -79,7 +79,7 @@ final class DealsBidAuction implements ActionControllerInterface
             return;
         }
 
-        $userHasHighestBid = $highestBid->getUser() === $user;
+        $userHasHighestBid = $highestBid->getUser()->getId() === $user->getId();
         if ($userHasHighestBid) {
             $this->raiseOwnBid($maxAmount, $highestBid, $game, $auction);
             return;

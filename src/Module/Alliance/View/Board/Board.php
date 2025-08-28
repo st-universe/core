@@ -32,7 +32,7 @@ final class Board implements ViewControllerInterface
         }
 
         $board = $this->allianceBoardRepository->find($this->boardRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 

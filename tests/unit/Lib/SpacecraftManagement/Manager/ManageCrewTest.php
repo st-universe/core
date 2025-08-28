@@ -68,6 +68,10 @@ class ManageCrewTest extends StuTestCase
         $this->user = $this->mock(User::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->subject = new ManageCrew(
             $this->shipCrewCalculator,
             $this->troopTransferUtility,
@@ -195,6 +199,10 @@ class ManageCrewTest extends StuTestCase
         $shipOwner = $this->mock(User::class);
         $buildplan = $this->mock(SpacecraftBuildplan::class);
         $values = ['crew' => ['555' => '42']];
+
+        $shipOwner->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -608,6 +616,7 @@ class ManageCrewTest extends StuTestCase
     {
         $ownCrew = $this->mock(CrewAssignment::class);
         $foreignCrew = $this->mock(Crew::class);
+        $foreignCrewUser = $this->mock(User::class);
         $foreignCrewAssignment = $this->mock(CrewAssignment::class);
 
         $shipCrewlist = new ArrayCollection([$ownCrew, $foreignCrewAssignment]);
@@ -617,6 +626,10 @@ class ManageCrewTest extends StuTestCase
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($this->ship);
+
+        $foreignCrewUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->managerProvider->shouldReceive('getUser')
             ->withNoArgs()
@@ -672,7 +685,7 @@ class ManageCrewTest extends StuTestCase
         $foreignCrew->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
+            ->andReturn($foreignCrewUser);
         $foreignCrew->shouldReceive('getName')
             ->withNoArgs()
             ->once()

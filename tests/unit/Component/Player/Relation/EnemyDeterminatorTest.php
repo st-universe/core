@@ -18,13 +18,11 @@ use Stu\StuTestCase;
 class EnemyDeterminatorTest extends StuTestCase
 {
     private MockInterface&AllianceRelationRepositoryInterface $allianceRelationRepository;
-
     private MockInterface&ContactRepositoryInterface $contactRepository;
 
     private EnemyDeterminator $subject;
 
     private MockInterface&User $user;
-
     private MockInterface&User $opponent;
 
     #[Override]
@@ -45,6 +43,10 @@ class EnemyDeterminatorTest extends StuTestCase
     public function testIsEnemyReturnsNoneIfAlliancesMatch(): void
     {
         $alliance = $this->mock(Alliance::class);
+
+        $alliance->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
 
         $this->user->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -82,12 +84,10 @@ class EnemyDeterminatorTest extends StuTestCase
 
         $allianceUser->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceUserId);
 
         $allianceOpponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceOpponentId);
 
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
@@ -129,12 +129,10 @@ class EnemyDeterminatorTest extends StuTestCase
 
         $allianceUser->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceUserId);
 
         $allianceOpponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceOpponentId);
 
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
@@ -150,12 +148,10 @@ class EnemyDeterminatorTest extends StuTestCase
 
         $this->user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
 
         $this->opponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($opponentId);
 
         $this->contactRepository->shouldReceive('getByUserAndOpponent')
@@ -188,12 +184,10 @@ class EnemyDeterminatorTest extends StuTestCase
 
         $this->user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
 
         $this->opponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($opponentId);
 
         $this->contactRepository->shouldReceive('getByUserAndOpponent')

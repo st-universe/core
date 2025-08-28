@@ -30,6 +30,10 @@ class KnCommentWrapperTest extends StuTestCase
         $this->comment = $this->mock(KnComment::class);
         $this->user = $this->mock(User::class);
 
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->tal = new KnCommentWrapper(
             $this->config,
             $this->userSettingsProvider,
@@ -199,6 +203,10 @@ class KnCommentWrapperTest extends StuTestCase
     public function testIsDeleteableReturnsFalseIfCommentBelongsToOtherUser(): void
     {
         $otherUser = $this->mock(User::class);
+
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->comment->shouldReceive('getUser')
             ->withNoArgs()

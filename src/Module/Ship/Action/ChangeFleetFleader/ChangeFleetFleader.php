@@ -45,7 +45,7 @@ final class ChangeFleetFleader implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if ($target->getUser() !== $ship->getUser()) {
+        if ($target->getUser()->getId() !== $ship->getUser()->getId()) {
             return;
         }
 

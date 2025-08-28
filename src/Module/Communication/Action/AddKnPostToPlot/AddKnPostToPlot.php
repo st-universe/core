@@ -73,7 +73,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
     private function notifyPlotMembers(KnPost $post, RpgPlot $plot): void
     {
         foreach ($plot->getMembers() as $member) {
-            if ($member->getUser() !== $post->getUser()) {
+            if ($member->getUser()->getId() !== $post->getUser()->getId()) {
                 $user = $member->getUser();
 
                 $text = sprintf(

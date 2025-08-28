@@ -50,7 +50,7 @@ final class PostKnComment implements ActionControllerInterface
         $notificatedPlayers = [$game->getUser()->getId()];
 
         // send notification to post owner
-        if ($game->getUser() !== $post->getUser()) {
+        if ($game->getUser()->getId() !== $post->getUser()->getId()) {
             $notificatedPlayers[] = $post->getUserId();
 
             $text = sprintf(

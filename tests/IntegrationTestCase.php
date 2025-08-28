@@ -61,7 +61,7 @@ abstract class IntegrationTestCase extends StuTestCase
     public static function tearDownAfterClass(): void
     {
         StuMocks::get()->reset();
-        StuLogger::log('STUMOCKS RESETTED');
+        // StuLogger::log('STUMOCKS RESETTED');
     }
 
     private function setupTestSession(): void
@@ -69,10 +69,11 @@ abstract class IntegrationTestCase extends StuTestCase
         $dic = $this->getContainer();
 
         if (self::$testSession === null) {
-            StuLogger::log('NEW TEST SESSION');
+            // StuLogger::log('NEW TEST SESSION');
             self::$testSession = new TestSession($dic->get(UserRepositoryInterface::class));
         }
         $dic->setAdditionalService(SessionInterface::class, self::$testSession);
+        self::$testSession->getUser()?->setSessiondata('');
     }
 
     private function setupServiceMocks(): IntegrationTestCase
@@ -144,7 +145,7 @@ abstract class IntegrationTestCase extends StuTestCase
             $this->dropSchema();
             $this->initializeSchemaAndTestData();
 
-            StuLogger::log('SCHEMA INITIALIZED');
+            // StuLogger::log('SCHEMA INITIALIZED');
 
             self::$isSchemaInitializationNeeded = false;
         }
@@ -172,7 +173,7 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         if (!self::$areProxiesInitialized) {
             $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies --quiet");
-            StuLogger::log('PROXIES INITIALIZED');
+            // StuLogger::log('PROXIES INITIALIZED');
             self::$areProxiesInitialized = true;
         }
     }

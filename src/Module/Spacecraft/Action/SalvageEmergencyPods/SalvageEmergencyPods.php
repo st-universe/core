@@ -180,7 +180,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 }
             } elseif ($this->gotEnoughFreeTroopQuarters($spacecraft, $count)) {
                 foreach ($target->getCrewAssignments() as $crewAssignment) {
-                    if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
+                    if ($crewAssignment->getCrew()->getUser()->getId() === $game->getUser()->getId()) {
                         $crewAssignment->setSpacecraft($spacecraft);
                         $spacecraft->getCrewAssignments()->add($crewAssignment);
                         $this->shipCrewRepository->save($crewAssignment);

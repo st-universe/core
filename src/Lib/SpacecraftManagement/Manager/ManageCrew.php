@@ -50,7 +50,7 @@ class ManageCrew implements ManagerInterface
             isset($newCrewCountArray[$ship->getId()])
             && $wrapper->canMan()
             && $buildplan !== null
-            && $ship->getUser() === $user
+            && $ship->getUser()->getId() === $user->getId()
         ) {
             $newCrewCount = (int)$newCrewCountArray[$ship->getId()];
             if ($ship->getCrewCount() !== $newCrewCount) {
@@ -186,7 +186,7 @@ class ManageCrew implements ManagerInterface
     private function dumpForeignCrew(Spacecraft $spacecraft): void
     {
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
-            if ($shipCrew->getCrew()->getUser() !== $spacecraft->getUser()) {
+            if ($shipCrew->getCrew()->getUser()->getId() !== $spacecraft->getUser()->getId()) {
                 $this->spacecraftLeaver->dumpCrewman(
                     $shipCrew,
                     sprintf(

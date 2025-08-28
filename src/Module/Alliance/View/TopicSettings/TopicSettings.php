@@ -26,7 +26,7 @@ final class TopicSettings implements ViewControllerInterface
         $topicId = $this->topicSettingsRequest->getTopicId();
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

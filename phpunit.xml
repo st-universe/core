@@ -22,7 +22,10 @@
       <directory>./tests/unit</directory>
     </testsuite>
     <testsuite name="STU integration">
-      <directory>./tests/inttest</directory>
+      <directory>./tests/inttest/Config</directory>
+      <directory>./tests/inttest/html</directory>
+      <directory>./tests/inttest/Tick</directory>
+      <directory>./tests/inttest/Action</directory>
     </testsuite>
   </testsuites>
   <php>

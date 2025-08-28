@@ -49,7 +49,7 @@ final class PromotePlayer implements ActionControllerInterface
         $promotedPlayerId = $this->promotePlayerRequest->getPlayerId();
         $promotedPlayer = $this->userRepository->find($promotedPlayerId);
 
-        if ($promotedPlayer === null || $promotedPlayer->getAlliance() !== $alliance) {
+        if ($promotedPlayer === null || $promotedPlayer->getAlliance()?->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 
@@ -66,7 +66,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $founderJob = $alliance->getFounder();
 
-        if ($founderJob->getUser() === $promotedPlayer) {
+        if ($founderJob->getUser()->getId() === $promotedPlayer->getId()) {
             throw new AccessViolationException();
         }
 
@@ -88,7 +88,7 @@ final class PromotePlayer implements ActionControllerInterface
 
     private function setFounder(AllianceJob $founderJob, User $promotedPlayer, GameControllerInterface $game): string
     {
-        if ($founderJob->getUser() !== $game->getUser()) {
+        if ($founderJob->getUser()->getId() !== $game->getUser()->getId()) {
             throw new AccessViolationException();
         }
         $this->allianceActionManager->setJobForUser(
@@ -107,7 +107,7 @@ final class PromotePlayer implements ActionControllerInterface
 
     private function setSuccessor(User $user, Alliance $alliance, User $promotedPlayer): string
     {
-        if ($user === $promotedPlayer) {
+        if ($user->getId() === $promotedPlayer->getId()) {
             throw new AccessViolationException();
         }
 
@@ -125,7 +125,7 @@ final class PromotePlayer implements ActionControllerInterface
 
     private function setDiplomatic(User $user, Alliance $alliance, User $promotedPlayer): string
     {
-        if ($user === $promotedPlayer) {
+        if ($user->getId() === $promotedPlayer->getId()) {
             throw new AccessViolationException();
         }
 

@@ -91,7 +91,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
         $destination = $isUnload ? $target : $source;
         $crewAssignments = $isUnload ? $source->get()->getCrewAssignments() : $target->get()->getCrewAssignments();
-        $filteredByUser = $crewAssignments->filter(fn(CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser() === $source->getUser())->toArray();
+        $filteredByUser = $crewAssignments->filter(fn(CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser()->getId() === $source->getUser()->getId())->toArray();
         $slice = array_slice($filteredByUser, 0, $amount);
 
         foreach ($slice as $crewAssignment) {
@@ -106,7 +106,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
             $target->getName()
         );
 
-        $foreignCrewChangeAmount = $source->getUser() !== $target->getUser()
+        $foreignCrewChangeAmount = $source->getUser()->getId() !== $target->getUser()->getId()
             ? ($isUnload ? $amount : -$amount)
             : 0;
 

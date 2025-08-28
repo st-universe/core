@@ -23,9 +23,7 @@ use Stu\StuTestCase;
 class PlanetFieldHostProviderTest extends StuTestCase
 {
     private MockInterface&ColonySandboxRepositoryInterface $colonySandboxRepository;
-
     private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
-
     private MockInterface&ColonyLoaderInterface $colonyLoader;
 
     private PlanetFieldHostProviderInterface $subject;
@@ -115,10 +113,15 @@ class PlanetFieldHostProviderTest extends StuTestCase
 
         request::setMockVars(['id' => 42, 'hosttype' => PlanetFieldHostTypeEnum::SANDBOX->value]);
 
-        $sandbox->shouldReceive('getUser')
+        $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
+            ->andReturn(11111);
+
+        $sandbox->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(77777);
 
         $this->colonySandboxRepository->shouldReceive('find')
             ->with(42)
@@ -139,6 +142,10 @@ class PlanetFieldHostProviderTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(55555);
 
         $this->colonySandboxRepository->shouldReceive('find')
             ->with(42)

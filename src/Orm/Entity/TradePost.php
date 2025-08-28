@@ -230,7 +230,7 @@ class TradePost
         $count = 0;
 
         foreach ($this->getCrewAssignments() as $crewAssignment) {
-            if ($crewAssignment->getUser() === $user) {
+            if ($crewAssignment->getUser()->getId() === $user->getId()) {
                 $count++;
             }
         }
