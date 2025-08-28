@@ -166,7 +166,7 @@
 <td style="text-align: center;">
 								107/108
 								<span id="effectiveEps"></span>
-												(<span class="neg">4</span>/<span class="neg" id="reactorUsage">0</span>)
+												(<span class="neg">5</span>/<span class="neg" id="reactorUsage">0</span>)
 							</td>
 			<td style="text-align: center;">
 								<span>36</span>
@@ -342,8 +342,8 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     
 <tr>
     <td colspan="3">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser1');" onmouseout="cp('act_phaser','buttons/act_phaser2');">
-    <img src="/assets/buttons/act_phaser2.png" name="act_phaser"> Strahlenwaffe aktivieren</a>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser2');" onmouseout="cp('act_phaser','buttons/act_phaser1');">
+    <img src="/assets/buttons/act_phaser1.png" name="act_phaser"> Strahlenwaffe deaktivieren</a>
     </td>
 </tr>
         
@@ -401,7 +401,19 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
                 <img src="/assets/buttons/info1.png" name="mapRegionButton">
                 Thalassanebel
             </a>
-                                                                    </td>
+                                                                        <br>
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ADVENT_DOOR', 'id=42&amp;target=1&amp;sstr=MOCKED_SESSIONSTRING');" title="Adventst&uuml;rchen &ouml;ffnen">
+        <img src="/assets/anomalies/advent/-104.png" name="Adventst&uuml;r">
+        &#10024;<strong><span style="color: red">Ad</span><span style="color: green">ve</span><span style="color: white">nt</span><span style="color: red">st</span><span style="color: green">&uuml;r</span><span style="color: white">ch</span><span style="color: red">en</span></strong>
+    &#127873;&#127876;
+    </a>
+                        <br>
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_EASTER_EGG', 'id=42&amp;target=2&amp;sstr=MOCKED_SESSIONSTRING');" title="Osterei erhalten">
+        <img src="/assets/anomalies/easter/easter.png" name="Oster Ei">
+        &#128048;<strong><span style="color: orange">O</span><span style="color: green">s</span><span style="color: #e359c7">t</span><span style="color: yellow">e</span><span style="color: #6ac0ce">r</span><span style="color: white">
+    E</span><span style="color: red">i</span></strong>
+    &#129370;&#127873;
+    </a>                                            </td>
                                                 <td>
                         <img src="/assets/map/systemtypes/1060.png" style="width: 15px; height: 15px;" title="Roter Zwerg">
             Stempor'Arr
@@ -547,6 +559,9 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
+        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=43&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_43','buttons/phaser2')" onmouseout="cp('att_43','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_43" title="Mighty AP angreifen">
+    </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
@@ -601,6 +616,9 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
+        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=10203&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_10203','buttons/phaser2')" onmouseout="cp('att_10203','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_10203" title="Aerie 102 at Mighty AP angreifen">
+    </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
@@ -653,6 +671,9 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
+        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=100001&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_100001','buttons/phaser2')" onmouseout="cp('att_100001','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_100001" title="Workbee angreifen">
+    </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
@@ -738,7 +759,7 @@ updateSelectedSpacecraftId('100001');"><span>Workbee</span></a>
   <tr>
     <th>
       <img onclick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum"> Lagerraum
-      141/155
+      142/155
     </th>
   </tr>
   <tr>
@@ -751,15 +772,18 @@ updateSelectedSpacecraftId('100001');"><span>Workbee</span></a>
         <img src="/assets/commodities/21.png" title="Duranium">
         99
       </div>
-            <div style="float: left; width: 50%;"></div>
-                            </td>
+                                          <div style="float: left; width: 50%;">
+        <img src="/assets/commodities/20061.png" title="Workbee">
+        1
+      </div>
+                      </td>
   </tr>
 </table>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 <script>
-            setReactorSplitConstants(54,4,2,1,57,58);
+            setReactorSplitConstants(54,5,2,1,57,58);
                 updateReactorValues(100);
                 updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&component=GAME_PM_NAVLET', 60000);
                 updateComponent('GAME_SERVERTIME', '/game.php?SHOW_COMPONENT=1&component=GAME_SERVERTIME', 300000);

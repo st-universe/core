@@ -7,14 +7,17 @@ namespace Stu\Action;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
+use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 
 class AllActionControllerTest extends ActionTestCase
 {
     private const array CURRENTLY_SUPPORTED_MODULES = [
-        'SHIP_ACTIONS'
+        'SHIP_ACTIONS',
+        'SPACECRAFT_ACTIONS',
     ];
 
     private const array CURRENTLY_UNSUPPORTED_KEYS = [];
@@ -76,6 +79,19 @@ class AllActionControllerTest extends ActionTestCase
             'SHIP_ACTIONS-B_GATHER_RESOURCES' => ['id' => 81, 'chosen' => 1488763],
             'SHIP_ACTIONS-B_LAND_SHUTTLE' => ['id' => 43],
             'SHIP_ACTIONS-B_PAY_TRADELICENSE' => ['id' => 10203, 'target' => 10203, 'method' => 'ship'],
+            'SPACECRAFT_ACTIONS-B_ACTIVATE_SYSTEM',
+            'SPACECRAFT_ACTIONS-B_DEACTIVATE_SYSTEM' => ['type' => SpacecraftSystemTypeEnum::NBS->name],
+            'SPACECRAFT_ACTIONS-B_START_SHUTTLE' => ['shid' => 20061],
+            'SPACECRAFT_ACTIONS-B_DUMP_CREWMAN',
+            'SPACECRAFT_ACTIONS-B_RENAME_CREW' => ['crewid' => 2],
+            'SPACECRAFT_ACTIONS-B_LOAD_REACTOR' => ['id' => 43, 'reactorload' => 5],
+            'SPACECRAFT_ACTIONS-B_MOVE' => ['posx' => 7, 'posy' => 7],
+            'SPACECRAFT_ACTIONS-B_SEND_BROADCAST' => ['text' => 'BROADCAST TXT'],
+            'SPACECRAFT_ACTIONS-B_ADD_SHIP_LOG' => ['log' => 'LOGBOOK TXT'],
+            'SPACECRAFT_ACTIONS-B_ATTACK_BUILDING' => ['id' => 77, 'field' => 25],
+            'SPACECRAFT_ACTIONS-B_ADVENT_DOOR' => ['target' => 1],
+            'SPACECRAFT_ACTIONS-B_EASTER_EGG' => ['target' => 2],
+            'SPACECRAFT_ACTIONS-B_SPLIT_REACTOR_OUTPUT' => ['fleet' => 0, 'autocarryover' => 1],
             default => []
         };
     }
@@ -98,6 +114,10 @@ class AllActionControllerTest extends ActionTestCase
             'regionid' => 134,
             'switch' => 1,
             'TOKEN' => 'MY_TOKEN',
+            'is_unload' => 1,
+            'transfer_type' => TransferTypeEnum::COMMODITIES->value,
+            'source_type' => 'ship',
+            'target_type' => 'station',
 
             // SHIP
             'rumpid' => 6501,
