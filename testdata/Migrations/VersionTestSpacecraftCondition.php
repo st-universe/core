@@ -19,7 +19,7 @@ final class VersionTestSpacecraftCondition extends AbstractMigration
         $this->addSql('INSERT INTO stu_spacecraft_condition (spacecraft_id, hull, shield, is_disabled, state)
             VALUES (42, 819, 819, 0, 0),
                     (77, 819, 819, 0, 0),
-                    (78, 819, 819, 0, 0),
+                    (78, 800, 819, 0, 0),
                     (79, 819, 819, 0, 0),
                     (80, 819, 819, 0, 0),
                     (81, 819, 819, 0, 0),

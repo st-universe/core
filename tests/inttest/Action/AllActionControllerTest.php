@@ -7,6 +7,9 @@ namespace Stu\Action;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
+use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Building\BuildMenuEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Transfer\TransferTypeEnum;
@@ -16,6 +19,7 @@ use Stu\Module\Control\GameControllerInterface;
 class AllActionControllerTest extends ActionTestCase
 {
     private const array CURRENTLY_SUPPORTED_MODULES = [
+        'COLONY_ACTIONS',
         'SHIP_ACTIONS',
         'SPACECRAFT_ACTIONS',
     ];
@@ -92,6 +96,19 @@ class AllActionControllerTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_ADVENT_DOOR' => ['target' => 1],
             'SPACECRAFT_ACTIONS-B_EASTER_EGG' => ['target' => 2],
             'SPACECRAFT_ACTIONS-B_SPLIT_REACTOR_OUTPUT' => ['fleet' => 0, 'autocarryover' => 1],
+            'COLONY_ACTIONS-B_REMOVE_WASTE' => ['commodity' => [2 => 100, 4 => 100]],
+            'COLONY_ACTIONS-B_CHANGE_TORPS' => ['torpid' => 0],
+            'COLONY_ACTIONS-B_CHANGE_FREQUENCY' => ['frequency' => '123'],
+            'COLONY_ACTIONS-B_DISASSEMBLE_SHIP' => ['ship_id' => 77],
+            'COLONY_ACTIONS-B_TRAIN_CREW' => ['crewcount' => 1],
+            'COLONY_ACTIONS-B_SET_POPULATIONLIMIT' => ['poplimit' => 20],
+            'COLONY_ACTIONS-B_SWITCH_COLONYMENU' => ['menu' => ColonyMenuEnum::MENU_SOCIAL->value],
+            'COLONY_ACTIONS-B_CREATE_SANDBOX' => ['name' => 'SANDBOX NAME'],
+            'COLONY_ACTIONS-B_LOAD_SHIELDS' => ['load' => 200],
+            'COLONY_ACTIONS-B_SCROLL_BUILDMENU' => ['menu' => BuildMenuEnum::BUILDMENU_ENERGY->value],
+            'COLONY_ACTIONS-B_CREATE_MODULES' => ['moduleids' => [], 'values' => [], 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
+            'COLONY_ACTIONS-B_CANCEL_REPAIR' => ['shipid' => 78],
+            'COLONY_ACTIONS-B_CANCEL_MODULECREATION' => ['module' => 1, 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
             default => []
         };
     }
@@ -102,7 +119,7 @@ class AllActionControllerTest extends ActionTestCase
             'id' => 42,
             'target' => 43,
             'userid' => 101,
-            'colonyid' => 1,
+            'colonyid' => 42,
             'layerid' => 2,
             'section' => 1,
             'systemid' => 252,
@@ -129,7 +146,6 @@ class AllActionControllerTest extends ActionTestCase
 
             // COLONY
             'fid' => 26,
-            'func' => 87,
             'buildingid' => 82010100,
             'shuttletarget' => 77,
 
