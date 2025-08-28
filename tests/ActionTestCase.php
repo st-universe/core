@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Override;
 use Stu\Orm\Entity\GameTurn;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 abstract class ActionTestCase extends IntegrationTestCase
 {
@@ -22,6 +24,22 @@ abstract class ActionTestCase extends IntegrationTestCase
 
     /**
      * @param class-string<T> $entityClass
+     * @param array<string, mixed> $expectation
+     */
+    protected function assertEntity(int $id, string $entityClass, array $expectation): void
+    {
+        $entity = $this->getContainer()->get(EntityManagerInterface::class)
+            ->getRepository($entityClass)
+            ->find($id);
+
+        $actual = $this->getTransformationClosure($entityClass)($entity);
+
+        $this->assertEquals($expectation, $actual);
+    }
+
+    /**
+     * @param class-string<T> $entityClass
+     * @param array<string, mixed> $expectation
      */
     protected function assertEntities(string $entityClass, array $expectation): void
     {
@@ -40,6 +58,12 @@ abstract class ActionTestCase extends IntegrationTestCase
     private function getTransformationClosure(string $entityClass): Closure
     {
         return match ($entityClass) {
+            Spacecraft::class => fn(Spacecraft $s) => [
+                'crewCount' => $s->getCrewCount()
+            ],
+            SpacecraftSystem::class => fn(SpacecraftSystem $ss) => [
+                'data' => $ss->getData()
+            ],
             GameTurn::class => fn(GameTurn $gt) => [
                 'turn' => $gt->getTurn(),
                 'startdate' => $gt->getStart(),

@@ -19,13 +19,13 @@ use Stu\Component\Database\AchievementManager;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
+use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Transaction\ReopeningEntityManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,13 +55,13 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         $dic = $this->getContainer();
         $dic->get(GameControllerInterface::class)->resetGameData();
+        $dic->get(ComponentRegistrationInterface::class)->resetComponents();
         AchievementManager::reset();
     }
 
     public static function tearDownAfterClass(): void
     {
         StuMocks::get()->reset();
-        // StuLogger::log('STUMOCKS RESETTED');
     }
 
     private function setupTestSession(): void
@@ -69,7 +69,6 @@ abstract class IntegrationTestCase extends StuTestCase
         $dic = $this->getContainer();
 
         if (self::$testSession === null) {
-            // StuLogger::log('NEW TEST SESSION');
             self::$testSession = new TestSession($dic->get(UserRepositoryInterface::class));
         }
         $dic->setAdditionalService(SessionInterface::class, self::$testSession);
@@ -145,8 +144,6 @@ abstract class IntegrationTestCase extends StuTestCase
             $this->dropSchema();
             $this->initializeSchemaAndTestData();
 
-            // StuLogger::log('SCHEMA INITIALIZED');
-
             self::$isSchemaInitializationNeeded = false;
         }
     }
@@ -173,7 +170,6 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         if (!self::$areProxiesInitialized) {
             $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies --quiet");
-            // StuLogger::log('PROXIES INITIALIZED');
             self::$areProxiesInitialized = true;
         }
     }
