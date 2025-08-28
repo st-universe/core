@@ -7,7 +7,6 @@ namespace Stu;
 use Override;
 use request;
 use Spatie\Snapshots\MatchesSnapshots;
-use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\JavascriptExecution;
@@ -35,7 +34,6 @@ abstract class TwigTestCase extends IntegrationTestCase
         parent::tearDown();
         $dic = $this->getContainer();
         $dic->get(TwigPageInterface::class)->resetVariables();
-        $dic->get(ComponentRegistrationInterface::class)->resetComponents();
         JavascriptExecution::reset();
     }
 
