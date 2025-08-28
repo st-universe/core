@@ -37,6 +37,8 @@ final class BeamBlockerShipSystem extends AbstractSpacecraftSystemType implement
         return 0;
     }
 
+    //test
+
     #[Override]
     public function getEnergyConsumption(): int
     {
