@@ -47,9 +47,7 @@
             <div id="GAME_COLONIES_NAVLET">
     </div>
             <div id="GAME_NAGUS_POPUP">
-            </div>
-            <div id="nagus">
-            </div>
+    </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
                     <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
@@ -126,7 +124,7 @@
 			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
 				<img src="/assets/buttons/info2.png" style="height:16px;">
 			</th>
-												<th style="text-align: center;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)">
+												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(this, 43);">
 				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
 			<th style="text-align: center;">Batterie</th>
@@ -150,6 +148,7 @@
 				</a>
 			</td>
 			<td style="text-align: center;">
+								<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
 							</td>
 			<td style="text-align: center;">
 				7|8
@@ -161,8 +160,12 @@
 								<span>24000/25000</span>
 				 (+0)   </td>
 								<td style="text-align: center;">
+								107/108
+												<span>+1</span>
+								(<span class="neg">1</span>/<span class="neg" id="reactorUsage">0</span>)
 							</td>
 			<td style="text-align: center;">
+								<span>36</span>
 							</td>
 			<td style="text-align: center;">
 												<span style="">1</span>
@@ -187,20 +190,20 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('uship','buttons/update1');" 
 				<a href="javascript:void(0);" onclick="showCommunication(this, 43);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
 					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
 				</a>
+								<a href="javascript:void(0);" onclick="showLSSFilter(this);" onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
+					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermen&uuml; &ouml;ffnen" name="actlss">
+				</a>
 												<a href="javascript:void(0);" onclick="openStarMap(this,43);" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap">
 				</a>
 								<a href="?B_STANDBY=1&amp;id=43&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
 					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown">
 				</a>
-								<a href="javascript:void(0);" onclick="showRepairOptions(this, 43);" onmouseover="cp('selfrepair','buttons/rep2');" onmouseout="cp('selfrepair','buttons/rep1');">
-					<img src="/assets/buttons/rep1.png" style="height: 20px;" title="Reparaturoptionen anzeigen" name="selfrepair">
-				</a>
 							</td>
 			<td colspan="2">
-								<img style="margin-right: 5px;" src="/assets/commodities/11115.png" title="ablative Duranium-H&uuml;llenpanzerung (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/19003.png" title="Tachyon-Scanner"><img style="margin-right: 5px;" src="/assets/commodities/19007.png" title="Subraumfeldscanner">							</td>
+								<img style="margin-right: 5px;" src="/assets/commodities/11115.png" title="ablative Duranium-H&uuml;llenpanzerung (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/10225.png" title="Plasmatische-Schilde (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/11904.png" title="Computer (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10604.png" title="Sensorenphalanx (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10504.png" title="Warpkern (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10304.png" title="EPS-Gitter (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10735.png" title="Klingonischer Disruptor (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/10835.png" title="Klingonische Torpedobank (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/19003.png" title="Tachyon-Scanner"><img style="margin-right: 5px;" src="/assets/commodities/19007.png" title="Subraumfeldscanner">							</td>
 			<td colspan="5">
-							</td>
+				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Strahlenwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Projektilwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/6.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png">			</td>
 		</tr>
 	</table>
 	<br>
@@ -320,7 +323,22 @@ updateSelectedSpacecraftId('42');"></a>
     </tr>
     
     
-        
+<tr>
+    <td colspan="3">
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=43&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser1');" onmouseout="cp('act_phaser','buttons/act_phaser2');">
+    <img src="/assets/buttons/act_phaser2.png" name="act_phaser"> Strahlenwaffe aktivieren</a>
+    </td>
+</tr>
+    <tr>
+        <td>
+                                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=43&amp;type=TORPEDO&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_torp','buttons/act_torp1');" onmouseout="cp('act_torp','buttons/act_torp2');">
+    <img src="/assets/buttons/act_torp2.png" name="act_torp"> Projektilwaffe aktivieren</a>
+    </td>
+        <td>
+                <img src="/assets/buttons/torp.png"> Torpedos: 0
+    </td>
+</tr>
+    
     
     
     
@@ -370,6 +388,48 @@ updateSelectedSpacecraftId('42');"></a>
 				<br>
 				
 
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/warpk.png">
+            <span>Reaktor + Antrieb</span>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="/assets/buttons/warpk.png" title="Warpkern">
+            <span style="">810/810</span>
+            <input type="text" size="3" name="reactorload" id="reactorload" value="1" onkeydown="event.key == 'Enter' &amp;&amp; $('loadreactorbutton').click();">
+            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton">
+            <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
+        </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+        
+</table>
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie"> Ersatzbatterie
+            36 / 36
+        </th>
+    </tr>
+    <tr>
+                <td style="width: 60%;">
+            Einheiten
+            <input type="text" size="5" name="ebattload" id="ebattload" onkeydown="event.key == 'Enter' &amp;&amp; $('unloadBatteryButton').click()">
+            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton">
+            <input type="button" class="button" onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max">
+        </td>
+                <td>
+                                    <input type="checkbox" onchange="actionToInnerContent('B_TOGGLE_BATT_RELOAD', 'id=43&amp;sstr=MOCKED_SESSIONSTRING');">
+            reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="/assets/buttons/info2.png" style="height:16px;">
+                    </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+</table>
 
 <br>
 
@@ -377,6 +437,14 @@ updateSelectedSpacecraftId('42');"></a>
 			</td>
 			<td style="vertical-align: top; width: 67%;">
 				<table class="tcal">
+        <tr>
+        <th colspan="3">
+<a href="?B_ACTIVATE_SYSTEM=1&amp;id=43&amp;type=LSS&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/lss2.png" title="Langstreckensensoren aktivieren"></a>
+                        <a href="?B_ACTIVATE_SYSTEM=1&amp;id=43&amp;type=LSS&amp;sstr=MOCKED_SESSIONSTRING">
+                Langstreckensensoren aktivieren
+            </a>
+                    </th>
+    </tr>
         </table>
 
 															</td>

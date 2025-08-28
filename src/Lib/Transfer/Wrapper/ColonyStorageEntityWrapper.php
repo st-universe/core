@@ -140,7 +140,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function getFreeCrewSpace(User $user): int
     {
-        if ($user !== $this->colony->getUser()) {
+        if ($user->getId() !== $this->colony->getUser()->getId()) {
             return 0;
         }
 
@@ -158,7 +158,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     #[Override]
     public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
-        return $this->colony->getUser() === $user;
+        return $this->colony->getUser()->getId() === $user->getId();
     }
 
     #[Override]

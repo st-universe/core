@@ -77,6 +77,10 @@ class TrackerDeviceManagerTest extends StuTestCase
         $spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $user = $this->mock(User::class);
 
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()

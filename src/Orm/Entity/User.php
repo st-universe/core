@@ -368,7 +368,7 @@ class User
 
     public function isOnline(): bool
     {
-        return !($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD);
+        return $this->getLastAction() + GameEnum::USER_ONLINE_PERIOD >= time();
     }
 
     public function getAlliance(): ?Alliance

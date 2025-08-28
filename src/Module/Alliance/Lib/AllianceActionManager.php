@@ -97,8 +97,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $successor = $alliance->getSuccessor();
         $founder = $alliance->getFounder();
 
-        return ($successor !== null && $user === $successor->getUser()
-        ) || $user === $founder->getUser();
+        return ($successor !== null && $user->getId() === $successor->getUser()->getId()
+        ) || $user->getId() === $founder->getUser()->getId();
     }
 
     #[Override]
@@ -106,7 +106,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     {
         $diplomatic = $alliance->getDiplomatic();
 
-        if ($diplomatic === null || $diplomatic->getUser() !== $user) {
+        if ($diplomatic === null || $diplomatic->getUser()->getId() !== $user->getId()) {
             return $this->mayEdit($alliance, $user);
         }
 

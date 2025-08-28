@@ -13,7 +13,6 @@ use Stu\StuTestCase;
 class PlayerRelationDeterminatorTest extends StuTestCase
 {
     private MockInterface&FriendDeterminator $friendDeterminator;
-
     private MockInterface&EnemyDeterminator $enemyDeterminator;
 
     private PlayerRelationDeterminator $subject;
@@ -35,6 +34,13 @@ class PlayerRelationDeterminatorTest extends StuTestCase
 
         $this->user = $this->mock(User::class);
         $this->opponent = $this->mock(User::class);
+
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $this->opponent->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
     }
 
     public function testIsFriendExpectTrueIfSameUser(): void

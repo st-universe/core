@@ -83,7 +83,7 @@ final class ShowTransfer implements ViewControllerInterface
 
         $game->setTemplateVar('SOURCE', $source);
         $game->setTemplateVar('TARGET', $target);
-        $game->setTemplateVar('OWNS_TARGET', $transferInformation->getTargetWrapper()->getUser() === $user);
+        $game->setTemplateVar('OWNS_TARGET', $transferInformation->getTargetWrapper()->getUser()->getId() === $user->getId());
         $game->setTemplateVar('TRANSFER_INFO', $transferInformation);
 
         $strategy = $this->getTransferStrategy($transferType);

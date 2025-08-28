@@ -5,26 +5,18 @@ declare(strict_types=1);
 namespace Stu\Html\Spacecraft;
 
 use Mockery;
-use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
-use Stu\StuMocks;
+use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 
 class ShowStationTest extends TwigTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
-            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
-            ->registerStubbedComponent(GameComponentEnum::PM)
-            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
-            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
-            ->registerStubbedComponent(GameComponentEnum::USER);
-    }
+    use StubGameComponentsTrait;
 
     public function testHandle(): void
     {
+        $this->stubGameComponents();
         $anomalyRepositoryMock = $this->mock(AnomalyRepositoryInterface::class);
         $anomalyRepositoryMock->shouldReceive('getClosestAnomalyDistance')
             ->with(Mockery::any())

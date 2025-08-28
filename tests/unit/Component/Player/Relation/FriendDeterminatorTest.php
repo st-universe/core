@@ -18,7 +18,6 @@ use Stu\StuTestCase;
 class FriendDeterminatorTest extends StuTestCase
 {
     private MockInterface&AllianceRelationRepositoryInterface $allianceRelationRepository;
-
     private MockInterface&ContactRepositoryInterface $contactRepository;
 
     private FriendDeterminator $subject;
@@ -51,6 +50,10 @@ class FriendDeterminatorTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
+        $alliance->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(424242);
+
         $this->opponent->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
@@ -82,12 +85,10 @@ class FriendDeterminatorTest extends StuTestCase
 
         $allianceUser->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceUserId);
 
         $allianceOpponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceOpponentId);
 
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
@@ -131,12 +132,10 @@ class FriendDeterminatorTest extends StuTestCase
 
         $allianceUser->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceUserId);
 
         $allianceOpponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($allianceOpponentId);
 
         $this->allianceRelationRepository->shouldReceive('getActiveByTypeAndAlliancePair')
@@ -154,12 +153,10 @@ class FriendDeterminatorTest extends StuTestCase
 
         $this->user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
 
         $this->opponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($opponentId);
 
         $this->contactRepository->shouldReceive('getByUserAndOpponent')
@@ -192,12 +189,10 @@ class FriendDeterminatorTest extends StuTestCase
 
         $this->user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
 
         $this->opponent->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($opponentId);
 
         $this->contactRepository->shouldReceive('getByUserAndOpponent')

@@ -101,7 +101,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         //PM to all losers
         foreach ($losers as $loserId => $user) {
             //skip winner if he had more than one ticket
-            if ($user === $winner) {
+            if ($user->getId() === $winner->getId()) {
                 continue;
             }
 

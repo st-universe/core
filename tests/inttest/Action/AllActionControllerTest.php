@@ -1,0 +1,144 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Action;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use request;
+use Stu\ActionTestCase;
+use Stu\Config\Init;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+
+class AllActionControllerTest extends ActionTestCase
+{
+    private const array CURRENTLY_SUPPORTED_MODULES = [
+        'SHIP_ACTIONS'
+    ];
+
+    private const array CURRENTLY_UNSUPPORTED_KEYS = [];
+
+    public static function getAllActionControllerDataProvider(): array
+    {
+        $definedImplementations =  Init::getContainer()
+            ->getDefinedImplementationsOf(ActionControllerInterface::class, true);
+
+        return $definedImplementations
+            ->map(fn(ActionControllerInterface $actionController): array => [$definedImplementations->indexOf($actionController)])
+            ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
+            ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_SUPPORTED_MODULES, fn(string $supportedModule): bool => str_starts_with($array[0], $supportedModule)) !== [])
+            ->toArray();
+    }
+
+    #[DataProvider('getAllActionControllerDataProvider')]
+    public function testHandle(string $key): void
+    {
+        $dic = $this->getContainer();
+
+        self::$testSession->setUserById($this->getUserId($key));
+        $vars = $this->getSpecificRequestVariables($key) + $this->getGeneralRequestVariables();
+        request::setMockVars($vars);
+
+        $game = $dic->get(GameControllerInterface::class);
+        $subject = Init::getContainer()
+            ->getDefinedImplementationsOf(ActionControllerInterface::class, true)->get($key);
+
+        $subject->handle($game);
+    }
+
+    private function getUserId(string $key): int
+    {
+        return match ($key) {
+            'SHIP_ACTIONS-B_PAY_TRADELICENSE' => 102,
+            default => 101
+        };
+    }
+
+    private function getSpecificRequestVariables(string $key): array
+    {
+        return match ($key) {
+            'SHIP_ACTIONS-B_FLEET_UP',
+            'SHIP_ACTIONS-B_FLEET_ALERT_GREEN',
+            'SHIP_ACTIONS-B_FLEET_ALERT_YELLOW',
+            'SHIP_ACTIONS-B_FLEET_ALERT_RED' => ['id' => 77],
+            'SHIP_ACTIONS-B_HIDE_FLEET',
+            'SHIP_ACTIONS-B_SHOW_FLEET',
+            'SHIP_ACTIONS-B_TOGGLE_FLEET' => ['fleet' => 77],
+            'SHIP_ACTIONS-B_TRANSWARP' => ['transwarplayer' => 2],
+            'SHIP_ACTIONS-B_COLONIZE' => ['fieldid' => 1],
+            'SHIP_ACTIONS-B_CREATE_WEB' => ['id' => 1023],
+            'SHIP_ACTIONS-B_CANCEL_WEB' => ['id' => 1024],
+            'SHIP_ACTIONS-B_UNSUPPORT_WEB' => ['id' => 1025],
+            'SHIP_ACTIONS-B_REMOVE_WEB',
+            'SHIP_ACTIONS-B_IMPLODE_WEB',
+            'SHIP_ACTIONS-B_SUPPORT_WEB' => ['id' => 1026],
+            'SHIP_ACTIONS-B_GATHER_RESOURCES' => ['id' => 81, 'chosen' => 1488763],
+            'SHIP_ACTIONS-B_LAND_SHUTTLE' => ['id' => 43],
+            'SHIP_ACTIONS-B_PAY_TRADELICENSE' => ['id' => 10203, 'target' => 10203, 'method' => 'ship'],
+            default => []
+        };
+    }
+
+    private function getGeneralRequestVariables(): array
+    {
+        return [
+            'id' => 42,
+            'target' => 43,
+            'userid' => 101,
+            'colonyid' => 1,
+            'layerid' => 2,
+            'section' => 1,
+            'systemid' => 252,
+            'x' => 5,
+            'y' => 5,
+            'hosttype' => 1,
+            'commodityid' => 21,
+            'noteid' => 42,
+            'regionid' => 134,
+            'switch' => 1,
+            'TOKEN' => 'MY_TOKEN',
+
+            // SHIP
+            'rumpid' => 6501,
+            'planid' => 2324,
+            'shipid' => 42,
+            'fleetid' => 77,
+            'buoyid' => 42,
+            'shuttle' => 100001,
+
+            // COLONY
+            'fid' => 26,
+            'func' => 87,
+            'buildingid' => 82010100,
+            'shuttletarget' => 77,
+
+            // MAP
+            'macro' => 'html/map/starmapSectionTable.twig',
+
+            // ALLIANCE
+            'boardid' => 1,
+            'topicid' => 1,
+
+            // COMMUNICATION
+            'knid' => 42,
+            'plotid' => 9,
+            'character' => 42,
+            'contactid' => 102,
+            'pmcat' => 4780,
+            'fromid' => 42,
+            'toid' => 42,
+            'fromtype' => 2,
+            'totype' => 5,
+
+            // DATABASE
+            'ent' => 6501001,
+            'cat' => 1,
+
+            // TRADE
+            'postid' => '2',
+            'mode' => 'to',
+            'network' => '101'
+        ];
+    }
+}

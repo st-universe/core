@@ -139,8 +139,16 @@ class ShipWrapperTest extends StuTestCase
     public function testCanLandOnCurrentColonyExpectFalseWhenColonyOfOtherUser(): void
     {
         $user = $this->mock(User::class);
+        $colonyUser = $this->mock(User::class);
         $starmap = $this->mock(StarSystemMap::class);
         $colony = $this->mock(Colony::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $colonyUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
@@ -161,7 +169,7 @@ class ShipWrapperTest extends StuTestCase
 
         $colony->shouldReceive('getUser')
             ->withNoArgs()
-            ->andReturn($this->mock(User::class));
+            ->andReturn($colonyUser);
 
         $result = $this->subject->canLandOnCurrentColony();
 
@@ -174,6 +182,10 @@ class ShipWrapperTest extends StuTestCase
         $starmap = $this->mock(StarSystemMap::class);
         $colony = $this->mock(Colony::class);
         $surface = $this->mock(ColonySurfaceInterface::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()
@@ -215,6 +227,10 @@ class ShipWrapperTest extends StuTestCase
         $starmap = $this->mock(StarSystemMap::class);
         $colony = $this->mock(Colony::class);
         $surface = $this->mock(ColonySurfaceInterface::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
 
         $this->ship->shouldReceive('getRump->getCommodity')
             ->withNoArgs()

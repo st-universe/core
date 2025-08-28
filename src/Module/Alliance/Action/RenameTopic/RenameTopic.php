@@ -28,7 +28,7 @@ final class RenameTopic implements ActionControllerInterface
         $name = $this->renameTopicRequest->getTitle();
 
         $topic = $this->allianceBoardTopicRepository->find($this->renameTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

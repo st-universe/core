@@ -53,7 +53,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         if ($currentColony === null) {
             return false;
         }
-        if ($currentColony->getUser() !== $this->spacecraft->getUser()) {
+        if ($currentColony->getUser()->getId() !== $this->spacecraft->getUser()->getId()) {
             return false;
         }
 

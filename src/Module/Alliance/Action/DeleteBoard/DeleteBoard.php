@@ -24,7 +24,7 @@ final class DeleteBoard implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $board = $this->allianceBoardRepository->find($this->deleteBoardRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

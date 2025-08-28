@@ -10,9 +10,7 @@ use Stu\Orm\Entity\User;
 
 final class TradeOfferItem implements TradeOfferItemInterface
 {
-    public function __construct(private TradeOffer $tradeOffer, private User $currentUser)
-    {
-    }
+    public function __construct(private TradeOffer $tradeOffer, private User $currentUser) {}
 
     #[Override]
     public function getOffer(): TradeOffer
@@ -23,6 +21,6 @@ final class TradeOfferItem implements TradeOfferItemInterface
     #[Override]
     public function isOwnOffer(): bool
     {
-        return $this->tradeOffer->getUser() === $this->currentUser;
+        return $this->tradeOffer->getUser()->getId() === $this->currentUser->getId();
     }
 }

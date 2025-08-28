@@ -46,7 +46,7 @@ final class CreateTopic implements ActionControllerInterface
         }
 
         $board = $this->allianceBoardRepository->find($this->createTopicRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

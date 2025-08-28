@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
@@ -27,6 +28,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         private ShipLoaderInterface $shipLoader,
         private TholianWebUtilInterface $tholianWebUtil,
         private TholianWebRepositoryInterface $tholianWebRepository,
+        private StuTime $stuTime,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -64,7 +66,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         }
 
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
-        if ($web === null || $web->isFinished()) {
+        if ($web === null || $web->isFinished($this->stuTime->time())) {
             throw new SanityCheckException('no web at location or already finished', self::ACTION_IDENTIFIER);
         }
 

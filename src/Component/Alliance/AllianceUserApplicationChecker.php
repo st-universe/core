@@ -35,7 +35,7 @@ final class AllianceUserApplicationChecker implements AllianceUserApplicationChe
             && $user->getAlliance() === null
             && (
                 $alliance->getFaction() === null
-                || $user->getFaction() === $alliance->getFaction()
+                || $user->getFaction()->getId() === $alliance->getFaction()->getId()
             );
     }
 }

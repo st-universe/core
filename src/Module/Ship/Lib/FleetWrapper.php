@@ -40,6 +40,6 @@ final class FleetWrapper implements FleetWrapperInterface
     #[Override]
     public function isForeignFleet(): bool
     {
-        return !$this->isSingleShips && $this->fleet->getUser() !== $this->game->getUser();
+        return !$this->isSingleShips && $this->fleet->getUser()->getId() !== $this->game->getUser()->getId();
     }
 }

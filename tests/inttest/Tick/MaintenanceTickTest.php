@@ -6,7 +6,6 @@ namespace Stu\Tick;
 
 use Stu\ActionTestCase;
 use Stu\Config\Init;
-use Stu\Module\Logging\StuLogger;
 use Stu\Module\Maintenance\DatabaseBackup;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 
@@ -22,7 +21,5 @@ class MaintenanceTickTest extends ActionTestCase
                 $handler->handle();
             }
         }
-
-        StuLogger::log('MAINTENANCE TICK TEST EXECUTED');
     }
 }

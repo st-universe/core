@@ -62,7 +62,7 @@ final class AttackBuilding implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = request::getIntFatal('colid');
+        $colonyId = request::getIntFatal('colonyid');
         $fieldId = request::getIntFatal('field');
 
 

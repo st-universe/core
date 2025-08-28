@@ -16,9 +16,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
 {
-    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLoaderInterface $colonyLoader)
-    {
-    }
+    public function __construct(private ColonySandboxRepositoryInterface $colonySandboxRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLoaderInterface $colonyLoader) {}
 
     #[Override]
     public function loadFieldViaRequestParameter(User $user, bool $checkForEntityLock = true): PlanetField
@@ -74,7 +72,7 @@ class PlanetFieldHostProvider implements PlanetFieldHostProviderInterface
             throw new RuntimeException(sprintf('sandbox with following id does not exist: %d', $id));
         }
 
-        if ($sandbox->getUser() !== $user) {
+        if ($sandbox->getUser()->getId() !== $user->getId()) {
             throw new SanityCheckException('sandbox does belong to other user');
         }
 

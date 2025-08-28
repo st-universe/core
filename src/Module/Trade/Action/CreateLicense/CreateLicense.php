@@ -35,7 +35,7 @@ final class CreateLicense implements ActionControllerInterface
             throw new AccessViolationException(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
         }
         $tradepost_user = $tradepost->getStation()->getUser();
-        if ($tradepost_user !== $user) {
+        if ($tradepost_user->getId() !== $user->getId()) {
             throw new AccessViolationException(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }
 

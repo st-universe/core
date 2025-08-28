@@ -37,6 +37,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
     public function testDeleteDeletesBuildplans(): void
     {
         $user = $this->mock(User::class);
+        $foreignShipUser = $this->mock(User::class);
         $foreignBuildplansUser = $this->mock(User::class);
         $spacecraftBuildplanWithoutShips = $this->mock(SpacecraftBuildplan::class);
         $spacecraftBuildplanWithOwnShip = $this->mock(SpacecraftBuildplan::class);
@@ -48,8 +49,14 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn($userId);
+
+        $foreignShipUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(777);
+        $foreignBuildplansUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(888);
 
         $spacecraftBuildplanWithoutShips->shouldReceive('getSpacecraftList')
             ->withNoArgs()
@@ -84,7 +91,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
         $foreignShip->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
+            ->andReturn($foreignShipUser);
 
         $this->spacecraftBuildplanRepository->shouldReceive('getByUser')
             ->with($userId)

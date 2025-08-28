@@ -44,7 +44,7 @@ final class Topic implements ViewControllerInterface
             throw new AccessViolationException(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
         }
 
-        if ($topic->getAlliance() !== $alliance) {
+        if ($topic->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 

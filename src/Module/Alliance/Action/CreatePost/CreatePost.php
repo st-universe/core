@@ -38,7 +38,7 @@ final class CreatePost implements ActionControllerInterface
         }
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

@@ -46,7 +46,7 @@ final class SuggestPeace implements ActionControllerInterface
             return;
         }
 
-        if ($relation->getOpponentId() !== $allianceId && $relation->getAlliance() !== $alliance) {
+        if ($relation->getOpponentId() !== $allianceId && $relation->getAlliance()->getId() !== $alliance->getId()) {
             return;
         }
 
@@ -66,7 +66,7 @@ final class SuggestPeace implements ActionControllerInterface
             $alliance->getName()
         );
 
-        if ($relation->getAlliance() === $alliance) {
+        if ($relation->getAlliance()->getId() === $alliance->getId()) {
             $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);

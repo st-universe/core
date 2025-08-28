@@ -40,7 +40,7 @@ class SpacecraftStorageCrewLogic
 
     public function getFreeCrewSpace(Spacecraft $spacecraft, User $user): int
     {
-        if ($user !== $spacecraft->getUser()) {
+        if ($user->getId() !== $spacecraft->getUser()->getId()) {
             if (!$spacecraft->hasUplink()) {
                 return 0;
             }
@@ -107,7 +107,7 @@ class SpacecraftStorageCrewLogic
             return false;
         }
 
-        if ($spacecraft->getUser() === $user) {
+        if ($spacecraft->getUser()->getId() === $user->getId()) {
             return true;
         }
 
@@ -204,7 +204,7 @@ class SpacecraftStorageCrewLogic
     {
         $count = 0;
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
-            if ($spacecraftCrew->getCrew()->getUser() === $spacecraft->getUser()) {
+            if ($spacecraftCrew->getCrew()->getUser()->getId() === $spacecraft->getUser()->getId()) {
                 $count++;
             }
         }

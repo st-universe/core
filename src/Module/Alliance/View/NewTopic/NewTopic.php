@@ -25,7 +25,7 @@ final class NewTopic implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $board = $this->allianceBoardRepository->find($this->newTopicRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

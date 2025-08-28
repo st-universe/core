@@ -29,10 +29,9 @@ final class NewPost implements ViewControllerInterface
 
         $boardId = $this->newPostRequest->getBoardId();
         $topicId = $this->newPostRequest->getTopicId();
-        $allianceId = $alliance->getId();
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 

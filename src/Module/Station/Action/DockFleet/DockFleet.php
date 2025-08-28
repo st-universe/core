@@ -70,7 +70,7 @@ final class DockFleet implements ActionControllerInterface
             $this->loggerUtil->log('C');
             return;
         }
-        if ($targetFleet->getUser() !== $game->getUser()) {
+        if ($targetFleet->getUser()->getId() !== $game->getUser()->getId()) {
             $this->loggerUtil->log('D');
             return;
         }
