@@ -14,7 +14,7 @@ use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\ManagerComponentInterface;
 
-final class SpacecraftTickManager implements SpacecraftTickManagerInterface
+class SpacecraftTickManager implements SpacecraftTickManagerInterface
 {
     /** @param array<ManagerComponentInterface> $components */
     public function __construct(

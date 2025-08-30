@@ -97,6 +97,7 @@ return [
             ]
         ),
     SpacecraftTickManagerInterface::class => autowire(SpacecraftTickManager::class)
+        ->lazy()
         ->constructorParameter(
             'components',
             [
