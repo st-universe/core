@@ -319,10 +319,11 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,25,0);" id="field25">
-            <div>
+                                
+                <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;" onclick="fieldMouseClick(this,25,12345, 'Lager');" id="field25">
+            <div onmouseover="fieldMouseOver(this,12345,101)" onmouseout="fieldMouseOut(this,101)">
                 <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+<img style="width: 40px; height: 40px;" title="Lager auf Wiese" src="/assets/generated/buildings/12345/0at.png">
                 </div>
             </div>
         </div>
@@ -1308,9 +1309,29 @@ updateSelectedSpacecraftId('77');"></a>
       <td style="width: auto; min-width: 60px; padding: 2px;">
                       </td>
       <td style="width: auto; min-width: 60px; padding: 2px;">
-                      </td>
+                        <table class="tcal" style="width: 100%;">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="/assets/buttons/modul_8.png" title="EPS">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="Energie" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Energie: 107/108"><img alt="Energie" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:0px;" title="Energie: 107/108">
+                          </td>
+          </tr>
+        </table>
+              </td>
       <td style="width: auto; min-width: 60px; padding: 2px;">
-                      </td>
+                        <table class="tcal" style="width: 100%;">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="/assets/buttons/modul_11.png" title="EPS">
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+                            <img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #0070cf;height: 12px; width:49px;" title="Warpantrieb: 57/58"><img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:1px;" title="Warpantrieb: 57/58">
+                          </td>
+          </tr>
+        </table>
+              </td>
     </tr>
   </table>
 </li>

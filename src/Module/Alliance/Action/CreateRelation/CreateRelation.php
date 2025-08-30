@@ -51,7 +51,7 @@ final class CreateRelation implements ActionControllerInterface
         $relationType = AllianceRelationTypeEnum::tryFrom($typeId);
         if (
             $counterpart === null
-            || $alliance === $counterpart
+            || $alliance->getId() === $counterpart->getId()
             || $relationType === null
         ) {
             return;

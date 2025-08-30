@@ -282,7 +282,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->createNativeQuery(
                 'SELECT s.id as id FROM stu_spacecraft s
                 WHERE s.user_id = :userId
-                AND EXISTS (SELECT ca
+                AND EXISTS (SELECT ca.crew_id
                             FROM stu_crew_assign ca
                             WHERE s.id = ca.spacecraft_id)
                 ORDER BY RANDOM()

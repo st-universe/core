@@ -71,7 +71,7 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
             //fremdes Netz under construction da? -> dann button für Support
             $game->setTemplateVar('CANHELP', true);
         } else {
-            $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
+            $game->setTemplateVar('OWNFINISHED', $web->getUser()->getId() === $user->getId());
         }
     }
 }

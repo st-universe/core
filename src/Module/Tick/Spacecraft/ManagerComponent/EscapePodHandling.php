@@ -62,7 +62,7 @@ class EscapePodHandling implements ManagerComponentInterface
         $count = 0;
 
         foreach ($escapePod->getCrewAssignments() as $crewAssignment) {
-            if ($crewAssignment->getUser() !== $colony->getUser()) {
+            if ($crewAssignment->getUser()->getId() !== $colony->getUser()->getId()) {
                 continue;
             }
 

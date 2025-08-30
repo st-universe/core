@@ -10,11 +10,13 @@ enum LogTypeEnum: string
     case PIRATE = 'pirate';
     case ANOMALY = 'anomaly';
     case DBAL = 'dbal';
+    case TICK = 'tick';
 
     public function isRotating(): bool
     {
         return match ($this) {
-            self::DEFAULT => false,
+            self::DEFAULT,
+            self::TICK => false,
             default => true
         };
     }
@@ -25,7 +27,8 @@ enum LogTypeEnum: string
             self::DEFAULT => '/debug.log',
             self::PIRATE => '/pirate/pirate.log',
             self::ANOMALY => '/anomaly/anomaly.log',
-            self::DBAL => '/dbal/sql.log'
+            self::DBAL => '/dbal/sql.log',
+            self::TICK => '/tick.log'
         };
 
         return sprintf('%s%s', $logFolder, $subPath);

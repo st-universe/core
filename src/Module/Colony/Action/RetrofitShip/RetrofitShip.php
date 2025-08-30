@@ -87,7 +87,7 @@ final class RetrofitShip implements ActionControllerInterface
                 $game->getInfo()->addInformation(_('Das Schiff hat einen anderen Bauplan'));
                 return;
             }
-            if ($ship->getBuildplan()->getUser() !== $user) {
+            if ($ship->getBuildplan()->getUser()->getId() !== $user->getId()) {
                 $game->getInfo()->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
             }
         }

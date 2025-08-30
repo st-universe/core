@@ -9,13 +9,11 @@ use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickFinishedException;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class LifeSupportCheckHandler implements SpacecraftTickHandlerInterface
 {
     public function __construct(
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private readonly SpacecraftSystemRepositoryInterface $spacecraftSystemRepository,
         private readonly SpacecraftLeaverInterface $spacecraftLeaver
     ) {}
 
@@ -30,7 +28,7 @@ class LifeSupportCheckHandler implements SpacecraftTickHandlerInterface
         // leave spacecraft
         if (
             $this->crewAssignmentRepository->getAmountBySpacecraft($spacecraft) > 0
-            && !$this->spacecraftSystemRepository->isSystemHealthy($spacecraft, SpacecraftSystemTypeEnum::LIFE_SUPPORT)
+            && !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::LIFE_SUPPORT)
         ) {
             $information->addInformation('Die Lebenserhaltung ist ausgefallen:');
             $information->addInformation($this->spacecraftLeaver->evacuate($wrapper));

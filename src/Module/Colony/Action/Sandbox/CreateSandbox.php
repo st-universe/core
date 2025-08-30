@@ -38,7 +38,7 @@ final class CreateSandbox implements
     {
         $game->setView(ShowColonySandbox::VIEW_IDENTIFIER);
 
-        $colonyId = request::getIntFatal('cid');
+        $colonyId = request::getIntFatal('colonyid');
 
         /** @var Colony|null */
         $colony = $game->getUser()->getColonies()->get($colonyId);

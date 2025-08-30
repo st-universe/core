@@ -8,8 +8,6 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -20,56 +18,39 @@ final class DumpForeignCrewman implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DUMP_CREWMAN';
 
-    private LoggerUtilInterface $loggerUtil;
-
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
-        private SpacecraftLeaverInterface $spacecraftLeaver,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private SpacecraftLeaverInterface $spacecraftLeaver
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
-
-        $this->loggerUtil->log('A');
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
-        $this->loggerUtil->log('B');
-
-        $shipCrewId = request::getIntFatal('scid');
-
-        $shipCrew = $this->shipCrewRepository->find($shipCrewId);
-
-        $this->loggerUtil->log('C');
-
-        if ($shipCrew === null) {
-            $this->loggerUtil->log('D');
+        $crewId = request::getIntFatal('crewid');
+        $crewAssignment = $this->crewAssignmentRepository->find($crewId);
+        if ($crewAssignment === null) {
             return;
         }
 
-        $this->loggerUtil->log('E');
-
-        if ($shipCrew->getSpacecraft() !== $ship) {
+        if ($crewAssignment->getSpacecraft()?->getId() !== $ship->getId()) {
             return;
         }
 
-        $name = $shipCrew->getCrew()->getName();
+        $name = $crewAssignment->getCrew()->getName();
 
         $survivalMessage = $this->spacecraftLeaver->dumpCrewman(
-            $shipCrew,
+            $crewAssignment,
             sprintf(
                 'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt.',
                 $name,

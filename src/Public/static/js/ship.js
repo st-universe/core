@@ -11,8 +11,8 @@ function tradeMenuChoosePayment(postid) {
 function payTradeLicense(postid, method, id) {
 	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENSE=1&id=' + spacecraftid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
 }
-function showColonization(element, colonyId) {
-	updatePopupAtElement(element, 'ship.php?SHOW_COLONIZATION=1&id=' + spacecraftid + '&colid=' + colonyId);
+function showColonization(element) {
+	updatePopupAtElement(element, 'ship.php?SHOW_COLONIZATION=1&id=' + spacecraftid);
 }
 
 function hideFleet(fleetid) {

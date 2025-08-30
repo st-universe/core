@@ -83,7 +83,15 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
 
         return (int)$this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 as newsort FROM stu_fleets f WHERE f.user_id = :userId',
+                'SELECT COALESCE(
+                        MAX(
+                            CASE
+                                WHEN f.sort > f.id THEN f.sort
+                                ELSE f.id
+                            END
+                        ),
+                        0
+                    ) + 1 as newsort FROM stu_fleets f WHERE f.user_id = :userId',
                 $rsm
             )
             ->setParameters([

@@ -27,7 +27,7 @@ final class DeletePms implements ActionControllerInterface
         foreach ($this->deletePmsRequest->getDeletionIds() as $messageId) {
             $pm = $this->privateMessageRepository->find($messageId);
 
-            if ($pm === null || $pm->getRecipient() !== $user) {
+            if ($pm === null || $pm->getRecipient()->getId() !== $user->getId()) {
                 continue;
             }
 

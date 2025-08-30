@@ -21,19 +21,19 @@ class ConnectionFactory implements ConnectionFactoryInterface
 
     public function createConnection(): Connection
     {
+        $configuration = null;
+        if ($this->stuConfig->getDebugSettings()->getSqlLoggingSettings()->isActive()) {
+            $configuration = new Configuration();
+            $configuration->setMiddlewares([new Middleware($this->sqlLogger)]);
+        }
+
         //use sqlite database
         if ($this->stuConfig->getDbSettings()->useSqlite()) {
             $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
             $connectionParams = $dsnParser
                 ->parse($this->stuConfig->getDbSettings()->getSqliteDsn());
 
-            return DriverManager::getConnection($connectionParams);
-        }
-
-        $configuration = null;
-        if ($this->stuConfig->getDebugSettings()->getSqlLoggingSettings()->isActive()) {
-            $configuration = new Configuration();
-            $configuration->setMiddlewares([new Middleware($this->sqlLogger)]);
+            return DriverManager::getConnection($connectionParams, $configuration);
         }
 
         return DriverManager::getConnection([

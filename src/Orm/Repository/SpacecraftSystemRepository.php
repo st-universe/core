@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
 
 /**
@@ -49,24 +48,25 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
     #[Override]
     public function getTrackingShipSystems(int $targetId): array
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ss FROM %s ss
-                    WHERE ss.system_type = :systemType
-                    AND ss.data LIKE :target',
-                    SpacecraftSystem::class
-                )
-            )
-            ->setParameters([
-                'systemType' => SpacecraftSystemTypeEnum::TRACKER,
-                'target' => sprintf('%%"targetId":%d%%', $targetId)
-            ])
-            ->getResult();
+        return $this->getShipSystem(
+            sprintf('%%"targetId":%d%%', $targetId),
+            SpacecraftSystemTypeEnum::TRACKER
+        );
     }
 
     #[Override]
     public function getWebConstructingShipSystems(int $webId): array
+    {
+        return $this->getShipSystem(
+            sprintf('%%"webUnderConstructionId":%d%%', $webId),
+            SpacecraftSystemTypeEnum::THOLIAN_WEB
+        );
+    }
+
+    /**
+     * @return array<SpacecraftSystem>
+     */
+    private function getShipSystem(string $target, SpacecraftSystemTypeEnum $type): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -78,8 +78,8 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
                 )
             )
             ->setParameters([
-                'systemType' => SpacecraftSystemTypeEnum::THOLIAN_WEB,
-                'target' => sprintf('%%"webUnderConstructionId":%d%%', $webId)
+                'systemType' => $type,
+                'target' => $target
             ])
             ->getResult();
     }
@@ -101,25 +101,6 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
                 'target' => sprintf('%%"ownedWebId":%d%%', $webId)
             ])
             ->getOneOrNullResult();
-    }
-
-    #[Override]
-    public function isSystemHealthy(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $type): bool
-    {
-        return (int)$this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ss.status FROM %s ss
-                    WHERE ss.system_type = :systemType
-                    AND ss.spacecraft = :spacecraft',
-                    SpacecraftSystem::class
-                )
-            )
-            ->setParameters([
-                'systemType' => $type->value,
-                'spacecraft' => $spacecraft
-            ])
-            ->getSingleScalarResult() > 0;
     }
 
     #[Override]

@@ -28,7 +28,7 @@ final class EditPost implements ActionControllerInterface
             return;
         }
 
-        if ($post->getBoard()->getAlliance() !== $alliance) {
+        if ($post->getBoard()->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

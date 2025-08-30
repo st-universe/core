@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use BadMethodCallException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Orm\Repository\TholianWebRepository;
@@ -56,7 +56,7 @@ class TholianWeb extends Spacecraft
         return $this;
     }
 
-    public function isFinished(): bool
+    public function isFinished(?int $currentTime = null): bool
     {
         //uninitialized
         if ($this->finished_time === 0) {
@@ -68,7 +68,9 @@ class TholianWeb extends Spacecraft
             return true;
         }
 
-        return $this->finished_time < time();
+        $time = $currentTime ?? time();
+
+        return $this->finished_time < $time;
     }
 
     /**
@@ -86,6 +88,6 @@ class TholianWeb extends Spacecraft
 
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
-        throw new RuntimeException('unsupported operation');
+        throw new BadMethodCallException('unsupported operation');
     }
 }

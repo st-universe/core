@@ -20,19 +20,13 @@ use Stu\StuTestCase;
 class DemotePlayerTest extends StuTestCase
 {
     private MockInterface&DemotePlayerRequestInterface $demotePlayerRequest;
-
     private MockInterface&AllianceJobRepositoryInterface $allianceJobRepository;
-
     private MockInterface&AllianceActionManagerInterface $allianceActionManager;
-
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
-
     private MockInterface&UserRepositoryInterface $userRepository;
 
     private MockInterface&User $user;
-
     private MockInterface&GameControllerInterface $game;
-
     private MockInterface&Alliance $alliance;
 
     private DemotePlayer $subject;
@@ -53,6 +47,11 @@ class DemotePlayerTest extends StuTestCase
         $this->user = $this->mock(User::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->alliance = $this->mock(Alliance::class);
+
+        $this->alliance->shouldReceive('getId')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(424242);
 
         $this->subject = new DemotePlayer(
             $this->demotePlayerRequest,

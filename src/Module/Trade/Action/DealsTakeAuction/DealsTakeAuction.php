@@ -57,7 +57,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         if ($auction->getTakenTime() !== null) {
             return;
         }
-        if ($auction->getAuctionUser() !== $user) {
+        if ($auction->getAuctionUser()?->getId() !== $user->getId()) {
             return;
         }
 

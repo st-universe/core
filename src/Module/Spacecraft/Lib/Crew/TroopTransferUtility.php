@@ -48,7 +48,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
     {
         return $target->getCrewAssignments()
             ->map(fn(CrewAssignment $crewAssignment): Crew => $crewAssignment->getCrew())
-            ->filter(fn(Crew $crew): bool => $crew->getUser() === $user)
+            ->filter(fn(Crew $crew): bool => $crew->getUser()->getId() === $user->getId())
             ->count();
     }
 
@@ -60,7 +60,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         $user = $spacecraft->getUser();
 
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
-            if ($shipCrew->getCrew()->getUser() !== $user) {
+            if ($shipCrew->getCrew()->getUser()->getId() !== $user->getId()) {
                 $count++;
             }
         }

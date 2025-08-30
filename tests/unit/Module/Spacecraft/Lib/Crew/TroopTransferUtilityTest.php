@@ -139,8 +139,16 @@ class TroopTransferUtilityTest extends StuTestCase
     public function testGetOwnCrewOnTarget(): void
     {
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
         $shipCrew1 = $this->mock(CrewAssignment::class);
         $shipCrew2 = $this->mock(CrewAssignment::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $crewAssignments = new ArrayCollection([$shipCrew1, $shipCrew2]);
 
@@ -156,7 +164,7 @@ class TroopTransferUtilityTest extends StuTestCase
         $shipCrew2->shouldReceive('getCrew->getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
+            ->andReturn($otherUser);
 
         $result = $this->subject->ownCrewOnTarget($user, $this->ship);
 
@@ -166,10 +174,18 @@ class TroopTransferUtilityTest extends StuTestCase
     public function testForeignerCount(): void
     {
         $user = $this->mock(User::class);
+        $crew2User = $this->mock(User::class);
         $shipCrew1 = $this->mock(CrewAssignment::class);
         $shipCrew2 = $this->mock(CrewAssignment::class);
 
         $crewAssignments = new ArrayCollection([$shipCrew1, $shipCrew2]);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $crew2User->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
@@ -187,7 +203,7 @@ class TroopTransferUtilityTest extends StuTestCase
         $shipCrew2->shouldReceive('getCrew->getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
+            ->andReturn($crew2User);
 
         $result = $this->subject->foreignerCount($this->ship);
 

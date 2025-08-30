@@ -55,7 +55,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         );
         $game->setTemplateVar(
             'IS_PROFILE_CURRENT_USER',
-            $user === $visitor
+            $user->getId() === $visitor->getId()
         );
         $game->setTemplateVar(
             'RPG_PLOTS',

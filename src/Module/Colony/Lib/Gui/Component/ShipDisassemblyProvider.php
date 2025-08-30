@@ -45,7 +45,7 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
 
             foreach ($group->getWrappers() as $wrapper) {
                 $ship = $wrapper->get();
-                if ($ship->getUser() !== $game->getUser()) {
+                if ($ship->getUser()->getId() !== $game->getUser()->getId()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {

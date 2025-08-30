@@ -11,12 +11,13 @@ use Stu\Config\Init;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\StuMocks;
+use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 
 class AllViewControllerTest extends TwigTestCase
 {
+    use StubGameComponentsTrait;
+
     private const array CURRENTLY_UNSUPPORTED_MODULES = [
         'STATION_VIEWS'                             // has own test case
     ];
@@ -66,16 +67,6 @@ class AllViewControllerTest extends TwigTestCase
 
     private string $snapshotKey = '';
 
-    public static function setUpBeforeClass(): void
-    {
-        StuMocks::get()->registerStubbedComponent(GameComponentEnum::COLONIES)
-            ->registerStubbedComponent(GameComponentEnum::NAVIGATION)
-            ->registerStubbedComponent(GameComponentEnum::PM)
-            ->registerStubbedComponent(GameComponentEnum::RESEARCH)
-            ->registerStubbedComponent(GameComponentEnum::SERVERTIME_AND_VERSION)
-            ->registerStubbedComponent(GameComponentEnum::USER);
-    }
-
     #[Override]
     protected function getSnapshotId(): string
     {
@@ -100,6 +91,7 @@ class AllViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
+        $this->stubGameComponents();
         PanelLayerCreation::$skippedLayers[] = PanelLayerEnum::ANOMALIES->value;
 
         $this->snapshotKey = $key;

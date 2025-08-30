@@ -20,7 +20,7 @@ final class PriorizeFleet implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $fleet = $this->fleetRepository->find($this->priorizeFleetRequest->getFleetId());
-        if ($fleet === null || $fleet->getUser() !== $game->getUser()) {
+        if ($fleet === null || $fleet->getUser()->getId() !== $game->getUser()->getId()) {
             throw new AccessViolationException();
         }
 

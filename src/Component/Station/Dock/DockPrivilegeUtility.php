@@ -30,10 +30,11 @@ final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
     private function isAllowed(DockingPrivilege $privilege, User|Ship $source): bool
     {
         $user = $source instanceof User ? $source : $source->getUser();
+        $userAlliance = $user->getAlliance();
 
         $isMatch = match ($privilege->getPrivilegeType()) {
             DockTypeEnum::USER => $privilege->getTargetId() === $user->getId(),
-            DockTypeEnum::ALLIANCE => $user->getAlliance() !== null && $privilege->getTargetId() === $user->getAlliance()->getId(),
+            DockTypeEnum::ALLIANCE => $userAlliance !== null && $privilege->getTargetId() === $userAlliance->getId(),
             DockTypeEnum::FACTION => $privilege->getTargetId() == $user->getFactionId(),
             DockTypeEnum::SHIP => $source instanceof Ship && $privilege->getTargetId() == $source->getId(),
         };

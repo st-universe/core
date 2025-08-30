@@ -13,4 +13,6 @@ interface SessionStorageInterface
     public function hasSessionValue(string $key, mixed $value): bool;
 
     public function getSessionValue(string $key): mixed;
+
+    public function reset(): void;
 }

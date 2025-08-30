@@ -21,9 +21,7 @@ use Stu\StuTestCase;
 class TransferToClosestLocationTest extends StuTestCase
 {
     private MockInterface&ClosestLocations $closestLocations;
-
     private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
-
     private MockInterface&DistanceCalculationInterface $distanceCalculation;
 
     private MockInterface&Ship $ship;
@@ -205,6 +203,13 @@ class TransferToClosestLocationTest extends StuTestCase
     ): void {
         $user = $this->mock(User::class);
         $otherUser = $this->mock(User::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $shipCrew = $this->mock(CrewAssignment::class);
         $foreignCrewAssignment = $this->mock(CrewAssignment::class);

@@ -5,7 +5,7 @@
 
 {% if div %}
 <span class="cltype{{ value }}" id="contact{{ contact.getId }}"
-    onclick="showContactModeSwitcher('{{ div }}', {{ contact.getId }});">{{ title }}</span>
+    onclick="showContactModeSwitcher(this, '{{ div }}', {{ contact.getId }});">{{ title }}</span>
 {% else %}
 <span class="cltype{{ value }}" style="cursor: auto;">{{ title }}</span>
 {% endif %}

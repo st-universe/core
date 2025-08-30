@@ -35,6 +35,10 @@ class KnItemTest extends StuTestCase
         $this->post = $this->mock(KnPost::class);
         $this->currentUser = $this->mock(User::class);
 
+        $this->currentUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->item = new KnItem(
             $this->bbcodeParser,
             $this->knCommentRepository,
@@ -228,7 +232,6 @@ class KnItemTest extends StuTestCase
 
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(666);
 
         $this->assertTrue(
@@ -305,17 +308,10 @@ class KnItemTest extends StuTestCase
 
     public function testUserHasRatedReturnsTrueIfAlreadyRated(): void
     {
-        $userId = 666;
-
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->once()
-            ->andReturn([$userId => 'foo']);
-
-        $this->currentUser->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
+            ->andReturn([1111 => 'foo']);
 
         $this->assertTrue(
             $this->item->userHasRated()
@@ -324,17 +320,10 @@ class KnItemTest extends StuTestCase
 
     public function testUserHasRatedReturnsFalseIfHasNotRatedYet(): void
     {
-        $userId = 666;
-
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->once()
             ->andReturn([]);
-
-        $this->currentUser->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
 
         $this->assertFalse(
             $this->item->userHasRated()
@@ -343,8 +332,6 @@ class KnItemTest extends StuTestCase
 
     public function testUserCanRateReturnsFalseIfItsTheSameUser(): void
     {
-        $userId = 666;
-
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->once()
@@ -356,8 +343,7 @@ class KnItemTest extends StuTestCase
 
         $this->currentUser->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
+            ->andReturn(1111);
 
         $this->assertFalse(
             $this->item->userCanRate()
@@ -366,7 +352,11 @@ class KnItemTest extends StuTestCase
 
     public function testUserCanRateReturnsTrueIfItsRateable(): void
     {
-        $userId = 666;
+        $postUser = $this->mock(User::class);
+
+        $postUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
@@ -375,17 +365,7 @@ class KnItemTest extends StuTestCase
         $this->post->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(User::class));
-
-        $this->currentUser->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
-        $this->currentUser->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
+            ->andReturn($postUser);
 
         $this->assertTrue(
             $this->item->userCanRate()

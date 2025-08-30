@@ -9,7 +9,7 @@
                     title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
                 {% else %}
                 <a
-                    href="?id={{ SHIP.getId }}&B_COLONIZE=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
+                    href="?id={{ SHIP.getId }}&B_COLONIZE=1&colonyid={{ currentColony.getId }}&fieldid={{ field.getId }}&sstr={{ SESSIONSTRING }}">
                     <img src="assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png"
                         title="{{ field|planetFieldTitle }}" style="width: 40px; height: 40px;" />
                 </a>

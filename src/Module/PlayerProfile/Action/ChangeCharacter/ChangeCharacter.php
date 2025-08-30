@@ -23,7 +23,7 @@ final class ChangeCharacter implements ActionControllerInterface
         $characterId = $this->request->getCharacterId();
         $character = $this->userCharactersRepository->find($characterId);
 
-        if (!$character || $character->getUser() !== $game->getUser()) {
+        if (!$character || $character->getUser()->getId() !== $game->getUser()->getId()) {
             $game->getInfo()->addInformation(_('Charakter nicht gefunden oder kein Zugriff.'));
             return;
         }

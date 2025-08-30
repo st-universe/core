@@ -36,7 +36,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
             return;
         }
 
-        if ($fleet->getUser() !== $game->getUser()) {
+        if ($fleet->getUser()->getId() !== $game->getUser()->getId()) {
             throw new AccessViolationException(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
         }
         $fleet->setHiddenStyle($this->sessionStorage->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');

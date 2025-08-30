@@ -101,7 +101,7 @@ class Commodity
 
     public function isBeamable(?User $user = null, ?User $targetUser = null): bool
     {
-        $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user !== $targetUser;
+        $isBound = $user !== null && $targetUser !== null && $this->isBoundToAccount() && $user->getId() !== $targetUser->getId();
 
         return $this->getType() === CommodityTypeConstants::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
     }

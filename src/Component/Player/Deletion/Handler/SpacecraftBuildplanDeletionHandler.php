@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use InvalidArgumentException;
 use Override;
-use RuntimeException;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -28,13 +28,13 @@ final class SpacecraftBuildplanDeletionHandler implements PlayerDeletionHandlerI
         foreach ($this->spacecraftBuildplanRepository->getByUser($user->getId()) as $spacecraftBuildplan) {
 
             $existsForeignShip = !$spacecraftBuildplan->getSpacecraftList()
-                ->filter(fn(Spacecraft $spacecraft): bool => $spacecraft->getUser() !== $spacecraftBuildplan->getUser())
+                ->filter(fn(Spacecraft $spacecraft): bool => $spacecraft->getUser()->getId() !== $spacecraftBuildplan->getUser()->getId())
                 ->isEmpty();
 
             if ($existsForeignShip) {
                 $user = $this->userRepository->find(UserConstants::USER_FOREIGN_BUILDPLANS);
                 if ($user === null) {
-                    throw new RuntimeException(sprintf('user with id %d does not exist', UserConstants::USER_FOREIGN_BUILDPLANS));
+                    throw new InvalidArgumentException(sprintf('user with id %d does not exist', UserConstants::USER_FOREIGN_BUILDPLANS));
                 }
                 $spacecraftBuildplan->setUser($user);
                 $this->spacecraftBuildplanRepository->save($spacecraftBuildplan);

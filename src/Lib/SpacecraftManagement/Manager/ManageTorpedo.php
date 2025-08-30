@@ -80,7 +80,7 @@ class ManageTorpedo implements ManagerInterface
         $user = $managerProvider->getUser();
         $ship = $wrapper->get();
 
-        if ($ship->getUser() !== $user) {
+        if ($ship->getUser()->getId() !== $user->getId()) {
             return [];
         }
 

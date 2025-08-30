@@ -57,8 +57,8 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $allianceId = $alliance->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
-        $userIsFounder = $alliance->getFounder()->getUser() === $user;
-        $isInAlliance = $alliance === $game->getUser()->getAlliance();
+        $userIsFounder = $alliance->getFounder()->getUser()->getId() === $user->getId();
+        $isInAlliance = $alliance->getId() === $game->getUser()->getAlliance()?->getId();
         $settings = $alliance->getSettings();
 
         $game->appendNavigationPart(sprintf(

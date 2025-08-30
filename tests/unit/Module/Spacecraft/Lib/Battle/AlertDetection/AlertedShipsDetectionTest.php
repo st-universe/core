@@ -18,7 +18,6 @@ use Stu\StuTestCase;
 class AlertedShipsDetectionTest extends StuTestCase
 {
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
-
     private MockInterface&Location $location;
 
     private AlertedShipsDetectionInterface $subject;
@@ -55,6 +54,10 @@ class AlertedShipsDetectionTest extends StuTestCase
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
 
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
             ->once()
@@ -76,6 +79,14 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -94,7 +105,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertTrue($result->isEmpty());
@@ -104,6 +115,14 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -125,7 +144,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertTrue($result->isEmpty());
@@ -135,6 +154,14 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -156,7 +183,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertTrue($result->isEmpty());
@@ -166,7 +193,15 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -196,7 +231,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertTrue($result->isEmpty());
@@ -206,7 +241,15 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -236,7 +279,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertEquals(1, $result->count());
@@ -247,7 +290,15 @@ class AlertedShipsDetectionTest extends StuTestCase
     {
         $ship = $this->mock(Ship::class);
         $user = $this->mock(User::class);
+        $otherUser = $this->mock(User::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->location->shouldReceive('getSpacecraftsWithoutVacation')
             ->withNoArgs()
@@ -280,7 +331,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
         $result = $this->subject->getAlertedShipsOnLocation(
             $this->location,
-            $this->mock(User::class)
+            $otherUser
         );
 
         $this->assertEquals(1, $result->count());

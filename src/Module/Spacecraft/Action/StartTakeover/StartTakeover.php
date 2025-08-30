@@ -68,7 +68,7 @@ final class StartTakeover implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUser() === $user) {
+        if ($target->getUser()->getId() === $user->getId()) {
             return;
         }
 

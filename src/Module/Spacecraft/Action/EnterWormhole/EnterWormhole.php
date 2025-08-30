@@ -43,12 +43,12 @@ final class EnterWormhole extends AbstractDirectedMovement
         foreach ($restrictions as $restriction) {
             if ($restriction->getMode() === self::MODE_ALLOWED) {
                 $hasAllowedEntry = true;
-                if ($restriction->getUser() === $ship->getUser()) {
+                if ($restriction->getUser()->getId() === $ship->getUser()->getId()) {
                     return false;
                 }
                 $game->getInfo()->addInformation(_("Du hast keine Berechtigung um in das Wurmloch einzufliegen"));
             }
-            if ($restriction->getUser() === $ship->getUser() && $restriction->getMode() === self::MODE_DENIED) {
+            if ($restriction->getUser()->getId() === $ship->getUser()->getId() && $restriction->getMode() === self::MODE_DENIED) {
                 $game->getInfo()->addInformation(_("Du hast keine Berechtigung um in das Wurmloch einzufliegen"));
                 return true;
             }

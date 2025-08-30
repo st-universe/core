@@ -41,7 +41,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         if ($target instanceof Colony) {
             $game->setTemplateVar(
                 'SHOW_SHIELD_FREQUENCY',
-                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $source->getUser()
+                $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser()->getId() !== $source->getUser()->getId()
             );
         }
 
@@ -100,7 +100,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
 
         if (
             $target instanceof Colony
-            && $target->getUser() !== $user
+            && $target->getUser()->getId() !== $user->getId()
             && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()
             && $target->getChangeable()->getShieldFrequency()
         ) {

@@ -73,7 +73,7 @@ final class GatherResources implements ActionControllerInterface
         } else {
 
             $locationMining = $this->locationMiningRepository->findById($chosenLocationId);
-            if ($locationMining === null) {
+            if ($locationMining === null || $locationMining->getLocationId() !== $ship->getLocation()->getId()) {
                 throw new SanityCheckException('Invalid location mining ID', self::ACTION_IDENTIFIER);
             }
 

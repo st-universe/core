@@ -23,25 +23,15 @@ use Ubench;
 class ColonyTickManagerTest extends StuTestCase
 {
     private MockInterface&ColonyTickInterface $colonyTick;
-
     private MockInterface&CrewCreatorInterface $crewCreator;
-
     private MockInterface&CrewTrainingRepositoryInterface $crewTrainingRepository;
-
     private MockInterface&ColonyRepositoryInterface $colonyRepository;
-
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
-
     private MockInterface&CrewCountRetrieverInterface $crewCountRetriever;
-
     private MockInterface&LockManagerInterface $lockManager;
-
     private ColonyFunctionManagerInterface&MockInterface $colonyFunctionManager;
-
     private MockInterface&CrewLimitCalculatorInterface $crewLimitCalculator;
-
     private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
-
     private MockInterface&Ubench $benchmark;
 
     private ColonyTickManagerInterface $subject;
@@ -72,7 +62,6 @@ class ColonyTickManagerTest extends StuTestCase
             $this->crewLimitCalculator,
             $this->colonyLibFactory,
             $this->lockManager,
-            $this->initLoggerUtil(),
             $this->benchmark
         );
     }

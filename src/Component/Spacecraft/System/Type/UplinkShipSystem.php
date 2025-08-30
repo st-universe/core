@@ -46,7 +46,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
     {
         $count = 0;
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
-            if ($spacecraftCrew->getCrew()->getUser() === $spacecraft->getUser()) {
+            if ($spacecraftCrew->getCrew()->getUser()->getId() === $spacecraft->getUser()->getId()) {
                 $count++;
             }
         }
@@ -56,7 +56,7 @@ final class UplinkShipSystem extends AbstractSpacecraftSystemType implements Spa
     private function hasForeignCrew(Spacecraft $spacecraft): bool
     {
         foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
-            if ($spacecraftCrew->getCrew()->getUser() !== $spacecraft->getUser()) {
+            if ($spacecraftCrew->getCrew()->getUser()->getId() !== $spacecraft->getUser()->getId()) {
                 return true;
             }
         }

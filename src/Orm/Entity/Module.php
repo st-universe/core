@@ -212,7 +212,7 @@ class Module
 
         if (
             $this->getFaction() !== null
-            && $this->getFaction() !== $faction
+            && $this->getFaction()->getId() !== $faction->getId()
         ) {
             $result += 1;
         }

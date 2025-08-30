@@ -35,7 +35,5 @@ interface SpacecraftSystemRepositoryInterface extends ObjectRepository
 
     public function getWebOwningShipSystem(int $webId): ?SpacecraftSystem;
 
-    public function isSystemHealthy(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $type): bool;
-
     public function truncateByShip(int $shipId): void;
 }

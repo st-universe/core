@@ -24,7 +24,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
             return false;
         }
 
-        if ($user === $otherUser) {
+        if ($user->getId() === $otherUser->getId()) {
             return true;
         }
 

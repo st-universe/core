@@ -70,8 +70,8 @@ final class Colonize implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = request::getIntFatal('colid');
-        $fieldId = request::getIntFatal('field');
+        $colonyId = request::getIntFatal('colonyid');
+        $fieldId = request::getIntFatal('fieldid');
 
         $colony = $this->colonyRepository->find($colonyId);
         $field = $this->planetFieldRepository->find($fieldId);

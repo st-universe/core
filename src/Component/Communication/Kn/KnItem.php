@@ -73,7 +73,7 @@ final class KnItem implements KnItemInterface
     #[Override]
     public function isEditAble(): bool
     {
-        return $this->getDate() > time() - 600 && $this->post->getUser() === $this->currentUser;
+        return $this->getDate() > time() - 600 && $this->post->getUser()->getId() === $this->currentUser->getId();
     }
 
     #[Override]
@@ -98,7 +98,7 @@ final class KnItem implements KnItemInterface
     public function displayContactLinks(): bool
     {
         $user = $this->post->getUser();
-        return $user !== $this->currentUser && $user->getId() !== UserConstants::USER_NOONE;
+        return $user->getId() !== $this->currentUser->getId() && $user->getId() !== UserConstants::USER_NOONE;
     }
 
     #[Override]
@@ -122,7 +122,9 @@ final class KnItem implements KnItemInterface
     #[Override]
     public function userCanRate(): bool
     {
-        return !$this->userHasRated() && $this->currentUser !== $this->post->getUser() && $this->currentUser->getId() > 100;
+        return !$this->userHasRated()
+            && $this->currentUser->getId() !== $this->post->getUser()->getId()
+            && $this->currentUser->getId() > 100;
     }
 
     #[Override]

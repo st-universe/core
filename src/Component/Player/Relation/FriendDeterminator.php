@@ -20,7 +20,7 @@ class FriendDeterminator
         $otherUserAlliance = $otherUser->getAlliance();
 
         if ($alliance !== null && $otherUserAlliance !== null) {
-            if ($alliance === $otherUserAlliance) {
+            if ($alliance->getId() === $otherUserAlliance->getId()) {
                 return PlayerRelationTypeEnum::ALLY;
             }
 

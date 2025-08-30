@@ -46,6 +46,10 @@ class ManageTorpedoTest extends StuTestCase
         $this->torpedoType = $this->mock(TorpedoType::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
 
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+
         $this->subject = new ManageTorpedo(
             $this->shipTorpedoManager,
             $this->privateMessageSender
@@ -135,6 +139,10 @@ class ManageTorpedoTest extends StuTestCase
     {
         $shipOwner = $this->mock(User::class);
         $values = ['torp' => ['555' => '5']];
+
+        $shipOwner->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()

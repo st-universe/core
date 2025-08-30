@@ -48,6 +48,7 @@
     "doctrine/orm": "^3.0",
     "doctrine/persistence": "^4.0",
     "filp/whoops": "^2.5",
+    "friendsofphp/proxy-manager-lts": "^1.0",
     "graphp/graphviz": "^0.2.1",
     "hackzilla/password-generator": "^1.4",
     "hassankhan/config": "^3",

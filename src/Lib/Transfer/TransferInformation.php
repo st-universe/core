@@ -47,7 +47,7 @@ class TransferInformation
             return true;
         }
 
-        return $this->target->getUser() === $this->source->getUser();
+        return $this->target->getUser()?->getId() === $this->source->getUser()?->getId();
     }
 
     public function isTorpedoTransferPossible(bool $isOtherTypeRequired = true): bool
@@ -69,7 +69,7 @@ class TransferInformation
 
     public function isFriend(): bool
     {
-        return $this->isFriend || $this->source->getUser() === $this->target->getUser();
+        return $this->isFriend || $this->source->getUser()?->getId() === $this->target->getUser()?->getId();
     }
 
     public function isOtherGoodTransferPossible(): bool

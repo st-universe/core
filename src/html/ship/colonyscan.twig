@@ -29,7 +29,7 @@
         <div
             style="background-image: url(assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png); width: 40px; height: 40px;">
             <a
-                href="?id={{ SHIP.getId }}&B_ATTACK_BUILDING=1&colid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
+                href="?id={{ SHIP.getId }}&B_ATTACK_BUILDING=1&colonyid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
                 <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: {{ field|planetFieldTitle }}"
                     src="assets/generated/buildings/{{ field.getBuildingId }}/{{ field.getBuilding.getBuildingType }}{{ field.getBuildingState }}{{ dayNightPrefix }}.png" />
             </a>

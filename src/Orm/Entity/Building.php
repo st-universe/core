@@ -276,17 +276,6 @@ class Building
         return $this;
     }
 
-    public function getBmCol(): int
-    {
-        return $this->bm_col;
-    }
-
-    public function setBmCol(int $buildmenuColumn): Building
-    {
-        $this->bm_col = $buildmenuColumn;
-        return $this;
-    }
-
     public function isActivateable(): bool
     {
         return $this->getIsActivateable();

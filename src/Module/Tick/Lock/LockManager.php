@@ -10,9 +10,7 @@ use Stu\Module\Config\StuConfigInterface;
 
 final class LockManager implements LockManagerInterface
 {
-    public function __construct(private StuConfigInterface $config)
-    {
-    }
+    public function __construct(private StuConfigInterface $config) {}
 
     #[Override]
     public function setLock(int $batchGroupId, LockTypeEnum $type): void
@@ -60,11 +58,10 @@ final class LockManager implements LockManagerInterface
 
     private function getGroupCount(LockTypeEnum $type): int
     {
-        switch ($type) {
-            case LockTypeEnum::COLONY_GROUP:
-                return $this->config->getGameSettings()->getColonySettings()->getTickWorker();
-            case LockTypeEnum::SHIP_GROUP:
-                return 1;
-        }
+        return match ($type) {
+            LockTypeEnum::COLONY_GROUP =>
+            $this->config->getGameSettings()->getColonySettings()->getTickWorker(),
+            LockTypeEnum::SHIP_GROUP => 1
+        };
     }
 }

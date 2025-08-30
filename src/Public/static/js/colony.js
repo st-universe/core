@@ -652,5 +652,5 @@ function createNewSandbox(sstr) {
 	let colonyId = document.getElementById('colony-id').value;
 	let name = document.getElementById('sandbox-name').value;
 
-	actionToInnerContent('B_CREATE_SANDBOX', `cid=${colonyId}&name=${name}&sstr=${sstr}`);
+	actionToInnerContent('B_CREATE_SANDBOX', `colonyid=${colonyId}&name=${name}&sstr=${sstr}`);
 }

@@ -40,7 +40,6 @@ final class VersionTestColoniesFielddata extends AbstractMigration
                        (22, 42, 20, 701, NULL, NULL, 0, 0, 1, NULL),
                        (23, 42, 21, 701, NULL, NULL, 0, 0, 1, NULL),
                        (24, 42, 22, 501, NULL, NULL, 0, 0, 1, NULL),
-                       (25, 42, 23, 201, NULL, NULL, 0, 0, 1, NULL),
                        (27, 42, 25, 112, NULL, NULL, 0, 0, 1, NULL),
                        (28, 42, 26, 501, NULL, NULL, 0, 0, 1, NULL),
                        (29, 42, 27, 112, NULL, NULL, 0, 0, 1, NULL),
@@ -116,6 +115,7 @@ final class VersionTestColoniesFielddata extends AbstractMigration
                        (100, 42, 98, 801, NULL, NULL, 0, 0, 1, NULL),
                        (101, 42, 99, 801, NULL, NULL, 0, 0, 1, NULL),
                        (31, 42, 29, 112, NULL, NULL, 0, 0, 1, NULL),
+                       (25, 42, 23, 101, 12345, NULL, 1500, 0, 1, NULL),
                        (26, 42, 24, 101, 82010100, NULL, 1500, 1, 1, NULL);
         ');
     }

@@ -122,4 +122,10 @@ final class SessionStorage implements SessionStorageInterface
 
         return $user;
     }
+
+    #[Override]
+    public function reset(): void
+    {
+        $this->sessionDataPerUser = [];
+    }
 }

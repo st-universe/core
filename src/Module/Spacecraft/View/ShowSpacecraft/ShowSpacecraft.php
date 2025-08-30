@@ -111,7 +111,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             if ($rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
                 $canColonize = $this->colonizationChecker->canColonize($user, $colony);
             }
-            $ownsCurrentColony = $colony->getUser() === $user;
+            $ownsCurrentColony = $colony->getUser()->getId() === $user->getId();
         }
 
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann

@@ -42,7 +42,7 @@ final class CancelShipRepair implements ActionControllerInterface
             return;
         }
 
-        if ($station->getUser() !== $game->getUser()) {
+        if ($station->getUser()->getId() !== $game->getUser()->getId()) {
             return;
         }
 

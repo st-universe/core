@@ -23,7 +23,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
     }
 
-    private function reset(): void
+    public function reset(): void
     {
         $this->wrapped = $this->entityManagerFactory->createEntityManager();
     }

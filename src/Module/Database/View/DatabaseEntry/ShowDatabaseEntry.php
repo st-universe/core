@@ -252,7 +252,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
     {
         return $map->getColony() !== null
             && !$map->getColony()->isFree()
-            && $map->getColony()->getUser() !== $user;
+            && $map->getColony()->getUser()->getId() !== $user->getId();
     }
 
     /**

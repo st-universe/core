@@ -9,10 +9,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 
 class StationViewControllerTest extends TwigTestCase
 {
+    use StubGameComponentsTrait;
+
     private const array CURRENTLY_UNSUPPORTED_KEYS = [
         'STATION_VIEWS-SHOW_AGGREGATION_SYSTEM_AJAX',   // needs corresponding system
         'STATION_VIEWS-SHOW_SENSOR_SCAN',               // render not possible if template is not set
@@ -46,6 +49,8 @@ class StationViewControllerTest extends TwigTestCase
     #[DataProvider('getAllViewControllerDataProvider')]
     public function testHandle(string $key): void
     {
+        $this->stubGameComponents();
+
         $this->snapshotKey = $key;
 
         $this->renderSnapshot(

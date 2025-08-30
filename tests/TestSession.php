@@ -31,7 +31,10 @@ class TestSession implements SessionInterface
         return $this;
     }
 
-    public function createSession(bool $session_check = true): void {}
+    public function createSession(bool $session_check = true): void
+    {
+        // nothing to do here
+    }
 
     public function getUser(): ?User
     {
@@ -41,5 +44,8 @@ class TestSession implements SessionInterface
         return $this->user;
     }
 
-    public function logout(?User $user = null): void {}
+    public function logout(?User $user = null): void
+    {
+        // nothing to do here
+    }
 }

@@ -11,6 +11,7 @@ use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentLoaderInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\JavascriptExecution;
 use Stu\Module\Control\SemaphoreUtil;
 use Stu\Module\Logging\StuLogger;
@@ -48,14 +49,18 @@ class StuMocks
     {
         request::setMockVars(null);
         PanelLayerCreation::$skippedLayers = [];
-        $this->getStuContainer()->clearAdditionalServices();
-        $this->getStuContainer()
-            ->get(ComponentLoaderInterface::class)
-            ->resetStubbedComponents();
         StuLogger::setMock(null);
         AchievementManager::reset();
         JavascriptExecution::reset();
         SemaphoreUtil::reset();
+
+        $dic = $this->getStuContainer();
+
+        $dic->clearAdditionalServices();
+        $dic->get(ComponentLoaderInterface::class)
+            ->resetStubbedComponents();
+        $dic->get(SessionStorageInterface::class)
+            ->reset();
     }
 
     private function getStuContainer(): StuContainer

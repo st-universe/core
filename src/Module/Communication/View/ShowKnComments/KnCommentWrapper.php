@@ -87,7 +87,7 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
     #[Override]
     public function isDeleteable(): bool
     {
-        return $this->comment->getUser() === $this->currentUser;
+        return $this->comment->getUser()->getId() === $this->currentUser->getId();
     }
 
     #[Override]

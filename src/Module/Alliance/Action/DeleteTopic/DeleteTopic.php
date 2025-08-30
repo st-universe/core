@@ -26,7 +26,7 @@ final class DeleteTopic implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->deleteTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAlliance() !== $alliance) {
+        if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 

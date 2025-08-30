@@ -26,7 +26,7 @@ final class DeleteColonyScan implements ActionControllerInterface
 
         if (
             $colonyScan === null
-            || $colonyScan->getUser() !== $game->getUser()
+            || $colonyScan->getUser()->getId() !== $game->getUser()->getId()
         ) {
             return;
         }

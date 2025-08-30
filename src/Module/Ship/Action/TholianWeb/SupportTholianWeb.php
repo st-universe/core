@@ -74,7 +74,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         }
 
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
-        if ($web === null || $web->isFinished()) {
+        if ($web === null || $web->isFinished($this->stuTime->time())) {
             throw new SanityCheckException('no web at location or already finished', self::ACTION_IDENTIFIER);
         }
 

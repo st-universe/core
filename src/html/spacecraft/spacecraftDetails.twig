@@ -110,7 +110,7 @@
                     {% if data.getCrew.getUser != SHIP.getUser %}
                     <span style="vertical-align: top; color:red; cursor: default;"
                         title="von {{ data.getCrew.getUser.getName|bbcode2txt }}">*</span>
-                    <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&scid={{ crewId }}&sstr={{ SESSIONSTRING }}"
+                    <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&crewid={{ crewId }}&sstr={{ SESSIONSTRING }}"
                         onmouseover="cp('dump_{{ crewId }}','buttons/x2')"
                         onmouseout="cp('dump_{{ crewId }}','buttons/x1')">
                         <img src="/assets/buttons/x2.png" name="dump_{{ crewId }}" title="Crewman entfernen" />

@@ -5,7 +5,7 @@
   },
   "game": {
     "webroot": "src/Public",
-    "temp_dir": "tmp",
+    "temp_dir": ".",
     "map": {
       "encryptionKey": "kIWEuwnenWUIunwueww7whw3huuhweuh"
     },

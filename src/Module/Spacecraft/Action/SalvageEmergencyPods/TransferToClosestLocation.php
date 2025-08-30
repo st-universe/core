@@ -45,7 +45,7 @@ final class TransferToClosestLocation
         //transfer to closest colony
         if ($colonyDistance === $minimumDistance && $closestColony !== null) {
             foreach ($target->getCrewAssignments() as $crewAssignment) {
-                if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+                if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
                     $crewAssignment->setColony($closestColony);
                     $crewAssignment->setSpacecraft(null);
                     $this->shipCrewRepository->save($crewAssignment);
@@ -61,7 +61,7 @@ final class TransferToClosestLocation
         //transfer to closest station
         if ($stationDistance === $minimumDistance && $closestStation !== null) {
             foreach ($target->getCrewAssignments() as $crewAssignment) {
-                if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+                if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
                     $crewAssignment->setSpacecraft($closestStation);
                     $this->shipCrewRepository->save($crewAssignment);
                 }
@@ -75,7 +75,7 @@ final class TransferToClosestLocation
 
         //transfer to closest tradepost
         foreach ($target->getCrewAssignments() as $crewAssignment) {
-            if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+            if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
                 $crewAssignment->setSpacecraft(null);
                 $crewAssignment->setTradepost($closestTradepost);
                 $this->shipCrewRepository->save($crewAssignment);

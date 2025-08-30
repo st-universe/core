@@ -60,9 +60,10 @@ function addUserContact(obj, userid) {
 	);
 }
 var clmodeswitchdiv = "";
-function showContactModeSwitcher(div, contactid) {
+function showContactModeSwitcher(element, div, contactid) {
 	clmodeswitchdiv = div;
-	updatePopup(
+	updatePopupAtElement(
+		element,
 		"/pm.php?SHOW_CONTACT_MODESWITCH=1&contactid=" + contactid,
 		70
 	);

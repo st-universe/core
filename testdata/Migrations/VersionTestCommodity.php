@@ -450,6 +450,7 @@ final class VersionTestCommodity extends AbstractMigration
                        (70, \'Metaphasen Gas\', 70, 1, 1, 0, 0),
                        (71, \'Galonium Gas\', 71, 1, 1, 0, 0),
                        (72, \'Kelbonium Gas\', 72, 1, 1, 0, 0),
+                       (73,\'Osterei\',73,1,1,1,1),
                        (67, \'Tritanium Partikel\', 67, 1, 1, 0, 0);
         ');
     }

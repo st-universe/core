@@ -38,11 +38,11 @@ abstract class AbstractFlightConsequence implements FlightConsequenceInterface
         );
     }
 
-    protected abstract function triggerSpecific(
+    abstract protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,
         MessageCollectionInterface $messages
     ): void;
 
-    protected abstract function skipWhenTractored(): bool;
+    abstract protected function skipWhenTractored(): bool;
 }

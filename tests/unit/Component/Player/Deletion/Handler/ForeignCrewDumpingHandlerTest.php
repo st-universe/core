@@ -49,6 +49,13 @@ class ForeignCrewDumpingHandlerTest extends StuTestCase
         $user = $this->mock(User::class);
         $otherUser = $this->mock(User::class);
 
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1111);
+        $otherUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(2222);
+
         $stationWithoutCrew->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->once()
@@ -87,17 +94,13 @@ class ForeignCrewDumpingHandlerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
 
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
         $user->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('SPIELER');
 
         $this->stationRepository->shouldReceive('getStationsByUser')
-            ->with(1)
+            ->with(1111)
             ->once()
             ->andReturn([$stationWithoutCrew, $stationWithForeigner]);
 

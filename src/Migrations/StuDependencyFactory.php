@@ -11,8 +11,6 @@ use Stu\Config\Init;
 
 class StuDependencyFactory extends DependencyFactory
 {
-    public function __construct() {}
-
     public static function createDependencyFactory(): DependencyFactory
     {
         /** @var array<string> */

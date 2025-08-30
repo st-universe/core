@@ -45,7 +45,7 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
-        if ($plan->getUser() !== $game->getUser()) {
+        if ($plan->getUser()->getId() !== $game->getUser()->getId()) {
             return;
         }
 

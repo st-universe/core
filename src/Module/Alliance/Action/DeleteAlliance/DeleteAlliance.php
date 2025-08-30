@@ -52,8 +52,8 @@ final class DeleteAlliance implements ActionControllerInterface
         );
 
         if (
-            $jobFounder->getUser() !== $user
-            && ($jobSuccessor === null || $jobSuccessor->getUser() !== $user)
+            $jobFounder->getUser()->getId() !== $user->getId()
+            && ($jobSuccessor === null || $jobSuccessor->getUser()->getId() !== $user->getId())
         ) {
             throw new AccessViolationException();
         }

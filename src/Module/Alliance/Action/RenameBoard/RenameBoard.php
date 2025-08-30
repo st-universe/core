@@ -28,7 +28,7 @@ final class RenameBoard implements ActionControllerInterface
         $name = $this->renameBoardRequest->getTitle();
 
         $board = $this->allianceBoardRepository->find($this->renameBoardRequest->getBoardId());
-        if ($board === null || $board->getAlliance() !== $alliance) {
+        if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
 
