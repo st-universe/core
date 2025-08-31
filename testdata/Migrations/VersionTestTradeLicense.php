@@ -18,7 +18,8 @@ final class VersionTestTradeLicense extends AbstractMigration
     {
         $this->addSql(
             'INSERT INTO stu_trade_license (id, posts_id,user_id,date,expired)
-                    VALUES (1,2,101,1728921382,2044473382);'
+                    VALUES (1,2,101,1728921382,2044473382),
+                           (2,2,102,1728921382,2044473382);'
         );
     }
 }

@@ -30,7 +30,7 @@ final class BasicTradeSell implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $tradePostId = request::postIntFatal('tpid');
+        $tradePostId = request::postIntFatal('postid');
         $uniqId = request::postStringFatal('uid');
         $basicTrade = $this->basicTradeRepository->getByUniqId($uniqId);
 

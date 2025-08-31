@@ -55,7 +55,7 @@
 			<tr>
 				<td>Handelsposten:</td>
 				<td>
-					<select name="pid" id="tradepostSelect" style="width:100%;">
+					<select name="postid" id="tradepostSelect" style="width:100%;">
 						<option value="0">----------------------</option>
 																		<option value="2">
 							Goldene Kugel
@@ -1005,9 +1005,41 @@
 		<th>Handelsposten</th>
 		<th>Siedler</th>
 	</tr>
-		<tr colspan="6">Keine Angebote vorhanden
+								<tr class="row">
+		<td>
+						<a href="?B_CANCEL_OFFER=1&amp;offerid=1&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('MOCKED_UNIQUEID','buttons/x2');" onmouseout="cp('MOCKED_UNIQUEID','buttons/x1');">
+				<img src="assets/buttons/x1.png" name="MOCKED_UNIQUEID" title="Angebot l&ouml;schen">
+			</a>
+					</td>
+		<td>
+			<a href="javascript:void(0);" onclick="changeSearchCommodity(10506);">
+				<img src="assets/commodities/10506.png" title="Warpkern (Klasse 6)">
+				1
+			</a>
+		</td>
+		<td>
+			<a href="javascript:void(0);" onclick="changeSearchCommodity(50);">
+				<img src="assets/commodities/50.png" title="Latinum">
+				2
+			</a>
+		</td>
+		<td>14</td>
+		<td>
+									<a href="javascript:void(0);" onmouseover="cp('hdlo1','buttons/info2');" onmouseout="cp('hdlo1','buttons/info1');" onclick="openTradepostInfo(this, 2,0,0);">
+    <img src="assets/buttons/info1.png" name="hdlo1" title="Details">
+</a>
+			<a href="javascript:void(0);" onclick="changeSearchTradepost(2);">
+				Goldene Kugel
+			</a>
+		</td>
+		<td>
+			<a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+
+			
+			Siedler 101
+		</td>
 	</tr>
-		</table>
+	</table>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
