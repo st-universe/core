@@ -80,7 +80,7 @@ return [
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemDataFactoryInterface::class => autowire(ShipSystemDataFactory::class),
     SystemDataDeserializerInterface::class => autowire(SystemDataDeserializer::class),
-    SpacecraftSystemManagerInterface::class => create(SpacecraftSystemManager::class)->constructor(
+    SpacecraftSystemManagerInterface::class => autowire(SpacecraftSystemManager::class)->constructor(
         [
             SpacecraftSystemTypeEnum::HULL->value => autowire(HullShipSystem::class),
             SpacecraftSystemTypeEnum::CLOAK->value => autowire(CloakShipSystem::class),
