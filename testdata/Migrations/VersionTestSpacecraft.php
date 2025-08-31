@@ -26,7 +26,7 @@ final class VersionTestSpacecraft extends AbstractMigration
                     (43, 101, 10053, 689, \'Mighty AP\', 21000, 25000, NULL, NULL, NULL, \'STATION\', 15247),
                     (1021, 102, 6501, 2324, \'Aerie 102\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204143),
                     (1022, 102, 10053, 689, \'AP 102\', 819, 819, NULL, NULL, NULL, \'STATION\', 204143),
-                    (10203, 102, 6501, 2324, \'Aerie 102 at Mighty AP\', 819, 819, NULL, NULL, NULL, \'SHIP\', 15247),
+                    (10203, 11, 6501, 2324, \'Aerie 102 at Mighty AP\', 819, 819, NULL, NULL, NULL, \'SHIP\', 15247),
                     (1023, 101, 3107, 1827, \'Netzschiff ohne Netz\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204145),
                     (1024, 101, 3107, 1827, \'Netzschiff mit Netz in Bau\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204146),
                     (1025, 101, 3107, 1827, \'Netzschiff am supporten\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204146),

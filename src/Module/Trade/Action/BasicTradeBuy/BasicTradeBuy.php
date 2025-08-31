@@ -28,7 +28,7 @@ final class BasicTradeBuy implements ActionControllerInterface
     {
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
-        $tradePostId = request::postIntFatal('tpid');
+        $tradePostId = request::postIntFatal('postid');
         $uniqId = request::postStringFatal('uid');
         $basicTrade = $this->basicTradeRepository->getByUniqId($uniqId);
 

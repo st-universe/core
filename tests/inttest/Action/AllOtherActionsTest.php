@@ -21,7 +21,8 @@ class AllOtherActionsTest extends ActionTestCase
     private const array CURRENTLY_SUPPORTED_MODULES = [
         'COLONY_ACTIONS',
         'SHIP_ACTIONS',
-        'SPACECRAFT_ACTIONS'
+        'SPACECRAFT_ACTIONS',
+        'TRADE_ACTIONS'
     ];
 
     private const array CURRENTLY_UNSUPPORTED_KEYS = [];
@@ -57,7 +58,8 @@ class AllOtherActionsTest extends ActionTestCase
     private function getUserId(string $key): int
     {
         return match ($key) {
-            'SHIP_ACTIONS-B_PAY_TRADELICENSE' => 102,
+            'SHIP_ACTIONS-B_PAY_TRADELICENSE' => 11,
+            'TRADE_ACTIONS-B_TAKE_OFFER' => 102,
             default => 101
         };
     }
@@ -109,6 +111,19 @@ class AllOtherActionsTest extends ActionTestCase
             'COLONY_ACTIONS-B_CREATE_MODULES' => ['moduleids' => [], 'values' => [], 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
             'COLONY_ACTIONS-B_CANCEL_REPAIR' => ['shipid' => 78],
             'COLONY_ACTIONS-B_CANCEL_MODULECREATION' => ['module' => 1, 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
+            'TRADE_ACTIONS-B_CREATE_OFFER' => ['storid' => 13, 'ggid' => 8, 'wgid' => 21, 'gcount' => 1, 'wcount' => 5, 'amount' => 1],
+            'TRADE_ACTIONS-B_TAKE_OFFER',
+            'TRADE_ACTIONS-B_CANCEL_OFFER' => ['offerid' => 1],
+            'TRADE_ACTIONS-B_DEALS_TAKE_OFFER' => ['dealid' => 1],
+            'TRADE_ACTIONS-B_DEALS_BID_AUCTION' => ['dealid' => 1],
+            'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION' => ['dealid' => 1],
+            'TRADE_ACTIONS-B_BUY_LOTTERY_TICKETS' => ['amount' => 1],
+            'TRADE_ACTIONS-B_TRADE_SEARCH_BOTH',
+            'TRADE_ACTIONS-B_TRADE_SEARCH_DEMAND',
+            'TRADE_ACTIONS-B_TRADE_SEARCH_OFFER' => ['cid' => 8],
+            'TRADE_ACTIONS-B_TRANSFER' => ['storid' => 13],
+            'TRADE_ACTIONS-B_BASIC_BUY',
+            'TRADE_ACTIONS-B_BASIC_SELL' => ['uid' => 'uniq_123456'],
             default => []
         };
     }

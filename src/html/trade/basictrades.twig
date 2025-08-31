@@ -28,7 +28,7 @@
         <form method="post" action="trade.php">
             <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
             <input type="hidden" name="uid" value="{{ item.getUniqId }}" />
-            <input type="hidden" name="tpid" value="{{ data.getId }}" />
+            <input type="hidden" name="postid" value="{{ data.getId }}" />
             <td><img src="assets/commodities/{{ item.getCommodity.getId }}.png"
                     title="{{ item.getCommodity.getName }}" /> <span>{{ item.getStoredAmount }}</span></td>
             <td><span>{{ item.getBuyValue }}</span> <button type="submit" name="B_BASIC_BUY" value="Ware kaufen"

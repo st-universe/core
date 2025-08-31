@@ -45,4 +45,13 @@ trait CustomControllerHelperTrait
 
         return $this->queryParameter($name);
     }
+
+    protected function bodyParameter(string $name): TypeParser
+    {
+        if (request::isMocked()) {
+            $this->initRequestParser(request::getvars(), new Config());
+        }
+
+        return $this->bodyParser->get($name);
+    }
 }

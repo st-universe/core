@@ -19,7 +19,12 @@ final class CancelOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository) {}
+    public function __construct(
+        private CancelOfferRequestInterface $cancelOfferRequest,
+        private TradeLibFactoryInterface $tradeLibFactory,
+        private TradeOfferRepositoryInterface $tradeOfferRepository,
+        private StorageRepositoryInterface $storageRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -47,7 +52,6 @@ final class CancelOffer implements ActionControllerInterface
         );
 
         $this->storageRepository->delete($offer->getStorage());
-        $this->tradeOfferRepository->delete($offer);
 
         $game->getInfo()->addInformation(_('Das Angebot wurde gelöscht'));
     }

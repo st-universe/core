@@ -14,7 +14,7 @@ final class CreateLicenseRequest implements CreateLicenseRequestInterface
     #[Override]
     public function getTradePostId(): int
     {
-        return $this->bodyParameter('tradepost')->int()->required();
+        return $this->bodyParameter('postid')->int()->required();
     }
 
     #[Override]

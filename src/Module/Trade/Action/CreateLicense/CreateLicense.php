@@ -17,13 +17,16 @@ final class CreateLicense implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_LICENSE';
 
-    public function __construct(private CreateLicenseRequestInterface $createLicenseRequest, private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository, private TradePostRepositoryInterface $tradePostRepository, private CommodityRepositoryInterface $commodityRepository) {}
+    public function __construct(
+        private CreateLicenseRequestInterface $createLicenseRequest,
+        private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
+        private TradePostRepositoryInterface $tradePostRepository,
+        private CommodityRepositoryInterface $commodityRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('trade', LogLevelEnum::ERROR);
-
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
@@ -58,14 +61,14 @@ final class CreateLicense implements ActionControllerInterface
             return;
         }
 
-        $setLicense = $this->TradeLicenseInfoRepository->prototype();
+        $setLicense = $this->tradeLicenseInfoRepository->prototype();
         $setLicense->setTradepost($tradepost);
         $setLicense->setDate(time());
         $setLicense->setCommodity($commodity);
         $setLicense->setAmount($giveAmount);
         $setLicense->setDays($days);
 
-        $this->TradeLicenseInfoRepository->save($setLicense);
+        $this->tradeLicenseInfoRepository->save($setLicense);
 
 
         $game->getInfo()->addInformation('Handelslizenz geändert');

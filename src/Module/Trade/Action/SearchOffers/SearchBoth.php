@@ -39,12 +39,12 @@ final class SearchBoth implements ActionControllerInterface
         $userId = $user->getId();
 
         $commodityId = request::postIntFatal('cid');
-        $postId = request::postIntFatal('pid') > 0 ? request::postIntFatal('pid') : null;
+        $postId = request::postIntFatal('postid') > 0 ? request::postIntFatal('postid') : null;
 
         $game->setView(ModuleEnum::TRADE);
         $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
-        $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
+        $game->setTemplateVar('POST_ID', request::postIntFatal('postid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
 
         $this->sessionStorage->deleteSessionData('trade_filter_cid');
