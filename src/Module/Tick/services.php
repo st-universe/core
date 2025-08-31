@@ -75,7 +75,7 @@ return [
                 autowire(ProceedMigration::class)
             ]
         ),
-    ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
+    ColonyTickManagerInterface::class => autowire(ColonyTickManager::class)->lazy(),
     StationConstructionHandler::class => autowire(StationConstructionHandler::class),
     StationPassiveRepairHandler::class => autowire(StationPassiveRepairHandler::class),
     SpacecraftTickInterface::class => autowire(SpacecraftTick::class)
@@ -135,7 +135,7 @@ return [
             get(ProcessTickHandlerInterface::class)
         ),
     SpacecraftTickRunner::class => autowire(),
-    PirateTickInterface::class => autowire(PirateTick::class)->constructorParameter(
+    PirateTickInterface::class => autowire(PirateTick::class)->lazy()->constructorParameter(
         'behaviours',
         get(PirateBehaviourInterface::class)
     ),

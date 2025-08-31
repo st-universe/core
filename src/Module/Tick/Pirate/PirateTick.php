@@ -14,7 +14,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 
-final class PirateTick implements PirateTickInterface
+class PirateTick implements PirateTickInterface
 {
     private PirateLoggerInterface $logger;
 

@@ -21,7 +21,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Ubench;
 
-final class ColonyTickManager extends AbstractTickManager implements ColonyTickManagerInterface
+class ColonyTickManager extends AbstractTickManager implements ColonyTickManagerInterface
 {
     public function __construct(
         private ColonyTickInterface $colonyTick,
