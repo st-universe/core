@@ -169,16 +169,51 @@ updateSelectedSpacecraftId('77');">
 </div>
 <br>
 
-
-<table id="shiplist_singles_table" class="tcal">
-    <tr>
-        <td colspan="11">Einzelschiffe</td>
-    </tr>
+<form action="ship.php" method="post" id="shiplist_fleet_form_42">
+    <input type="hidden" name="fleetid" value="42">
+    <table class="tcal">
         <tr>
+            <td colspan="11">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 35%;">
+                            <div style="display: table-cell;">
+                                <img src="/assets/buttons/layer_2.png" title="Tullamore Trench">
+                                <a href="javascript:void(0);" onclick="toggleFleet(42);" title="zuklappen/aufklappen">
+                                    <img src="/assets/buttons/fleet.png">
+                                </a>
+                            </div>
+                            <div style="display: table-cell; vertical-align:middle;">
+                                <strong><span style="color: #760505">Fleet of 42</span></strong>
+                                <span>
+                                    (11/100 Crew)
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 25%;">
+                                                                                </td>
+                        <td style="width: 20%;">
+                            <input type="text" name="fleetname" style="width: 150px;" value="[b][color=#760505]Fleet of 42[/color][/b]">
+                            <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name &auml;ndern" title="Name &auml;ndern">
+                                <img src="/assets/buttons/knedit2.png" alt="Name &auml;ndern">
+                            </button>
+                        </td>
+                        <td style="width: 20%; text-align: right;">
+                            <a href="javascript:void(0);" onclick="showAvailableShips(this, 42);" title="Schiff hinzuf&uuml;gen"><img src="/assets/buttons/fl_join2.png" alt="Schiff hinzuf&uuml;gen"></a>
+                            <a href="?B_FLEET_UP=1&amp;id=42">
+                                <img src="/assets/buttons/bt_up1.png" title="Flotte nach oben schieben">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="" class="tcal" id="fleetbody_42">
+                <tr>
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
-        <th style="width: 30px;"></th>
-    <th style="width: 30px;"></th>
+        <th style="width: 60px;"></th>
         <th style="width: 95px;" title="im System (au&szlig;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
 </th>
     <th style="width: 100px;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
@@ -197,7 +232,7 @@ WarpDrive: aktuell/maximal, Zuwachs">
     <th style="width: 35px;"></th>
 </tr>
 
-        <tr>
+                <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
         <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
@@ -224,9 +259,7 @@ updateSelectedSpacecraftId('42');">
     <td id="shipalarmstate" style="text-align: center;">
                 <img src="/assets/buttons/alert2_1.png" title="Alarmstufe">
             </td>
-    <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
-            </td>
+        
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
             <div style="flex: 1; text-align: center;">
@@ -274,10 +307,42 @@ updateSelectedSpacecraftId('42');">
                                 <img src="/assets/buttons/act_phaser1.png" title="Strahlenwaffe aktiviert">
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=42" onmouseover="cp('fleet_42','buttons/fl_flag2')" onmouseout="cp('fleet_42','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_42" title="Flotte erstellen">
+                        <a href="?B_DELETE_FLEET=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('fleet_42','buttons/fl_flag3')" onmouseout="cp('fleet_42','buttons/fl_flag2')">
+            <img src="/assets/buttons/fl_flag2.png" name="fleet_42" title="Flotte aufl&ouml;sen">
         </a>
                     </td>
+</tr>
+
+            </table>
+</form>
+<br>
+
+
+<table id="shiplist_singles_table" class="tcal">
+    <tr>
+        <td colspan="11">Einzelschiffe</td>
+    </tr>
+        <tr>
+    <th style="width: 140px;">Klasse</th>
+    <th>Name</th>
+        <th style="width: 30px;"></th>
+    <th style="width: 30px;"></th>
+        <th style="width: 95px;" title="im System (au&szlig;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 100px;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+    </th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 210px;" title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)
+WarpDrive: aktuell/maximal, Zuwachs">
+        Energie <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 90px; text-align: center;" title="gr&uuml;n: mehr als ausreichend, rot: zu wenig">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+    <th style="width: 125px; text-align: center;">Systeme</th>
+    <th style="width: 35px;"></th>
 </tr>
 
         <tr>

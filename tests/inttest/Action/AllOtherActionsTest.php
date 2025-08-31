@@ -16,12 +16,12 @@ use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 
-class AllActionControllerTest extends ActionTestCase
+class AllOtherActionsTest extends ActionTestCase
 {
     private const array CURRENTLY_SUPPORTED_MODULES = [
         'COLONY_ACTIONS',
         'SHIP_ACTIONS',
-        'SPACECRAFT_ACTIONS',
+        'SPACECRAFT_ACTIONS'
     ];
 
     private const array CURRENTLY_UNSUPPORTED_KEYS = [];

@@ -162,7 +162,7 @@
 								<td style="text-align: center;">
 								107/108
 												<span>+1</span>
-								(<span class="neg">1</span>/<span class="neg" id="reactorUsage">0</span>)
+								(<span class="neg">2</span>/<span class="neg" id="reactorUsage">0</span>)
 							</td>
 			<td style="text-align: center;">
 								<span>36</span>
@@ -203,7 +203,7 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('uship','buttons/update1');" 
 			<td colspan="2">
 								<img style="margin-right: 5px;" src="/assets/commodities/11115.png" title="ablative Duranium-H&uuml;llenpanzerung (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/10225.png" title="Plasmatische-Schilde (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/11904.png" title="Computer (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10604.png" title="Sensorenphalanx (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10504.png" title="Warpkern (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10304.png" title="EPS-Gitter (Klasse 4)"><img style="margin-right: 5px;" src="/assets/commodities/10735.png" title="Klingonischer Disruptor (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/10835.png" title="Klingonische Torpedobank (Klasse 5)"><img style="margin-right: 5px;" src="/assets/commodities/19003.png" title="Tachyon-Scanner"><img style="margin-right: 5px;" src="/assets/commodities/19007.png" title="Subraumfeldscanner">							</td>
 			<td colspan="5">
-				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Strahlenwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Projektilwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/6.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png">			</td>
+				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Strahlenwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Projektilwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/6.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Aggregationssystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/32.png">			</td>
 		</tr>
 	</table>
 	<br>
@@ -325,8 +325,8 @@ updateSelectedSpacecraftId('42');"></a>
     
 <tr>
     <td colspan="3">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=43&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser1');" onmouseout="cp('act_phaser','buttons/act_phaser2');">
-    <img src="/assets/buttons/act_phaser2.png" name="act_phaser"> Strahlenwaffe aktivieren</a>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=43&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser2');" onmouseout="cp('act_phaser','buttons/act_phaser1');">
+    <img src="/assets/buttons/act_phaser1.png" name="act_phaser"> Strahlenwaffe deaktivieren</a>
     </td>
 </tr>
     <tr>
@@ -343,6 +343,14 @@ updateSelectedSpacecraftId('42');"></a>
     
     
     
+<tr>
+    <td title="Aggregationssystem Einstellungen" colspan="2">
+        <a href="javascript:void(0);" onclick="showSystemSettingsWindow(this, 'AGGREGATION_SYSTEM');" onmouseover="cp('AGGREGATION_SYSTEM','buttons/aggsys2')" onmouseout="cp('AGGREGATION_SYSTEM','buttons/aggsys1')">
+            <img style="width: 20px;" src="/assets/buttons/aggsys1.png" name="AGGREGATION_SYSTEM">
+            Aggregationssystem Einstellungen
+        </a>
+    </td>
+</tr>
     
     
     
