@@ -51,34 +51,15 @@ final class AddDockPrivilege implements ActionControllerInterface
         if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $station)) {
             return;
         }
-        $save = 0;
-        switch ($type) {
-            case DockTypeEnum::USER:
-                if ($this->userRepository->find($target) === null) {
-                    break;
-                }
-                $save = 1;
-                break;
-            case DockTypeEnum::ALLIANCE:
-                if ($this->allianceRepository->find($target) === null) {
-                    break;
-                }
-                $save = 1;
-                break;
-            case DockTypeEnum::FACTION:
-                if ($this->factionRepository->find($target) === null) {
-                    break;
-                }
-                $save = 1;
-                break;
-            case DockTypeEnum::SHIP:
-                if ($this->shipRepository->find($target) === null) {
-                    break;
-                }
-                $save = 1;
-                break;
-        }
-        if ($save == 1) {
+
+        $targetEntity = match ($type) {
+            DockTypeEnum::USER => $this->userRepository->find($target),
+            DockTypeEnum::ALLIANCE => $this->allianceRepository->find($target),
+            DockTypeEnum::FACTION => $this->factionRepository->find($target),
+            DockTypeEnum::SHIP => $this->shipRepository->find($target)
+        };
+
+        if ($targetEntity !== null) {
             $dock = $this->dockingPrivilegeRepository->prototype();
             $dock->setPrivilegeMode($mode);
             $dock->setPrivilegeType($type);

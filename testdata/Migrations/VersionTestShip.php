@@ -17,7 +17,7 @@ final class VersionTestShip extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('INSERT INTO stu_ship (id, fleet_id, docked_to_id, is_fleet_leader)
-            VALUES (42, NULL, 43, 0),
+            VALUES (42, 42, 43, 1),
                     (77, 77, NULL, 1),
                     (78, NULL, NULL, 0),
                     (79, NULL, NULL, 0),

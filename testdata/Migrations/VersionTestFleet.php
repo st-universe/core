@@ -18,7 +18,8 @@ final class VersionTestFleet extends AbstractMigration
     {
         $this->addSql(
             'INSERT INTO stu_fleets (id, name,user_id,ships_id,defended_colony_id,blocked_colony_id,sort,is_fixed)
-                VALUES (77, \'[b][color=#760505]The FLEET[/color][/b]\',101,77,NULL,NULL,29,0);'
+                VALUES (77, \'[b][color=#760505]The FLEET[/color][/b]\',101,77,NULL,NULL,29,0),
+                        (42, \'[b][color=#760505]Fleet of 42[/color][/b]\',101,42,NULL,NULL,28,0);'
         );
     }
 }

@@ -360,6 +360,101 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
 <br>
 <table class="tcal">
     <tr>
+        <th colspan="4">
+            <img src="/assets/buttons/fleet.png" title="Flottenkontrolle">
+            <span>Flottenkontrolle</span>
+        </th>
+    </tr>
+    <tr>
+        <td class="darkbg" style="width: 35%;">Aktivieren</td>
+        <td class="darkbg" style="width: 35%;">Deaktivieren</td>
+        <td class="darkbg" style="width: 15%;">Alarmstufe</td>
+    </tr>
+    <tr>
+        <td>
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/kss1.png" name="fl_kss1" title="Nahbereichssensoren aktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/shldac1.png" name="fl_shldac1" title="Schilde aktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_phaser1.png" name="fl_act_phaser1" title="Strahlenwaffen aktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=TORPEDO&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_torp1.png" name="fl_act_torp1" title="Torpedob&auml;nke aktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=CLOAK&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/tarn1.png" name="fl_tarn1" title="Tarnung aktivieren">
+</a>
+
+
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/warp1.png" name="fl_warp1" title="Warpantrieb aktivieren">
+</a>
+
+
+                    </td>
+        <td>
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/kss2.png" name="fl_kss2" title="Nahbereichssensoren deaktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/shldac2.png" name="fl_shldac2" title="Schilde deaktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_phaser2.png" name="fl_act_phaser2" title="Strahlenwaffen
+            deaktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=TORPEDO&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_torp2.png" name="fl_act_torp2" title="Torpedob&auml;nke deaktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=CLOAK&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/tarn2.png" name="fl_tarn2" title="Tarnung deaktivieren">
+</a>
+
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/warp2.png" name="fl_warp2" title="Warpantrieb deaktivieren">
+</a>
+
+
+        </td>
+        <td>
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_GREEN', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert1_1.png" name="fl_alert1_1" title="Flotte: Alarmstufe Gr&uuml;n">
+</a>
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_YELLOW', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert2_1.png" name="fl_alert2_1" title="Flotte: Alarmstufe Gelb">
+</a>
+
+            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_RED', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert3_1.png" name="fl_alert3_1" title="Flotte: Alarmstufe Rot">
+</a>
+
+        </td>
+    </tr>
+</table>
+<br>
+<table class="tcal">
+    <tr>
         <th>Angedockt</th>
     </tr>
     <tr>
@@ -446,6 +541,8 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
             <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
         </td>
         <td style="width: 15%;">
+                        <span><input type="checkbox" name="fleet_reactor">
+                Flotte</span>
                     </td>
     </tr>
                                 
@@ -464,7 +561,8 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
             </div>
         </td>
         <td style="width: 15%;">
-                        <input type="checkbox" id="fleetSplit" style="display: none;">
+                        <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit(42);">
+                Flotte</span>
                     </td>
     </tr>
 
@@ -525,11 +623,16 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
                 <td>
                     </td>
         <td style="width: 15%;">
+                        <span><input type="checkbox" name="fleet_batt">
+                Flotte</span>
                     </td>
     </tr>
 </table>
 
 <br>
+
+
+
 
 			</td>
 		</tr>
@@ -660,7 +763,7 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
         Aerie 102 at Mighty AP
     </td>
 <td style="width: 160px;">
-    819/819
+    800/819
     </td>
 <td>
                 <a href="javascript:void(0);" onclick="openPmWindow(42,10203,2,2);" title="Nachricht an Siedler 102 verfassen" onmouseover="cp('nbsPm10203','buttons/msg2')" onmouseout="cp('nbsPm10203','buttons/msg1')">
