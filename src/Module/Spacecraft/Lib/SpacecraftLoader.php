@@ -13,6 +13,8 @@ use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappers;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
@@ -168,20 +170,68 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         //main spacecraft sema on
+        StuLogger::log(sprintf(
+            'Acquiring main semaphore for user %d and spacecraft %d%s',
+            $spacecraft->getUser()->getId(),
+            $spacecraft->getId(),
+            $targetId !== null ? ', target ' . $targetId : ''
+        ), LogTypeEnum::SEMAPHORE);
+
+        $startTime = microtime(true);
         $mainSema = $this->semaphoreUtil->acquireSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
 
+        StuLogger::log(sprintf(
+            'Main semaphore acquired for user %d, waited %F seconds',
+            $spacecraft->getUser()->getId(),
+            microtime(true) - $startTime
+        ), LogTypeEnum::SEMAPHORE);
+
+        StuLogger::log(sprintf(
+            'Acquiring spacecraft semaphore for user %d and spacecraft %d',
+            $spacecraft->getUser()->getId(),
+            $spacecraft->getId()
+        ), LogTypeEnum::SEMAPHORE);
+
+        $startTime = microtime(true);
         $wrapper = $this->acquireSemaphoreForSpacecraft($spacecraft, null);
         if ($wrapper === null) {
             throw new RuntimeException('wrapper should not be null here');
         }
+
+        StuLogger::log(sprintf(
+            'Spacecraft semaphore acquired for user %d and spacecraft %d, waited %F seconds',
+            $spacecraft->getUser()->getId(),
+            $spacecraft->getId(),
+            microtime(true) - $startTime
+        ), LogTypeEnum::SEMAPHORE);
+
         $result = new SourceAndTargetWrappers($wrapper);
 
         if ($targetId !== null) {
+
+            StuLogger::log(sprintf(
+                'Acquiring target spacecraft semaphore for user %d and target %d',
+                $spacecraft->getUser()->getId(),
+                $targetId
+            ), LogTypeEnum::SEMAPHORE);
+
+            $startTime = microtime(true);
             $result->setTarget($this->acquireSemaphoreForSpacecraft(null, $targetId));
+
+            StuLogger::log(sprintf(
+                'Target spacecraft semaphore acquired for user %d and target %d, waited %F seconds',
+                $spacecraft->getUser()->getId(),
+                $targetId,
+                microtime(true) - $startTime
+            ), LogTypeEnum::SEMAPHORE);
         }
 
         //main spacecraft sema off
         $this->semaphoreUtil->releaseSemaphore($mainSema);
+        StuLogger::log(sprintf(
+            'Main semaphore released for user %d',
+            $spacecraft->getUser()->getId()
+        ), LogTypeEnum::SEMAPHORE);
 
         return $result;
     }
