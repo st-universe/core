@@ -68,6 +68,7 @@ final class GameController implements GameControllerInterface
     public function setView(ModuleEnum|string $view): void
     {
         if ($view instanceof ModuleEnum) {
+            unset($this->gameData->viewContext[ViewContextTypeEnum::VIEW->value]);
             $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $view);
         } else {
             $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
