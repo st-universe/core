@@ -193,7 +193,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         ), LogTypeEnum::SEMAPHORE);
 
         $startTime = microtime(true);
-        $wrapper = $this->acquireSemaphoreForSpacecraft($spacecraft, null);
+        $wrapper = $this->acquireSemaphoreForSpacecraft($spacecraft);
         if ($wrapper === null) {
             throw new RuntimeException('wrapper should not be null here');
         }
@@ -216,7 +216,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             ), LogTypeEnum::SEMAPHORE);
 
             $startTime = microtime(true);
-            $result->setTarget($this->acquireSemaphoreForSpacecraft(null, $targetId));
+            $result->setTarget($this->acquireSemaphoreForSpacecraft($targetId));
 
             StuLogger::log(sprintf(
                 'Target spacecraft semaphore acquired for user %d and target %d, waited %F seconds',
@@ -236,15 +236,11 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         return $result;
     }
 
-    private function acquireSemaphoreForSpacecraft(?Spacecraft $spacecraft, ?int $spacecraftId): ?SpacecraftWrapperInterface
+    private function acquireSemaphoreForSpacecraft(Spacecraft|int $spacecraft): ?SpacecraftWrapperInterface
     {
-        if ($spacecraft === null && $spacecraftId === null) {
-            return null;
-        }
-
-        if ($spacecraft === null) {
-            $spacecraft = $this->spacecraftRepository->find($spacecraftId);
-        }
+        $spacecraft = $spacecraft instanceof Spacecraft
+            ? $spacecraft
+            : $this->spacecraftRepository->find($spacecraft);
 
         if ($spacecraft === null) {
             return null;
