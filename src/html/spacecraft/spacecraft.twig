@@ -201,6 +201,9 @@
 		{% if SPACECRAFT.isStation %}
 		<tr>
 			<td style="vertical-align: top; width: 33%;">
+				{% if FIRST_MANAGE_SHIP %}
+            	<input type="hidden" id="selshipid" value="{{ FIRST_MANAGE_SHIP.get.getId }}" />
+            	{% endif %}
 				<div class="box">
 					<div class="box_title">Angedockte Schiffe
 						(
