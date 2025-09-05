@@ -31,6 +31,7 @@ final class VersionTestSpacecraftCondition extends AbstractMigration
                     (1024, 819, 819, 0, 7),
                     (1025, 819, 819, 0, 7),
                     (1026, 819, 819, 0, 0),
+                    (1031, 819, 819, 0, 0),
                     (60001, 40, 0, 0, 0),
                     (60002, 80, 80, 0, 0),
                     (100001, 81, 81, 0, 0);

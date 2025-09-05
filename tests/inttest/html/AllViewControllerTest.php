@@ -42,20 +42,17 @@ class AllViewControllerTest extends TwigTestCase
         'DATABASE_VIEWS-SHOW_STATISTICS',
         'DATABASE_VIEWS-SHOW_SURFACE',              // needs surface scan test data
         'DATABASE_VIEWS-SHOW_TOP_RPG',              // sql in getRpgVotesTop10 not compatible with sqlite?
-        'GAME_VIEWS-SHOW_COMPONENT',                // make separate tests for each ComponentEnum
+        'GAME_VIEWS-SHOW_COMPONENT',                // has own test case
         'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleEnum
-        'MAINDESK_VIEWS-SHOW_COLONYLIST',           // needs uncolonized user
         'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
         'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
-        'SHIP_VIEWS-SHOW_BUSSARD_COLLECTOR_AJAX',   // needs corresponding ship system
-        'SHIP_VIEWS-SHOW_COLONIZATION',             // needs colonizer ship over free colony
         'SPACECRAFT_VIEWS-SHOW_COLONY_SCAN',        // needs ship over colony with matrix scanner
         'SPACECRAFT_VIEWS-SHOW_RENAME_CREW',
         'SPACECRAFT_VIEWS-SHOW_SCAN',               // needs ship on same location
         'SPACECRAFT_VIEWS-SHOW_SECTOR_SCAN',        // not idempotent, because it creates prestige log
         'SPACECRAFT_VIEWS-SHOW_SPACECRAFT',         // has own test case
-        'SPACECRAFT_VIEWS-SHOW_SYSTEM_SETTINGS_AJAX',  // has own test case
+        'SPACECRAFT_VIEWS-SHOW_SYSTEM_SETTINGS_AJAX', //has own test case
         'SPACECRAFT_VIEWS-SHOW_TRANSFER',           // has own test case
         'SPACECRAFT_VIEWS-SHOW_WASTEMENU',
         'TRADE_VIEWS-SHOW_OFFER_MENU',
@@ -95,13 +92,31 @@ class AllViewControllerTest extends TwigTestCase
         PanelLayerCreation::$skippedLayers[] = PanelLayerEnum::ANOMALIES->value;
 
         $this->snapshotKey = $key;
+        $vars = $this->getSpecificRequestVariables($key) + $this->getGeneralRequestVariables();
 
         $this->renderSnapshot(
-            101,
+            $this->getUserId($key),
             Init::getContainer()
                 ->getDefinedImplementationsOf(ViewControllerInterface::class, true)->get($key),
-            $this->getGeneralRequestVariables()
+            $vars
         );
+    }
+
+    private function getUserId(string $key): int
+    {
+        return match ($key) {
+            'MAINDESK_VIEWS-SHOW_COLONYLIST' => 2,
+            'SHIP_VIEWS-SHOW_COLONIZATION' => 103,
+            default => 101
+        };
+    }
+
+    private function getSpecificRequestVariables(string $key): array
+    {
+        return match ($key) {
+            'SHIP_VIEWS-SHOW_COLONIZATION' => ['id' => 1031],
+            default => []
+        };
     }
 
     private function getGeneralRequestVariables(): array
