@@ -25,6 +25,7 @@ final class VersionTestUserRegistration extends AbstractMigration
                        (19, \'borg\', \'pw\', \'npc@stuniverse.de\', 1731247407, 3, \'MY_TOKEN\', NULL, NULL),
                        (101, \'test\', \'$2y$10$0GsVfP3Ok.ngqaqARlyUnOXjZOeSyNEiVM3n1Fi5pnWu8YBGxLvxO\', \'npc@stuniverse.de\', 1731253491, 3, \'\', NULL, NULL),
                        (102, \'test2\', \'$2y$10$0GsVfP3Ok.ngqaqARlyUnOXjZOeSyNEiVM3n1Fi5pnWu8YBGxLvxO\', \'npc@stuniverse.de\', 1731253673, 3, \'\', NULL, NULL),
+                       (103, \'user103\', \'pw\', \'user103@stuniverse.de\', 1248036351, 3, \'\', NULL, NULL),
                        (1, \'niemand\', \'pw\', \'npc@stuniverse.de\', 1248036351, 3, \'\', NULL, NULL),
                        (3, \'tester\', \'pw\', \'npc@stuniverse.de\', 1248036351, 3, \'\', NULL, NULL),
                        (2, \'handelsallianz\', \'pw\', \'npc@stuniverse.de\', 1248036351, 3, \'\', NULL, NULL),

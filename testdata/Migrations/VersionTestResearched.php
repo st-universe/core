@@ -18,7 +18,8 @@ final class VersionTestResearched extends AbstractMigration
     {
         $this->addSql('INSERT INTO stu_researched (id, research_id, user_id, aktiv, finished)
                 VALUES (37842, 1001, 101, 0, 1731253491),
-                       (37843, 1001, 102, 0, 1731253673);
+                       (37843, 1001, 102, 0, 1731253673),
+                       (37844, 1001, 103, 0, 1731253673);
         ');
     }
 }

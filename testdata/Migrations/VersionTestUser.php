@@ -26,6 +26,7 @@ final class VersionTestUser extends AbstractMigration
                        (42, \'Gesperrter User\', NULL, 1, 1732009965, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (101, \'Siedler 101\', 2, 1, 1732007484, 0, 0, \'\', \'\', 0, 2, 0, 1, NULL),
                        (102, \'Siedler 102\', NULL, 1, 1732009965, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
+                       (103, \'User with Coloship\', NULL, 1, 1611430453, 0, 0, \'\', \'\', 0, 4, 0, 0, NULL),
                        (1, \'Niemand\', NULL, 9, 1710020754, 507, 0, \'\', \'\', 0, 1, 19, 0, NULL),
                        (3, \'Test\', NULL, 1, 1611430453, 0, 0, \'\', \'\', 0, 1, 0, 0, NULL),
                        (2, \'Handelsallianz\', NULL, 1, 1611430453, 0, 0, \'\', \'\', 0, 1, 0, 0, NULL),
