@@ -2,7 +2,7 @@
 <div id="researchComponent">
     {% if CURRENT_RESEARCH %}
     <div class="header_box header_box_research border_box action"
-        onclick="showResearchDetails({{ CURRENT_RESEARCH.getResearch.getId }}); return false;">
+        onclick="showResearchDetails(this, {{ CURRENT_RESEARCH.getResearch.getId }}); return false;">
         <div class="researchNavlet">
             <div class="researchNavletName">{{ CURRENT_RESEARCH.getResearch.getName }}</div>
             <div class="researchNavletImage">
