@@ -174,8 +174,8 @@ function ajaxPost(url, elements) {
 		parameters: elements,
 	});
 }
-function showResearchDetails(researchId) {
-	updatePopup("/research.php?SHOW_RESEARCH=1&id=" + researchId);
+function showResearchDetails(element, researchId) {
+	updatePopupAtElement(element, "/research.php?SHOW_RESEARCH=1&id=" + researchId);
 }
 function openNotes() {
 	str = "notes.php";
