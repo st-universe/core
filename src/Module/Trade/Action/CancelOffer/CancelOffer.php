@@ -52,6 +52,7 @@ final class CancelOffer implements ActionControllerInterface
         );
 
         $this->storageRepository->delete($offer->getStorage());
+        $this->tradeOfferRepository->delete($offer);
 
         $game->getInfo()->addInformation(_('Das Angebot wurde gelöscht'));
     }
