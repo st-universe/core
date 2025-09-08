@@ -47,8 +47,11 @@ function enablePopupDrag() {
 
 	document.addEventListener('mousemove', (e) => {
 		if (!isDragging) return;
-		popup.style.left = (e.clientX - offsetX) + 'px';
-		popup.style.top = (e.clientY - offsetY) + 'px';
+		const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+		popup.style.left = (e.clientX - offsetX + scrollLeft) + 'px';
+		popup.style.top = (e.clientY - offsetY + scrollTop) + 'px';
 	});
 
 	document.addEventListener('mouseup', () => {
