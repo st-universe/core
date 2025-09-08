@@ -77,11 +77,11 @@ final class DeactivateSystem implements ActionControllerInterface
     {
         $spacecraft = $wrapper->get();
 
+        //Alarm-Rot check for ship
+        $this->alertReactionFacade->doItAll($wrapper, $info);
+
         if ($fleetWrapper === null) {
             $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
-
-            //Alarm-Rot check for ship
-            $this->alertReactionFacade->doItAll($wrapper, $info);
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {
