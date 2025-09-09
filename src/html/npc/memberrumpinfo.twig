@@ -1,0 +1,95 @@
+<table class="tcal">
+    {% for wrapper in WRAPPERS %}
+    {% set ship = wrapper.get %}
+    {% set condition = ship.getCondition %}
+    <tr>
+        <td>{{ship.getName|bbcode}} ({{ship.getId}})</td>
+        <td>
+            <img src="/assets/buttons/layer_{{ ship.getLocation.getLayer.getId }}.png"
+                title="{{ ship.getLocation.getLayer.getName }}" style="flex-shrink: 0;" /> <span>{{ ship.getSectorString
+                }}</span>
+        </td>
+        <td style="background-color: #000000 ! important">
+            <div style="width: 100%">
+                <div style="width: 25%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="width: 20px; text-align: center;">
+                                <img src="/assets/buttons/modul_1.png" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ wrapper.getHullSystemData.getHullStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ condition.getHull }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% set shields = wrapper.getShieldSystemData %}
+                {% if shields %}
+                <div style="width: 25%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="width: 20px; text-align: center;">
+                                <img src="/assets/buttons/modul_2.png" />
+                            </th>
+                            <td style="text-align: center; vertical-align: middle;">
+                                {% autoescape false %}
+                                {{ shields.getShieldStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ condition.getShield }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+                {% set eps = wrapper.getEpsSystemData %}
+                {% if eps %}
+                <div style="width: 25%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th style="text-align: center; width: 20px;">
+                                <img src="/assets/buttons/modul_8.png" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ eps.getEpsStatusBarBig }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ eps.getEps }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+                {% set warpdrive = wrapper.getWarpDriveSystemData %}
+                {% if warpdrive %}
+                <div style="width: 25%; float: left;">
+                    <table class="tcal">
+                        <tr>
+                            <th>
+                                <img src="/assets/buttons/modul_11.png" style="width: 20px;" title="Warpdrive" />
+                            </th>
+                            <td style="vertical-align: middle; text-align: center;">
+                                {% autoescape false %}
+                                {{ warpdrive.getWarpDriveStatusBar }}
+                                {% endautoescape %}
+                            </td>
+                            <td style="text-align: center; width: 60px;">
+                                {{ warpdrive.getWarpdrive }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

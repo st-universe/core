@@ -17,8 +17,11 @@ use Stu\Module\NPC\Action\CreateShip;
 use Stu\Module\NPC\Action\DeleteBuildplan;
 use Stu\Module\NPC\Action\DeleteSpacecraft;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
+use Stu\Module\NPC\View\ShowPlayerList\ShowPlayerList;
+use Stu\Module\NPC\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
 use Stu\Module\NPC\Action\RenameBuildplan;
 use Stu\Module\NPC\Action\SaveWelcomeMessage;
+use Stu\Module\NPC\Action\LogPlayerDetails;
 
 use function DI\autowire;
 
@@ -31,7 +34,8 @@ return [
         DeleteBuildplan::ACTION_IDENTIFIER => autowire(DeleteBuildplan::class),
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
         DeleteSpacecraft::ACTION_IDENTIFIER => autowire(DeleteSpacecraft::class),
-        SaveWelcomeMessage::ACTION_IDENTIFIER => autowire(SaveWelcomeMessage::class)
+        SaveWelcomeMessage::ACTION_IDENTIFIER => autowire(SaveWelcomeMessage::class),
+        LogPlayerDetails::ACTION_IDENTIFIER => autowire(LogPlayerDetails::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -39,6 +43,8 @@ return [
         ShowTools::VIEW_IDENTIFIER => autowire(ShowTools::class),
         ShowBuildplanCreator::VIEW_IDENTIFIER => autowire(ShowBuildplanCreator::class),
         ShowShipCreator::VIEW_IDENTIFIER => autowire(ShowShipCreator::class),
-        ShowNPCSettings::VIEW_IDENTIFIER => autowire(ShowNPCSettings::class)
+        ShowNPCSettings::VIEW_IDENTIFIER => autowire(ShowNPCSettings::class),
+        ShowPlayerList::VIEW_IDENTIFIER => autowire(ShowPlayerList::class),
+        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class)
     ]
 ];

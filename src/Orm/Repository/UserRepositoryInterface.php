@@ -102,6 +102,11 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getNonNpcList(): array;
 
     /**
+     * @return array<User>
+     */
+    public function getNonNpcListbyFaction(int $factionid): array;
+
+    /**
      * Returns the game's default fallback user item
      */
     public function getFallbackUser(): User;
