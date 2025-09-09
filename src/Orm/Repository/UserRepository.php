@@ -378,6 +378,23 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[Override]
+
+    public function getNonNpcListbyFaction(int $factionid): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id >= :firstUserId AND u.faction_id = :factionid ORDER BY u.id ASC',
+                User::class
+            )
+        )->setParameters(
+            [
+                'firstUserId' => UserConstants::USER_FIRST_ID,
+                'factionid' => $factionid
+            ]
+        )->getResult();
+    }
+
+    #[Override]
     public function getFallbackUser(): User
     {
         $user = $this->find(UserConstants::USER_NOONE);

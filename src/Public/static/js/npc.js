@@ -44,6 +44,40 @@ function switchNpcLog(logType) {
     }
 }
 
+function showNPCMemberRumpInfo(obj, userid, rumpid) {
+    var pos = findObject(obj);
+    updatePopup('/npc/?SHOW_MEMBER_RUMP_INFO=1&userid=' + userid + '&rumpid=' + rumpid,
+        900, pos[0] - 400, pos[1]
+    );
+}
+
+function showPlayerDetails(userId) {
+    const reasonInput = document.getElementById('reason-' + userId);
+    const reason = reasonInput.value.trim();
+
+    if (!reason) {
+        alert('Bitte gib einen Grund für die Einsicht an.');
+        return;
+    }
+    document.getElementById('detailsForm-' + userId).style.display = 'none';
+
+    document.getElementById('playerDetails-' + userId).style.display = 'block';
+    document.getElementById('playerColonies-' + userId).style.display = 'flex';
+    document.getElementById('playerShips-' + userId).style.display = 'block';
+    fetch('/npc/index.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'B_LOG_PLAYER_DETAILS=1&userId=' + userId + '&reason=' + encodeURIComponent(reason)
+    })
+        .catch(error => {
+            console.error('Fehler beim Protokollieren des Zugriffs:', error);
+        });
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     initNpcLogData();
 });
