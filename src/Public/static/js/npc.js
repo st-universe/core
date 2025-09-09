@@ -1,3 +1,46 @@
+function loadPlayerDetails(userId) {
+    const reasonInput = document.getElementById('reason-' + userId);
+    const reason = reasonInput.value.trim();
+
+    if (!reason) {
+        alert('Bitte gib einen Grund für die Einsicht an.');
+        return;
+    }
+
+    document.getElementById('detailsForm-' + userId).style.display = 'none';
+
+    document.getElementById('playerDetailsInfo-' + userId).style.display = 'block';
+    document.getElementById('playerColonies-' + userId).style.display = 'block';
+    document.getElementById('playerShips-' + userId).style.display = 'block';
+
+    fetch('/npc/?SHOW_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason))
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const columns = tempDiv.querySelector('div').children;
+
+            document.getElementById('playerDetailsInfo-' + userId).innerHTML = columns[0].innerHTML;
+            document.getElementById('playerColonies-' + userId).innerHTML = columns[1].innerHTML;
+            document.getElementById('playerShips-' + userId).innerHTML = columns[2].innerHTML;
+
+            fetch('/npc/index.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'B_LOG_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason)
+            })
+                .catch(error => {
+                    console.error('Fehler beim Protokollieren des Zugriffs:', error);
+                });
+        })
+        .catch(error => {
+            console.error('Fehler beim Laden der Spielerdetails:', error);
+        });
+}
+
 function initNpcLogData() {
     var logContainer = document.getElementById('npcLogContainer');
     if (logContainer) {
@@ -69,7 +112,7 @@ function showPlayerDetails(userId) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'B_LOG_PLAYER_DETAILS=1&userId=' + userId + '&reason=' + encodeURIComponent(reason)
+        body: 'B_LOG_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason)
     })
         .catch(error => {
             console.error('Fehler beim Protokollieren des Zugriffs:', error);

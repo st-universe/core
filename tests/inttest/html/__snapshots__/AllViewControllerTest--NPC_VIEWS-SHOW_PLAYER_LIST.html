@@ -81,8 +81,8 @@
     </a>
 </div>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='npc/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
-    <a class="navitem_link" href="npc/?SHOW_PLAYER_LIST=1">
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_PLAYER_LIST=1">
         <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="User">
         <div class="navitem_title">User</div>
     </a>
@@ -105,233 +105,148 @@
 <script src="/static/js/ally.js"></script>
 <script src="/static/js/npc.js"></script>
 <div class="userList">
-                <div class="userListItem" style="width: 100% !important; max-width: 100% !important; grid-template-columns: minmax(300px, 25%) minmax(200px, 25%) auto !important; display: grid !important;">
-        <div style="display: flex; flex-direction: row;">
-            <div style="margin-right: 10px;">
-                <div class="userAvatar">
+                <div class="userListItem" style="width: 100% !important; max-width: 100% !important;">
+        <div style="display: grid; grid-template-columns: 300px 1fr 1fr; width: 100%;">
+            <div>
+                <div style="display: flex; flex-direction: row;">
+                    <div style="margin-right: 10px;">
+                        <div class="userAvatar">
     <a href="/userprofile.php?uid=101">
                 <img src="/assets/rassen//1kn.png" title="Siedler 101">
             </a>
 </div>
 
-            </div>
-            <div>
-                <div class="userListItemName">
-                    Siedler 101 (101)
+                    </div>
+                    <div>
+                        <div class="userListItemName">
+                            Siedler 101 (101)
 <img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
 
-                </div>
-                <div class="userListItemAllianceName">
-                                                            <a href="/alliance.php?id=2">testally</a>
-                                    </div>
-                <div class="userListItemButtons">
-                    <img src="/assets/rassen/1s.png">
-                    <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                        </div>
+                        <div class="userListItemAllianceName">
+                                                                                    <a href="/alliance.php?id=2">testally</a>
+                                                    </div>
+                        <div class="userListItemButtons">
+                            <img src="/assets/rassen/1s.png">
+                            <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
 
-                    
-                </div>
-                <div class="userBoxDetailAddendum">
-                    <div>
-                        Spielt seit: 10.11.2024 15:44
-                    </div>
-                    <div class="player-details-form" id="detailsForm-101">
-                        <div style="margin: 10px 0;">
-                            <label for="reason-101">Grund f&uuml;r Einsicht:</label>
-                            <input type="text" id="reason-101" name="reason" size="20" required>
-                            <input type="submit" class="button" value="Details anzeigen" onclick="showPlayerDetails(101)">
+                            
                         </div>
-                    </div>
-                    <div class="player-details" id="playerDetails-101" style="display: none;">
-                        <div>
-                            <img title="Zuletzt online" src="/assets/buttons/time.png">
-                            21.07.2394 11:30
-                        </div>
-                        <div>
-                            <img src="/assets/navigation/menu_ships0.png" height="20" width="20" title="Crew auf Schiffen/Stationen">
-                            <span>34</span> / <span>10</span>
-                            <img src="/assets/bev/bev_free_5_1.png" height="20" width="20" title="globales Crewlimit">
-                        </div>
-                        <div>STATUS:
-                            <span style="color: greenyellow;">AKTIV</span>
+                        <div class="userBoxDetailAddendum">
+                            <div>
+                                Spielt seit: 10.11.2024 15:44
+                            </div>
+                            <div class="player-details-form" id="detailsForm-101">
+                                <div style="margin: 10px 0;">
+                                    <label for="reason-101">Grund f&uuml;r Einsicht:</label>
+                                    <input type="text" id="reason-101" name="reason" size="20" required>
+                                    <input type="button" class="button" value="Details laden" onclick="loadPlayerDetails(101)">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div id="playerDetailsInfo-101" style="padding-left: 58px; display: none;"></div>
             </div>
+            <div id="playerColonies-101" style="display: none;"></div>
+            <div id="playerShips-101" style="display: none; width: 1000px"></div>
         </div>
-        <div id="playerColonies-101" class="player-colonies player-details-section" style="display: none; flex-wrap: wrap; align-items: center; padding-left: 10px;">
-                                                
-            <img src="/assets/planets/201.png" title="Kolonieinformationen: Stempor'Arr 4
-Koordinaten: 7|11
-System: Stempor'Arr-System (7|8)" style="margin: 2px;">
-                    </div>
-        <div id="playerShips-101" class="player-ships player-details-section" style="display: none; padding-left: 10px;">
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                2 Energienetz<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 101, 9);">
-                    <img src="/assets/ships/9.png" title="Energienetz (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                1 Workbee<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 101, 161);">
-                    <img src="/assets/ships/161.png" title="Workbee (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                4 Tholianisches Netzschiff<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 101, 3107);">
-                    <img src="/assets/ships/3107.png" title="Tholianisches Netzschiff (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                4 Aerie<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 101, 6501);">
-                    <img src="/assets/ships/6501.png" title="Aerie (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                1 Au&szlig;enposten<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 101, 10053);">
-                    <img src="/assets/ships/10053.png" title="Au&szlig;enposten (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                    </div>
     </div>
-                <div class="userListItem" style="width: 100% !important; max-width: 100% !important; grid-template-columns: minmax(300px, 25%) minmax(200px, 25%) auto !important; display: grid !important;">
-        <div style="display: flex; flex-direction: row;">
-            <div style="margin-right: 10px;">
-                <div class="userAvatar">
+                <div class="userListItem" style="width: 100% !important; max-width: 100% !important;">
+        <div style="display: grid; grid-template-columns: 300px 1fr 1fr; width: 100%;">
+            <div>
+                <div style="display: flex; flex-direction: row;">
+                    <div style="margin-right: 10px;">
+                        <div class="userAvatar">
     <a href="/userprofile.php?uid=102">
                 <img src="/assets/rassen//1kn.png" title="Siedler 102">
             </a>
 </div>
 
-            </div>
-            <div>
-                <div class="userListItemName">
-                    Siedler 102 (102)
+                    </div>
+                    <div>
+                        <div class="userListItemName">
+                            Siedler 102 (102)
 <img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
 
-                </div>
-                <div class="userListItemAllianceName">
-                                                            <span>-</span>
-                                    </div>
-                <div class="userListItemButtons">
-                    <img src="/assets/rassen/1s.png">
-                    <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                        </div>
+                        <div class="userListItemAllianceName">
+                                                                                    <span>-</span>
+                                                    </div>
+                        <div class="userListItemButtons">
+                            <img src="/assets/rassen/1s.png">
+                            <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
 
-                    <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                            <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
 
-                </div>
-                <div class="userBoxDetailAddendum">
-                    <div>
-                        Spielt seit: 10.11.2024 15:47
-                    </div>
-                    <div class="player-details-form" id="detailsForm-102">
-                        <div style="margin: 10px 0;">
-                            <label for="reason-102">Grund f&uuml;r Einsicht:</label>
-                            <input type="text" id="reason-102" name="reason" size="20" required>
-                            <input type="submit" class="button" value="Details anzeigen" onclick="showPlayerDetails(102)">
                         </div>
-                    </div>
-                    <div class="player-details" id="playerDetails-102" style="display: none;">
-                        <div>
-                            <img title="Zuletzt online" src="/assets/buttons/time.png">
-                            21.07.2394 11:30
-                        </div>
-                        <div>
-                            <img src="/assets/navigation/menu_ships0.png" height="20" width="20" title="Crew auf Schiffen/Stationen">
-                            <span>0</span> / <span>0</span>
-                            <img src="/assets/bev/bev_free_5_1.png" height="20" width="20" title="globales Crewlimit">
-                        </div>
-                        <div>STATUS:
-                            <span style="color: greenyellow;">AKTIV</span>
+                        <div class="userBoxDetailAddendum">
+                            <div>
+                                Spielt seit: 10.11.2024 15:47
+                            </div>
+                            <div class="player-details-form" id="detailsForm-102">
+                                <div style="margin: 10px 0;">
+                                    <label for="reason-102">Grund f&uuml;r Einsicht:</label>
+                                    <input type="text" id="reason-102" name="reason" size="20" required>
+                                    <input type="button" class="button" value="Details laden" onclick="loadPlayerDetails(102)">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div id="playerDetailsInfo-102" style="padding-left: 58px; display: none;"></div>
             </div>
+            <div id="playerColonies-102" style="display: none;"></div>
+            <div id="playerShips-102" style="display: none; width: 1000px"></div>
         </div>
-        <div id="playerColonies-102" class="player-colonies player-details-section" style="display: none; flex-wrap: wrap; align-items: center; padding-left: 10px;">
-                    </div>
-        <div id="playerShips-102" class="player-ships player-details-section" style="display: none; padding-left: 10px;">
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                1 Aerie<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 102, 6501);">
-                    <img src="/assets/ships/6501.png" title="Aerie (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                1 Au&szlig;enposten<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 102, 10053);">
-                    <img src="/assets/ships/10053.png" title="Au&szlig;enposten (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                    </div>
     </div>
-                <div class="userListItem" style="width: 100% !important; max-width: 100% !important; grid-template-columns: minmax(300px, 25%) minmax(200px, 25%) auto !important; display: grid !important;">
-        <div style="display: flex; flex-direction: row;">
-            <div style="margin-right: 10px;">
-                <div class="userAvatar">
+                <div class="userListItem" style="width: 100% !important; max-width: 100% !important;">
+        <div style="display: grid; grid-template-columns: 300px 1fr 1fr; width: 100%;">
+            <div>
+                <div style="display: flex; flex-direction: row;">
+                    <div style="margin-right: 10px;">
+                        <div class="userAvatar">
     <a href="/userprofile.php?uid=103">
                 <img src="/assets/rassen//1kn.png" title="User with Coloship">
             </a>
 </div>
 
-            </div>
-            <div>
-                <div class="userListItemName">
-                    User with Coloship (103)
+                    </div>
+                    <div>
+                        <div class="userListItemName">
+                            User with Coloship (103)
 <img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
 
-                </div>
-                <div class="userListItemAllianceName">
-                                                            <span>-</span>
-                                    </div>
-                <div class="userListItemButtons">
-                    <img src="/assets/rassen/1s.png">
-                    <a href="/userprofile.php?uid=103" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                        </div>
+                        <div class="userListItemAllianceName">
+                                                                                    <span>-</span>
+                                                    </div>
+                        <div class="userListItemButtons">
+                            <img src="/assets/rassen/1s.png">
+                            <a href="/userprofile.php?uid=103" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
 
-                    <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 103, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                            <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 103, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
 
-                </div>
-                <div class="userBoxDetailAddendum">
-                    <div>
-                        Spielt seit: 19.07.2009 20:45
-                    </div>
-                    <div class="player-details-form" id="detailsForm-103">
-                        <div style="margin: 10px 0;">
-                            <label for="reason-103">Grund f&uuml;r Einsicht:</label>
-                            <input type="text" id="reason-103" name="reason" size="20" required>
-                            <input type="submit" class="button" value="Details anzeigen" onclick="showPlayerDetails(103)">
                         </div>
-                    </div>
-                    <div class="player-details" id="playerDetails-103" style="display: none;">
-                        <div>
-                            <img title="Zuletzt online" src="/assets/buttons/time.png">
-                            21.07.2394 11:30
-                        </div>
-                        <div>
-                            <img src="/assets/navigation/menu_ships0.png" height="20" width="20" title="Crew auf Schiffen/Stationen">
-                            <span>0</span> / <span>0</span>
-                            <img src="/assets/bev/bev_free_5_1.png" height="20" width="20" title="globales Crewlimit">
-                        </div>
-                        <div>STATUS:
-                            <span style="color: #dddddd;">KOLONISATIONS SCHIFF</span>
+                        <div class="userBoxDetailAddendum">
+                            <div>
+                                Spielt seit: 19.07.2009 20:45
+                            </div>
+                            <div class="player-details-form" id="detailsForm-103">
+                                <div style="margin: 10px 0;">
+                                    <label for="reason-103">Grund f&uuml;r Einsicht:</label>
+                                    <input type="text" id="reason-103" name="reason" size="20" required>
+                                    <input type="button" class="button" value="Details laden" onclick="loadPlayerDetails(103)">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div id="playerDetailsInfo-103" style="padding-left: 58px; display: none;"></div>
             </div>
+            <div id="playerColonies-103" style="display: none;"></div>
+            <div id="playerShips-103" style="display: none; width: 1000px"></div>
         </div>
-        <div id="playerColonies-103" class="player-colonies player-details-section" style="display: none; flex-wrap: wrap; align-items: center; padding-left: 10px;">
-                    </div>
-        <div id="playerShips-103" class="player-ships player-details-section" style="display: none; padding-left: 10px;">
-                        <div style="display: inline-block; padding-left: 10px; text-align: center; margin-bottom: 5px;">
-                1 Aerie<br>
-                <a href="javascript:void(0);" onclick="showNPCMemberRumpInfo(this, 103, 6501);">
-                    <img src="/assets/ships/6501.png" title="Aerie (Klick f&uuml;r Details)">
-                </a>
-            </div>
-                    </div>
     </div>
     </div>
             </div>

@@ -19,6 +19,7 @@ use Stu\Module\NPC\Action\DeleteSpacecraft;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
 use Stu\Module\NPC\View\ShowPlayerList\ShowPlayerList;
 use Stu\Module\NPC\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
+use Stu\Module\NPC\View\ShowPlayerDetails\ShowPlayerDetails;
 use Stu\Module\NPC\Action\RenameBuildplan;
 use Stu\Module\NPC\Action\SaveWelcomeMessage;
 use Stu\Module\NPC\Action\LogPlayerDetails;
@@ -45,6 +46,7 @@ return [
         ShowShipCreator::VIEW_IDENTIFIER => autowire(ShowShipCreator::class),
         ShowNPCSettings::VIEW_IDENTIFIER => autowire(ShowNPCSettings::class),
         ShowPlayerList::VIEW_IDENTIFIER => autowire(ShowPlayerList::class),
+        ShowPlayerDetails::VIEW_IDENTIFIER => autowire(ShowPlayerDetails::class),
         ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class)
     ]
 ];
