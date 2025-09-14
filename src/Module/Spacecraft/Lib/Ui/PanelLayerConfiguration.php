@@ -10,6 +10,7 @@ use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLa
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
@@ -21,7 +22,10 @@ class PanelLayerConfiguration
 {
     use LayerExplorationTrait;
 
-    public function __construct(private UserMapRepositoryInterface $userMapRepository) {}
+    public function __construct(
+        private readonly UserMapRepositoryInterface $userMapRepository,
+        private readonly StuTime $stuTime
+    ) {}
 
     public function configureLayers(
         PanelLayerCreationInterface $panelLayerCreation,
@@ -102,8 +106,8 @@ class PanelLayerConfiguration
             return;
         }
 
-        $flightSig = $subspaceSystemData->getHighlightedFlightSig($wrapper->get());
-        if ($flightSig) {
+        $flightSig = $subspaceSystemData->getHighlightedFlightSig($this->stuTime->time());
+        if ($flightSig !== null) {
             $spacecraftId = $flightSig->getShipId();
             $rumpId = $flightSig->getRump()->getId();
             $panelLayerCreation->addSpacecraftSignatureLayer($spacecraftId, $rumpId);

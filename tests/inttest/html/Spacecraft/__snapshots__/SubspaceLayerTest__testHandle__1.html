@@ -1,0 +1,3607 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/lib/Sortable.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.js"></script>
+    <script src="/static/js/default.js"></script>
+    <script src="/static/js/colony.js"></script>
+    <script src="/static/js/comm.js"></script>
+    <script src="/static/js/database.js"></script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/ship.js"></script>
+    <script src="/static/js/shipmanagement.js"></script>
+    <script src="/static/js/spacecraft.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/station.js"></script>
+    <script src="/static/js/trade.js"></script>
+    <script src="/static/js/tutorial.js"></script>
+    <title></title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+</head>
+
+<body onload="startUp();">
+    <div id="popupWindow" class="popup" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+<script>
+    appendJsAsync('/static/js/popup.js');
+</script>
+    <div class="container">
+                <div class="header">
+            <div id="GAME_USER_PROFILE">
+    </div>
+            <div id="GAME_PM_NAVLET">
+    </div>
+            <div id="GAME_RESEARCH_NAVLET">
+    </div>
+            <div id="GAME_COLONIES_NAVLET">
+    </div>
+            <div id="GAME_NAGUS_POPUP">
+    </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+                    <div>
+                        <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                        <div style="margin-top: 5px">Einstellungen</div>
+                    </div>
+                </a>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                <div id="GAME_NAVIGATION">
+    </div>
+                <div id="GAME_SERVERTIME">
+    </div>
+            </div>
+            <div id="innerContent" class="innerContent">
+                
+
+
+
+    <meta charset="utf-8">
+
+
+
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="ship.php">
+            Schiffe
+        </a>
+                <span> / </span>
+                        <a href="?SHOW_SPACECRAFT=1&amp;id=102102">
+            Aerie mit Subraumfelderscanner
+        </a>
+                    </div>
+</div>
+<br>
+<script>
+            setSpacecraftIdAndSstr(102102, 'MOCKED_SESSIONSTRING');
+        </script>
+
+<div id="result" style="display: none;">..</div>
+
+<form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
+	<input type="hidden" name="id" value="102102">
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+	<table class="tcal">
+		<tr>
+			<th style="text-align: center;">Typ</th>
+			<th></th>
+			<th style="text-align: center;" title="im System">Koordinaten <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;" title="aktuell/maximal">H&uuml;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
+				<img src="/assets/buttons/info2.png" style="height:16px;">
+			</th>
+						<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
+				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(this, 102102);">
+				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;">Batterie</th>
+			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
+</th>
+			<th style="text-align: center;">Name</th>
+			<td rowspan="3" style="text-align: center;">
+								<a href="javascript:void(0);" onclick="showSelfdestructWindow(this, 102102);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
+					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerst&ouml;rung">
+				</a>
+											</td>
+		</tr>
+		<tr>
+						<td style="" rowspan="2" class="shipimage">
+				<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
+					<img src="/assets/ships/6501.png" title="Aerie">
+
+				</a>
+			</td>
+			<td style="text-align: center;">
+								<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
+							</td>
+			<td style="text-align: center;">
+				7|13
+			</td>
+			<td style="text-align: center;">
+				819/819
+			</td>
+			<td style="text-align: center;">
+								<span>819/819</span>
+				  </td>
+								<td style="text-align: center;">
+								57/58
+				<span id="effectiveWarpdrive"></span>
+							</td>
+<td style="text-align: center;">
+								107/108
+								<span id="effectiveEps"></span>
+												(<span class="neg">17</span>/<span class="neg" id="reactorUsage">0</span>)
+							</td>
+			<td style="text-align: center;">
+								<span>36</span>
+							</td>
+			<td style="text-align: center;">
+												<span style="color: red;">0</span>
+				(11,18)
+			</td>
+			<td style="text-align: center;">
+				<input type="text" name="shipname" size="25" value="Aerie mit Subraumfelderscanner" onkeydown="event.key == 'Enter' &amp;&amp; $('changeshipnamebutton').click()">
+				<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME" value="&auml;ndern">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=102102" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie mit Subraumfelderscanner',
+'id=102102',
+'ship.php'); event.preventDefault();}
+updateSelectedSpacecraftId('102102');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
+					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
+				</a>
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails(this, 102102);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
+				</a>
+				<a href="javascript:void(0);" onclick="showCommunication(this, 102102);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
+				</a>
+								<a href="javascript:void(0);" onclick="showLSSFilter(this);" onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
+					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermen&uuml; &ouml;ffnen" name="actlss">
+				</a>
+												<a href="javascript:void(0);" onclick="openStarMap(this,102102);" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
+					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap">
+				</a>
+								<a href="?B_STANDBY=1&amp;id=102102&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
+					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown">
+				</a>
+							</td>
+			<td colspan="2">
+								<img style="margin-right: 5px;" src="/assets/commodities/10102.png" title="Monotanium-H&uuml;llenpanzerung (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10202.png" title="Elektromagnetische-Schilde (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/11902.png" title="Computer (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10403.png" title="Impulsantrieb (Klasse 3)"><img style="margin-right: 5px;" src="/assets/commodities/10602.png" title="Sensorenphalanx (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10912.png" title="F&ouml;derations Warpantrieb (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10502.png" title="Warpkern (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10302.png" title="EPS-Gitter (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10702.png" title="F&ouml;derations Phaser (Klasse 2)">							</td>
+			<td colspan="5">
+				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Strahlenwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Warpantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/10.png"><img title="Subraumfeldsensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/18.png"><img title="Matrixsensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/19.png">			</td>
+		</tr>
+	</table>
+	<br>
+	<table style="width: 100%;">
+				<tr>
+			<td style="width: 33%; vertical-align: top;">
+				
+
+<div style="float:left; padding-bottom:5px;">
+    <table class="lssarea" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align: center; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+                <a href="?B_DEACTIVATE_SYSTEM=1&amp;id=102102&amp;type=LSS&amp;sstr=MOCKED_SESSIONSTRING" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                1
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                2
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                3
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                4
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                5
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                6
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                7
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                8
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                9
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                10
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                11
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                12
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                13
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                14
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                15
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                16
+            </td>
+                        <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
+                17
+            </td>
+                    </tr>
+        
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">3</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0301.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0302.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0303.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0304.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0305.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0306.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,3);">
+            
+
+
+<img src="/assets/map/starmap/0307.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0308.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0309.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0310.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0311.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0312.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0313.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0314.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0315.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0316.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0317.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">4</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0401.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0402.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0403.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0110.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0404.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0405.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1001.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0406.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,4);">
+            
+
+
+<img src="/assets/map/starmap/0407.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0408.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0409.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0410.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0411.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0412.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0413.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0414.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0415.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0416.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0417.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">5</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0501.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0502.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0503.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0504.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0505.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0506.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,5);">
+            
+
+
+<img src="/assets/map/starmap/0507.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0508.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0509.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0510.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0511.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0512.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0513.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0514.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0515.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0516.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0517.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">6</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0601.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0602.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0603.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0011.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0604.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/415.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0605.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000605.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1100.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0606.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000606.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,6);">
+            
+
+
+<img src="/assets/map/starmap/0607.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000607.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0608.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0609.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0610.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0611.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0612.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0613.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0614.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0615.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0616.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0617.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">7</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0701.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0702.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0703.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0704.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0705.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000725.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0706.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000726.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,7);">
+            
+
+
+<img src="/assets/map/starmap/0707.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000727.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0708.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0709.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0710.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+<div style="font-size: 0.9vw; z-index: 7;" class="centered">1</div>
+<img src="/assets/map/starmap/0711.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/203.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0712.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/413.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0713.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0714.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0715.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0716.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0717.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">8</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0801.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0802.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0803.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/223.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0804.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+<div style="font-size: 0.9vw; z-index: 7;" class="centered">1</div>
+<img src="/assets/map/starmap/0805.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000845.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0806.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000846.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,8);">
+            
+
+<div style="font-size: 0.9vw; z-index: 7;" class="centered">17</div>
+<img src="/assets/map/starmap/0807.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/13000847.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0808.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0809.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0810.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0811.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0812.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0813.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0814.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0815.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0816.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0817.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">9</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0901.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0902.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0903.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0904.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0905.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/0906.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,9);">
+            
+
+
+<img src="/assets/map/starmap/0907.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0908.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0909.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0910.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0911.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0912.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0913.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0914.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0915.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0916.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/0917.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">10</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1001.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1002.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1003.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1004.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1005.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0211.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0110.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1006.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,10);">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1007.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1100.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1100.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1008.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1009.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1010.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106001.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1011.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106002.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1012.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106003.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1100.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1100.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1013.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106004.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1014.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1015.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1016.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1017.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">11</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1101.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1102.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1103.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1104.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1105.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0112.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0011.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1106.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,11);">
+            <img src="/assets/subspace/generated/1000.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1000.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+<div style="font-size: 0.9vw; z-index: 7;" class="centered">3</div>
+<img src="/assets/map/starmap/1107.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/201.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0101.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1108.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1109.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1110.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106005.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1111.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106006.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1112.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106007.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0101.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1113.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106008.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1114.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1115.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1116.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1117.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">12</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1201.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1202.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1203.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1204.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1205.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/1206.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,12);">
+            
+
+
+<img src="/assets/map/starmap/1207.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0101.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1208.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1209.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1210.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106009.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1211.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106010.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1212.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106011.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/0101.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0101.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1213.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106012.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1214.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1215.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1216.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1217.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">13</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(1,13);">
+            
+
+
+<img src="/assets/map/starmap/1301.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(2,13);">
+            
+
+
+<img src="/assets/map/starmap/1302.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(3,13);">
+            
+
+
+<img src="/assets/map/starmap/1303.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(4,13);">
+            
+
+
+<img src="/assets/map/starmap/1304.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(5,13);">
+            <img src="/assets/subspace/generated/0010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/1305.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(6,13);">
+            <img src="/assets/subspace/generated/1011.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+
+<img src="/assets/map/starmap/1306.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss_current" style="border:1px solid #9b9b9b; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            <img src="/assets/subspace/generated/1000.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+
+<div style="font-size: 0.9vw; z-index: 7;" class="centered">1</div>
+<img src="/assets/map/starmap/1307.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(8,13);">
+            <img src="/assets/subspace/generated/0011.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/0011.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1308.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(9,13);">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1309.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(10,13);">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1310.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106013.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(11,13);">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1311.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106014.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(12,13);">
+            <img src="/assets/subspace/generated/1010.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1010.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1312.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106015.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(13,13);">
+            <img src="/assets/subspace/generated/1001.png" class="visualPanelLayer" style="z-index: 5; height: 1.7vw; width: 1.7vw;">
+<img src="/assets/subspace/generated/1001.png" class="visualPanelLayer inverted" style="z-index: 6; height: 1.7vw; width: 1.7vw;">
+
+<img src="/assets/map/starmap/1313.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/106016.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(14,13);">
+            
+
+
+<img src="/assets/map/starmap/1314.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(15,13);">
+            
+
+
+<img src="/assets/map/starmap/1315.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(16,13);">
+            
+
+
+<img src="/assets/map/starmap/1316.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(17,13);">
+            
+
+
+<img src="/assets/map/starmap/1317.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">14</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1401.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1402.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1403.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1404.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1405.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1406.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,14);">
+            
+
+
+<img src="/assets/map/starmap/1407.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1408.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1409.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1410.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1411.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1412.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1413.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1414.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1415.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1416.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1417.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/703.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">15</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1501.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1502.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1503.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1504.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1505.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1506.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/702.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,15);">
+            
+
+
+<img src="/assets/map/starmap/1507.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/701.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1508.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1509.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1510.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1511.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1512.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1513.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1514.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1515.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1516.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1517.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">16</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1601.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1602.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1603.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1604.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1605.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1606.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,16);">
+            
+
+
+<img src="/assets/map/starmap/1607.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1608.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1609.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1610.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1611.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1612.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1613.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1614.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1615.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1616.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1617.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">17</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1701.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1702.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1703.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1704.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1705.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1706.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,17);">
+            
+
+
+<img src="/assets/map/starmap/1707.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1708.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1709.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1710.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1711.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1712.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1713.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1714.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1715.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1716.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1717.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">18</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1801.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1802.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1803.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1804.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1805.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1806.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,18);">
+            
+
+
+<img src="/assets/map/starmap/1807.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1808.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1809.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1810.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1811.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1812.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1813.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1814.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1815.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1816.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1817.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">19</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1901.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1902.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1903.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1904.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1905.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1906.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,19);">
+            
+
+
+<img src="/assets/map/starmap/1907.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1908.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1909.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1910.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1911.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1912.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1913.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1914.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/413.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1915.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/211.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1916.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/1917.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">20</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2001.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2002.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2003.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2004.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2005.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2006.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,20);">
+            
+
+
+<img src="/assets/map/starmap/2007.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2008.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/431.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2009.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2010.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2011.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2012.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2013.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2014.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2015.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2016.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2017.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">21</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2101.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2102.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2103.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2104.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2105.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2106.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,21);">
+            
+
+
+<img src="/assets/map/starmap/2107.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/231.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2108.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2109.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2110.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2111.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2112.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2113.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/215.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2114.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2115.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2116.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2117.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+<tr>
+    <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">22</td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2201.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2202.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2203.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2204.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2205.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2206.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,22);">
+            
+
+
+<img src="/assets/map/starmap/2207.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2208.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2209.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2210.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2211.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2212.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2213.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2214.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2215.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2216.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+        <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
+                <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
+            
+
+
+<img src="/assets/map/starmap/2217.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+
+        </div>
+            </td>
+    </tr>
+    </table>
+</div>
+<div style="float:left; margin-left:5px;">
+    <table class="tcal">
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_UP');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen">
+                </a>
+                            </td>
+        </tr>
+        <tr>
+            <td>
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_LEFT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png" title="Nach links fliegen">
+                </a>
+                            </td>
+            <td style="text-align: center; font-weight: bold;">
+                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp" style="text-align: center;" size="1" value="1">
+            </td>
+            <td>
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_RIGHT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_to1.png" title="Nach rechts fliegen">
+                </a>
+                            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center;">
+                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_DOWN');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_down1.png" title="Nach unten fliegen">
+                </a>
+                            </td>
+        </tr>
+    </table>
+</div>
+
+			</td>
+			<td style="vertical-align: top; width: 33%;">
+				
+
+<table id="schiffskontrolle" class="tcal">
+    <tr>
+                <th colspan="3">
+<img src="/assets/buttons/gefecht.png"> Schiffskontrolle</th>
+    </tr>
+    
+    
+<tr>
+    <td colspan="3">
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=102102&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser1');" onmouseout="cp('act_phaser','buttons/act_phaser2');">
+    <img src="/assets/buttons/act_phaser2.png" name="act_phaser"> Strahlenwaffe aktivieren</a>
+    </td>
+</tr>
+        
+<tr>
+    <td title="Subraumfeldsensoren Einstellungen" colspan="2">
+        <a href="javascript:void(0);" onclick="showSystemSettingsWindow(this, 'SUBSPACE_SCANNER');" onmouseover="cp('SUBSPACE_SCANNER','buttons/subspace2')" onmouseout="cp('SUBSPACE_SCANNER','buttons/subspace1')">
+            <img style="width: 20px;" src="/assets/buttons/subspace1.png" name="SUBSPACE_SCANNER">
+            Subraumfeldsensoren Einstellungen
+        </a>
+    </td>
+</tr>
+    
+    
+    
+    
+    
+    
+    
+                        
+    
+</table>
+<br>
+<table class="tcal">
+        <tr>
+        <th style="width: 50%;">Informationen</th>
+                        <th>Sternensystem</th>
+            </tr>
+    <tr>
+        <td>
+            <a href="javascript:void(0);" onclick="showSectorScanWindow(this);" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
+                <img src="/assets/buttons/lupe1.png" name="sectorScanButton">
+                <span>Sektor 7|13 scannen</span>
+            </a>
+                        <img src="/assets/buttons/map1.png">
+<span>System nicht kartographiert</span>
+
+            
+                                                                                                                                            </td>
+                <td>
+                                    <img src="/assets/map/systemtypes/1060.png" style="width: 15px; height: 15px;" title="Roter Zwerg">
+            <span>Stempor'Arr
+                (7|8)</span>
+                        <br>
+                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_LEAVE_STARSYSTEM', 'id=102102&amp;sstr=MOCKED_SESSIONSTRING');">
+                <img src="/assets/buttons/sysleave1.png" name="sysleave" title="System verlassen"> verlassen
+            </a>
+                                </td>
+            </tr>
+</table>
+
+			</td>
+			<td style="vertical-align: top; width: 33%;">
+				
+
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/warpk.png">
+            <span>Reaktor + Antrieb</span>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="/assets/buttons/warpk.png" title="Warpkern">
+            <span style="">810/810</span>
+            <input type="text" size="3" name="reactorload" id="reactorload" value="1" onkeydown="event.key == 'Enter' &amp;&amp; $('loadreactorbutton').click();">
+            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton">
+            <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
+        </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+                                
+    <tr>
+        <td style="width: 60%;">
+<img src="/assets/buttons/wkp2.png" style="width: 20px;" title="Zuwachs zum Warpdrive">
+            <span id="calculatedWarpDrive"></span>
+            <input type="range" min="0" max="100" value="100" id="warpdriveSplit" onchange="saveWarpCoreSplit(102102);" oninput="updateReactorValues();">
+            <img src="/assets/buttons/battp2.png" style="width: 20px;" title="Zuwachs zum EPS">
+            <span id="calculatedEPS"></span>
+        </td>
+        <td>
+            <div style="display: inline-block;" title="&Uuml;bersch&uuml;ssige Energie wird in anderen Speicher &uuml;bertragen">
+                                <img src="/assets/buttons/transfer.png" style="height:20px;">
+                <input type="checkbox" id="autoCarryOver" onchange="saveWarpCoreSplit(102102); updateReactorValues();">
+            </div>
+        </td>
+        <td style="width: 15%;">
+                        <input type="checkbox" id="fleetSplit" style="display: none;">
+                    </td>
+    </tr>
+
+
+            
+</table>
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie"> Ersatzbatterie
+            36 / 36
+        </th>
+    </tr>
+    <tr>
+                <td style="width: 60%;">
+            Einheiten
+            <input type="text" size="5" name="ebattload" id="ebattload" onkeydown="event.key == 'Enter' &amp;&amp; $('unloadBatteryButton').click()">
+            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton">
+            <input type="button" class="button" onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max">
+        </td>
+                <td>
+                    </td>
+        <td style="width: 15%;">
+                    </td>
+    </tr>
+</table>
+
+<br>
+
+			</td>
+		</tr>
+			</table>
+	<br>
+</form>
+<br>
+<table class="use" style="width: 250px;">
+  <tr>
+    <th>
+      <img onclick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum"> Lagerraum
+      0/155
+    </th>
+  </tr>
+  <tr>
+    <td>
+          </td>
+  </tr>
+</table>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+<script>
+            setReactorSplitConstants(54,17,2,1,57,58);
+                updateReactorValues(100);
+                updateComponent('GAME_PM_NAVLET', '/game.php?SHOW_COMPONENT=1&component=GAME_PM_NAVLET', 60000);
+                updateComponent('GAME_SERVERTIME', '/game.php?SHOW_COMPONENT=1&component=GAME_SERVERTIME', 300000);
+        </script>
+
+
+
+                <script>
+                    window.addEventListener("popstate", function (e) {
+                        window.location.reload();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

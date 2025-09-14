@@ -48,7 +48,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
     /** @return array<CellDataInterface> */
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, ?int $rumpId = null): array;
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, int $time, ResultSetMapping $rsm, ?int $rumpId = null): array;
 
     /** @return array<CellDataInterface> */
     public function getColonyShieldData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
@@ -72,7 +72,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
     /** @return array<CellDataInterface> */
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array;
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, int $time, ResultSetMapping $rsm): array;
 
     /**
      * @return array<int>
