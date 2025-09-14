@@ -34,7 +34,8 @@ final class VersionTestSpacecraft extends AbstractMigration
                     (1031, 103, 6501, 2324, \'Aerie 103 Colonizer\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204275),
                     (60001, 101, 9, 1840, \'Netz im Bau\', 819, 819, NULL, NULL, NULL, \'THOLIAN_WEB\', 204146),
                     (60002, 101, 9, 1840, \'Fertiges Netz\', 819, 819, NULL, NULL, NULL, \'THOLIAN_WEB\', 204147),
-                    (100001, 101, 161, 667, \'Workbee\', 81, 81, NULL, NULL, NULL, \'SHIP\', 15247);
+                    (100001, 101, 161, 667, \'Workbee\', 81, 81, NULL, NULL, NULL, \'SHIP\', 15247),
+                    (102102, 102, 6501, 2324, \'Aerie mit Subraumfelderscanner\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204403);
         ');
     }
 }

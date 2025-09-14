@@ -98,7 +98,15 @@ final class VersionTestSpacecraftSystem extends AbstractMigration
                        (1020304, 10203, 4, 11902, 100, 1, NULL, \'{"hitChance":68,"evadeChance":0,"isInEmergency":false,"flightDirection":0,"alertState":2}\'),
                        (1020305, 10203, 5, 10702, 100, 1, NULL, \'{"baseDamage":43}\'),
                        (1020308, 10203, 8, 10602, 100, 2, NULL, \'{"sensorRange":2,"mode":1}\'),
-                       (1020310, 10203, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\');
+                       (1020310, 10203, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\'),
+                       (10210201, 102102, 1, 10302, 100, 1, NULL, \'{"eps":107,"maxEps":108,"maxBattery":36,"battery":36,"batteryCooldown":0,"reloadBattery":false}\'),
+                       (10210203, 102102, 3, 10502, 100, 1, NULL, \'{"output":54,"load":810}\'),
+                       (10210204, 102102, 4, 11902, 100, 1, NULL, \'{"hitChance":68,"evadeChance":0,"isInEmergency":false,"flightDirection":0,"alertState":2}\'),
+                       (10210205, 102102, 5, 10702, 100, 1, NULL, \'{"baseDamage":43}\'),
+                       (10210208, 102102, 8, 10602, 100, 2, NULL, \'{"sensorRange":10,"mode":1}\'),
+                       (10210210, 102102, 10, 10912, 100, 1, NULL, \'{"wd":57,"maxwd":58,"split":100,"autoCarryOver":0}\'),
+                       (10210218, 102102, 18, 10912, 100, 3, NULL, \'{"flightSigId": 1, "spacecraftId": 77, "analyzeTime": 1732214048}\'),
+                       (10210219, 102102, 19, 10912, 100, 1, NULL, NULL);
         ');
     }
 }

@@ -313,9 +313,9 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     #[Override]
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, ResultSetMapping $rsm): array
+    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, int $time, ResultSetMapping $rsm): array
     {
-        $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+        $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sm.sx as x, sm.sy AS y, mft.effects as effects,
@@ -358,9 +358,9 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
     #[Override]
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, ResultSetMapping $rsm, ?int $rumpId = null): array
+    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, int $time, ResultSetMapping $rsm, ?int $rumpId = null): array
     {
-        $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+        $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
         $rumpId_condition = $rumpId !== null ? 'AND fs1.rump_id = :rumpId' : '';
         $rumpId_condition2 = $rumpId !== null ? 'AND fs2.rump_id = :rumpId' : '';

@@ -65,20 +65,17 @@ class SubspaceSystemData extends AbstractSystemData
         return $this;
     }
 
-    public function getHighlightedFlightSig(Spacecraft $spacecraft): ?FlightSignature
+    public function getHighlightedFlightSig(int $currentTime): ?FlightSignature
     {
-        $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if (!$isSubspaceScannerActive) {
-            return null;
-        }
+        $isSubspaceScannerActive = $this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
+        $isMatrixScannerHealthy = $this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
+        $subspaceSystem = $this->spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
 
-        $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
-        if (!$isMatrixScannerHealthy) {
-            return null;
-        }
-
-        $subspaceSystem = $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
-        if ($subspaceSystem->getData() === null) {
+        if (
+            !$isSubspaceScannerActive
+            || !$isMatrixScannerHealthy
+            || $subspaceSystem->getData() === null
+        ) {
             return null;
         }
 
@@ -87,20 +84,15 @@ class SubspaceSystemData extends AbstractSystemData
             return null;
         }
 
-        $currentTime = time();
         $minTime = $analyzeTime + (3 * 60);
         $maxTime = $analyzeTime + (10 * 60);
 
-        if (!($currentTime >= $minTime && $currentTime <= $maxTime)) {
+        if ($currentTime < $minTime || $currentTime > $maxTime) {
             return null;
         }
 
         $flightSigId = $this->getFlightSigId();
-        if ($flightSigId) {
-            $flightSig = $this->flightSignatureRepository->find($flightSigId);
-            return $flightSig;
-        } else {
-            return null;
-        }
+
+        return $flightSigId !== null ? $this->flightSignatureRepository->find($flightSigId) : null;
     }
 }

@@ -30,7 +30,8 @@ final class VersionTestShip extends AbstractMigration
                     (1026, NULL, NULL, 0),
                     (1031, NULL, NULL, 0),
                     (10203, NULL, NULL, 0),
-                    (100001, NULL, NULL, 0);
+                    (100001, NULL, NULL, 0),
+                    (102102, NULL, NULL, 0);
         ');
     }
 }
