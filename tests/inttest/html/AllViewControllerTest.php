@@ -105,6 +105,7 @@ class AllViewControllerTest extends TwigTestCase
     private function getUserId(string $key): int
     {
         return match ($key) {
+            'NPC_VIEWS-SHOW_PLAYER_DETAILS',
             'MAINDESK_VIEWS-SHOW_COLONYLIST' => 2,
             'SHIP_VIEWS-SHOW_COLONIZATION' => 103,
             default => 101
