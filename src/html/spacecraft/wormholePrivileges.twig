@@ -1,0 +1,27 @@
+<input type="hidden" id="wormhole_sstr" value="{{ SESSIONSTRING }}" />
+{% if RESTRICTIONS|length > 0 %}
+<table class="tcal">
+    <tr>
+        <th>Typ</th>
+        <th>Ziel</th>
+        <th>Modus</th>
+        <th>Aktion</th>
+    </tr>
+    {% for data in RESTRICTIONS %}
+    <tr>
+        <td>{{ data.getTypeName }}</td>
+        <td>{{ data.getTargetName|bbcode }}</td>
+        {% set class = data.isAllowed ? 'positive' : 'negative' %}
+        <td class="{{ class }}">
+            {{ data.getPrivilegeModeString }}
+        </td>
+        <td>
+            <a href="javascript:void(0);"
+                onclick="deleteWormholeRestriction({{ data.getId }}, {{ ENTRY_ID }}, '{{ SESSIONSTRING }}');">Entfernen</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<div>Keine Beschränkungen vorhanden.</div>
+{% endif %}

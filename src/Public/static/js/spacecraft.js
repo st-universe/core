@@ -217,6 +217,9 @@ function showRepairOptions(element, spacecraftid) {
 function analyseBuoy(element, buoyId) {
   updatePopupAtElement(element, `?SHOW_ANALYSE_BUOY=1&id=${spacecraftid}&buoyid=${buoyId}`);
 }
+function showWormholeControl(element) {
+  updatePopupAtElement(element, 'ship.php?SHOW_WORMHOLE_CONTROL=1&id=' + spacecraftid);
+}
 function showFightLog(element) {
   updatePopupAtElement(element, null);
   $("popupContent").innerHTML = $("fightlog").innerHTML;
@@ -460,6 +463,42 @@ function updateWarpSignatureCountdown() {
 
   setTimeout(updateWarpSignatureCountdown, 1000);
 }
+function addWormholeRestriction(entryId) {
+  // Das ist der Typ aus der Dropdown: 1=USER, 2=ALLIANCE, 3=FACTION
+  var typeValue = $('wormhole_type_' + entryId).value;
+  // Das ist das Ziel aus dem entsprechenden Input-Feld
+  var targetValue = $('whtarget_' + typeValue + '_' + entryId).value;
+  // Mode: 1=ALLOW, 2=DENY
+  var modeValue = $('whmode_' + entryId).value;
+  var sessionString = $('wormhole_sstr').value;
+
+  ajax_update(
+    'wormhole_restrictions_' + entryId,
+    'ship.php?B_ADD_WORMHOLE_RESTRICTION=1&id=' + spacecraftid +
+    "&entryId=" + entryId +
+    "&type=" + typeValue +
+    "&target=" + targetValue +
+    "&mode=" + modeValue +
+    "&sstr=" + sessionString
+  );
+}
+
+function deleteWormholeRestriction(restrictionId, entryId, sstr) {
+  if (!sstr) {
+    sstr = $('wormhole_sstr').value;
+  }
+
+  ajax_update(
+    'wormhole_restrictions_' + entryId,
+    'ship.php?B_DELETE_WORMHOLE_RESTRICTION=1&id=' + spacecraftid +
+    "&restrictionId=" + restrictionId +
+    "&entryId=" + entryId +
+    "&sstr=" + sstr
+  );
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
   initCommunicationObserver();
 

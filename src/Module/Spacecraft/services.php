@@ -70,6 +70,8 @@ use Stu\Module\Spacecraft\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Spacecraft\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Spacecraft\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Spacecraft\Action\WarpdriveBoost\WarpdriveBoost;
+use Stu\Module\Spacecraft\Action\AddWormholeRestriction\AddWormholeRestriction;
+use Stu\Module\Spacecraft\Action\DeleteWormholeRestriction\DeleteWormholeRestriction;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactory;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreator;
@@ -99,6 +101,8 @@ use Stu\Module\Spacecraft\View\ShowSpacecraftStorage\ShowSpacecraftStorage;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Spacecraft\View\ShowWasteMenu\ShowWasteMenu;
+use Stu\Module\Spacecraft\View\ShowWormholeControl\ShowWormholeControl;
+use Stu\Module\Spacecraft\View\ShowWormholeRestrictions\ShowWormholeRestrictions;
 use Stu\Module\Station\View\ShowStation\StationShowStrategy;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdown;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
@@ -274,6 +278,7 @@ return [
     ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
+    Lib\SpacecraftUiFactoryInterface::class => autowire(Lib\SpacecraftUiFactory::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
     SystemDamageInterface::class => autowire(SystemDamage::class),
     ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
@@ -417,6 +422,8 @@ return [
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
         SetLSSMode::ACTION_IDENTIFIER => autowire(SetLSSMode::class),
+        AddWormholeRestriction::ACTION_IDENTIFIER => autowire(AddWormholeRestriction::class),
+        DeleteWormholeRestriction::ACTION_IDENTIFIER => autowire(DeleteWormholeRestriction::class),
         BoardShip::ACTION_IDENTIFIER => autowire(BoardShip::class),
         StartTakeover::ACTION_IDENTIFIER => autowire(StartTakeover::class),
         StopTakeover::ACTION_IDENTIFIER => autowire(StopTakeover::class),
@@ -499,5 +506,7 @@ return [
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
         ShowWasteMenu::VIEW_IDENTIFIER => autowire(ShowWasteMenu::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+        ShowWormholeControl::VIEW_IDENTIFIER => autowire(ShowWormholeControl::class),
+        ShowWormholeRestrictions::VIEW_IDENTIFIER => autowire(ShowWormholeRestrictions::class),
     ],
 ];

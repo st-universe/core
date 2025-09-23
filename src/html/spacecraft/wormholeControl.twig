@@ -1,0 +1,124 @@
+<br />
+
+{% if WORMHOLE_ENTRIES|length == 0 %}
+<div class="box">
+    <div class="box_title">Keine Wurmlochverbindungen</div>
+    <div class="box_body">
+        An deiner aktuellen Position befinden sich keine Wurmlochverbindungen, die du kontrollieren kannst.
+    </div>
+</div>
+{% else %}
+<div>
+    {% for entry in WORMHOLE_ENTRIES %}
+    <div class="box">
+        <div class="box_title">Wurmlochverbindung {{ loop.index }}</div>
+        <div class="box_body">
+            <table class="tcal">
+                <tr>
+                    <th>Verbindung</th>
+                    <td>
+                        {% if entry.map %}
+                        Von: {{ entry.map.getCx }}|{{ entry.map.getCy }} (Karte)
+                        {% else %}
+                        Von: {{ entry.systemMap.getSx }}|{{ entry.systemMap.getSy }} (System: {{
+                        entry.systemMap.getSystem.getName }})
+                        {% endif %}
+                        <br />
+                        Zu: {% if entry.systemMap %}
+                        {{ entry.systemMap.getSx }}|{{ entry.systemMap.getSy }} (System: {{
+                        entry.systemMap.getSystem.getName }})
+                        {% else %}
+                        {{ entry.map.getCx }}|{{ entry.map.getCy }} (Karte)
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Typ</th>
+                    <td>
+                        {% if entry.type == 'BOTH' %}
+                        Bidirektional
+                        {% elseif entry.type.value == 'MAP -> W' %}
+                        Nur Eingang ins Wurmloch
+                        {% elseif entry.type.value == 'W -> MAP' %}
+                        Nur Ausgang aus dem Wurmloch
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Cooldown</th>
+                    <td>
+                        {% if entry.cooldown %}
+                        {{ entry.cooldown }} Minuten
+                        {% else %}
+                        Kein Cooldown
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+
+            <h3>Beschränkungen</h3>
+            <div id="wormhole_restrictions_{{ entry.id }}">
+                {% include 'html/spacecraft/wormholePrivileges.twig' with {
+                'ENTRY': entry,
+                'ENTRY_ID': entry.id,
+                'SESSIONSTRING': SESSIONSTRING,
+                'RESTRICTIONS': RESTRICTION_ITEMS_MAP[entry.id]
+                } %}
+            </div>
+
+            <h3>Neue Beschränkung hinzufügen</h3>
+            <table class="tcal">
+                <tr>
+                    <th colspan="2">Neuer Eintrag für Wurmloch {{ entry.id }}</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="wormhole_type_{{ entry.id }}" name="wormhole_type"
+                            onchange="$('wh_opt1_{{ entry.id }}').hide();$('wh_opt2_{{ entry.id }}').hide();$('wh_opt3_{{ entry.id }}').hide();$('wh_opt'+this.value+'_{{ entry.id }}').show();">
+                            <option value="1">Spieler</option>
+                            <option value="2">Allianz</option>
+                            <option value="3">Rasse</option>
+                        </select>
+                    </td>
+                    <td>
+                        <span id="wh_opt1_{{ entry.id }}">
+                            Spieler-ID: <input type="text" size="6" name="whtarget" id="whtarget_1_{{ entry.id }}" />
+                        </span>
+                        <span id="wh_opt2_{{ entry.id }}" style="display: none;">
+                            Allianz: <select name="whtarget" id="whtarget_2_{{ entry.id }}">
+                                {% for data in ALLIANCE_LIST %}
+                                <option value="{{ data.getId }}">
+                                    {{ data.getName|bbcode2txt }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                        <span id="wh_opt3_{{ entry.id }}" style="display: none;">
+                            Rasse: <select name="whtarget" id="whtarget_3_{{ entry.id }}">
+                                <option value="1">Föderation</option>
+                                <option value="2">Romulaner</option>
+                                <option value="3">Klingonen</option>
+                                <option value="4">Cardassianer</option>
+                                <option value="5">Ferengi</option>
+                            </select>
+                        </span>
+                        <select id="whmode_{{ entry.id }}">
+                            <option value="1">Erlauben</option>
+                            <option value="2">Verbieten</option>
+                        </select>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input class="button" type="button" value="Erstellen"
+                            onclick="addWormholeRestriction({{ entry.id }});" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br />
+    {% endfor %}
+</div>
+{% endif %}

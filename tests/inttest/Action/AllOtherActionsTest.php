@@ -97,6 +97,7 @@ class AllOtherActionsTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_ATTACK_BUILDING' => ['id' => 77, 'field' => 25],
             'SPACECRAFT_ACTIONS-B_ADVENT_DOOR' => ['target' => 1],
             'SPACECRAFT_ACTIONS-B_EASTER_EGG' => ['target' => 2],
+            'SPACECRAFT_ACTIONS-B_DELETE_WORMHOLE_RESTRICTION' => ['entryId' => 42, 'restrictionId' => 1],
             'SPACECRAFT_ACTIONS-B_SPLIT_REACTOR_OUTPUT' => ['fleet' => 0, 'autocarryover' => 1],
             'COLONY_ACTIONS-B_REMOVE_WASTE' => ['commodity' => [2 => 100, 4 => 100]],
             'COLONY_ACTIONS-B_CHANGE_TORPS' => ['torpid' => 0],

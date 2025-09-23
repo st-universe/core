@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %}
+canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, isAdmin) %}
 
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
@@ -268,6 +268,13 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
             <span>{{ starSystem.getName }}</span>
             <br />
             {% if location.getRandomWormholeEntry %}
+            {%if isAdmin %}
+            <a href="javascript:void(0);" onclick="showWormholeControl(this);"
+                onmouseover="cp('wormholePrivButton','buttons/wormh1')"
+                onmouseout="cp('wormholePrivButton','buttons/wormh2')" title="Wurmlochkontrolle">
+                <img src="/assets/buttons/wormh1.png" name="wormholePrivButton" />Wurmlochkontrolle</a>
+            </br />
+            {% endif %}
             <a href="javascript:void(0);"
                 onClick="actionToInnerContent('B_LEAVE_WORMHOLE', 'id={{ spacecraftId }}&sstr={{ SESSIONSTRING }}');">
                 <img src="/assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
@@ -327,6 +334,13 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance) %
         {% set wormholeEntry = location.getRandomWormholeEntry %}
         {% if wormholeEntry %}
         <td>
+            {%if isAdmin %}
+            <a href="javascript:void(0);" onclick="showWormholeControl(this);"
+                onmouseover="cp('wormholePrivButton','buttons/wormh1')"
+                onmouseout="cp('wormholePrivButton','buttons/wormh2')" title="Wurmlochkontrolle">
+                <img src="/assets/buttons/wormh1.png" name="wormholePrivButton" />Wurmlochkontrolle</a>
+            </br />
+            {% endif %}
             {{ wormholeEntry.getSystem.getName }}<br />
             {% if not SPACECRAFT.isWarped and not SPACECRAFT.isStation %}
             <a href="javascript:void(0);"

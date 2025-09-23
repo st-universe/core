@@ -202,8 +202,8 @@
 		<tr>
 			<td style="vertical-align: top; width: 33%;">
 				{% if FIRST_MANAGE_SHIP %}
-            	<input type="hidden" id="selshipid" value="{{ FIRST_MANAGE_SHIP.get.getId }}" />
-            	{% endif %}
+				<input type="hidden" id="selshipid" value="{{ FIRST_MANAGE_SHIP.get.getId }}" />
+				{% endif %}
 				<div class="box">
 					<div class="box_title">Angedockte Schiffe
 						(
@@ -266,7 +266,7 @@
 				<br />
 				{{ control_mid(WRAPPER, ASTRO_STATE_SYSTEM, ASTRO_STATE_REGION, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL,
 				CURRENT_COLONY, CAN_COLONIZE, CLOSEST_ANOMALY_DISTANCE, STORED_SHUTTLE_COUNT,
-				CLOSEST_COLONIZABLE_DISTANCE)
+				CLOSEST_COLONIZABLE_DISTANCE, IS_ADMIN)
 				}}
 				<br />
 				{{ control_right(WRAPPER, CONSTRUCTION_PROGRESS_WRAPPER, POSSIBLE_STATIONS, MODULE_SELECTORS,
@@ -294,7 +294,7 @@
 			<td style="vertical-align: top; width: 33%;">
 				{{ control_mid(WRAPPER, ASTRO_STATE_SYSTEM, ASTRO_STATE_REGION, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL,
 				CURRENT_COLONY, CAN_COLONIZE, CLOSEST_ANOMALY_DISTANCE, STORED_SHUTTLE_COUNT,
-				CLOSEST_COLONIZABLE_DISTANCE)
+				CLOSEST_COLONIZABLE_DISTANCE, IS_ADMIN)
 				}}
 			</td>
 			<td style="vertical-align: top; width: 33%;">

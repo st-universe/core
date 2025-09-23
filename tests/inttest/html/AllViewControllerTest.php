@@ -116,6 +116,7 @@ class AllViewControllerTest extends TwigTestCase
     {
         return match ($key) {
             'SHIP_VIEWS-SHOW_COLONIZATION' => ['id' => 1031],
+            'SPACECRAFT_VIEWS-SHOW_WORMHOLE_RESTRICTIONS' => ['entryId' => 42],
             default => []
         };
     }

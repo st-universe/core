@@ -1,0 +1,44 @@
+{% set restrictions = ENTRY.getRestrictions %}
+{% if restrictions|length > 0 %}
+<table class="tcal">
+    <tr>
+        <th>Typ</th>
+        <th>Ziel</th>
+        <th>Modus</th>
+
+        <th>Aktion</th>
+    </tr>
+    {% for restriction in restrictions %}
+    <tr>
+        <td>
+            {% if restriction.privilegeType is null %}
+            Alle
+            {% elseif restriction.privilegeType.value == 'MAP -> W' %}
+            Eingang
+            {% elseif restriction.privilegeType.value == 'W -> MAP' %}
+            Ausgang
+            {% endif %}
+        </td>
+        <td>
+            {% set targetId = restriction.getTargetId %}
+            {% if targetId > 0 and targetId < 6 %} {% set raceNames={1: 'Föderation' , 2: 'Romulaner' , 3: 'Klingonen' ,
+                4: 'Cardassianer' , 5: 'Ferengi' } %} Rasse: {{ raceNames[targetId] }} {% elseif targetId> 100 and
+                targetId < 10000 %} Allianz: {{ targetId }} {% else %} Spieler: {{ targetId }} {% endif %} </td>
+        <td>
+            {% if restriction.mode == 1 %}
+            Erlauben
+            {% else %}
+            Verbieten
+            {% endif %}
+        </td>
+
+        <td>
+            <a href="javascript:void(0);"
+                onclick="deleteWormholeRestriction({{ restriction.id }}, {{ ENTRY_ID }});">Entfernen</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<div>Keine Beschränkungen vorhanden.</div>
+{% endif %}
