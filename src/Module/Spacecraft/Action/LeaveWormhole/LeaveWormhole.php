@@ -6,6 +6,13 @@ namespace Stu\Module\Spacecraft\Action\LeaveWormhole;
 
 use Override;
 use RuntimeException;
+use Stu\Component\Ship\Wormhole\WormholeEntryPrivilegeUtilityInterface;
+use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
+use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
@@ -15,9 +22,27 @@ final class LeaveWormhole extends AbstractDirectedMovement
 {
     public const string ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
 
-    private const int MODE_ALLOWED = 1;
-    private const int MODE_DENIED = 2;
+    private WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility;
 
+    public function __construct(
+        MoveShipRequestInterface $moveShipRequest,
+        SpacecraftLoaderInterface $spacecraftLoader,
+        ShipMoverInterface $shipMover,
+        FlightRouteFactoryInterface $flightRouteFactory,
+        RandomSystemEntryInterface $randomSystemEntry,
+        DistributedMessageSenderInterface $distributedMessageSender,
+        WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility
+    ) {
+        parent::__construct(
+            $moveShipRequest,
+            $spacecraftLoader,
+            $shipMover,
+            $flightRouteFactory,
+            $randomSystemEntry,
+            $distributedMessageSender
+        );
+        $this->wormholeEntryPrivilegeUtility = $wormholeEntryPrivilegeUtility;
+    }
     #[Override]
     protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
@@ -37,23 +62,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
             return true;
         }
 
-        $restrictions = $wormholeEntry->getRestrictions();
-
-        $hasAllowedEntry = false;
-        foreach ($restrictions as $restriction) {
-            if ($restriction->getMode() === self::MODE_ALLOWED) {
-                $hasAllowedEntry = true;
-                if ($restriction->getUser()->getId() === $ship->getUser()->getId()) {
-                    return false;
-                }
-            }
-            if ($restriction->getUser()->getId() === $ship->getUser()->getId() && $restriction->getMode() === self::MODE_DENIED) {
-                $game->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
-                return true;
-            }
-        }
-
-        if ($hasAllowedEntry) {
+        if (!$this->wormholeEntryPrivilegeUtility->checkPrivilegeFor($wormholeEntry, $ship)) {
             $game->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
             return true;
         }

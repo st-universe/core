@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
+use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
 use Stu\Orm\Repository\WormholeRestrictionRepository;
 
 #[Table(name: 'stu_wormhole_restrictions')]
@@ -26,12 +28,14 @@ class WormholeRestriction
     #[JoinColumn(name: 'wormhole_entry_id', nullable: false, referencedColumnName: 'id')]
     private WormholeEntry $wormholeEntry;
 
-    #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private User $user;
+    #[Column(type: 'integer')]
+    private int $target = 0;
+
+    #[Column(type: 'smallint', enumType: WormholeEntryTypeEnum::class, nullable: true)]
+    private ?WormholeEntryTypeEnum $privilege_type = null;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $mode = null;
+    private ?int $mode = WormholeEntryModeEnum::ALLOW->value;
 
     public function getId(): int
     {
@@ -49,16 +53,28 @@ class WormholeRestriction
         return $this;
     }
 
-    public function getUser(): User
+    public function getTargetId(): int
     {
-        return $this->user;
+        return $this->target;
     }
 
-    public function setUser(User $user): WormholeRestriction
+    public function setTargetId(int $targetId): WormholeRestriction
     {
-        $this->user = $user;
+        $this->target = $targetId;
         return $this;
     }
+
+    public function getPrivilegeType(): ?WormholeEntryTypeEnum
+    {
+        return $this->privilege_type;
+    }
+
+    public function setPrivilegeType(?WormholeEntryTypeEnum $privilegeType): WormholeRestriction
+    {
+        $this->privilege_type = $privilegeType;
+        return $this;
+    }
+
 
     public function getMode(): ?int
     {
