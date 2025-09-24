@@ -76,6 +76,9 @@ class Module
     #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class, nullable: true)]
     private ?SpacecraftSystemTypeEnum $system_type = null;
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $is_npc = false;
+
     /**
      * @var Research
      */
@@ -383,5 +386,10 @@ class Module
     public function getFaction(): ?Faction
     {
         return $this->faction;
+    }
+
+    public function getisNpc(): ?bool
+    {
+        return $this->is_npc;
     }
 }
