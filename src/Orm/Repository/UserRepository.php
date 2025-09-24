@@ -224,7 +224,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $query = $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT u FROM %s u WHERE u.id IN (10, 11, 12, 13, 14, 15, 16, 17, 19, 101, 102) ORDER BY u.%s %s',
+                    'SELECT u FROM %s u WHERE u.id IN (10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 101, 102) ORDER BY u.%s %s',
                     User::class,
                     $sortField,
                     $sortOrder
