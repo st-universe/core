@@ -23,6 +23,7 @@ final class VersionTestUser extends AbstractMigration
                        (15, \'[b][color=552222]Pakled[/color][/b] (NPC)\', NULL, 6, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (17, \'[b][color=#9b734d]Kazon[/color][/b] (KI-NPC)\', NULL, 7, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (19, \'[b][color=#006400]Borg Kollektiv[/color][/b]\', NULL, 8, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
+                       (20, \'[b][color=#4b4b4b]Hirogen[/color][/b] (KI-NPC)\', NULL, 10, 1731247407, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (42, \'Gesperrter User\', NULL, 1, 1732009965, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),
                        (101, \'Siedler 101\', 2, 1, 1732007484, 0, 0, \'\', \'\', 0, 2, 0, 1, NULL),
                        (102, \'Siedler 102\', NULL, 1, 1732009965, 0, 0, \'\', \'\', 0, 2, 0, 0, NULL),

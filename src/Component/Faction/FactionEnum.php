@@ -18,6 +18,7 @@ enum FactionEnum: int
     case FACTION_KAZON = 7;
     case FACTION_BORG = 8;
     case FACTION_BLANK = 9;
+    case FACTION_HIROGEN = 10;
 
     public function getColorCode(): string
     {

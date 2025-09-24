@@ -30,6 +30,7 @@ final class VersionTestCrewRace extends AbstractMigration
                        (13, 3, \'Gorn\', 20, 100, \'GORN\'),
                        (14, 8, \'Borg\', 100, 100, \'BORG\'),
                        (15, 7, \'Kazon\', 100, 100, \'KAZON\');
+                       (16, 10, \'Hirogen\', 50, 100, \'HIROGEN\');
         ');
     }
 }
