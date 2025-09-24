@@ -18,7 +18,8 @@ final class VersionTestFaction extends AbstractMigration
     {
         $this->addSql(
             'INSERT INTO stu_factions (id, name, description, darker_color, chooseable, player_limit, start_building_id, start_research_id, start_map_id, close_combat_score, positive_effect_primary_commodity_id, positive_effect_secondary_commodity_id)
-            VALUES  (9, \'Fraktionslos\', \'nö\', \'#006400\', 0, 0, 0, NULL, 15007, NULL, NULL, NULL),
+            VALUES  (10, \'Hirogen\', \'Jäger und Sammler\', \'#4b4b4b\', 0, 0, 0, NULL, 15007, 300, NULL, NULL),
+                    (9, \'Fraktionslos\', \'nö\', \'#006400\', 0, 0, 0, NULL, 15007, NULL, NULL, NULL),
                     (6, \'Pakled\', \'Sucher...\', \'#5c2e00\', 0, 0, 0, NULL, 15007, 100, NULL, NULL),
                     (8, \'Borg-Kollektiv\', \'Alkoven\', \'#006400\', 0, 0, 0, NULL, 15007, 200, NULL, NULL),
                     (1, \'Vereinte Föderation der Planeten\', \'Die Föderation ist in STU die vielseitigste Fraktion. 
