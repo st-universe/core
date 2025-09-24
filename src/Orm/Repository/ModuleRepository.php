@@ -30,10 +30,9 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id,
-                        m.system_type
+                'SELECT m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor,
+                        m.crew, m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id,
+                        m.ecost, m.faction_id, m.system_type, m.is_npc, m.is_npc
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -73,11 +72,10 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT
-                    m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
-                    m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id,
-                    m.system_type
-                FROM stu_modules m
+                'SELECT m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor,
+                        m.crew, m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id,
+                        m.ecost, m.faction_id, m.system_type, m.is_npc, m.is_npc
+                    FROM stu_modules m
                 WHERE m.type = :typeId
                 AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                             FROM stu_storage
@@ -111,10 +109,9 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost, m.faction_id,
-                        m.system_type
+                'SELECT m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor,
+                        m.crew, m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id,
+                        m.ecost, m.faction_id, m.system_type, m.is_npc, m.is_npc
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -153,7 +150,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->createNativeQuery(
                 'SELECT m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor,
                         m.crew, m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id,
-                        m.ecost, m.faction_id, m.system_type
+                        m.ecost, m.faction_id, m.system_type, m.is_npc, m.is_npc
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -215,6 +212,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         $rsm->addFieldResult('m', 'ecost', 'ecost');
         $rsm->addFieldResult('m', 'faction_id', 'faction_id');
         $rsm->addFieldResult('m', 'system_type', 'system_type');
+        $rsm->addFieldResult('m', 'is_npc', 'is_npc');
 
         return $rsm;
     }

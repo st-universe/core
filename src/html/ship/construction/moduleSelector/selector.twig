@@ -4,6 +4,17 @@
     {% set allowMultiple = SELECTOR.allowMultiple %}
     <input type="hidden" name="module_level_{{ type }}" value="{{ SELECTOR.getModuleTypeLevel }}" />
     {% if SELECTOR.getAvailableModules %}
+    {% set normalModules = [] %}
+    {% set npcModules = [] %}
+
+    {% for entry in SELECTOR.getAvailableModules %}
+    {% if entry.getModule.getisNpc == true %}
+    {% set npcModules = npcModules|merge([entry]) %}
+    {% else %}
+    {% set normalModules = normalModules|merge([entry]) %}
+    {% endif %}
+    {% endfor %}
+
     <tr>
         {% set colspan = allowMultiple ? 2 : 3 %}
         <th colspan="{{ colspan }}">Modulbezeichnung</th>
@@ -21,7 +32,7 @@
         </td>
     </tr>
     {% endif %}
-    {% for moduleSelectorEntry in SELECTOR.getAvailableModules %}
+    {% for moduleSelectorEntry in normalModules %}
     {% set module = moduleSelectorEntry.getModule %}
     {% set moduleId = module.getId %}
     {% set commodityId = module.getCommodityId %}
@@ -51,6 +62,42 @@
         </td>
     </tr>
     {% endfor %}
+    {% if npcModules|length > 0 %}
+    <tr>
+        {% set colspan = allowMultiple ? 5 : 6 %}
+        <th colspan="{{ colspan }}" style="text-align: center;">NPC Module</th>
+    </tr>
+    {% for moduleSelectorEntry in npcModules %}
+    {% set module = moduleSelectorEntry.getModule %}
+    {% set moduleId = module.getId %}
+    {% set commodityId = module.getCommodityId %}
+    {% set checked = moduleSelectorEntry.isChosen ? 'checked="true"' : '' %}
+    <tr>
+        {% if not allowMultiple %}
+        <td style="width: 3px;" class="{{ moduleSelectorEntry.getModuleLevelClass }}"></td>
+        {% endif %}
+        <td style="width: 50px;">
+            {% if allowMultiple %}
+            <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
+                value="{{ moduleId }}"
+                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ module.getCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
+            {% else %}
+            <input type="radio" {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
+                onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
+            {% endif %}
+            <img src="assets/commodities/{{ commodityId }}.png" />
+        </td>
+        <td style="width: 300px;">{{ module.getName }}</td>
+        <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
+        <td style="width: 30px; text-align: center;">
+            {{ moduleSelectorEntry.getStoredAmount }}
+        </td>
+        <td id="{{ moduleId }}_content">
+            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
     {% else %}
     <tr>
         <td>Keine Module dieses Typs installierbar</td>
