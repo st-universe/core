@@ -108,13 +108,11 @@ class ManageCrew implements ManagerInterface
             );
 
             if ($ship->getBuildplan() != null) {
-                $mincrew = $ship->getBuildplan()->getCrew();
                 $actualcrew = $ship->getCrewCount();
                 $maxcrew = $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump());
 
                 if (
-                    $actualcrew >= $mincrew
-                    && $actualcrew + $additionalCrew > $maxcrew
+                    $actualcrew + $additionalCrew > $maxcrew
                     && ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS) && ($additionalCrew > 0
                         && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_OFF
                         && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $informations)))
@@ -146,7 +144,6 @@ class ManageCrew implements ManagerInterface
     ): void {
         $ship = $wrapper->get();
         $user = $managerProvider->getUser();
-
         if ($managerProvider->getFreeCrewStorage() == 0) {
             $msg[] = sprintf(
                 _('%s: Kein Platz für die Crew auf der %s'),
@@ -163,6 +160,24 @@ class ManageCrew implements ManagerInterface
             $ship->getCrewCount() - $newCrewCount,
             $managerProvider->getFreeCrewStorage()
         );
+
+        if ($ship->getBuildplan() != null) {
+            $mincrew = $ship->getBuildplan()->getCrew();
+            $actualcrew = $ship->getCrewCount();
+            $maxcrew = $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump());
+
+            if (
+                $actualcrew - $removedCrew >= $mincrew && $actualcrew - $removedCrew < $maxcrew &&
+                $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+                && ($removedCrew > 0 && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_ON
+                )
+            ) {
+                $informations = new InformationWrapper();
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $informations);
+                $msg = array_merge($msg, $informations->getInformations());
+            }
+        }
+
 
         $this->dumpForeignCrew($ship);
 

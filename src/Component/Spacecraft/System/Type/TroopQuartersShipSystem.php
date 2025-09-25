@@ -44,4 +44,10 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
     {
         return 5;
     }
+
+    #[Override]
+    public function canBeActivatedWithInsufficientCrew(): bool
+    {
+        return true;
+    }
 }

@@ -327,7 +327,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn($this->user);
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->times(3)
+            ->times(2)
             ->andReturn($this->buildplan);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -412,7 +412,7 @@ class ManageCrewTest extends StuTestCase
             ->andReturn($this->user);
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->times(3)
+            ->times(2)
             ->andReturn($this->buildplan);
         $this->ship->shouldReceive('getName')
             ->withNoArgs()
@@ -551,6 +551,8 @@ class ManageCrewTest extends StuTestCase
         $shipCrew2 = $this->mock(CrewAssignment::class);
 
         $shipCrewlist = new ArrayCollection([$shipCrew1, $shipCrew2]);
+        $rumpMock = $this->mock(SpacecraftRump::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
 
         $values = ['crew' => ['555' => '0']];
 
@@ -570,8 +572,8 @@ class ManageCrewTest extends StuTestCase
 
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(SpacecraftBuildplan::class));
+            ->times(3)
+            ->andReturn($buildplan);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn($this->shipId);
@@ -592,6 +594,24 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->andReturn($shipCrewlist);
+        $this->ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rumpMock);
+        $this->ship->shouldReceive('hasSpacecraftSystem')
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            ->once()
+            ->andReturn(false);
+
+        $buildplan->shouldReceive('getCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByRump')
+            ->with($rumpMock)
+            ->once()
+            ->andReturn(5);
 
         $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
             ->with($this->user, $this->ship)
@@ -618,6 +638,8 @@ class ManageCrewTest extends StuTestCase
         $foreignCrew = $this->mock(Crew::class);
         $foreignCrewUser = $this->mock(User::class);
         $foreignCrewAssignment = $this->mock(CrewAssignment::class);
+        $rumpMock = $this->mock(SpacecraftRump::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
 
         $shipCrewlist = new ArrayCollection([$ownCrew, $foreignCrewAssignment]);
 
@@ -646,8 +668,8 @@ class ManageCrewTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getBuildplan')
             ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(SpacecraftBuildplan::class));
+            ->times(3)
+            ->andReturn($buildplan);
         $this->wrapper->shouldReceive('canMan')
             ->withNoArgs()
             ->once()
@@ -664,6 +686,24 @@ class ManageCrewTest extends StuTestCase
         $this->ship->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->andReturn($shipCrewlist);
+        $this->ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rumpMock);
+        $this->ship->shouldReceive('hasSpacecraftSystem')
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            ->once()
+            ->andReturn(false);
+
+        $buildplan->shouldReceive('getCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+
+        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByRump')
+            ->with($rumpMock)
+            ->once()
+            ->andReturn(5);
 
         $this->troopTransferUtility->shouldReceive('ownCrewOnTarget')
             ->with($this->user, $this->ship)
