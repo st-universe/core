@@ -29,9 +29,21 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         $conversations = [];
 
         foreach ($messages as $message) {
-            $senderId = $message->getSenderId();
-            if (!array_key_exists($senderId, $conversations)) {
-                $conversations[$senderId] = new Conversation(
+            $sender = $message->getSender();
+            $senderId = $sender->getId();
+            $formerSenderId = $message->getFormerSendUser();
+
+            if ($senderId === 1) {
+                if ($formerSenderId === null || $formerSenderId === 1) {
+                    continue;
+                }
+
+                $groupId = $formerSenderId;
+            } else {
+                $groupId = $senderId;
+            }
+            if (!array_key_exists($groupId, $conversations)) {
+                $conversations[$groupId] = new Conversation(
                     $message,
                     $this->determineUnreadPmCount($message),
                     $this->determineDateString($message, $timestamp),

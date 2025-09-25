@@ -178,7 +178,9 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             ->setRecipient($recipient)
             ->setSender($sender)
             ->setNew($new)
-            ->setInboxPm($inboxPm);
+            ->setInboxPm($inboxPm)
+            ->setFormerSendUser($sender->getId())
+            ->setFormerRecipUser($recipient->getId());
 
         $this->privateMessageRepository->save($pm);
 

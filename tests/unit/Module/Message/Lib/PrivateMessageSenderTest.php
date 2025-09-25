@@ -69,7 +69,6 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $sender->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(2);
         $sender->shouldReceive('isContactable')
             ->withNoArgs()
@@ -77,7 +76,6 @@ class PrivateMessageSenderTest extends StuTestCase
             ->andReturn(true);
         $recipient->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(3);
 
         $this->userRepository->shouldReceive('find')
@@ -185,6 +183,23 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
+        $recipientpm->shouldReceive('setFormerSendUser')
+            ->with(2)
+            ->once()
+            ->andReturnSelf();
+        $recipientpm->shouldReceive('setFormerRecipUser')
+            ->with(3)
+            ->once()
+            ->andReturnSelf();
+        $outboxPm->shouldReceive('setFormerSendUser')
+            ->with(3)
+            ->once()
+            ->andReturnSelf();
+        $outboxPm->shouldReceive('setFormerRecipUser')
+            ->with(2)
+            ->once()
+            ->andReturnSelf();
+
         $this->messageRepository->shouldReceive('save')
             ->with($recipientpm)
             ->once();
@@ -208,7 +223,6 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $sender->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(2);
         $sender->shouldReceive('getName')
             ->withNoArgs()
@@ -221,7 +235,6 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipient->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(3);
         $this->userSettingsProvider->shouldReceive('isEmailNotification')
             ->with($recipient)
@@ -328,6 +341,23 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
+        $recipientpm->shouldReceive('setFormerSendUser')
+            ->with(2)
+            ->once()
+            ->andReturnSelf();
+        $recipientpm->shouldReceive('setFormerRecipUser')
+            ->with(3)
+            ->once()
+            ->andReturnSelf();
+        $outboxPm->shouldReceive('setFormerSendUser')
+            ->with(3)
+            ->once()
+            ->andReturnSelf();
+        $outboxPm->shouldReceive('setFormerRecipUser')
+            ->with(2)
+            ->once()
+            ->andReturnSelf();
+
         $this->emailNotificationSender->shouldReceive('sendNotification')
             ->with('[b]SENDER[/b]', 'foobar', $recipient)
             ->once();
@@ -369,15 +399,12 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $sender->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(55);
         $recipient1->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(1);
         $recipient2->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(2);
 
         $this->userSettingsProvider->shouldReceive('isEmailNotification')
@@ -526,6 +553,37 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
+        $recipient1pm->shouldReceive('setFormerSendUser')
+            ->with(55)
+            ->once()
+            ->andReturnSelf();
+        $recipient1pm->shouldReceive('setFormerRecipUser')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+
+        $recipient2pm->shouldReceive('setFormerSendUser')
+            ->with(55)
+            ->once()
+            ->andReturnSelf();
+        $recipient2pm->shouldReceive('setFormerRecipUser')
+            ->with(2)
+            ->once()
+            ->andReturnSelf();
+
+        $userNoOne->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1);
+
+        $outboxPm->shouldReceive('setFormerSendUser')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $outboxPm->shouldReceive('setFormerRecipUser')
+            ->with(55)
+            ->once()
+            ->andReturnSelf();
+
         $this->messageRepository->shouldReceive('save')
             ->with($recipient1pm)
             ->once();
@@ -570,7 +628,6 @@ class PrivateMessageSenderTest extends StuTestCase
 
         $recipient->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
             ->andReturn(3);
 
         $this->userRepository->shouldReceive('getFallbackUser')
@@ -630,6 +687,19 @@ class PrivateMessageSenderTest extends StuTestCase
             ->andReturnSelf();
         $message->shouldReceive('setInboxPm')
             ->with(null)
+            ->once()
+            ->andReturnSelf();
+
+        $fallbackUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1);
+
+        $message->shouldReceive('setFormerSendUser')
+            ->with(1)
+            ->once()
+            ->andReturnSelf();
+        $message->shouldReceive('setFormerRecipUser')
+            ->with(3)
             ->once()
             ->andReturnSelf();
 

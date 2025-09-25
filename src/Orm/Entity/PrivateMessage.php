@@ -56,6 +56,12 @@ class PrivateMessage
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $former_send_user = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $former_recip_user = null;
+
     #[ManyToOne(targetEntity: PrivateMessageFolder::class)]
     #[JoinColumn(name: 'cat_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private PrivateMessageFolder $category;
@@ -204,5 +210,27 @@ class PrivateMessage
     {
         $text = $this->getText();
         return strpos($text, '[translate]') !== false && strpos($text, '[/translate]') !== false;
+    }
+
+    public function getFormerSendUser(): ?int
+    {
+        return $this->former_send_user;
+    }
+
+    public function setFormerSendUser(?int $former_send_user): PrivateMessage
+    {
+        $this->former_send_user = $former_send_user;
+        return $this;
+    }
+
+    public function getFormerRecipUser(): ?int
+    {
+        return $this->former_recip_user;
+    }
+
+    public function setFormerRecipUser(?int $former_recip_user): PrivateMessage
+    {
+        $this->former_recip_user = $former_recip_user;
+        return $this;
     }
 }
