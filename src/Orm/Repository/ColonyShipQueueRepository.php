@@ -201,4 +201,12 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ])
             ->execute();
     }
+
+    #[Override]
+    public function getByShip(int $shipId): ?ColonyShipQueue
+    {
+        return $this->findOneBy([
+            'ship_id' => $shipId
+        ]);
+    }
 }

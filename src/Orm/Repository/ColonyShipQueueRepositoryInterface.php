@@ -56,4 +56,6 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
     public function truncateByColonyAndBuildingFunction(Colony $colony, BuildingFunctionEnum $buildingFunction): void;
 
     public function truncateByShip(int $shipId): void;
+
+    public function getByShip(int $shipId): ?ColonyShipQueue;
 }
