@@ -71,7 +71,21 @@ final class AddContact implements ActionControllerInterface
             $this->privateMessageSender->send(
                 $userId,
                 $recipient->getId(),
-                _('Der Spieler betrachtet Dich von nun an als Feind')
+                _('Der Siedler betrachtet Dich von nun an als Feind')
+            );
+        }
+        if ($mode == ContactListModeEnum::FRIEND) {
+            $this->privateMessageSender->send(
+                $userId,
+                $recipient->getId(),
+                _('Der Siedler betrachtet Dich von nun an als Freund')
+            );
+        }
+        if ($mode == ContactListModeEnum::NEUTRAL) {
+            $this->privateMessageSender->send(
+                $userId,
+                $recipient->getId(),
+                _('Der Siedler betrachtet Dich von nun an als neutral')
             );
         }
         $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
