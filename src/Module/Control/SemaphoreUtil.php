@@ -6,9 +6,8 @@ use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Logging\LogLevelEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use SysvSemaphore;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
@@ -16,14 +15,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     /** @var array<int, SysvSemaphore> */
     public static array $semaphores = [];
 
-    private LoggerUtilInterface $loggerUtil;
-
-    public function __construct(
-        private readonly StuConfigInterface $stuConfig,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
+    public function __construct(private readonly StuConfigInterface $stuConfig) {}
 
     #[Override]
     public function isSemaphoreAlreadyAcquired(int $key): bool
@@ -83,18 +75,36 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->release($semaphore, $doRemove);
     }
 
+    #[Override]
+    public function releaseAllSemaphores(bool $doRemove = false): void
+    {
+        if (!$this->isSemaphoreUsageActive()) {
+            return;
+        }
+
+        foreach (self::$semaphores as $semaphore) {
+            $this->release($semaphore, $doRemove);
+        }
+    }
+
     private function release(SysvSemaphore $semaphore, bool $doRemove): void
     {
+        $key = array_search($semaphore, self::$semaphores, true);
+        if ($key === false) {
+            return;
+        }
+        unset(self::$semaphores[$key]);
+
         if (!sem_release($semaphore)) {
-            $this->loggerUtil->init('semaphores', LogLevelEnum::ERROR);
-            $this->loggerUtil->log("Error releasing Semaphore!");
+            StuLogger::log(sprintf("Error releasing Semaphore with key %d!", $key), LogTypeEnum::SEMAPHORE);
             return;
             //throw new SemaphoreException("Error releasing Semaphore!");
+        } else {
+            StuLogger::log(sprintf('  Released semaphore %d', $key), LogTypeEnum::SEMAPHORE);
         }
 
         if ($doRemove && !sem_remove($semaphore)) {
-            $this->loggerUtil->init('semaphores', LogLevelEnum::ERROR);
-            $this->loggerUtil->log("Error removing Semaphore!");
+            StuLogger::log(sprintf("Error removing Semaphore with key %d!", $key), LogTypeEnum::SEMAPHORE);
             //throw new SemaphoreException("Error removing Semaphore!");
         }
     }

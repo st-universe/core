@@ -247,6 +247,11 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         $key = $spacecraft->getUser()->getId();
+        StuLogger::log(sprintf(
+            'spacecraft %d with key %d',
+            $spacecraft->getId(),
+            $key
+        ), LogTypeEnum::SEMAPHORE);
         $this->semaphoreUtil->acquireSemaphore($key);
 
         return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
