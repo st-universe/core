@@ -5,6 +5,7 @@ namespace Stu\Lib\Pirate\Behaviour;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
@@ -20,6 +21,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtilInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
@@ -46,6 +48,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         private TrapDetectionInterface $trapDetection,
         private MessageFactoryInterface $messageFactory,
         private DistributedMessageSenderInterface $distributedMessageSender,
+        private TroopTransferUtilityInterface $troopTransferUtility,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getPirateLogger();
@@ -134,6 +137,21 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
             );
         }
 
+        // Check uplink status after combat
+        $uplinkMessages = $this->checkUplinkStatus($phalanxWrapper);
+
+        // Füge die Uplink-Meldungen zur Nachrichtensammlung hinzu
+        if (!empty($uplinkMessages)) {
+            // Erstelle eine einzige Nachricht mit allen Uplink-Meldungen
+            $message = $this->messageFactory->createMessage(
+                UserConstants::USER_NPC_KAZON,
+                $closestPhalanx->getUser()->getId(),
+                $uplinkMessages
+            );
+            $messages->add($message);
+        }
+
+        // Send messages including combat results and uplink status
         $this->sendPms(
             $closestPhalanx->getSectorString(),
             $messages
@@ -159,6 +177,63 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         }
 
         return $pirateShipWithMostCrew;
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function checkUplinkStatus(\Stu\Module\Station\Lib\StationWrapperInterface $wrapper): array
+    {
+        $spacecraft = $wrapper->get();
+        $messages = [];
+
+        // Check if uplink system exists and is active
+        if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+            return $messages;
+        }
+
+        $hasForeigners = $this->troopTransferUtility->foreignerCount($spacecraft) > 0;
+        $ownCrewCount = $this->getOwnCrewCount($spacecraft);
+        $minOwnCrew = 0;
+
+        $buildplan = $spacecraft->getBuildplan();
+        if ($buildplan !== null) {
+            $minOwnCrew = $buildplan->getCrew();
+        }
+
+        // Deactivate uplink if no foreigners left
+        if (!$hasForeigners && $spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            $message = sprintf('Der Uplink der %s wurde deaktiviert, da sich keine fremden Crewmitglieder mehr an Bord befinden', $spacecraft->getName());
+            $this->logger->log($message);
+            $messages[] = $message;
+        }
+
+        // Deactivate uplink if not enough own crew
+        if ($hasForeigners && $spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK) && $ownCrewCount < $minOwnCrew) {
+            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            $message = sprintf(
+                'Der Uplink der %s wurde deaktiviert, da nicht mehr genügend eigene Crewmitglieder an Bord sind (%d/%d)',
+                $spacecraft->getName(),
+                $ownCrewCount,
+                $minOwnCrew
+            );
+            $this->logger->log($message);
+            $messages[] = $message;
+        }
+
+        return $messages;
+    }
+
+    private function getOwnCrewCount(Spacecraft $spacecraft): int
+    {
+        $count = 0;
+        foreach ($spacecraft->getCrewAssignments() as $spacecraftCrew) {
+            if ($spacecraftCrew->getCrew()->getUser()->getId() === $spacecraft->getUser()->getId()) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
     private function sendPms(
