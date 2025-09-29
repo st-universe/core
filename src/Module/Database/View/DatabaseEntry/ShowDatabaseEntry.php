@@ -144,10 +144,14 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                             if ($cy > $maxY) $maxY = $cy;
                         }
 
+                        $layer = $mapFields[0]->getLayer();
+                        $layerWidth = $layer !== null ? $layer->getWidth() : 0;
+                        $layerHeight = $layer !== null ? $layer->getHeight() : 0;
+
                         $minX = max(1, $minX - 1);
                         $minY = max(1, $minY - 1);
-                        $maxX = $maxX + 1;
-                        $maxY = $maxY + 1;
+                        $maxX = min($layerWidth, $maxX + 1);
+                        $maxY = min($layerHeight, $maxY + 1);
 
                         $allMapFields = [];
                         if ($layerId !== null) {
