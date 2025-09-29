@@ -950,4 +950,25 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $result > 0;
     }
+
+    #[Override]
+    public function getMapFieldsByRegion(int $regionId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m
+                    JOIN %s l
+                    WITH m.id = l.id
+                    WHERE m.region_id = :regionId
+                    ORDER BY l.cy ASC, l.cx ASC',
+                    Map::class,
+                    Location::class
+                )
+            )
+            ->setParameters([
+                'regionId' => $regionId
+            ])
+            ->getResult();
+    }
 }
