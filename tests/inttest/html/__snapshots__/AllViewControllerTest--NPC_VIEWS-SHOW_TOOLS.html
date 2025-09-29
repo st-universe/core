@@ -1182,6 +1182,30 @@
     </form>
 </div>
 
+<div style="margin-top: 20px;">
+    <h2>Prestige Tools</h2>
+    <br>
+    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+        <div>
+            <h2>Prestige hinzuf&uuml;gen/abziehen</h2>
+            User ID: <input type="text" size="5" name="userid" id="userid">
+            Prestige Wert: <input type="text" size="5" name="prestigeamount" id="prestigeamount"> (positive oder
+            negative Werte m&ouml;glich)
+            <br>
+            <br>
+            Beschreibung: <input type="text" size="100" name="prestigedescription" id="prestigedescription"> (F&uuml;rs
+            Prestige Log des Users. Sollte
+            mit "X Prestige erhalten/abgezogen f&uuml;r...." beginnen)
+            <br>
+            <br>
+            Grund: <input type="text" size="20" name="reason" id="reason">
+            <br>
+            <br>
+            <input type="submit" class="button" name="B_PRESTIGE_CHEAT" value="Prestige anpassen" id="prestigecheatbutton">
+        </div>
+    </form>
+</div>
 
 
             </div>

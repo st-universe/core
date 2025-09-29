@@ -6,6 +6,7 @@ namespace Stu\Module\NPC;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\NPC\Action\CommodityCheat;
+use Stu\Module\NPC\Action\PrestigeCheat;
 use Stu\Module\NPC\View\NPCLog\NPCLog;
 use Stu\Module\NPC\View\Overview\Overview;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
@@ -29,6 +30,7 @@ use function DI\autowire;
 return [
     'NPC_ACTIONS' => [
         CommodityCheat::ACTION_IDENTIFIER => autowire(CommodityCheat::class),
+        PrestigeCheat::ACTION_IDENTIFIER => autowire(PrestigeCheat::class),
         CreateBuildplan::ACTION_IDENTIFIER => autowire(CreateBuildplan::class),
         CreateHistoryEntry::ACTION_IDENTIFIER => autowire(CreateHistoryEntry::class),
         CreateShip::ACTION_IDENTIFIER => autowire(CreateShip::class),
