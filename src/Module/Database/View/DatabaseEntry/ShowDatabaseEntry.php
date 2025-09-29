@@ -6,6 +6,7 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Exception\AccessViolationException;
@@ -18,12 +19,15 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -46,7 +50,9 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private ShipRepositoryInterface $shipRepository,
-        private PlanetGeneratorInterface $planetGenerator
+        private PlanetGeneratorInterface $planetGenerator,
+        private MapRepositoryInterface $mapRepository,
+        private EncodedMapInterface $encodedMap
     ) {}
 
     #[Override]
@@ -115,7 +121,49 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('POI', $this->shipRepository->find($entry_object_id));
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_MAP:
-                $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
+                $region = $this->mapRegionRepository->findOneBy(['database_id' => $entry->getId()]);
+                $game->setTemplateVar('REGION', $region);
+
+                if ($region !== null) {
+                    $regionId = $region->getId();
+                    $mapFields = $this->mapRepository->getMapFieldsByRegion($regionId);
+
+                    if (!empty($mapFields)) {
+                        $minX = $maxX = $mapFields[0]->getCx();
+                        $minY = $maxY = $mapFields[0]->getCy();
+                        $layer = $mapFields[0]->getLayer();
+                        $layerId = $layer !== null ? $layer->getId() : null;
+
+                        foreach ($mapFields as $field) {
+                            $cx = $field->getCx();
+                            $cy = $field->getCy();
+
+                            if ($cx < $minX) $minX = $cx;
+                            if ($cx > $maxX) $maxX = $cx;
+                            if ($cy < $minY) $minY = $cy;
+                            if ($cy > $maxY) $maxY = $cy;
+                        }
+
+                        $minX = max(1, $minX - 1);
+                        $minY = max(1, $minY - 1);
+                        $maxX = $maxX + 1;
+                        $maxY = $maxY + 1;
+
+                        $allMapFields = [];
+                        if ($layerId !== null) {
+                            $allMapFields = $this->mapRepository->getByCoordinateRange(
+                                $layerId,
+                                $minX,
+                                $maxX,
+                                $minY,
+                                $maxY
+                            );
+                        }
+
+                        $mapData = $this->prepareRegionMapData($mapFields, $allMapFields, $minX, $maxX, $minY, $maxY);
+                        $game->setTemplateVar('MAP_DATA', $mapData);
+                    }
+                }
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP:
                 $rump = $this->spacecraftRumpRepository->find($entry_object_id);
@@ -289,5 +337,81 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         }
 
         return $latestScans;
+    }
+
+
+
+    /**
+     * @param array<Map> $mapFields
+     * @param array<Map> $allMapFields
+     * @return array{head_row: array<int>, fields: array<array{row: int, fields: array<array{cx: int, cy: int, style: string, icon_path: string, title: string}>}>}
+     */
+    private function prepareRegionMapData(array $mapFields, array $allMapFields, int $minX, int $maxX, int $minY, int $maxY): array
+    {
+        $headRow = range($minX, $maxX);
+
+        $fieldMap = [];
+        foreach ($allMapFields as $field) {
+            $x = $field->getX();
+            $y = $field->getY();
+            $fieldMap["$x-$y"] = $field;
+        }
+
+        $rows = [];
+        for ($y = $minY; $y <= $maxY; $y++) {
+            $rowData = [
+                'row' => $y,
+                'fields' => []
+            ];
+
+            for ($x = $minX; $x <= $maxX; $x++) {
+                $key = "$x-$y";
+                $fieldData = [
+                    'cx' => $x,
+                    'cy' => $y,
+                    'style' => '',
+                    'icon_path' => '',
+                    'title' => ''
+                ];
+
+                if (isset($fieldMap[$key])) {
+                    $field = $fieldMap[$key];
+                    $fieldType = $field->getFieldType();
+                    $layer = $field->getLayer();
+
+                    $border = $field->getBorder();
+                    $fieldData['style'] = $border;
+
+                    $title = [];
+                    $title[] = $fieldType->getName();
+
+                    if ($field->getSystem() !== null) {
+                        $title[] = 'System: ' . $field->getSystem()->getName();
+                    }
+
+                    $fieldData['title'] = implode('\n', $title);
+
+                    if ($layer !== null) {
+                        if ($layer->isEncoded()) {
+                            $encodedPath = $this->encodedMap->getEncodedMapPath(
+                                $fieldType->getId(),
+                                $layer
+                            );
+                            $fieldData['icon_path'] = sprintf('region/%s', $encodedPath);
+                        } else {
+                            $fieldData['icon_path'] = sprintf('region/%d/%d.png', $layer->getId(), $fieldType->getId());
+                        }
+                    }
+                }
+                $rowData['fields'][] = $fieldData;
+            }
+
+            $rows[] = $rowData;
+        }
+
+        return [
+            'head_row' => $headRow,
+            'fields' => $rows
+        ];
     }
 }

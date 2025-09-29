@@ -1,0 +1,43 @@
+<table class="tcal">
+    <tr>
+        <th colspan="2">Regionsdetails</th>
+    </tr>
+    <tr>
+        <td class="darkbg">Name</td>
+        <td>{{ REGION.getDescription }}</td>
+    </tr>
+    {% if MAP_DATA %}
+    <tr>
+        <td colspan="2">
+            <div class="divhead">Regionskarte</div>
+            <div class="divbody">
+                <table id="regionmaptable" class="use">
+                    <tr>
+                        <th>x|y</th>
+                        {% for head in MAP_DATA.head_row %}
+                        <th>{{ head }}</th>
+                        {% endfor %}
+                    </tr>
+                    {% for yrow in MAP_DATA.fields %}
+                    <tr>
+                        <th>{{ yrow.row }}</th>
+                        {% for data in yrow.fields %}
+                        <td class="starmap" style="{{ data.style }}" id="{{ data.cx }}_{{ data.cy }}">
+                            <div title="{{ data.title }}" class="starmapInner" style="cursor: auto ! important;">
+                                {% if data.icon_path %}
+                                <img src="/assets/map/{{ data.icon_path }}" style="height: 28px; width: 28px;"
+                                    alt="Regionskarte" />
+                                {% else %}
+                                &nbsp;
+                                {% endif %}
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </td>
+    </tr>
+    {% endif %}
+</table>

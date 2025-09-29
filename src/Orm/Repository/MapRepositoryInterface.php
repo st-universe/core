@@ -131,4 +131,9 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getUniqueInfluenceAreaIds(int $layerId): array;
 
     public function isAdminRegionUserRegion(int $locationId, int $factionId): bool;
+
+    /**
+     * @return array<Map>
+     */
+    public function getMapFieldsByRegion(int $regionId): array;
 }
