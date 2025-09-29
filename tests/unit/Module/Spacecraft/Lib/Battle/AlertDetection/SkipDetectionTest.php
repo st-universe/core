@@ -299,6 +299,10 @@ class SkipDetectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($unfinishedWeb);
+        $this->alertedShip->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserConstants::USER_NPC_KAZON);
 
         $unfinishedWeb->shouldReceive('isFinished')
             ->withNoArgs()
