@@ -57,6 +57,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
     private function groupPlanetsByLayerAndRegion(array $planets): array
     {
         $grouped = [];
+        $layerInfo = [];
 
         foreach ($planets as $planet) {
             $system = $planet->getSystem();
@@ -67,13 +68,21 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
             $layerId = $layer?->getId() ?? 0;
             $layerName = $layer?->getName() ?? 'Unbekannte Ebene';
             $layerDescription = $layer?->getDescription();
+            $isNoobzone = $layer?->isNoobzone() ?? false;
             $regionId = $adminRegion?->getId() ?? 0;
             $regionName = $adminRegion?->getDescription() ?? 'Unbekannte Region';
+
+            if (!isset($layerInfo[$layerId])) {
+                $layerInfo[$layerId] = [
+                    'is_noobzone' => $isNoobzone
+                ];
+            }
 
             if (!isset($grouped[$layerId])) {
                 $grouped[$layerId] = [
                     'layer_name' => $layerName,
                     'layer_description' => $layerDescription,
+                    'is_noobzone' => $isNoobzone,
                     'regions' => []
                 ];
             }
@@ -88,9 +97,24 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
             $grouped[$layerId]['regions'][$regionId]['planets'][] = $planet;
         }
 
-        ksort($grouped);
+        $sortedKeys = array_keys($grouped);
+        usort($sortedKeys, function ($a, $b) use ($layerInfo) {
+            $isANoobzone = $layerInfo[$a]['is_noobzone'] ?? false;
+            $isBNoobzone = $layerInfo[$b]['is_noobzone'] ?? false;
 
-        return $grouped;
+            if ($isANoobzone !== $isBNoobzone) {
+                return $isBNoobzone ? 1 : -1;
+            }
+
+            return $a <=> $b;
+        });
+
+        $sortedGrouped = [];
+        foreach ($sortedKeys as $key) {
+            $sortedGrouped[$key] = $grouped[$key];
+        }
+
+        return $sortedGrouped;
     }
 
     #[Override]
