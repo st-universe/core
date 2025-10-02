@@ -40,8 +40,6 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     #[Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
-
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
         // only Admins can trigger this
@@ -74,7 +72,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         while ($allMapWithoutSystem !== []) {
             $round++;
             $this->loggerUtil->log(sprintf('round: %d', $round));
-            $this->shuffle_assoc($this->spreader);
+            $this->shuffleAssoc($this->spreader);
 
             if ($this->spreader === []) {
                 break;
@@ -82,7 +80,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
             foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
                 $this->loggerUtil->log(sprintf('influenceId: %d', $influenceId));
-                $this->shuffle_assoc($spreaderPerSystem);
+                $this->shuffleAssoc($spreaderPerSystem);
 
                 foreach ($spreaderPerSystem as $id => $map) {
                     $neighbour = $this->getRandomFreeNeighbour($map);
@@ -169,7 +167,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     /**
      * @param array<int, mixed> $array
      */
-    private function shuffle_assoc(array &$array): bool
+    private function shuffleAssoc(array &$array): void
     {
         $keys = array_keys($array);
 
@@ -182,8 +180,6 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         $array = $new;
-
-        return true;
     }
 
     /**
