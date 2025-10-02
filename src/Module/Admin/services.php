@@ -41,7 +41,6 @@ use Stu\Module\Admin\Action\Map\ResetEffects\ResetEffects;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
-use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequest;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequestInterface;
@@ -116,7 +115,6 @@ return [
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
         PostNews::ACTION_IDENTIFIER => autowire(PostNews::class),
-        StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
         ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
         CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
         GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
