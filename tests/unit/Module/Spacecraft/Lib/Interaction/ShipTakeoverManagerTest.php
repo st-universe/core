@@ -188,6 +188,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $user->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('USER');
+        $user->shouldReceive('isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
         $targetUser->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(777);
@@ -214,7 +217,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->createPrestigeLog->shouldReceive('createLog')
             ->with(
                 -999,
-                '-999 Prestige erhalten für den Start der Übernahme der TARGET von Spieler TARGETUSER',
+                '-999 Prestige abgezogen für den Start der Übernahme der TARGET von Spieler TARGETUSER',
                 $user,
                 Mockery::any()
             )
@@ -379,6 +382,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $user->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('USER');
+        $user->shouldReceive('isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $this->target->shouldReceive('getName')
             ->withNoArgs()
@@ -476,6 +482,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $user->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('USER');
+        $user->shouldReceive('isNpc')
+            ->withNoArgs()
+            ->andReturn(false);
 
         $this->target->shouldReceive('getName')
             ->withNoArgs()

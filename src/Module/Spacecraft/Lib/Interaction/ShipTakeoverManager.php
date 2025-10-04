@@ -68,18 +68,19 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $this->shipTakeoverRepository->save($takeover);
 
         $source->setTakeoverActive($takeover);
-
-        $this->createPrestigeLog->createLog(
-            -$prestige,
-            sprintf(
-                '-%d Prestige erhalten für den Start der Übernahme der %s von Spieler %s',
-                $prestige,
-                $target->getName(),
-                $target->getUser()->getName()
-            ),
-            $source->getUser(),
-            time()
-        );
+        if (!$source->getUser()->isNpc()) {
+            $this->createPrestigeLog->createLog(
+                -$prestige,
+                sprintf(
+                    '-%d Prestige abgezogen für den Start der Übernahme der %s von Spieler %s',
+                    $prestige,
+                    $target->getName(),
+                    $target->getUser()->getName()
+                ),
+                $source->getUser(),
+                time()
+            );
+        }
 
         $isFleet = false;
         if ($target instanceof Ship) {
@@ -194,17 +195,19 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
             $cause
         );
 
-        $this->createPrestigeLog->createLog(
-            $takeover->getPrestige(),
-            sprintf(
-                '%d Prestige erhalten für Abbruch der Übernahme der %s von Spieler %s',
+        if (!$takeover->getSourceSpacecraft()->getUser()->isNpc()) {
+            $this->createPrestigeLog->createLog(
                 $takeover->getPrestige(),
-                $takeover->getTargetSpacecraft()->getName(),
-                $takeover->getTargetSpacecraft()->getUser()->getName()
-            ),
-            $takeover->getSourceSpacecraft()->getUser(),
-            time()
-        );
+                sprintf(
+                    '%d Prestige erhalten für Abbruch der Übernahme der %s von Spieler %s',
+                    $takeover->getPrestige(),
+                    $takeover->getTargetSpacecraft()->getName(),
+                    $takeover->getTargetSpacecraft()->getUser()->getName()
+                ),
+                $takeover->getSourceSpacecraft()->getUser(),
+                time()
+            );
+        }
 
         $this->removeTakeover($takeover);
     }

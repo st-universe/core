@@ -123,7 +123,7 @@ final class StartTakeover implements ActionControllerInterface
         }
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForTakeover($target);
-        if ($user->getPrestige() < $neededPrestige) {
+        if ($user->getPrestige() < $neededPrestige && !$user->isNpc()) {
             $game->getInfo()->addInformation(sprintf(
                 'Nicht genügend Prestige vorhanden, benötigt wird: %d',
                 $neededPrestige
