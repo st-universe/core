@@ -11,8 +11,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class CreateInfluenceAreas implements ActionControllerInterface
@@ -31,7 +33,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     private array $mapsByCoords = [];
 
     public function __construct(
-        private MapRepositoryInterface $mapRepository,
+        private readonly LayerRepositoryInterface $layerRepository,
+        private readonly MapRepositoryInterface $mapRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -49,6 +52,12 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         $layerId = request::postIntFatal('layerid');
+        $layer = $this->layerRepository->find($layerId);
+        if ($layer === null) {
+            $game->getInfo()->addInformationf("Layer mit ID %d nicht gefunden", $layerId);
+            return;
+        }
+
         $allMapWithSystem = $this->mapRepository->getAllWithSystem($layerId);
         $allMapWithoutSystem = $this->mapRepository->getAllWithoutSystem($layerId);
 
@@ -65,7 +74,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             $this->addSpreader($map, $systemId);
             $this->setInfluenceArea($map, $system);
 
-            $this->spreadInCircle($map, $system);
+            $this->spreadInCircle($map, $system, $layer);
         }
 
         $round = 0;
@@ -83,7 +92,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
                 $this->shuffleAssoc($spreaderPerSystem);
 
                 foreach ($spreaderPerSystem as $id => $map) {
-                    $neighbour = $this->getRandomFreeNeighbour($map);
+                    $neighbour = $this->getRandomFreeNeighbour($map, $layer);
 
                     if ($neighbour === null) {
                         unset($spreaderPerSystem[$id]);
@@ -111,8 +120,11 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $game->getInfo()->addInformation("Influence Areas wurden randomisiert verteilt");
     }
 
-    private function spreadInCircle(Map $map, StarSystem $system): void
+    private function spreadInCircle(Map $map, StarSystem $system, Layer $layer): void
     {
+        $layerWidht = $layer->getWidth();
+        $layerHeight = $layer->getHeight();
+
         $x = $map->getX();
         $y = $map->getY();
 
@@ -129,27 +141,27 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         //top right
-        if ($y > 1 && $x < 120 && !$this->isMapUsed($x + 1, $y - 1)) {
+        if ($y > 1 && $x < $layerWidht && !$this->isMapUsed($x + 1, $y - 1)) {
             $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y - 1];
         }
 
         //right
-        if ($x < 120 && !$this->isMapUsed($x + 1, $y)) {
+        if ($x < $layerWidht && !$this->isMapUsed($x + 1, $y)) {
             $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y];
         }
 
         //bottom
-        if ($y < 120 && !$this->isMapUsed($x, $y + 1)) {
+        if ($y < $layerHeight && !$this->isMapUsed($x, $y + 1)) {
             $circleNeighbours[] = $this->mapsByCoords[$x][$y + 1];
         }
 
         //bottom left
-        if ($y < 120 && $x > 1 && !$this->isMapUsed($x - 1, $y + 1)) {
+        if ($y < $layerHeight && $x > 1 && !$this->isMapUsed($x - 1, $y + 1)) {
             $circleNeighbours[] = $this->mapsByCoords[$x - 1][$y + 1];
         }
 
         //bottom right
-        if ($y < 120 && $x < 120 && !$this->isMapUsed($x + 1, $y + 1)) {
+        if ($y < $layerHeight && $x < $layerWidht && !$this->isMapUsed($x + 1, $y + 1)) {
             $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y + 1];
         }
 
@@ -198,7 +210,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
     }
 
-    private function getRandomFreeNeighbour(Map $map): ?Map
+    private function getRandomFreeNeighbour(Map $map, Layer $layer): ?Map
     {
         $x = $map->getX();
         $y = $map->getY();
@@ -211,12 +223,12 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         //right
-        if ($x < 120 && !$this->isMapUsed($x + 1, $y)) {
+        if ($x <  $layer->getWidth() && !$this->isMapUsed($x + 1, $y)) {
             $freeNeighbours[] = $this->mapsByCoords[$x + 1][$y];
         }
 
         //bottom
-        if ($y < 120 && !$this->isMapUsed($x, $y + 1)) {
+        if ($y < $layer->getHeight() && !$this->isMapUsed($x, $y + 1)) {
             $freeNeighbours[] = $this->mapsByCoords[$x][$y + 1];
         }
 
