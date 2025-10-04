@@ -135,7 +135,7 @@ final class BoardShip implements ActionControllerInterface
 
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForBoardingAttempt($target);
-        if ($user->getPrestige() < $neededPrestige) {
+        if ($user->getPrestige() < $neededPrestige && !$user->isNpc()) {
             $game->getInfo()->addInformation(sprintf(
                 'Nicht genügend Prestige vorhanden, benötigt wird: %d',
                 $neededPrestige
@@ -170,17 +170,19 @@ final class BoardShip implements ActionControllerInterface
 
         $this->spacecraftStateChanger->changeState($targetWrapper, SpacecraftStateEnum::NONE);
 
-        $this->createPrestigeLog->createLog(
-            -$neededPrestige,
-            sprintf(
-                '-%d Prestige erhalten für einen Enterversuch auf die %s von Spieler %s',
-                $neededPrestige,
-                $target->getName(),
-                $target->getUser()->getName()
-            ),
-            $user,
-            time()
-        );
+        if (!$user->isNpc()) {
+            $this->createPrestigeLog->createLog(
+                -$neededPrestige,
+                sprintf(
+                    '-%d Prestige erhalten für einen Enterversuch auf die %s von Spieler %s',
+                    $neededPrestige,
+                    $target->getName(),
+                    $target->getUser()->getName()
+                ),
+                $user,
+                time()
+            );
+        }
 
         while ($combatGroupAttacker !== [] && $combatGroupDefender !== []) {
             $this->boardShip->cycleKillRound(
