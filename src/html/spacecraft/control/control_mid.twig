@@ -242,10 +242,10 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
             <br />
             {% include anomaly.getAnomalyType.getTemplate %}
             {% endfor %}
-            {% elseif SPACECRAFT.getLss and closestAnomalyDistance %}
+            {% elseif SPACECRAFT.getLss and closestAnomalyDistance is not null %}
             {% set lss = wrapper.getLssSystemData %}
             <br />
-            <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, lss.getSensorRange * 2, 1) }}"
+            <span style="border: 2px solid {{ gradientColor(closestAnomalyDistance, lss.getSensorRange * 2, 0) }}"
                 title="Es wurde eine Anomalie in der Nähe detektiert">Anomalie in der Nähe</span>
             {% endif %}
             {% if SPACECRAFT.getLss and closescolonydistance %}

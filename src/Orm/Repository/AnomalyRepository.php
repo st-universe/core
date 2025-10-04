@@ -98,7 +98,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
             return null;
         }
 
-        $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
+        $range = 2 * ($wrapper->getLssSystemData()?->getSensorRange() ?? 0);
 
         try {
             $result = (int)$this->getEntityManager()->createQuery(

@@ -14,7 +14,7 @@ final class GradientColor implements GradientColorInterface
         $color3 = '#FF0000';
 
         $diff = $highestValue - $lowestValue;
-        $percent = 100 / $diff * ($modificator - $lowestValue);
+        $percent = min(100, 100 / $diff * ($modificator - $lowestValue));
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
         $rgb1 = $this->hexToRgb($color1);
@@ -31,9 +31,7 @@ final class GradientColor implements GradientColorInterface
         }
 
         // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
-        $gradientColor = $this->rgbToHex($gradientRgb);
-
-        return $gradientColor;
+        return $this->rgbToHex($gradientRgb);
     }
 
     /**
