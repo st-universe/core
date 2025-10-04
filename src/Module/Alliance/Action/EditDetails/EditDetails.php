@@ -55,6 +55,13 @@ final class EditDetails implements ActionControllerInterface
             return;
         }
 
+        if (mb_strlen($name) > 255) {
+            $game->getInfo()->addInformation(
+                _('Der Name darf inklusive BBCode nur maximal 255 Zeichen lang sein')
+            );
+            return;
+        }
+
         $faction_mode = $this->editDetailsRequest->getFactionMode();
         $description = $this->editDetailsRequest->getDescription();
         $homepage = $this->editDetailsRequest->getHomepage();
