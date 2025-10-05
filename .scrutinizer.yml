@@ -2,7 +2,7 @@ build:
   image: default-jammy
   environment:
     php:
-      version: "8.4.11"
+      version: "8.4.13"
       ini:
         memory_limit: "-1"
       pecl_extensions:
