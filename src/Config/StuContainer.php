@@ -11,7 +11,7 @@ use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\DependencyException;
 use DI\NotFoundException;
-use DI\Proxy\ProxyFactory;
+use DI\Proxy\ProxyFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Psr\Container\ContainerInterface;
@@ -36,7 +36,7 @@ class StuContainer extends Container
      */
     public function __construct(
         MutableDefinitionSource $definitions,
-        ?ProxyFactory $proxyFactory = null,
+        ?ProxyFactoryInterface $proxyFactory = null,
         ?ContainerInterface $wrapperContainer = null
     ) {
         parent::__construct($definitions, $proxyFactory, $wrapperContainer);
