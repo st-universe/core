@@ -14,7 +14,6 @@ src/Public/robots.txt
 backup
 *.sqlite
 build
-OrmProxy
 src/lang/*/*/*.mo
 .php-cs-fixer.cache
 .githooks

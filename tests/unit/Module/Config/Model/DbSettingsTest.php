@@ -59,17 +59,4 @@ class DbSettingsTest extends StuTestCase
 
         $this->assertEquals('test', $namespace);
     }
-
-
-    public function testGetProxyNamespace(): void
-    {
-        $this->settingsCore->shouldReceive('getStringConfigValue')
-            ->with('proxy_namespace')
-            ->once()
-            ->andReturn('test');
-
-        $namespace = $this->subject->getProxyNamespace();
-
-        $this->assertEquals('test', $namespace);
-    }
 }
