@@ -9,6 +9,4 @@ interface DbSettingsInterface
     public function getSqliteDsn(): string;
 
     public function getDatabase(): string;
-
-    public function getProxyNamespace(): string;
 }

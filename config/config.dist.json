@@ -8,8 +8,7 @@
     "pass": "me",
     "database": "change_me",
     "backup_dir": "change/me",
-    "backup_cycle_time": 2592000,
-    "proxy_namespace": "Stu\\Orm\\Proxy"
+    "backup_cycle_time": 2592000
   },
   "mq": {
     "host": "stu-mq",

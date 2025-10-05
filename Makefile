@@ -50,7 +50,6 @@ generateMigrations:force
 
 migrateDatabase:force
 	vendor/bin/doctrine-migrations migrate --all-or-nothing --allow-no-migration --quiet -vv
-	bin/doctrine orm:generate-proxies
 
 resetGame:force
 	bin/cli game:reset

@@ -37,13 +37,7 @@ Code:
 
 ## DB-Änderungen via Doctrine-Migrations
 
-- Entities editieren und danach Proxies generieren:
-
-```shell
-bin/doctrine orm:generate-proxies
-```
-
-- DB-Änderungen mit Script generieren. In src/Migrations/Sqlite darf immer nur die aktuellste Datei liegen!
+- Entities editieren und danach die DB-Änderungen mit Script generieren. In src/Migrations/Sqlite darf immer nur die aktuellste Datei liegen!
 
 ```shell
 generate-migrations.sh

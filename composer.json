@@ -106,7 +106,6 @@
     }
   ],
   "scripts": {
-    "orm:proxies": "./bin/doctrine orm:generate-proxies",
     "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
     "integrationtests": "@php vendor/bin/phpunit --testsuite 'STU integration'",
     "stan": "phpstan",
