@@ -150,7 +150,7 @@ abstract class IntegrationTestCase extends StuTestCase
 
     private function dropSchema(): void
     {
-        $this->runCommand(DropCommand::class, "orm:schema-tool:drop --force --full-database");
+        $this->runCommand(DropCommand::class, "orm:schema-tool:drop --force --full-database --quiet");
     }
 
     private function initializeSchemaAndTestData(): IntegrationTestCase
