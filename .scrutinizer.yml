@@ -5,9 +5,9 @@ build:
       version: "8.4.11"
       ini:
         memory_limit: "-1"
-        xdebug.mode: coverage
       pecl_extensions:
         - redis
+        - xdebug
     redis: true
   nodes:
     analysis:
