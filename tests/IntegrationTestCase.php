@@ -9,7 +9,6 @@ use Doctrine\Migrations\Configuration\Migration\PhpFile;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
@@ -38,13 +37,11 @@ abstract class IntegrationTestCase extends StuTestCase
     protected static ?TestSession $testSession = null;
 
     protected static bool $isSchemaInitializationNeeded = true;
-    private static bool $areProxiesInitialized = false;
     private static ?StuContainer $INTTEST_CONTAINER = null;
 
     #[Override]
     public function setUp(): void
     {
-        $this->initializeProxies();
         $this->initializeSchemaAndTestdataIfNeeded();
         $this->setupTestSession();
         $this->setupServiceMocks();
@@ -164,14 +161,6 @@ abstract class IntegrationTestCase extends StuTestCase
         );
 
         return $this;
-    }
-
-    private function initializeProxies(): void
-    {
-        if (!self::$areProxiesInitialized) {
-            $this->runCommand(GenerateProxiesCommand::class, "orm:generate-proxies --quiet");
-            self::$areProxiesInitialized = true;
-        }
     }
 
     protected function runCommand(string $commandClass, string $input): void

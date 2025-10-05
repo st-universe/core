@@ -13,7 +13,6 @@
     <exclude>
       <directory suffix="services.php">src</directory>
       <directory>src/Migrations</directory>
-      <directory>src/OrmProxy</directory>
       <directory>src/Public</directory>
     </exclude>
   </source>

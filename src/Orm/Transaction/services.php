@@ -25,14 +25,13 @@ return [
     Configuration::class => function (ContainerInterface $c): Configuration {
         $stuConfig = $c->get(StuConfigInterface::class);
 
-        $emConfig = ORMSetup::createAttributeMetadataConfiguration(
+        $emConfig = ORMSetup::createAttributeMetadataConfig(
             [__DIR__ . '/../../Orm/Entity/'],
             $stuConfig->getDebugSettings()->isDebugMode(),
-            __DIR__ . '/../../OrmProxy/',
+            (string)$stuConfig->getGameSettings()->getVersion(),
             $c->get(CacheItemPoolInterface::class)
         );
-        $emConfig->setAutoGenerateProxyClasses(0);
-        $emConfig->setProxyNamespace($stuConfig->getDbSettings()->getProxyNamespace());
+        $emConfig->enableNativeLazyObjects(true);
 
         return $emConfig;
     },
