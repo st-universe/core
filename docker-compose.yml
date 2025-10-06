@@ -1,7 +1,7 @@
 version: '3'
 services:
   stu-db:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     hostname: stu_db
     restart: always
     environment:
