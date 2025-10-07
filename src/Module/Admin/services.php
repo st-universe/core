@@ -6,6 +6,7 @@ namespace Stu\Module\Admin;
 
 use Stu\Module\Admin\Action\BlockUser;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
+use Stu\Module\Admin\Action\CreateCrew;
 use Stu\Module\Admin\Action\CreateMissingUserWards;
 use Stu\Module\Admin\Action\LockUser;
 use Stu\Module\Admin\Action\PostNews;
@@ -112,6 +113,7 @@ return [
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
+        CreateCrew::ACTION_IDENTIFIER => autowire(CreateCrew::class),
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),

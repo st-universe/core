@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
+
 use InvalidArgumentException;
 use Override;
 use request;
