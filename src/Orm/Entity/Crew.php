@@ -143,6 +143,8 @@ class Crew
 
     public function __toString(): string
     {
-        return sprintf('crewId: %d', $this->getId());
+        return isset($this->id)
+            ? sprintf('crewId: %d', $this->id)
+            : sprintf('crew: %s (%s)', $this->name, $this->getGenderShort());
     }
 }
