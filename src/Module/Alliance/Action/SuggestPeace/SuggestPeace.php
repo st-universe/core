@@ -56,7 +56,13 @@ final class SuggestPeace implements ActionControllerInterface
 
         $obj = $this->allianceRelationRepository->prototype();
         $obj->setAlliance($alliance);
-        $obj->setOpponent($relation->getOpponent());
+
+        if ($relation->getAlliance()->getId() === $alliance->getId()) {
+            $obj->setOpponent($relation->getOpponent());
+        } else {
+            $obj->setOpponent($relation->getAlliance());
+        }
+
         $obj->setType(AllianceRelationTypeEnum::PEACE);
 
         $this->allianceRelationRepository->save($obj);
