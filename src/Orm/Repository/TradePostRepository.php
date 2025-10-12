@@ -9,6 +9,7 @@ use Doctrine\ORM\NoResultException;
 use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
@@ -114,32 +115,52 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ])
             ->getResult();
     }
-
     #[Override]
-    public function getClosestNpcTradePost(Location $location): ?TradePost
+    public function getClosestTradePost(Location $location, User $user): ?TradePost
     {
         $layer = $location->getLayer();
         if ($layer === null) {
             return null;
         }
 
-        try {
+        $userAlliance = $user->getAlliance();
+        $userFactionId = $user->getFactionId();
 
+        try {
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
                         'SELECT tp
-                            FROM %s tp
-                            JOIN %s s
-                            WITH tp.station = s
-                            JOIN %s l
-                            WITH s.location = l
-                            WHERE tp.user_id < :firstUserId
-                            AND l.layer = :layer
-                            ORDER BY abs(l.cx - :cx) + abs(l.cy - :cy) ASC',
+                        FROM %s tp
+                        JOIN %s s WITH tp.station = s
+                        JOIN %s l WITH s.location = l
+                        WHERE l.layer = :layer
+                        AND EXISTS (
+                            SELECT dp.id FROM %s dp
+                            WHERE dp.station = s
+                            AND dp.privilege_mode = 1
+                            AND (
+                                (dp.privilege_type = 1 AND dp.target = :userId)
+                                OR (dp.privilege_type = 2 AND dp.target = :allianceId)
+                                OR (dp.privilege_type = 3 AND dp.target = :factionId)
+                            )
+                            AND NOT EXISTS (
+                                SELECT dp2.id FROM %s dp2
+                                WHERE dp2.station = s
+                                AND dp2.privilege_mode = 2
+                                AND (
+                                    (dp2.privilege_type = 1 AND dp2.target = :userId)
+                                    OR (dp2.privilege_type = 2 AND dp2.target = :allianceId)
+                                    OR (dp2.privilege_type = 3 AND dp2.target = :factionId)
+                                )
+                            )
+                        )
+                        ORDER BY abs(l.cx - :cx) + abs(l.cy - :cy) ASC',
                         TradePost::class,
                         Station::class,
-                        Location::class
+                        Location::class,
+                        DockingPrivilege::class,
+                        DockingPrivilege::class
                     )
                 )
                 ->setMaxResults(1)
@@ -147,7 +168,9 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                     'layer' => $layer,
                     'cx' => $location->getCx(),
                     'cy' => $location->getCy(),
-                    'firstUserId' => UserConstants::USER_FIRST_ID
+                    'userId' => $user->getId(),
+                    'allianceId' => $userAlliance?->getId(),
+                    'factionId' => $userFactionId
                 ])
                 ->getSingleResult();
         } catch (NoResultException) {

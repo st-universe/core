@@ -42,7 +42,7 @@ interface TradePostRepositoryInterface extends ObjectRepository
      */
     public function getByUserLicenseOnlyFerg(int $userId): array;
 
-    public function getClosestNpcTradePost(Location $location): ?TradePost;
+    public function getClosestTradePost(Location $location, User $user): ?TradePost;
 
     /**
      * @return array<User>

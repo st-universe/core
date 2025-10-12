@@ -22,9 +22,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
@@ -41,7 +41,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         private TransferToClosestLocation $transferToClosestLocation,
         private CancelRetrofitInterface $cancelRetrofit,
         private SpacecraftRemoverInterface $spacecraftRemover,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private UserRepositoryInterface $userRepository
     ) {}
 
     #[Override]
@@ -100,14 +101,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             return;
         }
 
-        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($spacecraft->getLocation());
-        if ($closestTradepost === null) {
-            $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die Crew überstellt werden könnte');
+        //send PMs to crew owners
+        $success = $this->sendPMsToCrewOwners($crewmanPerUser, $spacecraft, $target, $game);
+        if (!$success) {
             return;
         }
-
-        //send PMs to crew owners
-        $this->sendPMsToCrewOwners($crewmanPerUser, $spacecraft, $target, $closestTradepost, $game);
 
         //remove entity if crew was on escape pods
         if ($target->getRump()->isEscapePods()) {
@@ -146,15 +144,29 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         array $crewmanPerUser,
         Spacecraft $spacecraft,
         Spacecraft $target,
-        TradePost $closestTradepost,
         GameControllerInterface $game
-    ): void {
+    ): bool {
         $userId = $game->getUser()->getId();
 
         $sentGameInfoForForeignCrew = false;
+        $closestTradepost = null;
 
         foreach ($crewmanPerUser as $ownerId => $count) {
             if ($ownerId !== $userId) {
+                if ($closestTradepost === null) {
+                    $crewOwner = $this->userRepository->find($ownerId);
+                    if ($crewOwner === null) {
+                        $game->getInfo()->addInformation('Crew-Besitzer nicht gefunden');
+                        return false;
+                    }
+
+                    $closestTradepost = $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $crewOwner);
+                    if ($closestTradepost === null) {
+                        $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die fremde Crew überstellt werden könnte');
+                        return false;
+                    }
+                }
+
                 $this->privateMessageSender->send(
                     UserConstants::USER_NOONE,
                     $ownerId,
@@ -182,12 +194,20 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 foreach ($target->getCrewAssignments() as $crewAssignment) {
                     if ($crewAssignment->getCrew()->getUser()->getId() === $game->getUser()->getId()) {
                         $crewAssignment->setSpacecraft($spacecraft);
-                        $spacecraft->getCrewAssignments()->add($crewAssignment);
                         $this->shipCrewRepository->save($crewAssignment);
                     }
                 }
                 $game->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
             } else {
+                if ($closestTradepost === null) {
+                    $closestTradepost = $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $game->getUser());
+                }
+
+                if ($closestTradepost === null) {
+                    $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die eigene Crew überstellt werden könnte');
+                    return false;
+                }
+
                 $game->getInfo()->addInformation($this->transferToClosestLocation->transfer(
                     $spacecraft,
                     $target,
@@ -196,6 +216,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 ));
             }
         }
+
+        return true;
     }
 
     private function gotEnoughFreeTroopQuarters(Spacecraft $spacecraft, int $count): bool
