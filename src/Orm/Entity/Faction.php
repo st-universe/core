@@ -20,8 +20,8 @@ class Faction
 {
     #[Id]
     #[GeneratedValue(strategy: 'IDENTITY')]
-    #[Column(type: 'integer', enumType: FactionEnum::class)]
-    private FactionEnum $id;
+    #[Column(type: 'integer')]
+    private int $id;
 
     #[Column(type: 'string')]
     private string $name = '';
@@ -78,7 +78,7 @@ class Faction
 
     public function getId(): int
     {
-        return $this->id->value;
+        return $this->id;
     }
 
     public function getName(): string
