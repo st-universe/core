@@ -22,7 +22,7 @@ final class DeleteIgnores implements ActionControllerInterface
 
         foreach ($this->deleteIgnoresRequest->getIgnoreIds() as $val) {
             $contact = $this->ignoreListRepository->find($val);
-            if (!$contact || !$contact->getUserId() != $userId) {
+            if (!$contact || $contact->getUserId() != $userId) {
                 continue;
             }
 
