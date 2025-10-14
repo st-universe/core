@@ -52,9 +52,9 @@ function deleteMarkedContacts() {
 }
 
 function deleteMarkedIgnores() {
-	$('deletion_mark').value = nodelistToString(document.getElementById('contactlist').elements['deleted[]']);
+	$('deletion_mark').value = nodelistToString(document.getElementById('ignorelist').elements['deleted[]']);
 	$('formaction').name = 'B_DELETE_IGNORES';
-	document.forms.contactlist.submit();
+	document.forms.ignorelist.submit();
 }
 
 function markAllContacts() {
@@ -66,6 +66,18 @@ function markAllContacts() {
 function unMarkAllContacts() {
 	for (var i = 0; i < document.contactlist.length; ++i) {
 		document.forms.contactlist.elements[i].checked = false;
+	}
+}
+
+function markAllIgnores() {
+	for (var i = 0; i < document.ignorelist.length; ++i) {
+		document.forms.ignorelist.elements[i].checked = true;
+	}
+}
+
+function unMarkAllIgnores() {
+	for (var i = 0; i < document.ignorelist.length; ++i) {
+		document.forms.ignorelist.elements[i].checked = false;
 	}
 }
 

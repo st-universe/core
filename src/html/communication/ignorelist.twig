@@ -1,9 +1,8 @@
 {% block body %}
-<script src="{{ javascriptPath }}/js/comm.js"></script>
-<form action="pm.php" method="post" name="contactlist" id="contactlist">
+<form action="pm.php" method="post" name="ignorelist" id="ignorelist">
     <input type="hidden" name="SHOW_IGNORELIST" value="1" />
-    <input type="hidden" id="formaction" value="1" />
-    <input type="hidden" name="deletion_mark" value="" />
+    <input type="hidden" name="formaction" id="formaction" value="1" />
+    <input type="hidden" name="deletion_mark" id="deletion_mark" value="" />
     <div style="float: left; width: 75%;">
         <table class="tcal">
             <tr>
@@ -57,10 +56,10 @@
             <tr>
                 <td>
                     <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
-                        onclick="markAllContacts();">Alle selektieren</a>
+                        onclick="markAllIgnores();">Alle selektieren</a>
                     <br />
                     <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
-                        onclick="unMarkAllContacts();">Alle deselektieren</a>
+                        onclick="unMarkAllIgnores();">Alle deselektieren</a>
                     <br /><br />
                     <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
                         onclick="deleteMarkedIgnores();">Alle selektierten löschen</a>
