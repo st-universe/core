@@ -263,6 +263,256 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
     }
 
+    public function testFireExpectNoSecondShotOnFirstTargetIfFirstTargetDestroyed(): void
+    {
+        $attacker = $this->mock(EnergyAttackerInterface::class);
+        $target = $this->mock(Ship::class);
+        $target2 = $this->mock(Ship::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $targetWrapper2 = $this->mock(ShipWrapperInterface::class);
+        $weapon = $this->mock(Weapon::class);
+        $user = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
+        $targetRump = $this->mock(SpacecraftRump::class);
+        $targetPool = $this->mock(BattlePartyInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
+        $message2 = $this->mock(MessageInterface::class);
+        $location = $this->mock(Map::class);
+
+        $targetId = 42;
+        $target2Id = 43;
+
+        $targetPool->shouldReceive('getRandomActiveMember')
+            ->withNoArgs()
+            ->times(2)
+            ->andReturn($targetWrapper, $targetWrapper2);
+        $targetPool->shouldReceive('isDefeated')
+            ->withNoArgs()
+            ->times(3)
+            ->andReturn(false, false, true);
+
+        $attacker->shouldReceive('getPhaserVolleys')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(3);
+        $attacker->shouldReceive('getPhaserState')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(true);
+        $attacker->shouldReceive('hasSufficientEnergy')
+            ->with(1)
+            ->andReturn(true);
+        $attacker->shouldReceive('getWeapon')
+            ->withNoArgs()
+            ->andReturn($weapon);
+        $attacker->shouldReceive('getFiringMode')
+            ->withNoArgs()
+            ->andReturn(2);
+        $attacker->shouldReceive('reduceEps')
+            ->with(1)
+            ->twice();
+        $attacker->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->andReturn(888);
+        $attacker->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("ATTACKER");
+        $attacker->shouldReceive('getHitChance')
+            ->withNoArgs()
+            ->andReturn(100);
+        $attacker->shouldReceive('getWeaponDamage')
+            ->with(true)
+            ->andReturn(100);
+        $attacker->shouldReceive('getPhaserShieldDamageFactor')
+            ->withNoArgs()
+            ->andReturn(100);
+        $attacker->shouldReceive('getPhaserHullDamageFactor')
+            ->withNoArgs()
+            ->andReturn(100);
+        $attacker->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $attacker->shouldReceive('isAvoidingHullHits')
+            ->with($target)
+            ->andReturn(false);
+        $attacker->shouldReceive('isAvoidingHullHits')
+            ->with($target2)
+            ->andReturn(false);
+
+        $location->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::HIT_CHANCE_INTERFERENCE)
+            ->andReturn(false);
+        $location->shouldReceive('getFieldType->hasEffect')
+            ->with(FieldTypeEffectEnum::EVADE_CHANCE_INTERFERENCE)
+            ->andReturn(false);
+
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(888);
+
+        $targetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target);
+        $targetWrapper->shouldReceive('getComputerSystemDataMandatory->getEvadeChance')
+            ->withNoArgs()
+            ->andReturn(0);
+
+        $targetWrapper2->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($target2);
+        $targetWrapper2->shouldReceive('getComputerSystemDataMandatory->getEvadeChance')
+            ->withNoArgs()
+            ->andReturn(0);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($targetId);
+        $target->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("TARGET");
+        $target->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($targetUser);
+        $target->shouldReceive('getCondition->isDestroyed')
+            ->withNoArgs()
+            ->andReturn(true);
+        $target->shouldReceive('isStation')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target->shouldReceive('getRump')
+            ->withNoArgs()
+            ->andReturn($targetRump);
+        $target->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->andReturn("SECTOR");
+        $target->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $target2->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn($target2Id);
+        $target2->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target2->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("TARGET2");
+        $target2->shouldReceive('getUser')
+            ->withNoArgs()
+            ->andReturn($targetUser);
+        $target2->shouldReceive('getCondition->isDestroyed')
+            ->withNoArgs()
+            ->andReturn(true);
+        $target2->shouldReceive('isStation')
+            ->withNoArgs()
+            ->andReturn(false);
+        $target2->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->andReturn(null);
+        $target2->shouldReceive('getRump')
+            ->withNoArgs()
+            ->andReturn($targetRump);
+        $target2->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->andReturn("SECTOR");
+        $target2->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->andReturn($location);
+        $target2->shouldReceive('hasComputer')
+            ->withNoArgs()
+            ->andReturn(true);
+
+        $targetRump->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("RUMP");
+        $targetRump->shouldReceive('getPrestige')
+            ->withNoArgs()
+            ->andReturn(0);
+
+        $targetUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(999);
+
+        $weapon->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn("WEAPON");
+        $weapon->shouldReceive('getCriticalChance')
+            ->withNoArgs()
+            ->andReturn(0);
+        $weapon->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $weapon->shouldReceive('getFiringMode')
+            ->withNoArgs()
+            ->andReturn(1);
+
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 100)
+            ->andReturn(0);
+        $this->stuRandom->shouldReceive('rand')
+            ->with(1, 10000)
+            ->andReturn(0);
+
+        $this->applyDamage->shouldReceive('damage')
+            ->with(Mockery::any(), $targetWrapper, $message);
+        $this->applyDamage->shouldReceive('damage')
+            ->with(Mockery::any(), $targetWrapper2, $message2);
+
+        $this->spacecraftDestruction->shouldReceive('destroy')
+            ->with(
+                $attacker,
+                $targetWrapper,
+                SpacecraftDestructionCauseEnum::SHIP_FIGHT,
+                $message
+            )
+            ->once();
+        $this->spacecraftDestruction->shouldReceive('destroy')
+            ->with(
+                $attacker,
+                $targetWrapper2,
+                SpacecraftDestructionCauseEnum::SHIP_FIGHT,
+                $message2
+            )
+            ->once();
+
+        $messages->shouldReceive('add')
+            ->with($message)
+            ->once();
+        $messages->shouldReceive('add')
+            ->with($message2)
+            ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(888, 999)
+            ->twice()
+            ->andReturn($message, $message2);
+
+        $message->shouldReceive('add')
+            ->with('Die ATTACKER feuert mit einem WEAPON auf die TARGET')
+            ->once();
+        $message2->shouldReceive('add')
+            ->with('Die ATTACKER feuert mit einem WEAPON auf die TARGET2')
+            ->once();
+
+        $this->userRepository->shouldReceive('find')
+            ->with(888)
+            ->twice()
+            ->andReturn($user);
+
+        $this->subject->fire($attacker, $targetPool, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages);
+    }
+
     public function testFireExpectNoShotIfAttackerAvoidsHittingHull(): void
     {
         $attacker = $this->mock(EnergyAttackerInterface::class);

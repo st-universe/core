@@ -59,4 +59,20 @@ class ShipTest extends StuTestCase
         $this->assertSame($systemMap, $this->subject->getStarsystemMap());
         $this->assertNull($this->subject->getMap());
     }
+
+    public function testSetDockedToExpectUndockingIfDocked(): void
+    {
+        $station = $this->mock(Station::class);
+        $station->shouldReceive('getDockedShips->removeElement')
+            ->with($this->subject)
+            ->once();
+
+        $this->subject->setDockedTo($station);
+
+        $this->assertSame($station, $this->subject->getDockedTo());
+
+        $this->subject->setDockedTo(null);
+
+        $this->assertNull($this->subject->getDockedTo());
+    }
 }

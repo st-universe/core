@@ -98,6 +98,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                     $message
                 );
 
+                $targetWrapper = null;
+
                 if ($weapon->getFiringMode() === self::FIRINGMODE_FOCUS) {
                     break;
                 }
