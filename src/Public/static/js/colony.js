@@ -558,6 +558,8 @@ function applyFilter(isSelected, querySelector, expandAll) {
 				showModuleLevel(module);
 			}
 		});
+
+		showMatchingResponsiveRows(querySelector);
 	}
 }
 
@@ -612,12 +614,20 @@ function toggleModuleLevel(type, level, element) {
 
 function hideAllModulesAndLevelButtons(isFilterActive) {
 	const allModules = document.querySelectorAll('.modules');
+	const allResponsiveRows = document.querySelectorAll('.responsive-show');
 	const allLevelButtons = document.querySelectorAll('.level-button');
 	const allModuleLevels = document.querySelectorAll('.module-level');
 	const allLevelBoxes = document.querySelectorAll('.level-box');
 
 	allModules.forEach(module => {
 		module.style.display = isFilterActive ? 'none' : 'table-row'
+	});
+	allResponsiveRows.forEach(row => {
+		if (isFilterActive) {
+			row.style.display = 'none';
+		} else {
+			row.style.display = '';
+		}
 	});
 	allLevelButtons.forEach(button => {
 		button.style.display = isFilterActive ? 'none' : 'block';
@@ -641,6 +651,18 @@ function showModuleLevel(module) {
 	const type = module.getAttribute('data-module-type');
 	const level = module.getAttribute('data-module-level');
 	document.getElementById(`module-level-${type}-${level}`).style.display = 'block';
+}
+
+function showMatchingResponsiveRows(querySelector) {
+	const className = querySelector.substring(1);
+
+	const responsiveRows = document.querySelectorAll('.responsive-show');
+	responsiveRows.forEach(row => {
+		const moduleClass = row.getAttribute('data-module-class');
+		if (moduleClass && moduleClass.includes(className)) {
+			row.style.display = '';
+		}
+	});
 }
 
 function showNewSandboxWindow(element) {

@@ -28,8 +28,8 @@
     <div id="module-container">
         {% for type, levels in MODULES_BY_TYPE_AND_LEVEL %}
         {% set moduleType = type %}
-        <div id="module_tab_{{ moduleType }}" class="module_tab border_box {{ MODULE_TYPES[type].cssClass }}"
-            style="margin-top: 5px" onclick="toggleModuleType({{ moduleType }});">
+        <div id="module_tab_{{ moduleType }}" class="module_tab border_box" style="margin-top: 5px"
+            onclick="toggleModuleType({{ moduleType }});">
             <div class="module-header" style="display: flex; align-items: center; cursor: pointer;">
                 <img src="{{ MODULE_TYPES[type].image }}" id="tab_image_mod_{{ moduleType }}"
                     alt="{{ MODULE_TYPES[type].name }}" />
@@ -110,7 +110,8 @@
                             oninput="setModuleInput(this);" />
                     </td>
                 </tr>
-                <tr class="responsive-show">
+                <tr class="responsive-show" data-module-type="{{ data.getModuleType }}"
+                    data-module-level="{{ data.getModuleLevel }}" data-module-class="{{ data.getClass }}">
                     <td colspan="3">
                         <table class="tcal">
                             <tr>
