@@ -121,6 +121,11 @@ class Ship extends Spacecraft
 
     public function setDockedTo(?Station $dockedTo): Ship
     {
+        $currentDockedTo = $this->dockedTo;
+        if($dockedTo === null && $currentDockedTo !== null) {
+            $currentDockedTo->getDockedShips()->removeElement($this);
+        }
+
         $this->dockedTo = $dockedTo;
         return $this;
     }
