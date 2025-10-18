@@ -42,4 +42,14 @@ final class AllianceRelationWrapper
     {
         return $this->relation->getType();
     }
+
+    public function getId(): int
+    {
+        return $this->relation->getId();
+    }
+
+    public function hasText(): bool
+    {
+        return $this->relation->hasText();
+    }
 }

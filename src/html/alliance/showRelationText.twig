@@ -1,0 +1,23 @@
+{% block body %}
+<div id="popup-drag" style="padding: 5px; text-align: center; font-weight: bold; cursor: grab;">
+    {{ RELATION.getType.getDescription }} zwischen <br>{{ RELATION.getAlliance.getName|bbcode }} <br>und <br>{{
+    RELATION.getOpponent.getName|bbcode }}
+</div>
+<div style="padding: 15px; max-width: 600px;">
+    {% if RELATION.hasText %}
+    <div
+        style="background-color: #171616; border: 1px solid #262323; padding: 15px; margin-bottom: 15px; word-wrap: break-word; line-height: 1.4;">
+        {{ RELATION.getText|nl2br|bbcode }}
+    </div>
+    {% if RELATION.getLastEdited %}
+    <div style="font-size: 90%; color: #888; text-align: right; margin-bottom: 15px;">
+        Zuletzt bearbeitet: {{ RELATION.getLastEdited|stuDateTime }}
+    </div>
+    {% endif %}
+    {% else %}
+    <div style="text-align: center; color: #888; font-style: italic; padding: 30px;">
+        Kein Vertragstext hinterlegt
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

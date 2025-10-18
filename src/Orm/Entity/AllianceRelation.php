@@ -39,6 +39,12 @@ class AllianceRelation
     #[Column(type: 'integer')]
     private int $date = 0;
 
+    #[Column(type: 'text', nullable: true)]
+    private ?string $text = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $last_edited = null;
+
     #[ManyToOne(targetEntity: Alliance::class)]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Alliance $alliance;
@@ -116,5 +122,32 @@ class AllianceRelation
         $this->opponent = $opponent;
 
         return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(?string $text): AllianceRelation
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    public function getLastEdited(): ?int
+    {
+        return $this->last_edited;
+    }
+
+    public function setLastEdited(?int $lastEdited): AllianceRelation
+    {
+        $this->last_edited = $lastEdited;
+        return $this;
+    }
+
+    public function hasText(): bool
+    {
+        return $this->text !== null && trim($this->text) !== '';
     }
 }

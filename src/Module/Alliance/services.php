@@ -51,6 +51,9 @@ use Stu\Module\Alliance\Action\EditDetails\EditDetails;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequestInterface;
 use Stu\Module\Alliance\Action\EditPost\EditPost;
+use Stu\Module\Alliance\Action\EditRelationText\EditRelationText;
+use Stu\Module\Alliance\Action\EditRelationText\EditRelationTextRequest;
+use Stu\Module\Alliance\Action\EditRelationText\EditRelationTextRequestInterface;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayer;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayerRequest;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayerRequestInterface;
@@ -91,6 +94,12 @@ use Stu\Module\Alliance\View\BoardSettings\BoardSettingsRequestInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
 use Stu\Module\Alliance\View\Edit\Edit;
+use Stu\Module\Alliance\View\EditRelationText\EditRelationText as ViewEditRelationText;
+use Stu\Module\Alliance\View\EditRelationText\EditRelationTextRequest as ViewEditRelationTextRequest;
+use Stu\Module\Alliance\View\EditRelationText\EditRelationTextRequestInterface as ViewEditRelationTextRequestInterface;
+use Stu\Module\Alliance\View\ShowRelationText\ShowRelationText;
+use Stu\Module\Alliance\View\ShowRelationText\ShowRelationTextRequest;
+use Stu\Module\Alliance\View\ShowRelationText\ShowRelationTextRequestInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Alliance\View\NewPost\NewPost;
 use Stu\Module\Alliance\View\NewPost\NewPostRequest;
@@ -141,6 +150,9 @@ return [
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     AcceptOfferRequestInterface::class => autowire(AcceptOfferRequest::class),
     CancelContractRequestInterface::class => autowire(CancelContractRequest::class),
+    EditRelationTextRequestInterface::class => autowire(EditRelationTextRequest::class),
+    ViewEditRelationTextRequestInterface::class => autowire(ViewEditRelationTextRequest::class),
+    ShowRelationTextRequestInterface::class => autowire(ShowRelationTextRequest::class),
     AllianceUiFactoryInterface::class => autowire(AllianceUiFactory::class),
     'ALLIANCE_ACTIONS' => [
         AddBoard::ACTION_IDENTIFIER => autowire(AddBoard::class),
@@ -171,6 +183,7 @@ return [
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         DeleteAvatar::ACTION_IDENTIFIER => autowire(DeleteAvatar::class),
         DeleteAlliance::ACTION_IDENTIFIER => autowire(DeleteAlliance::class),
+        EditRelationText::ACTION_IDENTIFIER => autowire(EditRelationText::class),
         DemotePlayer::ACTION_IDENTIFIER => autowire(DemotePlayer::class)
             ->constructorParameter(
                 'demotePlayerRequest',
@@ -194,5 +207,7 @@ return [
         Relations::VIEW_IDENTIFIER => autowire(Relations::class),
         ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class),
         DiplomaticRelations::VIEW_IDENTIFIER => autowire(DiplomaticRelations::class),
+        ViewEditRelationText::VIEW_IDENTIFIER => autowire(ViewEditRelationText::class),
+        ShowRelationText::VIEW_IDENTIFIER => autowire(ShowRelationText::class),
     ]
 ];
