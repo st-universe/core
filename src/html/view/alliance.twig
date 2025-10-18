@@ -96,6 +96,12 @@
         <div class="allianceRelationOpponentName">{{ wrapper.getDescription|bbcode }}</div>
         <div class="allianceRelationDate">
           seit {{ wrapper.getDate|stuDate }}
+          {% if wrapper.hasText %}
+          <div style="margin-top: 5px;">
+            <a href="javascript:void(0);" onclick="showRelationText({{ wrapper.getId }});" class="linkbutton"
+              style="font-size: 85%;">Vertragswerk</a>
+          </div>
+          {% endif %}
         </div>
       </div>
       {% endfor %}
