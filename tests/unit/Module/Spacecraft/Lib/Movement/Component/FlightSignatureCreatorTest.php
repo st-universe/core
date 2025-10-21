@@ -10,8 +10,8 @@ use Mockery\MockInterface;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Map\DirectionEnum;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Map;
@@ -26,7 +26,7 @@ class FlightSignatureCreatorTest extends StuTestCase
 {
     private MockInterface&FlightSignatureRepositoryInterface $flightSignatureRepository;
     private MockInterface&StuTime $stuTime;
-    private MockInterface&ShipLoaderInterface $shipLoader;
+    private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
     private MockInterface&SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
 
     private FlightSignatureCreator $subject;
@@ -36,13 +36,13 @@ class FlightSignatureCreatorTest extends StuTestCase
     {
         $this->flightSignatureRepository = $this->mock(FlightSignatureRepositoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
-        $this->shipLoader = $this->mock(ShipLoaderInterface::class);
+        $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);
         $this->spacecraftRumpRepository = $this->mock(SpacecraftRumpRepositoryInterface::class);
 
         $this->subject = new FlightSignatureCreator(
             $this->flightSignatureRepository,
             $this->stuTime,
-            $this->shipLoader,
+            $this->spacecraftLoader,
             $this->spacecraftRumpRepository
         );
     }
@@ -120,8 +120,8 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->twice()
             ->andReturn($cloakState);
 
-        $wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
             ->twice()
             ->andReturn($wrapper);
@@ -241,8 +241,8 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->twice()
             ->andReturn($cloakState);
 
-        $wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
             ->twice()
             ->andReturn($wrapper);

@@ -9,7 +9,8 @@ use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
@@ -23,10 +24,11 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
  */
 final class FlightSignatureCreator implements FlightSignatureCreatorInterface
 {
+    /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
         private StuTime $stuTime,
-        private ShipLoaderInterface $shipLoader,
+        private SpacecraftLoaderInterface $spacecraftLoader,
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
     ) {}
 
@@ -83,7 +85,7 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
     private function getWarpSignature(Spacecraft $spacecraft): SpacecraftRump
     {
         $rump = $spacecraft->getRump();
-        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $spacecraft->getId(),
             $spacecraft->getUser()->getId()
         );
