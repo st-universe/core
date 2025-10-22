@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceJobRepository;
 
@@ -31,12 +30,6 @@ class AllianceJob
     #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'jobs')]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Alliance $alliance;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $user_id = null;
-
-    #[Column(type: 'smallint', enumType: AllianceJobTypeEnum::class, nullable: true)]
-    private ?AllianceJobTypeEnum $type = null;
 
     #[Column(type: 'string', nullable: true)]
     private ?string $title = null;
@@ -100,16 +93,6 @@ class AllianceJob
     {
         $this->sort = $sort;
         return $this;
-    }
-
-    public function getOldUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function getOldType(): ?AllianceJobTypeEnum
-    {
-        return $this->type;
     }
 
     public function hasFounderPermission(): bool

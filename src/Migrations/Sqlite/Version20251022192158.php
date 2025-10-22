@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251022170057 extends AbstractMigration
+final class Version20251022192158 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -44,7 +44,7 @@ final class Version20251022170057 extends AbstractMigration
         $this->addSql('CREATE INDEX ordered_topics_idx ON stu_alliance_topics (board_id, last_post_date)');
         $this->addSql('CREATE TABLE stu_alliances (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, homepage VARCHAR(255) NOT NULL, date INTEGER NOT NULL, faction_id INTEGER DEFAULT NULL, accept_applications BOOLEAN NOT NULL, avatar VARCHAR(32) NOT NULL, rgb_code VARCHAR(7) NOT NULL, CONSTRAINT FK_A36183F74448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A36183F74448F8DA ON stu_alliances (faction_id)');
-        $this->addSql('CREATE TABLE stu_alliances_jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER DEFAULT NULL, type SMALLINT DEFAULT NULL, title VARCHAR(255) DEFAULT NULL, sort INTEGER DEFAULT NULL, is_founder_permission BOOLEAN DEFAULT 0 NOT NULL, is_successor_permission BOOLEAN DEFAULT 0 NOT NULL, is_diplomatic_permission BOOLEAN DEFAULT 0 NOT NULL, alliance_id INTEGER NOT NULL, CONSTRAINT FK_3C71C67B10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_alliances_jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title VARCHAR(255) DEFAULT NULL, sort INTEGER DEFAULT NULL, is_founder_permission BOOLEAN DEFAULT 0 NOT NULL, is_successor_permission BOOLEAN DEFAULT 0 NOT NULL, is_diplomatic_permission BOOLEAN DEFAULT 0 NOT NULL, alliance_id INTEGER NOT NULL, CONSTRAINT FK_3C71C67B10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3C71C67B10A0EA3F ON stu_alliances_jobs (alliance_id)');
         $this->addSql('CREATE TABLE stu_alliances_relations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, alliance_id INTEGER NOT NULL, recipient INTEGER NOT NULL, date INTEGER NOT NULL, text CLOB DEFAULT NULL, last_edited INTEGER DEFAULT NULL, CONSTRAINT FK_9EBADCD910A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9EBADCD96804FB49 FOREIGN KEY (recipient) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9EBADCD910A0EA3F ON stu_alliances_relations (alliance_id)');
