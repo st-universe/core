@@ -7,9 +7,11 @@ use Stu\Orm\Entity\User;
 
 final class AllianceMemberWrapper
 {
-    public function __construct(private User $user, private Alliance $alliance)
-    {
-    }
+    public function __construct(
+        private User $user,
+        private Alliance $alliance,
+        private AllianceJobManagerInterface $allianceJobManager
+    ) {}
 
     public function getUser(): User
     {
@@ -23,7 +25,7 @@ final class AllianceMemberWrapper
 
     public function isFounder(): bool
     {
-        return $this->user->getId() === $this->alliance->getFounder()->getUserId();
+        return $this->allianceJobManager->hasUserFounderPermission($this->user, $this->alliance);
     }
 
     public function getUserId(): int

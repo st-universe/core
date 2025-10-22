@@ -7,7 +7,6 @@ namespace Stu\Module\Alliance\Lib;
 use Noodlehaus\ConfigInterface;
 use Override;
 use RuntimeException;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -18,6 +17,7 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\AllianceMemberJobRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
@@ -27,28 +27,14 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
-        private ConfigInterface $config
+        private ConfigInterface $config,
+        private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     #[Override]
-    public function setJobForUser(Alliance $alliance, User $user, AllianceJobTypeEnum $jobType): void
+    public function assignUserToJob(User $user, AllianceJob $job): void
     {
-        $obj = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $alliance->getId(),
-            $jobType
-        );
-        if ($obj === null) {
-            $obj = $this->allianceJobRepository->prototype();
-            $obj->setType($jobType);
-            $obj->setAlliance($alliance);
-        }
-        $obj->setUser($user);
-
-        if (!$obj->getAlliance()->getJobs()->containsKey($jobType->value)) {
-            $obj->getAlliance()->getJobs()->set($jobType->value, $obj);
-        }
-
-        $this->allianceJobRepository->save($obj);
+        $this->allianceJobManager->assignUserToJob($user, $job);
     }
 
     #[Override]
@@ -94,36 +80,28 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     #[Override]
     public function mayEdit(Alliance $alliance, User $user): bool
     {
-        $successor = $alliance->getSuccessor();
-        $founder = $alliance->getFounder();
-
-        return ($successor !== null && $user->getId() === $successor->getUser()->getId()
-        ) || $user->getId() === $founder->getUser()->getId();
+        return $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance);
     }
 
     #[Override]
     public function mayManageForeignRelations(Alliance $alliance, User $user): bool
     {
-        $diplomatic = $alliance->getDiplomatic();
-
-        if ($diplomatic === null || $diplomatic->getUser()->getId() !== $user->getId()) {
-            return $this->mayEdit($alliance, $user);
-        }
-
-        return true;
+        return $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance)
+            || $this->mayEdit($alliance, $user);
     }
 
     #[Override]
     public function sendMessage(int $allianceId, string $text): void
     {
-        /** @var AllianceJob[] $jobList */
-        $jobList = array_filter(
-            $this->allianceJobRepository->getByAlliance($allianceId),
-            static fn(AllianceJob $job): bool => $job->getType() !== AllianceJobTypeEnum::PENDING
-        );
+        $alliance = $this->allianceRepository->find($allianceId);
 
-        foreach ($jobList as $job) {
-            $this->privateMessageSender->send(UserConstants::USER_NOONE, $job->getUserId(), $text);
+        if ($alliance === null) {
+            return;
+        }
+
+        foreach ($alliance->getMembers() as $member) {
+            $this->privateMessageSender->send(UserConstants::USER_NOONE, $member->getId(), $text);
         }
     }
 

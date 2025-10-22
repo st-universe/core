@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Lib;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
@@ -16,6 +17,8 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     private MockInterface&Alliance $alliance;
 
+    private MockInterface&AllianceJobManagerInterface $allianceJobManager;
+
     private AllianceMemberWrapper $subject;
 
     #[Override]
@@ -23,10 +26,12 @@ class AllianceMemberWrapperTest extends StuTestCase
     {
         $this->user = $this->mock(User::class);
         $this->alliance = $this->mock(Alliance::class);
+        $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->subject = new AllianceMemberWrapper(
             $this->user,
-            $this->alliance
+            $this->alliance,
+            $this->allianceJobManager
         );
     }
 
@@ -48,17 +53,10 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testIsFounderReturnsTrueIfSo(): void
     {
-        $userId = 666;
-
-        $this->user->shouldReceive('getId')
-            ->withNoArgs()
+        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
+            ->with($this->user, $this->alliance)
             ->once()
-            ->andReturn($userId);
-
-        $this->alliance->shouldReceive('getFounder->getUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
+            ->andReturnTrue();
 
         static::assertTrue(
             $this->subject->isFounder()
@@ -67,15 +65,10 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testIsFounderReturnsTrueIfIdsAreDifferent(): void
     {
-        $this->user->shouldReceive('getId')
-            ->withNoArgs()
+        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
+            ->with($this->user, $this->alliance)
             ->once()
-            ->andReturn(666);
-
-        $this->alliance->shouldReceive('getFounder->getUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
+            ->andReturnFalse();
 
         static::assertFalse(
             $this->subject->isFounder()

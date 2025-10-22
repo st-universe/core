@@ -6,16 +6,17 @@ namespace Stu\Component\Alliance;
 
 use Mockery\MockInterface;
 use Override;
+use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceApplication;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\StuTestCase;
 
 class AllianceUserApplicationCheckerTest extends StuTestCase
 {
-    private AllianceApplicationRepositoryInterface&MockInterface $allianceApplicationRepository;
+    private AllianceJobRepositoryInterface&MockInterface $allianceJobRepository;
     private User&MockInterface $user;
 
     private Alliance&MockInterface $alliance;
@@ -25,24 +26,26 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->allianceApplicationRepository = $this->mock(AllianceApplicationRepositoryInterface::class);
+        $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);
 
         $this->user = $this->mock(User::class);
         $this->alliance = $this->mock(Alliance::class);
 
-        $this->subject = new AllianceUserApplicationChecker($this->allianceApplicationRepository
+        $this->subject = new AllianceUserApplicationChecker(
+            $this->allianceJobRepository
         );
     }
 
     public function testMayApplyReturnsFalseIfUserHasPendingApplications(): void
     {
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
-            ->andReturn($this->mock(AllianceApplication::class));
+            ->andReturn($this->mock(AllianceJob::class));
 
         $this->assertFalse(
             $this->subject->mayApply($this->user, $this->alliance)
@@ -51,10 +54,11 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     public function testMayApplyReturnsFalseIfAllianceDoesNotAcceptApplications(): void
     {
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -71,10 +75,11 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     public function testMayApplyReturnsFalseIfUserIsInAnAlliance(): void
     {
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -106,10 +111,11 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(2222);
 
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -143,10 +149,11 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(1111);
 
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();
@@ -174,10 +181,11 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     public function testMayApplyReturnsTrueIfFactionModeIsDisabled(): void
     {
-        $this->allianceApplicationRepository->shouldReceive('getByUserAndAlliance')
+        $this->allianceJobRepository->shouldReceive('getByUserAndAllianceAndType')
             ->with(
                 $this->user,
-                $this->alliance
+                $this->alliance,
+                AllianceJobTypeEnum::PENDING
             )
             ->once()
             ->andReturnNull();

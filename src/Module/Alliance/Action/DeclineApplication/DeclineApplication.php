@@ -12,13 +12,18 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
-    public function __construct(private DeclineApplicationRequestInterface $declineApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private DeclineApplicationRequestInterface $declineApplicationRequest,
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -33,19 +38,20 @@ final class DeclineApplication implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $appl = $this->allianceJobRepository->find($this->declineApplicationRequest->getApplicationId());
-        if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
+        $application = $this->allianceApplicationRepository->find($this->declineApplicationRequest->getApplicationId());
+        if ($application === null || $application->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 
-        $this->allianceJobRepository->delete($appl);
+        $applicant = $application->getUser();
+        $this->allianceApplicationRepository->delete($application);
 
         $text = sprintf(
             _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(UserConstants::USER_NOONE, $appl->getUserId(), $text);
+        $this->privateMessageSender->send(UserConstants::USER_NOONE, $applicant->getId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

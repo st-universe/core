@@ -306,6 +306,14 @@ button {
   cursor: pointer;
 }
 
+button.button {
+  color: var(--color-46);
+  padding: 2px;
+  background-color: var(--color-51);
+  border: 1px solid var(--color-16);
+  height: auto;
+}
+
 .button {
   cursor: pointer;
 }
@@ -2199,4 +2207,53 @@ label.linkbutton:hover {
 
 .tippy-box .tippy-close {
   display: none !important;
+}
+
+.alliance-job-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--color-53);
+  background-color: var(--color-29);
+  border-radius: 3px;
+}
+
+.alliance-job-item.dragging {
+  opacity: 0.3;
+  border-style: dashed;
+  border-color: var(--color-23);
+}
+
+.alliance-job-item.over {
+  border-color: #c2b942;
+  background-color: var(--color-13);
+}
+
+.job-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.drag-handle {
+  cursor: grab;
+  font-size: 20px;
+  color: var(--color-23);
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.job-title-input {
+  flex: 1;
+}
+
+.job-permissions {
+  padding-left: 30px;
+}
+
+.job-permissions label {
+  margin-right: 20px;
 }

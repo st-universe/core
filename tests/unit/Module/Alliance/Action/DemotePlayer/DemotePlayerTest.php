@@ -8,22 +8,22 @@ use Mockery\MockInterface;
 use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class DemotePlayerTest extends StuTestCase
 {
     private MockInterface&DemotePlayerRequestInterface $demotePlayerRequest;
-    private MockInterface&AllianceJobRepositoryInterface $allianceJobRepository;
     private MockInterface&AllianceActionManagerInterface $allianceActionManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&AllianceJobManagerInterface $allianceJobManager;
 
     private MockInterface&User $user;
     private MockInterface&GameControllerInterface $game;
@@ -39,10 +39,10 @@ class DemotePlayerTest extends StuTestCase
     protected function setUp(): void
     {
         $this->demotePlayerRequest = $this->mock(DemotePlayerRequestInterface::class);
-        $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);
         $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->user = $this->mock(User::class);
         $this->game = $this->mock(GameControllerInterface::class);
@@ -55,10 +55,10 @@ class DemotePlayerTest extends StuTestCase
 
         $this->subject = new DemotePlayer(
             $this->demotePlayerRequest,
-            $this->allianceJobRepository,
             $this->allianceActionManager,
             $this->privateMessageSender,
-            $this->userRepository
+            $this->userRepository,
+            $this->allianceJobManager
         );
     }
 
@@ -178,8 +178,8 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($this->alliance);
 
-        $this->allianceJobRepository->shouldReceive('truncateByUser')
-            ->with($this->playerId)
+        $this->allianceJobManager->shouldReceive('removeUserFromAllJobs')
+            ->with($player, $this->alliance)
             ->once();
 
         $this->privateMessageSender->shouldReceive('send')

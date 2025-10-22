@@ -50,6 +50,9 @@ use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayerRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetails;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequestInterface;
+use Stu\Module\Alliance\Action\SaveJobs\SaveJobs;
+use Stu\Module\Alliance\Action\SaveJobs\SaveJobsRequest;
+use Stu\Module\Alliance\Action\SaveJobs\SaveJobsRequestInterface;
 use Stu\Module\Alliance\Action\EditPost\EditPost;
 use Stu\Module\Alliance\Action\EditRelationText\EditRelationText;
 use Stu\Module\Alliance\Action\EditRelationText\EditRelationTextRequest;
@@ -81,6 +84,8 @@ use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequest;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequestInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManager;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManager;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactory;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -123,6 +128,7 @@ use function DI\autowire;
 
 return [
     AllianceActionManagerInterface::class => autowire(AllianceActionManager::class),
+    AllianceJobManagerInterface::class => autowire(AllianceJobManager::class),
     AddBoardRequestInterface::class => autowire(AddBoardRequest::class),
     NewTopicRequestInterface::class => autowire(NewTopicRequest::class),
     BoardRequestInterface::class => autowire(BoardRequest::class),
@@ -145,6 +151,7 @@ return [
     PromotePlayerRequestInterface::class => autowire(PromotePlayerRequest::class),
     CreateAllianceRequestInterface::class => autowire(CreateAllianceRequest::class),
     EditDetailsRequestInterface::class => autowire(EditDetailsRequest::class),
+    SaveJobsRequestInterface::class => autowire(SaveJobsRequest::class),
     CreateRelationRequestInterface::class => autowire(CreateRelationRequest::class),
     SuggestPeaceRequestInterface::class => autowire(SuggestPeaceRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
@@ -189,6 +196,7 @@ return [
                 'demotePlayerRequest',
                 autowire(DemotePlayerRequest::class),
             ),
+        SaveJobs::ACTION_IDENTIFIER => autowire(SaveJobs::class),
     ],
     'ALLIANCE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

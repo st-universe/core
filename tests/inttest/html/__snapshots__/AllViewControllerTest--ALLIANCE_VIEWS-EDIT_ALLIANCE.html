@@ -20,7 +20,7 @@
 <br>
 
 <div id="result" style="display: none;">..</div>
-
+<script src="/static/js/ally.js"></script>
 <form action="alliance.php" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
 	<div style="width: 505px; float: left;">
@@ -94,15 +94,54 @@
 			werden k&ouml;nnen. Beispiel: #9ab5ef
 		</div>
 		<br>
-		<div class="divhead">Postenbeschreibung</div>
-		Pr&auml;sident
-		<input type="text" style="width: 500px" name="founder_description" value="Pr&auml;sident">
-		<br>
-		Vize-Pr&auml;sident
-		<input type="text" style="width: 500px" name="successor_description" value="Vize-Pr&auml;sident">
-		<br>
-		Au&szlig;enminister
-		<input type="text" style="width: 500px" name="diplomatic_description" value="Au&szlig;enminister">
+		<div class="divhead">Allianz Rollen</div>
+		<div class="divbody">
+			<div id="alliance-jobs-container">
+								<div class="alliance-job-item" data-job-id="1" data-sort="1">
+					<div class="job-header">
+												<input type="text" class="job-title-input" value="Pr&auml;sident" placeholder="Rollenbezeichnung">
+											</div>
+									</div>
+								<div class="alliance-job-item" data-job-id="2" data-sort="2" draggable="true">
+					<div class="job-header">
+												<span class="drag-handle">&#9776;</span>
+												<input type="text" class="job-title-input" value="Vize-Pr&auml;sident" placeholder="Rollenbezeichnung">
+												<button type="button" class="button" onclick="deleteAllianceJob(2)">L&ouml;schen</button>
+											</div>
+										<div class="job-permissions">
+						<label>
+							<input type="checkbox" class="job-successor-check" checked>
+							Vize
+						</label>
+						<label>
+							<input type="checkbox" class="job-diplomatic-check">
+							Diplomat
+						</label>
+					</div>
+									</div>
+								<div class="alliance-job-item" data-job-id="3" data-sort="3" draggable="true">
+					<div class="job-header">
+												<span class="drag-handle">&#9776;</span>
+												<input type="text" class="job-title-input" value="Au&szlig;enminister" placeholder="Rollenbezeichnung">
+												<button type="button" class="button" onclick="deleteAllianceJob(3)">L&ouml;schen</button>
+											</div>
+										<div class="job-permissions">
+						<label>
+							<input type="checkbox" class="job-successor-check">
+							Vize
+						</label>
+						<label>
+							<input type="checkbox" class="job-diplomatic-check" checked>
+							Diplomat
+						</label>
+					</div>
+									</div>
+							</div>
+			<div class="seperator"></div>
+			<button type="button" class="button" onclick="addNewAllianceJob()">Neue Rolle hinzuf&uuml;gen</button>
+			<button type="button" class="button" onclick="saveAllianceJobs()" style="margin-left: 10px;">Rollen
+				speichern</button>
+		</div>
 	</div>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb

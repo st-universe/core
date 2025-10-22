@@ -14,8 +14,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class EditRelationText implements ActionControllerInterface
@@ -32,7 +30,6 @@ final class EditRelationText implements ActionControllerInterface
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
         private AllianceActionManagerInterface $allianceActionManager,
         private EditRelationTextRequestInterface $editRelationTextRequest,
-        private AllianceJobRepositoryInterface $allianceJobRepository,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
@@ -83,32 +80,6 @@ final class EditRelationText implements ActionControllerInterface
 
     private function sendNotificationToLeaders(Alliance $alliance, AllianceRelation $relation, string $editorName, int $editorId, ?string $oldText, ?string $newText): void
     {
-        $leaders = [];
-
-        $founder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $alliance->getId(),
-            AllianceJobTypeEnum::FOUNDER
-        );
-        if ($founder !== null) {
-            $leaders[] = $founder;
-        }
-
-        $successor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $alliance->getId(),
-            AllianceJobTypeEnum::SUCCESSOR
-        );
-        if ($successor !== null) {
-            $leaders[] = $successor;
-        }
-
-        $diplomatic = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $alliance->getId(),
-            AllianceJobTypeEnum::DIPLOMATIC
-        );
-        if ($diplomatic !== null) {
-            $leaders[] = $diplomatic;
-        }
-
         $relationTypeName = $relation->getType()->getDescription();
         $allianceAName = $relation->getAlliance()->getName();
         $allianceBName = $relation->getOpponent()->getName();
@@ -122,13 +93,38 @@ final class EditRelationText implements ActionControllerInterface
             $editorId
         );
 
-        foreach ($leaders as $leader) {
+        $founderJob = $alliance->getFounder();
+        foreach ($founderJob->getUsers() as $user) {
             $this->privateMessageSender->send(
                 UserConstants::USER_NOONE,
-                $leader->getUser()->getId(),
+                $user->getId(),
                 $message,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
             );
+        }
+
+        $successorJob = $alliance->getSuccessor();
+        if ($successorJob !== null) {
+            foreach ($successorJob->getUsers() as $user) {
+                $this->privateMessageSender->send(
+                    UserConstants::USER_NOONE,
+                    $user->getId(),
+                    $message,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
+                );
+            }
+        }
+
+        $diplomaticJob = $alliance->getDiplomatic();
+        if ($diplomaticJob !== null) {
+            foreach ($diplomaticJob->getUsers() as $user) {
+                $this->privateMessageSender->send(
+                    UserConstants::USER_NOONE,
+                    $user->getId(),
+                    $message,
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
+                );
+            }
         }
     }
 }

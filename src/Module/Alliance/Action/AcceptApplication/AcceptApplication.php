@@ -12,15 +12,21 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Entity\AllianceApplication;
+use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AcceptApplication implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
-    public function __construct(private AcceptApplicationRequestInterface $acceptApplicationRequest, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private AcceptApplicationRequestInterface $acceptApplicationRequest,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private UserRepositoryInterface $userRepository,
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -39,35 +45,35 @@ final class AcceptApplication implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $appl = $this->allianceJobRepository->find($this->acceptApplicationRequest->getApplicationId());
-        if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
+        $application = $this->allianceApplicationRepository->find($this->acceptApplicationRequest->getApplicationId());
+        if ($application === null || $application->getAlliance()->getId() !== $alliance->getId()) {
             throw new AccessViolationException();
         }
 
-        $applicant = $appl->getUser();
+        $applicant = $application->getUser();
         $applicant->setAlliance($alliance);
-        $applicationsOfUser = $this->allianceJobRepository->getByUser($applicant->getId());
+        $applicationsOfUser = $this->allianceApplicationRepository->getByUser($applicant->getId());
 
-        $this->cancelOtherApplications($applicationsOfUser, $appl);
+        $this->cancelOtherApplications($applicationsOfUser, $application);
 
         $this->userRepository->save($applicant);
 
-        $this->allianceJobRepository->delete($appl);
+        $this->allianceApplicationRepository->delete($application);
 
         $text = sprintf(
             _('Deine Bewerbung wurde akzeptiert - Du bist jetzt Mitglied der Allianz %s'),
             $alliance->getName()
         );
 
-        $alliance->getMembers()->add($appl->getUser());
+        $alliance->getMembers()->add($application->getUser());
 
         $this->privateMessageSender->send($userId, $applicant->getId(), $text);
 
         $game->getInfo()->addInformation(_('Die Bewerbung wurde angenommen'));
     }
 
-    /** @param array<AllianceJob> $applications */
-    private function cancelOtherApplications(array $applications, AllianceJob $currentApplication): void
+    /** @param array<AllianceApplication> $applications */
+    private function cancelOtherApplications(array $applications, AllianceApplication $currentApplication): void
     {
         $text = sprintf(
             'Der Siedler %s wurde bei einer anderen Allianz aufgenommen',
@@ -81,12 +87,19 @@ final class AcceptApplication implements ActionControllerInterface
 
             $alliance = $application->getAlliance();
 
-            $this->privateMessageSender->send(UserConstants::USER_NOONE, $alliance->getFounder()->getUserId(), $text);
-            if ($alliance->getSuccessor() !== null) {
-                $this->privateMessageSender->send(UserConstants::USER_NOONE, $alliance->getSuccessor()->getUserId(), $text);
+            $founderJob = $alliance->getFounder();
+            foreach ($founderJob->getUsers() as $founder) {
+                $this->privateMessageSender->send(UserConstants::USER_NOONE, $founder->getId(), $text);
             }
 
-            $this->allianceJobRepository->delete($application);
+            $successorJob = $alliance->getSuccessor();
+            if ($successorJob !== null) {
+                foreach ($successorJob->getUsers() as $successor) {
+                    $this->privateMessageSender->send(UserConstants::USER_NOONE, $successor->getId(), $text);
+                }
+            }
+
+            $this->allianceApplicationRepository->delete($application);
         }
     }
 

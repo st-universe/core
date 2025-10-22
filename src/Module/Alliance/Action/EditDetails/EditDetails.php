@@ -6,8 +6,6 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use JBBCode\Parser;
 use Override;
-use Stu\Component\Alliance\AllianceSettingsEnum;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -16,6 +14,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\AllianceSettingsRepositoryInterface;
@@ -24,7 +23,15 @@ final class EditDetails implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
-    public function __construct(private EditDetailsRequestInterface $editDetailsRequest, private Parser $bbcodeParser, private AllianceJobRepositoryInterface $allianceJobRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender, private AllianceRepositoryInterface $allianceRepository, private AllianceSettingsRepositoryInterface $allianceSettingsRepository) {}
+    public function __construct(
+        private EditDetailsRequestInterface $editDetailsRequest,
+        private Parser $bbcodeParser,
+        private AllianceJobRepositoryInterface $allianceJobRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private AllianceRepositoryInterface $allianceRepository,
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -67,9 +74,6 @@ final class EditDetails implements ActionControllerInterface
         $homepage = $this->editDetailsRequest->getHomepage();
         $acceptApplications = $this->editDetailsRequest->getAcceptApplications();
         $rgbCode = $this->editDetailsRequest->getRgbCode();
-        $founderdescription = $this->editDetailsRequest->getFounderDescription();
-        $successordescription = $this->editDetailsRequest->getSuccessorDescription();
-        $diplomatdescription = $this->editDetailsRequest->getDiplomaticDescription();
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
@@ -86,17 +90,15 @@ final class EditDetails implements ActionControllerInterface
         } else {
             $alliance->setAcceptApplications(false);
 
-            $result = $this->allianceJobRepository->getByAllianceAndType(
-                $allianceId,
-                AllianceJobTypeEnum::PENDING
-            );
+            $applications = $this->allianceApplicationRepository->getByAlliance($allianceId);
 
-            foreach ($result as $applicant) {
+            foreach ($applications as $application) {
                 $text = sprintf(
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                $this->privateMessageSender->send(UserConstants::USER_NOONE, $applicant->getUserId(), $text);
+                $this->privateMessageSender->send(UserConstants::USER_NOONE, $application->getUser()->getId(), $text);
+                $this->allianceApplicationRepository->delete($application);
             }
         }
 
@@ -124,59 +126,9 @@ final class EditDetails implements ActionControllerInterface
             $alliance->setRgbCode($rgbCode);
         }
 
-        if (strlen($founderdescription) > 2) {
-            $foundersetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
-            );
-
-            if ($foundersetting === null) {
-                $foundersetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION);
-            }
-
-            $foundersetting->setValue($founderdescription);
-            $this->allianceSettingsRepository->save($foundersetting);
-        } else {
-            $game->getInfo()->addInformation(_('Die Beschreibung des Präsidenten muss mindestens 3 Zeichen lang sein'));
-        }
-
-        if (strlen($successordescription) > 2) {
-            $successorsetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
-            );
-
-            if ($successorsetting === null) {
-                $successorsetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION);
-            }
-
-            $successorsetting->setValue($successordescription);
-            $this->allianceSettingsRepository->save($successorsetting);
-        } else {
-            $game->getInfo()->addInformation(_('Die Beschreibung des Vize-Präsidenten muss mindestens 3 Zeichen lang sein'));
-        }
-
-        if (strlen($diplomatdescription) > 2) {
-            $diplomatsetting = $this->allianceSettingsRepository->findByAllianceAndSetting(
-                $alliance,
-                AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
-            );
-
-            if ($diplomatsetting === null) {
-                $diplomatsetting = $this->allianceSettingsRepository->prototype()
-                    ->setAlliance($alliance)
-                    ->setSetting(AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION);
-            }
-
-            $diplomatsetting->setValue($diplomatdescription);
-            $this->allianceSettingsRepository->save($diplomatsetting);
-        } else {
-            $game->getInfo()->addInformation(_('Die Beschreibung des Außenministers muss mindestens 3 Zeichen lang sein'));
-        }
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdFounder(), $this->editDetailsRequest->getJobTitleFounder(), $alliance, $game);
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdSuccessor(), $this->editDetailsRequest->getJobTitleSuccessor(), $alliance, $game);
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdDiplomatic(), $this->editDetailsRequest->getJobTitleDiplomatic(), $alliance, $game);
 
         $alliance->setName($name);
         $alliance->setHomepage($homepage);
@@ -185,6 +137,24 @@ final class EditDetails implements ActionControllerInterface
         $this->allianceRepository->save($alliance);
 
         $game->getInfo()->addInformation(_('Die Allianz wurde editiert'));
+    }
+
+    private function updateJobTitle(int $jobId, string $title, \Stu\Orm\Entity\Alliance $alliance, GameControllerInterface $game): void
+    {
+        if ($jobId === 0 || $title === '') {
+            return;
+        }
+
+        if (strlen($title) < 3) {
+            $game->getInfo()->addInformation(_('Alle Postenbeschreibungen müssen mindestens 3 Zeichen lang sein'));
+            return;
+        }
+
+        $job = $this->allianceJobRepository->find($jobId);
+        if ($job !== null && $job->getAlliance()->getId() === $alliance->getId()) {
+            $job->setTitle($title);
+            $this->allianceJobRepository->save($job);
+        }
     }
 
     private function validHex(string $hex): int|bool

@@ -56,15 +56,10 @@
                 onclick="toggleVisible('promote{{ data.getId }}');">Befördern</a>
             <div id="promote{{ data.getId }}"
                 style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
-                <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_DIPLOMATIC.value }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">{{ DIPLOMATIC_DESCRIPTION }}</a><br /><br />
-                <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_SUCCESSOR.value }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">{{ SUCCESSOR_DESCRIPTION }}</a>
-                {% if USER_IS_FOUNDER %}
-                <br /><br />
-                <a href="alliance.php?B_PROMOTE_USER=1&type={{ ALLIANCE_JOB_FOUNDER.value }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">{{ FOUNDER_DESCRIPTION }}</a>
-                {% endif %}
+                {% for job in ALLIANCE_JOBS %}
+                <a href="alliance.php?B_PROMOTE_USER=1&type={{ job.getId }}&uid={{ data.getId }}&sstr={{ SESSIONSTRING }}"
+                    class="linkbutton">{{ job.getTitle }}</a><br /><br />
+                {% endfor %}
             </div>
             {% if data.canBeDemoted %}
             <br /><br />

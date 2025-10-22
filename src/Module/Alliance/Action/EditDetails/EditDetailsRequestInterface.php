@@ -16,9 +16,15 @@ interface EditDetailsRequestInterface
 
     public function getRgbCode(): string;
 
-    public function getFounderDescription(): string;
+    public function getJobIdFounder(): int;
 
-    public function getSuccessorDescription(): string;
+    public function getJobTitleFounder(): string;
 
-    public function getDiplomaticDescription(): string;
+    public function getJobIdSuccessor(): int;
+
+    public function getJobTitleSuccessor(): string;
+
+    public function getJobIdDiplomatic(): int;
+
+    public function getJobTitleDiplomatic(): string;
 }

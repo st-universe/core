@@ -7,11 +7,11 @@ namespace Stu\Module\Alliance\Action\DemotePlayer;
 use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
@@ -23,10 +23,10 @@ final class DemotePlayer implements ActionControllerInterface
 
     public function __construct(
         private DemotePlayerRequestInterface $demotePlayerRequest,
-        private AllianceJobRepositoryInterface $allianceJobRepository,
         private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     /**
@@ -58,7 +58,7 @@ final class DemotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $this->allianceJobRepository->truncateByUser($playerId);
+        $this->allianceJobManager->removeUserFromAllJobs($player, $alliance);
 
         $this->privateMessageSender->send(
             $userId,

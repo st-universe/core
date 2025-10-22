@@ -6,10 +6,10 @@ namespace Stu\Module\Alliance\View\Management;
 
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 /**
@@ -17,7 +17,15 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
  */
 final class ManagementListItem
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private Alliance $alliance, private User $user, private int $currentUserId, private CrewLimitCalculatorInterface $crewLimitCalculator, private CrewCountRetrieverInterface $crewCountRetriever) {}
+    public function __construct(
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private Alliance $alliance,
+        private User $user,
+        private int $currentUserId,
+        private CrewLimitCalculatorInterface $crewLimitCalculator,
+        private CrewCountRetrieverInterface $crewCountRetriever,
+        private AllianceJobManagerInterface $allianceJobManager
+    ) {}
 
     /**
      * Return the user's id
@@ -74,7 +82,7 @@ final class ManagementListItem
      */
     public function isFounder(): bool
     {
-        return $this->alliance->getFounder()->getUserId() === $this->user->getId();
+        return $this->allianceJobManager->hasUserFounderPermission($this->user, $this->alliance);
     }
 
     /**
@@ -98,10 +106,8 @@ final class ManagementListItem
      */
     public function canBeDemoted(): bool
     {
-        $userId = $this->user->getId();
-
         return $this->isCurrentUser() === false
-            && $this->allianceJobRepository->getByUser($userId) !== [];
+            && $this->allianceJobManager->hasUserJob($this->user, $this->alliance);
     }
 
     /**

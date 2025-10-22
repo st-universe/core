@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -24,29 +23,26 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     public function delete(AllianceJob $post): void;
 
     /**
-     * @return array<int, AllianceJob>
-     */
-    public function getByUser(int $userId): array;
-
-    /**
-     * @return AllianceJob[]
+     * @return array<AllianceJob>
      */
     public function getByAlliance(int $allianceId): array;
-
-    public function truncateByUser(int $userId): void;
 
     public function truncateByAlliance(int $allianceId): void;
 
     /**
-     * @return AllianceJob[]
+     * @return array<AllianceJob>
      */
-    public function getByAllianceAndType(int $allianceId, AllianceJobTypeEnum $typeId): array;
+    public function getJobsWithFounderPermission(int $allianceId): array;
 
-    public function getByUserAndAllianceAndType(
-        User $user,
-        Alliance $alliance,
-        AllianceJobTypeEnum $type
-    ): ?AllianceJob;
+    /**
+     * @return array<AllianceJob>
+     */
+    public function getJobsWithSuccessorPermission(int $allianceId): array;
 
-    public function getSingleResultByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): ?AllianceJob;
+    /**
+     * @return array<AllianceJob>
+     */
+    public function getJobsWithDiplomaticPermission(int $allianceId): array;
+
+    public function getByAllianceAndTitle(int $allianceId, string $title): ?AllianceJob;
 }

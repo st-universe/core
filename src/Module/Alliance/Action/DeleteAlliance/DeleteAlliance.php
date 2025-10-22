@@ -6,13 +6,12 @@ namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use Override;
 use RuntimeException;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
@@ -21,8 +20,8 @@ final class DeleteAlliance implements ActionControllerInterface
 
     public function __construct(
         private AllianceActionManagerInterface $allianceActionManager,
-        private AllianceJobRepositoryInterface $allianceJobRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     #[Override]
@@ -34,31 +33,16 @@ final class DeleteAlliance implements ActionControllerInterface
             throw new RuntimeException('user not in alliance');
         }
 
-        $allianceId = $alliance->getId();
         $game->setView(ModuleEnum::ALLIANCE);
 
-        $jobFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $allianceId,
-            AllianceJobTypeEnum::FOUNDER
-        );
+        $isFounder = $this->allianceJobManager->hasUserFounderPermission($user, $alliance);
+        $isSuccessor = $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance);
 
-        if ($jobFounder === null) {
+        if (!$isFounder && !$isSuccessor) {
             throw new AccessViolationException();
         }
 
-        $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            $allianceId,
-            AllianceJobTypeEnum::SUCCESSOR
-        );
-
-        if (
-            $jobFounder->getUser()->getId() !== $user->getId()
-            && ($jobSuccessor === null || $jobSuccessor->getUser()->getId() !== $user->getId())
-        ) {
-            throw new AccessViolationException();
-        }
-
-        $this->allianceActionManager->delete($jobFounder->getAlliance());
+        $this->allianceActionManager->delete($alliance);
 
         $user->setAlliance(null);
 

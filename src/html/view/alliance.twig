@@ -44,28 +44,23 @@
   <div>
     <div class="allianceHeader">Leitung</div>
     <div class="allianceLead">
-      {% set founderUser = ALLIANCE.getFounder.getUser %}
-      {% set successor = ALLIANCE.getSuccessor %}
-      {% set diplomatic = ALLIANCE.getDiplomatic %}
-      <div class="allianceMinister alliancePresident">
-        {{ userAvatar(founderUser) }}
-        <div class="namePresident">{{ founderUser.getName|bbcode }}</div>
-        <div class="jobDescription">{{ FOUNDER_DESCRIPTION }}</div>
+      {% for job in ALLIANCE_LEADERSHIP_JOBS %}
+      {% for user in job.getUsers %}
+      {% if job.hasFounderPermission %}
+      <div class="allianceMinister alliancePresident" style="margin-bottom: 10px;">
+        {{ userAvatar(user) }}
+        <div class="namePresident">{{ user.getName|bbcode }}</div>
+        <div class="jobDescription">{{ job.getTitle }}</div>
       </div>
-      {% if successor %}
-      <div class="allianceMinister">
-        {{ userAvatar(successor.getUser) }}
-        <div class="name">{{ successor.getUser.getName|bbcode }}</div>
-        <div class="jobDescription">{{ SUCCESSOR_DESCRIPTION }}</div>
-      </div>
-      {% endif %}
-      {% if diplomatic %}
-      <div class="allianceMinister">
-        {{ userAvatar(diplomatic.getUser) }}
-        <div class="name">{{ diplomatic.getUser.getName|bbcode }}</div>
-        <div class="jobDescription">{{ DIPLOMATIC_DESCRIPTION }}</div>
+      {% else %}
+      <div class="allianceMinister" style="margin-bottom: 10px;">
+        {{ userAvatar(user) }}
+        <div class="name">{{ user.getName|bbcode }}</div>
+        <div class="jobDescription">{{ job.getTitle }}</div>
       </div>
       {% endif %}
+      {% endfor %}
+      {% endfor %}
     </div>
     <div class="allianceHeader">Mitglieder</div>
     <div class="allianceMemberList">

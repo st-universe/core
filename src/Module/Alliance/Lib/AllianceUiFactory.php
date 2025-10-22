@@ -11,7 +11,6 @@ use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 /**
@@ -19,7 +18,12 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
  */
 final class AllianceUiFactory implements AllianceUiFactoryInterface
 {
-    public function __construct(private AllianceJobRepositoryInterface $allianceJobRepository, private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository, private CrewCountRetrieverInterface $crewCountRetriever, private CrewLimitCalculatorInterface $crewLimitCalculator) {}
+    public function __construct(
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private CrewCountRetrieverInterface $crewCountRetriever,
+        private CrewLimitCalculatorInterface $crewLimitCalculator,
+        private AllianceJobManagerInterface $allianceJobManager
+    ) {}
 
     #[Override]
     public function createManagementListItem(
@@ -28,13 +32,13 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         int $currentUserId
     ): ManagementListItem {
         return new ManagementListItem(
-            $this->allianceJobRepository,
             $this->spacecraftRumpRepository,
             $alliance,
             $user,
             $currentUserId,
             $this->crewLimitCalculator,
-            $this->crewCountRetriever
+            $this->crewCountRetriever,
+            $this->allianceJobManager
         );
     }
 
@@ -54,7 +58,8 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
     ): AllianceMemberWrapper {
         return new AllianceMemberWrapper(
             $user,
-            $alliance
+            $alliance,
+            $this->allianceJobManager
         );
     }
 

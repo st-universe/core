@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
 
 interface AllianceActionManagerInterface
 {
-    public function setJobForUser(Alliance $alliance, User $user, AllianceJobTypeEnum $jobTypeId): void;
+    public function assignUserToJob(User $user, AllianceJob $job): void;
 
     public function delete(Alliance $alliance, bool $sendMessage = true): void;
 

@@ -35,6 +35,10 @@ final class EntryCreator implements EntryCreatorInterface
             $targetUser = $target->getFounder()->getUser();
         }
 
+        if ($targetUser === null) {
+            return;
+        }
+
         $location = $target instanceof EntityWithLocationInterface
             ? $target->getLocation()
             : null;

@@ -12,6 +12,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
@@ -24,7 +25,7 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory) {}
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory, private AllianceJobManagerInterface $allianceJobManager) {}
 
     #[Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -57,7 +58,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $allianceId = $alliance->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
-        $userIsFounder = $alliance->getFounder()->getUser()->getId() === $user->getId();
+        $userIsFounder = $this->allianceJobManager->hasUserFounderPermission($user, $alliance);
         $isInAlliance = $alliance->getId() === $game->getUser()->getAlliance()?->getId();
         $settings = $alliance->getSettings();
 
@@ -105,6 +106,35 @@ final class AllianceProvider implements ViewComponentProviderInterface
                 fn(User $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
             )
         );
+
+        $founderJobs = [];
+        $successorJobs = [];
+        $diplomaticJobs = [];
+        $otherJobs = [];
+
+        foreach ($alliance->getJobs() as $job) {
+            if (count($job->getUsers()) === 0 || $job->getSort() === null) {
+                continue;
+            }
+
+            if ($job->hasFounderPermission()) {
+                $founderJobs[] = $job;
+            } elseif ($job->hasSuccessorPermission()) {
+                $successorJobs[] = $job;
+            } elseif ($job->hasDiplomaticPermission()) {
+                $diplomaticJobs[] = $job;
+            } else {
+                $otherJobs[] = $job;
+            }
+        }
+
+        usort($successorJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($diplomaticJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($otherJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
+
+        $leadershipJobs = array_merge($founderJobs, $successorJobs, $diplomaticJobs, $otherJobs);
+
+        $game->setTemplateVar('ALLIANCE_LEADERSHIP_JOBS', $leadershipJobs);
 
         $founderDescription = $settings->filter(
             function (AllianceSettings $setting): bool {

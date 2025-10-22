@@ -73,7 +73,7 @@ class Alliance
     /**
      * @var ArrayCollection<int, AllianceJob>
      */
-    #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance', indexBy: 'type')]
+    #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance')]
     private Collection $jobs;
 
 
@@ -187,22 +187,65 @@ class Alliance
      */
     public function getFounder(): AllianceJob
     {
-        $job = $this->jobs->get(AllianceJobTypeEnum::FOUNDER->value);
-        if ($job === null) {
-            // alliance without founder? this should not happen
-            throw new AllianceFounderNotSetException();
+        foreach ($this->jobs as $job) {
+            if ($job->hasFounderPermission()) {
+                return $job;
+            }
         }
-        return $job;
+        throw new AllianceFounderNotSetException();
     }
 
     public function getSuccessor(): ?AllianceJob
     {
-        return $this->jobs->get(AllianceJobTypeEnum::SUCCESSOR->value);
+        foreach ($this->jobs as $job) {
+            if ($job->hasSuccessorPermission() && !$job->hasFounderPermission()) {
+                return $job;
+            }
+        }
+        return null;
     }
 
     public function getDiplomatic(): ?AllianceJob
     {
-        return $this->jobs->get(AllianceJobTypeEnum::DIPLOMATIC->value);
+        foreach ($this->jobs as $job) {
+            if ($job->hasDiplomaticPermission() && !$job->hasFounderPermission() && !$job->hasSuccessorPermission()) {
+                return $job;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return array<AllianceJob>
+     */
+    public function getJobsWithFounderPermission(): array
+    {
+        return array_values(array_filter(
+            $this->jobs->toArray(),
+            fn(AllianceJob $job) => $job->hasFounderPermission()
+        ));
+    }
+
+    /**
+     * @return array<AllianceJob>
+     */
+    public function getJobsWithSuccessorPermission(): array
+    {
+        return array_values(array_filter(
+            $this->jobs->toArray(),
+            fn(AllianceJob $job) => $job->hasSuccessorPermission()
+        ));
+    }
+
+    /**
+     * @return array<AllianceJob>
+     */
+    public function getJobsWithDiplomaticPermission(): array
+    {
+        return array_values(array_filter(
+            $this->jobs->toArray(),
+            fn(AllianceJob $job) => $job->hasDiplomaticPermission()
+        ));
     }
 
     /**
@@ -218,13 +261,19 @@ class Alliance
      */
     public function isNpcAlliance(): bool
     {
-        $founder = $this->jobs->get(AllianceJobTypeEnum::FOUNDER->value);
+        try {
+            $founder = $this->getFounder();
 
-        if ($founder === null) {
+            foreach ($founder->getMemberAssignments() as $assignment) {
+                if ($assignment->getUser()->isNpc()) {
+                    return true;
+                }
+            }
+        } catch (AllianceFounderNotSetException) {
             return false;
         }
 
-        return $founder->getUser()->isNpc();
+        return false;
     }
 
     /**

@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -28,6 +29,7 @@ class PromotePlayerTest extends StuTestCase
     private MockInterface&AllianceActionManagerInterface $allianceActionManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&AllianceJobManagerInterface $allianceJobManager;
 
     private ActionControllerInterface $subject;
 
@@ -39,76 +41,96 @@ class PromotePlayerTest extends StuTestCase
         $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->subject = new PromotePlayer(
             $this->promotePlayerRequest,
             $this->allianceJobRepository,
             $this->allianceActionManager,
             $this->privateMessageSender,
-            $this->userRepository
+            $this->userRepository,
+            $this->allianceJobManager
         );
     }
 
     public static function provideData(): array
     {
         return [
-            [AllianceJobTypeEnum::FOUNDER, 'Du wurdest zum neuen Präsidenten der Allianz ALLYNAME ernannt'],
-            [AllianceJobTypeEnum::SUCCESSOR, 'Du wurdest zum neuen Vize-Präsidenten der Allianz ALLYNAME ernannt'],
-            [AllianceJobTypeEnum::DIPLOMATIC, 'Du wurdest zum neuen Außenminister der Allianz ALLYNAME ernannt']
+            [true, 'Präsident', 'Du wurdest zum Präsident der Allianz ALLYNAME ernannt'],
+            [false, 'Vize-Präsident', 'Du wurdest zum Vize-Präsident der Allianz ALLYNAME ernannt'],
+            [false, 'Außenminister', 'Du wurdest zum Außenminister der Allianz ALLYNAME ernannt']
         ];
     }
 
     #[DataProvider('provideData')]
     public function testHandle(
-        AllianceJobTypeEnum $jobType,
+        bool $isFounderJob,
+        string $jobTitle,
         string $expectedPmText
     ): void {
 
         $alliance = $this->mock(Alliance::class);
         $user = $this->mock(User::class);
         $promotedPlayer = $this->mock(User::class);
+        $job = $this->mock(AllianceJob::class);
         $founderJob = $this->mock(AllianceJob::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $alliance->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(555);
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->andReturn(42);
-        $promotedPlayer->shouldReceive('getId')
-            ->withNoArgs()
-            ->andReturn(2222);
-
         $alliance->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn('ALLYNAME');
         $alliance->shouldReceive('getFounder')
             ->withNoArgs()
-            ->once()
+            ->zeroOrMoreTimes()
             ->andReturn($founderJob);
-        $alliance->shouldReceive('getJobs->remove')
-            ->with($jobType->value)
-            ->once();
 
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
         $user->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
 
+        $promotedPlayer->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(55);
         $promotedPlayer->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
 
-        $founderJob->shouldReceive('getUser')
+        $job->shouldReceive('hasFounderPermission')
             ->withNoArgs()
-            ->andReturn($user);
-        $founderJob->shouldReceive('getAlliance')
+            ->once()
+            ->andReturn($isFounderJob);
+        $job->shouldReceive('getAlliance')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn($alliance);
+        $job->shouldReceive('getTitle')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($jobTitle);
+
+        if ($isFounderJob) {
+            $founderJob->shouldReceive('getUsers')
+                ->withNoArgs()
+                ->once()
+                ->andReturn([$user]);
+
+            $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
+                ->with($user, $alliance)
+                ->once()
+                ->andReturnTrue();
+            $this->allianceJobManager->shouldReceive('removeUserFromJob')
+                ->with($user, $founderJob)
+                ->once();
+        }
 
         $game->shouldReceive('getUser')
             ->withNoArgs()
@@ -117,14 +139,8 @@ class PromotePlayerTest extends StuTestCase
             ->with('Das Mitglied wurde befördert')
             ->once();
         $game->shouldReceive('setView')
-            ->with(Management::VIEW_IDENTIFIER)
+            ->with($isFounderJob ? ModuleEnum::ALLIANCE : Management::VIEW_IDENTIFIER)
             ->once();
-
-        if ($jobType === AllianceJobTypeEnum::FOUNDER) {
-            $game->shouldReceive('setView')
-                ->with(ModuleEnum::ALLIANCE)
-                ->once();
-        }
 
         $this->promotePlayerRequest->shouldReceive('getPlayerId')
             ->withNoArgs()
@@ -133,23 +149,28 @@ class PromotePlayerTest extends StuTestCase
         $this->promotePlayerRequest->shouldReceive('getPromotionType')
             ->withNoArgs()
             ->once()
-            ->andReturn($jobType->value);
+            ->andReturn(99);
 
         $this->allianceActionManager->shouldReceive('mayEdit')
             ->with($alliance, $user)
             ->once()
             ->andReturn(true);
-        $this->allianceActionManager->shouldReceive('setJobForUser')
-            ->with($alliance, $promotedPlayer, $jobType)
-            ->once();
 
         $this->userRepository->shouldReceive('find')
             ->with(55)
             ->once()
             ->andReturn($promotedPlayer);
 
-        $this->allianceJobRepository->shouldReceive('truncateByUser')
-            ->with(55)
+        $this->allianceJobRepository->shouldReceive('find')
+            ->with(99)
+            ->once()
+            ->andReturn($job);
+
+        $this->allianceJobManager->shouldReceive('removeUserFromAllJobs')
+            ->with($promotedPlayer, $alliance)
+            ->once();
+        $this->allianceJobManager->shouldReceive('assignUserToJob')
+            ->with($promotedPlayer, $job)
             ->once();
 
         $this->privateMessageSender->shouldReceive('send')

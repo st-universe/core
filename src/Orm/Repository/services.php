@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerInterface;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceApplication;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\AllianceMemberJob;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Anomaly;
@@ -171,10 +173,12 @@ use Stu\Orm\Entity\WormholeRestriction;
 
 return [
     AllianceRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
+    AllianceApplicationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceApplication::class),
     AllianceBoardRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoard::class),
     AllianceBoardPostRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardPost::class),
     AllianceBoardTopicRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class),
     AllianceJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class),
+    AllianceMemberJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceMemberJob::class),
     AllianceRelationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
     AllianceSettingsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceSettings::class),
     AnomalyTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AnomalyType::class),

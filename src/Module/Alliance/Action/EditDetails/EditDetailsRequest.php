@@ -56,26 +56,44 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
     }
 
     #[Override]
-    public function getFounderDescription(): string
+    public function getJobIdFounder(): int
+    {
+        return $this->parameter('job_id_founder')->int()->defaultsTo(0);
+    }
+
+    #[Override]
+    public function getJobTitleFounder(): string
     {
         return $this->tidyString(
-            $this->parameter('founder_description')->string()->defaultsToIfEmpty('Präsident')
+            $this->parameter('job_title_founder')->string()->defaultsToIfEmpty('')
         );
     }
 
     #[Override]
-    public function getSuccessorDescription(): string
+    public function getJobIdSuccessor(): int
+    {
+        return $this->parameter('job_id_successor')->int()->defaultsTo(0);
+    }
+
+    #[Override]
+    public function getJobTitleSuccessor(): string
     {
         return $this->tidyString(
-            $this->parameter('successor_description')->string()->defaultsToIfEmpty('Vize-Präsident')
+            $this->parameter('job_title_successor')->string()->defaultsToIfEmpty('')
         );
     }
 
     #[Override]
-    public function getDiplomaticDescription(): string
+    public function getJobIdDiplomatic(): int
+    {
+        return $this->parameter('job_id_diplomatic')->int()->defaultsTo(0);
+    }
+
+    #[Override]
+    public function getJobTitleDiplomatic(): string
     {
         return $this->tidyString(
-            $this->parameter('diplomatic_description')->string()->defaultsToIfEmpty('Außenminister')
+            $this->parameter('job_title_diplomatic')->string()->defaultsToIfEmpty('')
         );
     }
 }

@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Applications;
 
 use Override;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 
 final class Applications implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceJobRepositoryInterface $allianceJobRepository) {}
+    public function __construct(
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository
+    ) {}
 
     #[Override]
     public function handle(GameControllerInterface $game): void
@@ -41,12 +43,9 @@ final class Applications implements ViewControllerInterface
             _('Bewerbungen')
         );
         $game->setViewTemplate('html/alliance/allianceapplications.twig');
-        $game->setTemplateVar(
-            'APPLICATIONS',
-            $this->allianceJobRepository->getByAllianceAndType(
-                $alliance->getId(),
-                AllianceJobTypeEnum::PENDING
-            )
-        );
+
+        $applications = $this->allianceApplicationRepository->getByAlliance($alliance->getId());
+
+        $game->setTemplateVar('APPLICATIONS', $applications);
     }
 }

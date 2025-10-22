@@ -6,10 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Override;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
-use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<AllianceJob>
@@ -26,7 +23,6 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     public function save(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
-
         $em->persist($post);
     }
 
@@ -34,37 +30,17 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     public function delete(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
-
         $em->remove($post);
-    }
-
-    #[Override]
-    public function getByUser(int $userId): array
-    {
-        return $this->findBy([
-            'user_id' => $userId,
-        ]);
     }
 
     #[Override]
     public function getByAlliance(int $allianceId): array
     {
-        return $this->findBy([
-            'alliance_id' => $allianceId,
-        ]);
-    }
-
-    #[Override]
-    public function truncateByUser(int $userId): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s aj WHERE aj.user_id = :userId',
-                AllianceJob::class
-            )
-        )->setParameters([
-            'userId' => $userId,
-        ])->execute();
+        return $this->createQueryBuilder('aj')
+            ->where('aj.alliance = :allianceId')
+            ->setParameter('allianceId', $allianceId)
+            ->getQuery()
+            ->getResult();
     }
 
     #[Override]
@@ -72,7 +48,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s aj WHERE aj.alliance_id = :allianceId',
+                'DELETE FROM %s aj WHERE aj.alliance = :allianceId',
                 AllianceJob::class
             )
         )->setParameters([
@@ -81,33 +57,47 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     }
 
     #[Override]
-    public function getByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): array
+    public function getJobsWithFounderPermission(int $allianceId): array
     {
-        return $this->findBy([
-            'alliance_id' => $allianceId,
-            'type' => $type->value,
-        ]);
+        return $this->createQueryBuilder('aj')
+            ->where('aj.alliance = :allianceId')
+            ->andWhere('aj.is_founder_permission = true')
+            ->setParameter('allianceId', $allianceId)
+            ->getQuery()
+            ->getResult();
     }
 
     #[Override]
-    public function getByUserAndAllianceAndType(
-        User $user,
-        Alliance $alliance,
-        AllianceJobTypeEnum $type
-    ): ?AllianceJob {
-        return $this->findOneBy([
-            'user' => $user,
-            'alliance' => $alliance,
-            'type' => $type->value,
-        ]);
+    public function getJobsWithSuccessorPermission(int $allianceId): array
+    {
+        return $this->createQueryBuilder('aj')
+            ->where('aj.alliance = :allianceId')
+            ->andWhere('aj.is_successor_permission = true')
+            ->setParameter('allianceId', $allianceId)
+            ->getQuery()
+            ->getResult();
     }
 
     #[Override]
-    public function getSingleResultByAllianceAndType(int $allianceId, AllianceJobTypeEnum $type): ?AllianceJob
+    public function getJobsWithDiplomaticPermission(int $allianceId): array
     {
-        return $this->findOneBy([
-            'alliance_id' => $allianceId,
-            'type' => $type->value,
-        ]);
+        return $this->createQueryBuilder('aj')
+            ->where('aj.alliance = :allianceId')
+            ->andWhere('aj.is_diplomatic_permission = true')
+            ->setParameter('allianceId', $allianceId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    #[Override]
+    public function getByAllianceAndTitle(int $allianceId, string $title): ?AllianceJob
+    {
+        return $this->createQueryBuilder('aj')
+            ->where('aj.alliance = :allianceId')
+            ->andWhere('aj.title = :title')
+            ->setParameter('allianceId', $allianceId)
+            ->setParameter('title', $title)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

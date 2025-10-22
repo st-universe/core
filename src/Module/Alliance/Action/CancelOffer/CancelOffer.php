@@ -50,9 +50,17 @@ final class CancelOffer implements ActionControllerInterface
 
         $opponent = $relation->getOpponent();
 
-        $this->privateMessageSender->send(UserConstants::USER_NOONE, $opponent->getFounder()->getUserId(), $text);
-        if ($opponent->getDiplomatic() !== null) {
-            $this->privateMessageSender->send(UserConstants::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
+        $founderUser = $opponent->getFounder()->getUser();
+        if ($founderUser !== null) {
+            $this->privateMessageSender->send(UserConstants::USER_NOONE, $founderUser->getId(), $text);
+        }
+
+        $diplomaticJob = $opponent->getDiplomatic();
+        if ($diplomaticJob !== null) {
+            $diplomaticUser = $diplomaticJob->getUser();
+            if ($diplomaticUser !== null) {
+                $this->privateMessageSender->send(UserConstants::USER_NOONE, $diplomaticUser->getId(), $text);
+            }
         }
 
         $game->getInfo()->addInformation(_('Das Angebot wurde zurückgezogen'));

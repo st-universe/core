@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Override;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,7 +23,9 @@ final class CreateAlliance implements ActionControllerInterface
         private CreateAllianceRequestInterface $createAllianceRequest,
         private AllianceJobRepositoryInterface $allianceJobRepository,
         private AllianceRepositoryInterface $allianceRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private AllianceJobManagerInterface $allianceJobManager,
+        private EntityManagerInterface $entityManager
     ) {}
 
     #[Override]
@@ -49,21 +53,26 @@ final class CreateAlliance implements ActionControllerInterface
         }
 
         $this->allianceRepository->save($alliance);
+        $this->entityManager->flush();
+
+        $founderJob = new AllianceJob();
+        $founderJob->setAlliance($alliance);
+        $founderJob->setTitle('Präsident');
+        $founderJob->setSort(1);
+        $founderJob->setIsFounderPermission(true);
+        $founderJob->setIsSuccessorPermission(true);
+        $founderJob->setIsDiplomaticPermission(true);
+
+        $this->allianceJobRepository->save($founderJob);
+        $this->entityManager->flush();
 
         $user->setAlliance($alliance);
-
         $this->userRepository->save($user);
 
-        $this->allianceJobRepository->truncateByUser($userId);
+        $this->allianceJobManager->assignUserToJob($user, $founderJob);
+        $this->entityManager->flush();
 
-        $job = $this->allianceJobRepository->prototype();
-        $job->setType(AllianceJobTypeEnum::FOUNDER);
-        $job->setAlliance($alliance);
-        $job->setUser($user);
-
-        $this->allianceJobRepository->save($job);
-
-        $alliance->getJobs()->set(AllianceJobTypeEnum::FOUNDER->value, $job);
+        $this->entityManager->refresh($alliance);
 
         $game->getInfo()->addInformation('Die Allianz wurde gegründet');
     }

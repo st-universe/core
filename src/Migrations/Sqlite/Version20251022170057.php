@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251017150013 extends AbstractMigration
+final class Version20251022170057 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,8 +20,14 @@ final class Version20251017150013 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE TABLE stu_alliance_applications (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date INTEGER NOT NULL, alliance_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_E317119C10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E317119CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_E317119C10A0EA3F ON stu_alliance_applications (alliance_id)');
+        $this->addSql('CREATE INDEX IDX_E317119CA76ED395 ON stu_alliance_applications (user_id)');
         $this->addSql('CREATE TABLE stu_alliance_boards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_5D868E4710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX alliance_idx ON stu_alliance_boards (alliance_id)');
+        $this->addSql('CREATE TABLE stu_alliance_member_job (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, job_id INTEGER NOT NULL, CONSTRAINT FK_81B01F0FA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_81B01F0FBE04EA9 FOREIGN KEY (job_id) REFERENCES stu_alliances_jobs (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_81B01F0FA76ED395 ON stu_alliance_member_job (user_id)');
+        $this->addSql('CREATE INDEX IDX_81B01F0FBE04EA9 ON stu_alliance_member_job (job_id)');
         $this->addSql('CREATE TABLE stu_alliance_posts (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, topic_id INTEGER NOT NULL, board_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, date INTEGER NOT NULL, text CLOB NOT NULL, user_id INTEGER NOT NULL, lastedit INTEGER DEFAULT NULL, CONSTRAINT FK_31F4A4121F55203D FOREIGN KEY (topic_id) REFERENCES stu_alliance_topics (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_31F4A412E7EC5785 FOREIGN KEY (board_id) REFERENCES stu_alliance_boards (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_31F4A412A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_31F4A4121F55203D ON stu_alliance_posts (topic_id)');
         $this->addSql('CREATE INDEX IDX_31F4A412E7EC5785 ON stu_alliance_posts (board_id)');
@@ -38,9 +44,8 @@ final class Version20251017150013 extends AbstractMigration
         $this->addSql('CREATE INDEX ordered_topics_idx ON stu_alliance_topics (board_id, last_post_date)');
         $this->addSql('CREATE TABLE stu_alliances (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB NOT NULL, homepage VARCHAR(255) NOT NULL, date INTEGER NOT NULL, faction_id INTEGER DEFAULT NULL, accept_applications BOOLEAN NOT NULL, avatar VARCHAR(32) NOT NULL, rgb_code VARCHAR(7) NOT NULL, CONSTRAINT FK_A36183F74448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A36183F74448F8DA ON stu_alliances (faction_id)');
-        $this->addSql('CREATE TABLE stu_alliances_jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, user_id INTEGER NOT NULL, type SMALLINT NOT NULL, CONSTRAINT FK_3C71C67B10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_3C71C67BA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_alliances_jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER DEFAULT NULL, type SMALLINT DEFAULT NULL, title VARCHAR(255) DEFAULT NULL, sort INTEGER DEFAULT NULL, is_founder_permission BOOLEAN DEFAULT 0 NOT NULL, is_successor_permission BOOLEAN DEFAULT 0 NOT NULL, is_diplomatic_permission BOOLEAN DEFAULT 0 NOT NULL, alliance_id INTEGER NOT NULL, CONSTRAINT FK_3C71C67B10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3C71C67B10A0EA3F ON stu_alliances_jobs (alliance_id)');
-        $this->addSql('CREATE INDEX IDX_3C71C67BA76ED395 ON stu_alliances_jobs (user_id)');
         $this->addSql('CREATE TABLE stu_alliances_relations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, alliance_id INTEGER NOT NULL, recipient INTEGER NOT NULL, date INTEGER NOT NULL, text CLOB DEFAULT NULL, last_edited INTEGER DEFAULT NULL, CONSTRAINT FK_9EBADCD910A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9EBADCD96804FB49 FOREIGN KEY (recipient) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9EBADCD910A0EA3F ON stu_alliances_relations (alliance_id)');
         $this->addSql('CREATE INDEX IDX_9EBADCD96804FB49 ON stu_alliances_relations (recipient)');
@@ -573,7 +578,9 @@ final class Version20251017150013 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP TABLE stu_alliance_applications');
         $this->addSql('DROP TABLE stu_alliance_boards');
+        $this->addSql('DROP TABLE stu_alliance_member_job');
         $this->addSql('DROP TABLE stu_alliance_posts');
         $this->addSql('DROP TABLE stu_alliance_settings');
         $this->addSql('DROP TABLE stu_alliance_topics');
