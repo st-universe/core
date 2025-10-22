@@ -31,6 +31,6 @@ jobs:
         run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/coverage-clover.xml tests
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.3.2
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
