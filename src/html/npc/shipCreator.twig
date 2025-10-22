@@ -109,6 +109,36 @@
                 <input type="hidden" name="buildplanId" value="{{ SELECTED_BUILDPLAN.getId }}">
                 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
+                {% if SELECTED_BUILDPLAN.getRump.isStation %}
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <div style="padding: 5px;">
+                        <input type="checkbox" name="underConstruction" id="underConstruction" value="1"
+                            style="margin-right: 5px;" />
+                        <label for="underConstruction" style="color: #ddd; font-weight: bold;">In Konstruktion?</label>
+                    </div>
+                </div>
+                {% if SPECIAL_MODULES %}
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <h3 style="color: #4CAF50; margin-bottom: 10px;">Auswahl der Spezialmodule</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px;">
+                        {% for module in SPECIAL_MODULES %}
+                        <div
+                            style="padding: 8px; background-color: #333; border-radius: 4px; display: flex; align-items: center;">
+                            <input type="checkbox" name="mod_9[]" id="mod_{{ module.getId }}" value="{{ module.getId }}"
+                                style="margin-right: 8px;" />
+                            <label for="mod_{{ module.getId }}" style="color: #ddd; cursor: pointer; flex: 1;">
+                                <img src="/assets/commodities/{{ module.getCommodityId }}.png"
+                                    style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;" />
+                                {{ module.getName }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+
                 {% if TORPEDO_TYPES|length > 0 %}
                 <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
                     <h3 style="color: #4CAF50; margin-bottom: 10px;">Torpedos</h3>

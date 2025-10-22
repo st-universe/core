@@ -6,6 +6,9 @@ namespace Stu\Module\NPC\View\ShowShipCreator;
 
 use Override;
 use request;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -13,7 +16,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 
 
 
@@ -26,7 +31,8 @@ final class ShowShipCreator implements ViewControllerInterface
         private UserRepositoryInterface $userRepository,
         private LayerRepositoryInterface $layerRepository,
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
+        private ModuleRepositoryInterface $moduleRepository
     ) {}
 
     #[Override]
@@ -56,7 +62,9 @@ final class ShowShipCreator implements ViewControllerInterface
                     $rump = $buildplan->getRump();
 
                     $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-                    $filteredRumps = array_filter($allRumps, fn($rump): bool => $rump->getNpcBuildable() === true);
+                    $filteredRumps = $game->isAdmin()
+                        ? $allRumps
+                        : array_filter($allRumps, fn($rump): bool => $rump->getNpcBuildable() === true);
 
                     $isRumpInFiltered = false;
                     foreach ($filteredRumps as $filteredRump) {
@@ -76,29 +84,32 @@ final class ShowShipCreator implements ViewControllerInterface
                     $game->setTemplateVar('TORPEDO_TYPES', $possibleTorpedoTypes);
                     $game->setTemplateVar('SELECTED_BUILDPLAN', $buildplan);
                     $game->setTemplateVar('LAYERS', $this->layerRepository->findAll());
+
+                    if ($rump->isStation()) {
+                        $specialModules = $this->moduleRepository->getBySpecialTypeAndRumpWithoutHost(
+                            SpacecraftModuleTypeEnum::SPECIAL,
+                            $rump->getId()
+                        );
+                        $game->setTemplateVar('SPECIAL_MODULES', $specialModules);
+                    }
                 }
             } else {
                 $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
                 $allBuildplans = $this->spacecraftBuildplanRepository->getByUser($userId);
-                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps): bool {
-                    $rump = $buildplan->getRump();
-                    foreach ($allRumps as $rumpItem) {
-                        if ($rumpItem->getId() === $rump->getId()  && $rumpItem->getNpcBuildable() === true) {
-                            return true;
-                        }
-                    }
-                    return false;
-                });
 
-                $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps): bool {
-                    $rump = $buildplan->getRump();
-                    foreach ($allRumps as $rumpItem) {
-                        if ($rumpItem->getId() === $rump->getId() && $rumpItem->getNpcBuildable() === true) {
-                            return true;
+                if ($game->isAdmin()) {
+                    $filteredBuildplans = $allBuildplans;
+                } else {
+                    $filteredBuildplans = array_filter($allBuildplans, function ($buildplan) use ($allRumps): bool {
+                        $rump = $buildplan->getRump();
+                        foreach ($allRumps as $rumpItem) {
+                            if ($rumpItem->getId() === $rump->getId() && $rumpItem->getNpcBuildable() === true) {
+                                return true;
+                            }
                         }
-                    }
-                    return false;
-                });
+                        return false;
+                    });
+                }
 
                 $game->setTemplateVar('BUILDPLANS', $filteredBuildplans);
                 $game->setTemplateVar('DELETABLE_BUILDPLANS', array_filter($filteredBuildplans, fn($buildplan): bool => $this->isDeletable($buildplan)));

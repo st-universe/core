@@ -66,4 +66,12 @@ interface ModuleRepositoryInterface extends ObjectRepository
      * @return array<Module>
      */
     public function getBySpecialTypeIds(array $specialTypeIds): array;
+
+    /**
+     * @return array<Module>
+     */
+    public function getBySpecialTypeAndRumpWithoutHost(
+        SpacecraftModuleTypeEnum $moduleType,
+        int $rumpId
+    ): array;
 }
