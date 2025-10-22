@@ -13,6 +13,7 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipRumpModuleSpecial;
 use Stu\Orm\Entity\Spacecraft;
 
 /**
@@ -189,6 +190,35 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             )
             ->setParameters([
                 'specialTypeIds' => $specialTypeIds
+            ])
+            ->getResult();
+    }
+
+    #[Override]
+    public function getBySpecialTypeAndRumpWithoutHost(
+        SpacecraftModuleTypeEnum $moduleType,
+        int $rumpId
+    ): array {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m
+                    WHERE m.type = :typeId
+                    AND m.id IN (
+                        SELECT IDENTITY(ms.module) FROM %s ms
+                        WHERE ms.special_id IN (
+                            SELECT rms.module_special_id FROM %s rms
+                            WHERE rms.rump_id = :rumpId
+                        )
+                    )',
+                    Module::class,
+                    ModuleSpecial::class,
+                    ShipRumpModuleSpecial::class
+                )
+            )
+            ->setParameters([
+                'typeId' => $moduleType->value,
+                'rumpId' => $rumpId
             ])
             ->getResult();
     }
