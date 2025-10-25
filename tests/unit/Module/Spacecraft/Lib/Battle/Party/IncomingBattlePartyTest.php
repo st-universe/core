@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
+use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -13,6 +16,15 @@ use Stu\StuTestCase;
 
 class IncomingBattlePartyTest extends StuTestCase
 {
+    private MockInterface&StuRandom $stuRandom;
+
+    #[Override]
+    public function setUp(): void
+    {
+        //injected
+        $this->stuRandom = $this->mock(StuRandom::class);
+    }
+
     public function testGetActiveMembersExpectEmptyWhenCloaked(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -49,7 +61,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $subject = new IncomingBattleParty($wrapper);
+        $subject = new IncomingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -95,7 +107,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $subject = new IncomingBattleParty($wrapper);
+        $subject = new IncomingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -144,7 +156,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new IncomingBattleParty($wrapper);
+        $subject = new IncomingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -215,7 +227,7 @@ class IncomingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $subject = new IncomingBattleParty($wrapper);
+        $subject = new IncomingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 

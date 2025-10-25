@@ -10,14 +10,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class AttackedBattleParty extends AbstractBattleParty
 {
-    public function __construct(
-        SpacecraftWrapperInterface $attackedWrapper
-    ) {
-        parent::__construct(
-            $attackedWrapper
-        );
-    }
-
     #[Override]
     protected function initMembers(): Collection
     {

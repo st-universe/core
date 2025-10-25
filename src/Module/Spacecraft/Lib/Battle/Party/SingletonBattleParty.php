@@ -4,6 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class SingletonBattleParty extends AbstractBattleParty
@@ -11,9 +12,10 @@ class SingletonBattleParty extends AbstractBattleParty
     private bool $isStation;
 
     public function __construct(
-        SpacecraftWrapperInterface $leader
+        SpacecraftWrapperInterface $leader,
+        StuRandom $stuRandom
     ) {
-        parent::__construct($leader);
+        parent::__construct($leader, $stuRandom);
 
         $this->isStation = $leader->get()->isStation();
     }

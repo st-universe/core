@@ -28,10 +28,23 @@ class StuRandom
         return random_int($min, $max);
     }
 
-    /** @param array<mixed> $array */
+    /**
+     * Return a random key from the given array.
+     *
+     * @template TKey of int|string
+     * @param array<TKey, mixed> $array The array to pick a key from.
+     * @return TKey A randomly selected key from the array.
+     */
     public function array_rand(array $array): string|int
     {
-        return array_rand($array);
+        if ($array === []) {
+            throw new RuntimeException('Cannot pick a random key from an empty array');
+        }
+        
+        /** @var TKey of int|string */
+        $result = array_rand($array);
+
+        return $result;
     }
 
     /** @param array<int, int> $probabilities */

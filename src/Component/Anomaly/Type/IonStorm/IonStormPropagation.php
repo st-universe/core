@@ -58,7 +58,7 @@ class IonStormPropagation
         }
 
         $neighbours = $locationPool->getNeighbours($location);
-        $location = $neighbours[array_rand($neighbours)];
+        $location = $neighbours[$this->stuRandom->array_rand($neighbours)];
 
         if ($location->isAnomalyForbidden()) {
             return;

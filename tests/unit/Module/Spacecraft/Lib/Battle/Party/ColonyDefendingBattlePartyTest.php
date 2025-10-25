@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
+use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -14,6 +17,15 @@ use Stu\StuTestCase;
 
 class ColonyDefendingBattlePartyTest extends StuTestCase
 {
+    private MockInterface&StuRandom $stuRandom;
+
+    #[Override]
+    public function setUp(): void
+    {
+        //injected
+        $this->stuRandom = $this->mock(StuRandom::class);
+    }
+
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -50,7 +62,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new ColonyDefendingBattleParty($wrapper);
+        $subject = new ColonyDefendingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -111,7 +123,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new ColonyDefendingBattleParty($wrapper);
+        $subject = new ColonyDefendingBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -136,7 +148,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
 
-        $subject = new ColonyDefendingBattleParty($wrapper);
+        $subject = new ColonyDefendingBattleParty($wrapper, $this->stuRandom);
         $result = $subject->getAttackCause();
 
         $this->assertEquals(SpacecraftAttackCauseEnum::COLONY_DEFENSE, $result);
@@ -158,7 +170,7 @@ class ColonyDefendingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
 
-        $subject = new ColonyDefendingBattleParty($wrapper);
+        $subject = new ColonyDefendingBattleParty($wrapper, $this->stuRandom);
 
         $result = $subject->getAlertDescription();
 

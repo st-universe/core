@@ -229,7 +229,7 @@ class PirateCreation implements PirateCreationInterface
         $ships = $this->createShips($pirateSetup, $supportCaller);
         $this->entityManager->flush();
 
-        $fleetLeader = $ships[array_rand($ships)];
+        $fleetLeader = $ships[$this->stuRandom->array_rand($ships)];
         $fleetLeader->setIsFleetLeader(true);
 
         //create fleet
@@ -273,7 +273,7 @@ class PirateCreation implements PirateCreationInterface
 
                 $mostUnusedNames = $this->namesRepository->mostUnusedNames();
                 if ($mostUnusedNames !== []) {
-                    $selectedNameEntry = $mostUnusedNames[array_rand($mostUnusedNames)];
+                    $selectedNameEntry = $mostUnusedNames[$this->stuRandom->array_rand($mostUnusedNames)];
                     $shipName = $selectedNameEntry->getName();
                     $selectedNameEntry->setCount($selectedNameEntry->getCount() + 1);
                     $this->namesRepository->save($selectedNameEntry);

@@ -191,6 +191,19 @@ class IonStormPropagationTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
+        $this->stuRandom->shouldReceive('array_rand')
+            ->with([0 => $locationWithoutStorm])
+            ->once()
+            ->andReturn(0);
+        $this->stuRandom->shouldReceive('array_rand')
+            ->with([0 => $locationWithIonStorm])
+            ->once()
+            ->andReturn(0);
+        $this->stuRandom->shouldReceive('array_rand')
+            ->with([0 => $locationWithForbiddenEffect])
+            ->once()
+            ->andReturn(0);
+
         $this->anomalyRepository->shouldReceive('save')
             ->with($root)
             ->times(1);

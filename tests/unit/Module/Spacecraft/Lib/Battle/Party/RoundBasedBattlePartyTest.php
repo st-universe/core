@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -16,6 +17,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 {
     private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&BattlePartyInterface $battleParty;
+    private MockInterface&StuRandom $stuRandom;
 
     private RoundBasedBattleParty $subject;
 
@@ -24,6 +26,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
     {
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->battleParty = $this->mock(BattlePartyInterface::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
     }
 
     public function testGet(): void
@@ -33,10 +36,9 @@ class RoundBasedBattlePartyTest extends StuTestCase
             ->once()
             ->andReturn([0, 1, 2]);
 
-
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $result = $this->subject->get();
@@ -73,7 +75,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $this->subject->use(1);
@@ -91,7 +93,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $result = $this->subject->isDone();
@@ -112,7 +114,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $this->subject->use(0);
@@ -130,7 +132,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $result = $this->subject->isDone();
@@ -154,9 +156,14 @@ class RoundBasedBattlePartyTest extends StuTestCase
             ->twice()
             ->andReturn(0);
 
+        $this->stuRandom->shouldReceive('array_rand')
+            ->with([0 => $wrapper0])
+            ->once()
+            ->andReturn(0);
+
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $result = $this->subject->getRandomUnused();
@@ -205,7 +212,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository
+            $this->spacecraftRepository, $this->stuRandom
         );
 
         $this->subject->saveActiveMembers();

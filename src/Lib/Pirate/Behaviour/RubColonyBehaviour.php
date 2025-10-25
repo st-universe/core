@@ -104,7 +104,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
 
             $ship = $wrapper->get();
-            $randomCommodityId = array_rand($filteredColonyStorage);
+            $randomCommodityId = (int)$this->stuRandom->array_rand($filteredColonyStorage);
 
             $informations = new InformationWrapper();
 

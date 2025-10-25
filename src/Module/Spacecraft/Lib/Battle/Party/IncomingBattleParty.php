@@ -8,12 +8,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class IncomingBattleParty extends AbstractBattleParty
 {
-    public function __construct(
-        SpacecraftWrapperInterface $leader
-    ) {
-        parent::__construct($leader);
-    }
-
     #[Override]
     public function initMembers(): Collection
     {
