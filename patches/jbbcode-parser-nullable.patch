@@ -1,0 +1,10 @@
+--- a/JBBCode/Parser.php   2025-07-06 09:49:56.849569800 -0300
++++ b/JBBCode/Parser.php   2025-07-06 09:57:23.776283600 -0300
+@@ -60,7 +60,7 @@
+      * @return Parser
+      */
+     public function addBBCode($tagName, $replace, $useOption = false, $parseContent = true, $nestLimit = -1,
+-                              InputValidator $optionValidator = null, InputValidator $bodyValidator = null)
++                              ?InputValidator $optionValidator = null, ?InputValidator $bodyValidator = null)
+     {
+         $builder = new CodeDefinitionBuilder($tagName, $replace);
