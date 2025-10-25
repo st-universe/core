@@ -73,13 +73,11 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         }
 
         $shuttles = [];
-        $currentlyStored = 0;
 
         foreach ($ship->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $smi = new ShuttleManagementItem($stor->getCommodity());
                 $smi->setCurrentLoad($stor->getAmount());
-                $currentlyStored += $stor->getAmount();
 
                 $shuttles[$stor->getCommodity()->getId()] = $smi;
             }
@@ -107,10 +105,11 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
 
             $commodity = $this->commodityRepository->find((int)$commodityId);
-
             if ($commodity === null) {
                 return;
             }
+
+            $commodityId = $commodity->getId();
 
             if (!$commodity->isShuttle()) {
                 return;
@@ -118,7 +117,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
             $wantedCount = (int)$shuttlecount[$commodityId];
 
-            $smi = $shuttles[(int)$commodityId];
+            $smi = $shuttles[$commodityId];
 
             if ($wantedCount > $smi->getMaxUnits()) {
                 continue;

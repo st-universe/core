@@ -53,7 +53,7 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
             return;
         }
 
-        $moduleType = self::POSSIBLE_SYSTEM_TYPES[array_rand(self::POSSIBLE_SYSTEM_TYPES)];
+        $moduleType = self::POSSIBLE_SYSTEM_TYPES[$this->stuRandom->array_rand(self::POSSIBLE_SYSTEM_TYPES)];
         $percentage = $this->stuRandom->rand(1, 20, true, 5);
 
         $gain = match ($moduleType) {

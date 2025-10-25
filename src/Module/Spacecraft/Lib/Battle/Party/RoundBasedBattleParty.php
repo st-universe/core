@@ -5,6 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
@@ -15,7 +16,8 @@ class RoundBasedBattleParty
 
     public function __construct(
         private BattlePartyInterface $battleParty,
-        private SpacecraftRepositoryInterface $spacecraftRepository
+        private SpacecraftRepositoryInterface $spacecraftRepository,
+        private StuRandom $stuRandom
     ) {
         $this->unUsedIds = new ArrayCollection($battleParty->getActiveMembers(true)->getKeys());
     }
@@ -53,7 +55,7 @@ class RoundBasedBattleParty
         $allUnusedThatCanFire = $this->getAllUnusedThatCanFire();
 
         /** @var SpacecraftWrapperInterface|null */
-        $random = $allUnusedThatCanFire->get(array_rand($allUnusedThatCanFire->toArray()));
+        $random = $allUnusedThatCanFire->get($this->stuRandom->array_rand($allUnusedThatCanFire->toArray()));
         if ($random === null) {
             throw new RuntimeException('isDone shoule be called first!');
         }

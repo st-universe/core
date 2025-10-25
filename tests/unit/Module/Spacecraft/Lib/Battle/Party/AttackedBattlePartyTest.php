@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
@@ -18,6 +19,7 @@ use Stu\StuTestCase;
 class AttackedBattlePartyTest extends StuTestCase
 {
     private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&StuRandom $stuRandom;
 
     private MockInterface&User $user;
 
@@ -28,6 +30,7 @@ class AttackedBattlePartyTest extends StuTestCase
     {
         //injected
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
+        $this->stuRandom = $this->mock(StuRandom::class);
 
         //other
         $this->user = $this->mock(User::class);
@@ -53,7 +56,7 @@ class AttackedBattlePartyTest extends StuTestCase
             ->andReturn(false);
 
         $this->subject = new AttackedBattleParty(
-            $this->wrapper
+            $this->wrapper, $this->stuRandom
         );
     }
 

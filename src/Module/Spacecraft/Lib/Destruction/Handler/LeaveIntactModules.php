@@ -5,6 +5,7 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
@@ -14,7 +15,8 @@ use Stu\Orm\Entity\TholianWeb;
 class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
 {
     public function __construct(
-        private StorageManagerInterface $storageManager
+        private readonly StorageManagerInterface $storageManager,
+        private readonly StuRandom $stuRandom
     ) {}
 
     #[Override]
@@ -55,7 +57,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         }
 
         for ($i = 1; $i <= $leaveCount; $i++) {
-            $module = $intactModules[array_rand($intactModules)];
+            $module = $intactModules[$this->stuRandom->array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
 
             $this->storageManager->upperStorage(

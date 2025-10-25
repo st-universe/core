@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
+use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -14,6 +17,15 @@ use Stu\StuTestCase;
 
 class AttackingBattlePartyTest extends StuTestCase
 {
+    private MockInterface&StuRandom $stuRandom;
+
+    #[Override]
+    public function setUp(): void
+    {
+        //injected
+        $this->stuRandom = $this->mock(StuRandom::class);
+    }
+
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -50,7 +62,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper, true);
+        $subject = new AttackingBattleParty($wrapper, $this->stuRandom, true);
 
         $members = $subject->getActiveMembers();
 
@@ -95,7 +107,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper, false);
+        $subject = new AttackingBattleParty($wrapper, $this->stuRandom, false);
 
         $members = $subject->getActiveMembers();
 
@@ -160,7 +172,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($wrapper, true);
+        $subject = new AttackingBattleParty($wrapper, $this->stuRandom, true);
 
         $members = $subject->getActiveMembers();
 
@@ -230,7 +242,7 @@ class AttackingBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new AttackingBattleParty($fleetWrapper, false);
+        $subject = new AttackingBattleParty($fleetWrapper, $this->stuRandom, false);
 
         $members = $subject->getActiveMembers();
 

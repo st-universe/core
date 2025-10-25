@@ -4,6 +4,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
 use Override;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -12,11 +13,12 @@ class AttackingBattleParty extends AbstractBattleParty
 {
     public function __construct(
         private SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
+        StuRandom $stuRandom,
         bool $isAttackingShieldsOnly
     ) {
         $leader = $wrapper instanceof SpacecraftWrapperInterface ? $wrapper : $wrapper->getLeadWrapper();
 
-        parent::__construct($leader, $isAttackingShieldsOnly);
+        parent::__construct($leader, $stuRandom, $isAttackingShieldsOnly);
     }
 
     #[Override]

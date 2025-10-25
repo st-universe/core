@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft;
 
+use RuntimeException;
+
 enum SpacecraftAlertStateEnum: int
 {
     case ALERT_GREEN = 1;
@@ -37,6 +39,9 @@ enum SpacecraftAlertStateEnum: int
     {
         /** @var array<int> */
         $values = array_map(fn(SpacecraftAlertStateEnum $alertState) => $alertState->value, self::cases());
+        if($values === []) {
+            throw new RuntimeException('No alert states defined');
+        }
 
         return self::from($values[array_rand($values)]);
     }

@@ -9,6 +9,7 @@ use Override;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Exception\SanityCheckException;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Crew;
@@ -27,7 +28,8 @@ final class CrewCreator implements CrewCreatorInterface
         private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private CrewRepositoryInterface $crewRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private StuRandom $stuRandom
     ) {}
 
     #[Override]
@@ -52,7 +54,7 @@ final class CrewCreator implements CrewCreatorInterface
             );
             $arr = [...$arr, ...$amount];
         }
-        $randomRaceId = $arr[array_rand($arr)];
+        $randomRaceId = $arr[$this->stuRandom->array_rand($arr)];
         $race = $this->crewRaceRepository->find($randomRaceId);
         if ($race === null) {
             throw new SanityCheckException(sprintf('raceId %d does not exist', $randomRaceId));
@@ -160,7 +162,7 @@ final class CrewCreator implements CrewCreatorInterface
         }
 
         /** @var CrewAssignment $random */
-        $random = $crewAssignments->get(array_rand($crewAssignments->toArray()));
+        $random = $crewAssignments->get($this->stuRandom->array_rand($crewAssignments->toArray()));
 
         $crewAssignments->removeElement($random);
 

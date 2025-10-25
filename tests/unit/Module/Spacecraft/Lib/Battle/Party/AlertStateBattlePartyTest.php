@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
+use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -14,6 +17,15 @@ use Stu\StuTestCase;
 
 class AlertStateBattlePartyTest extends StuTestCase
 {
+    private MockInterface&StuRandom $stuRandom;
+
+    #[Override]
+    public function setUp(): void
+    {
+        //injected
+        $this->stuRandom = $this->mock(StuRandom::class);
+    }
+
     public function testGetActiveMembersExpectSingle(): void
     {
         $wrapper = $this->mock(ShipWrapperInterface::class);
@@ -50,7 +62,7 @@ class AlertStateBattlePartyTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(false);
 
-        $subject = new AlertStateBattleParty($wrapper);
+        $subject = new AlertStateBattleParty($wrapper, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 
@@ -147,7 +159,7 @@ class AlertStateBattlePartyTest extends StuTestCase
             ->andReturn(false);
 
 
-        $subject = new AlertStateBattleParty($wrapperOk);
+        $subject = new AlertStateBattleParty($wrapperOk, $this->stuRandom);
 
         $members = $subject->getActiveMembers();
 

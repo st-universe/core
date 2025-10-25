@@ -91,6 +91,12 @@ abstract class IntegrationTestCase extends StuTestCase
         $stuRandomMock->shouldReceive('uniqid')
             ->zeroOrMoreTimes()
             ->andReturn('MOCKED_UNIQUEID');
+        $stuRandomMock->shouldReceive('array_rand')
+            ->zeroOrMoreTimes()
+            ->andReturnUsing(function (array $array) {
+                $keys = array_keys($array);
+                return $keys[0];
+            });
 
         $stuTimeMock = $this->mock(StuTime::class);
         $stuTimeMock->shouldReceive('time')

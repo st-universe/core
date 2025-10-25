@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -15,9 +16,10 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
     private bool $isSingleton = false;
 
     public function __construct(
-        SpacecraftWrapperInterface $leader
+        SpacecraftWrapperInterface $leader,
+        StuRandom $stuRandom
     ) {
-        parent::__construct($leader);
+        parent::__construct($leader, $stuRandom);
 
         $this->leaderAlertState = $leader->getAlertState();
     }

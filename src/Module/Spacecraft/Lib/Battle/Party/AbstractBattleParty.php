@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Override;
 use RuntimeException;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\User;
@@ -20,6 +21,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
 
     public function __construct(
         protected SpacecraftWrapperInterface $leader,
+        protected StuRandom $stuRandom,
         private bool $isAttackingShieldsOnly = false
     ) {
         $this->isStation = $leader->get()->isStation();
@@ -61,7 +63,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     public function getRandomActiveMember(): SpacecraftWrapperInterface
     {
         $activeMembers = $this->getActiveMembers();
-        $randomActiveMember = $activeMembers->get(array_rand($activeMembers->toArray()));
+        $randomActiveMember = $activeMembers->get($this->stuRandom->array_rand($activeMembers->toArray()));
         if ($randomActiveMember === null) {
             throw new RuntimeException('isDefeated should be called first');
         }
