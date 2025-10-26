@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
@@ -41,7 +40,7 @@ class SpacecraftWrapperTest extends StuTestCase
 
     private SpacecraftWrapperInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected
@@ -70,7 +69,7 @@ class SpacecraftWrapperTest extends StuTestCase
             $this->stateIconAndTitle,
             $this->colonyLibFactory
         ) extends SpacecraftWrapper {
-            #[Override]
+            #[\Override]
             public function getFleetWrapper(): ?FleetWrapperInterface
             {
                 return null;

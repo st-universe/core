@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement;
 
-use Override;
 use Stu\Lib\SpacecraftManagement\Manager\ManagerInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -16,7 +15,7 @@ class HandleManagers implements HandleManagersInterface
      */
     public function __construct(private array $managers) {}
 
-    #[Override]
+    #[\Override]
     public function handle(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

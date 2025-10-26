@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Cache\Adapter\Common\CacheItem;
-use Override;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LogLevelEnum;
@@ -39,7 +38,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function getDescription(int $fieldTypeId): string
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_NAME)) {
@@ -49,7 +48,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         return $this->cache->getItem(self::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
     }
 
-    #[Override]
+    #[\Override]
     public function getCategory(int $fieldTypeId): int
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_CATEGORY)) {
@@ -70,7 +69,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         return $result ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function isUndergroundField(
         PlanetField $planetField
     ): bool {
@@ -80,7 +79,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isOrbitField(
         PlanetField $planetField
     ): bool {

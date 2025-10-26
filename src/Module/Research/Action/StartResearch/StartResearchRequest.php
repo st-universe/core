@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\StartResearch;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class StartResearchRequest implements StartResearchRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getResearchId(): int
     {
         return $this->parameter('id')->int()->required();

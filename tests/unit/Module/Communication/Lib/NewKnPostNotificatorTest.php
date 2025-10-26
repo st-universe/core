@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -22,7 +21,7 @@ class NewKnPostNotificatorTest extends StuTestCase
 
     private NewKnPostNotificator $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);

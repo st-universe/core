@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Mining;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -32,7 +31,7 @@ final class GatherResources implements ActionControllerInterface
         private LocationMiningRepositoryInterface $locationMiningRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -104,7 +103,7 @@ final class GatherResources implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

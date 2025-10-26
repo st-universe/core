@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -43,7 +42,7 @@ final class SpacecraftCreator implements SpacecraftCreatorInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function createBy(
         int $userId,
         int $rumpId,

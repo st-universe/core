@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Ship;
@@ -27,7 +26,7 @@ class TholianWebUtilTest extends StuTestCase
 
     private TholianWebUtilInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

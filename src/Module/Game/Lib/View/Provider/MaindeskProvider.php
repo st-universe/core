@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
@@ -46,7 +45,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         private readonly CrewCountRetrieverInterface $crewCountRetriever
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

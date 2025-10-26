@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-use Override;
 
 /**
  * Creates status bar objects for rendering purposes
  */
 final class StatusBarFactory implements StatusBarFactoryInterface
 {
-    #[Override]
+    #[\Override]
     public function createStatusBar(): StatusBarInterface
     {
         return new StatusBar();

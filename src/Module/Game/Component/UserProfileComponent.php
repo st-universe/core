@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Component;
 
-use Override;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -13,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
  */
 final class UserProfileComponent implements ComponentInterface
 {
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $game->setTemplateVar('PRESTIGE', $game->getUser()->getPrestige());

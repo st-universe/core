@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
 use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Entity\WormholeEntry;
@@ -15,20 +14,20 @@ use Stu\Orm\Entity\WormholeEntry;
  */
 final class WormholeRestrictionRepository extends EntityRepository implements WormholeRestrictionRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): WormholeRestriction
     {
         return new WormholeRestriction();
     }
 
-    #[Override]
+    #[\Override]
     public function save(WormholeRestriction $restriction): void
     {
         $em = $this->getEntityManager();
         $em->persist($restriction);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(WormholeRestriction $restriction): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class WormholeRestrictionRepository extends EntityRepository implements Wo
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function existsForTargetAndTypeAndEntry(int $targetId, ?WormholeEntryTypeEnum $privilegeType, WormholeEntry $wormholeEntry): bool
     {
         return $this->count([
@@ -47,7 +46,7 @@ final class WormholeRestrictionRepository extends EntityRepository implements Wo
         ]) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByTypeAndTarget(?WormholeEntryTypeEnum $type, int $targetId): void
     {
         $this->getEntityManager()

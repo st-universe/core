@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +27,7 @@ final class CreateAlliance implements ActionControllerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -77,7 +76,7 @@ final class CreateAlliance implements ActionControllerInterface
         $game->getInfo()->addInformation('Die Allianz wurde gegründet');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

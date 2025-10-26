@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +21,7 @@ final class LogPlayerDetails implements ActionControllerInterface
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = request::postIntFatal('userId');
@@ -61,7 +60,7 @@ final class LogPlayerDetails implements ActionControllerInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

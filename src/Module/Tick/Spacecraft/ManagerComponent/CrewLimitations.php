@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
-use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -35,7 +34,7 @@ final class CrewLimitations implements ManagerComponentInterface
         private CrewLimitCalculatorInterface $crewLimitCalculator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $userList = $this->userRepository->getNonNpcList();

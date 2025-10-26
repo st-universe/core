@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 
@@ -14,7 +13,7 @@ final class PirateWrathDecreaser implements MaintenanceHandlerInterface
         private PirateWrathRepositoryInterface $pirateWrathRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         foreach ($this->pirateWrathRepository->findAll() as $pirateWrath) {

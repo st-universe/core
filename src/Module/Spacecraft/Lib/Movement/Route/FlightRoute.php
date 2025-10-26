@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
@@ -52,7 +51,7 @@ final class FlightRoute implements FlightRouteInterface
         $this->waypoints = new ArrayCollection();
     }
 
-    #[Override]
+    #[\Override]
     public function setDestination(
         Map|StarSystemMap $destination,
         bool $isTranswarp
@@ -72,7 +71,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setDestinationViaWormhole(WormholeEntry $wormholeEntry, bool $isEntry): FlightRouteInterface
     {
         $this->wormholeEntry = $wormholeEntry;
@@ -87,7 +86,7 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setDestinationViaCoordinates(Spacecraft $spacecraft, int $x, int $y): FlightRouteInterface
     {
         $start = $spacecraft->getLocation();
@@ -102,13 +101,13 @@ final class FlightRoute implements FlightRouteInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getCurrentWaypoint(): Location
     {
         return $this->current;
     }
 
-    #[Override]
+    #[\Override]
     public function getNextWaypoint(): Location
     {
         if ($this->waypoints->isEmpty()) {
@@ -130,13 +129,13 @@ final class FlightRoute implements FlightRouteInterface
         $this->waypoints->removeElement($this->current);
     }
 
-    #[Override]
+    #[\Override]
     public function abortFlight(): void
     {
         $this->waypoints->clear();
     }
 
-    #[Override]
+    #[\Override]
     public function enterNextWaypoint(
         FlightCompany $flightCompany,
         MessageCollectionInterface $messages
@@ -207,25 +206,25 @@ final class FlightRoute implements FlightRouteInterface
         $this->walkConsequences($consequences, $wrapper->getTractoredShipWrapper(), $messages);
     }
 
-    #[Override]
+    #[\Override]
     public function isDestinationArrived(): bool
     {
         return $this->waypoints->isEmpty();
     }
 
-    #[Override]
+    #[\Override]
     public function getRouteMode(): RouteModeEnum
     {
         return $this->routeMode;
     }
 
-    #[Override]
+    #[\Override]
     public function isTraversing(): bool
     {
         return $this->isTraversing;
     }
 
-    #[Override]
+    #[\Override]
     public function isImpulseDriveNeeded(): bool
     {
         $routeMode = $this->routeMode;
@@ -241,7 +240,7 @@ final class FlightRoute implements FlightRouteInterface
             && $this->getNextWaypoint() instanceof StarSystemMap;
     }
 
-    #[Override]
+    #[\Override]
     public function isWarpDriveNeeded(): bool
     {
         $routeMode = $this->routeMode;
@@ -257,13 +256,13 @@ final class FlightRoute implements FlightRouteInterface
             && $this->getNextWaypoint() instanceof Map;
     }
 
-    #[Override]
+    #[\Override]
     public function isTranswarpCoilNeeded(): bool
     {
         return $this->routeMode === RouteModeEnum::TRANSWARP;
     }
 
-    #[Override]
+    #[\Override]
     public function hasSpecialDamageOnField(): bool
     {
         foreach ($this->waypoints as $waypoint) {
@@ -275,7 +274,7 @@ final class FlightRoute implements FlightRouteInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function hasEffectOnRoute(FieldTypeEffectEnum $effect): bool
     {
         foreach ($this->waypoints as $waypoint) {
@@ -287,7 +286,7 @@ final class FlightRoute implements FlightRouteInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function isDestinationInAdminRegion(array $regionIds): bool
     {
         $destination = $this->waypoints->last();
@@ -296,7 +295,7 @@ final class FlightRoute implements FlightRouteInterface
             && in_array($destination->getAdminRegionId(), $regionIds);
     }
 
-    #[Override]
+    #[\Override]
     public function isDestinationAtTradepost(): bool
     {
         $destination = $this->waypoints->last();

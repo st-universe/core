@@ -2,12 +2,11 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Stu\Orm\Entity\User;
 
 class PirateProtection implements PirateProtectionInterface
 {
-    #[Override]
+    #[\Override]
     public function isProtectedAgainstPirates(User $user): bool
     {
         $pirateWrath = $user->getPirateWrath();

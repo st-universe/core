@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -20,7 +19,7 @@ class ClearTractoringBeam implements SpacecraftDestructionHandlerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

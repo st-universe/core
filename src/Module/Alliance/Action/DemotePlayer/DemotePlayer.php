@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -32,7 +31,7 @@ final class DemotePlayer implements ActionControllerInterface
     /**
      * Demotes a player
      */
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -74,7 +73,7 @@ final class DemotePlayer implements ActionControllerInterface
         $game->getInfo()->addInformation('Das Mitglied wurde von seinem Posten enthoben');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

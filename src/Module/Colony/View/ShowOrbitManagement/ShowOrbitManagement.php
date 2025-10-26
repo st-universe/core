@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

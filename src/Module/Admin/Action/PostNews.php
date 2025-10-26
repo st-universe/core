@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use request;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
@@ -21,7 +20,7 @@ final class PostNews implements ActionControllerInterface
         private readonly StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -54,7 +53,7 @@ final class PostNews implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die News wurde gespeichert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

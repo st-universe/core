@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
 use Stu\Orm\Entity\RpgPlotMemberArchiv;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\RpgPlotMemberArchiv;
  */
 final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotArchivRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByFoundingUser(int $userId): array
     {
         return $this->findBy([
@@ -23,13 +22,13 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): RpgPlotArchiv
     {
         return new RpgPlotArchiv();
     }
 
-    #[Override]
+    #[\Override]
     public function save(RpgPlotArchiv $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         $em->persist($rpgPlot);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(RpgPlotArchiv $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -45,7 +44,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         $em->remove($rpgPlot);
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -62,7 +61,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getEmptyOldPlots(int $maxAge): array
     {
         return $this->getEntityManager()
@@ -82,13 +81,13 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getOrderedList(): array
     {
         return $this->findBy([], ['start_date' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(
@@ -99,7 +98,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         )->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getAvailableVersions(): array
     {
         $result = $this->createQueryBuilder('rpa')
@@ -111,7 +110,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         return array_column($result, 'version');
     }
 
-    #[Override]
+    #[\Override]
     public function getByVersion(string $version): array
     {
         return $this->findBy(
@@ -120,7 +119,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getOrderedListByVersion(string $version): array
     {
         return $this->createQueryBuilder('rpa')
@@ -131,7 +130,7 @@ final class RpgPlotArchivRepository extends EntityRepository implements RpgPlotA
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function findByFormerId(int $formerId): ?RpgPlotArchiv
     {
         return $this->findOneBy(['former_id' => $formerId]);

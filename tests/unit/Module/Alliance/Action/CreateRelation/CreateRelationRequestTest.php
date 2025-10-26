@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
-use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -15,13 +14,13 @@ class CreateRelationRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
-    #[Override]
+    #[\Override]
     protected function getRequestClass(): string
     {
         return CreateRelationRequest::class;
     }
 
-    #[Override]
+    #[\Override]
     public static function requestVarsDataProvider(): array
     {
         return [
@@ -30,7 +29,7 @@ class CreateRelationRequestTest extends RequestTestCase
         ];
     }
 
-    #[Override]
+    #[\Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

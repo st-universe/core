@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
@@ -32,7 +31,7 @@ class SpacecraftAttackerTest extends StuTestCase
 
     private SpacecraftAttacker $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

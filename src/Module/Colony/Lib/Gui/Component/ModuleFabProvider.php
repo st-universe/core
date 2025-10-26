@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Colony\View\ShowModuleFab\ModuleFabricationListItem;
@@ -17,7 +16,7 @@ final class ModuleFabProvider implements PlanetFieldHostComponentInterface
     public function __construct(private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository) {}
 
     /** @param Colony $entity */
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

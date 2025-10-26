@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SpacecraftDoesNotExistException;
@@ -24,7 +23,7 @@ final class CommodityCheat implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository, private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
@@ -139,7 +138,7 @@ final class CommodityCheat implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

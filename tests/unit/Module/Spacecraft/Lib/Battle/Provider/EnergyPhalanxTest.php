@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Orm\Entity\Colony;
@@ -21,7 +20,7 @@ class EnergyPhalanxTest extends StuTestCase
 
     private EnergyPhalanx $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

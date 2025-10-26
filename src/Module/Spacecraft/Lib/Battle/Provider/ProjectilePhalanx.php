@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Location;
@@ -18,13 +17,13 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function hasSufficientEnergy(int $amount): bool
     {
         return $this->getEps() >= $amount;
     }
 
-    #[Override]
+    #[\Override]
     public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return false;
@@ -35,37 +34,37 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         return $this->colony->getChangeable()->getEps();
     }
 
-    #[Override]
+    #[\Override]
     public function reduceEps(int $amount): void
     {
         $this->colony->getChangeable()->lowerEps($amount);
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return 'Orbitale Torpedophalanx';
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoState(): bool
     {
         return $this->getTorpedoCount() > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getHitChance(): int
     {
         return 75;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->colony->getUser()->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoCount(): int
     {
         $torpedo = $this->getTorpedo();
@@ -81,7 +80,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         return  0;
     }
 
-    #[Override]
+    #[\Override]
     public function lowerTorpedoCount(int $amount): void
     {
         $torpedo = $this->getTorpedo();
@@ -96,25 +95,25 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isShieldPenetration(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedo(): ?TorpedoType
     {
         return $this->colony->getChangeable()->getTorpedo();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoVolleys(): int
     {
         return 7;
     }
 
-    #[Override]
+    #[\Override]
     public function getProjectileWeaponDamage(bool $isCritical): int
     {
         $torpedo = $this->getTorpedo();
@@ -129,7 +128,7 @@ final class ProjectilePhalanx implements ProjectileAttackerInterface
         return $isCritical ? $damage * 2 : $damage;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->colony->getLocation();

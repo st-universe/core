@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\ShowColonyList;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ViewContext;
@@ -21,7 +20,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
 
     public function __construct(private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -117,7 +116,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         return $sortedGrouped;
     }
 
-    #[Override]
+    #[\Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleEnum::MAINDESK, self::VIEW_IDENTIFIER);

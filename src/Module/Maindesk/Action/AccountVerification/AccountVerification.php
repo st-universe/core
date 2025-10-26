@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\AccountVerification;
 
-use Override;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -37,7 +36,7 @@ final class AccountVerification implements
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
 
@@ -90,7 +89,7 @@ final class AccountVerification implements
         $game->getInfo()->addInformation('Dein Account wurde erfolgreich freigeschaltet');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
-use Override;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -33,7 +32,7 @@ final class Management implements ViewControllerInterface
         return $minSort ?? PHP_INT_MAX;
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

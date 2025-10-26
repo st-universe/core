@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RemoveBuilding;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
@@ -23,7 +22,7 @@ final class RemoveBuilding implements ActionControllerInterface
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -50,7 +49,7 @@ final class RemoveBuilding implements ActionControllerInterface
             ->addComponentUpdate(ColonyComponentEnum::STORAGE, $host);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Repair;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -22,7 +21,7 @@ final class CancelRepair implements CancelRepairInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function cancelRepair(Spacecraft $ship): bool
     {
         $state = $ship->getState();

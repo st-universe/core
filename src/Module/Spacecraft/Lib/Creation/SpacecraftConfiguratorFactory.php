@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
-use Override;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
@@ -23,7 +22,7 @@ class SpacecraftConfiguratorFactory implements SpacecraftConfiguratorFactoryInte
         private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSpacecraftConfigurator($wrapper): SpacecraftConfiguratorInterface
     {
         return new SpacecraftConfigurator(

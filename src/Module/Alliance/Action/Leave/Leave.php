@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\Leave;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -23,7 +22,7 @@ final class Leave implements ActionControllerInterface
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -60,7 +59,7 @@ final class Leave implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Du hast die Allianz verlassen'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 
@@ -18,7 +17,7 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         $this->setFallbackUserByDeletedSender($user);

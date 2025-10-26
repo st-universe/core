@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
@@ -22,7 +21,7 @@ final class BorderLayerRenderer implements LayerRendererInterface
     ) {}
 
     /** @param BorderData $data */
-    #[Override]
+    #[\Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(

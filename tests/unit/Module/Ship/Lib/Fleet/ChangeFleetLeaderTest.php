@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\Fleet;
@@ -28,7 +27,7 @@ class ChangeFleetLeaderTest extends StuTestCase
 
     private ChangeFleetLeaderInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

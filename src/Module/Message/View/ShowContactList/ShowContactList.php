@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowContactList;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -16,7 +15,7 @@ final class ShowContactList implements ViewControllerInterface
 
     public function __construct(private ContactRepositoryInterface $contactRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

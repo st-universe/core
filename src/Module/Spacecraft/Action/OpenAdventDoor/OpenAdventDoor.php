@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\OpenAdventDoor;
 
-use Override;
 use request;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -37,7 +36,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         private CreatePrestigeLogInterface $createPrestigeLog
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -121,7 +120,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $this->openedAdventDoorRepository->save($openedDoor);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

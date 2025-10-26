@@ -6,7 +6,6 @@ namespace Stu\Component\Spacecraft\Module;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -30,7 +29,7 @@ class ModuleRecyclingTest extends StuTestCase
 
     private ModuleRecyclingInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->storageManager = $this->mock(StorageManagerInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\FakeWarpSignature;
 
-use Override;
 use request;
 use Stu\Module\Control\StuTime;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -33,7 +32,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         private ShipRumpModuleLevelRepositoryInterface $rumpModuleRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -128,7 +127,7 @@ final class FakeWarpSignature implements ActionControllerInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

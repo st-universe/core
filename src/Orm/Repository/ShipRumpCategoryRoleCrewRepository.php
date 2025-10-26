@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
  */
 final class ShipRumpCategoryRoleCrewRepository extends EntityRepository implements ShipRumpCategoryRoleCrewRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByShipRumpCategoryAndRole(
         SpacecraftRumpCategoryEnum $shipRumpCategory,
         SpacecraftRumpRoleEnum $shipRumpRole

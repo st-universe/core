@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,7 +14,7 @@ final class ViewComponentLoader implements ViewComponentLoaderInterface
     /** @param array<int, ViewComponentProviderInterface> $viewComponentProviders */
     public function __construct(private array $viewComponentProviders) {}
 
-    #[Override]
+    #[\Override]
     public function registerViewComponents(
         ModuleEnum $view,
         GameControllerInterface $game

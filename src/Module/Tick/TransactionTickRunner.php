@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameStateInterface;
@@ -26,7 +25,7 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil(true);
     }
 
-    #[Override]
+    #[\Override]
     public function runWithResetCheck(callable $fn, string $tickDescription, int $batchGroup, int $batchGroupCount): void
     {
         if (!$this->isGameStateReset()) {
@@ -75,7 +74,7 @@ final class TransactionTickRunner implements TransactionTickRunnerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function isGameStateReset(): bool
     {
         return $this->gameState->getGameState() === GameStateEnum::RESET;

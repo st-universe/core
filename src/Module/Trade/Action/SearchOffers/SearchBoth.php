@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\SearchOffers;
 
-use Override;
 use request;
 
 use Stu\Component\Game\GameEnum;
@@ -32,7 +31,7 @@ final class SearchBoth implements ActionControllerInterface
         private readonly SessionStorageInterface $sessionStorage
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -72,7 +71,7 @@ final class SearchBoth implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
@@ -18,20 +17,20 @@ use Stu\Orm\Entity\Map;
  */
 final class AnomalyRepository extends EntityRepository implements AnomalyRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): Anomaly
     {
         return new Anomaly();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Anomaly $anomaly): void
     {
         $em = $this->getEntityManager();
         $em->persist($anomaly);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Anomaly $anomaly): void
     {
         $location = $anomaly->getLocation();
@@ -47,7 +46,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         $this->getEntityManager()->remove($anomaly);
     }
 
-    #[Override]
+    #[\Override]
     public function getByLocationAndType(Location $location, AnomalyTypeEnum $type): ?Anomaly
     {
         return $this->findOneBy([
@@ -59,7 +58,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     /**
      * @return array<Anomaly>
      */
-    #[Override]
+    #[\Override]
     public function findAllRoot(): array
     {
         return $this->getEntityManager()
@@ -73,7 +72,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int
     {
         return (int) $this->getEntityManager()
@@ -90,7 +89,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getClosestAnomalyDistance(SpacecraftWrapperInterface $wrapper): ?int
     {
         $map = $wrapper->get()->getMap();

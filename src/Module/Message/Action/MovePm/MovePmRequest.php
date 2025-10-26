@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\MovePm;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class MovePmRequest implements MovePmRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getPmId(): int
     {
         return $this->parameter('move_pm')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getDestinationCategoryId(): int
     {
         return $this->queryParameter(

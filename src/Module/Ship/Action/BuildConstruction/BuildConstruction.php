@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use BadMethodCallException;
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -64,7 +63,7 @@ final class BuildConstruction implements ActionControllerInterface
         private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -311,7 +310,7 @@ final class BuildConstruction implements ActionControllerInterface
         $this->dockingPrivilegeRepository->save($dock);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

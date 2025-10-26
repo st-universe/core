@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -46,7 +45,7 @@ final class BuildOnField implements ActionControllerInterface
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -291,7 +290,7 @@ final class BuildOnField implements ActionControllerInterface
         return $isEnoughAvailable;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

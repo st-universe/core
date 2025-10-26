@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\StopEmergency;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -28,7 +27,7 @@ final class StopEmergency implements ActionControllerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -57,7 +56,7 @@ final class StopEmergency implements ActionControllerInterface
         $game->getInfo()->addInformation('Das Notrufsignal wurde beendet');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

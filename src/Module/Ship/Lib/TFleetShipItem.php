@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Override;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItem;
 
 #[Entity]
@@ -21,19 +20,19 @@ class TFleetShipItem extends TSpacecraftItem implements TFleetShipItemInterface
     #[Column(type: 'boolean')]
     private bool $is_blocking = false;
 
-    #[Override]
+    #[\Override]
     public function getFleetName(): string
     {
         return $this->fleet_name;
     }
 
-    #[Override]
+    #[\Override]
     public function isDefending(): bool
     {
         return $this->is_defending;
     }
 
-    #[Override]
+    #[\Override]
     public function isBlocking(): bool
     {
         return $this->is_blocking;

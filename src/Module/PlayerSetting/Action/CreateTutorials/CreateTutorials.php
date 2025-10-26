@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\CreateTutorials;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
@@ -16,7 +15,7 @@ final class CreateTutorials implements ActionControllerInterface
 
     public function __construct(private UserTutorialRepositoryInterface $userTutorialRepository, private TutorialStepRepositoryInterface $tutorialStepRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -38,7 +37,7 @@ final class CreateTutorials implements ActionControllerInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

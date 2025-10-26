@@ -7,7 +7,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\Alliance;
 use Stu\StuTestCase;
 
@@ -17,7 +16,7 @@ class RelationItemVertexBuilderTest extends StuTestCase
 
     private RelationItemVertexBuilder $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->allianceDataToGraphAttributeConverter = $this->mock(AllianceDataToGraphAttributeConverterInterface::class);

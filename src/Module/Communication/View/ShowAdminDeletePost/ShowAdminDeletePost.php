@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowAdminDeletePost;
 
-use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -20,7 +19,7 @@ final class ShowAdminDeletePost implements ViewControllerInterface
         private KnPostRepositoryInterface $knPostRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
 

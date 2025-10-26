@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DisassembleShip;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\Module\ModuleRecyclingInterface;
@@ -41,7 +40,7 @@ final class DisassembleShip implements ActionControllerInterface
         private ModuleRecyclingInterface $moduleRecycling
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -172,7 +171,7 @@ final class DisassembleShip implements ActionControllerInterface
         $game->getInfo()->addInformationf('%d Einheiten folgender Ware konnten recycelt werden: %s', $amount, $commodity->getName());
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

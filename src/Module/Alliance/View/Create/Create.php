@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Create;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,7 +12,7 @@ final class Create implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'CREATE_ALLIANCE';
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

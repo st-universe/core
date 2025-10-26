@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Notification;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Logging\LogLevelEnum;
@@ -24,7 +23,7 @@ final class FailureEmailSender implements FailureEmailSenderInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function sendMail(string $subject, string $message): void
     {
         $mail = $this->mailFactory->createStuMail()

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
@@ -35,7 +34,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function render(
         GameControllerInterface $game,
         ?User $user

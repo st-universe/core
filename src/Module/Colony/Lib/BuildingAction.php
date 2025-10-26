@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,7 +15,7 @@ final class BuildingAction implements BuildingActionInterface
 {
     public function __construct(private StorageManagerInterface $storageManager, private BuildingManagerInterface $buildingManager) {}
 
-    #[Override]
+    #[\Override]
     public function activate(PlanetField $field, GameControllerInterface $game): void
     {
         $building = $field->getBuilding();
@@ -59,7 +58,7 @@ final class BuildingAction implements BuildingActionInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(PlanetField $field, GameControllerInterface $game): void
     {
         $building = $field->getBuilding();
@@ -82,7 +81,7 @@ final class BuildingAction implements BuildingActionInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function remove(
         PlanetField $field,
         GameControllerInterface $game,

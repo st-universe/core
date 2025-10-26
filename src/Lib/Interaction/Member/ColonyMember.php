@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Interaction\Member;
 
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
@@ -18,13 +17,13 @@ class ColonyMember implements InteractionMemberInterface
         private Colony $colony
     ) {}
 
-    #[Override]
+    #[\Override]
     public function get(): Colony
     {
         return $this->colony;
     }
 
-    #[Override]
+    #[\Override]
     public function canAccess(
         InteractionMemberInterface $other,
         callable $shouldCheck
@@ -32,7 +31,7 @@ class ColonyMember implements InteractionMemberInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
         callable $shouldCheck
@@ -55,13 +54,13 @@ class ColonyMember implements InteractionMemberInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Map|StarSystemMap
     {
         return $this->colony->getLocation();
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): ?User
     {
         return $this->colony->getUser();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -24,7 +23,7 @@ final class CreateCrew implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -112,7 +111,7 @@ final class CreateCrew implements ActionControllerInterface
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

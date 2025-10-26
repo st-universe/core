@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -30,7 +29,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         private readonly BuildingManagerInterface $buildingManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function colonize(
         Colony $colony,
         User $user,

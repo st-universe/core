@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -24,7 +23,7 @@ final class AddKnPlotMember implements ActionControllerInterface
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
@@ -61,7 +60,7 @@ final class AddKnPlotMember implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -6,7 +6,6 @@ namespace Stu\Component\Station\Dock;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\DockingPrivilege;
@@ -24,7 +23,7 @@ class DockPrivilegeUtilityTest extends StuTestCase
 
     private DockPrivilegeUtilityInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new DockPrivilegeUtility();

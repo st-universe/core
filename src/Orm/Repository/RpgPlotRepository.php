@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\User;
  */
 final class RpgPlotRepository extends EntityRepository implements RpgPlotRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByFoundingUser(int $userId): array
     {
         return $this->findBy([
@@ -24,13 +23,13 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): RpgPlot
     {
         return new RpgPlot();
     }
 
-    #[Override]
+    #[\Override]
     public function save(RpgPlot $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -38,7 +37,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em->persist($rpgPlot);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(RpgPlot $rpgPlot): void
     {
         $em = $this->getEntityManager();
@@ -46,7 +45,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em->remove($rpgPlot);
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -63,7 +62,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(User $user): array
     {
         return $this->getEntityManager()
@@ -80,7 +79,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getEmptyOldPlots(int $maxAge): array
     {
         return $this->getEntityManager()
@@ -100,7 +99,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getOrderedList(): array
     {
         return $this->findBy([], ['start_date' => 'asc']);

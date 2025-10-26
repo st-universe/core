@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\AllowImmigration;
 
-use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -20,7 +19,7 @@ final class AllowImmigration implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -38,7 +37,7 @@ final class AllowImmigration implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Einwanderung wurde erlaubt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
-use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
@@ -35,7 +34,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageManagerInterface $storageManager, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private InteractionCheckerInterface $interactionChecker) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
@@ -189,7 +188,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->tradeLicenseRepository->save($license);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\TradeLicense;
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\TradeOffer;
  */
 final class TradeOfferRepository extends EntityRepository implements TradeOfferRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): TradeOffer
     {
         return new TradeOffer();
     }
 
-    #[Override]
+    #[\Override]
     public function save(TradeOffer $post): void
     {
         $em = $this->getEntityManager();
@@ -31,7 +30,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(TradeOffer $post): void
     {
         $em = $this->getEntityManager();
@@ -39,7 +38,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(int $userId): void
     {
         /** @noinspection SyntaxError */
@@ -54,7 +53,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getByTradePostAndUserAndOfferedCommodity(
         int $tradePostId,
         int $userId,
@@ -67,7 +66,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByTradePostAndUserAndCommodities(
         int $tradePostId,
         int $userId,
@@ -82,7 +81,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array
     {
         if ($commodityId !== null && $commodityId !== 0) {
@@ -118,7 +117,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int
     {
         return (int) $this->getEntityManager()
@@ -135,7 +134,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getGroupedSumByTradePostAndUser(int $tradePostId, int $userId): array
     {
         $rsm = new ResultSetMapping();
@@ -157,7 +156,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getOldOffers(int $threshold): array
     {
         return $this->getEntityManager()

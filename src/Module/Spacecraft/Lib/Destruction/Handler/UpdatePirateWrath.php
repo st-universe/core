@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
@@ -27,7 +26,7 @@ class UpdatePirateWrath implements SpacecraftDestructionHandlerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

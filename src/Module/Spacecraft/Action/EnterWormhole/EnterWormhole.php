@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\EnterWormhole;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Ship\Wormhole\WormholeEntryPrivilegeUtilityInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -44,7 +43,7 @@ final class EnterWormhole extends AbstractDirectedMovement
         $this->wormholeEntryPrivilegeUtility = $wormholeEntryPrivilegeUtility;
     }
 
-    #[Override]
+    #[\Override]
     protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
@@ -71,7 +70,7 @@ final class EnterWormhole extends AbstractDirectedMovement
         return $ship->isStation();
     }
 
-    #[Override]
+    #[\Override]
     protected function getFlightRoute(SpacecraftWrapperInterface $wrapper): FlightRouteInterface
     {
         $ship = $wrapper->get();

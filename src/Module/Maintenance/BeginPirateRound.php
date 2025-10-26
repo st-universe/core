@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
@@ -35,7 +34,7 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $lastRound = $this->getLastPirateRound();

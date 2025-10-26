@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station\Dock;
 
-use Override;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\User;
 
 final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
 {
-    #[Override]
+    #[\Override]
     public function checkPrivilegeFor(Station $station, User|Ship $source): bool
     {
         try {

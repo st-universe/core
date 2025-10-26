@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -39,7 +38,7 @@ final class ColonyResetter implements ColonyResetterInterface
         private readonly PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function reset(
         Colony $colony,
         bool $sendMessage = true

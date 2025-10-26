@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\TransformResources;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -28,7 +27,7 @@ final class TransformResources implements ActionControllerInterface
         private CommodityRepositoryInterface $commodityRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -95,7 +94,7 @@ final class TransformResources implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

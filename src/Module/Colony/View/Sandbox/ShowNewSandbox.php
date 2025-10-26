@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\Sandbox;
 
-use Override;
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,13 +18,13 @@ final class ShowNewSandbox implements
 
     public function __construct(private StuTime $stuTime) {}
 
-    #[Override]
+    #[\Override]
     public function getFeatureIdentifier(): AccessGrantedFeatureEnum
     {
         return AccessGrantedFeatureEnum::COLONY_SANDBOX;
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Neue Sandbox erstellen'));

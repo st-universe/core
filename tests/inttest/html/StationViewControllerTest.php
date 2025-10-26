@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Html;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
@@ -26,7 +25,7 @@ class StationViewControllerTest extends TwigTestCase
 
     private string $snapshotKey = '';
 
-    #[Override]
+    #[\Override]
     protected function getSnapshotId(): string
     {
         return (new ReflectionClass($this))->getShortName() . '--' .

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowScrapping;
 
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,7 +15,7 @@ final class ShowScrapping implements ViewControllerInterface
 
     public function __construct(private StationLoaderInterface $stationLoader) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

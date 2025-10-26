@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Buildplan;
 
-use Override;
 use Stu\Orm\Entity\Module;
 use Stu\StuTestCase;
 
@@ -12,7 +11,7 @@ class BuildplanSignatureCreationTest extends StuTestCase
 {
     private BuildplanSignatureCreationInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new BuildplanSignatureCreation();

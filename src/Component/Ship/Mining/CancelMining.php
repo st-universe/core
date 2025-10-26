@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Mining;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
@@ -20,7 +19,7 @@ final class CancelMining implements CancelMiningInterface
         private MiningQueueRepositoryInterface $miningQueueRepository,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function cancelMining(ShipWrapperInterface $wrapper): bool
     {
         $ship = $wrapper->get();

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\NewPost;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class NewPostRequest implements NewPostRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getBoardId(): int
     {
         return $this->parameter('boardid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getTopicId(): int
     {
         return $this->parameter('topicid')->int()->required();

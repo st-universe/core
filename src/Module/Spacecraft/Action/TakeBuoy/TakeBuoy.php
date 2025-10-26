@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\TakeBuoy;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -31,7 +30,7 @@ final class TakeBuoy implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -105,7 +104,7 @@ final class TakeBuoy implements ActionControllerInterface
         $game->getInfo()->addInformation('Die Boje wurde erfolgreich eingesammelt');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

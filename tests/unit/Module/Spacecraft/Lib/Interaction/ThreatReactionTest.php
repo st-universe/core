@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
@@ -38,7 +37,7 @@ class ThreatReactionTest extends StuTestCase
 
     private ThreatReactionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

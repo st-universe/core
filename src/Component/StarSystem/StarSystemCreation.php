@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\StarSystem;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Colony\ColonyCreationInterface;
 use Stu\Component\Colony\ColonyTypeEnum;
@@ -45,7 +44,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function recreateStarSystem(Map $map, string $randomSystemName): ?StarSystem
     {
         //$this->loggerUtil->init('SysGen', LogLevelEnum::ERROR);

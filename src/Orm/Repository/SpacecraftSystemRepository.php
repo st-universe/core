@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\SpacecraftSystem;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\SpacecraftSystem;
  */
 final class SpacecraftSystemRepository extends EntityRepository implements SpacecraftSystemRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): SpacecraftSystem
     {
         return new SpacecraftSystem();
     }
 
-    #[Override]
+    #[\Override]
     public function save(SpacecraftSystem $post): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(SpacecraftSystem $post): void
     {
         $em = $this->getEntityManager();
@@ -36,7 +35,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
@@ -45,7 +44,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTrackingShipSystems(int $targetId): array
     {
         return $this->getShipSystem(
@@ -54,7 +53,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getWebConstructingShipSystems(int $webId): array
     {
         return $this->getShipSystem(
@@ -84,7 +83,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getWebOwningShipSystem(int $webId): ?SpacecraftSystem
     {
         return $this->getEntityManager()
@@ -103,7 +102,7 @@ final class SpacecraftSystemRepository extends EntityRepository implements Space
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()

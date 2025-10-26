@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset\Communication;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -17,7 +16,7 @@ final class PmReset implements PmResetInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function unsetAllInboxReferences(): void
     {
         echo "  - unset all inbox references\n";
@@ -27,7 +26,7 @@ final class PmReset implements PmResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function resetAllNonNpcPmFolders(): void
     {
         echo "  - deleting all non npc pm folders\n";

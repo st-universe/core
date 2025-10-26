@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -22,7 +21,7 @@ class FlightCompanyTest extends StuTestCase
 {
     private MockInterface&PreFlightConditionsCheckInterface $preFlightConditionsCheck;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->preFlightConditionsCheck = $this->mock(PreFlightConditionsCheckInterface::class);

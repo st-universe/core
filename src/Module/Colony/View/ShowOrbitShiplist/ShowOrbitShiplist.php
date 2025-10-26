@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 
-use Override;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
         private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

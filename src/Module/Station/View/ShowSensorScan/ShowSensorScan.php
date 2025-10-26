@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowSensorScan;
 
-use Override;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
@@ -46,7 +45,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

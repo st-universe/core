@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\UserPirateRound;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\UserPirateRound;
  */
 final class UserPirateRoundRepository extends EntityRepository implements UserPirateRoundRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): UserPirateRound
     {
         return new UserPirateRound();
     }
 
-    #[Override]
+    #[\Override]
     public function save(UserPirateRound $userPirateRound): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
         $em->persist($userPirateRound);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(UserPirateRound $userPirateRound): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
         $em->remove($userPirateRound);
     }
 
-    #[Override]
+    #[\Override]
     public function findByPirateRound(int $pirateRoundId): array
     {
         return $this->findBy(
@@ -44,7 +43,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
         );
     }
 
-    #[Override]
+    #[\Override]
     public function findByUser(int $userId): array
     {
         return $this->findBy(
@@ -53,7 +52,7 @@ final class UserPirateRoundRepository extends EntityRepository implements UserPi
         );
     }
 
-    #[Override]
+    #[\Override]
     public function findByUserAndPirateRound(int $userId, int $pirateRoundId): ?UserPirateRound
     {
         return $this->findOneBy([

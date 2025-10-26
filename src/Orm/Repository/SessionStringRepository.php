@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\User;
 
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\User;
  */
 final class SessionStringRepository extends EntityRepository implements SessionStringRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function isValid(string $sessionString, int $userId): bool
     {
         $q = $this->getEntityManager()->createQuery(
@@ -32,7 +31,7 @@ final class SessionStringRepository extends EntityRepository implements SessionS
         return $q->execute() > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function truncate(User $user): void
     {
         $q = $this->getEntityManager()->createQuery(
@@ -48,13 +47,13 @@ final class SessionStringRepository extends EntityRepository implements SessionS
         $q->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): SessionString
     {
         return new SessionString();
     }
 
-    #[Override]
+    #[\Override]
     public function save(SessionString $sessionString): void
     {
         $em = $this->getEntityManager();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
-use Override;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\DatabaseCategory;
@@ -24,7 +23,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         private DatabaseCategoryAwardRepositoryInterface $databaseCategoryAwardRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createDatabaseEntryForUser(User $user, int $databaseEntryId): ?DatabaseEntry
     {
         if ($databaseEntryId === 0) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -31,7 +30,7 @@ class ManageCrew implements ManagerInterface
         private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
-    #[Override]
+    #[\Override]
     public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

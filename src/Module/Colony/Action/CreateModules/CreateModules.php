@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateModules;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -31,7 +30,7 @@ final class CreateModules implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -195,7 +194,7 @@ final class CreateModules implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

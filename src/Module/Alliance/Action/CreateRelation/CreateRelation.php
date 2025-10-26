@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
-use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
@@ -28,7 +27,7 @@ final class CreateRelation implements ActionControllerInterface
         private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -96,7 +95,7 @@ final class CreateRelation implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

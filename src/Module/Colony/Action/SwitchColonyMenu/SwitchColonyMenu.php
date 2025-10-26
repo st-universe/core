@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
@@ -21,7 +20,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
 
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
@@ -65,7 +64,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         ) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

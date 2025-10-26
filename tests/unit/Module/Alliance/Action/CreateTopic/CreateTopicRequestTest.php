@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
-use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -15,13 +14,13 @@ class CreateTopicRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
-    #[Override]
+    #[\Override]
     protected function getRequestClass(): string
     {
         return CreateTopicRequest::class;
     }
 
-    #[Override]
+    #[\Override]
     public static function requestVarsDataProvider(): array
     {
         return [
@@ -31,7 +30,7 @@ class CreateTopicRequestTest extends RequestTestCase
         ];
     }
 
-    #[Override]
+    #[\Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerProviderFactoryInterface;
@@ -25,7 +24,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function cycle(
         BattlePartyInterface $attackers,
         BattlePartyInterface $defenders,

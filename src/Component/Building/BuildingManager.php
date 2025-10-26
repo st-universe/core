@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
-use Override;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\ColonyChangeable;
@@ -28,7 +27,7 @@ final class BuildingManager implements BuildingManagerInterface
         private readonly BuildingPostActionInterface $buildingPostAction
     ) {}
 
-    #[Override]
+    #[\Override]
     public function activate(PlanetField $field): bool
     {
         $building = $field->getBuilding();
@@ -76,7 +75,7 @@ final class BuildingManager implements BuildingManagerInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(PlanetField $field): void
     {
         $building = $field->getBuilding();
@@ -125,7 +124,7 @@ final class BuildingManager implements BuildingManagerInterface
         $host->setMaxBev($host->getMaxBev() - $building->getHousing());
     }
 
-    #[Override]
+    #[\Override]
     public function remove(PlanetField $field, bool $isDueToUpgrade = false): void
     {
         $building = $field->getBuilding();
@@ -162,7 +161,7 @@ final class BuildingManager implements BuildingManagerInterface
         $this->saveHost($field->getHost());
     }
 
-    #[Override]
+    #[\Override]
     public function finish(PlanetField $field, bool $activate = true): ?string
     {
         $building = $field->getBuilding();

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
-use Override;
 use Stu\StuTestCase;
 
 class MessageFactoryTest extends StuTestCase
 {
     private MessageFactoryInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new MessageFactory();

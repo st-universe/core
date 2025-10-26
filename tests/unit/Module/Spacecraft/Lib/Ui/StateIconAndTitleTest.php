@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
@@ -26,7 +25,7 @@ class StateIconAndTitleTest extends StuTestCase
 
     private StateIconAndTitle $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->game = $this->mock(GameControllerInterface::class);

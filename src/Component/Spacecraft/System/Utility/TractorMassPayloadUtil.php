@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Utility;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -29,7 +28,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function tryToTow(
         SpacecraftWrapperInterface $wrapper,
         Ship $tractoredShip,
@@ -74,7 +73,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function isTractorSystemStressed(
         SpacecraftWrapperInterface $wrapper,
         Ship $tractoredShip
@@ -87,7 +86,7 @@ class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return $mass > self::POSSIBLE_DAMAGE_THRESHOLD * $payload;
     }
 
-    #[Override]
+    #[\Override]
     public function stressTractorSystemForTowing(
         SpacecraftWrapperInterface $wrapper,
         Ship $tractoredShip,

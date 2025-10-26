@@ -3,7 +3,6 @@
 namespace Stu\Module\Station\Lib\Creation;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreationConfigInterface;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressModule;
@@ -14,13 +13,13 @@ class StationCreationConfig implements SpacecraftCreationConfigInterface
 {
     public function __construct(private ConstructionProgress $progress) {}
 
-    #[Override]
+    #[\Override]
     public function getSpacecraft(): ?Spacecraft
     {
         return $this->progress->getStation();
     }
 
-    #[Override]
+    #[\Override]
     public function getSpecialSystemModules(): Collection
     {
         return $this->progress

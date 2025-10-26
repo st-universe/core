@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -20,7 +19,7 @@ final class ChangePassword implements ActionControllerInterface
 
     public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -57,7 +56,7 @@ final class ChangePassword implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Passwort wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

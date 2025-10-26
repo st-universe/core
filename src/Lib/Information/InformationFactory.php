@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Information;
 
-use Override;
 
 class InformationFactory implements InformationFactoryInterface
 {
-    #[Override]
+    #[\Override]
     public function createInformationWrapper(): InformationWrapper
     {
         //TODO use this everywhere instead of new

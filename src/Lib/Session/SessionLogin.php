@@ -3,7 +3,6 @@
 namespace Stu\Lib\Session;
 
 use DateTime;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SessionInvalidException;
@@ -35,7 +34,7 @@ final class SessionLogin implements SessionLoginInterface
     /**
      * @api
      */
-    #[Override]
+    #[\Override]
     public function checkLoginCookie(): void
     {
         $sstr = $_COOKIE['sstr'] ?? '';
@@ -45,7 +44,7 @@ final class SessionLogin implements SessionLoginInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function login(string $login, string $password): bool
     {
         $this->destroyLoginCookies();

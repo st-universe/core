@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
-use Override;
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
@@ -36,7 +35,7 @@ final class AddKnPost implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -171,7 +170,7 @@ final class AddKnPost implements ActionControllerInterface
 
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

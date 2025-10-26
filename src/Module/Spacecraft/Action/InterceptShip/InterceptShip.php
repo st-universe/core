@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\InterceptShip;
 
-use Override;
 use request;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -29,7 +28,7 @@ final class InterceptShip implements ActionControllerInterface
         private PirateReactionInterface $pirateReaction
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -95,7 +94,7 @@ final class InterceptShip implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

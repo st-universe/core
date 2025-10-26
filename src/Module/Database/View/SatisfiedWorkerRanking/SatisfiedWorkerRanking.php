@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\SatisfiedWorkerRanking;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
@@ -32,7 +31,7 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

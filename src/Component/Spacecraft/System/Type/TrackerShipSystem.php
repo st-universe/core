@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -14,13 +13,13 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class TrackerShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::TRACKER;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -38,32 +37,32 @@ class TrackerShipSystem extends AbstractSpacecraftSystemType implements Spacecra
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $this->reset($wrapper);
         $wrapper->get()->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACKER)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
-    #[Override]
+    #[\Override]
     public function getCooldownSeconds(): int
     {
         return TimeConstants::ONE_HOUR_IN_SECONDS;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 15;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 7;
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $this->reset($wrapper);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Communication\Kn;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\User;
@@ -20,7 +19,7 @@ class KnFactoryTest extends StuTestCase
 
     private KnFactoryInterface $factory;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->bbcodeParser = $this->mock(KnBbCodeParser::class);

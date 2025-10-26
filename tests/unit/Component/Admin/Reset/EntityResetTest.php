@@ -11,7 +11,6 @@ use Doctrine\ORM\Query;
 use Mockery;
 use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
-use Override;
 use ReflectionAttribute;
 use ReflectionClass;
 use Stu\Orm\Attribute\TruncateOnGameReset;
@@ -28,7 +27,7 @@ class EntityResetTest extends StuTestCase
 
     private MockInterface&EntityReset $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         vfsStream::setup('tmpDir');
@@ -55,7 +54,7 @@ class EntityResetTest extends StuTestCase
             ) {
                 parent::__construct($entityManager);
             }
-            #[Override]
+            #[\Override]
             public function createReflectionClass(string $className): ReflectionClass
             {
                 return match ($className) {

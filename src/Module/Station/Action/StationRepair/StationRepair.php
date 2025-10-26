@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\StationRepair;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -22,7 +21,7 @@ final class StationRepair implements ActionControllerInterface
         private RepairUtilInterface $repairUtil
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -60,7 +59,7 @@ final class StationRepair implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -6,7 +6,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
-use Override;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
@@ -18,7 +17,7 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
 {
     public function __construct(private GraphVizFactoryInterface $graphvizFactory, private RelationItemVertexBuilderInterface $relationItemVertexBuilder) {}
 
-    #[Override]
+    #[\Override]
     public function render(
         iterable $relationList,
         int $width,

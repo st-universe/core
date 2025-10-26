@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowWasteMenu;
 
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -24,7 +23,7 @@ final class ShowWasteMenu implements ViewControllerInterface
         private SpacecraftLoaderInterface $spaceCraftLoader
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

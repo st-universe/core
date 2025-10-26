@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystemType;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\StarSystemType;
  */
 final class StarSystemTypeRepository extends EntityRepository implements StarSystemTypeRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(StarSystemType $type): void
     {
         $em = $this->getEntityManager();
@@ -23,7 +22,7 @@ final class StarSystemTypeRepository extends EntityRepository implements StarSys
         $em->persist($type);
     }
 
-    #[Override]
+    #[\Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()

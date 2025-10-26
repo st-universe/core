@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowTradeMenu;
 
-use Override;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Exception\AccessViolationException;
@@ -36,7 +35,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

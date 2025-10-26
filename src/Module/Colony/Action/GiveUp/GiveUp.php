@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\GiveUp;
 
-use Override;
 use request;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Exception\AccessViolationException;
@@ -29,7 +28,7 @@ final class GiveUp implements ActionControllerInterface
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -67,7 +66,7 @@ final class GiveUp implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Kolonie wurde aufgegeben'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

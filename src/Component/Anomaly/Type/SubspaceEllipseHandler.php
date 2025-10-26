@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
-use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -39,7 +38,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         private readonly MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkForCreation(): void
     {
         $subspaceEllipses = [];
@@ -61,7 +60,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(Anomaly $anomaly): void
     {
         $location = $anomaly->getLocation();
@@ -123,7 +122,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         // nothing to do here
@@ -183,7 +182,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         //not needed

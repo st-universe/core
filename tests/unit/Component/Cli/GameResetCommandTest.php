@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
 use Stu\Component\Admin\Reset\ResetManagerInterface;
@@ -18,7 +17,7 @@ class GameResetCommandTest extends StuTestCase
 
     private GameResetCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->dic = $this->mock(ContainerInterface::class);

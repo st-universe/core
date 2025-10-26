@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Twig\TwigPage;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\StuTestCase;
@@ -23,7 +22,7 @@ class TwigPageTest extends StuTestCase
 
     private TwigPageInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->environment = $this->mock(Environment::class);

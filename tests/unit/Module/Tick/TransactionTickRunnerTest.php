@@ -7,7 +7,6 @@ namespace Stu\Module\Tick;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameStateInterface;
@@ -21,7 +20,7 @@ class TransactionTickRunnerTest extends StuTestCase
 
     private TransactionTickRunnerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);

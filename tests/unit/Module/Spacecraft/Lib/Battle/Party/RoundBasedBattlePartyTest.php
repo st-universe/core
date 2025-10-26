@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -21,7 +20,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
     private RoundBasedBattleParty $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);

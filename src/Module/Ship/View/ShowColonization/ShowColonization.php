@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowColonization;
 
-use Override;
 use request;
 
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -27,7 +26,7 @@ final class ShowColonization implements ViewControllerInterface
         private ColonizationCheckerInterface $colonizationChecker
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

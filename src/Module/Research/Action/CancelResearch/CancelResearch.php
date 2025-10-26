@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
-use Override;
 use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\AuthenticatedActionController;
@@ -25,7 +24,7 @@ final class CancelResearch extends AuthenticatedActionController
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $id = request::getIntFatal('id');

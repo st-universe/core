@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\View\ShowComponent;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
@@ -25,7 +24,7 @@ final class ShowComponent implements ViewControllerInterface
         private PlanetFieldHostProviderInterface $planetFieldHostProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $exploded = explode('_', request::getStringFatal('component'), 2);

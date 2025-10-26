@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Module;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -19,7 +18,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function retrieveSomeModules(
         Spacecraft $spacecraft,
         EntityWithStorageInterface $entity,

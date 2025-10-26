@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
@@ -19,7 +18,7 @@ final class KnArchiveFactory implements KnArchiveFactoryInterface
         private KnCommentArchivRepositoryInterface $knCommentArchivRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createKnArchiveItem(KnPostArchiv $post, User $user, ?RpgPlotArchiv $plot = null): KnArchiveItemInterface
     {
         $item = new KnArchiveItem(

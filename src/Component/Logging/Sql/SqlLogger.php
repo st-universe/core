@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\Sql;
 
 use Monolog\Level;
-use Override;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Stringable;
@@ -19,7 +18,7 @@ final class SqlLogger extends AbstractLogger
     /**
      * @param mixed[] $context
      */
-    #[Override]
+    #[\Override]
     public function log($level, string|Stringable $message, array $context = []): void
     {
         $this->logger->log(Level::Info, print_r(func_get_args(), true));

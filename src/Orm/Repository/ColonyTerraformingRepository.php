@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ColonyTerraforming;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\ColonyTerraforming;
  */
 final class ColonyTerraformingRepository extends EntityRepository implements ColonyTerraformingRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ColonyTerraforming
     {
         return new ColonyTerraforming();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ColonyTerraforming $terraforming): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em->persist($terraforming);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ColonyTerraforming $terraforming): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em->remove($terraforming);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColony(array $colonies): array
     {
         return $this->findBy([
@@ -43,7 +42,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraforming
     {
         return $this->findOneBy([
@@ -52,7 +51,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getFinishedJobs(): array
     {
         return $this->getEntityManager()

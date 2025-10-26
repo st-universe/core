@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class CreateRelationRequest implements CreateRelationRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getCounterpartId(): int
     {
         return $this->parameter('oid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getRelationType(): int
     {
         return $this->parameter('type')->int()->required();

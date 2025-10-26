@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\ManageShips;
 
-use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
@@ -33,7 +32,7 @@ final class ManageShips implements ActionControllerInterface
         private HandleManagersInterface $handleManagers
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
@@ -109,7 +108,7 @@ final class ManageShips implements ActionControllerInterface
         return $msg;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

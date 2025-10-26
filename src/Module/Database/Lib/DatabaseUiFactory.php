@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
-use Override;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -24,7 +23,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         private TradePostRepositoryInterface $tradePostRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createStorageWrapper(
         int $commodityId,
         int $amount,
@@ -41,7 +40,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseTopActivTradePost(
         array $item
     ): DatabaseTopActivTradePost {
@@ -51,7 +50,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseTopListCrew(
         array $item
     ): DatabaseTopListCrew {
@@ -61,7 +60,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseTopListWithPoints(
         int $userId,
         string $points,
@@ -75,7 +74,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseTopListFlights(
         array $item
     ): DatabaseTopListFlights {
@@ -85,7 +84,7 @@ final class DatabaseUiFactory implements DatabaseUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseTopListWithColorGradient(
         int $userId,
         string $gradientColor

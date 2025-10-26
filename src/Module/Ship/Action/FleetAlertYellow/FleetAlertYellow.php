@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\FleetAlertYellow;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,7 +17,7 @@ final class FleetAlertYellow implements ActionControllerInterface
 
     public function __construct(private readonly AlertStateManagerInterface $alertStateManager) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -26,7 +25,7 @@ final class FleetAlertYellow implements ActionControllerInterface
         $this->alertStateManager->setAlertStateFleet(request::indInt('id'), SpacecraftAlertStateEnum::ALERT_YELLOW);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

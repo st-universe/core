@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageCrew;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
@@ -38,7 +37,7 @@ final class SalvageCrew implements ActionControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -138,7 +137,7 @@ final class SalvageCrew implements ActionControllerInterface
         $this->shipLoader->save($ship);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

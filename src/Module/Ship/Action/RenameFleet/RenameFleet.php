@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\RenameFleet;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,7 +16,7 @@ final class RenameFleet implements ActionControllerInterface
 
     public function __construct(private RenameFleetRequestInterface $renameFleetRequest, private FleetRepositoryInterface $fleetRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $text = $this->renameFleetRequest->getNewName();
@@ -56,7 +55,7 @@ final class RenameFleet implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Name der Flotte wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

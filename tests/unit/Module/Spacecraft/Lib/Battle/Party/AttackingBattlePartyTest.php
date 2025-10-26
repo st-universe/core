@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -19,7 +18,7 @@ class AttackingBattlePartyTest extends StuTestCase
 {
     private MockInterface&StuRandom $stuRandom;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

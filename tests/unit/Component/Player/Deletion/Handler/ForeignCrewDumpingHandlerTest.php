@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Crew;
@@ -24,7 +23,7 @@ class ForeignCrewDumpingHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->stationRepository = $this->mock(StationRepositoryInterface::class);

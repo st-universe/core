@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\User;
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\User;
  */
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): Fleet
     {
         return new Fleet();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Fleet $fleet): void
     {
         $em = $this->getEntityManager();
@@ -30,7 +29,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em->persist($fleet);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Fleet $fleet): void
     {
         $em = $this->getEntityManager();
@@ -39,7 +38,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em->flush(); //TODO really neccessary?
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
@@ -52,7 +51,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -61,7 +60,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByUser(int $userId): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -75,7 +74,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getHighestSortByUser(int $userId): int
     {
         $rsm = new ResultSetMapping();
@@ -100,7 +99,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNonNpcFleetList(): array
     {
         return $this->getEntityManager()

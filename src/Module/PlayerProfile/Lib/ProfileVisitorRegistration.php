@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Lib;
 
-use Override;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 
@@ -17,7 +16,7 @@ final class ProfileVisitorRegistration implements ProfileVisitorRegistrationInte
     {
     }
 
-    #[Override]
+    #[\Override]
     public function register(
         User $user,
         User $visitor

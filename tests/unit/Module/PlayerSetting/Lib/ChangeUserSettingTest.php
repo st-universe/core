@@ -6,7 +6,6 @@ namespace Stu\Module\Research\Action\CancelResearch;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Orm\Entity\User;
@@ -20,7 +19,7 @@ class ChangeUserSettingTest extends StuTestCase
 
     private ChangeUserSetting $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->userSettingRepository = $this->mock(UserSettingRepositoryInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
-use Override;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
 use Stu\Orm\Entity\Map;
@@ -17,7 +16,7 @@ final class CheckDestination implements CheckDestinationInterface
 {
     public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
-    #[Override]
+    #[\Override]
     public function validate(
         Spacecraft $spacecraft,
         int $destinationX,

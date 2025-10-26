@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -34,7 +33,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -75,7 +74,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
         $game->getInfo()->addInformation("Die Unterstützung des Energienetz wurde abgebrochen");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -2,26 +2,25 @@
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperSpecial extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function getValue(?Module $module = null): int
     {
         return 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::SPECIAL;
     }
 
-    #[Override]
+    #[\Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         // nothing to do here

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class Category implements ViewControllerInterface
 
     public function __construct(private CategoryRequestInterface $categoryRequest, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private LayerRepositoryInterface $layerRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $category_id = $this->categoryRequest->getCategoryId();

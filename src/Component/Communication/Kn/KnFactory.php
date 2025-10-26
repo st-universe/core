@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\User;
@@ -18,7 +17,7 @@ final class KnFactory implements KnFactoryInterface
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createKnItem(
         KnPost $knPost,
         User $currentUser

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use OutOfBoundsException;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -22,7 +21,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         private array $handlerList
     ) {}
 
-    #[Override]
+    #[\Override]
     public function processExistingAnomalies(): void
     {
         foreach ($this->anomalyRepository->findAllRoot() as $root) {
@@ -33,7 +32,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function createNewAnomalies(): void
     {
         foreach ($this->handlerList as $handler) {
@@ -41,7 +40,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         foreach ($wrapper->get()->getLocation()->getAnomalies() as $anomaly) {

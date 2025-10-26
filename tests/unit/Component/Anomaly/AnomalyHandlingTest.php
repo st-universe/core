@@ -6,7 +6,6 @@ namespace Stu\Component\Anomaly;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -24,7 +23,7 @@ class AnomalyHandlingTest extends StuTestCase
 
     private AnomalyHandlingInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);

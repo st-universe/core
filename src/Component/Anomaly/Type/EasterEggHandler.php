@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
-use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -28,7 +27,7 @@ final class EasterEggHandler implements AnomalyHandlerInterface
     ) {}
 
     /** create easter egg anomalies on easter sunday */
-    #[Override]
+    #[\Override]
     public function checkForCreation(): void
     {
         $hour = (int)date("G");
@@ -51,7 +50,7 @@ final class EasterEggHandler implements AnomalyHandlerInterface
 
 
     /** reset location */
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(Anomaly $anomaly): void
     {
 
@@ -71,13 +70,13 @@ final class EasterEggHandler implements AnomalyHandlerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         //not needed
     }
 
-    #[Override]
+    #[\Override]
     public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         //TODO

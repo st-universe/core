@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -20,7 +19,7 @@ final class ShipUiFactory implements ShipUiFactoryInterface
         private PanelLayerConfiguration $panelLayerConfiguration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createVisualNavPanel(
         SpacecraftWrapperInterface $wrapper,
         User $user,

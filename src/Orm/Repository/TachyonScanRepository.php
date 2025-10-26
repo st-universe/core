@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Spacecraft\System\Type\TachyonScannerShipSystem;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\TachyonScan;
  */
 final class TachyonScanRepository extends EntityRepository implements TachyonScanRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): TachyonScan
     {
         return new TachyonScan();
     }
 
-    #[Override]
+    #[\Override]
     public function isTachyonScanActiveByShipLocationAndOwner(Spacecraft $spacecraft): bool
     {
         return $this->getEntityManager()->createQuery(
@@ -44,7 +43,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         ])->getSingleScalarResult() > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function save(TachyonScan $obj): void
     {
         $em = $this->getEntityManager();
@@ -52,7 +51,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         $em->persist($obj);
     }
 
-    #[Override]
+    #[\Override]
     public function deleteOldScans(int $threshold): void
     {
         $q = $this->getEntityManager()->createQuery(

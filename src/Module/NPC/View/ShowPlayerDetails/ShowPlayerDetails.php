@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\ShowPlayerDetails;
 
-use Override;
 use request;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
@@ -27,7 +26,7 @@ final class ShowPlayerDetails implements ViewControllerInterface
         private LogPlayerDetails $logPlayerDetailsAction
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/npc/playerDetails.twig');

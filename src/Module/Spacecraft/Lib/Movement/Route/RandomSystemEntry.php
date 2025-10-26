@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -16,7 +15,7 @@ class RandomSystemEntry implements RandomSystemEntryInterface
 {
     public function __construct(private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
-    #[Override]
+    #[\Override]
     public function getRandomEntryPoint(SpacecraftWrapperInterface $wrapper, StarSystem $system): StarSystemMap
     {
         [$posx, $posy] = $this->getDestinationCoordinates($wrapper, $system);

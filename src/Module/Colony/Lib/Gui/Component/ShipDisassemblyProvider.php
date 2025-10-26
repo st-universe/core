@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -21,7 +20,7 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
     ) {}
 
     /** @param Colony $entity */
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

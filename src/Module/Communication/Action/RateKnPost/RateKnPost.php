@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\RateKnPost;
 
-use Override;
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class RateKnPost implements ActionControllerInterface
 
     public function __construct(private KnPostRepositoryInterface $knPostRepository, private RateKnPostRequestInterface $knPostRequest, private CreatePrestigeLogInterface $createPrestigeLog) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $post = $this->knPostRepository->find($this->knPostRequest->getKnId());
@@ -80,7 +79,7 @@ final class RateKnPost implements ActionControllerInterface
         return '';
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -20,13 +19,13 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
 {
     public function __construct(private SpacecraftStateChangerInterface $spacecraftStateChanger) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::CLOAK;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -60,19 +59,19 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 10;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 8;
     }
 
-    #[Override]
+    #[\Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();

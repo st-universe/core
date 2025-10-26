@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Transwarp;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -50,7 +49,7 @@ final class Transwarp extends AbstractDirectedMovement
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $layerId = request::postIntFatal('transwarplayer');
@@ -126,7 +125,7 @@ final class Transwarp extends AbstractDirectedMovement
         return false;
     }
 
-    #[Override]
+    #[\Override]
     protected function getFlightRoute(SpacecraftWrapperInterface $wrapper): FlightRouteInterface
     {
         return $this->flightRouteFactory->getRouteForMapDestination($this->destination, true);

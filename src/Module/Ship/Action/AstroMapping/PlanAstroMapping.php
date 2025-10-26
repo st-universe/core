@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\AstroMapping;
 
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
-use Override;
 use request;
 
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
@@ -40,7 +39,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -122,7 +121,7 @@ final class PlanAstroMapping implements ActionControllerInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditPost;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
@@ -18,7 +17,7 @@ final class EditPost implements ActionControllerInterface
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -42,7 +41,7 @@ final class EditPost implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

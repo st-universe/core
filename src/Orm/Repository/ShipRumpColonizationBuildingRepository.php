@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\SpacecraftRump;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\SpacecraftRump;
  */
 final class ShipRumpColonizationBuildingRepository extends EntityRepository implements ShipRumpColonizationBuildingRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function findByShipRump(SpacecraftRump $shipRump): ?ShipRumpColonizationBuilding
     {
         return $this->findOneBy([

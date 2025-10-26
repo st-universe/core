@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Repository\LocationRepositoryInterface;
@@ -19,7 +18,7 @@ final class SubspaceDataProviderFactory implements SubspaceDataProviderFactoryIn
         private readonly StarSystemMapRepositoryInterface $starSystemMapRepository,
         private readonly StuTime $stuTime
     ) {}
-    #[Override]
+    #[\Override]
     public function getDataProvider(int $id, SubspaceLayerTypeEnum $type, ?int $rumpId = null): AbstractPanelLayerDataProvider
     {
         return match ($type) {

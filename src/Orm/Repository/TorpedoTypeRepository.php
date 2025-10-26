@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\TorpedoType;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\TorpedoType;
  */
 final class TorpedoTypeRepository extends EntityRepository implements TorpedoTypeRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getAll(): array
     {
         return $this->getEntityManager()
@@ -28,7 +27,7 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getForUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -49,7 +48,7 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByLevel(int $level): array
     {
         return $this->getEntityManager()

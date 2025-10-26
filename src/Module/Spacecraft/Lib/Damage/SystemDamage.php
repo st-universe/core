@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
@@ -19,7 +18,7 @@ final class SystemDamage implements SystemDamageInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkForDamagedShipSystems(
         SpacecraftWrapperInterface $wrapper,
         DamageWrapper $damageWrapper,
@@ -41,7 +40,7 @@ final class SystemDamage implements SystemDamageInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function destroyRandomShipSystem(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): ?string
     {
         $healthySystems = $this->getHealthySystems($wrapper, $damageWrapper);
@@ -58,7 +57,7 @@ final class SystemDamage implements SystemDamageInterface
         return $healthySystems[0]->getSystemType()->getDescription();
     }
 
-    #[Override]
+    #[\Override]
     public function damageRandomShipSystem(
         SpacecraftWrapperInterface $wrapper,
         DamageWrapper $damageWrapper,
@@ -85,7 +84,7 @@ final class SystemDamage implements SystemDamageInterface
             ->toArray();
     }
 
-    #[Override]
+    #[\Override]
     public function damageShipSystem(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftSystem $system,

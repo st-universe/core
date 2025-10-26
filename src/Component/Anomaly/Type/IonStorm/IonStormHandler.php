@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use JsonMapper\JsonMapperInterface;
-use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
@@ -65,7 +64,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkForCreation(): void
     {
         $count = $this->anomalyRepository->getActiveCountByTypeWithoutParent(AnomalyTypeEnum::ION_STORM);
@@ -103,7 +102,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(Anomaly $root): void
     {
         $ionStormData = $this->getIonStormData($root);
@@ -187,13 +186,13 @@ final class IonStormHandler implements AnomalyHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function letAnomalyDisappear(Anomaly $anomaly): void
     {
         //not needed
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, MessageCollectionInterface $messages): void
     {
         $message = $this->messageFactory->createMessage(

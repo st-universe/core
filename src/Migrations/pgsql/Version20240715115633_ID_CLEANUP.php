@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Migrations\Pgsql;
 
-use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20240715115633_ID_CLEANUP extends AbstractMigration
 {
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return 'Removes the obsolete map_id and system_map_id columns.';
     }
 
-    #[Override]
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('DROP INDEX location_system_map_idx');
@@ -35,7 +34,7 @@ final class Version20240715115633_ID_CLEANUP extends AbstractMigration
         $this->addSql('ALTER TABLE stu_tachyon_scan DROP starsystem_map_id');
     }
 
-    #[Override]
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE stu_tachyon_scan ADD map_id INT DEFAULT NULL');

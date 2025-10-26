@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Orm\Entity\User;
 
@@ -15,7 +14,7 @@ class TransferInformationFactory implements TransferInformationFactoryInterface
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createTransferInformation(
         int $sourceId,
         TransferEntityTypeEnum $sourceType,

@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use RuntimeException;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
@@ -20,7 +19,7 @@ use Stu\Orm\Entity\Location;
  */
 class LocationRepository extends EntityRepository implements LocationRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getForSubspaceEllipseCreation(): array
     {
         $rsm = new ResultSetMapping();
@@ -119,7 +118,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
 
-    #[Override]
+    #[\Override]
     public function getRumpCategoryInfo(Layer $layer, int $cx, int $cy): array
     {
         $rsm = new ResultSetMapping();
@@ -157,7 +156,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRandomLocation(): Location
     {
         $rsm = new ResultSetMapping();
@@ -181,7 +180,7 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
         return $location;
     }
 
-    #[Override]
+    #[\Override]
     public function getByCoordinates(int $x, int $y, int $layerId): ?Location
     {
         return $this->findOneBy([

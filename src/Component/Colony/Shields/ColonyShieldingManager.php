@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Shields;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -25,7 +24,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
         private PlanetFieldHostInterface $host
     ) {}
 
-    #[Override]
+    #[\Override]
     public function updateActualShields(): void
     {
         if (!$this->host instanceof Colony) {
@@ -60,7 +59,7 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function hasShielding(): bool
     {
         return $this->colonyFunctionManager->hasFunction(
@@ -69,13 +68,13 @@ final class ColonyShieldingManager implements ColonyShieldingManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxShielding(): int
     {
         return $this->planetFieldRepository->getMaxShieldsOfHost($this->host);
     }
 
-    #[Override]
+    #[\Override]
     public function isShieldingEnabled(): bool
     {
         return $this->colonyFunctionManager->hasActiveFunction($this->host, BuildingFunctionEnum::SHIELD_GENERATOR)

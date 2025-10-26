@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -19,19 +18,19 @@ class ManagerProviderColony implements ManagerProviderInterface
 {
     public function __construct(private Colony $colony, private CrewCreatorInterface $crewCreator, private ColonyLibFactoryInterface $colonyLibFactory, private StorageManagerInterface $storageManager, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->colony->getUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getEps(): int
     {
         return $this->colony->getChangeable()->getEps();
     }
 
-    #[Override]
+    #[\Override]
     public function lowerEps(int $amount): ManagerProviderInterface
     {
         $this->colony->getChangeable()->lowerEps($amount);
@@ -39,31 +38,31 @@ class ManagerProviderColony implements ManagerProviderInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return sprintf('Kolonie %s', $this->colony->getName());
     }
 
-    #[Override]
+    #[\Override]
     public function getSectorString(): string
     {
         return $this->colony->getSectorString();
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewAmount(): int
     {
         return $this->colony->getCrewAssignmentAmount();
     }
 
-    #[Override]
+    #[\Override]
     public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void
     {
         $this->crewCreator->createCrewAssignments($spacecraft, $this->colony, $amount);
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewStorage(): int
     {
         return $this->colonyLibFactory->createColonyPopulationCalculator(
@@ -71,7 +70,7 @@ class ManagerProviderColony implements ManagerProviderInterface
         )->getFreeAssignmentCount();
     }
 
-    #[Override]
+    #[\Override]
     public function addCrewAssignments(array $crewAssignments): void
     {
         foreach ($crewAssignments as $crewAssignment) {
@@ -79,13 +78,13 @@ class ManagerProviderColony implements ManagerProviderInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getStorage(): Collection
     {
         return $this->colony->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function upperStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->upperStorage(
@@ -95,7 +94,7 @@ class ManagerProviderColony implements ManagerProviderInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function lowerStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->lowerStorage(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeRgbCode;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ChangeRgbCode implements ActionControllerInterface
 
     public function __construct(private ChangeUserSettingInterface $changerUserSetting) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $value = request::postStringFatal('rgb_code');
@@ -45,7 +44,7 @@ final class ChangeRgbCode implements ActionControllerInterface
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowAnalyseBuoy;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class ShowAnalyseBuoy implements ViewControllerInterface
         private SpacecraftLoaderInterface $spacecraftLoader
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

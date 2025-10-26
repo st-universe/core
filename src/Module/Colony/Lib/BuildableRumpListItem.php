@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -19,25 +18,25 @@ final class BuildableRumpListItem implements BuildableRumpListItemInterface
         private User $currentUser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->shipRump->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->shipRump->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function getCategoryName(): string
     {
         return $this->shipRump->getShipRumpCategory()->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveShipCount(): int
     {
         return $this->spacecraftRepository->getAmountByUserAndRump(
@@ -46,7 +45,7 @@ final class BuildableRumpListItem implements BuildableRumpListItemInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildplanCount(): int
     {
         return $this->spacecraftBuildplanRepository->getCountByRumpAndUser(

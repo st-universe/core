@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPost;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,7 +26,7 @@ final class EditKnPost implements ActionControllerInterface
 
     public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharacterRepositoryInterface $knCharactersRepository, private UserCharacterRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -180,7 +179,7 @@ final class EditKnPost implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreatePost;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\NewPost\NewPost;
 use Stu\Module\Alliance\View\Topic\Topic;
@@ -23,7 +22,7 @@ final class CreatePost implements ActionControllerInterface
         private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -60,7 +59,7 @@ final class CreatePost implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Beitrag wurde erstellt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

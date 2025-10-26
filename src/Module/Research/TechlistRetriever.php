@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
 use Stu\Component\Research\ResearchModeEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
@@ -19,7 +18,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 {
     public function __construct(private ResearchRepositoryInterface $researchRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository, private ResearchedRepositoryInterface $researchedRepository, private FactionRepositoryInterface $factionRepository) {}
 
-    #[Override]
+    #[\Override]
     public function getResearchList(User $user): array
     {
         $researchedList = $this->getResearchedList($user);
@@ -108,7 +107,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         return $list_result;
     }
 
-    #[Override]
+    #[\Override]
     public function canResearch(User $user, int $researchId): ?Research
     {
         return $this->getResearchList($user)[$researchId] ?? null;
@@ -161,7 +160,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         return $excludes;
     }
 
-    #[Override]
+    #[\Override]
     public function getResearchedList(User $user): array
     {
         return $this->researchedRepository->getListByUser($user->getId());

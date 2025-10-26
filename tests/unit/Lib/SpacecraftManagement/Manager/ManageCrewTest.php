@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
@@ -52,7 +51,7 @@ class ManageCrewTest extends StuTestCase
 
     private ManageCrew $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->shipCrewCalculator = $this->mock(SpacecraftCrewCalculatorInterface::class);
@@ -82,7 +81,7 @@ class ManageCrewTest extends StuTestCase
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function tearDown(): void
     {
         Mockery::close();

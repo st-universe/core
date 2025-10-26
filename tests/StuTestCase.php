@@ -7,7 +7,6 @@ namespace Stu;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Override;
 use ReflectionClass;
 use request;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -17,7 +16,7 @@ use Stu\Module\Logging\StuLogger;
 
 abstract class StuTestCase extends MockeryTestCase
 {
-    #[Override]
+    #[\Override]
     protected function tearDown(): void
     {
         request::setMockVars(null);

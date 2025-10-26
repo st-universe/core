@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -18,7 +17,7 @@ final class CrewDeletionHandler implements PlayerDeletionHandlerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         $this->crewAssignmentRepository->truncateByUser($user);

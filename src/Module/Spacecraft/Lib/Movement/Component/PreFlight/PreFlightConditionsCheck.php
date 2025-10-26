@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition\PreFlightConditionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
@@ -21,7 +20,7 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
         private array $conditions
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkPreconditions(
         FlightCompany $flightCompany,
         FlightRouteInterface $flightRoute,

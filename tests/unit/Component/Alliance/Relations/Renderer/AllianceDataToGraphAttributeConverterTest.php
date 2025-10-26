@@ -7,7 +7,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Faction;
@@ -21,7 +20,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 
     private AllianceDataToGraphAttributeConverter $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->bbCodeParser = $this->mock(Parser::class);

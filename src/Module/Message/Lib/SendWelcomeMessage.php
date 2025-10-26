@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -16,7 +15,7 @@ final class SendWelcomeMessage implements SendWelcomeMessageInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function sendWelcomeMessage(User $user): void
     {
         $faction = $this->factionRepository->find($user->getFactionId());

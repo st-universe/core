@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowShiplist;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class ShowShiplist implements ViewControllerInterface
 
     public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private ShipRepositoryInterface $shipRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

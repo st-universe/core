@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,7 +22,7 @@ final class ThreatReaction implements ThreatReactionInterface
         private GameControllerInterface $game
     ) {}
 
-    #[Override]
+    #[\Override]
     public function reactToThreat(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,

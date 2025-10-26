@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
@@ -39,7 +38,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     private SpacecraftLoaderInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowShoutBoxList;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,7 +18,7 @@ final class ShowShoutBoxList implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $tradeNetworkId = $this->showShoutBoxListRequest->getTradeNetworkId();

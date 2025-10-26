@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\Pirate\Component\PirateAttackInterface;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
@@ -36,7 +35,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

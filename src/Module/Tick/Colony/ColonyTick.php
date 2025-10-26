@@ -4,7 +4,6 @@ namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
-use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Building\BuildingManagerInterface;
@@ -48,7 +47,7 @@ final class ColonyTick implements ColonyTickInterface
         private readonly array $components
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(Colony $colony): void
     {
         $this->information = $this->informationFactory->createInformationWrapper();

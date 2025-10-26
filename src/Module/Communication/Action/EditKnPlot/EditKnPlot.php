@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPlot;
 
-use Override;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,7 +15,7 @@ final class EditKnPlot implements ActionControllerInterface
 
     public function __construct(private EditKnPlotRequestInterface $editKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->editKnPlotRequest->getPlotId());
@@ -41,7 +40,7 @@ final class EditKnPlot implements ActionControllerInterface
         $game->setView(ShowKnPlot::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

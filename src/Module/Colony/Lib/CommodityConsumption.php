@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
@@ -14,7 +13,7 @@ final class CommodityConsumption implements CommodityConsumptionInterface
         private readonly ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getConsumption(
         array $production,
         Colony $colony

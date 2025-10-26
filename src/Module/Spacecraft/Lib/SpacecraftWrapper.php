@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib;
 use BadMethodCallException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\AbstractSystemData;
@@ -64,25 +63,25 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         $this->shipSystemDataCache = new ArrayCollection();
     }
 
-    #[Override]
+    #[\Override]
     public function get(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getSpacecraftWrapperFactory(): SpacecraftWrapperFactoryInterface
     {
         return $this->spacecraftWrapperFactory;
     }
 
-    #[Override]
+    #[\Override]
     public function getSpacecraftSystemManager(): SpacecraftSystemManagerInterface
     {
         return $this->spacecraftSystemManager;
     }
 
-    #[Override]
+    #[\Override]
     public function getEpsUsage(): int
     {
         if ($this->epsUsage === null) {
@@ -91,7 +90,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->epsUsage;
     }
 
-    #[Override]
+    #[\Override]
     public function lowerEpsUsage(int $value): void
     {
         $this->epsUsage -= $value;
@@ -120,7 +119,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->getEpsUsage() + $reactor->getUsage();
     }
 
-    #[Override]
+    #[\Override]
     public function getReactorWrapper(): ?ReactorWrapperInterface
     {
         if ($this->reactorWrapper === null) {
@@ -130,13 +129,13 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->reactorWrapper;
     }
 
-    #[Override]
+    #[\Override]
     public function getAlertState(): SpacecraftAlertStateEnum
     {
         return $this->getComputerSystemDataMandatory()->getAlertState();
     }
 
-    #[Override]
+    #[\Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): ?string
     {
         $msg = $this->spacecraftStateChanger->changeAlertState($this, $alertState);
@@ -145,14 +144,14 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $msg;
     }
 
-    #[Override]
+    #[\Override]
     public function isUnalerted(): bool
     {
         return !$this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)
             || $this->getComputerSystemDataMandatory()->isAlertGreen();
     }
 
-    #[Override]
+    #[\Override]
     public function getShieldRegenerationRate(): int
     {
         $regenerationPercentage = $this->get()->isSystemHealthy(SpacecraftSystemTypeEnum::SHIELDS) ? 10 : 0;
@@ -174,7 +173,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
      *
      * @return SpacecraftSystem[]
      */
-    #[Override]
+    #[\Override]
     public function getDamagedSystems(): array
     {
         $damagedSystems = [];
@@ -200,14 +199,14 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $damagedSystems;
     }
 
-    #[Override]
+    #[\Override]
     public function isSelectable(): bool
     {
         return $this->game->getUser()->getId() === $this->spacecraft->getUser()->getId()
             && $this->spacecraft->getType()->getModuleView() !== null;
     }
 
-    #[Override]
+    #[\Override]
     public function canBeRepaired(): bool
     {
         if (!$this->isUnalerted()) {
@@ -229,7 +228,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->spacecraft->getCondition()->getHull() < $this->spacecraft->getMaxHull();
     }
 
-    #[Override]
+    #[\Override]
     public function canFire(): bool
     {
         $ship = $this->spacecraft;
@@ -244,7 +243,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $epsSystem !== null && $epsSystem->getEps() !== 0;
     }
 
-    #[Override]
+    #[\Override]
     public function canMan(): bool
     {
         $buildplan = $this->spacecraft->getBuildplan();
@@ -254,19 +253,19 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
             && $this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::LIFE_SUPPORT);
     }
 
-    #[Override]
+    #[\Override]
     public function getRepairDuration(): int
     {
         return $this->repairUtil->getRepairDuration($this);
     }
 
-    #[Override]
+    #[\Override]
     public function getRepairDurationPreview(): int
     {
         return $this->repairUtil->getRepairDurationPreview($this);
     }
 
-    #[Override]
+    #[\Override]
     public function getRepairCosts(): array
     {
         $neededParts = $this->repairUtil->determineSpareParts($this, false);
@@ -280,7 +279,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         ];
     }
 
-    #[Override]
+    #[\Override]
     public function getPossibleTorpedoTypes(): array
     {
         if ($this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)) {
@@ -290,7 +289,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->torpedoTypeRepository->getByLevel($this->spacecraft->getRump()->getTorpedoLevel());
     }
 
-    #[Override]
+    #[\Override]
     public function getTractoredShipWrapper(): ?ShipWrapperInterface
     {
         $tractoredShip = $this->spacecraft->getTractoredShip();
@@ -301,13 +300,13 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $this->spacecraftWrapperFactory->wrapShip($tractoredShip);
     }
 
-    #[Override]
+    #[\Override]
     public function getStateIconAndTitle(): ?array
     {
         return $this->stateIconAndTitle->getStateIconAndTitle($this);
     }
 
-    #[Override]
+    #[\Override]
     public function getTakeoverTicksLeft(?ShipTakeover $takeover = null): int
     {
         $takeover ??= $this->spacecraft->getTakeoverActive();
@@ -320,7 +319,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         return $takeover->getStartTurn() + ShipTakeoverManagerInterface::TURNS_TO_TAKEOVER - $currentTurn;
     }
 
-    #[Override]
+    #[\Override]
     public function getCrewStyle(): string
     {
         $ship = $this->spacecraft;
@@ -350,7 +349,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function __toString(): string
     {
         $systems = implode(",\n", $this->spacecraft->getSystems()

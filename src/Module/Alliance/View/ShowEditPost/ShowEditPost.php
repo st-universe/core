@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\ShowEditPost;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ShowEditPost implements ViewControllerInterface
 
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();

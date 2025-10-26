@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\StandBy;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +27,7 @@ final class StandBy implements ActionControllerInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
@@ -72,7 +71,7 @@ final class StandBy implements ActionControllerInterface
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

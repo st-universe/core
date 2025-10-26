@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
@@ -41,7 +40,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
 
     private MockInterface&FlightRouteInterface $flightRoute;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->astroEntryRepository = $this->mock(AstroEntryRepositoryInterface::class);

@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 
 #[MappedSuperclass]
@@ -81,133 +80,133 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
     #[Column(type: 'boolean')]
     private bool $has_crew = false;
 
-    #[Override]
+    #[\Override]
     public function getShipId(): int
     {
         return $this->ship_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getFleetId(): ?int
     {
         return $this->fleet_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getRumpId(): int
     {
         return $this->rump_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getWarpDriveState(): int
     {
         return $this->warp_state ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getTractorWarpState(): int
     {
         return $this->tractor_warp_state ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function isCloaked(): int
     {
         return $this->cloak_state ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function isShielded(): int
     {
         return $this->shield_state ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getUplinkState(): int
     {
         return $this->uplink_state ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::from($this->spacecraft_type);
     }
 
-    #[Override]
+    #[\Override]
     public function getShipName(): string
     {
         return $this->ship_name;
     }
 
-    #[Override]
+    #[\Override]
     public function getHull(): int
     {
         return $this->hull;
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxHull(): int
     {
         return $this->max_hull;
     }
 
-    #[Override]
+    #[\Override]
     public function getShield(): int
     {
         return $this->shield;
     }
 
-    #[Override]
+    #[\Override]
     public function getWebId(): ?int
     {
         return $this->web_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getWebFinishTime(): ?int
     {
         return $this->web_finish_time;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserName(): string
     {
         return $this->user_name;
     }
 
-    #[Override]
+    #[\Override]
     public function getRumpCategoryId(): int
     {
         return $this->rump_category_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getRumpName(): string
     {
         return $this->rump_name;
     }
 
-    #[Override]
+    #[\Override]
     public function getRumpRoleId(): ?int
     {
         return $this->rump_role_id;
     }
 
-    #[Override]
+    #[\Override]
     public function hasLogbook(): bool
     {
         return $this->has_logbook;
     }
 
-    #[Override]
+    #[\Override]
     public function hasCrew(): bool
     {
         return $this->has_crew;

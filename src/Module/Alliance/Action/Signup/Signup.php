@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Signup;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +27,7 @@ final class Signup implements ActionControllerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -73,7 +72,7 @@ final class Signup implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

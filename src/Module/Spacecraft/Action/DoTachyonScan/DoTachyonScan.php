@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DoTachyonScan;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TachyonScannerShipSystem;
@@ -28,7 +27,7 @@ final class DoTachyonScan implements ActionControllerInterface
         private SpacecraftRepositoryInterface $spacecraftRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -81,7 +80,7 @@ final class DoTachyonScan implements ActionControllerInterface
         $game->getInfo()->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

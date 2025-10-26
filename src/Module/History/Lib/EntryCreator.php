@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\Lib;
 
-use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Lib\Map\EntityWithLocationInterface;
 use Stu\Orm\Entity\Alliance;
@@ -17,7 +16,7 @@ final class EntryCreator implements EntryCreatorInterface
 {
     public function __construct(private HistoryRepositoryInterface $historyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function addEntry(
         string $text,
         int $sourceUserId,
@@ -52,7 +51,7 @@ final class EntryCreator implements EntryCreatorInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createEntry(
         HistoryTypeEnum $type,
         string $text,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSectorScan;
 
-use Override;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
@@ -30,7 +29,7 @@ final class ShowSectorScan implements ViewControllerInterface
         private FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

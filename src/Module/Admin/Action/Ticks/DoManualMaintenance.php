@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
-use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class DoManualMaintenance implements ActionControllerInterface
      */
     public function __construct(private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory, private array $handlerList) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -45,7 +44,7 @@ final class DoManualMaintenance implements ActionControllerInterface
         $game->getInfo()->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

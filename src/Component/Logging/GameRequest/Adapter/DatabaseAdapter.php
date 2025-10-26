@@ -7,7 +7,6 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Monolog\Level;
-use Override;
 use request;
 use Stu\Orm\Entity\GameRequest;
 
@@ -22,7 +21,7 @@ final class DatabaseAdapter extends AbstractAdapter
     {
     }
 
-    #[Override]
+    #[\Override]
     protected function log(
         GameRequest $gameRequest,
         Level $logLevel,

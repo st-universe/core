@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class CreateAllianceRequest implements CreateAllianceRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->tidyString(
@@ -19,7 +18,7 @@ final class CreateAllianceRequest implements CreateAllianceRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return $this->tidyString(
@@ -27,7 +26,7 @@ final class CreateAllianceRequest implements CreateAllianceRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getFactionMode(): int
     {
         return $this->parameter('factionid')->int()->defaultsTo(0);

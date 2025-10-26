@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -22,7 +21,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function resetTrackersOfTrackedShip(
         SpacecraftWrapperInterface $trackedShipWrapper,
         SpacecraftSystemManagerInterface $spacecraftSystemManager,
@@ -37,7 +36,7 @@ class TrackerDeviceManager implements TrackerDeviceManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function deactivateTrackerIfActive(SpacecraftWrapperInterface $wrapper, bool $sendPmToTargetOwner): void
     {
         $tracker = $wrapper instanceof ShipWrapperInterface ? $wrapper->getTrackerSystemData() : null;

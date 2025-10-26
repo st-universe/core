@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\UserList;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class UserListRequest implements UserListRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getSortField(): string
     {
         /**
@@ -22,7 +21,7 @@ final class UserListRequest implements UserListRequestInterface
         return $param;
     }
 
-    #[Override]
+    #[\Override]
     public function getSortOrder(): string
     {
         /**
@@ -33,7 +32,7 @@ final class UserListRequest implements UserListRequestInterface
         return $param;
     }
 
-    #[Override]
+    #[\Override]
     public function getPagination(): int
     {
         return $this->parameter('mark')->int()->defaultsTo(0);

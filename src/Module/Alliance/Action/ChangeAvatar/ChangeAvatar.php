@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
 use Exception;
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -21,7 +20,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -114,7 +113,7 @@ final class ChangeAvatar implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

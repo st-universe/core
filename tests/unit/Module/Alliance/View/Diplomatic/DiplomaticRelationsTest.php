@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceRelation;
@@ -20,7 +19,7 @@ class DiplomaticRelationsTest extends StuTestCase
 
     private DiplomaticRelations $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->allianceRelationRepository = $this->mock(AllianceRelationRepositoryInterface::class);

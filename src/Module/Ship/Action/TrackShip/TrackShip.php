@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TrackShip;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
@@ -28,7 +27,7 @@ final class TrackShip implements ActionControllerInterface
         private readonly InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -98,7 +97,7 @@ final class TrackShip implements ActionControllerInterface
         $game->getInfo()->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

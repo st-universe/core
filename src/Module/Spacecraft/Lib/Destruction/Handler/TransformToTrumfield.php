@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
@@ -31,7 +30,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
         private ConstructionProgressRepositoryInterface $constructionProgressRepository,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

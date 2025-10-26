@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset\Alliance;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 
 final class AllianceReset implements AllianceResetInterface
 {
@@ -13,7 +12,7 @@ final class AllianceReset implements AllianceResetInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function unsetUserAlliances(): void
     {
         echo "  - removes alliance references\n";

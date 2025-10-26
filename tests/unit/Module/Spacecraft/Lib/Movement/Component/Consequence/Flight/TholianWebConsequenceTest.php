@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -31,7 +30,7 @@ class TholianWebConsequenceTest extends StuTestCase
 
     private MockInterface&FlightRouteInterface $flightRoute;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);

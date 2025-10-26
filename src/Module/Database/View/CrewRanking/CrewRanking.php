@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\CrewRanking;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListCrew;
@@ -17,7 +16,7 @@ final class CrewRanking implements ViewControllerInterface
 
     public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setNavigation([

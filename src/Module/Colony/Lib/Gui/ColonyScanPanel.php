@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -27,7 +26,7 @@ class ColonyScanPanel extends AbstractVisualPanel
         parent::__construct($panelLayerCreation, $loggerUtil);
     }
 
-    #[Override]
+    #[\Override]
     protected function createBoundaries(): PanelBoundaries
     {
         $range = 1;
@@ -41,7 +40,7 @@ class ColonyScanPanel extends AbstractVisualPanel
         return PanelBoundaries::fromLocation($this->colony->getStarsystemMap(), $range);
     }
 
-    #[Override]
+    #[\Override]
     protected function loadLayers(): void
     {
         $showCloaked = $this->colonyFunctionManager->hasFunction($this->colony, BuildingFunctionEnum::COLONY_CENTRAL);
@@ -62,7 +61,7 @@ class ColonyScanPanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this, $this->colony->getLocation());
     }
 
-    #[Override]
+    #[\Override]
     protected function getEntryCallable(): callable
     {
         return fn(int $x, int $y): VisualPanelElementInterface => new ColonyScanPanelEntry(
@@ -72,7 +71,7 @@ class ColonyScanPanel extends AbstractVisualPanel
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function getPanelViewportPercentage(): int
     {
         return 8;

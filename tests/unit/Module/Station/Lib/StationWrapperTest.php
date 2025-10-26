@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -36,7 +35,7 @@ class StationWrapperTest extends StuTestCase
 
     private StationWrapperInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

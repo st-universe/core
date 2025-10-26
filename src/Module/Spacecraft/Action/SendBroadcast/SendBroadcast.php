@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Action\SendBroadcast;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -31,7 +30,7 @@ final class SendBroadcast implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->spacecraftLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
@@ -100,7 +99,7 @@ final class SendBroadcast implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

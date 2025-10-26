@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
-use Override;
 use request;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
@@ -22,7 +21,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         bool $isUnload,
         StorageEntityWrapperInterface $source,
@@ -60,7 +59,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
             ->render();
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $source,

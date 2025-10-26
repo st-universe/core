@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Entity\RpgPlotArchiv;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\RpgPlotArchiv;
  */
 final class KnPostArchivRepository extends EntityRepository implements KnPostArchivRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): KnPostArchiv
     {
         return new KnPostArchiv();
     }
 
-    #[Override]
+    #[\Override]
     public function save(KnPostArchiv $post): void
     {
         $em = $this->getEntityManager();
@@ -29,7 +28,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function delete(KnPostArchiv $post): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getBy(int $offset, int $limit): array
     {
         return $this->findBy(
@@ -48,7 +47,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -57,7 +56,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByPlot(RpgPlotArchiv $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
@@ -68,7 +67,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByVersion(string $version, int $offset, int $limit): array
     {
         return $this->findBy(
@@ -79,7 +78,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByVersionWithPlots(string $version, int $offset, int $limit): array
     {
         return $this->createQueryBuilder('kpa')
@@ -96,7 +95,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
      * @param array<int> $plotIds
      * @return array<int, RpgPlotArchiv>
      */
-    #[Override]
+    #[\Override]
     public function getPlotsByIds(array $plotIds): array
     {
         if (empty($plotIds)) {
@@ -119,7 +118,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function getAvailableVersions(): array
     {
         $result = $this->createQueryBuilder('kpa')
@@ -131,13 +130,13 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         return array_column($result, 'version');
     }
 
-    #[Override]
+    #[\Override]
     public function getAmount(): int
     {
         return $this->count([]);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByPlot(int $plotId): int
     {
         return $this->count([
@@ -145,13 +144,13 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByVersion(string $version): int
     {
         return $this->count(['version' => $version]);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountSince(int $postId): int
     {
         return (int) $this->getEntityManager()
@@ -165,7 +164,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNewerThenMark(int $mark): array
     {
         return $this->getEntityManager()
@@ -180,7 +179,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function searchByContent(string $content): array
     {
         return $this->getEntityManager()
@@ -196,7 +195,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateAllEntities(): void
     {
         $this->getEntityManager()->createQuery(
@@ -207,13 +206,13 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         )->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function findByFormerId(int $formerId): ?KnPostArchiv
     {
         return $this->findOneBy(['former_id' => $formerId]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByPlotFormerId(int $plotFormerId, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
@@ -224,7 +223,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndVersion(int $userId, string $version): array
     {
         return $this->findBy(
@@ -236,7 +235,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         );
     }
 
-    #[Override]
+    #[\Override]
     public function findByFormerIdAndVersion(int $formerId, string $version): ?KnPostArchiv
     {
         return $this->findOneBy([
@@ -245,7 +244,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function searchByContentAndVersion(string $content, string $version): array
     {
         return $this->getEntityManager()

@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -21,7 +20,7 @@ class AttackingBattleParty extends AbstractBattleParty
         parent::__construct($leader, $stuRandom, $isAttackingShieldsOnly);
     }
 
-    #[Override]
+    #[\Override]
     public function initMembers(): Collection
     {
         if ($this->wrapper instanceof FleetWrapperInterface) {

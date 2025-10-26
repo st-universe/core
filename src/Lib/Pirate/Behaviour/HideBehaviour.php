@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Stu\Lib\Pirate\Component\PirateNavigationInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -25,7 +24,7 @@ class HideBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

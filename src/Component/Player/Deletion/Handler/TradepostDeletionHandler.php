@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Override;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -27,7 +26,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         $fallbackUser = $this->userRepository->getFallbackUser();

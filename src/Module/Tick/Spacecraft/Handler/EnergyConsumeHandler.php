@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -24,7 +23,7 @@ class EnergyConsumeHandler implements SpacecraftTickHandlerInterface
         private readonly SpacecraftLeaverInterface $spacecraftLeaver
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

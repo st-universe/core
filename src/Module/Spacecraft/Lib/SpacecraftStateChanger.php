@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
@@ -31,7 +30,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         private CancelRetrofitInterface $cancelRetrofit
     ) {}
 
-    #[Override]
+    #[\Override]
     public function changeState(SpacecraftWrapperInterface $wrapper, SpacecraftStateEnum $newState): void
     {
         $ship = $wrapper->get();
@@ -68,7 +67,7 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         $this->spacecraftRepository->save($ship);
     }
 
-    #[Override]
+    #[\Override]
     public function changeAlertState(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftAlertStateEnum $alertState

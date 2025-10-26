@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\AddPmCategory;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
@@ -18,7 +17,7 @@ final class AddPmCategory implements ActionControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
@@ -42,7 +41,7 @@ final class AddPmCategory implements ActionControllerInterface
         $game->setTemplateVar('CATEGORY', $cat);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

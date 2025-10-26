@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Lib;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -38,7 +37,7 @@ class ColonyLoaderTest extends StuTestCase
     private ColonyLoaderInterface $subject;
 
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);

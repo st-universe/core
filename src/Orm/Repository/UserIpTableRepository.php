@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserIpTable;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\UserIpTable;
  */
 final class UserIpTableRepository extends EntityRepository implements UserIpTableRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): UserIpTable
     {
         return new UserIpTable();
     }
 
-    #[Override]
+    #[\Override]
     public function save(UserIpTable $userIpTable): void
     {
         $em = $this->getEntityManager();
@@ -29,7 +28,7 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function findMostRecentByUser(User $user): ?UserIpTable
     {
         return $this->findOneBy(
@@ -42,7 +41,7 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
         );
     }
 
-    #[Override]
+    #[\Override]
     public function findBySessionId(string $sessionId): ?UserIpTable
     {
         return $this->findOneBy([

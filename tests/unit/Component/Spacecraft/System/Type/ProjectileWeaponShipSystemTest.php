@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -20,7 +19,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     private MockInterface&Ship $ship;
     private ProjectileWeaponShipSystem $system;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

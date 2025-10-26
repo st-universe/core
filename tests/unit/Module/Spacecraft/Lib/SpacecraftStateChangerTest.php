@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Ship\Mining\CancelMiningInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
@@ -38,7 +37,7 @@ class SpacecraftStateChangerTest extends StuTestCase
 
     private SpacecraftStateChangerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

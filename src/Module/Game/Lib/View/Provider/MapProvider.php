@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Exception\SanityCheckException;
@@ -15,7 +14,7 @@ final class MapProvider implements ViewComponentProviderInterface
 {
     public function __construct(private LayerRepositoryInterface $layerRepository) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         //only layers, that are known by user

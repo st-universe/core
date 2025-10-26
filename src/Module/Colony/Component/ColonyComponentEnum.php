@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Component;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentEnumInterface;
 
@@ -35,13 +34,13 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
     case SHIP_DISASSEMBLY = 'SHIP_DISASSEMBLY';
     case SHIP_RETROFIT = 'SHIP_RETROFIT';
 
-    #[Override]
+    #[\Override]
     public function getModuleView(): ModuleEnum
     {
         return ModuleEnum::COLONY;
     }
 
-    #[Override]
+    #[\Override]
     public function getTemplate(): string
     {
         return match ($this) {
@@ -53,19 +52,19 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public function getRefreshIntervalInSeconds(): ?int
     {
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function hasTemplateVariables(): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getValue(): string
     {
         return $this->name;

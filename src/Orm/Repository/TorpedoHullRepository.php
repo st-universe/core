@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\TorpedoHull;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\TorpedoHull;
  */
 final class TorpedoHullRepository extends EntityRepository implements TorpedoHullRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): TorpedoHull
     {
         return new TorpedoHull();
     }
 
-    #[Override]
+    #[\Override]
     public function save(TorpedoHull $torpedohull): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class TorpedoHullRepository extends EntityRepository implements TorpedoHul
         $em->persist($torpedohull);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(TorpedoHull $torpedohull): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class TorpedoHullRepository extends EntityRepository implements TorpedoHul
         $em->remove($torpedohull);
     }
 
-    #[Override]
+    #[\Override]
     public function getModificatorMinAndMax(): array
     {
         $min =  (int)$this->getEntityManager()->createQuery(

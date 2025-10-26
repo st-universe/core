@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
@@ -51,7 +50,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
 
     private EnergyWeaponPhaseInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

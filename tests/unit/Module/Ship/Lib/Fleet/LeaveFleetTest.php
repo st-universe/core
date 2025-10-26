@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -21,7 +20,7 @@ class LeaveFleetTest extends StuTestCase
 
     private LeaveFleetInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

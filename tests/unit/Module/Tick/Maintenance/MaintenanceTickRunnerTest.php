@@ -8,7 +8,6 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -27,7 +26,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
 
     private MaintenanceTickRunner $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);

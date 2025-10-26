@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
@@ -22,7 +21,7 @@ use Stu\Orm\Entity\User;
  */
 final class SpacecraftRumpRepository extends EntityRepository implements SpacecraftRumpRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(SpacecraftRump $post): void
     {
         $em = $this->getEntityManager();
@@ -30,7 +29,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getGroupedInfoByUser(User $user): array
     {
         return $this->getEntityManager()
@@ -48,7 +47,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildableByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array
     {
         return $this->getEntityManager()
@@ -72,7 +71,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildableByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -92,7 +91,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()
@@ -109,7 +108,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStartableByColony(int $colonyId): array
     {
         return $this->getEntityManager()
@@ -132,7 +131,7 @@ final class SpacecraftRumpRepository extends EntityRepository implements Spacecr
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getList(): array
     {
         return $this->findBy(

@@ -4,7 +4,6 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
@@ -22,25 +21,25 @@ class SpacecraftGroup implements SpacecraftGroupInterface
         $this->spacecraftWrappers = new ArrayCollection();
     }
 
-    #[Override]
+    #[\Override]
     public function addSpacecraftWrapper(SpacecraftWrapperInterface $wrapper): void
     {
         $this->spacecraftWrappers->add($wrapper);
     }
 
-    #[Override]
+    #[\Override]
     public function getWrappers(): Collection
     {
         return $this->spacecraftWrappers;
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->name;
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): ?User
     {
         return $this->user;

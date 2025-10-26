@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Override;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -16,7 +15,7 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
 {
     public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PrivateMessageSenderInterface $privateMessageSender, private BuildingManagerInterface $buildingManager) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $result = $this->planetFieldRepository->getByConstructionFinish(time());

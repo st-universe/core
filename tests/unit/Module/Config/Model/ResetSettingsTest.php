@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\StuTestCase;
 
 class ResetSettingsTest extends StuTestCase
@@ -15,7 +14,7 @@ class ResetSettingsTest extends StuTestCase
 
     private ResetSettings $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->settingsCore = $this->mock(SettingsCoreInterface::class);

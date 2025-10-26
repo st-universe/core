@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib;
 use Stu\Orm\Entity\Spacecraft;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -40,7 +39,7 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
 
     private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

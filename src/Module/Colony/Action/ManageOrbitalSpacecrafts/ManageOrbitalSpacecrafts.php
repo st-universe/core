@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ManageOrbitalSpacecrafts;
 
-use Override;
 use request;
 use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
@@ -31,7 +30,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         private HandleManagersInterface $handleManagers
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
@@ -100,7 +99,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         return $msg;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

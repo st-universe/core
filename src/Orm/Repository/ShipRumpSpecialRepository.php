@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ShipRumpSpecial;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\ShipRumpSpecial;
  */
 final class ShipRumpSpecialRepository extends EntityRepository implements ShipRumpSpecialRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByShipRump(int $rumpId): array
     {
         return $this->findBy([

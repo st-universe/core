@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\WeaponShield;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\WeaponShield;
  */
 final class WeaponShieldRepository extends EntityRepository implements WeaponShieldRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): WeaponShield
     {
         return new WeaponShield();
     }
 
-    #[Override]
+    #[\Override]
     public function save(WeaponShield $weaponshield): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         $em->persist($weaponshield);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(WeaponShield $weaponshield): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         $em->remove($weaponshield);
     }
 
-    #[Override]
+    #[\Override]
     public function getModificatorMinAndMax(): array
     {
         $min =  (int)$this->getEntityManager()->createQuery(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\BuildingCommodity;
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\PlanetField;
  */
 final class CommodityRepository extends EntityRepository implements CommodityRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByBuildingsOnColony(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()
@@ -43,7 +42,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByType(int $typeId): array
     {
         return $this->findBy([
@@ -51,7 +50,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         ], ['sort' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getViewable(): array
     {
         return $this->findBy([
@@ -59,7 +58,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         ], ['sort' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getTradeable(): array
     {
         return $this->findBy([
@@ -69,7 +68,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         ], ['sort' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getTradeableNPC(): array
     {
         return $this->findBy([
@@ -78,7 +77,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         ], ['sort' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getAll(): array
     {
         return $this->getEntityManager()

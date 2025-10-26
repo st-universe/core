@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Spacecraft\System\Data\BussardCollectorSystemData;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
@@ -21,13 +20,13 @@ use Stu\Orm\Entity\Ship;
  */
 final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function get(): Ship
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
         $fleet = $this->spacecraft->getFleet();
@@ -38,7 +37,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         return $this->spacecraftWrapperFactory->wrapFleet($fleet);
     }
 
-    #[Override]
+    #[\Override]
     public function canLandOnCurrentColony(): bool
     {
         if ($this->spacecraft->getRump()->getCommodity() === null) {
@@ -62,7 +61,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
             ->hasAirfield();
     }
 
-    #[Override]
+    #[\Override]
     public function canBeRetrofitted(): bool
     {
         if (!$this->isUnalerted()) {
@@ -95,7 +94,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getTractoringSpacecraftWrapper(): ?SpacecraftWrapperInterface
     {
         $tractoringSpacecraft = $this->spacecraft->getTractoringSpacecraft();
@@ -106,7 +105,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         return $this->spacecraftWrapperFactory->wrapSpacecraft($tractoringSpacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function getDockedToStationWrapper(): ?StationWrapperInterface
     {
         $dockedTo = $this->spacecraft->getDockedTo();
@@ -117,7 +116,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         return $this->spacecraftWrapperFactory->wrapStation($dockedTo);
     }
 
-    #[Override]
+    #[\Override]
     public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
@@ -126,7 +125,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getBussardCollectorSystemData(): ?BussardCollectorSystemData
     {
         return $this->getSpecificShipSystem(
@@ -135,7 +134,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getWebEmitterSystemData(): ?WebEmitterSystemData
     {
         return $this->getSpecificShipSystem(
@@ -144,7 +143,7 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getAstroLaboratorySystemData(): ?AstroLaboratorySystemData
     {
         return $this->getSpecificShipSystem(

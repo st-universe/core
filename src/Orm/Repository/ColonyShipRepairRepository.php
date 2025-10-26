@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Orm\Entity\ColonyShipRepair;
 
 /**
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\ColonyShipRepair;
  */
 final class ColonyShipRepairRepository extends EntityRepository implements ColonyShipRepairRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ColonyShipRepair
     {
         return new ColonyShipRepair();
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyField(int $colonyId, int $fieldId): array
     {
         return $this->findBy([
@@ -29,7 +28,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         ], ['id' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): ?ColonyShipRepair
     {
         return $this->findOneBy([
@@ -37,7 +36,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getMostRecentJobs(int $tickId): array
     {
         $rsm = new ResultSetMapping();
@@ -61,7 +60,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ColonyShipRepair $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -69,7 +68,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         $em->persist($colonyShipRepair);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ColonyShipRepair $colonyShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -77,7 +76,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         $em->remove($colonyShipRepair);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(

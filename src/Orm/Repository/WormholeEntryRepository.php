@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\WormholeEntry;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\WormholeEntry;
  */
 final class WormholeEntryRepository extends EntityRepository implements WormholeEntryRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(WormholeEntry $entry): void
     {
         $em = $this->getEntityManager();

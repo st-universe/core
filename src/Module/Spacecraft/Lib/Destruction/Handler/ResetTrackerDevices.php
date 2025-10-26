@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
@@ -18,7 +17,7 @@ class ResetTrackerDevices implements SpacecraftDestructionHandlerInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

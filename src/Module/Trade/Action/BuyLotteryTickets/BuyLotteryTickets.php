@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\BuyLotteryTickets;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
@@ -24,7 +23,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
 
     public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLibFactoryInterface $tradeLibFactory, private LotteryFacadeInterface $lotteryFacade, private StorageRepositoryInterface $storageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -77,7 +76,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $game->getInfo()->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

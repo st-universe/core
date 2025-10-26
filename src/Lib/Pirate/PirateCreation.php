@@ -3,7 +3,6 @@
 namespace Stu\Lib\Pirate;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -61,7 +60,7 @@ class PirateCreation implements PirateCreationInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function createPirateFleetsIfNeeded(): array
     {
         $currentRound = $this->pirateRoundRepository->getCurrentActiveRound();
@@ -215,7 +214,7 @@ class PirateCreation implements PirateCreationInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function createPirateFleet(?Ship $supportCaller = null): Fleet
     {
         $pirateUser = $this->userRepository->find(UserConstants::USER_NPC_KAZON);

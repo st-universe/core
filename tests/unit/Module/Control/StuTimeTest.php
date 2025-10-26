@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Override;
 use Stu\StuTestCase;
 
 class StuTimeTest extends StuTestCase
 {
     private StuTime $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new StuTime();

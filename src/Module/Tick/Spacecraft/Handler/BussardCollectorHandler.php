@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -19,7 +18,7 @@ class BussardCollectorHandler implements SpacecraftTickHandlerInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

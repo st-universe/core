@@ -6,7 +6,6 @@ namespace Stu\Module\Index\Action\ResetPassword;
 
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Exception\InvalidParamException;
 use Stu\Lib\Mail\MailFactoryInterface;
@@ -27,7 +26,7 @@ final class ResetPassword implements ActionControllerInterface
         private PasswordGeneratorInterface $passwordGenerator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $token = $this->resetPasswordRequest->getToken();
@@ -73,7 +72,7 @@ final class ResetPassword implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

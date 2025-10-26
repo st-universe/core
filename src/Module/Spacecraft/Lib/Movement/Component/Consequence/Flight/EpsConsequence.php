@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
@@ -17,13 +16,13 @@ use Stu\Orm\Entity\Spacecraft;
 class EpsConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

@@ -6,7 +6,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Ship;
@@ -22,7 +21,7 @@ class SpacecraftBuildplanDeletionHandlerTest extends StuTestCase
 
     private SpacecraftBuildplanDeletionHandler $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftBuildplanRepository = $this->mock(SpacecraftBuildplanRepositoryInterface::class);

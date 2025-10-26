@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\Colony;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\Colony;
  */
 final class ColonyDepositMiningRepository extends EntityRepository implements ColonyDepositMiningRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ColonyDepositMining
     {
         return new ColonyDepositMining();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ColonyDepositMining $entity): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class ColonyDepositMiningRepository extends EntityRepository implements Co
         $em->persist($entity);
     }
 
-    #[Override]
+    #[\Override]
     public function getCurrentUserDepositMinings(Colony $colony): array
     {
         $result = [];

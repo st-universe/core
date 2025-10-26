@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
@@ -27,7 +26,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
 {
     public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory, private AllianceJobManagerInterface $allianceJobManager) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

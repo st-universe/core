@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -20,13 +19,13 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
 
     public function __construct(private AstroEntryLibInterface $astroEntryLib) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::ASTRO_LABORATORY;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -49,7 +48,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
@@ -60,7 +59,7 @@ final class AstroLaboratoryShipSystem extends AbstractSpacecraftSystemType imple
         $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

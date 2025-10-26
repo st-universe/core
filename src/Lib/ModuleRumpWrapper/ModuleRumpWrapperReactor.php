@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
@@ -15,7 +14,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -30,7 +29,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getSecondValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -47,13 +46,13 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::REACTOR;
     }
 
-    #[Override]
+    #[\Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $reactorWrapper = $wrapper->getReactorWrapper();

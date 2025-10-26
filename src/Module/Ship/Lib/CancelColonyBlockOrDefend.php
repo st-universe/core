@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -28,7 +27,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function work(Spacecraft $spacecraft, InformationInterface $informations, bool $isTraktor = false): void
     {
         $this->loggerUtil->log('A');

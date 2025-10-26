@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ShipLog;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\ShipLog;
  */
 final class ShipLogRepository extends EntityRepository implements ShipLogRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ShipLog
     {
         return new ShipLog();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ShipLog $shipLog): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class ShipLogRepository extends EntityRepository implements ShipLogReposit
         $em->persist($shipLog);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ShipLog $shipLog): void
     {
         $em = $this->getEntityManager();

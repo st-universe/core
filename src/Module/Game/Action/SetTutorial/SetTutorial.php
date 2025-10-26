@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\SetTutorial;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,7 +24,7 @@ final class SetTutorial implements ActionControllerInterface
         private UserTutorialRepositoryInterface $userTutorialRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
@@ -73,7 +72,7 @@ final class SetTutorial implements ActionControllerInterface
         throw new RuntimeException('UserTutorial not found');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

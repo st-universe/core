@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
@@ -16,7 +15,7 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

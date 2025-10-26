@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\User;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\User;
  */
 final class PrestigeLogRepository extends EntityRepository implements PrestigeLogRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(PrestigeLog $log): void
     {
         $em = $this->getEntityManager();
@@ -22,7 +21,7 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
         $em->persist($log);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(PrestigeLog $log): void
     {
         $em = $this->getEntityManager();
@@ -30,13 +29,13 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
         $em->remove($log);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): PrestigeLog
     {
         return new PrestigeLog();
     }
 
-    #[Override]
+    #[\Override]
     public function getSumByUser(User $user): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -50,7 +49,7 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPrestigeHistory(User $user, int $maxResults): array
     {
         return $this->getEntityManager()

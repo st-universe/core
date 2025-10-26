@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -22,13 +21,13 @@ final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType impl
         private TrackerDeviceManagerInterface $trackerDeviceManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::NBS;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -41,7 +40,7 @@ final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType impl
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function checkDeactivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         if ($wrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
@@ -60,7 +59,7 @@ final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType impl
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
@@ -76,7 +75,7 @@ final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType impl
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

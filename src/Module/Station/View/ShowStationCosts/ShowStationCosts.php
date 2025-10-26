@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStationCosts;
 
-use Override;
 use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ShowStationCosts implements ViewControllerInterface
 
     public function __construct(private StationLoaderInterface $stationLoader, private StationUtilityInterface $stationUtility) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->stationLoader->getByIdAndUser(

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -33,7 +32,7 @@ final class ManagementProvider implements PlanetFieldHostComponentInterface
         private readonly StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

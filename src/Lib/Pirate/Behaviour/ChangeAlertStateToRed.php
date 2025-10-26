@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\Spacecraft;
 
 class ChangeAlertStateToRed implements PirateBehaviourInterface
 {
-    #[Override]
+    #[\Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

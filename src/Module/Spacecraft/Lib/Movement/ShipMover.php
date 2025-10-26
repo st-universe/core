@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Movement;
 
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -27,7 +26,7 @@ final class ShipMover implements ShipMoverInterface
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkAndMove(
         SpacecraftWrapperInterface $leadWrapper,
         FlightRouteInterface $flightRoute

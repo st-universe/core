@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
 use Stu\Component\Game\TimeConstants;
@@ -19,7 +18,7 @@ final class ActivateVacation implements ActionControllerInterface
 
     public function __construct(private SessionInterface $session, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         //wenn die letzte Aktivierung älter als eine Woche ist
@@ -41,7 +40,7 @@ final class ActivateVacation implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

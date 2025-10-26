@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Repair;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -48,7 +47,7 @@ class RepairUtilTest extends StuTestCase
 
     private RepairUtilInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->shipSystemRepository = $this->mock(SpacecraftSystemRepositoryInterface::class);

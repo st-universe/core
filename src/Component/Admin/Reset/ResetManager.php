@@ -7,7 +7,6 @@ namespace Stu\Component\Admin\Reset;
 use Ahc\Cli\IO\Interactor;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
 use Stu\Component\Admin\Reset\Communication\PmResetInterface;
 use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
@@ -42,7 +41,7 @@ final class ResetManager implements ResetManagerInterface
         private readonly Connection $connection
     ) {}
 
-    #[Override]
+    #[\Override]
     public function performReset(Interactor $io): void
     {
         $io->info('starting game reset', true);

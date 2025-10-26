@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use BadMethodCallException;
-use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -21,13 +20,13 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::WARPDRIVE;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -60,7 +59,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
@@ -72,7 +71,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         $this->eventDispatcher->dispatch(new WarpdriveActivationEvent($wrapper));
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getWarpDriveSystemData();
@@ -83,7 +82,7 @@ final class WarpdriveShipSystem extends AbstractSpacecraftSystemType implements 
         $systemData->setWarpDrive(0)->update();
     }
 
-    #[Override]
+    #[\Override]
     public function handleDamage(SpacecraftWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getWarpDriveSystemData();

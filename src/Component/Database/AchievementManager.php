@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Database;
 
-use Override;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -19,13 +18,13 @@ class AchievementManager implements AchievementManagerInterface
         private readonly CreateDatabaseEntryInterface $createDatabaseEntry
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getAchievements(): array
     {
         return self::$achievements;
     }
 
-    #[Override]
+    #[\Override]
     public function checkDatabaseItem(?int $databaseEntryId, User $user): void
     {
         if (
@@ -48,7 +47,7 @@ class AchievementManager implements AchievementManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public static function reset(): void
     {
         self::$achievements = [];

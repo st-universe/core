@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
-use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -55,7 +54,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         private EncodedMapInterface $encodedMap
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

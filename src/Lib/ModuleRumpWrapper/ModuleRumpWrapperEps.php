@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -28,7 +27,7 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getSecondValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -38,13 +37,13 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
         return (int) round($this->getValue($module) / 3);
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::EPS;
     }
 
-    #[Override]
+    #[\Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $epsSystem = $wrapper->getEpsSystemData();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\ShowTools;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -17,7 +16,7 @@ final class ShowTools implements ViewControllerInterface
 
     public function __construct(private CommodityRepositoryInterface $commodityRepository, private LayerRepositoryInterface $layerRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $commodityList = $this->commodityRepository->getTradeableNPC();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -17,7 +16,7 @@ final class LotteryFacade implements LotteryFacadeInterface
 {
     public function __construct(private LotteryTicketRepositoryInterface $lotteryTicketRepository, private PrivateMessageSenderInterface $privateMessageSender, private StuTime $stuTime) {}
 
-    #[Override]
+    #[\Override]
     public function createLotteryTicket(User $user, bool $sendPm): void
     {
         $ticket = $this->lotteryTicketRepository->prototype();
@@ -35,7 +34,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getTicketAmount(bool $isLastPeriod): int
     {
         return $this->lotteryTicketRepository->getAmountByPeriod(
@@ -43,7 +42,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTicketAmountByUser(int $userId, bool $isLastPeriod): int
     {
         return $this->lotteryTicketRepository->getAmountByPeriodAndUser(
@@ -52,7 +51,7 @@ final class LotteryFacade implements LotteryFacadeInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTicketsOfLastPeriod(): array
     {
         return $this->lotteryTicketRepository->getByPeriod($this->getCurrentOrLastPeriod(true));

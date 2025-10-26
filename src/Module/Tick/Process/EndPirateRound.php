@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Process;
 
-use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
@@ -38,7 +37,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $lastRound = $this->getLastPirateRound();

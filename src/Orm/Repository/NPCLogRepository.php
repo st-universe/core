@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\NPCLog;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\NPCLog;
  */
 final class NPCLogRepository extends EntityRepository implements NPCLogRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getRecent(): array
     {
         return $this->findBy(
@@ -23,13 +22,13 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
         );
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): NPCLog
     {
         return new NPCLog();
     }
 
-    #[Override]
+    #[\Override]
     public function save(NPCLog $npclog): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
         $em->persist($npclog);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(NPCLog $npclog): void
     {
         $em = $this->getEntityManager();

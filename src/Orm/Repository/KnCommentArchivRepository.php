@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\KnCommentArchiv;
 use Stu\Orm\Entity\KnPostArchiv;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\KnPostArchiv;
  */
 final class KnCommentArchivRepository extends EntityRepository implements KnCommentArchivRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByPost(int $postId): array
     {
         return $this->findBy(
@@ -34,7 +33,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByPost(KnPostArchiv $post): int
     {
         return $this->count(['post_id' => $post, 'deleted' => null]);
@@ -45,13 +44,13 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         return $this->count(['post_id' => $postFormerId, 'deleted' => null]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): KnCommentArchiv
     {
         return new KnCommentArchiv();
     }
 
-    #[Override]
+    #[\Override]
     public function save(KnCommentArchiv $comment): void
     {
         $em = $this->getEntityManager();
@@ -60,7 +59,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function delete(KnCommentArchiv $comment): void
     {
         $em = $this->getEntityManager();
@@ -69,7 +68,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()

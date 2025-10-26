@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
@@ -19,13 +18,13 @@ class DockConsequence extends AbstractFlightConsequence implements FlightStartCo
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
@@ -49,7 +48,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         private readonly array $dataProviders
     ) {}
 
-    #[Override]
+    #[\Override]
     public function addSystemLayer(): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SYSTEM->value] = new SystemLayerRenderer();
@@ -57,7 +56,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addMapLayer(Layer $layer): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::MAP->value] = new MapLayerRenderer($layer, $this->encodedMap);
@@ -65,7 +64,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addColonyShieldLayer(): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::COLONY_SHIELD->value] = new ColonyShieldLayerRenderer();
@@ -73,7 +72,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addSubspaceLayer(int $id, SubspaceLayerTypeEnum $type): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SUBSPACE_SIGNATURES->value] = new SubspaceLayerRenderer(PanelLayerEnum::SUBSPACE_SIGNATURES->value);
@@ -81,7 +80,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
 
         return $this;
     }
-    #[Override]
+    #[\Override]
     public function addSpacecraftSignatureLayer(int $spacecraftId, ?int $rumpId = null): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::SPACECRAFT_SIGNATURE->value] = new SubspaceLayerRenderer(PanelLayerEnum::SPACECRAFT_SIGNATURE->value, true);
@@ -90,7 +89,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addShipCountLayer(
         bool $showCloakedEverywhere,
         ?Spacecraft $currentSpacecraft,
@@ -103,7 +102,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addBorderLayer(?SpacecraftWrapperInterface $currentWrapper, ?bool $isOnShipLevel): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::BORDER->value] = new BorderLayerRenderer($currentWrapper, $isOnShipLevel);
@@ -112,7 +111,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addAnomalyLayer(): PanelLayerCreationInterface
     {
         $this->layers[PanelLayerEnum::ANOMALIES->value] = new AnomalyLayerRenderer();
@@ -120,7 +119,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function build(AbstractVisualPanel $panel, ?Location $observerLocation = null): PanelLayers
     {
         $layers = $this->layers;

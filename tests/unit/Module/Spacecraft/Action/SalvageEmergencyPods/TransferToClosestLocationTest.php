@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Action\SalvageEmergencyPods;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Orm\Entity\Colony;
@@ -30,7 +29,7 @@ class TransferToClosestLocationTest extends StuTestCase
 
     private TransferToClosestLocation $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->closestLocations = $this->mock(ClosestLocations::class);

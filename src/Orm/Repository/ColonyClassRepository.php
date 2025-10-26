@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\DatabaseEntry;
  */
 final class ColonyClassRepository extends EntityRepository implements ColonyClassRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(ColonyClass $obj): void
     {
         $em = $this->getEntityManager();
@@ -23,7 +22,7 @@ final class ColonyClassRepository extends EntityRepository implements ColonyClas
         $em->persist($obj);
     }
 
-    #[Override]
+    #[\Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()

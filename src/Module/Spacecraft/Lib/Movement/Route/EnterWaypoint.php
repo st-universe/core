@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
@@ -18,7 +17,7 @@ final class EnterWaypoint implements EnterWaypointInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function enterNextWaypoint(
         ?Spacecraft $spacecraft,
         bool $isTraversing,

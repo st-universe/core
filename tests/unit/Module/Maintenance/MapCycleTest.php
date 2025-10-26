@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Maintenance;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Orm\Entity\Award;
@@ -29,7 +28,7 @@ class MapCycleTest extends StuTestCase
 
     private MaintenanceHandlerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceApplication;
 use Stu\Orm\Entity\User;
@@ -15,27 +14,27 @@ use Stu\Orm\Entity\User;
  */
 final class AllianceApplicationRepository extends EntityRepository implements AllianceApplicationRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): AllianceApplication
     {
         return new AllianceApplication();
     }
 
-    #[Override]
+    #[\Override]
     public function save(AllianceApplication $application): void
     {
         $em = $this->getEntityManager();
         $em->persist($application);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(AllianceApplication $application): void
     {
         $em = $this->getEntityManager();
         $em->remove($application);
     }
 
-    #[Override]
+    #[\Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->createQueryBuilder('a')
@@ -46,7 +45,7 @@ final class AllianceApplicationRepository extends EntityRepository implements Al
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->createQueryBuilder('a')
@@ -56,7 +55,7 @@ final class AllianceApplicationRepository extends EntityRepository implements Al
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndAlliance(User $user, Alliance $alliance): ?AllianceApplication
     {
         return $this->findOneBy([
@@ -65,7 +64,7 @@ final class AllianceApplicationRepository extends EntityRepository implements Al
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -78,7 +77,7 @@ final class AllianceApplicationRepository extends EntityRepository implements Al
         ])->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByAlliance(int $allianceId): void
     {
         $this->getEntityManager()->createQuery(

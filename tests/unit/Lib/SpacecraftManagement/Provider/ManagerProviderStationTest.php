@@ -7,7 +7,6 @@ namespace Stu\Lib\SpacecraftManagement\Provider;
 use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -31,7 +30,7 @@ class ManagerProviderStationTest extends StuTestCase
 
     private ManagerProviderInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->wrapper = $this->mock(StationWrapperInterface::class);

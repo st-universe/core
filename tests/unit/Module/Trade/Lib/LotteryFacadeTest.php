@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\LotteryTicket;
@@ -32,7 +31,7 @@ class LotteryFacadeTest extends StuTestCase
 
     private LotteryFacadeInterface $lotteryFacade;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->lotteryTicketRepository = $this->mock(LotteryTicketRepositoryInterface::class);

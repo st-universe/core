@@ -6,7 +6,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
@@ -36,7 +35,7 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);

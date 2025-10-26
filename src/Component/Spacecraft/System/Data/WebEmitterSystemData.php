@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\TholianWeb;
@@ -24,7 +23,7 @@ class WebEmitterSystemData extends AbstractSystemData
         parent::__construct($shipSystemRepository, $statusBarFactory);
     }
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::THOLIAN_WEB;

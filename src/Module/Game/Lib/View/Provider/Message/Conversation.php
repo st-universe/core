@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Orm\Entity\PrivateMessage;
@@ -34,7 +33,7 @@ final class Conversation extends PrivateMessageListItem
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isMarkableAsNew(): bool
     {
         return $this->message->getNew();

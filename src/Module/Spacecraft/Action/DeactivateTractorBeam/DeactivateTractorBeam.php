@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DeactivateTractorBeam;
 
-use Override;
 use request;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -25,7 +24,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -43,7 +42,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

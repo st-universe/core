@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\SetKnMark;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -16,7 +15,7 @@ final class SetKnMark implements ActionControllerInterface
 
     public function __construct(private SetKnMarkRequestInterface $setKnMarkRequest, private KnPostRepositoryInterface $knPostRepository, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $posting = $this->knPostRepository->find($this->setKnMarkRequest->getKnOffset());
@@ -34,7 +33,7 @@ final class SetKnMark implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Lesezeichen wurde gesetzt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

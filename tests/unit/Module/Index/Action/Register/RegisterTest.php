@@ -6,7 +6,6 @@ namespace Stu\Module\Index\Action\Register;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
@@ -32,7 +31,7 @@ class RegisterTest extends StuTestCase
 
     private MockInterface&Faction $faction;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->registerRequest = $this->mock(RegisterRequestInterface::class);

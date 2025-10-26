@@ -8,7 +8,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Mockery\MockInterface;
 use Monolog\Logger;
-use Override;
 use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
 
@@ -18,7 +17,7 @@ class DatabaseAdapterTest extends StuTestCase
 
     private DatabaseAdapter $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->database = $this->mock(Connection::class);

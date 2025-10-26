@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -39,7 +38,7 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     private Ship $ship;
     private ShipWrapperInterface $wrapper;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

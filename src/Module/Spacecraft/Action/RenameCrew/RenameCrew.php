@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\RenameCrew;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,7 +24,7 @@ final class RenameCrew implements ActionControllerInterface
         private RenameCrewRequestInterface $renameCrewRequest
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -53,7 +52,7 @@ final class RenameCrew implements ActionControllerInterface
         $game->setTemplateVar('CREW', $crew);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowDeals;
 
-use Override;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -22,7 +21,7 @@ final class ShowDeals implements ViewControllerInterface
         private TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

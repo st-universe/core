@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowAstroEntry;
 
-use Override;
 use request;
 
 use Stu\Module\Control\GameControllerInterface;
@@ -25,7 +24,7 @@ final class ShowAstroEntry implements ViewControllerInterface
         private AstroEntryLibInterface $astroEntryLib
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

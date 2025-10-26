@@ -8,7 +8,6 @@ use Ahc\Cli\Application;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\Register\LocalPlayerCreator;
@@ -25,7 +24,7 @@ class UserCreateCommandTest extends StuTestCase
 
     private UserCreateCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->factionRepository = $this->mock(FactionRepositoryInterface::class);

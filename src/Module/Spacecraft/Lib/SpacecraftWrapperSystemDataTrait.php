@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Component\Spacecraft\System\Data\EnergyWeaponSystemData;
@@ -29,7 +28,7 @@ trait SpacecraftWrapperSystemDataTrait
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getThis()->getSpecificShipSystem(
@@ -44,7 +43,7 @@ trait SpacecraftWrapperSystemDataTrait
         return $hullSystemData;
     }
 
-    #[Override]
+    #[\Override]
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -53,7 +52,7 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -62,7 +61,7 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getComputerSystemDataMandatory(): ComputerSystemData
     {
         $computer = $this->getThis()->getSpecificShipSystem(
@@ -76,7 +75,7 @@ trait SpacecraftWrapperSystemDataTrait
         return $computer;
     }
 
-    #[Override]
+    #[\Override]
     public function getLssSystemData(): ?LssSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -85,7 +84,7 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -94,7 +93,7 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getWarpDriveSystemData(): ?WarpDriveSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -102,7 +101,7 @@ trait SpacecraftWrapperSystemDataTrait
             WarpDriveSystemData::class
         );
     }
-    #[Override]
+    #[\Override]
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -110,7 +109,7 @@ trait SpacecraftWrapperSystemDataTrait
             ProjectileLauncherSystemData::class
         );
     }
-    #[Override]
+    #[\Override]
     public function getSubspaceSystemData(): ?SubspaceSystemData
     {
         return $this->getThis()->getSpecificShipSystem(

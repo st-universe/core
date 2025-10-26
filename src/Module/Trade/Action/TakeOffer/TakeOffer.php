@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
@@ -26,7 +25,7 @@ final class TakeOffer implements ActionControllerInterface
 
     public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -163,7 +162,7 @@ final class TakeOffer implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

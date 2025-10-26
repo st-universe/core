@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 
-use Override;
 use request;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
@@ -33,7 +32,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

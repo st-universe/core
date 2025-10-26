@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +21,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
     public function __construct(private UserRepositoryInterface $userRepository, private ShipRepositoryInterface $shipRepository, private FleetRepositoryInterface $fleetRepository, private ColonyRepositoryInterface $colonyRepository, private AllianceRepositoryInterface $allianceRepository, private Parser $bbCodeParser) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -109,7 +108,7 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
         $game->getInfo()->addInformation("Allianznamen wurde bereinigt!");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

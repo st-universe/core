@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Game\NameTypeEnum;
 use Stu\Orm\Entity\Names;
 use Stu\Orm\Entity\StarSystem;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\StarSystem;
  */
 final class NamesRepository extends EntityRepository implements NamesRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(Names $name): void
     {
         $em = $this->getEntityManager();
@@ -23,7 +22,7 @@ final class NamesRepository extends EntityRepository implements NamesRepositoryI
         $em->persist($name);
     }
 
-    #[Override]
+    #[\Override]
     public function mostUnusedNames(): array
     {
         $query = $this->getEntityManager()->createQuery(
@@ -45,7 +44,7 @@ final class NamesRepository extends EntityRepository implements NamesRepositoryI
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRandomFreeSystemNames(int $amount): array
     {
         $freeNames = $this->getEntityManager()

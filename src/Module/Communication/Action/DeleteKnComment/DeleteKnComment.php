@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnComment;
 
-use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,7 +15,7 @@ final class DeleteKnComment implements ActionControllerInterface
 
     public function __construct(private DeleteKnCommentRequestInterface $deleteKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -34,7 +33,7 @@ final class DeleteKnComment implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

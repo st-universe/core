@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\IgnoreList;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\IgnoreList;
  */
 final class IgnoreListRepository extends EntityRepository implements IgnoreListRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): IgnoreList
     {
         return new IgnoreList();
     }
 
-    #[Override]
+    #[\Override]
     public function save(IgnoreList $ignoreList): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         $em->persist($ignoreList);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(IgnoreList $ignoreList): void
     {
         $em = $this->getEntityManager();
@@ -36,7 +35,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getByRecipient(int $recipientId): array
     {
         return $this->findBy(
@@ -45,7 +44,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -54,7 +53,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         );
     }
 
-    #[Override]
+    #[\Override]
     public function exists(int $userId, int $recipientId): bool
     {
         return $this->count([
@@ -63,7 +62,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         ]) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\StopEmergency;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -28,7 +27,7 @@ class StopEmergencyTest extends StuTestCase
 
     private MockInterface&StuTime $stuTime;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);

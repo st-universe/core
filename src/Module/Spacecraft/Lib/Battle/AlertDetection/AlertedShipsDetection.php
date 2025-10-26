@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
@@ -17,7 +16,7 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getAlertedShipsOnLocation(
         Location $location,
         User $user

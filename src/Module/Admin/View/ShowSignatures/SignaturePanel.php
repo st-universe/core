@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -29,13 +28,13 @@ class SignaturePanel extends AbstractVisualPanel
         parent::__construct($panelLayerCreation, $loggerUtil);
     }
 
-    #[Override]
+    #[\Override]
     protected function createBoundaries(): PanelBoundaries
     {
         return PanelBoundaries::fromArray($this->data, $this->layer);
     }
 
-    #[Override]
+    #[\Override]
     protected function loadLayers(): void
     {
 
@@ -64,7 +63,7 @@ class SignaturePanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this);
     }
 
-    #[Override]
+    #[\Override]
     protected function getEntryCallable(): callable
     {
         return fn(int $x, int $y): SignaturePanelEntry => new SignaturePanelEntry(
@@ -74,7 +73,7 @@ class SignaturePanel extends AbstractVisualPanel
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function getPanelViewportPercentage(): int
     {
         return 100;

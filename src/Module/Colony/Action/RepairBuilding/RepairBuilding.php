@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RepairBuilding;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -21,7 +20,7 @@ final class RepairBuilding implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private PlanetFieldRepositoryInterface $planetFieldRepository, private StorageManagerInterface $storageManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -129,7 +128,7 @@ final class RepairBuilding implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

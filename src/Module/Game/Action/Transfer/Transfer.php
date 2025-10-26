@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\Transfer;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Config\Init;
@@ -44,7 +43,7 @@ final class Transfer implements ActionControllerInterface
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $isUnload = request::postIntFatal('is_unload') === 1;
@@ -213,7 +212,7 @@ final class Transfer implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

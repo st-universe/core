@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -19,13 +18,13 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
 {
     public function __construct(private SpacecraftStateChangerInterface $spacecraftStateChanger) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -74,7 +73,7 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
@@ -90,19 +89,19 @@ class BussardCollectorShipSystem extends AbstractSpacecraftSystemType implements
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $wrapper->get()->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 15;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 10;

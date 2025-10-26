@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\ShowMemberRumpInfo;
 
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -30,7 +29,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

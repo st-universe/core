@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Profile\View\ShowColonySurface;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
@@ -17,7 +16,7 @@ final class ShowColonySurface implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Letzter Oberflächenscan'));

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowSingleKn;
 
-use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -22,7 +21,7 @@ final class ShowSingleKn implements ViewControllerInterface
         private KnFactoryInterface $knFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

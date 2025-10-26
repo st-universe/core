@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CancelShipRepair;
 
-use Override;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
@@ -22,7 +21,7 @@ final class CancelShipRepair implements ActionControllerInterface
 
     public function __construct(private CancelShipRepairRequestInterface $request, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -58,7 +57,7 @@ final class CancelShipRepair implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLicenseInfo;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
@@ -22,7 +21,7 @@ final class ShowLicenseInfo implements ViewControllerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $tradePostId = $this->showLicenseInfoRequest->getTradePostId();

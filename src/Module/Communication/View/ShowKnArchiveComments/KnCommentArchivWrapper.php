@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchiveComments;
 
-use Override;
 use Stu\Orm\Entity\KnCommentArchiv;
 
 final class KnCommentArchivWrapper implements KnCommentArchivWrapperInterface
@@ -13,61 +12,61 @@ final class KnCommentArchivWrapper implements KnCommentArchivWrapperInterface
         private readonly KnCommentArchiv $comment
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->comment->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getFormerId(): int
     {
         return $this->comment->getFormerId();
     }
 
-    #[Override]
+    #[\Override]
     public function getKnId(): int
     {
         return $this->comment->getKnId();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->comment->getText();
     }
 
-    #[Override]
+    #[\Override]
     public function getDate(): int
     {
         return $this->comment->getDate();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->comment->getUserId();
     }
 
-    #[Override]
+    #[\Override]
     public function getDisplayUserName(): string
     {
         return $this->comment->getUsername();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserAvatarPath(): string
     {
         return '';
     }
 
-    #[Override]
+    #[\Override]
     public function isDeleteable(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getVersion(): string
     {
         return $this->comment->getVersion() ?? '';

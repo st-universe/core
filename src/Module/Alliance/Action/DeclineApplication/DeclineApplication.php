@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -25,7 +24,7 @@ final class DeclineApplication implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -58,7 +57,7 @@ final class DeclineApplication implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Bewerbung wurde abgelehnt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

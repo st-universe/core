@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarColorEnum;
@@ -45,13 +44,13 @@ class WarpDriveSystemData extends AbstractSystemData
         $this->game = $game;
     }
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::WARPDRIVE;
     }
 
-    #[Override]
+    #[\Override]
     public function update(): void
     {
         $this->split = max(0, min(100, $this->split));

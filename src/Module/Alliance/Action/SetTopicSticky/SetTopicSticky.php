@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\SetTopicSticky;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,7 +20,7 @@ final class SetTopicSticky implements ActionControllerInterface
         private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -40,7 +39,7 @@ final class SetTopicSticky implements ActionControllerInterface
         $game->setView(Topic::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

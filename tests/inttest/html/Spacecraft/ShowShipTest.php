@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Html\Spacecraft;
 
 use Mockery;
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -17,7 +16,7 @@ class ShowShipTest extends TwigTestCase
 {
     use StubGameComponentsTrait;
 
-    #[Override]
+    #[\Override]
     public function tearDown(): void
     {
         parent::tearDown();

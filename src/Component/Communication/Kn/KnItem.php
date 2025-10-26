@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Communication\Kn;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
@@ -28,98 +27,98 @@ final class KnItem implements KnItemInterface
         private User $currentUser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->post->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->post->getUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->post->getUserId();
     }
 
-    #[Override]
+    #[\Override]
     public function getTitle(): ?string
     {
         return $this->post->getTitle();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->bbcodeParser->parse($this->post->getText())->getAsHTML();
     }
 
-    #[Override]
+    #[\Override]
     public function getDate(): int
     {
         return $this->post->getDate();
     }
 
-    #[Override]
+    #[\Override]
     public function getEditDate(): int
     {
         return $this->post->getEditDate();
     }
 
-    #[Override]
+    #[\Override]
     public function isEditAble(): bool
     {
         return $this->getDate() > time() - 600 && $this->post->getUser()->getId() === $this->currentUser->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getPlot(): ?RpgPlot
     {
         return $this->post->getRpgPlot();
     }
 
-    #[Override]
+    #[\Override]
     public function getCharacters(): Collection
     {
         return $this->post->getKnCharacters();
     }
 
-    #[Override]
+    #[\Override]
     public function getCommentCount(): int
     {
         return $this->knCommentRepository->getAmountByPost($this->post);
     }
 
-    #[Override]
+    #[\Override]
     public function displayContactLinks(): bool
     {
         $user = $this->post->getUser();
         return $user->getId() !== $this->currentUser->getId() && $user->getId() !== UserConstants::USER_NOONE;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserName(): string
     {
         return $this->post->getUsername();
     }
 
-    #[Override]
+    #[\Override]
     public function isUserDeleted(): bool
     {
         return $this->post->getUserId() !== 1;
     }
 
-    #[Override]
+    #[\Override]
     public function isNewerThanMark(): bool
     {
         return $this->post->getId() > $this->currentUser->getKnMark();
     }
 
-    #[Override]
+    #[\Override]
     public function userCanRate(): bool
     {
         return !$this->userHasRated()
@@ -127,37 +126,37 @@ final class KnItem implements KnItemInterface
             && $this->currentUser->getId() > 100;
     }
 
-    #[Override]
+    #[\Override]
     public function userHasRated(): bool
     {
         return array_key_exists($this->currentUser->getId(), $this->post->getRatings());
     }
 
-    #[Override]
+    #[\Override]
     public function getMark(): ?int
     {
         return $this->mark;
     }
 
-    #[Override]
+    #[\Override]
     public function setMark(int $mark): void
     {
         $this->mark = $mark;
     }
 
-    #[Override]
+    #[\Override]
     public function getDivClass(): string
     {
         return $this->isHighlighted ? 'red_box' : 'box';
     }
 
-    #[Override]
+    #[\Override]
     public function setIsHighlighted(bool $isHighlighted): void
     {
         $this->isHighlighted = $isHighlighted;
     }
 
-    #[Override]
+    #[\Override]
     public function getRating(): int
     {
         return (int) array_sum(
@@ -168,7 +167,7 @@ final class KnItem implements KnItemInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getRatingBar(): string
     {
         $ratingAmount = count($this->post->getRatings());
@@ -185,7 +184,7 @@ final class KnItem implements KnItemInterface
             ->setValue($this->getRating())
             ->render();
     }
-    #[Override]
+    #[\Override]
     public function hasTranslation(): bool
     {
         $text = $this->getText();

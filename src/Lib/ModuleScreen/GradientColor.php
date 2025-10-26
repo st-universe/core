@@ -2,11 +2,10 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use Override;
 
 final class GradientColor implements GradientColorInterface
 {
-    #[Override]
+    #[\Override]
     public function calculateGradientColor(int $modificator, int $lowestValue, int $highestValue): string
     {
         $color1 = '#00ff00';

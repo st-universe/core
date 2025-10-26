@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Component\FlightSignatureCreatorInterface;
@@ -20,13 +19,13 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
         private readonly UpdateFlightDirectionInterface $updateFlightDirection
     ) {}
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

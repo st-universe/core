@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -29,7 +28,7 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
         $this->logger = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function change(Ship $oldLeader): void
     {
         $fleet = $oldLeader->getFleet();

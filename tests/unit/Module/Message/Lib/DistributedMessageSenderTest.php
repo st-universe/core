@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\StuTestCase;
@@ -19,7 +18,7 @@ class DistributedMessageSenderTest extends StuTestCase
 
     private DistributedMessageSenderInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);

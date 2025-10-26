@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CancelOffer;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,7 +25,7 @@ final class CancelOffer implements ActionControllerInterface
         private StorageRepositoryInterface $storageRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleEnum::TRADE;
@@ -57,7 +56,7 @@ final class CancelOffer implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Angebot wurde gelöscht'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

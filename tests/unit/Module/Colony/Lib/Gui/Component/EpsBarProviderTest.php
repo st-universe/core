@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -21,7 +20,7 @@ class EpsBarProviderTest extends StuTestCase
 
     private PlanetFieldHostComponentInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
@@ -15,7 +14,7 @@ class CrewEvacuation implements SpacecraftDestructionHandlerInterface
         private SpacecraftLeaverInterface $spacecraftLeaver
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

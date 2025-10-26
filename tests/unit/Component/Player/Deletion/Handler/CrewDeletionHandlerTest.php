@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -21,7 +20,7 @@ class CrewDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);

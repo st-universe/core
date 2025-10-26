@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeactivateBuilding;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,7 +15,7 @@ final class DeactivateBuilding implements ActionControllerInterface
 
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
@@ -35,7 +34,7 @@ final class DeactivateBuilding implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

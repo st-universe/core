@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
@@ -20,7 +19,7 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
         private ColonyLibFactoryInterface $colonyLibFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

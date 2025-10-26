@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -22,7 +21,7 @@ final class SpacecraftBuildplanDeletionHandler implements PlayerDeletionHandlerI
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         foreach ($this->spacecraftBuildplanRepository->getByUser($user->getId()) as $spacecraftBuildplan) {

@@ -6,7 +6,6 @@ namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -33,7 +32,7 @@ class ManagerProviderColonyTest extends StuTestCase
 
     private ManagerProviderInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->colony = $this->mock(Colony::class);

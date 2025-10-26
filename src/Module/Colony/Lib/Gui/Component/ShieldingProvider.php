@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -15,7 +14,7 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

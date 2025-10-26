@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowRegionInfo;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Exception\AccessViolationException;
@@ -21,7 +20,7 @@ final class ShowRegionInfo implements ViewControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

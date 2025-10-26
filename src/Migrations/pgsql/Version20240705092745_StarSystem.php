@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Migrations\Pgsql;
 
-use Override;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20240705092745_StarSystem extends AbstractMigration
 {
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return 'Removes the following obsolete fields from stu_systems: cx, cy';
     }
 
-    #[Override]
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->addSql('DROP INDEX coordinate_idx;');
@@ -24,7 +23,7 @@ final class Version20240705092745_StarSystem extends AbstractMigration
         $this->addSql('ALTER TABLE stu_systems DROP cy;');
     }
 
-    #[Override]
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE stu_systems ADD cx SMALLINT DEFAULT NULL;');

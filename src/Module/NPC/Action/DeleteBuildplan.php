@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class DeleteBuildplan implements ActionControllerInterface
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -67,7 +66,7 @@ final class DeleteBuildplan implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

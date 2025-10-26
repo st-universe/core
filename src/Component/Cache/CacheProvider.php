@@ -4,7 +4,6 @@ namespace Stu\Component\Cache;
 
 use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
-use Override;
 use Psr\Cache\CacheItemPoolInterface;
 use Redis;
 use Stu\Module\Config\StuConfigInterface;
@@ -15,7 +14,7 @@ final class CacheProvider implements CacheProviderInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function getRedisCachePool(): CacheItemPoolInterface
     {
         $redis = new Redis();

@@ -7,7 +7,6 @@ namespace Stu\Module\NPC\Action;
 
 use BadMethodCallException;
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -49,7 +48,7 @@ final class CreateShip implements ActionControllerInterface
         private ModuleRepositoryInterface $moduleRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipCreator::VIEW_IDENTIFIER);
@@ -300,7 +299,7 @@ final class CreateShip implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

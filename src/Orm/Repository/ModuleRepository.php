@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +21,7 @@ use Stu\Orm\Entity\Spacecraft;
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
     // used for ModuleSelector
-    #[Override]
+    #[\Override]
     public function getBySpecialTypeAndRumpAndRole(
         Colony|Ship $host,
         SpacecraftModuleTypeEnum $moduleType,
@@ -65,7 +64,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getBySpecialTypeAndRump(
         Colony|Spacecraft $host,
         SpacecraftModuleTypeEnum $moduleType,
@@ -101,7 +100,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 
 
     // used for ModuleSelector
-    #[Override]
+    #[\Override]
     public function getByTypeColonyAndLevel(
         int $colonyId,
         SpacecraftModuleTypeEnum $moduleType,
@@ -141,7 +140,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
-    #[Override]
+    #[\Override]
     public function getByTypeAndLevel(
         int $moduleTypeId,
         SpacecraftRumpRoleEnum $shipRumpRole,
@@ -174,7 +173,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
-    #[Override]
+    #[\Override]
     public function getBySpecialTypeIds(array $specialTypeIds): array
     {
         return $this->getEntityManager()
@@ -194,7 +193,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getBySpecialTypeAndRumpWithoutHost(
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,7 +20,7 @@ final class KnPostDeletionHandler implements PlayerDeletionHandlerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         $gameFallbackUser = $this->userRepository->getFallbackUser();

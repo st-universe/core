@@ -6,7 +6,6 @@ namespace Stu\Module\Control;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
@@ -25,7 +24,7 @@ class AccessCheckTest extends StuTestCase
 
     private AccessCheckInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);

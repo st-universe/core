@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Anomaly\AnomalyHandlingInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -19,7 +18,7 @@ class AnomalyConsequenceTest extends StuTestCase
 
     private FlightConsequenceInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->anomalyHandling = $this->mock(AnomalyHandlingInterface::class);

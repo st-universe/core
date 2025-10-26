@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -42,7 +41,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
@@ -167,7 +166,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony\Shields;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +21,7 @@ class ColonyShieldingManagerTest extends StuTestCase
 
     private ColonyShieldingManager $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);

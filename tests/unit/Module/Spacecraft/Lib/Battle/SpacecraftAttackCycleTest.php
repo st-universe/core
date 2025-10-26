@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\RoundBasedBattleParty;
@@ -31,7 +30,7 @@ class SpacecraftAttackCycleTest extends StuTestCase
 
     private SpacecraftAttackCycleInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->energyWeaponPhase = $this->mock(EnergyWeaponPhaseInterface::class);

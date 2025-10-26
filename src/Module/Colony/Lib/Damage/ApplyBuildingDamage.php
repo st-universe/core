@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Damage;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Damage\DamageModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
@@ -19,7 +18,7 @@ final class ApplyBuildingDamage implements ApplyBuildingDamageInterface
         private ColonyLibFactoryInterface $colonyLibFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function damageBuilding(
         DamageWrapper $damageWrapper,
         PlanetField $target,

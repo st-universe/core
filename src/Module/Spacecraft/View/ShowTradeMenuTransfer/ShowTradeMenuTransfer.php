@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowTradeMenuTransfer;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
@@ -28,7 +27,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
         private InteractionCheckerInterface $interactionChecker
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

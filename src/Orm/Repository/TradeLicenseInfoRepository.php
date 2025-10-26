@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\TradeLicenseInfo;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\TradeLicenseInfo;
  */
 final class TradeLicenseInfoRepository extends EntityRepository implements TradeLicenseInfoRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): TradeLicenseInfo
     {
         return new TradeLicenseInfo();
     }
 
-    #[Override]
+    #[\Override]
     public function save(TradeLicenseInfo $setLicense): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class TradeLicenseInfoRepository extends EntityRepository implements Trade
         $em->persist($setLicense);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(TradeLicenseInfo $setLicense): void
     {
         $em = $this->getEntityManager();
@@ -36,7 +35,7 @@ final class TradeLicenseInfoRepository extends EntityRepository implements Trade
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getLatestLicenseInfo(int $tradepostId): ?TradeLicenseInfo
     {
         return $this->getEntityManager()

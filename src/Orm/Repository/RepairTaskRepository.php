@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Ship;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\Ship;
  */
 final class RepairTaskRepository extends EntityRepository implements RepairTaskRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): RepairTask
     {
         return new RepairTask();
     }
 
-    #[Override]
+    #[\Override]
     public function save(RepairTask $obj): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         $em->persist($obj);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(RepairTask $post): void
     {
         $em = $this->getEntityManager();
@@ -36,7 +35,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): ?RepairTask
     {
         return $this->findOneBy([
@@ -44,7 +43,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(
@@ -57,7 +56,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         $q->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getFinishedRepairTasks(): array
     {
         return $this->getEntityManager()

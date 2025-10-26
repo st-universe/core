@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Component;
 
 use OutOfBoundsException;
-use Override;
 use RuntimeException;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -26,7 +25,7 @@ final class ComponentLoader implements ComponentLoaderInterface
     /**
      * Adds the execute javascript after render.
      */
-    #[Override]
+    #[\Override]
     public function loadComponentUpdates(GameControllerInterface $game): void
     {
         foreach ($this->componentRegistration->getComponentUpdates() as $id => $componentUpdate) {
@@ -72,7 +71,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         ), JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
-    #[Override]
+    #[\Override]
     public function loadRegisteredComponents(GameControllerInterface $game): void
     {
         foreach ($this->componentRegistration->getRegisteredComponents() as $id => $registeredComponent) {
@@ -109,7 +108,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function registerStubbedComponent(ComponentEnumInterface $componentEnum): ComponentLoaderInterface
     {
         $this->registeredStubs[] = $componentEnum;
@@ -117,7 +116,7 @@ final class ComponentLoader implements ComponentLoaderInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function resetStubbedComponents(): void
     {
         $this->registeredStubs = [];

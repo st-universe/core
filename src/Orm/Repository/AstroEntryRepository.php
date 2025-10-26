@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\User;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\User;
  */
 final class AstroEntryRepository extends EntityRepository implements AstroEntryRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): AstronomicalEntry
     {
         return new AstronomicalEntry();
     }
 
-    #[Override]
+    #[\Override]
     public function save(AstronomicalEntry $entry): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         $em->persist($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(AstronomicalEntry $entry): void
     {
         $em = $this->getEntityManager();
@@ -38,7 +37,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     }
 
     /** @return array<AstronomicalEntry> */
-    #[Override]
+    #[\Override]
     public function getByUser(User $user): array
     {
         return $this->findBy(
@@ -47,7 +46,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     }
 
     /** @return array<AstronomicalEntry> */
-    #[Override]
+    #[\Override]
     public function getByUserAndState(User $user, int $state): array
     {
         return $this->findBy(

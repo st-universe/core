@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnPlotMember;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class DeleteKnPlotMemberRequest implements DeleteKnPlotMemberRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getPlotId(): int
     {
         return $this->parameter('plotid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getRecipientId(): int
     {
         return $this->parameter('memid')->int()->required();

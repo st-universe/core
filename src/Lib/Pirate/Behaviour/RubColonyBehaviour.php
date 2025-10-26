@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -44,7 +43,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function action(
         FleetWrapperInterface $fleet,
         PirateReactionInterface $pirateReaction,

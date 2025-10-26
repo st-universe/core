@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
@@ -26,7 +25,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

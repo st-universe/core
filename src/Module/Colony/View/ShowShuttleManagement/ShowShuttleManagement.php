@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShuttleManagement;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -34,7 +33,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation($this->request->getColonyId(), $game->getUser()->getId());

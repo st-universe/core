@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\SetLSSModeBorder;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,7 +17,7 @@ final class SetLSSModeBorder implements ActionControllerInterface
 
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -26,7 +25,7 @@ final class SetLSSModeBorder implements ActionControllerInterface
         $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::BORDER, $game);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
-use Override;
 use Stu\StuTestCase;
 
 class MessageTest extends StuTestCase
@@ -14,7 +13,7 @@ class MessageTest extends StuTestCase
 
     private MessageInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new Message(

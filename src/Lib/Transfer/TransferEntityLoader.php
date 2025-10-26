@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactoryInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
@@ -27,7 +26,7 @@ class TransferEntityLoader implements TransferEntityLoaderInterface
         private StorageEntityWrapperFactoryInterface $storageEntityWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function loadEntity(
         int $id,
         TransferEntityTypeEnum $entityType,

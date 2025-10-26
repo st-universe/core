@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Action\ChangeCharacter;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ChangeCharacterRequest implements ChangeCharacterRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getCharacterId(): int
     {
         return $this->parameter('character_id')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->tidyString($this->parameter('name')->string()->required());
     }
 
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return $this->tidyString($this->parameter('description')->string()->required());
@@ -32,7 +31,7 @@ final class ChangeCharacterRequest implements ChangeCharacterRequestInterface
     /**
      * @return array<string, mixed>
      */
-    #[Override]
+    #[\Override]
     public function getAvatar(): array
     {
         return $_FILES['avatar'];

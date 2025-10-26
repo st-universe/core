@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\SwitchContactMode;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -18,7 +17,7 @@ final class SwitchContactMode implements ActionControllerInterface
 
     public function __construct(private SwitchContactModeRequestInterface $switchContactModeRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowContactMode::VIEW_IDENTIFIER);
@@ -64,7 +63,7 @@ final class SwitchContactMode implements ActionControllerInterface
         $game->setTemplateVar('contact', $contact);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

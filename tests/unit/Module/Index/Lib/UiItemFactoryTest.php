@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Lib;
 
-use Override;
 use Stu\Orm\Entity\Faction;
 use Stu\StuTestCase;
 
@@ -12,7 +11,7 @@ class UiItemFactoryTest extends StuTestCase
 {
     private UiItemFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new UiItemFactory();

@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
 use Stu\StuTestCase;
@@ -17,7 +16,7 @@ class ColonyTickCommandTest extends StuTestCase
 
     private ColonyTickCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->colonyTickRunner = $this->mock(ColonyTickRunner::class);

@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
@@ -37,7 +36,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setLocation(Location $location): SpacecraftConfiguratorInterface
     {
         $this->wrapper->get()->setLocation($location);
@@ -45,7 +44,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function loadEps(int $percentage): SpacecraftConfiguratorInterface
     {
         $epsSystem = $this->wrapper->getEpsSystemData();
@@ -59,7 +58,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function loadBattery(int $percentage): SpacecraftConfiguratorInterface
     {
         $epsSystem = $this->wrapper->getEpsSystemData();
@@ -73,7 +72,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function loadReactor(int $percentage): SpacecraftConfiguratorInterface
     {
         $reactor = $this->wrapper->getReactorWrapper();
@@ -84,7 +83,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function loadWarpdrive(int $percentage): SpacecraftConfiguratorInterface
     {
         $warpdrive = $this->wrapper->getWarpDriveSystemData();
@@ -97,7 +96,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function maxOutSystems(): SpacecraftConfiguratorInterface
     {
         $this->loadEps(100)
@@ -112,7 +111,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function createCrew(?int $amount = null): SpacecraftConfiguratorInterface
     {
         $spacecraft = $this->wrapper->get();
@@ -137,7 +136,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function transferCrew(EntityWithCrewAssignmentsInterface $provider): SpacecraftConfiguratorInterface
     {
         $ship = $this->wrapper->get();
@@ -154,7 +153,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setAlertState(SpacecraftAlertStateEnum $alertState): SpacecraftConfiguratorInterface
     {
         $this->alertStateManager->setAlertState(
@@ -165,7 +164,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setTorpedo(?int $torpedoTypeId = null): SpacecraftConfiguratorInterface
     {
         $spacecraft = $this->wrapper->get();
@@ -193,7 +192,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setSpacecraftName(string $name): SpacecraftConfiguratorInterface
     {
         $this->wrapper->get()->setName($name);
@@ -201,7 +200,7 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function finishConfiguration(): SpacecraftWrapperInterface
     {
         $this->spacecraftRepository->save($this->wrapper->get());

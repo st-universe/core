@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -25,7 +24,7 @@ class ShipUndockingTest extends StuTestCase
 
     private ShipUndockingInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

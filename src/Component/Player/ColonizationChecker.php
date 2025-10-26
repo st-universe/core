@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
-use Override;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
@@ -17,7 +16,7 @@ final class ColonizationChecker implements ColonizationCheckerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function canColonize(User $user, Colony $colony): bool
     {
         if (!$colony->isFree()) {

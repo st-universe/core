@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\WritePm;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class WritePmRequest implements WritePmRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getRecipientId(): int
     {
         return $this->parameter('recipient')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Destruction;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\SpacecraftDestructionHandlerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -20,7 +19,7 @@ final class SpacecraftDestruction implements SpacecraftDestructionInterface
         private array $destructionHandlers
     ) {}
 
-    #[Override]
+    #[\Override]
     public function destroy(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

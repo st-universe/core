@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Damage;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
@@ -14,7 +13,7 @@ class DamageWrapperTest extends StuTestCase
 {
     private DamageWrapper $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new DamageWrapper(0);

@@ -4,56 +4,55 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class RegisterRequest implements RegisterRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getLoginName(): string
     {
         return $this->parameter('loginname')->string()->defaultsToIfEmpty('');
     }
 
-    #[Override]
+    #[\Override]
     public function getEmailAddress(): string
     {
         return $this->parameter('email')->string()->defaultsToIfEmpty('');
     }
 
-    #[Override]
+    #[\Override]
     public function getPassword(): string
     {
         return $this->parameter('password')->string()->defaultsToIfEmpty('');
     }
 
-    #[Override]
+    #[\Override]
     public function getPasswordReEntered(): string
     {
         return $this->parameter('password2')->string()->defaultsToIfEmpty('');
     }
 
-    #[Override]
+    #[\Override]
     public function getMobileNumber(): string
     {
         return trim($this->parameter('mobile')->string()->defaultsToIfEmpty(''));
     }
 
-    #[Override]
+    #[\Override]
     public function getCountryCode(): string
     {
         return $this->parameter('countrycode')->string()->defaultsToIfEmpty('');
     }
 
-    #[Override]
+    #[\Override]
     public function getFactionId(): int
     {
         return $this->parameter('factionid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getToken(): string
     {
         $token = $this->parameter('token')->string()->defaultsToIfEmpty('');
@@ -61,7 +60,7 @@ final class RegisterRequest implements RegisterRequestInterface
         return preg_replace('/[\W_]+/', '', $token);
     }
 
-    #[Override]
+    #[\Override]
     public function getReferer(): ?string
     {
         return $this->parameter('referer')->string()->defaultsToIfEmpty(null);

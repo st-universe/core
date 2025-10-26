@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Manager;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Tick\TickManagerInterface;
 use Stu\StuTestCase;
 
@@ -15,7 +14,7 @@ class TickManagerRunnerTest extends StuTestCase
 
     private TickManagerRunner $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->tickManager = $this->mock(TickManagerInterface::class);

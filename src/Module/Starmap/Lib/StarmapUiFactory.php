@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -31,7 +30,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         private readonly LoggerUtilFactoryInterface $loggerUtilFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createMapSectionHelper(): MapSectionHelper
     {
         return new MapSectionHelper(
@@ -40,7 +39,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createYRow(
         ?Layer $layer,
         int $cury,
@@ -60,7 +59,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createUserYRow(
         User $user,
         Layer $layer,
@@ -83,7 +82,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createExplorableStarmapItem(
         ExploreableStarMapInterface $exploreableStarMap,
         Layer $layer

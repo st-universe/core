@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -33,7 +32,7 @@ class EnoughEpsConditionTest extends StuTestCase
 
     private MockInterface&ConditionCheckResult $conditionCheckResult;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);

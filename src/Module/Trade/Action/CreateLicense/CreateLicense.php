@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateLicense;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +23,7 @@ final class CreateLicense implements ActionControllerInterface
         private CommodityRepositoryInterface $commodityRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -74,7 +73,7 @@ final class CreateLicense implements ActionControllerInterface
         $game->getInfo()->addInformation('Handelslizenz geändert');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Image\ImageCreationInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
@@ -26,7 +25,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $showAllyAreas = request::getInt('showAlly');

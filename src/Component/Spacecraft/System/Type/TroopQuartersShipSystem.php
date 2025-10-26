@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -17,13 +16,13 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
 
     public function __construct(private CrewRepositoryInterface $crewRepository) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::TROOP_QUARTERS;
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         foreach ($wrapper->get()->getCrewAssignments() as $crewAssignment) {
@@ -33,19 +32,19 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 5;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 5;
     }
 
-    #[Override]
+    #[\Override]
     public function canBeActivatedWithInsufficientCrew(): bool
     {
         return true;

@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 use ArrayIterator;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
@@ -25,7 +24,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);

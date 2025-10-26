@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowShipCommunication;
 
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -25,7 +24,7 @@ final class ShowShipCommunication implements ViewControllerInterface
         private Parser $bbCodeParser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

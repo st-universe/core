@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config;
 
-use Override;
 use Stu\Module\Config\Model\CacheSettingsInterface;
 use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\Model\DebugSettingsInterface;
@@ -17,37 +16,37 @@ final class StuConfig implements StuConfigInterface
         private SettingsCacheInterface $settingsCache
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getCacheSettings(): CacheSettingsInterface
     {
         return $this->settingsCache->getSettings(CacheSettingsInterface::class, null);
     }
 
-    #[Override]
+    #[\Override]
     public function getDbSettings(): DbSettingsInterface
     {
         return $this->settingsCache->getSettings(DbSettingsInterface::class, null);
     }
 
-    #[Override]
+    #[\Override]
     public function getDebugSettings(): DebugSettingsInterface
     {
         return $this->settingsCache->getSettings(DebugSettingsInterface::class, null);
     }
 
-    #[Override]
+    #[\Override]
     public function getGameSettings(): GameSettingsInterface
     {
         return $this->settingsCache->getSettings(GameSettingsInterface::class, null);
     }
 
-    #[Override]
+    #[\Override]
     public function getResetSettings(): ResetSettingsInterface
     {
         return $this->settingsCache->getSettings(ResetSettingsInterface::class, null);
     }
 
-    #[Override]
+    #[\Override]
     public function getSecuritySettings(): SecuritySettingsInterface
     {
         return $this->settingsCache->getSettings(SecuritySettingsInterface::class, null);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Station;
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\Station;
  */
 final class DockingPrivilegeRepository extends EntityRepository implements DockingPrivilegeRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): DockingPrivilege
     {
         return new DockingPrivilege();
     }
 
-    #[Override]
+    #[\Override]
     public function save(DockingPrivilege $post): void
     {
         $em = $this->getEntityManager();
@@ -29,7 +28,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(DockingPrivilege $post): void
     {
         $em = $this->getEntityManager();
@@ -38,7 +37,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function existsForTargetAndTypeAndShip(int $targetId, DockTypeEnum $privilegeType, Station $station): bool
     {
         return $this->count([
@@ -48,7 +47,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         ]) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByTypeAndTarget(DockTypeEnum $type, int $targetId): void
     {
         $this->getEntityManager()

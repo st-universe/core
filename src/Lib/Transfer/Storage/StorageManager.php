@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Storage;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
@@ -20,7 +19,7 @@ final class StorageManager implements StorageManagerInterface
         private readonly StorageRepositoryInterface $storageRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function lowerStorage(EntityWithStorageInterface $entity, Commodity $commodity, int $amount): void
     {
         $storageList = $entity->getStorage();
@@ -57,7 +56,7 @@ final class StorageManager implements StorageManagerInterface
         $this->storageRepository->save($storage);
     }
 
-    #[Override]
+    #[\Override]
     public function upperStorage(EntityWithStorageInterface $entity, Commodity $commodity, int $amount): void
     {
         $storages = $entity->getStorage();

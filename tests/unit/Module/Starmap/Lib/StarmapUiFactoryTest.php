@@ -6,7 +6,6 @@ namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\Layer;
@@ -27,7 +26,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     private StarmapUiFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

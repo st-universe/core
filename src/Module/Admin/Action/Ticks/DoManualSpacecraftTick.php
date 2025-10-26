@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
@@ -28,7 +27,7 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -58,7 +57,7 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

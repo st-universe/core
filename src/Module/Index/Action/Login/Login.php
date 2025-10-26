@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Login;
 
-use Override;
 use Stu\Component\Game\RedirectionException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\LoginException;
@@ -25,7 +24,7 @@ final class Login implements ActionControllerInterface
     /**
      * @throws LoginException
      */
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $success = $this->sessionLogin->login(
@@ -39,7 +38,7 @@ final class Login implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Action\StartEmergency;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -26,7 +25,7 @@ class StartEmergencyTest extends StuTestCase
 
     private StartEmergency $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);

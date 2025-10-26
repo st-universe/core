@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\LoadReactor;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
@@ -28,7 +27,7 @@ final class LoadReactor implements ActionControllerInterface
         private CommodityCacheInterface $commodityCache
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -140,7 +139,7 @@ final class LoadReactor implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

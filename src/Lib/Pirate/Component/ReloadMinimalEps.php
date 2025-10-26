@@ -2,13 +2,12 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class ReloadMinimalEps implements ReloadMinimalEpsInterface
 {
-    #[Override]
+    #[\Override]
     public function reload(FleetWrapperInterface $fleetWrapper, int $minimalPercentage = 20): void
     {
         foreach ($fleetWrapper->getShipWrappers() as $wrapper) {

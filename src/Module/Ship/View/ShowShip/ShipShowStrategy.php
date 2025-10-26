@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Override;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
@@ -26,7 +25,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         private AstroEntryLibInterface $astroEntryLib,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function appendNavigationPart(GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
     {
         $game->appendNavigationPart('ship.php',  _('Schiffe'));
@@ -34,7 +33,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(int $spacecraftId, GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
     {
         $ship = $this->shipLoader->getByIdAndUser($spacecraftId, $game->getUser()->getId(), true, false);
@@ -93,7 +92,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleEnum::SHIP, ShowSpacecraft::VIEW_IDENTIFIER);

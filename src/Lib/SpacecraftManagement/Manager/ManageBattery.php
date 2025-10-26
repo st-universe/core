@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
@@ -21,7 +20,7 @@ class ManageBattery implements ManagerInterface
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $msg = [];

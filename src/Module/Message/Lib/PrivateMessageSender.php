@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -30,7 +29,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         private readonly StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function send(
         int $senderId,
         int $recipientId,
@@ -110,7 +109,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             : $href;
     }
 
-    #[Override]
+    #[\Override]
     public function sendBroadcast(
         User $sender,
         array $recipients,

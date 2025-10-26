@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -24,7 +23,7 @@ class MessageFolderComponentTest extends StuTestCase
 
     private MessageFolderComponent $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);

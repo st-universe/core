@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -23,7 +22,7 @@ class BoardShipUtil implements BoardShipUtilInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function cycleKillRound(
         array &$attackers,
         array &$defenders,

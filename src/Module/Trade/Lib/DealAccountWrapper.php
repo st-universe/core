@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
@@ -21,13 +20,13 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
         private int $userId
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->tradePost->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getStation(): Station
     {
         return $this->tradePost->getStation();
@@ -45,7 +44,7 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
         return $this->storage;
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -55,13 +54,13 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isOverStorage(): bool
     {
         return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageCapacity(): int
     {
         return $this->tradePost->getStorage();

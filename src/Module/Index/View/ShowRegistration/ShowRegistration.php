@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\View\ShowRegistration;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Index\Lib\FactionItem;
@@ -23,7 +22,7 @@ final class ShowRegistration implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle('Registrierung - Star Trek Universe');

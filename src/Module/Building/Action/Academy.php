@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
@@ -14,19 +13,19 @@ final class Academy implements BuildingActionHandlerInterface
 {
     public function __construct(private CrewTrainingRepositoryInterface $crewTrainingRepository) {}
 
-    #[Override]
+    #[\Override]
     public function destruct(BuildingFunctionEnum $buildingFunction, Colony $colony): void
     {
         $this->crewTrainingRepository->truncateByColony($colony);
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         // nothing to do here
     }
 
-    #[Override]
+    #[\Override]
     public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         // nothing to do here

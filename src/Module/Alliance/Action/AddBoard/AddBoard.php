@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AddBoard;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
@@ -26,7 +25,7 @@ final class AddBoard implements ActionControllerInterface
     /**
      * @throws AccessViolationException
      */
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -60,7 +59,7 @@ final class AddBoard implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Forum wurde erstellt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

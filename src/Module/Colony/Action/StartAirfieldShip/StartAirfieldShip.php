@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\StartAirfieldShip;
 use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -49,7 +48,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -177,7 +176,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->storageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

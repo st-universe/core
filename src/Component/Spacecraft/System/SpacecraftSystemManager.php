@@ -6,7 +6,6 @@ namespace Stu\Component\Spacecraft\System;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Component\Spacecraft\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Spacecraft\System\Exception\AlreadyActiveException;
 use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
@@ -32,7 +31,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
      */
     public function __construct(private array $systemList, private StuTime $stuTime) {}
 
-    #[Override]
+    #[\Override]
     public function activate(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftSystemTypeEnum $type,
@@ -72,7 +71,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type, bool $force = false): void
     {
         $system = $this->lookupSystem($type);
@@ -84,7 +83,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         $system->deactivate($wrapper);
     }
 
-    #[Override]
+    #[\Override]
     public function deactivateAll(SpacecraftWrapperInterface $wrapper): void
     {
         foreach ($wrapper->get()->getSystems() as $shipSystem) {
@@ -96,7 +95,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(SpacecraftSystemTypeEnum $type): int
     {
         $system = $this->lookupSystem($type);
@@ -104,7 +103,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         return $system->getEnergyUsageForActivation();
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(SpacecraftSystemTypeEnum $type): int
     {
         $system = $this->lookupSystem($type);
@@ -112,7 +111,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         return $system->getEnergyConsumption();
     }
 
-    #[Override]
+    #[\Override]
     public function lookupSystem(SpacecraftSystemTypeEnum $type): SpacecraftSystemTypeInterface
     {
         $system = $this->systemList[$type->value] ?? null;
@@ -197,7 +196,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestroyedSystem(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type): void
     {
         $system = $this->lookupSystem($type);
@@ -205,7 +204,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         $system->handleDestruction($wrapper);
     }
 
-    #[Override]
+    #[\Override]
     public function handleDamagedSystem(SpacecraftWrapperInterface $wrapper, SpacecraftSystemTypeEnum $type): void
     {
         $system = $this->lookupSystem($type);
@@ -213,7 +212,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         $system->handleDamage($wrapper);
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveSystems(Spacecraft $ship, bool $sort = false): Collection
     {
         $activeSystems = [];

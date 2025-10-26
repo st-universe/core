@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
@@ -10,7 +9,7 @@ use Stu\Orm\Entity\Spacecraft;
 
 class AlertedShipInformation implements AlertedShipInformationInterface
 {
-    #[Override]
+    #[\Override]
     public function addAlertedShipsInfo(
         Spacecraft $incomingSpacecraft,
         array $alertedBattleParties,

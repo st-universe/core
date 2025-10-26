@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -13,7 +12,7 @@ final class TopFlightsReward implements MaintenanceHandlerInterface
 
     public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private UserRepositoryInterface $userRepository, private CreatePrestigeLogInterface $createPrestigeLog) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $ranking = $this->flightSignatureRepository->getFlightsTop10();

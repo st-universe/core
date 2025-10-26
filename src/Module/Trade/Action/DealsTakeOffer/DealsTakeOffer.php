@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
@@ -42,7 +41,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         private CreatePrestigeLogInterface $createPrestigeLog
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -225,7 +224,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             ->finishConfiguration();
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

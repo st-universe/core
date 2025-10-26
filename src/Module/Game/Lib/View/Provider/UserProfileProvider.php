@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\ParserWithImageInterface;
@@ -28,7 +27,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         private ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         if (!request::has('uid')) {

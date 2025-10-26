@@ -2,12 +2,11 @@
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 class MessageFactory implements MessageFactoryInterface
 {
-    #[Override]
+    #[\Override]
     public function createMessage(
         ?int $senderId = null,
         ?int $recipientId = null,
@@ -21,7 +20,7 @@ class MessageFactory implements MessageFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createMessageCollection(): MessageCollectionInterface
     {
         return new MessageCollection($this);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AstroMapping;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
@@ -29,7 +28,7 @@ final class StartAstroMapping implements ActionControllerInterface
         private AstroEntryLibInterface $astroEntryLib
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -98,7 +97,7 @@ final class StartAstroMapping implements ActionControllerInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Router;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Router\Handler\FallbackHandlerInterface;
 use Stu\StuTestCase;
@@ -16,7 +15,7 @@ class FallbackRouterTest extends StuTestCase
 
     private FallbackRouterInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->handler = $this->mock(FallbackHandlerInterface::class);

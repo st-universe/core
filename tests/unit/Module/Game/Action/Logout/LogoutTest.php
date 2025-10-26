@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Action\Logout;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ class LogoutTest extends StuTestCase
 
     private Logout $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->session = $this->mock(SessionInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -33,7 +32,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
         $this->logger->init('CREW', LogLevelEnum::ERROR);
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -85,7 +84,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

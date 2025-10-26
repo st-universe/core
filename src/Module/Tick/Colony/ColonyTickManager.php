@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
@@ -37,7 +36,7 @@ class ColonyTickManager extends AbstractTickManager implements ColonyTickManager
         private Ubench $benchmark
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(int $batchGroup, int $batchGroupCount): void
     {
         $this->setLock($batchGroup);
@@ -138,7 +137,7 @@ class ColonyTickManager extends AbstractTickManager implements ColonyTickManager
         $this->lockManager->clearLock($batchGroupId, LockTypeEnum::COLONY_GROUP);
     }
 
-    #[Override]
+    #[\Override]
     protected function getBenchmark(): Ubench
     {
         return $this->benchmark;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\Location;
 use Stu\StuTestCase;
@@ -13,7 +12,7 @@ class LocationPoolTest extends StuTestCase
 {
     private LocationPool $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new LocationPool(

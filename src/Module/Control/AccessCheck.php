@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Override;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Config\StuConfigInterface;
@@ -16,7 +15,7 @@ class AccessCheck implements AccessCheckInterface
         private readonly StuConfigInterface $stuConfig
     ) {}
 
-    #[Override]
+    #[\Override]
     public function checkUserAccess(
         ControllerInterface $controller,
         GameControllerInterface $game
@@ -78,7 +77,7 @@ class AccessCheck implements AccessCheckInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature, GameControllerInterface $game): bool
     {
         if ($game->isAdmin()) {

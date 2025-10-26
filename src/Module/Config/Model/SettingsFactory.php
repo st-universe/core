@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-use Override;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Config\StuConfigSettingEnum;
 
@@ -10,7 +9,7 @@ class SettingsFactory implements SettingsFactoryInterface
 {
     public function __construct(private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function createSettings(
         StuConfigSettingEnum $type,
         ?SettingsInterface $parent,

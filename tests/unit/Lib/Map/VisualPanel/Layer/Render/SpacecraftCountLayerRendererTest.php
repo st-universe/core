@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftCountData;
@@ -16,7 +15,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
 {
     private MockInterface&AbstractVisualPanel $panel;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->panel = mock(AbstractVisualPanel::class);

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class SubspaceSensorShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::SUBSPACE_SCANNER;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -30,13 +29,13 @@ final class SubspaceSensorShipSystem extends AbstractSpacecraftSystemType implem
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 30;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 15;

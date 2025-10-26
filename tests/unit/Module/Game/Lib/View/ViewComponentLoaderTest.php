@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Lib\View;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ class ViewComponentLoaderTest extends StuTestCase
 
     private ViewComponentLoaderInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->componentProvider = $this->mock(ViewComponentProviderInterface::class);

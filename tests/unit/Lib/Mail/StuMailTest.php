@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Mail;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\StuTestCase;
 use Symfony\Component\Mailer\MailerInterface;
@@ -19,7 +18,7 @@ class StuMailTest extends StuTestCase
 
     private StuMailInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->email = $this->mock(Email::class);

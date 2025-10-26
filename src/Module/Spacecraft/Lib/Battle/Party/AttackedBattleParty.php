@@ -4,13 +4,12 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class AttackedBattleParty extends AbstractBattleParty
 {
-    #[Override]
+    #[\Override]
     protected function initMembers(): Collection
     {
         $fleetWrapper = $this->leader->getFleetWrapper();

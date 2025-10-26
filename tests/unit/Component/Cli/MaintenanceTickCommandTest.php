@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\StuTestCase;
@@ -17,7 +16,7 @@ class MaintenanceTickCommandTest extends StuTestCase
 
     private MaintenanceTickCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->tickRunner = $this->mock(MaintenanceTickRunner::class);

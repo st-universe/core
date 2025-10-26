@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\StuTestCase;
 
 class EmailSettingsTest extends StuTestCase
@@ -15,7 +14,7 @@ class EmailSettingsTest extends StuTestCase
 
     private EmailSettingsInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->settingsCore = $this->mock(SettingsCoreInterface::class);

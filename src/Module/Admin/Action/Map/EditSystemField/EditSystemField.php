@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,7 +20,7 @@ final class EditSystemField implements ActionControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         /** @var StarSystemMap $selectedField */
@@ -39,7 +38,7 @@ final class EditSystemField implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

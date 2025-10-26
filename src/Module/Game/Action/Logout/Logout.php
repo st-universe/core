@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\Logout;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Session\SessionInterface;
@@ -20,7 +19,7 @@ final class Logout implements ActionControllerInterface
 
     public function __construct(private SessionInterface $session) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         if ($game->hasUser()) {
@@ -30,7 +29,7 @@ final class Logout implements ActionControllerInterface
         throw new RedirectionException(sprintf('/%s.php', ModuleEnum::INDEX->value));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

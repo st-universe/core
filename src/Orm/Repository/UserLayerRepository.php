@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\UserLayer;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\UserLayer;
  */
 final class UserLayerRepository extends EntityRepository implements UserLayerRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): UserLayer
     {
         return new UserLayer();
     }
 
-    #[Override]
+    #[\Override]
     public function save(UserLayer $userLayer): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
         $em->persist($userLayer);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(UserLayer $userLayer): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
         $em->remove($userLayer);
     }
 
-    #[Override]
+    #[\Override]
     public function getByMappingType(int $mappingType): array
     {
         return $this->findBy([

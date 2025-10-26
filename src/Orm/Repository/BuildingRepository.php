@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
@@ -22,7 +21,7 @@ use Stu\Orm\Entity\Research;
  */
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getBuildmenuBuildings(
         PlanetFieldHostInterface $host,
         int $userId,
@@ -86,7 +85,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByResearch(Research $research): array
     {
         return $this->findBy(

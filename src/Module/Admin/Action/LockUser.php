@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use request;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
@@ -32,7 +31,7 @@ final class LockUser implements ActionControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('admin', LogLevelEnum::ERROR);
@@ -95,7 +94,7 @@ final class LockUser implements ActionControllerInterface
         $this->userLockRepository->save($lock);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

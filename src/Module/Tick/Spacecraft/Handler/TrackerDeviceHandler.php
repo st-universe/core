@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -15,7 +14,7 @@ class TrackerDeviceHandler implements SpacecraftTickHandlerInterface
         private TrackerDeviceManagerInterface $trackerDeviceManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

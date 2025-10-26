@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\StarSystem;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -17,7 +16,7 @@ final class GenerateEmptySystems implements GenerateEmptySystemsInterface
 
     public function __construct(private LayerRepositoryInterface $layerRepository, private MapRepositoryInterface $mapRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation) {}
 
-    #[Override]
+    #[\Override]
     public function generate(int $layerId, ?GameControllerInterface $game): int
     {
         $layer = $this->layerRepository->find($layerId);

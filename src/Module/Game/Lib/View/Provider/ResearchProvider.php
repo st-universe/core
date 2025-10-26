@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 
@@ -14,7 +13,7 @@ final class ResearchProvider implements ViewComponentProviderInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

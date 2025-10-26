@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
@@ -18,7 +17,7 @@ final class AlertLevelBasedReaction implements AlertLevelBasedReactionInterface
 {
     public function __construct(private SpacecraftSystemManagerInterface $spacecraftSystemManager) {}
 
-    #[Override]
+    #[\Override]
     public function react(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void
     {
         if ($this->changeFromGreenToYellow($wrapper, $informations)) {

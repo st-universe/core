@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
@@ -20,13 +19,13 @@ class RetrofitConsequence extends AbstractFlightConsequence implements FlightSta
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

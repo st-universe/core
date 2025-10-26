@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -44,7 +43,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function releaseSpacecraftFromWeb(SpacecraftWrapperInterface $wrapper): void
     {
         $this->loggerUtil->log(sprintf('releaseSpacecraftFromWeb, shipId: %d', $wrapper->get()->getId()));
@@ -66,7 +65,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->spacecraftRepository->save($spacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function releaseAllShips(TholianWeb $web, SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory): void
     {
         foreach ($web->getCapturedSpacecrafts() as $target) {
@@ -86,7 +85,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function removeWeb(TholianWeb $web): void
     {
         $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
@@ -94,7 +93,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->tholianWebRepository->delete($web);
     }
 
-    #[Override]
+    #[\Override]
     public function releaseWebHelper(ShipWrapperInterface $wrapper): void
     {
         $this->loggerUtil->log(sprintf('releaseWebHelper, shipId: %d', $wrapper->get()->getId()));
@@ -133,7 +132,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function resetWebHelpers(
         TholianWeb $web,
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
@@ -183,7 +182,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         return $this->updateWebFinishTime($web, -1);
     }
 
-    #[Override]
+    #[\Override]
     public function updateWebFinishTime(TholianWeb $web, ?int $helperModifier = null): ?int
     {
         $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
@@ -254,7 +253,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         return $web;
     }
 
-    #[Override]
+    #[\Override]
     public function isTargetOutsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
     {
         if (!$source instanceof Spacecraft) {
@@ -269,7 +268,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         return !$target instanceof Spacecraft || $target->getHoldingWeb() !== $web;
     }
 
-    #[Override]
+    #[\Override]
     public function isTargetInsideFinishedTholianWeb(EntityWithInteractionCheckInterface $source, EntityWithInteractionCheckInterface $target): bool
     {
         if (!$target instanceof Spacecraft) {

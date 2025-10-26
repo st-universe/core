@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -26,25 +25,25 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         parent::__construct($stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return $this->isAttackingShieldsOnly && !$target->isShielded();
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserVolleys(): int
     {
         return $this->get()->getRump()->getPhaserVolleys();
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserState(): bool
     {
         return $this->get()->getPhaserState();
     }
 
-    #[Override]
+    #[\Override]
     public function hasSufficientEnergy(int $amount): bool
     {
         $epsSystemData = $this->wrapper->getEpsSystemData();
@@ -54,7 +53,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $epsSystemData->getEps() >= $amount;
     }
 
-    #[Override]
+    #[\Override]
     public function getWeaponModule(): Module
     {
         if ($this->module === null) {
@@ -71,7 +70,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $this->module;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyWeaponBaseDamage(): int
     {
         $energyWeapon = $this->wrapper->getEnergyWeaponSystemData();
@@ -79,7 +78,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $energyWeapon === null ? 0 : $energyWeapon->getBaseDamage();
     }
 
-    #[Override]
+    #[\Override]
     public function reduceEps(int $amount): void
     {
         $epsSystemData = $this->wrapper->getEpsSystemData();
@@ -89,13 +88,13 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         $epsSystemData->lowerEps($amount)->update();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->get()->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->get()->getUser()->getId();
@@ -106,55 +105,55 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $this->wrapper->get();
     }
 
-    #[Override]
+    #[\Override]
     public function getHitChance(): int
     {
         return $this->wrapper->getComputerSystemDataMandatory()->getHitChance();
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserShieldDamageFactor(): int
     {
         return $this->get()->getRump()->getPhaserShieldDamageFactor();
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserHullDamageFactor(): int
     {
         return $this->get()->getRump()->getPhaserHullDamageFactor();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoVolleys(): int
     {
         return $this->get()->getRump()->getTorpedoVolleys();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoState(): bool
     {
         return $this->get()->getTorpedoState();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoCount(): int
     {
         return $this->get()->getTorpedoCount();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedo(): ?TorpedoType
     {
         return $this->get()->getTorpedo();
     }
 
-    #[Override]
+    #[\Override]
     public function lowerTorpedoCount(int $amount): void
     {
         $this->shipTorpedoManager->changeTorpedo($this->wrapper, -$amount);
     }
 
-    #[Override]
+    #[\Override]
     public function isShieldPenetration(): bool
     {
         $systemData = $this->wrapper->getProjectileLauncherSystemData();
@@ -165,7 +164,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $this->stuRandom->rand(1, 10000) <= $systemData->getShieldPenetration();
     }
 
-    #[Override]
+    #[\Override]
     public function getProjectileWeaponDamage(bool $isCritical): int
     {
         $torpedo = $this->getTorpedo();
@@ -185,7 +184,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         return $isCritical ? $damage * 2 : $damage;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->get()->getLocation();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Component;
 
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentEnumInterface;
 
@@ -19,13 +18,13 @@ enum GameComponentEnum: string implements ComponentEnumInterface
     case USER = 'USER_PROFILE';
     case OUTDATED = 'OUTDATED';
 
-    #[Override]
+    #[\Override]
     public function getModuleView(): ModuleEnum
     {
         return ModuleEnum::GAME;
     }
 
-    #[Override]
+    #[\Override]
     public function getTemplate(): string
     {
         return match ($this) {
@@ -40,7 +39,7 @@ enum GameComponentEnum: string implements ComponentEnumInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public function getRefreshIntervalInSeconds(): ?int
     {
         return match ($this) {
@@ -50,7 +49,7 @@ enum GameComponentEnum: string implements ComponentEnumInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public function hasTemplateVariables(): bool
     {
         return match ($this) {
@@ -60,7 +59,7 @@ enum GameComponentEnum: string implements ComponentEnumInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public function getValue(): string
     {
         return $this->value;

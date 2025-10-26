@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Movement;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
@@ -15,7 +14,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
 {
     public function __construct(private MessageFactoryInterface $messageFactory) {}
 
-    #[Override]
+    #[\Override]
     public function reachedDestination(
         Spacecraft $spacecraft,
         bool $isFleetMode,
@@ -97,7 +96,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         }
     }
 
-    #[Override]
+    #[\Override]
     public function reachedDestinationDestroyed(
         Spacecraft $spacecraft,
         string $leadShipName,
@@ -172,7 +171,7 @@ final class ShipMovementInformationAdder implements ShipMovementInformationAdder
         }
     }
 
-    #[Override]
+    #[\Override]
     public function pulledTractoredShip(
         Spacecraft $spacecraft,
         Ship $tractoredShip,

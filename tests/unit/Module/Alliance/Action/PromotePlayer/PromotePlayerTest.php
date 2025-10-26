@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -33,7 +32,7 @@ class PromotePlayerTest extends StuTestCase
 
     private ActionControllerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->promotePlayerRequest = $this->mock(PromotePlayerRequestInterface::class);

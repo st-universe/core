@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
@@ -23,7 +22,7 @@ final class ReactorUtil implements ReactorUtilInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function storageContainsNeededCommodities(Collection $storages, ReactorWrapperInterface $reactor): bool
     {
         foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
@@ -40,7 +39,7 @@ final class ReactorUtil implements ReactorUtilInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function loadReactor(
         Spacecraft $spacecraft,
         int $additionalLoad,

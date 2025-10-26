@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Commodity;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
@@ -16,7 +15,7 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
     {
     }
 
-    #[Override]
+    #[\Override]
     public function getProduction(): array
     {
         $result = $this->buildingCommodityRepository->getProductionByColony(

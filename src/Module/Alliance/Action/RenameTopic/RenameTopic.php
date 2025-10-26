@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\RenameTopic;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
@@ -20,7 +19,7 @@ final class RenameTopic implements ActionControllerInterface
         private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
@@ -45,7 +44,7 @@ final class RenameTopic implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Thema wurde umbenannt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

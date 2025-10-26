@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Iterator;
-use Override;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -54,31 +53,31 @@ final class FleetNfsIterator implements Iterator
         }
     }
 
-    #[Override]
+    #[\Override]
     public function rewind(): void
     {
         $this->position = 0;
     }
 
-    #[Override]
+    #[\Override]
     public function current(): FleetNfsItem
     {
         return new FleetNfsItem($this->fleets[$this->position], $this->currentSpacecraft, $this->sessionStorage, $this->userId);
     }
 
-    #[Override]
+    #[\Override]
     public function key(): int
     {
         return $this->position;
     }
 
-    #[Override]
+    #[\Override]
     public function next(): void
     {
         ++$this->position;
     }
 
-    #[Override]
+    #[\Override]
     public function valid(): bool
     {
         return isset($this->fleets[$this->position]);

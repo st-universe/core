@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -19,7 +18,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 {
     public function __construct(private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function notify(KnPost $post, RpgPlot $plot): void
     {
         $postUser = $post->getUser();

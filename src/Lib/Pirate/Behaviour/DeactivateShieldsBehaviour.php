@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Behaviour;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\Spacecraft;
 class DeactivateShieldsBehaviour implements PirateBehaviourInterface
 {
     public function __construct(private SpacecraftSystemManagerInterface $spacecraftSystemManager) {}
-    #[Override]
+    #[\Override]
     public function action(
         FleetWrapperInterface $fleetWrapper,
         PirateReactionInterface $pirateReaction,

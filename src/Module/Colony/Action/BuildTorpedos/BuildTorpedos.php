@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildTorpedos;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -20,7 +19,7 @@ final class BuildTorpedos implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -90,7 +89,7 @@ final class BuildTorpedos implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

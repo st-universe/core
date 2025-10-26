@@ -7,7 +7,6 @@ namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,7 +24,7 @@ final class ChangeAvatar implements ActionControllerInterface
         private readonly ConfigInterface $config
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $file = $_FILES['avatar'];
@@ -95,7 +94,7 @@ final class ChangeAvatar implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

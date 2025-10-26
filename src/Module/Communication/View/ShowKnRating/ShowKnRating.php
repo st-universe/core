@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnRating;
 
-use Override;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
@@ -18,7 +17,7 @@ final class ShowKnRating implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->showMacro('html/communication/knRating.twig');

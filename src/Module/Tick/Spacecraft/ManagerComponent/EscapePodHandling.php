@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -17,7 +16,7 @@ class EscapePodHandling implements ManagerComponentInterface
 {
     public function __construct(private PrivateMessageSenderInterface $privateMessageSender, private SpacecraftRemoverInterface $spacecraftRemover, private ShipRepositoryInterface $shipRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository, private ColonyLibFactoryInterface $colonyLibFactory) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $escapedToColonies = [];

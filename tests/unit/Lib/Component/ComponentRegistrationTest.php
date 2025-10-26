@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Component;
 
-use Override;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\Colony;
@@ -14,7 +13,7 @@ class ComponentRegistrationTest extends StuTestCase
 {
     private ComponentRegistrationInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new ComponentRegistration();

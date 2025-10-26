@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\StuTestCase;
@@ -26,7 +25,7 @@ class SpacecraftTickRunnerTest extends StuTestCase
 
     private SpacecraftTickRunner $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftTickManager = $this->mock(SpacecraftTickManagerInterface::class);

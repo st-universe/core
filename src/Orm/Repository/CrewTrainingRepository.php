@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\CrewTraining;
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\User;
  */
 final class CrewTrainingRepository extends EntityRepository implements CrewTrainingRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(CrewTraining $researched): void
     {
         $em = $this->getEntityManager();
@@ -24,7 +23,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em->persist($researched);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(CrewTraining $researched): void
     {
         $em = $this->getEntityManager();
@@ -32,13 +31,13 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em->remove($researched);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): CrewTraining
     {
         return new CrewTraining();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()
@@ -52,7 +51,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByUser(User $user): int
     {
         return $this->count([
@@ -60,7 +59,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
     {
         return $this->getEntityManager()

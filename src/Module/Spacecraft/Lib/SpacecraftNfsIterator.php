@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Iterator;
-use Override;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
 /**
@@ -19,31 +18,31 @@ final class SpacecraftNfsIterator implements Iterator
     /** @param array<TSpacecraftItemInterface> $spacecrafts */
     public function __construct(private array $spacecrafts, private int $userId) {}
 
-    #[Override]
+    #[\Override]
     public function rewind(): void
     {
         $this->position = 0;
     }
 
-    #[Override]
+    #[\Override]
     public function current(): SpacecraftNfsItem
     {
         return new SpacecraftNfsItem($this->spacecrafts[$this->position], $this->userId);
     }
 
-    #[Override]
+    #[\Override]
     public function key(): int
     {
         return $this->position;
     }
 
-    #[Override]
+    #[\Override]
     public function next(): void
     {
         ++$this->position;
     }
 
-    #[Override]
+    #[\Override]
     public function valid(): bool
     {
         return isset($this->spacecrafts[$this->position]);

@@ -6,7 +6,6 @@ namespace Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Component\Cli\ColonyCorrectionCommand;
 use Stu\Module\Colony\Lib\ColonyCorrector;
@@ -18,7 +17,7 @@ class ColonyCorrectionCommandTest extends StuTestCase
 
     private ColonyCorrectionCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->colonyCorrector = $this->mock(ColonyCorrector::class);

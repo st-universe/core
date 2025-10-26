@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Lib\Information\InformationInterface;
@@ -35,7 +34,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
 
     private TractorMassPayloadUtilInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //INJECTED
@@ -62,7 +61,7 @@ class TractorMassPayloadUtilTest extends StuTestCase
             $this->messageFactory
         ) extends TractorMassPayloadUtil {
 
-            #[Override]
+            #[\Override]
             protected function getTractorPayload(Spacecraft $spacecraft): int
             {
                 return $spacecraft->getRump()->getTractorPayload();

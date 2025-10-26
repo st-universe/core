@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
-use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -14,19 +13,19 @@ final class ColonyLimitCalculator implements ColonyLimitCalculatorInterface
 {
     public function __construct(private ResearchRepositoryInterface $researchRepository, private ColonyRepositoryInterface $colonyRepository) {}
 
-    #[Override]
+    #[\Override]
     public function canColonizeFurtherColonyWithType(User $user, ColonyTypeEnum $colonyType): bool
     {
         return $this->colonyRepository->getAmountByUser($user, $colonyType) < $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
-    #[Override]
+    #[\Override]
     public function getColonyLimitWithType(User $user, ColonyTypeEnum $colonyType): int
     {
         return $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
-    #[Override]
+    #[\Override]
     public function getColonyCountWithType(User $user, ColonyTypeEnum $colonyType): int
     {
         return $this->colonyRepository->getAmountByUser($user, $colonyType);

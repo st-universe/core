@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -50,7 +49,7 @@ final class BuildShip implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -260,7 +259,7 @@ final class BuildShip implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

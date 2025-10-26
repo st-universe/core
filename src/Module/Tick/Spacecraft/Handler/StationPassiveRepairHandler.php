@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -24,7 +23,7 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

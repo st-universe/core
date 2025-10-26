@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftSignatureData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\Control\StuTime;
@@ -29,13 +28,13 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function getDataClassString(): string
     {
         return SpacecraftSignatureData::class;
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getShipSubspaceLayerData(
@@ -48,7 +47,7 @@ final class ShipSubspaceDataProvider extends AbstractSubspaceDataProvider
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         return $this->starSystemMapRepository->getShipSubspaceLayerData(

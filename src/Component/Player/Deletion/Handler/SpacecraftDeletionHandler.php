@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
@@ -32,7 +31,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
         private MiningQueueRepositoryInterface $miningQueueRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         foreach ($this->spacecraftRepository->getByUser($user) as $spacecraft) {

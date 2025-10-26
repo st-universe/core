@@ -5,7 +5,6 @@ namespace Stu\Orm\Transaction;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Transaction\EntityManagerFactoryInterface;
@@ -28,7 +27,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         $this->wrapped = $this->entityManagerFactory->createEntityManager();
     }
 
-    #[Override]
+    #[\Override]
     public function getRepository(string $className): EntityRepository
     {
         return $this
@@ -37,7 +36,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
             ->getRepository($this, $className);
     }
 
-    #[Override]
+    #[\Override]
     public function beginTransaction(): void
     {
         if (!$this->wrapped->isOpen()) {
@@ -52,7 +51,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         }
     }
 
-    #[Override]
+    #[\Override]
     public function flush(): void
     {
         if ($this->wrapped->isOpen()) {
@@ -62,7 +61,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         }
     }
 
-    #[Override]
+    #[\Override]
     public function commit(): void
     {
         if ($this->wrapped->getConnection()->isTransactionActive()) {
@@ -71,7 +70,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         }
     }
 
-    #[Override]
+    #[\Override]
     public function rollback(): void
     {
         if ($this->wrapped->getConnection()->isTransactionActive()) {

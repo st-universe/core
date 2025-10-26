@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
@@ -39,13 +38,13 @@ final class SelectedTech implements SelectedTechInterface
         private ConfigInterface $config
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getResearch(): Research
     {
         return $this->research;
     }
 
-    #[Override]
+    #[\Override]
     public function getResearchState(): ?Researched
     {
         if ($this->state === null) {
@@ -57,7 +56,7 @@ final class SelectedTech implements SelectedTechInterface
         return $this->state;
     }
 
-    #[Override]
+    #[\Override]
     public function getDistinctExcludeNames(): array
     {
         if ($this->excludes === null) {
@@ -81,13 +80,13 @@ final class SelectedTech implements SelectedTechInterface
         return $this->excludes;
     }
 
-    #[Override]
+    #[\Override]
     public function hasExcludes(): bool
     {
         return $this->getDistinctExcludeNames() !== [];
     }
 
-    #[Override]
+    #[\Override]
     public function getDistinctPositiveDependencyNames(): array
     {
         if ($this->dependencies === null) {
@@ -113,13 +112,13 @@ final class SelectedTech implements SelectedTechInterface
         return $this->dependencies;
     }
 
-    #[Override]
+    #[\Override]
     public function hasPositiveDependencies(): bool
     {
         return $this->getDistinctPositiveDependencyNames() !== [];
     }
 
-    #[Override]
+    #[\Override]
     public function getDonePoints(): int
     {
         $researchState = $this->getResearchState();
@@ -134,7 +133,7 @@ final class SelectedTech implements SelectedTechInterface
         return $this->research->getPoints();
     }
 
-    #[Override]
+    #[\Override]
     public function isResearchFinished(): bool
     {
         $researchState = $this->getResearchState();
@@ -144,13 +143,13 @@ final class SelectedTech implements SelectedTechInterface
             : $researchState->getFinished() > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildings(): array
     {
         return $this->buildingRepository->getByResearch($this->research);
     }
 
-    #[Override]
+    #[\Override]
     public function getStatusBar(): string
     {
         $researchState = $this->getResearchState();
@@ -168,7 +167,7 @@ final class SelectedTech implements SelectedTechInterface
             ->render();
     }
 
-    #[Override]
+    #[\Override]
     public function getWikiLink(): string
     {
         return sprintf(

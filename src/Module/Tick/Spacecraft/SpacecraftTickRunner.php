@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Spacecraft;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -34,7 +33,7 @@ class SpacecraftTickRunner implements TickRunnerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil(true);
     }
 
-    #[Override]
+    #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         if ($this->transactionTickRunner->isGameStateReset()) {

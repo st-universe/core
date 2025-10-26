@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
@@ -27,7 +26,7 @@ class ResearchComponentTest extends StuTestCase
 
     private ResearchComponent $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);

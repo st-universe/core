@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\View\ShowNote;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,7 +15,7 @@ final class ShowNote implements ViewControllerInterface
 
     public function __construct(private ShowNoteRequestInterface $showNoteRequest, private NoteRepositoryInterface $noteRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $note = $this->noteRepository->find($this->showNoteRequest->getNoteId());

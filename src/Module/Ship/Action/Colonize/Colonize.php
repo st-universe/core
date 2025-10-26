@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Colonize;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Game\ModuleEnum;
@@ -57,7 +56,7 @@ final class Colonize implements ActionControllerInterface
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -199,7 +198,7 @@ final class Colonize implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnCharacter;
 
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,7 +18,7 @@ final class ShowKnCharacter implements ViewControllerInterface
         private UserCharacterRepositoryInterface $userCharactersRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $characterId = $this->showKnCharactersRequest->getCharacterId();

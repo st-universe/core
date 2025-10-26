@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\SplitReactorOutput;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
 use Stu\Exception\SanityCheckException;
@@ -21,7 +20,7 @@ final class SplitReactorOutput implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -84,7 +83,7 @@ final class SplitReactorOutput implements ActionControllerInterface
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

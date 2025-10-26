@@ -7,7 +7,6 @@ namespace Stu\Component\Anomaly;
 use InvalidArgumentException;
 use Mockery\MockInterface;
 use Monolog\Logger;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\IonStorm\IonStormData;
 use Stu\Module\Logging\StuLogger;
@@ -26,7 +25,7 @@ class AnomalyCreationTest extends StuTestCase
 
     private AnomalyCreationInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         StuLogger::setMock(new Logger('test'));

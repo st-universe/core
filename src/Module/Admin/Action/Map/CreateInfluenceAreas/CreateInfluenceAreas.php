@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\CreateInfluenceAreas;
 
-use Override;
 use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
@@ -40,7 +39,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -281,7 +280,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $this->usedMaps[$x][$y] = true;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

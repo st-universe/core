@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\SelfDestruct;
 
-use Override;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -37,7 +36,7 @@ final class SelfDestruct implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -123,7 +122,7 @@ final class SelfDestruct implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

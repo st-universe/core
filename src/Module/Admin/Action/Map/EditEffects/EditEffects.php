@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditEffects;
 
-use Override;
 use request;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Admin\View\Map\Noop\Noop;
@@ -22,7 +21,7 @@ final class EditEffects implements ActionControllerInterface
         private MapRepositoryInterface $mapRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $selectedField = $this->mapRepository->find(request::getIntFatal('field'));
@@ -44,7 +43,7 @@ final class EditEffects implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

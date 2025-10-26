@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowEditPlot;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -16,7 +15,7 @@ final class ShowEditPlot implements ViewControllerInterface
 
     public function __construct(private ShowEditPlotRequestInterface $showEditPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->showEditPlotRequest->getPlotId());

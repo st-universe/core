@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchivePlot;
 
-use Override;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,7 +25,7 @@ final class ShowKnArchivePlot implements ViewControllerInterface
         private KnArchiveFactoryInterface $knArchiveFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

@@ -7,14 +7,13 @@ namespace Stu;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use Override;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
 
 abstract class ActionTestCase extends IntegrationTestCase
 {
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         self::$isSchemaInitializationNeeded = true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace  Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class ColonyListProvider implements ViewComponentProviderInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

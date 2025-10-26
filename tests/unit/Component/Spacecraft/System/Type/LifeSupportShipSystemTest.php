@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
@@ -18,7 +17,7 @@ class LifeSupportShipSystemTest extends StuTestCase
 
     private SpacecraftSystemTypeInterface $system;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

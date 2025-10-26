@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -18,7 +17,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
 {
     public function __construct(private AstroEntryRepositoryInterface $astroEntryRepository) {}
 
-    #[Override]
+    #[\Override]
     public function cancelAstroFinalizing(SpacecraftWrapperInterface $wrapper): void
     {
         if (!$wrapper instanceof ShipWrapperInterface) {
@@ -44,7 +43,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $this->astroEntryRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function finish(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
@@ -67,7 +66,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $this->astroEntryRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function getAstroEntryByShipLocation(Spacecraft $spacecraft, bool $showOverSystem = true): ?AstronomicalEntry
     {
         $user = $spacecraft->getUser();

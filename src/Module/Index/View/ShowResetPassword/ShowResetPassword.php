@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowResetPassword;
 
-use Override;
 use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,7 +18,7 @@ final class ShowResetPassword implements ViewControllerInterface
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $this->userRepository->getByResetToken($this->showResetPasswordRequest->getToken());

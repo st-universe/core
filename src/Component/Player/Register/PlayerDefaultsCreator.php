@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -21,7 +20,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
     public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository,  private TutorialStepRepositoryInterface $tutorialStepRepository,  private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
-    #[Override]
+    #[\Override]
     public function createDefault(User $user): void
     {
         $this->createDefaultPmCategories($user);

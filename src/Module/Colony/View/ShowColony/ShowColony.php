@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowColony;
 
-use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
@@ -27,7 +26,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         private ShowColonyRequestInterface $showColonyRequest,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -78,7 +77,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleEnum::COLONY, self::VIEW_IDENTIFIER);

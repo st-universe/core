@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\MiningQueue;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\MiningQueue;
  */
 final class MiningQueueRepository extends EntityRepository implements MiningQueueRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): MiningQueue
     {
         return new MiningQueue();
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): ?MiningQueue
     {
         return $this->findOneBy([
@@ -27,7 +26,7 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function save(MiningQueue $miningqueue): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
         $em->persist($miningqueue);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(MiningQueue $miningqueue): void
     {
         $em = $this->getEntityManager();
@@ -43,7 +42,7 @@ final class MiningQueueRepository extends EntityRepository implements MiningQueu
         $em->remove($miningqueue);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(

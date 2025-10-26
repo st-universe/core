@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayers;
 use Stu\Orm\Entity\Spacecraft;
@@ -33,7 +32,7 @@ class VisualNavPanelEntry extends SignaturePanelEntry
         return $this->y === $this->currentSpacecraft->getPosY();
     }
 
-    #[Override]
+    #[\Override]
     public function getCssClass(): string
     {
         if ($this->isCurrentShipPosition()) {

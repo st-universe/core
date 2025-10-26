@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferMenuNewOffer;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
 
     public function __construct(private ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest, private CommodityRepositoryInterface $commodityRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

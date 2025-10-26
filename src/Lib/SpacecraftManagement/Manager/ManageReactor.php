@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
@@ -19,7 +18,7 @@ class ManageReactor implements ManagerInterface
 {
     public function __construct(private ReactorUtilInterface $reactorUtil, private CommodityCacheInterface $commodityCache, private PlayerRelationDeterminatorInterface $playerRelationDeterminator) {}
 
-    #[Override]
+    #[\Override]
     public function manage(SpacecraftWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
         $values = $values['reactor'] ?? null;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnPlotMember;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -16,7 +15,7 @@ final class DeleteKnPlotMember implements ActionControllerInterface
 
     public function __construct(private DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $plot = $this->rpgPlotRepository->find($this->deleteKnPlotMemberRequest->getPlotId());
@@ -38,7 +37,7 @@ final class DeleteKnPlotMember implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

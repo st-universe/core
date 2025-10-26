@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Research\Action\CancelResearch;
 
 use Mockery\MockInterface;
-use Override;
 use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameController;
@@ -23,7 +22,7 @@ class CancelResearchTest extends StuTestCase
 
     private CancelResearch $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\CrewAssignment;
@@ -21,13 +20,13 @@ use Stu\Orm\Entity\Station;
  */
 final class CrewAssignmentRepository extends EntityRepository implements CrewAssignmentRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): CrewAssignment
     {
         return new CrewAssignment();
     }
 
-    #[Override]
+    #[\Override]
     public function save(CrewAssignment $post): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(CrewAssignment $post): void
     {
         $em = $this->getEntityManager();
@@ -43,7 +42,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountBySpacecraft(Spacecraft $spacecraft): int
     {
         return $this->count([
@@ -51,13 +50,13 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function hasEnoughCrew(Spacecraft $spacecraft): bool
     {
         return $this->getAmountBySpacecraft($spacecraft) >= $spacecraft->getNeededCrewCount();
     }
 
-    #[Override]
+    #[\Override]
     public function hasCrewmanOfUser(Spacecraft $spacecraft, int $userId): bool
     {
         return (int)$this->getEntityManager()
@@ -83,7 +82,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     /**
      * @return array<array{id: int, name: string, sector: string, amount: int}>
      */
-    #[Override]
+    #[\Override]
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array
     {
         $rsm = new ResultSetMapping();
@@ -112,7 +111,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUser(User $user): int
     {
         return $this->count([
@@ -120,7 +119,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAtColonies(User $user): array
     {
         return $this->getEntityManager()
@@ -137,7 +136,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserOnEscapePods(User $user): array
     {
         return $this->getEntityManager()
@@ -163,7 +162,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAtTradeposts(User $user): array
     {
         return $this->getEntityManager()
@@ -180,7 +179,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUserOnColonies(User $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -194,7 +193,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
         )->setParameter('user', $user)->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUserOnShips(User $user): int
     {
         return (int)$this->getEntityManager()
@@ -211,7 +210,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUserAtTradeposts(User $user): int
     {
         return (int)$this->getEntityManager()
@@ -228,7 +227,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCrewsTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -253,7 +252,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateBySpacecraft(Spacecraft $spacecraft): void
     {
         $this->getEntityManager()
@@ -267,7 +266,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(User $user): void
     {
         $this->getEntityManager()
@@ -281,7 +280,7 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function hasCrewOnForeignStation(User $user): bool
     {
         return (int) $this->getEntityManager()

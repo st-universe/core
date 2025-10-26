@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateOffer;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,7 +25,7 @@ final class CreateOffer implements ActionControllerInterface
 
     public function __construct(private CreateOfferRequestInterface $createOfferRequest, private CommodityRepositoryInterface $commodityRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -198,7 +197,7 @@ final class CreateOffer implements ActionControllerInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\PirateWrathRanking;
 
-use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,7 +26,7 @@ final class PirateWrathRanking implements ViewControllerInterface
         private HistoryRepositoryInterface $historyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

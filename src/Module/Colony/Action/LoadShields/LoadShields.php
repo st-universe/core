@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\LoadShields;
 
-use Override;
 use request;
 
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -26,7 +25,7 @@ final class LoadShields implements ActionControllerInterface
         private readonly ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -62,7 +61,7 @@ final class LoadShields implements ActionControllerInterface
         $game->getInfo()->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

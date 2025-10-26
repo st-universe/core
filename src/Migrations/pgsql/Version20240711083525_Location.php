@@ -6,17 +6,16 @@ namespace Stu\Migrations\Pgsql;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Override;
 
 final class Version20240711083525_Location extends AbstractMigration
 {
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return 'Creates new location entity for class table inheritance of Map and StarSystemMap.';
     }
 
-    #[Override]
+    #[\Override]
     public function up(Schema $schema): void
     {
         $this->clearAllMapAndSystemMapReferences();
@@ -257,7 +256,7 @@ final class Version20240711083525_Location extends AbstractMigration
         $this->addSql('ALTER TABLE stu_sys_map ADD CONSTRAINT FK_758AA7F1BF396750 FOREIGN KEY (id) REFERENCES stu_location (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
-    #[Override]
+    #[\Override]
     public function down(Schema $schema): void
     {
         $this->clearMapAndSystemMapReferences();

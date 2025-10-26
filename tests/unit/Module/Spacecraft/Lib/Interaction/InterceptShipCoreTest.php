@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -34,7 +33,7 @@ class InterceptShipCoreTest extends StuTestCase
 
     private InterceptShipCoreInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

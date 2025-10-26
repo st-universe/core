@@ -6,7 +6,6 @@ namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -23,7 +22,7 @@ final class CommodityTransfer implements CommodityTransferInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function transferCommodity(
         int $commodityId,
         string|int $wantedAmount,
@@ -94,7 +93,7 @@ final class CommodityTransfer implements CommodityTransferInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function isDockTransfer(
         EntityWithStorageInterface $source,
         EntityWithStorageInterface $target

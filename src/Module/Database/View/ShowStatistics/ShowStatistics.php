@@ -7,7 +7,6 @@ namespace Stu\Module\Database\View\ShowStatistics;
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
-use Override;
 use request;
 use Stu\Component\Image\ImageCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -49,7 +48,7 @@ final class ShowStatistics implements ViewControllerInterface
 
     public function __construct(private GameTurnStatsRepositoryInterface $gameTurnStatsRepository, private ImageCreationInterface $imageCreation) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $period = request::getInt('period');

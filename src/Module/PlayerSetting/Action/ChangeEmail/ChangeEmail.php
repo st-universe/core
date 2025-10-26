@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeEmail;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
@@ -17,7 +16,7 @@ final class ChangeEmail implements ActionControllerInterface
 
     public function __construct(private ChangeEmailRequestInterface $changeEmailRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $value = trim($this->changeEmailRequest->getEmailAddress());
@@ -44,7 +43,7 @@ final class ChangeEmail implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Deine E-Mailadresse wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

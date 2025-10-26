@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-use Override;
 
 abstract class AbstractSettings implements SettingsInterface
 {
@@ -13,7 +12,7 @@ abstract class AbstractSettings implements SettingsInterface
     ) {
     }
 
-    #[Override]
+    #[\Override]
     public function getPath(): string
     {
         return $this->settingsCore->getPath();

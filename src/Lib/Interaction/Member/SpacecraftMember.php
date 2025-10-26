@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Interaction\Member;
 
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
@@ -22,13 +21,13 @@ class SpacecraftMember implements InteractionMemberInterface
         private Spacecraft $spacecraft
     ) {}
 
-    #[Override]
+    #[\Override]
     public function get(): Spacecraft
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function canAccess(
         InteractionMemberInterface $other,
         callable $shouldCheck
@@ -60,7 +59,7 @@ class SpacecraftMember implements InteractionMemberInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function canBeAccessedFrom(
         InteractionMemberInterface $other,
         callable $shouldCheck
@@ -107,13 +106,13 @@ class SpacecraftMember implements InteractionMemberInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Map|StarSystemMap
     {
         return $this->spacecraft->getLocation();
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): ?User
     {
         return $this->spacecraft->getUser();

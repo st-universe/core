@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\AddDockPrivilege;
 
-use Override;
 use request;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
@@ -31,7 +30,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         private ShipRepositoryInterface $shipRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -70,7 +69,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

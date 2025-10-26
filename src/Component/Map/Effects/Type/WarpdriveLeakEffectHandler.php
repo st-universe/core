@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects\Type;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -12,13 +11,13 @@ use Stu\Orm\Entity\Location;
 
 class WarpdriveLeakEffectHandler implements EffectHandlerInterface
 {
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         // not needed
     }
 
-    #[Override]
+    #[\Override]
     public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
@@ -28,7 +27,7 @@ class WarpdriveLeakEffectHandler implements EffectHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $spacecraft = $wrapper->get();

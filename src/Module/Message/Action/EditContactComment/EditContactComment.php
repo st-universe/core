@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\EditContactComment;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -16,7 +15,7 @@ final class EditContactComment implements ActionControllerInterface
 
     public function __construct(private EditContactCommentRequestInterface $editContactCommentRequest, private ContactRepositoryInterface $contactRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $contact = $this->contactRepository->find($this->editContactCommentRequest->getContactId());
@@ -38,7 +37,7 @@ final class EditContactComment implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Kommentar wurde editiert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

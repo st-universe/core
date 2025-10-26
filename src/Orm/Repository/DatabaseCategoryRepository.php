@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\DatabaseCategory;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\DatabaseCategory;
  */
 final class DatabaseCategoryRepository extends EntityRepository implements DatabaseCategoryRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByTypeId(int $type_id): array
     {
         return $this->findBy([

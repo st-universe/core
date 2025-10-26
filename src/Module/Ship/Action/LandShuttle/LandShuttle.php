@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LandShuttle;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -37,7 +36,7 @@ final class LandShuttle implements ActionControllerInterface
         private InteractionCheckerInterface $interactionChecker
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -137,7 +136,7 @@ final class LandShuttle implements ActionControllerInterface
         $this->spacecraftRepository->save($target);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

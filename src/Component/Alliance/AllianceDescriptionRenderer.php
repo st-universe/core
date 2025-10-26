@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Orm\Entity\Alliance;
@@ -27,7 +26,7 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
         private AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function render(
         Alliance $alliance
     ): string {

@@ -3,7 +3,6 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\Control\ViewContext;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\UserTutorial;
  */
 final class TutorialStepRepository extends EntityRepository implements TutorialStepRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function findByUserAndViewContext(User $user, ViewContext $viewContext): array
     {
         return $this->getEntityManager()->createQuery(
@@ -37,7 +36,7 @@ final class TutorialStepRepository extends EntityRepository implements TutorialS
     }
 
 
-    #[Override]
+    #[\Override]
     public function findAllFirstSteps(): array
     {
         return $this->getEntityManager()

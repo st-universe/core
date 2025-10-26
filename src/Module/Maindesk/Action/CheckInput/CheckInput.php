@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\CheckInput;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
@@ -24,7 +23,7 @@ final class CheckInput implements ActionControllerInterface, NoAccessCheckContro
 
     public function __construct(private CheckInputRequestInterface $checkInputRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
@@ -102,7 +101,7 @@ final class CheckInput implements ActionControllerInterface, NoAccessCheckContro
         return (bool) preg_match('/00..[1-9]\d/', $mobile);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -7,7 +7,6 @@ namespace Stu\Lib\Transfer\Storage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
@@ -31,7 +30,7 @@ class StorageManagerTest extends StuTestCase
 
     private StorageManagerInterface $manager;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -21,7 +20,7 @@ class SkipDetection implements SkipDetectionInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function isSkipped(
         Spacecraft $incomingSpacecraft,
         SpacecraftWrapperInterface $alertedWrapper,

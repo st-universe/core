@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\StartShuttle;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
@@ -35,7 +34,7 @@ final class StartShuttle implements ActionControllerInterface
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -158,7 +157,7 @@ final class StartShuttle implements ActionControllerInterface
         $this->spacecraftRepository->save($ship);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

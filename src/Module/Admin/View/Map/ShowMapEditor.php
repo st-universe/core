@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
-use Override;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class ShowMapEditor implements ViewControllerInterface
 
     public function __construct(private LayerRepositoryInterface $layerRepository, private StarSystemRepositoryInterface $starSystemRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/admin/mapeditor_overview.twig');

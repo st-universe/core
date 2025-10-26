@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\BuildingCost;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\BuildingCost;
  */
 final class BuildingCostRepository extends EntityRepository implements BuildingCostRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([

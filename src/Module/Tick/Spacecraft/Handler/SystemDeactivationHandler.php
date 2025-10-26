@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -16,7 +15,7 @@ class SystemDeactivationHandler implements SpacecraftTickHandlerInterface
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

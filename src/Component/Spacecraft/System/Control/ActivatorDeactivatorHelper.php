@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Control;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -27,7 +26,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         private readonly GameControllerInterface $game
     ) {}
 
-    #[Override]
+    #[\Override]
     public function activate(
         SpacecraftWrapperInterface|int $target,
         spacecraftSystemTypeEnum $type,
@@ -45,7 +44,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return $this->systemActivation->activateIntern($wrapper, $type, $logger, $isDryRun);
     }
 
-    #[Override]
+    #[\Override]
     public function activateFleet(
         int $shipId,
         spacecraftSystemTypeEnum $type,
@@ -81,7 +80,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(
         SpacecraftWrapperInterface|int $target,
         spacecraftSystemTypeEnum $type,
@@ -98,7 +97,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return $this->systemDeactivation->deactivateIntern($wrapper, $type, $informations);
     }
 
-    #[Override]
+    #[\Override]
     public function deactivateFleet(
         SpacecraftWrapperInterface|int $target,
         spacecraftSystemTypeEnum $type,

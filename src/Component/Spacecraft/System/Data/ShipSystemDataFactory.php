@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Spacecraft\System\Exception\InvalidSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuTime;
@@ -32,7 +31,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         private readonly GameController $gameController
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSystemData(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory

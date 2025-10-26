@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
@@ -36,7 +35,7 @@ final class SendMassMail implements ActionControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(MassMail::VIEW_IDENTIFIER);
@@ -110,7 +109,7 @@ final class SendMassMail implements ActionControllerInterface
         return $count;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

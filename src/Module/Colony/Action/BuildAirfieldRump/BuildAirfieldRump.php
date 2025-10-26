@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildAirfieldRump;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
@@ -30,7 +29,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -126,7 +125,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

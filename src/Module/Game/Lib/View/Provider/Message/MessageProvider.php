@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
-use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
@@ -28,7 +27,7 @@ final class MessageProvider implements ViewComponentProviderInterface
         private readonly PrivateMessageUiFactoryInterface $privateMessageUiFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         if (!request::has('pmcat') && $this->userSettingsProvider->isInboxMessengerStyle($game->getUser())) {

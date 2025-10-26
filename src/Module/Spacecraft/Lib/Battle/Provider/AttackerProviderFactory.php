@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -21,7 +20,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSpacecraftAttacker(SpacecraftWrapperInterface $wrapper, bool $isAttackingShieldsOnly = false): SpacecraftAttacker
     {
         return new SpacecraftAttacker(
@@ -32,7 +31,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createEnergyPhalanxAttacker(Colony $colony): EnergyAttackerInterface
     {
         return new EnergyPhalanx(
@@ -41,7 +40,7 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createProjectilePhalanxAttacker(Colony $colony): ProjectileAttackerInterface
     {
         return new ProjectilePhalanx(

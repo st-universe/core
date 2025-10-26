@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsBidAuction;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
@@ -37,7 +36,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
     public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -330,7 +329,7 @@ final class DealsBidAuction implements ActionControllerInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\BoardShip;
 
-use Override;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -51,7 +50,7 @@ final class BoardShip implements ActionControllerInterface
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -247,7 +246,7 @@ final class BoardShip implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

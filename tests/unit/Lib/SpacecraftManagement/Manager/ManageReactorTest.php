@@ -6,7 +6,6 @@ namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
@@ -39,7 +38,7 @@ class ManageReactorTest extends StuTestCase
 
     private ManageReactor $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->reactorUtil = $this->mock(ReactorUtilInterface::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Event\Listener;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
@@ -31,7 +30,7 @@ class WarpdriveActivationSubscriberTest extends StuTestCase
 
     private WarpdriveActivationSubscriber $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->tractorMassPayloadUtil = $this->mock(TractorMassPayloadUtilInterface::class);

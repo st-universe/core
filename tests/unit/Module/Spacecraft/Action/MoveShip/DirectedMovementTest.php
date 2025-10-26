@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\MoveShip;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationWrapper;
@@ -35,7 +34,7 @@ class DirectedMovementTest extends StuTestCase
     private MockInterface&RandomSystemEntryInterface $randomSystemEntry;
     private MockInterface&DistributedMessageSenderInterface $distributedMessageSender;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->moveShipRequest = $this->mock(MoveShipRequestInterface::class);

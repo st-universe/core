@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\LandShip;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -28,7 +27,7 @@ final class LandShip implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -131,7 +130,7 @@ final class LandShip implements ActionControllerInterface
         $game->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\OpenEasterEgg;
 
-use Override;
 use request;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\EasterEggHandler;
@@ -39,7 +38,7 @@ final class OpenEasterEgg implements ActionControllerInterface
         private EasterEggHandler $easterEggHandler
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -124,7 +123,7 @@ final class OpenEasterEgg implements ActionControllerInterface
         $this->openedAdventDoorRepository->save($openedDoor);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

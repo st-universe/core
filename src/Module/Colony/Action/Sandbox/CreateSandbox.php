@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\Sandbox;
 
-use Override;
 use request;
 use Stu\Module\Colony\View\Sandbox\ShowColonySandbox;
 use Stu\Module\Control\AccessCheckControllerInterface;
@@ -27,13 +26,13 @@ final class CreateSandbox implements
         private PlanetFieldRepositoryInterface $planetFieldRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getFeatureIdentifier(): AccessGrantedFeatureEnum
     {
         return AccessGrantedFeatureEnum::COLONY_SANDBOX;
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColonySandbox::VIEW_IDENTIFIER);
@@ -81,7 +80,7 @@ final class CreateSandbox implements
         $game->setViewContext(ViewContextTypeEnum::HOST, $sandbox);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

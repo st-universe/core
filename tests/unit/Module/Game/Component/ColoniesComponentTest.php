@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
@@ -15,7 +14,7 @@ class ColoniesComponentTest extends StuTestCase
 {
     private ColoniesComponent $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
 

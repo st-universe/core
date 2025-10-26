@@ -6,7 +6,6 @@ namespace Stu\Module\Message\Lib;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -21,7 +20,7 @@ class EmailNotificationSenderTest extends StuTestCase
 
     private EmailNotificationSenderInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->mailFactory = $this->mock(MailFactoryInterface::class);

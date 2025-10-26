@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\View\ShowTransfer;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Config\Init;
@@ -30,7 +29,7 @@ final class ShowTransfer implements ViewControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

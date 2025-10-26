@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\User;
@@ -26,7 +25,7 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
 
     private RpgPlotDeletionHandler $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->rpgPlotMemberRepository = Mockery::mock(RpgPlotMemberRepositoryInterface::class);

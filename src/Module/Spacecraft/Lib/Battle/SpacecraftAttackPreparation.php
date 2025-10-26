@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
@@ -16,7 +15,7 @@ final class SpacecraftAttackPreparation implements SpacecraftAttackPreparationIn
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getReady(
         BattlePartyInterface $attackers,
         BattlePartyInterface $defenders,

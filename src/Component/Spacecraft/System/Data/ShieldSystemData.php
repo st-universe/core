@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarColorEnum;
 
@@ -12,7 +11,7 @@ class ShieldSystemData extends AbstractSystemData
 {
     public int $shieldRegenerationTimer = 0;
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::SHIELDS;

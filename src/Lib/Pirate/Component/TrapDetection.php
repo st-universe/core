@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
@@ -19,7 +18,7 @@ class TrapDetection implements TrapDetectionInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function isAlertTrap(Location $location, Ship $leadShip): bool
     {
         $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(

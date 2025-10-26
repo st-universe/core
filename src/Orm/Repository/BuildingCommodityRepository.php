@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -20,7 +19,7 @@ use Stu\Orm\Entity\User;
  */
 final class BuildingCommodityRepository extends EntityRepository implements BuildingCommodityRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([
@@ -28,7 +27,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getProductionByColony(PlanetFieldHostInterface $host, ColonyClass $colonyClass): array
     {
         $rsm = new ResultSetMapping();
@@ -72,7 +71,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getProductionSumForAllUserColonies(User $user): iterable
     {
         $rsm = new ResultSetMapping();
@@ -102,7 +101,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->toIterable();
     }
 
-    #[Override]
+    #[\Override]
     public function getProductionByCommodityAndUser(int $commodityId, User $user): int
     {
         $rsm = new ResultSetMapping();
@@ -129,7 +128,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function canProduceCommodity(int $userId, int $commodityId): bool
     {
         $rsm = new ResultSetMapping();

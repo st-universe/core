@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ShowPirateRound;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\PirateRound;
@@ -29,7 +28,7 @@ final class ShowPirateRound implements ViewControllerInterface
         private UserPirateRoundRepositoryInterface $userPirateRoundRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(

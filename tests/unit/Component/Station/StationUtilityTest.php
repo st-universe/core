@@ -6,7 +6,6 @@ namespace Stu\Component\Station;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Station\Lib\Creation\StationCreatorInterface;
@@ -36,7 +35,7 @@ class StationUtilityTest extends StuTestCase
 
     private StationUtilityInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftBuildplanRepository = $this->mock(SpacecraftBuildplanRepositoryInterface::class);

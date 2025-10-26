@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
-use Override;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\User;
@@ -24,7 +23,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         private CrewTrainingRepositoryInterface $crewTrainingRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getDebrisAndTradePostsCount(User $user): int
     {
         $count = $this->crewRepository
@@ -36,19 +35,19 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         return $count + $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
     }
 
-    #[Override]
+    #[\Override]
     public function getAssignedToShipsCount(User $user): int
     {
         return $this->shipCrewRepository->getAmountByUserOnShips($user);
     }
 
-    #[Override]
+    #[\Override]
     public function getInTrainingCount(User $user): int
     {
         return $this->crewTrainingRepository->getCountByUser($user);
     }
 
-    #[Override]
+    #[\Override]
     public function getRemainingCount(User $user): int
     {
         return max(
@@ -57,13 +56,13 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getAssignedCount(User $user): int
     {
         return $this->shipCrewRepository->getAmountByUser($user);
     }
 
-    #[Override]
+    #[\Override]
     public function getTrainableCount(User $user): int
     {
         return (int) ceil($this->crewLimitCalculator->getGlobalCrewLimit($user) / 10);

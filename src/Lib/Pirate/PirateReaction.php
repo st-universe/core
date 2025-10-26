@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate;
 
-use Override;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManagerInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
@@ -33,7 +32,7 @@ class PirateReaction implements PirateReactionInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function checkForPirateReaction(
         Spacecraft $target,
         PirateReactionTriggerEnum $reactionTrigger,
@@ -58,7 +57,7 @@ class PirateReaction implements PirateReactionInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function react(
         Fleet $fleet,
         PirateReactionTriggerEnum $reactionTrigger,

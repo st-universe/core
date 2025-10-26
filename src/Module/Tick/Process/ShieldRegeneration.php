@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuTime;
@@ -26,7 +25,7 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $time = $this->stuTime->time();

@@ -6,7 +6,6 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -23,7 +22,7 @@ class IonStormPropagationTest extends StuTestCase
 
     private IonStormPropagation $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);
