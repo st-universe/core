@@ -1,0 +1,34 @@
+# Welcome to Mago!
+# For full documentation, see https://mago.carthage.software/tools/overview
+php-version = "8.4.13"
+
+[source]
+paths = ["src/"]
+includes = ["vendor"]
+excludes = ["src/html/**/*","src/Migrations","src/Public/**/*","**/__snapshots__/**"]
+
+[formatter]
+print-width = 110
+tab-width = 4
+use-tabs = false
+trailing-comma = false
+null-type-hint = "question"
+preserve-breaking-argument-list = true
+preserve-breaking-parameter-list = true
+
+[linter]
+integrations = ["symfony", "phpunit"]
+
+[linter.rules]
+ambiguous-function-call = { enabled = false }
+literal-named-argument = { enabled = false }
+halstead = { effort-threshold = 7000 }
+
+[analyzer]
+find-unused-definitions = true
+find-unused-expressions = false
+analyze-dead-code = false
+#check-throws = true
+allow-possibly-undefined-array-keys = true
+perform-heuristic-checks = true
+baseline = "analyzer-baseline.toml"

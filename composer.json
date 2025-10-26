@@ -67,6 +67,7 @@
   },
   "require-dev": {
     "bnf/phpstan-psr-container": "^1.0",
+    "carthage-software/mago": "^1.0.0-beta.34",
     "enlightn/security-checker": "^2.0",
     "friendsofphp/php-cs-fixer": "^3.13",
     "mikey179/vfsstream": "1.6.12",
@@ -91,6 +92,7 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
+      "carthage-software/mago": true,
       "cweagans/composer-patches": true,
       "mnsami/composer-custom-directory-installer": true,
       "phpstan/extension-installer": true
@@ -111,6 +113,7 @@
     }
   ],
   "scripts": {
+    "mago:init": "@php vendor/bin/mago init",
     "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
     "integrationtests": "@php vendor/bin/phpunit --testsuite 'STU integration'",
     "stan": "phpstan",
