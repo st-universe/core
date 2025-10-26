@@ -12,6 +12,7 @@ final class SessionDestruction implements SessionDestructionInterface
         private SessionStringRepositoryInterface $sessionStringRepository
     ) {}
 
+    #[\Override]
     public function destroySession(SessionInterface $session, ?User $user = null): void
     {
         $userToTruncate = $user ?? $session->getUser();
@@ -23,7 +24,7 @@ final class SessionDestruction implements SessionDestructionInterface
             $this->destroyLoginCookies();
             $sessionName = session_name();
             if ($sessionName) {
-                setcookie($sessionName, '', time() - 42000, "", "", true, true);
+                setcookie($sessionName, '', time() - 42000, '', '', true, true);
             }
             if (@session_destroy() === false) {
                 throw new RuntimeException('The session could not be destroyed');
@@ -35,6 +36,6 @@ final class SessionDestruction implements SessionDestructionInterface
 
     private function destroyLoginCookies(): void
     {
-        setcookie('sstr', "", 0, "", "", true, true);
+        setcookie('sstr', '', 0, '', '', true, true);
     }
 }

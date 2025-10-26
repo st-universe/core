@@ -18,6 +18,7 @@ class ProceedStorage implements ColonyTickComponentInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
+    #[\Override]
     public function work(Colony $colony, array &$production, InformationInterface $information): void
     {
         $sum = $colony->getStorageSum();
@@ -40,7 +41,9 @@ class ProceedStorage implements ColonyTickComponentInterface
                     $sum -= $amount;
                 } else {
                     // EFFECTS
-                    $depositMining = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings($colony)[$commodityId];
+                    $depositMining = $this->colonyDepositMiningRepository->getCurrentUserDepositMinings(
+                        $colony
+                    )[$commodityId];
 
                     $depositMining->setAmountLeft($depositMining->getAmountLeft() - $amount);
                     $this->colonyDepositMiningRepository->save($depositMining);
@@ -49,7 +52,6 @@ class ProceedStorage implements ColonyTickComponentInterface
         }
 
         foreach ($production as $commodityId => $obj) {
-
             $commodity = $this->commodityCache->get($commodityId);
             if ($obj->getProduction() <= 0 || !$commodity->isSaveable()) {
                 continue;
@@ -62,7 +64,7 @@ class ProceedStorage implements ColonyTickComponentInterface
                 }
                 break;
             }
-            if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
+            if (($sum + $obj->getProduction()) > $colony->getMaxStorage()) {
                 $this->storageManager->upperStorage(
                     $colony,
                     $commodity,

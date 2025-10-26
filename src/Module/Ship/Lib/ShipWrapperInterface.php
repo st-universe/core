@@ -12,6 +12,7 @@ use Stu\Orm\Entity\Ship;
 
 interface ShipWrapperInterface extends SpacecraftWrapperInterface
 {
+    #[\Override]
     public function get(): Ship;
 
     public function canLandOnCurrentColony(): bool;

@@ -7,6 +7,7 @@ use Stu\Module\Control\Router\FallbackRouteException;
 
 class AccountNotVerifiedFallbackHandler implements FallbackHandlerInterface
 {
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/index/accountVerification.twig');

@@ -26,7 +26,6 @@ final class ShipLoader implements ShipLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): Ship {
-
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             $shipId,
             $userId,
@@ -48,7 +47,6 @@ final class ShipLoader implements ShipLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): ShipWrapperInterface {
-
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $shipId,
             $userId,
@@ -71,7 +69,6 @@ final class ShipLoader implements ShipLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface {
-
         return $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
@@ -96,6 +93,7 @@ final class ShipLoader implements ShipLoaderInterface
         return $wrapper;
     }
 
+    #[\Override]
     public function save(Spacecraft $ship): void
     {
         $this->spacecraftLoader->save($ship);

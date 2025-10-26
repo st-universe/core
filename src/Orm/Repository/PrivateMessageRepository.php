@@ -118,8 +118,11 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
-    public function getNewAmountByFolderAndSender(PrivateMessageFolder $privateMessageFolder, User $sender): int
-    {
+    #[\Override]
+    public function getNewAmountByFolderAndSender(
+        PrivateMessageFolder $privateMessageFolder,
+        User $sender
+    ): int {
         return $this->count([
             'category' => $privateMessageFolder,
             'sendingUser' => $sender,
@@ -131,44 +134,51 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     #[\Override]
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'UPDATE %s pm SET pm.deleted = :timestamp WHERE pm.cat_id = :folderId',
-                PrivateMessage::class
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'UPDATE %s pm SET pm.deleted = :timestamp WHERE pm.cat_id = :folderId',
+                    PrivateMessage::class
+                )
             )
-        )->setParameters([
-            'folderId' => $folderId,
-            'timestamp' => $timestamp
-        ])->execute();
+            ->setParameters([
+                'folderId' => $folderId,
+                'timestamp' => $timestamp
+            ])
+            ->execute();
     }
 
     #[\Override]
     public function hasRecentMessage(User $user): bool
     {
-        return (int)$this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(pm.id)
+        return
+            (int) $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT count(pm.id)
                     FROM %s pm
                     WHERE pm.receivingUser = :user
                     AND pm.new = :true
                     AND pm.date > :threshold',
-                PrivateMessage::class
-            )
-        )
-            ->setParameters([
-                'user' => $user,
-                'threshold' => time() - GameComponentEnum::PM->getRefreshIntervalInSeconds(),
-                'true' => true
-            ])
-            ->getSingleScalarResult() > 0;
+                        PrivateMessage::class
+                    )
+                )
+                ->setParameters([
+                    'user' => $user,
+                    'threshold' => time() - GameComponentEnum::PM->getRefreshIntervalInSeconds(),
+                    'true' => true
+                ])
+                ->getSingleScalarResult() > 0
+        ;
     }
 
     #[\Override]
     public function getConversations(User $user): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT pm FROM %1$s pm
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT pm FROM %1$s pm
                 JOIN %2$s pmf
                 WITH pm.cat_id = pmf.id
                 LEFT JOIN %1$s inbox
@@ -185,10 +195,10 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                                     AND pm2.recip_user = pm.recip_user 
                                     AND pm2.date < pm.date)
                 ORDER BY pm.id DESC',
-                PrivateMessage::class,
-                PrivateMessageFolder::class
+                    PrivateMessage::class,
+                    PrivateMessageFolder::class
+                )
             )
-        )
             ->setParameters([
                 'user' => $user,
                 'main' => PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
@@ -200,19 +210,19 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     #[\Override]
     public function getAmountSince(int $timestamp): int
     {
-
-        return (int)$this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(pm.id)
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(pm.id)
                     FROM %s pm
                     JOIN %s pmf
                     WITH pm.category = pmf
                     WHERE pm.date > :threshold
                     AND pmf.special != :outbox',
-                PrivateMessage::class,
-                PrivateMessageFolder::class
+                    PrivateMessage::class,
+                    PrivateMessageFolder::class
+                )
             )
-        )
             ->setParameters([
                 'threshold' => $timestamp,
                 'outbox' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT
@@ -223,12 +233,14 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     #[\Override]
     public function unsetAllInboxReferences(): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'UPDATE %s pm
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'UPDATE %s pm
                 SET pm.inbox_pm_id = null',
-                PrivateMessage::class
+                    PrivateMessage::class
+                )
             )
-        )->execute();
+            ->execute();
     }
 }

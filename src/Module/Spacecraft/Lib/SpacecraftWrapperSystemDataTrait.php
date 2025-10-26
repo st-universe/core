@@ -28,7 +28,6 @@ trait SpacecraftWrapperSystemDataTrait
         return $this;
     }
 
-    #[\Override]
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getThis()->getSpecificShipSystem(
@@ -43,7 +42,6 @@ trait SpacecraftWrapperSystemDataTrait
         return $hullSystemData;
     }
 
-    #[\Override]
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -52,7 +50,6 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[\Override]
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -61,7 +58,6 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[\Override]
     public function getComputerSystemDataMandatory(): ComputerSystemData
     {
         $computer = $this->getThis()->getSpecificShipSystem(
@@ -75,7 +71,6 @@ trait SpacecraftWrapperSystemDataTrait
         return $computer;
     }
 
-    #[\Override]
     public function getLssSystemData(): ?LssSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -84,7 +79,6 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[\Override]
     public function getEnergyWeaponSystemData(): ?EnergyWeaponSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -93,7 +87,6 @@ trait SpacecraftWrapperSystemDataTrait
         );
     }
 
-    #[\Override]
     public function getWarpDriveSystemData(): ?WarpDriveSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -101,7 +94,7 @@ trait SpacecraftWrapperSystemDataTrait
             WarpDriveSystemData::class
         );
     }
-    #[\Override]
+
     public function getProjectileLauncherSystemData(): ?ProjectileLauncherSystemData
     {
         return $this->getThis()->getSpecificShipSystem(
@@ -109,7 +102,7 @@ trait SpacecraftWrapperSystemDataTrait
             ProjectileLauncherSystemData::class
         );
     }
-    #[\Override]
+
     public function getSubspaceSystemData(): ?SubspaceSystemData
     {
         return $this->getThis()->getSpecificShipSystem(

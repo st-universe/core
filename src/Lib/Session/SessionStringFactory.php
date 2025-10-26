@@ -15,12 +15,13 @@ class SessionStringFactory implements SessionStringFactoryInterface
         private StuTime $stuTime
     ) {}
 
+    #[\Override]
     public function createSessionString(User $user): string
     {
         $string = bin2hex(random_bytes(15));
 
-        $sessionString =
-            $this->sessionStringRepository->prototype()
+        $sessionString = $this->sessionStringRepository
+            ->prototype()
             ->setUser($user)
             ->setDate($this->stuTime->dateTime())
             ->setSessionString($string);

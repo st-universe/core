@@ -11,16 +11,23 @@ class ControllerDiscovery implements ControllerDiscoveryInterface
     /**
      * @return array<string, ControllerInterface>
      */
+    #[\Override]
     public function getControllers(ModuleEnum $module, bool $isViewController): array
     {
-        $controllers = Init::getContainer()->get($this->getContainerIdentifier($module->name, $isViewController));
+        $controllers = Init::getContainer()->get($this->getContainerIdentifier(
+            $module->name,
+            $isViewController
+        ));
 
         $commonModule = $module->getCommonModule();
         if ($commonModule === null) {
             return $controllers;
         }
 
-        return array_merge(Init::getContainer()->get($this->getContainerIdentifier($commonModule, $isViewController)), $controllers);
+        return array_merge(
+            Init::getContainer()->get($this->getContainerIdentifier($commonModule, $isViewController)),
+            $controllers
+        );
     }
 
     private function getContainerIdentifier(string $module, bool $isViewController): string

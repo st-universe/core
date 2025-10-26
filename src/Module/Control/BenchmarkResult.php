@@ -6,6 +6,7 @@ use Ubench;
 
 class BenchmarkResult implements BenchmarkResultInterface
 {
+    #[\Override]
     public function getResult(Ubench $benchmark): array
     {
         return [

@@ -7,6 +7,7 @@ use Stu\Module\Control\Router\FallbackRouteException;
 
 class ItemNotFoundFallbackHandler implements FallbackHandlerInterface
 {
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $game->getInfo()->addInformation('Das angeforderte Item wurde nicht gefunden');

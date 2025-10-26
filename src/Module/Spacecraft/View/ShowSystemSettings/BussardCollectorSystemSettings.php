@@ -18,12 +18,12 @@ class BussardCollectorSystemSettings implements SystemSettingsProviderInterface
         private LocationMiningRepositoryInterface $locationMiningRepository
     ) {}
 
+    #[\Override]
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
-
         if (!$wrapper instanceof ShipWrapperInterface) {
             throw new RuntimeException('this should not happen');
         }
@@ -34,7 +34,11 @@ class BussardCollectorSystemSettings implements SystemSettingsProviderInterface
 
         $collector = $wrapper->getBussardCollectorSystemData();
         if ($collector === null) {
-            throw new SanityCheckException('no bussard collector installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
+            throw new SanityCheckException(
+                'no bussard collector installed',
+                null,
+                ShowSystemSettings::VIEW_IDENTIFIER
+            );
         }
 
         $mining = $this->locationMiningRepository->getMiningAtLocation($ship);

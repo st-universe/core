@@ -81,7 +81,6 @@ class KnPost implements EntityWithHrefInterface
     #[OneToMany(targetEntity: KnCharacter::class, mappedBy: 'knPost')]
     private Collection $knCharacters;
 
-
     #[ManyToOne(targetEntity: RpgPlot::class, inversedBy: 'posts')]
     #[JoinColumn(name: 'plot_id', referencedColumnName: 'id')]
     private ?RpgPlot $rpgPlot = null;
@@ -89,7 +88,6 @@ class KnPost implements EntityWithHrefInterface
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private User $user;
-
 
     public function __construct()
     {
@@ -244,7 +242,6 @@ class KnPost implements EntityWithHrefInterface
         return $this;
     }
 
-
     public function getUrl(): string
     {
         return sprintf(
@@ -262,6 +259,7 @@ class KnPost implements EntityWithHrefInterface
         return $this->knCharacters;
     }
 
+    #[\Override]
     public function getHref(): string
     {
         return sprintf(

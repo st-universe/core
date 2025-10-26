@@ -8,15 +8,16 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
 
 /**
  * @extends EntityRepository<SpacecraftBuildplan>
  */
-final class SpacecraftBuildplanRepository extends EntityRepository implements SpacecraftBuildplanRepositoryInterface
+final class SpacecraftBuildplanRepository extends EntityRepository implements
+    SpacecraftBuildplanRepositoryInterface
 {
     #[\Override]
     public function getByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array
@@ -43,7 +44,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     {
         return $this->count([
             'rump_id' => $rumpId,
-            'user_id' => $userId,
+            'user_id' => $userId
         ]);
     }
 
@@ -176,6 +177,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
+    #[\Override]
     public function getAllNonNpcBuildplans(): array
     {
         return $this->getEntityManager()
@@ -212,7 +214,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
     {
         return $this->findBy([
             'user_id' => $userId,
-            'rump_id' => $rumpId,
+            'rump_id' => $rumpId
         ]);
     }
 }

@@ -22,12 +22,12 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
         private BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {}
 
+    #[\Override]
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
-
         $userId = $game->getUser()->getId();
         $spacecraft = $wrapper->get();
         $module = $spacecraft->getSpacecraftSystem($systemType)->getModule();
@@ -40,13 +40,16 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
 
         $aggregationsystem = $wrapper->getAggregationSystemSystemData();
         if ($aggregationsystem === null) {
-            throw new SanityCheckException('no aggregation system installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
+            throw new SanityCheckException(
+                'no aggregation system installed',
+                null,
+                ShowSystemSettings::VIEW_IDENTIFIER
+            );
         }
 
         $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
         $mode1Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 1);
         $mode2Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 2);
-
 
         $mode1Commodities = array_map(fn($entry): array => [
             $this->commodityRepository->find($entry[0]),
@@ -75,11 +78,13 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
         }
 
         $mode1Commodities = array_filter($mode1Commodities, function (array $entry) use ($userId): bool {
-            return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
+            return $entry[1] !== null
+            && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
         $mode2Commodities = array_filter($mode2Commodities, function (array $entry) use ($userId): bool {
-            return $entry[1] !== null && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
+            return $entry[1] !== null
+            && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
         });
 
         $chosencommodity = $aggregationsystem->getCommodityId();

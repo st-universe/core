@@ -25,7 +25,6 @@ use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
-use Stu\Component\Spacecraft\Trait\SpacecraftSystemExistenceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecrafCharacteristicsTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHoldingWebTrait;
@@ -36,6 +35,7 @@ use Stu\Component\Spacecraft\Trait\SpacecraftLocationTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftShieldsTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftStateTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftStorageTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftSystemExistenceTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemHealthTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftSystemStateTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftTorpedoTrait;
@@ -114,7 +114,12 @@ abstract class Spacecraft implements
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[OneToOne(targetEntity: SpacecraftCondition::class, mappedBy: 'spacecraft', fetch: 'EAGER', cascade: ['all'])]
+    #[OneToOne(
+        targetEntity: SpacecraftCondition::class,
+        mappedBy: 'spacecraft',
+        fetch: 'EAGER',
+        cascade: ['all']
+    )]
     private ?SpacecraftCondition $condition;
 
     #[OneToOne(targetEntity: Ship::class)]
@@ -190,6 +195,7 @@ abstract class Spacecraft implements
 
     abstract public function getFleet(): ?Fleet;
 
+    #[\Override]
     public function getId(): int
     {
         if ($this->id === null) {
@@ -211,6 +217,7 @@ abstract class Spacecraft implements
         return $this;
     }
 
+    #[\Override]
     public function getUserId(): int
     {
         return $this->user_id;
@@ -221,6 +228,7 @@ abstract class Spacecraft implements
         return $this->getUser()->getName();
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->name;
@@ -260,11 +268,13 @@ abstract class Spacecraft implements
         return $this;
     }
 
+    #[\Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crew;
     }
 
+    #[\Override]
     public function getUser(): User
     {
         return $this->user;
@@ -288,7 +298,9 @@ abstract class Spacecraft implements
 
         foreach ($buildplan->getModulesOrdered() as $obj) {
             $module = $obj->getModule();
-            $index = $module->getType() === SpacecraftModuleTypeEnum::SPECIAL ? $module->getId() : $module->getType()->value;
+            $index = $module->getType() === SpacecraftModuleTypeEnum::SPECIAL
+                ? $module->getId()
+                : $module->getType()->value;
             $modules[$index] = $module;
         }
 
@@ -306,17 +318,16 @@ abstract class Spacecraft implements
         return $this;
     }
 
+    #[\Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
+    #[\Override]
     public function getLocation(): Map|StarSystemMap
     {
-        if (
-            $this->location instanceof Map
-            || $this->location instanceof StarSystemMap
-        ) {
+        if ($this->location instanceof Map || $this->location instanceof StarSystemMap) {
             return $this->location;
         }
 
@@ -433,11 +444,7 @@ abstract class Spacecraft implements
     public function __toString(): string
     {
         if ($this->id !== null) {
-            return sprintf(
-                "id: %d, name: %s",
-                $this->getId(),
-                $this->getName()
-            );
+            return sprintf('id: %d, name: %s', $this->getId(), $this->getName());
         }
 
         return $this->getName();

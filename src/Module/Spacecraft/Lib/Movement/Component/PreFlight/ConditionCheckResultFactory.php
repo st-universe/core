@@ -13,6 +13,7 @@ class ConditionCheckResultFactory implements ConditionCheckResultFactoryInterfac
         private LeaveFleetInterface $leaveFleet
     ) {}
 
+    #[\Override]
     public function create(FlightCompany $flightCompany): ConditionCheckResult
     {
         return new ConditionCheckResult(
