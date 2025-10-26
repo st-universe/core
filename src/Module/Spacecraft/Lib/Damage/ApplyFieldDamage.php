@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
-use Override;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
@@ -20,7 +19,7 @@ final class ApplyFieldDamage implements ApplyFieldDamageInterface
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function damage(
         SpacecraftWrapperInterface $wrapper,
         int $damage,

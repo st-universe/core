@@ -6,7 +6,6 @@ namespace Stu\Component\Anomaly\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -46,7 +45,7 @@ class SubspaceEllipseHandlerTest extends StuTestCase
 
     private AnomalyHandlerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->locationRepository = $this->mock(LocationRepositoryInterface::class);

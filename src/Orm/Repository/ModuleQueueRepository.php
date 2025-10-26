@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\ModuleQueue;
  */
 final class ModuleQueueRepository extends EntityRepository implements ModuleQueueRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -34,7 +33,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([
@@ -42,7 +41,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndModuleAndBuilding(
         int $colonyId,
         int $moduleId,
@@ -55,7 +54,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndBuilding(
         int $colonyId,
         array $buildingFunctions
@@ -66,13 +65,13 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): ModuleQueue
     {
         return new ModuleQueue();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
@@ -80,7 +79,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em->persist($moduleQueue);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
@@ -88,7 +87,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em->remove($moduleQueue);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByColonyAndModule(int $colonyId, int $moduleId): int
     {
         $entry = $this->findOneBy([

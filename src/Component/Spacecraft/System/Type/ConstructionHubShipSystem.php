@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -17,25 +16,25 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
 {
     public function __construct(private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::CONSTRUCTION_HUB;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 20;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 10;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -48,7 +47,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
@@ -56,7 +55,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
         $this->shipyardShipQueueRepository->restartQueueByShipyard($spacecraft->getId());
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
@@ -64,7 +63,7 @@ final class ConstructionHubShipSystem extends AbstractSpacecraftSystemType imple
         $this->stopShipyardQeue($spacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $this->stopShipyardQeue($wrapper->get());

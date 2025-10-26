@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLayer;
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\UserMap;
  */
 final class UserMapRepository extends EntityRepository implements UserMapRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function insertMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void
     {
         $this->getEntityManager()->getConnection()->executeQuery(
@@ -45,7 +44,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUser(User $user, Layer $layer): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -62,7 +61,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
@@ -76,7 +75,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         ])->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUserAndLayer(UserLayer $userLayer): void
     {
         $this->getEntityManager()->createQuery(

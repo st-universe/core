@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -21,7 +20,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $result = $this->repairTaskRepository->getFinishedRepairTasks();

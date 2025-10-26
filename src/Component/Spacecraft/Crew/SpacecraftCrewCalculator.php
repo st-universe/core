@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Crew;
 
-use Override;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -31,7 +30,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         private readonly ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getMaxCrewCountByRump(
         SpacecraftRump $shipRump
     ): int {
@@ -42,7 +41,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
             + ($roleCrew?->getCrewForPosition(CrewTypeEnum::CREWMAN) ?? 0);
     }
 
-    #[Override]
+    #[\Override]
     public function getCrewObj(
         SpacecraftRump $shipRump
     ): ?ShipRumpCategoryRoleCrew {
@@ -64,7 +63,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         return $this->shipRumpCategoryRoleCrewCache[$id];
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxCrewCountByShip(
         Spacecraft $spacecraft
     ): int {
@@ -82,7 +81,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
         return $crewCount;
     }
 
-    #[Override]
+    #[\Override]
     public function getCrewUsage(array $modules, SpacecraftRump $rump, User $user): int
     {
         return array_reduce(

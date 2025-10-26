@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\StuTestCase;
@@ -16,7 +15,7 @@ class TradeLicenseTest extends StuTestCase
 
     private MockInterface $stuTime;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->stuTime = $this->mock(StuTime::class);

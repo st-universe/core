@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
@@ -17,7 +16,7 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
     }
 
     //public function calculateGradientColor(int $modificator): string
-    #[Override]
+    #[\Override]
     public function getModificators(Module $module): array
     {
         if ($this->interval === null) {

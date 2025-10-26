@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\MoveShip;
 
-use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -12,13 +11,13 @@ class MoveShipRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
-    #[Override]
+    #[\Override]
     protected function getRequestClass(): string
     {
         return MoveShipRequest::class;
     }
 
-    #[Override]
+    #[\Override]
     public static function requestVarsDataProvider(): array
     {
         return [
@@ -32,7 +31,7 @@ class MoveShipRequestTest extends RequestTestCase
         ];
     }
 
-    #[Override]
+    #[\Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

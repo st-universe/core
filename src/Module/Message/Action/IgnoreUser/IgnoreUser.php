@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\IgnoreUser;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
@@ -16,7 +15,7 @@ final class IgnoreUser implements ActionControllerInterface
 
     public function __construct(private IgnoreUserRequestInterface $ignoreUserRequest, private IgnoreListRepositoryInterface $ignoreListRepository, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -45,7 +44,7 @@ final class IgnoreUser implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Spieler wird ignoriert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

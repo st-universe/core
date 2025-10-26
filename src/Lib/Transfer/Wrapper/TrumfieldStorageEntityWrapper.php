@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Wrapper;
 
 use BadMethodCallException;
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Orm\Entity\Location;
@@ -22,44 +21,44 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     ) {}
 
     // GENERAL
-    #[Override]
+    #[\Override]
     public function get(): EntityWithStorageInterface
     {
         return $this->trumfield;
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->userRepository->getFallbackUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->trumfield->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function canTransfer(InformationInterface $information): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->trumfield->getLocation();
     }
 
     // COMMODITIES
-    #[Override]
+    #[\Override]
     public function getBeamFactor(): int
     {
         throw new BadMethodCallException();
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $target,
@@ -69,31 +68,31 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     // CREW
-    #[Override]
+    #[\Override]
     public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewSpace(User $user): int
     {
         return 0;
     }
 
-    #[Override]
+    #[\Override]
     public function checkCrewStorage(int $amount, bool $isUnload, InformationInterface $information): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
     {
         // nothing to do
@@ -101,37 +100,37 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // TORPEDOS
 
-    #[Override]
+    #[\Override]
     public function getTorpedo(): ?TorpedoType
     {
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoCount(): int
     {
         return $this->getMaxTorpedos();
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxTorpedos(): int
     {
         return 0;
     }
 
-    #[Override]
+    #[\Override]
     public function canTransferTorpedos(InformationInterface $information): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         throw new BadMethodCallException();

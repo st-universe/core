@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Maintenance;
 
 use Doctrine\DBAL\Connection;
-use Override;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
@@ -27,7 +26,7 @@ final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactory
     /**
      * @param null|array<MaintenanceHandlerInterface> $handlerList
      */
-    #[Override]
+    #[\Override]
     public function createMaintenanceTickRunner(
         ?array $handlerList = null
     ): TickRunnerInterface {

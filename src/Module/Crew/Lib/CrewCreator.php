@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Crew\Lib;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Exception\SanityCheckException;
@@ -32,7 +31,7 @@ final class CrewCreator implements CrewCreatorInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function create(int $userId, ?Colony $colony = null): CrewAssignment
     {
         $user = $this->userRepository->find($userId);
@@ -83,7 +82,7 @@ final class CrewCreator implements CrewCreatorInterface
         return $crewAssignment;
     }
 
-    #[Override]
+    #[\Override]
     public function createCrewAssignments(
         Spacecraft $spacecraft,
         EntityWithCrewAssignmentsInterface $crewProvider,

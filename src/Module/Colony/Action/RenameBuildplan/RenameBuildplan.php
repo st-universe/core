@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RenameBuildplan;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
@@ -21,7 +20,7 @@ final class RenameBuildplan implements ActionControllerInterface
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -60,7 +59,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

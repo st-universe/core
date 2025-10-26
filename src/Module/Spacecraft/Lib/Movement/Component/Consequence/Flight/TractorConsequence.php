@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
-use Override;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -21,13 +20,13 @@ class TractorConsequence extends AbstractFlightConsequence implements FlightStar
         private MessageFactoryInterface $messageFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

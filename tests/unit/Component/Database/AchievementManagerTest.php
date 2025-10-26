@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Database;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -20,7 +19,7 @@ class AchievementManagerTest extends StuTestCase
 
     private AchievementManagerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->databaseUserRepository = $this->mock(DatabaseUserRepositoryInterface::class);
@@ -32,7 +31,7 @@ class AchievementManagerTest extends StuTestCase
         );
     }
 
-    #[Override]
+    #[\Override]
     public function tearDown(): void
     {
         AchievementManager::reset();

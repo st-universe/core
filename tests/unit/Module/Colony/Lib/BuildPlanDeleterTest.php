@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -22,7 +21,7 @@ class BuildPlanDeleterTest extends StuTestCase
 
     private BuildPlanDeleter $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftBuildplanRepository = $this->mock(SpacecraftBuildplanRepositoryInterface::class);

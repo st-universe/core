@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Override;
 use Stu\StuTestCase;
 
 class UuidGeneratorTest extends StuTestCase
 {
     private UuidGenerator $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new UuidGenerator();

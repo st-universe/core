@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
@@ -25,7 +24,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     ) {
     }
 
-    #[Override]
+    #[\Override]
     public function createTradeAccountWrapper(
         TradePost $tradePost,
         int $userId
@@ -40,7 +39,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createBasicTradeAccountWrapper(
         TradePost $tradePost,
         array $basicTrades,
@@ -60,7 +59,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createTradePostStorageManager(
         TradePost $tradePost,
         User $user

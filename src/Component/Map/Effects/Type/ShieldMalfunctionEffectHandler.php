@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects\Type;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -22,7 +21,7 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         $information->addInformation(
@@ -30,7 +29,7 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
@@ -40,7 +39,7 @@ class ShieldMalfunctionEffectHandler implements EffectHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $spacecraft = $wrapper->get();

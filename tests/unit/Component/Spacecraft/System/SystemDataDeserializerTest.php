@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
@@ -30,7 +29,7 @@ class SystemDataDeserializerTest extends StuTestCase
 
     private SystemDataDeserializerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

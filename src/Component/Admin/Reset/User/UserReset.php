@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset\User;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;
@@ -19,7 +18,7 @@ final class UserReset implements UserResetInterface
         private EntityManagerInterface $entityManager,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function archiveBlockedUsers(): void
     {
         echo "  - archive blocked users\n";
@@ -32,7 +31,7 @@ final class UserReset implements UserResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function resetNpcs(): void
     {
         echo "  - reset NPCs\n";

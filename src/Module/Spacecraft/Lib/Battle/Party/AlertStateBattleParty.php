@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuRandom;
@@ -24,7 +23,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         $this->leaderAlertState = $leader->getAlertState();
     }
 
-    #[Override]
+    #[\Override]
     public function initMembers(): Collection
     {
         $fleet = $this->leader->getFleetWrapper();
@@ -52,7 +51,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         return $this->leaderAlertState;
     }
 
-    #[Override]
+    #[\Override]
     public function getAttackCause(): SpacecraftAttackCauseEnum
     {
         return match ($this->leaderAlertState) {
@@ -62,7 +61,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         };
     }
 
-    #[Override]
+    #[\Override]
     public function getAlertDescription(): string
     {
         return $this->leaderAlertState === SpacecraftAlertStateEnum::ALERT_RED

@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Interaction;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Interaction\Member\InteractionMemberInterface;
 
@@ -30,7 +29,7 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
         $this->checkTypes = $checkTypes;
     }
 
-    #[Override]
+    #[\Override]
     public function check(InformationInterface $information): bool
     {
         $targetUser = $this->target->getUser();

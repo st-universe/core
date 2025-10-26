@@ -7,7 +7,6 @@ namespace Stu\Module\Index\View\ShowPartnerSites;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 
@@ -17,7 +16,7 @@ class ShowPartnerSitesTest extends StuTestCase
 
     private ShowPartnerSites $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

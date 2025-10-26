@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Communication\Kn;
 
-use Override;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\KnPostArchiv;
@@ -22,31 +21,31 @@ final class KnArchiveItem implements KnArchiveItemInterface
         private KnCommentArchivRepositoryInterface $knCommentArchivRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->post->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getFormerId(): int
     {
         return $this->post->getFormerId();
     }
 
-    #[Override]
+    #[\Override]
     public function getTitle(): ?string
     {
         return $this->post->getTitle();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->bbcodeParser->parse($this->post->getText())->getAsHTML();
     }
 
-    #[Override]
+    #[\Override]
     public function getUsername(): string
     {
         $username = $this->post->getUsername();
@@ -55,43 +54,43 @@ final class KnArchiveItem implements KnArchiveItemInterface
         return sprintf('%s (%d)', $username, $userId);
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->post->getUserId() ?? 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getDate(): int
     {
         return $this->post->getDate();
     }
 
-    #[Override]
+    #[\Override]
     public function getEditDate(): ?int
     {
         return $this->post->getEditDate();
     }
 
-    #[Override]
+    #[\Override]
     public function getRpgPlot(): ?RpgPlotArchiv
     {
         return $this->plot;
     }
 
-    #[Override]
+    #[\Override]
     public function setPlot(?RpgPlotArchiv $plot): void
     {
         $this->plot = $plot;
     }
 
-    #[Override]
+    #[\Override]
     public function getVersion(): ?string
     {
         return $this->post->getVersion();
     }
 
-    #[Override]
+    #[\Override]
     public function getPost(): KnPostArchiv
     {
         return $this->post;
@@ -100,13 +99,13 @@ final class KnArchiveItem implements KnArchiveItemInterface
     /**
      * @return array<mixed>
      */
-    #[Override]
+    #[\Override]
     public function getRatings(): array
     {
         return $this->post->getRatings();
     }
 
-    #[Override]
+    #[\Override]
     public function getRatingBar(): string
     {
         $ratingAmount = count($this->post->getRatings());
@@ -124,7 +123,7 @@ final class KnArchiveItem implements KnArchiveItemInterface
             ->render();
     }
 
-    #[Override]
+    #[\Override]
     public function getRating(): int
     {
         return (int) array_sum(
@@ -135,19 +134,19 @@ final class KnArchiveItem implements KnArchiveItemInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function userCanRate(): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getCommentCount(): int
     {
         return $this->knCommentArchivRepository->getAmountByFormerId($this->post->getFormerId());
     }
 
-    #[Override]
+    #[\Override]
     public function getDivClass(): string
     {
         return 'box kn_archive_post';
@@ -156,7 +155,7 @@ final class KnArchiveItem implements KnArchiveItemInterface
     /**
      * @return array<int>|null
      */
-    #[Override]
+    #[\Override]
     public function getRefs(): ?array
     {
         return $this->post->getRefs();

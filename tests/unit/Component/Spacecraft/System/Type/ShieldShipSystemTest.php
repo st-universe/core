@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -29,7 +28,7 @@ class ShieldShipSystemTest extends StuTestCase
     private Ship&MockInterface $ship;
     private ShipWrapperInterface&MockInterface $wrapper;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);

@@ -6,7 +6,6 @@ namespace Stu\Module\Maindesk\Action\ColonizationShip;
 
 use BadMethodCallException;
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
@@ -29,7 +28,7 @@ final class ColonizationShip implements ActionControllerInterface
 
     public function __construct(private ShipCreatorInterface $shipCreator, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -102,7 +101,7 @@ final class ColonizationShip implements ActionControllerInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

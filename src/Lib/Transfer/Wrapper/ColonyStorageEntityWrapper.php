@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Wrapper;
 
-use Override;
 use request;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -29,25 +28,25 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     ) {}
 
     // GENERAL
-    #[Override]
+    #[\Override]
     public function get(): EntityWithStorageInterface
     {
         return $this->colony;
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->colony->getUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return sprintf('Kolonie %s', $this->colony->getName());
     }
 
-    #[Override]
+    #[\Override]
     public function canTransfer(InformationInterface $information): bool
     {
         if ($this->colony->getWorkers() + $this->colony->getChangeable()->getWorkless() === 0) {
@@ -58,7 +57,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->colony->getLocation();
@@ -70,7 +69,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         return $this->colony->getBeamFactor();
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $target,
@@ -131,13 +130,13 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     // CREW
-    #[Override]
+    #[\Override]
     public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return $this->troopTransferUtility->ownCrewOnTarget($user, $this->colony);
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewSpace(User $user): int
     {
         if ($user->getId() !== $this->colony->getUser()->getId()) {
@@ -149,19 +148,19 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
             ->getFreeAssignmentCount();
     }
 
-    #[Override]
+    #[\Override]
     public function checkCrewStorage(int $amount, bool $isUnload, InformationInterface $information): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return $this->colony->getUser()->getId() === $user->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
     {
         // nothing to do here
@@ -169,37 +168,37 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // TORPEDOS
 
-    #[Override]
+    #[\Override]
     public function getTorpedo(): ?TorpedoType
     {
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoCount(): int
     {
         return 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxTorpedos(): int
     {
         return $this->colony->getMaxStorage() - $this->colony->getStorageSum();
     }
 
-    #[Override]
+    #[\Override]
     public function canTransferTorpedos(InformationInterface $information): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         if ($changeAmount > 0) {

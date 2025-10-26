@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -22,7 +21,7 @@ class MixedBattleParty extends AbstractBattleParty
         parent::__construct($first, $stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function initMembers(): Collection
     {
         return $this->wrappers;

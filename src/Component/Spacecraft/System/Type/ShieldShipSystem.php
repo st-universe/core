@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -20,13 +19,13 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
 {
     public function __construct(private SpacecraftStateChangerInterface $spacecraftStateChanger) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::SHIELDS;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -72,7 +71,7 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
     {
         $spacecraft = $wrapper->get();
@@ -84,13 +83,13 @@ final class ShieldShipSystem extends AbstractSpacecraftSystemType implements Spa
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $wrapper->get()->getCondition()->setShield(0);
     }
 
-    #[Override]
+    #[\Override]
     public function handleDamage(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

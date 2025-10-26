@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\CreateFleet;
 
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,7 +21,7 @@ final class CreateFleet implements ActionControllerInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $spacecraft = $this->shipLoader->getByIdAndUser($this->createFleetRequest->getShipId(), $game->getUser()->getId());
@@ -67,7 +66,7 @@ final class CreateFleet implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Flotte wurde erstellt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -9,7 +9,6 @@ use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
@@ -24,7 +23,7 @@ class AllianceRelationRendererTest extends StuTestCase
 
     private AllianceRelationRenderer $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->graphVizFactory = $this->mock(GraphVizFactoryInterface::class);

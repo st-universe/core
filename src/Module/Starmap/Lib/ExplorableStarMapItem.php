@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\Layer;
@@ -27,31 +26,31 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         private readonly Layer $layer
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getCx(): int
     {
         return $this->exploreableStarMap->getCx();
     }
 
-    #[Override]
+    #[\Override]
     public function getCy(): int
     {
         return $this->exploreableStarMap->getCy();
     }
 
-    #[Override]
+    #[\Override]
     public function getFieldId(): int
     {
         return $this->exploreableStarMap->getFieldId();
     }
 
-    #[Override]
+    #[\Override]
     public function getLayer(): Layer
     {
         return $this->layer;
     }
 
-    #[Override]
+    #[\Override]
     public function getTitle(): ?string
     {
         if ($this->hide === true) {
@@ -107,7 +106,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $this->bbCodeParser->parse($string)->getAsText();
     }
 
-    #[Override]
+    #[\Override]
     public function getIcon(): ?string
     {
         if ($this->hide === true) {
@@ -127,7 +126,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getHref(): ?string
     {
         return $this->exploreableStarMap->getMapped()
@@ -151,7 +150,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function setHide(bool $hide): ExplorableStarMapItemInterface
     {
         $this->hide = $hide;
@@ -186,7 +185,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return '';
     }
 
-    #[Override]
+    #[\Override]
     public function getFieldStyle(): string
     {
         if ($this->hide === true) {

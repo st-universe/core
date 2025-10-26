@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTransferMenu;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class ShowTransferMenu implements ViewControllerInterface
 
     public function __construct(private ShowTransferMenueRequestInterface $showTransferMenueRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

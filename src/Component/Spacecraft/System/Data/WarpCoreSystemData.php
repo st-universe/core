@@ -4,37 +4,36 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 
 class WarpCoreSystemData extends AbstractReactorSystemData
 {
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::WARPCORE;
     }
 
-    #[Override]
+    #[\Override]
     public function getIcon(): string
     {
         return "warpk.png";
     }
 
-    #[Override]
+    #[\Override]
     public function getLoadUnits(): int
     {
         return ReactorWrapperInterface::WARPCORE_LOAD;
     }
 
-    #[Override]
+    #[\Override]
     public function getLoadCost(): array
     {
         return ReactorWrapperInterface::WARPCORE_LOAD_COST;
     }
 
-    #[Override]
+    #[\Override]
     public function getCapacity(): int
     {
         return $this->getTheoreticalReactorOutput() * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;

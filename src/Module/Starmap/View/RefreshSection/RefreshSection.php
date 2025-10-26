@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\RefreshSection;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
@@ -28,7 +27,7 @@ final class RefreshSection implements ViewControllerInterface
         private LayerRepositoryInterface $layerRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->request->getLayerId();

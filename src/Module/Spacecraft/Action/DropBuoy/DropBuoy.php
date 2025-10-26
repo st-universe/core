@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DropBuoy;
 
-use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -29,7 +28,7 @@ final class DropBuoy implements ActionControllerInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -113,7 +112,7 @@ final class DropBuoy implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Boje wurde erfolgreich platziert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

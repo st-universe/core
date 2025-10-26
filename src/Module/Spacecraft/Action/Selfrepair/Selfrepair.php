@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\Selfrepair;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairTaskConstants;
@@ -33,7 +32,7 @@ final class Selfrepair implements ActionControllerInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -177,7 +176,7 @@ final class Selfrepair implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

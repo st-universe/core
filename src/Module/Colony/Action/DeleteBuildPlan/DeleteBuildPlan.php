@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeleteBuildPlan;
 
-use Override;
 use request;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -18,7 +17,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
 
     public function __construct(private BuildPlanDeleterInterface $buildPlanDeleter, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -41,7 +40,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
         $game->getInfo()->addInformation('Der Bauplan wurde gelöscht');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

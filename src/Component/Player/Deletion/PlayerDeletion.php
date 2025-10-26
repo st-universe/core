@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -44,7 +43,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handleDeleteable(): void
     {
         $this->loggerUtil->init('DEL', LogLevelEnum::ERROR);
@@ -71,7 +70,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleReset(): void
     {
         foreach ($this->userRepository->getNonNpcList() as $player) {

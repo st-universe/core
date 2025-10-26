@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 
@@ -12,7 +11,7 @@ final class DistributedMessageSender implements DistributedMessageSenderInterfac
 {
     public function __construct(private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function distributeMessageCollection(
         MessageCollectionInterface $messageCollection,
         int $senderId = UserConstants::USER_NOONE,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Component;
 
-use Override;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
@@ -25,7 +24,7 @@ final class ResearchComponent implements ComponentInterface
         private BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

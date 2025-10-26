@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditInfluenceArea;
 
-use Override;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class EditInfluenceArea implements ActionControllerInterface
 
     public function __construct(private EditInfluenceAreaRequestInterface $editInfluenceAreaRequest, private StarSystemRepositoryInterface $starSystemRepository, private MapRepositoryInterface $mapRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $selectedField = $this->mapRepository->find($this->editInfluenceAreaRequest->getFieldId());
@@ -44,7 +43,7 @@ final class EditInfluenceArea implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

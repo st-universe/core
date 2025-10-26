@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
@@ -17,7 +16,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
         private FlightRouteFactoryInterface $flightRouteFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSafeFlightRoute(
         Ship $ship,
         callable $coordinateCallable

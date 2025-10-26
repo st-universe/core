@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateBuildings;
 
-use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -23,7 +22,7 @@ final class ActivateBuildings implements ActionControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
@@ -51,7 +50,7 @@ final class ActivateBuildings implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

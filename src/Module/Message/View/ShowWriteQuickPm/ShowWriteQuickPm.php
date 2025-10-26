@@ -6,7 +6,6 @@ namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
 use InvalidArgumentException;
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -37,7 +36,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setMacroInAjaxWindow('html/communication/writeQuickPm.twig');

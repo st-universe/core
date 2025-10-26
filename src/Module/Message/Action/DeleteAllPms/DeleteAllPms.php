@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteAllPms;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -16,7 +15,7 @@ final class DeleteAllPms implements ActionControllerInterface
 
     public function __construct(private DeleteAllPmsRequestInterface $deleteAllPmsRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $timestamp = time();
@@ -30,7 +29,7 @@ final class DeleteAllPms implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Ordner wurde geleert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

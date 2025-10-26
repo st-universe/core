@@ -7,7 +7,6 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Override;
 
 #[MappedSuperclass]
 class AbstractData implements CellDataInterface
@@ -25,13 +24,13 @@ class AbstractData implements CellDataInterface
         private int $y
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getPosX(): int
     {
         return $this->x;
     }
 
-    #[Override]
+    #[\Override]
     public function getPosY(): int
     {
         return $this->y;

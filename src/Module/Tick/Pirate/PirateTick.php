@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Pirate;
 
-use Override;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\ReloadMinimalEpsInterface;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
@@ -31,7 +30,7 @@ class PirateTick implements PirateTickInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $this->logger->log('PIRATE TICK:');

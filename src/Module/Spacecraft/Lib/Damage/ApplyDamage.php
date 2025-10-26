@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -21,7 +20,7 @@ final class ApplyDamage implements ApplyDamageInterface
         private SystemDamageInterface $systemDamage
     ) {}
 
-    #[Override]
+    #[\Override]
     public function damage(
         DamageWrapper $damageWrapper,
         SpacecraftWrapperInterface $wrapper,

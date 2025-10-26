@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowContactModeSwitch;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -18,7 +17,7 @@ final class ShowContactModeSwitch implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $contact = $this->contactRepository->find($this->showContactModeSwitchRequest->getContactId());

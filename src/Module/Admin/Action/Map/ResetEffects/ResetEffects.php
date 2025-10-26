@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\ResetEffects;
 
-use Override;
 use request;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,7 +20,7 @@ final class ResetEffects implements ActionControllerInterface
         private MapRepositoryInterface $mapRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $selectedField = $this->mapRepository->find(request::getIntFatal('field'));
@@ -37,7 +36,7 @@ final class ResetEffects implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

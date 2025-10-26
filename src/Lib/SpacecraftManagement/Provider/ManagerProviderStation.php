@@ -6,7 +6,6 @@ namespace Stu\Lib\SpacecraftManagement\Provider;
 
 use BadMethodCallException;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -24,13 +23,13 @@ class ManagerProviderStation implements ManagerProviderInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->wrapper->get()->getUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getEps(): int
     {
         $eps = $this->wrapper->getEpsSystemData();
@@ -42,7 +41,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $eps->getEps();
     }
 
-    #[Override]
+    #[\Override]
     public function lowerEps(int $amount): ManagerProviderInterface
     {
         $eps = $this->wrapper->getEpsSystemData();
@@ -56,7 +55,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         $station = $this->wrapper->get();
@@ -68,25 +67,25 @@ class ManagerProviderStation implements ManagerProviderInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getSectorString(): string
     {
         return $this->wrapper->get()->getSectorString();
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewAmount(): int
     {
         return $this->wrapper->get()->getExcessCrewCount();
     }
 
-    #[Override]
+    #[\Override]
     public function addCrewAssignment(Spacecraft $spacecraft, int $amount): void
     {
         $this->crewCreator->createCrewAssignments($spacecraft, $this->wrapper->get(), $amount);
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewStorage(): int
     {
         $station = $this->wrapper->get();
@@ -94,7 +93,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         return $this->troopTransferUtility->getFreeQuarters($station);
     }
 
-    #[Override]
+    #[\Override]
     public function addCrewAssignments(array $crewAssignments): void
     {
         $station = $this->wrapper->get();
@@ -104,13 +103,13 @@ class ManagerProviderStation implements ManagerProviderInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getStorage(): Collection
     {
         return $this->wrapper->get()->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function upperStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->upperStorage(
@@ -120,7 +119,7 @@ class ManagerProviderStation implements ManagerProviderInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function lowerStorage(Commodity $commodity, int $amount): void
     {
         $this->storageManager->lowerStorage(

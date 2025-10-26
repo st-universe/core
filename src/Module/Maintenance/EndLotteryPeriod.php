@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
@@ -44,7 +43,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $time = $this->stuTime->time();

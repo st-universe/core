@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -19,7 +18,7 @@ class AlertDetection implements AlertDetectionInterface
         private AlertedShipInformationInterface $alertedShipInformation
     ) {}
 
-    #[Override]
+    #[\Override]
     public function detectAlertedBattleParties(
         Spacecraft $incomingSpacecraft,
         InformationInterface $informations,

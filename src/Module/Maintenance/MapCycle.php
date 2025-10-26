@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Orm\Entity\UserLayer;
@@ -19,7 +18,7 @@ final class MapCycle implements MaintenanceHandlerInterface
         private CreateUserAwardInterface $createUserAward
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $userLayers = $this->userLayerRepository->getByMappingType(MapEnum::MAPTYPE_INSERT);

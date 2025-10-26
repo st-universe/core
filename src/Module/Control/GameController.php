@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use BadMethodCallException;
-use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -65,7 +64,7 @@ final class GameController implements GameControllerInterface
         $this->gameData = new GameData();
     }
 
-    #[Override]
+    #[\Override]
     public function setView(ModuleEnum|string $view): void
     {
         if ($view instanceof ModuleEnum) {
@@ -76,7 +75,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getViewContext(ViewContextTypeEnum $type): mixed
     {
         if (!array_key_exists($type->value, $this->gameData->viewContext)) {
@@ -86,13 +85,13 @@ final class GameController implements GameControllerInterface
         return $this->gameData->viewContext[$type->value];
     }
 
-    #[Override]
+    #[\Override]
     public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
     {
         $this->gameData->viewContext[$type->value] = $value;
     }
 
-    #[Override]
+    #[\Override]
     public function setViewTemplate(string $viewTemplate): void
     {
         $isSwitch = request::has('switch');
@@ -104,13 +103,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateFile(string $template): void
     {
         $this->twigPage->setTemplate($template);
     }
 
-    #[Override]
+    #[\Override]
     public function setMacroInAjaxWindow(string $macro): void
     {
         $this->gameData->macro = $macro;
@@ -118,7 +117,7 @@ final class GameController implements GameControllerInterface
         $this->setTemplateFile('html/ajaxwindow.twig');
     }
 
-    #[Override]
+    #[\Override]
     public function showMacro(string $macro): void
     {
         $this->gameData->macro = $macro;
@@ -126,25 +125,25 @@ final class GameController implements GameControllerInterface
         $this->setTemplateFile('html/ajaxempty.twig');
     }
 
-    #[Override]
+    #[\Override]
     public function getGameData(): GameData
     {
         return $this->gameData;
     }
 
-    #[Override]
+    #[\Override]
     public function getInfo(): InformationWrapper
     {
         return $this->gameData->gameInformations;
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVar(string $key, mixed $variable): void
     {
         $this->twigPage->setVar($key, $variable);
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         $user = $this->session->getUser();
@@ -155,13 +154,13 @@ final class GameController implements GameControllerInterface
         return $user;
     }
 
-    #[Override]
+    #[\Override]
     public function hasUser(): bool
     {
         return $this->session->getUser() !== null;
     }
 
-    #[Override]
+    #[\Override]
     public function setNavigation(
         array $navigationItems
     ): GameControllerInterface {
@@ -172,7 +171,7 @@ final class GameController implements GameControllerInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function appendNavigationPart(
         string $url,
         string $title
@@ -180,19 +179,19 @@ final class GameController implements GameControllerInterface
         $this->gameData->siteNavigation[$url] = $title;
     }
 
-    #[Override]
+    #[\Override]
     public function setPageTitle(string $title): void
     {
         $this->gameData->pagetitle = $title;
     }
 
-    #[Override]
+    #[\Override]
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
     {
         $this->javascriptExecution->addExecuteJS($value, $when);
     }
 
-    #[Override]
+    #[\Override]
     public function getCurrentRound(): GameTurn
     {
         if ($this->gameData->currentRound === null) {
@@ -204,13 +203,13 @@ final class GameController implements GameControllerInterface
         return $this->gameData->currentRound;
     }
 
-    #[Override]
+    #[\Override]
     public function getSessionString(): string
     {
         return $this->sessionStringFactory->createSessionString($this->getUser());
     }
 
-    #[Override]
+    #[\Override]
     public function sessionAndAdminCheck(): void
     {
         $this->session->createSession(true);
@@ -220,7 +219,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getGameRequest(): GameRequest
     {
         if ($this->gameData->gameRequest === null) {
@@ -239,7 +238,7 @@ final class GameController implements GameControllerInterface
         return $this->gameData->gameRequest;
     }
 
-    #[Override]
+    #[\Override]
     public function main(
         ModuleEnum $module,
         bool $session_check = true,
@@ -338,7 +337,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function isAdmin(): bool
     {
         if (!$this->hasUser()) {
@@ -352,7 +351,7 @@ final class GameController implements GameControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isNpc(): bool
     {
         if (!$this->hasUser()) {
@@ -362,13 +361,13 @@ final class GameController implements GameControllerInterface
         return $this->getUser()->isNpc();
     }
 
-    #[Override]
+    #[\Override]
     public function resetGameData(): void
     {
         $this->gameData = new GameData();
     }
 
-    #[Override]
+    #[\Override]
     public function getBenchmarkResult(): array
     {
         $this->benchmark->end();

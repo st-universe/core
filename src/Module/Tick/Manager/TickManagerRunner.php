@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Manager;
 
-use Override;
 use Stu\Module\Tick\TickManagerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
 
@@ -17,7 +16,7 @@ final class TickManagerRunner implements TickRunnerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->tickManager->work();

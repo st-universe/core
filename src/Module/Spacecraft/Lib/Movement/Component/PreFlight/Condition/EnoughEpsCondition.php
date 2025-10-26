@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -19,7 +18,7 @@ class EnoughEpsCondition implements PreFlightConditionInterface
 {
     public function __construct(private SpacecraftSystemManagerInterface $spacecraftSystemManager) {}
 
-    #[Override]
+    #[\Override]
     public function check(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

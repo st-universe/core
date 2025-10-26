@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Override;
 use Stu\StuTestCase;
 
 class StuRandomTest extends StuTestCase
 {
     private StuRandom $stuRandom;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->stuRandom = new StuRandom();

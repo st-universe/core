@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -17,7 +16,7 @@ class PirateFlight implements PirateFlightInterface
         private DistributedMessageSenderInterface $distributedMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function movePirate(ShipWrapperInterface $wrapper, FlightRouteInterface $flightRoute): void
     {
         $messages = $this->shipMover->checkAndMove(

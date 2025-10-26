@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick;
 
 use BadMethodCallException;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LogTypeEnum;
@@ -28,7 +27,7 @@ final class TickManager implements TickManagerInterface
         private readonly StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $oldTurn = $this->gameTurnRepository->getCurrent();

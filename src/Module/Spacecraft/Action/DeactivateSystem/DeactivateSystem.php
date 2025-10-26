@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DeactivateSystem;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -29,7 +28,7 @@ final class DeactivateSystem implements ActionControllerInterface
         private AlertReactionFacadeInterface $alertReactionFacade
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
@@ -113,7 +112,7 @@ final class DeactivateSystem implements ActionControllerInterface
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

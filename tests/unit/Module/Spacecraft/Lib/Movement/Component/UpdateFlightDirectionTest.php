@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
@@ -17,7 +16,7 @@ class UpdateFlightDirectionTest extends StuTestCase
 {
     private UpdateFlightDirectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new UpdateFlightDirection();

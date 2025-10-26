@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Note;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\Note;
  */
 final class NoteRepository extends EntityRepository implements NoteRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByUserId(int $userId): array
     {
         return $this->findBy([
@@ -21,13 +20,13 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): Note
     {
         return new Note();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Note $note): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
         $em->persist($note);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Note $note): void
     {
         $em = $this->getEntityManager();
@@ -44,7 +43,7 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUserId(int $userId): void
     {
         $q = $this->getEntityManager()->createQuery(

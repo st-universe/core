@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\PlanetField;
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\PlanetFieldType;
  */
 final class ColonyScanRepository extends EntityRepository implements ColonyScanRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ColonyScan
     {
         return new ColonyScan();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ColonyScan $post): void
     {
         $em = $this->getEntityManager();
@@ -30,7 +29,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ColonyScan $post): void
     {
         $em = $this->getEntityManager();
@@ -38,7 +37,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -46,7 +45,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUserId(ColonyScan $userId): void
     {
         $this->getEntityManager()
@@ -62,7 +61,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getSurface(int $colonyId): array
     {
         return $this->getEntityManager()
@@ -81,7 +80,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSurfaceArray(int $id): string
     {
         return strval($this->getEntityManager()
@@ -99,7 +98,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ->getSingleScalarResult());
     }
 
-    #[Override]
+    #[\Override]
     public function getSurfaceWidth(int $id): int
     {
         return (int)$this->getEntityManager()

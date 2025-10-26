@@ -4,37 +4,36 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 
 class FusionCoreSystemData extends AbstractReactorSystemData
 {
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::FUSION_REACTOR;
     }
 
-    #[Override]
+    #[\Override]
     public function getIcon(): string
     {
         return "fusrkt.png";
     }
 
-    #[Override]
+    #[\Override]
     public function getLoadUnits(): int
     {
         return ReactorWrapperInterface::FUSION_REACTOR_LOAD;
     }
 
-    #[Override]
+    #[\Override]
     public function getLoadCost(): array
     {
         return ReactorWrapperInterface::FUSION_REACTOR_LOAD_COST;
     }
 
-    #[Override]
+    #[\Override]
     public function getCapacity(): int
     {
         return $this->getTheoreticalReactorOutput() * ReactorWrapperInterface::FUSIONCORE_CAPACITY_MULTIPLIER;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset\Fleet;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 
 final class FleetReset implements FleetResetInterface
 {
@@ -13,7 +12,7 @@ final class FleetReset implements FleetResetInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function unsetShipFleetReference(): void
     {
         echo "  - removing all fleet references\n";

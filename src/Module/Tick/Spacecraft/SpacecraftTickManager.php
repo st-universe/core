@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Spacecraft;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LogTypeEnum;
@@ -24,7 +23,7 @@ class SpacecraftTickManager implements SpacecraftTickManagerInterface
         private array $components
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(bool $doCommit = false): void
     {
         $this->setLock(1);

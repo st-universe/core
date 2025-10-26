@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -15,7 +14,7 @@ final class CreateMissingUserAwards implements MaintenanceHandlerInterface
         private CreateDatabaseEntryInterface $createDatabaseEntry
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $categories = $this->databaseCategoryRepository->findAll();

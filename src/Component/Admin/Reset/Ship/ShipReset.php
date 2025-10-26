@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -19,7 +18,7 @@ final class ShipReset implements ShipResetInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function deactivateAllTractorBeams(): void
     {
         echo "  - deactivate all tractor beams\n";
@@ -29,7 +28,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function undockAllDockedShips(): void
     {
         echo "  - undock all ships\n";
@@ -39,7 +38,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function deleteAllTradeposts(): void
     {
         echo "  - deleting all tradeposts\n";
@@ -49,7 +48,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function deleteAllShips(): void
     {
         echo "  - deleting all ships and stations\n";
@@ -59,7 +58,7 @@ final class ShipReset implements ShipResetInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function deleteAllBuildplans(): void
     {
         echo "  - deleting all buildplans\n";

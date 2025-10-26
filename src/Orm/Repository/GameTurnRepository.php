@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\GameTurn;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\GameTurn;
  */
 final class GameTurnRepository extends EntityRepository implements GameTurnRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getCurrent(): ?GameTurn
     {
         return $this->findOneBy(
@@ -22,13 +21,13 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
         );
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): GameTurn
     {
         return new GameTurn();
     }
 
-    #[Override]
+    #[\Override]
     public function save(GameTurn $turn): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function delete(GameTurn $turn): void
     {
         $em = $this->getEntityManager();

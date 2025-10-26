@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Index\News;
 
-use Override;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Orm\Entity\News;
 
@@ -14,7 +13,7 @@ final class NewsFactory implements NewsFactoryInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function createNewsItem(
         News $news
     ): NewsItemInterface {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -16,13 +15,13 @@ final class MessageCollection implements MessageCollectionInterface
 
     public function __construct(private MessageFactoryInterface $messageFactory) {}
 
-    #[Override]
+    #[\Override]
     public function add(MessageInterface $msg): void
     {
         $this->messages[] = $msg;
     }
 
-    #[Override]
+    #[\Override]
     public function addMessageBy(string|array $text, ?int $recipient = null): MessageInterface
     {
         $message = $this->messageFactory->createMessage(
@@ -36,7 +35,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $message;
     }
 
-    #[Override]
+    #[\Override]
     public function addInformation(?string $information): InformationInterface
     {
         if ($information !== null) {
@@ -46,7 +45,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addInformationf(string $information, ...$args): InformationInterface
     {
         $this->addMessageBy(vsprintf($information, $args));
@@ -54,7 +53,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getRecipientIds(): array
     {
         $recipientIds = [];
@@ -78,7 +77,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $recipientIds;
     }
 
-    #[Override]
+    #[\Override]
     public function getInformationDump(?int $userId = null): InformationWrapper
     {
         $result = new InformationWrapper();
@@ -101,7 +100,7 @@ final class MessageCollection implements MessageCollectionInterface
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function isEmpty(): bool
     {
         return $this->getInformationDump()->isEmpty();

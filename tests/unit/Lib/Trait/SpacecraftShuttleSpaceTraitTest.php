@@ -6,7 +6,6 @@ namespace Stu\Lib\Trait;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Storage;
@@ -18,7 +17,7 @@ class SpacecraftShuttleSpaceTraitTest extends StuTestCase
 
     private MockInterface&Spacecraft $spacecraft;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraft = $this->mock(Spacecraft::class);

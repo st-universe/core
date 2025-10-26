@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -21,7 +20,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
      */
     public function __construct(private PlanetFieldHostInterface $host, private array $production) {}
 
-    #[Override]
+    #[\Override]
     public function getFreeAssignmentCount(): int
     {
         if (!$this->host instanceof Colony) {
@@ -31,7 +30,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         return max(0, $this->getCrewLimit() - $this->host->getCrewAssignmentAmount());
     }
 
-    #[Override]
+    #[\Override]
     public function getCrewLimit(): int
     {
         return (int) floor(
@@ -49,7 +48,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getLifeStandardPercentage(): int
     {
         $colonyProduction = $this->production[CommodityTypeConstants::COMMODITY_EFFECT_LIFE_STANDARD] ?? null;
@@ -66,13 +65,13 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         return (int)floor($production * 100 / $this->host->getPopulation());
     }
 
-    #[Override]
+    #[\Override]
     public function getNegativeEffect(): int
     {
         return (int) ceil($this->host->getPopulation() / 70);
     }
 
-    #[Override]
+    #[\Override]
     public function getPositiveEffectPrimary(): int
     {
         if ($this->positive_effect_primary === null) {
@@ -88,7 +87,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         return $this->positive_effect_primary;
     }
 
-    #[Override]
+    #[\Override]
     public function getPositiveEffectSecondary(): int
     {
         if ($this->positive_effect_secondary === null) {
@@ -103,7 +102,7 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         return $this->positive_effect_secondary;
     }
 
-    #[Override]
+    #[\Override]
     public function getGrowth(): int
     {
         $host = $this->host;

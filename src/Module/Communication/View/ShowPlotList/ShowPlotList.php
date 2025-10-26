@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowPlotList;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -15,7 +14,7 @@ final class ShowPlotList implements ViewControllerInterface
 
     public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $active_plots = [];

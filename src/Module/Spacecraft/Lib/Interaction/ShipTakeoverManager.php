@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -35,13 +34,13 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         private GameControllerInterface $game
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getPrestigeForBoardingAttempt(Spacecraft $target): int
     {
         return (int)ceil($this->getPrestigeForTakeover($target) / 25);
     }
 
-    #[Override]
+    #[\Override]
     public function getPrestigeForTakeover(Spacecraft $target): int
     {
         $buildplan = $target->getBuildplan();
@@ -55,7 +54,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function startTakeover(Spacecraft $source, Spacecraft $target, int $prestige): void
     {
         $takeover = $this->shipTakeoverRepository->prototype();
@@ -117,7 +116,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isTakeoverReady(ShipTakeover $takeover): bool
     {
         $remainingTurns = $takeover->getStartTurn() + self::TURNS_TO_TAKEOVER - $this->game->getCurrentRound()->getTurn();
@@ -164,7 +163,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function cancelTakeover(
         ?ShipTakeover $takeover,
         ?string $cause = null,
@@ -222,7 +221,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         return $takeover->getSourceSpacecraft() === $targetSpacecraft->getTractoringSpacecraft();
     }
 
-    #[Override]
+    #[\Override]
     public function cancelBothTakeover(Spacecraft $spacecraft, ?string $passiveCause = null): void
     {
         $this->cancelTakeover(
@@ -255,7 +254,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function finishTakeover(ShipTakeover $takeover): void
     {
         $sourceUser = $takeover->getSourceSpacecraft()->getUser();

@@ -6,7 +6,6 @@ namespace Stu\Component\Alliance\Event\Listener;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
@@ -24,7 +23,7 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
 
     private DiplomaticRelationProposalCreationSubscriber $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->allianceRelationRepository = $this->mock(AllianceRelationRepositoryInterface::class);

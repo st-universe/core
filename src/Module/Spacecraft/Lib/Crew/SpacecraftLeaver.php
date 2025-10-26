@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -30,7 +29,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function evacuate(SpacecraftWrapperInterface $wrapper): string
     {
         $ship = $wrapper->get();
@@ -68,7 +67,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function dumpCrewman(CrewAssignment $crewAssignment, string $message): string
     {
         $spacecraft = $crewAssignment->getSpacecraft();

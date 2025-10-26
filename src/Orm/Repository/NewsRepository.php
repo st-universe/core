@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\News;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\News;
 final class NewsRepository extends EntityRepository implements NewsRepositoryInterface
 {
 
-    #[Override]
+    #[\Override]
     public function save(News $news): void
     {
         $em = $this->getEntityManager();
@@ -22,7 +21,7 @@ final class NewsRepository extends EntityRepository implements NewsRepositoryInt
         $em->persist($news);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(News $news): void
     {
         $em = $this->getEntityManager();
@@ -30,12 +29,12 @@ final class NewsRepository extends EntityRepository implements NewsRepositoryInt
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): News
     {
         return new News();
     }
-    #[Override]
+    #[\Override]
     public function getRecent(int $limit): array
     {
         return $this->findBy(

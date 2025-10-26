@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
-use Override;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
@@ -22,7 +21,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function correctAllSpacecrafts(): void
     {
         $count = 0;

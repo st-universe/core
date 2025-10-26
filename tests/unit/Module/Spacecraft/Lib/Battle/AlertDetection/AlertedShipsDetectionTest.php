@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Fleet;
@@ -22,7 +21,7 @@ class AlertedShipsDetectionTest extends StuTestCase
 
     private AlertedShipsDetectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);

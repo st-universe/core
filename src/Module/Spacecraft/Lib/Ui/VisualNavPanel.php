@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
@@ -34,7 +33,7 @@ class VisualNavPanel extends AbstractVisualPanel
         parent::__construct($panelLayerCreation, $loggerUtil);
     }
 
-    #[Override]
+    #[\Override]
     protected function createBoundaries(): PanelBoundaries
     {
         $range = $this->wrapper->getLssSystemData()?->getSensorRange() ?? 0;
@@ -42,7 +41,7 @@ class VisualNavPanel extends AbstractVisualPanel
         return PanelBoundaries::fromLocation($this->getPanelCenter(), $range);
     }
 
-    #[Override]
+    #[\Override]
     protected function loadLayers(): void
     {
         $this->panelLayerConfiguration->configureLayers(
@@ -57,7 +56,7 @@ class VisualNavPanel extends AbstractVisualPanel
         $this->layers = $this->panelLayerCreation->build($this, $this->getPanelCenter());
     }
 
-    #[Override]
+    #[\Override]
     protected function getEntryCallable(): callable
     {
         return fn(int $x, int $y): VisualNavPanelEntry => new VisualNavPanelEntry(
@@ -69,7 +68,7 @@ class VisualNavPanel extends AbstractVisualPanel
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function getPanelViewportPercentage(): int
     {
         return $this->wrapper->get()->isStation() ? 50 : 33;

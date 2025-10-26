@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AddBoard;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
@@ -26,7 +25,7 @@ class AddBoardTest extends StuTestCase
 
     private AddBoard $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->addBoardRequest = $this->mock(AddBoardRequestInterface::class);

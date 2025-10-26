@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function getValue(?Module $module = null): int
     {
         $moduleValueCalculator = new ModuleValueCalculator();
@@ -28,13 +27,13 @@ final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implemen
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::IMPULSEDRIVE;
     }
 
-    #[Override]
+    #[\Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $wrapper->getComputerSystemDataMandatory()->setEvadeChance($this->getValue())->update();

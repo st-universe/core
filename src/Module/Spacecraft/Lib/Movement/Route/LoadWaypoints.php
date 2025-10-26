@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
-use Override;
 use RuntimeException;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
@@ -19,7 +18,7 @@ final class LoadWaypoints implements LoadWaypointsInterface
 {
     public function __construct(private MapRepositoryInterface $mapRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
-    #[Override]
+    #[\Override]
     public function load(
         Location $start,
         Location $destination

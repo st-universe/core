@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -19,7 +18,7 @@ class ShipUiFactoryTest extends StuTestCase
 
     private ShipUiFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->panelLayerCreation = $this->mock(PanelLayerCreationInterface::class);

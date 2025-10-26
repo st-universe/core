@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use request;
 use RuntimeException;
 use Stu\Exception\SanityCheckException;
@@ -28,7 +27,7 @@ class PlanetFieldHostProviderTest extends StuTestCase
 
     private PlanetFieldHostProviderInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->colonySandboxRepository = $this->mock(ColonySandboxRepositoryInterface::class);

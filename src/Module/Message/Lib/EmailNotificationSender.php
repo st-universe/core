@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use JBBCode\Parser;
-use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Logging\LogLevelEnum;
@@ -25,7 +24,7 @@ final class EmailNotificationSender implements EmailNotificationSenderInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function sendNotification(string $senderName, string $message, User $user): void
     {
         $mail = $this->mailFactory->createStuMail()

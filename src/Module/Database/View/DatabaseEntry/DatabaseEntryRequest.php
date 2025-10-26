@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class DatabaseEntryRequest implements DatabaseEntryRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getCategoryId(): int
     {
         return $this->parameter('cat')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getEntryId(): int
     {
         return $this->parameter('ent')->int()->required();

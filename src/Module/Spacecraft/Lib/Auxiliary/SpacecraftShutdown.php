@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Auxiliary;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
@@ -25,7 +24,7 @@ final class SpacecraftShutdown implements SpacecraftShutdownInterface
         private ShipUndockingInterface $shipUndocking
     ) {}
 
-    #[Override]
+    #[\Override]
     public function shutdown(SpacecraftWrapperInterface $wrapper, bool $doLeaveFleet = false): void
     {
         $this->spacecraftSystemManager->deactivateAll($wrapper);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,7 +19,7 @@ final class DoManualProcessTick implements ActionControllerInterface
      */
     public function __construct(private EntityManagerInterface $entityManager, private array $tickHandler) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -40,7 +39,7 @@ final class DoManualProcessTick implements ActionControllerInterface
         $game->getInfo()->addInformation("Der Process-Tick wurde durchgeführt!");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\AnomalyData;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
@@ -13,7 +12,7 @@ use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
 final class AnomalyLayerRenderer implements LayerRendererInterface
 {
     /** @param AnomalyData $data */
-    #[Override]
+    #[\Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         if ($data->getAnomalyTypes() === null) {

@@ -5,31 +5,30 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 
 final class MapDataProvider extends AbstractPanelLayerDataProvider
 {
-    #[Override]
+    #[\Override]
     protected function getDataClassString(): string
     {
         return MapData::class;
     }
 
-    #[Override]
+    #[\Override]
     protected function addFieldResults(ResultSetMapping $rsm): void
     {
         $rsm->addFieldResult('d', 'type', 'type');
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getMapLayerData($boundaries, $this->createResultSetMapping());
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         return $this->starSystemMapRepository->getMapLayerData($boundaries, $this->createResultSetMapping());

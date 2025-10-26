@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -13,7 +12,7 @@ class FinishedTakeoverHandler implements SpacecraftTickHandlerInterface
         private ShipTakeoverManagerInterface $shipTakeoverManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

@@ -3,7 +3,6 @@
 namespace Stu\Module\Maintenance;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\GameRequest;
 
@@ -15,7 +14,7 @@ final class GameRequestCleanUp implements MaintenanceHandlerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $this->entityManager

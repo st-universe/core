@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ChangeSettings implements ActionControllerInterface
 
     public function __construct(private ChangeUserSettingInterface $changeUserSetting) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -42,7 +41,7 @@ final class ChangeSettings implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

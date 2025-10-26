@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftCountData;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
@@ -16,7 +15,7 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
     public function __construct(private bool $showCloakedEverywhere, private ?Spacecraft $currentSpacecraft) {}
 
     /** @param SpacecraftCountData $data */
-    #[Override]
+    #[\Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         $displayCount = $this->getDisplayCount($data);

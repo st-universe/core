@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -46,7 +45,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         private readonly SystemDataDeserializerInterface $systemDataDeserializer
     ) {}
 
-    #[Override]
+    #[\Override]
     public function wrapSpacecraft(Spacecraft $spacecraft): SpacecraftWrapperInterface
     {
         if ($spacecraft instanceof Ship) {
@@ -64,7 +63,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         throw new RuntimeException('unknown spacecraft type');
     }
 
-    #[Override]
+    #[\Override]
     public function wrapStation(Station $station): StationWrapperInterface
     {
         return new StationWrapper(
@@ -82,7 +81,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function wrapShip(Ship $ship): ShipWrapperInterface
     {
         return new ShipWrapper(
@@ -117,7 +116,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function wrapShips(array $ships): Collection
     {
         $result = new ArrayCollection();
@@ -129,14 +128,14 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function wrapSpacecrafts(array $spacecrafts): Collection
     {
         return (new ArrayCollection($spacecrafts))
             ->map(fn(Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->wrapSpacecraft($spacecraft));
     }
 
-    #[Override]
+    #[\Override]
     public function wrapSpacecraftsAsGroups(
         Collection $spacecrafts
     ): Collection {
@@ -164,13 +163,13 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
         return $groups;
     }
 
-    #[Override]
+    #[\Override]
     public function wrapFleet(Fleet $fleet): FleetWrapperInterface
     {
         return new FleetWrapper($fleet, $this, $this->game, false);
     }
 
-    #[Override]
+    #[\Override]
     public function wrapFleets(array $fleets): array
     {
         return array_map(

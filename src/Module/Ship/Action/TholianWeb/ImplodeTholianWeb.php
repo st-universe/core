@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\TholianWeb;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
@@ -35,7 +34,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -112,7 +111,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

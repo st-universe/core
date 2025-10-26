@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Config\StuConfigException;
 use Stu\StuTestCase;
 
@@ -16,7 +15,7 @@ class GameSettingsTest extends StuTestCase
 
     private GameSettings $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->settingsCore = $this->mock(SettingsCoreInterface::class);

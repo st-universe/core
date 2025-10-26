@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount;
 
 use Crunz\Exception\NotImplementedException;
-use Override;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -26,13 +25,13 @@ final class UserSpacecraftCountDataProvider extends AbstractShipcountDataProvide
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getUserSpacecraftCountLayerData($boundaries, $this->userId, $this->createResultSetMapping());
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         throw new NotImplementedException('this is not possible');

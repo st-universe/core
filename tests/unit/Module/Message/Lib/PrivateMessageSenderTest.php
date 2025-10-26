@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\General\EntityWithHrefInterface;
 use Stu\Module\Control\StuTime;
@@ -28,7 +27,7 @@ class PrivateMessageSenderTest extends StuTestCase
 
     private PrivateMessageSenderInterface $messageSender;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->messageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
@@ -48,7 +47,7 @@ class PrivateMessageSenderTest extends StuTestCase
         );
     }
 
-    #[Override]
+    #[\Override]
     public function tearDown(): void
     {
         parent::tearDown();

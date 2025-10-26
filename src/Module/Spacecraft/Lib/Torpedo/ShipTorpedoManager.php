@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Torpedo;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TorpedoType;
@@ -20,7 +19,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         private StorageRepositoryInterface $storageRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function changeTorpedo(SpacecraftWrapperInterface $wrapper, int $changeAmount, ?TorpedoType $type = null): void
     {
         $spacecraft = $wrapper->get();

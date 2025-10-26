@@ -6,7 +6,6 @@ namespace Stu\Module\Tick\Colony;
 
 use Exception;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
@@ -36,7 +35,7 @@ class ColonyTickManagerTest extends StuTestCase
 
     private ColonyTickManagerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->colonyTick = $this->mock(ColonyTickInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateShields;
 
-use Override;
 use request;
 
 use Stu\Component\Building\BuildingFunctionEnum;
@@ -25,7 +24,7 @@ final class ActivateShields implements ActionControllerInterface
         private BuildingActionInterface $buildingAction
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -50,7 +49,7 @@ final class ActivateShields implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -19,7 +18,7 @@ use Stu\Orm\Entity\SpacecraftRump;
  */
 final class SpacecraftBuildplanRepository extends EntityRepository implements SpacecraftBuildplanRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByUserAndBuildingFunction(int $userId, BuildingFunctionEnum $buildingFunction): array
     {
         return $this->getEntityManager()
@@ -39,7 +38,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByRumpAndUser(int $rumpId, int $userId): int
     {
         return $this->count([
@@ -48,7 +47,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserShipRumpAndSignature(
         int $userId,
         int $rumpId,
@@ -61,7 +60,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getShuttleBuildplan(int $commodityId): ?SpacecraftBuildplan
     {
         return $this->getEntityManager()
@@ -81,7 +80,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStationBuildplansByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -107,7 +106,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStationBuildplanByRump(int $rumpId): ?SpacecraftBuildplan
     {
         return $this->findOneBy([
@@ -115,7 +114,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getShipyardBuildplansByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -138,13 +137,13 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): SpacecraftBuildplan
     {
         return new SpacecraftBuildplan();
     }
 
-    #[Override]
+    #[\Override]
     public function save(SpacecraftBuildplan $spacecraftBuildplan): void
     {
         $em = $this->getEntityManager();
@@ -152,7 +151,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         $em->persist($spacecraftBuildplan);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(SpacecraftBuildplan $spacecraftBuildplan): void
     {
         $em = $this->getEntityManager();
@@ -160,7 +159,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         $em->remove($spacecraftBuildplan);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -168,7 +167,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function findByUserAndName(int $userId, string $name): ?SpacecraftBuildplan
     {
         return $this->findOneBy([
@@ -191,7 +190,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateAllBuildplansExceptNoOne(): void
     {
         $this->getEntityManager()
@@ -208,7 +207,7 @@ final class SpacecraftBuildplanRepository extends EntityRepository implements Sp
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndRump(int $userId, int $rumpId): array
     {
         return $this->findBy([

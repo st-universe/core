@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
@@ -32,7 +31,7 @@ class TradePostStorageManagerTest extends StuTestCase
     private Storage&MockInterface $storage;
     private User&MockInterface $user;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

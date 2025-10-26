@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Prestige\Lib;
 
-use Override;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -21,13 +20,13 @@ final class CreatePrestigeLog implements CreatePrestigeLogInterface
         private ComponentRegistrationInterface $componentRegistration
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createLog(int $amount, string $description, User $user, int $date): void
     {
         $this->createLogIntern($amount, $description, $user, $date);
     }
 
-    #[Override]
+    #[\Override]
     public function createLogForDatabaseEntry(DatabaseEntry $databaseEntry, User $user, int $date): void
     {
         $amount = $databaseEntry->getCategory()->getPrestige();

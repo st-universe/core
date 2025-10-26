@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
@@ -14,7 +13,7 @@ final class OldTachyonScanDeletion implements MaintenanceHandlerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $this->tachyonScanRepository->deleteOldScans(OldTachyonScanDeletion::SCAN_MAX_AGE);

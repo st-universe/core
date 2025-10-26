@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\View\ShowNewNote;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
@@ -17,7 +16,7 @@ final class ShowNewNote implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $note = $this->noteRepository->prototype();

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Station\Lib;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\AggregationSystemSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -15,19 +14,19 @@ use Stu\Orm\Entity\Station;
  */
 class StationWrapper extends SpacecraftWrapper implements StationWrapperInterface
 {
-    #[Override]
+    #[\Override]
     public function get(): Station
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function canBeScrapped(): bool
     {
         $station = $this->get();
@@ -35,7 +34,7 @@ class StationWrapper extends SpacecraftWrapper implements StationWrapperInterfac
         return $station->getState() !== SpacecraftStateEnum::UNDER_SCRAPPING;
     }
 
-    #[Override]
+    #[\Override]
     public function getAggregationSystemSystemData(): ?AggregationSystemSystemData
     {
         return $this->getSpecificShipSystem(

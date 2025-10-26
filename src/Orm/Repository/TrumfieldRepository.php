@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Trumfield;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\Trumfield;
  */
 final class TrumfieldRepository extends EntityRepository implements TrumfieldRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): Trumfield
     {
         return new Trumfield();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Trumfield $trumfield): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class TrumfieldRepository extends EntityRepository implements TrumfieldRep
         $em->persist($trumfield);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Trumfield $trumfield): void
     {
         $em = $this->getEntityManager();

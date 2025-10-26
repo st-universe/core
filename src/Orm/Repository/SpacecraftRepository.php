@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
@@ -31,7 +30,7 @@ use Stu\Orm\Entity\User;
  */
 final class SpacecraftRepository extends EntityRepository implements SpacecraftRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
@@ -39,7 +38,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $em->persist($spacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
@@ -47,7 +46,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $em->remove($spacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUserAndSpecialAbility(
         int $userId,
         int $specialAbilityId
@@ -73,7 +72,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUserAndRump(int $userId, int $rumpId): int
     {
         return $this->count([
@@ -82,7 +81,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(User $user): array
     {
         return $this->findBy([
@@ -90,7 +89,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getSuitableForShieldRegeneration(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -124,7 +123,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPlayerSpacecraftsForTick(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -161,7 +160,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ])->toIterable();
     }
 
-    #[Override]
+    #[\Override]
     public function getNpcSpacecraftsForTick(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -172,7 +171,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function isCloakedSpacecraftAtLocation(
         Spacecraft $spacecraft
     ): bool {
@@ -199,7 +198,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return $result > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getSingleSpacecraftScannerResults(
         Spacecraft $spacecraft,
         bool $showCloaked = false,
@@ -272,7 +271,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRandomSpacecraftWithCrewByUser(int $userId): ?Spacecraft
     {
         $rsm = new ResultSetMapping();
@@ -299,7 +298,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             : null;
     }
 
-    #[Override]
+    #[\Override]
     public function getAllTractoringSpacecrafts(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -311,7 +310,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         )->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateAllSpacecrafts(): void
     {
         $this->getEntityManager()->createQuery(

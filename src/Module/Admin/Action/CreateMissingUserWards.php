@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class CreateMissingUserWards implements ActionControllerInterface
         private CreateMissingUserAwards $createMissingUserAwards
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -34,7 +33,7 @@ final class CreateMissingUserWards implements ActionControllerInterface
         $game->getInfo()->addInformation('Fehlende User Awards wurden hinzugefügt');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

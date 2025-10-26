@@ -6,7 +6,6 @@ namespace Stu\Component\Building;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Building\Action\BuildingActionHandlerInterface;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingFunction;
@@ -29,7 +28,7 @@ class BuildingManagerTest extends StuTestCase
 
     private BuildingManager $buildingManager;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);

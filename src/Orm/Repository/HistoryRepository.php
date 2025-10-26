@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\History;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\History;
  */
 final class HistoryRepository extends EntityRepository implements HistoryRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getRecent(): array
     {
         return $this->findBy(
@@ -25,7 +24,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getRecentWithoutPirate(): array
     {
         return $this->getEntityManager()
@@ -44,7 +43,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
 
-    #[Override]
+    #[\Override]
     public function getByTypeAndSearch(HistoryTypeEnum $type, int $limit): array
     {
         return $this->getEntityManager()
@@ -64,7 +63,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit): array
     {
 
@@ -88,7 +87,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSumDestroyedByUser(int $source_user, int $target_user): int
     {
         return (int) $this->getEntityManager()
@@ -109,7 +108,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
 
-    #[Override]
+    #[\Override]
     public function getAmountByType(int $typeId): int
     {
         return $this->count([
@@ -117,13 +116,13 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): History
     {
         return new History();
     }
 
-    #[Override]
+    #[\Override]
     public function save(History $history): void
     {
         $em = $this->getEntityManager();
@@ -131,7 +130,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         $em->persist($history);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(History $history): void
     {
         $em = $this->getEntityManager();

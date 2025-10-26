@@ -2,14 +2,13 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Orm\Repository\LocationMiningRepositoryInterface;
 
 final class CreateInterstellarMedia implements MaintenanceHandlerInterface
 {
     public function __construct(private LocationMiningRepositoryInterface $locationMiningRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $entries = $this->locationMiningRepository->findDepletedEntries();

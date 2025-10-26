@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Logging;
 
 use Monolog\Logger;
-use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 
@@ -19,7 +18,7 @@ final class LoggerUtil implements LoggerUtilInterface
 
     public function __construct(private StuConfigInterface $stuConfig) {}
 
-    #[Override]
+    #[\Override]
     public function init(string $channel = 'stu', LogLevelEnum $level = LogLevelEnum::INFO): void
     {
         $this->level = $level;
@@ -38,13 +37,13 @@ final class LoggerUtil implements LoggerUtilInterface
         return $this->doLog;
     }
 
-    #[Override]
+    #[\Override]
     public function doLog(): bool
     {
         return $this->doLog;
     }
 
-    #[Override]
+    #[\Override]
     public function log(string $message): void
     {
         if ($this->doLog) {
@@ -56,7 +55,7 @@ final class LoggerUtil implements LoggerUtilInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function logf(string $information, ...$args): void
     {
         $this->log(vsprintf(

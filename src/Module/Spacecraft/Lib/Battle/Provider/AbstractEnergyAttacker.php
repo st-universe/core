@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuRandom;
@@ -20,7 +19,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
         protected StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getFiringMode(): int
     {
         $weapon = $this->getWeapon();
@@ -30,7 +29,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
 
     abstract public function getWeaponModule(): Module;
 
-    #[Override]
+    #[\Override]
     public function getWeapon(): Weapon
     {
         if ($this->weapon === null) {
@@ -47,7 +46,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
 
     abstract public function getEnergyWeaponBaseDamage(): int;
 
-    #[Override]
+    #[\Override]
     public function getWeaponDamage(bool $isCritical): int
     {
         $basedamage = $this->getEnergyWeaponBaseDamage();

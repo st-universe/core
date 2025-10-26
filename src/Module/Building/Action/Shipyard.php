@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
@@ -14,7 +13,7 @@ final class Shipyard implements BuildingActionHandlerInterface
 {
     public function __construct(private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository) {}
 
-    #[Override]
+    #[\Override]
     public function destruct(BuildingFunctionEnum $buildingFunction, Colony $colony): void
     {
         $this->colonyShipQueueRepository->truncateByColonyAndBuildingFunction(
@@ -23,7 +22,7 @@ final class Shipyard implements BuildingActionHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         if ($host instanceof Colony) {
@@ -31,7 +30,7 @@ final class Shipyard implements BuildingActionHandlerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         if ($host instanceof Colony) {

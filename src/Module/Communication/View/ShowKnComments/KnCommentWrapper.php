@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\User;
@@ -19,37 +18,37 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
         private readonly User $currentUser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->comment->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getKnId(): int
     {
         return $this->comment->getPosting()->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->comment->getText();
     }
 
-    #[Override]
+    #[\Override]
     public function getDate(): int
     {
         return $this->comment->getDate();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->comment->getUser()->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getDisplayUserName(): string
     {
         $commentUserName = $this->comment->getUserName();
@@ -60,7 +59,7 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
         return $this->comment->getUser()->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserAvatarPath(): string
     {
         if ($this->comment->getUserName() !== '') {
@@ -84,13 +83,13 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function isDeleteable(): bool
     {
         return $this->comment->getUser()->getId() === $this->currentUser->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->comment->getUser();

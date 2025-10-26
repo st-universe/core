@@ -7,7 +7,6 @@ namespace Stu\Component\Communication\Kn;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
-use Override;
 
 /**
  * Defines all bbcode definitions available in the kn
@@ -20,7 +19,7 @@ final class KnBbCodeDefinitionSet implements CodeDefinitionSet
     /**
      * @return CodeDefinition[]
      */
-    #[Override]
+    #[\Override]
     public function getCodeDefinitions(): array
     {
         if ($this->definitions === null) {

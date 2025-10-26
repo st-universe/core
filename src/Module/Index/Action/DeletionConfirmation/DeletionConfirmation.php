@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\DeletionConfirmation;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -19,7 +18,7 @@ final class DeletionConfirmation implements ActionControllerInterface
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $token = $this->deletionConfirmationRequest->getToken();
@@ -42,7 +41,7 @@ final class DeletionConfirmation implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Dein Account wurde endgültig zur Löschung vorgesehen. Ein Login ist nicht mehr möglich.'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\User;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\User;
  */
 final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotMemberRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMember
     {
         return $this->findOneBy([
@@ -23,13 +22,13 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): RpgPlotMember
     {
         return new RpgPlotMember();
     }
 
-    #[Override]
+    #[\Override]
     public function save(RpgPlotMember $rpgPlotMember): void
     {
         $em = $this->getEntityManager();
@@ -37,7 +36,7 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         $em->persist($rpgPlotMember);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(RpgPlotMember $rpgPlotMember): void
     {
         $em = $this->getEntityManager();
@@ -45,7 +44,7 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         $em->remove($rpgPlotMember);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(User $user): array
     {
         return $this->findBy([
@@ -53,7 +52,7 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByPlot(int $plotId): array
     {
         return $this->findBy([

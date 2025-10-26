@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\Station;
@@ -25,25 +24,25 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
      */
     public function __construct(private StorageRepositoryInterface $storageRepository, private TradePost $tradePost, private array $basicTrades, private int $userId, private CommodityRepositoryInterface $commodityRepository) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->tradePost->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getStation(): Station
     {
         return $this->tradePost->getStation();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostDescription(): string
     {
         return $this->tradePost->getDescription();
     }
 
-    #[Override]
+    #[\Override]
     public function getBasicTradeItems(): array
     {
         $result = [];
@@ -58,7 +57,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function getLatinumItem(): BasicTradeItem
     {
         $latinumStorage = $this->getStorage()[CommodityTypeConstants::COMMODITY_LATINUM] ?? null;
@@ -80,7 +79,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
         return $this->storage;
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -90,13 +89,13 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isOverStorage(): bool
     {
         return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageCapacity(): int
     {
         return $this->tradePost->getStorage();

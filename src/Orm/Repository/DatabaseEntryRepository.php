@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\Map;
@@ -18,7 +17,7 @@ use Stu\Orm\Entity\Spacecraft;
  */
 final class DatabaseEntryRepository extends EntityRepository implements DatabaseEntryRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByCategoryId(int $categoryId): array
     {
         return $this->findBy([
@@ -26,7 +25,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntry
     {
         return $this->findOneBy([
@@ -35,7 +34,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getStarSystemEntriesByLayer(int $categoryId, ?int $layer = null): array
     {
         $query = $this->getEntityManager()
@@ -65,7 +64,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRegionEntriesByLayer(int $categoryId, ?int $layer = null): array
     {
         $query = $this->getEntityManager()
@@ -95,7 +94,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostEntriesByLayer(int $categoryId, ?int $layer = null): array
     {
         $query = $this->getEntityManager()
@@ -123,13 +122,13 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): DatabaseEntry
     {
         return new DatabaseEntry();
     }
 
-    #[Override]
+    #[\Override]
     public function save(DatabaseEntry $entry): void
     {
         $em = $this->getEntityManager();

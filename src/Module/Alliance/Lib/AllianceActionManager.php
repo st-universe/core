@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -31,13 +30,13 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function assignUserToJob(User $user, AllianceJob $job): void
     {
         $this->allianceJobManager->assignUserToJob($user, $job);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Alliance $alliance, bool $sendMesage = true): void
     {
         $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
@@ -77,21 +76,21 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->allianceRepository->delete($alliance);
     }
 
-    #[Override]
+    #[\Override]
     public function mayEdit(Alliance $alliance, User $user): bool
     {
         return $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
             || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance);
     }
 
-    #[Override]
+    #[\Override]
     public function mayManageForeignRelations(Alliance $alliance, User $user): bool
     {
         return $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance)
             || $this->mayEdit($alliance, $user);
     }
 
-    #[Override]
+    #[\Override]
     public function sendMessage(int $allianceId, string $text): void
     {
         $alliance = $this->allianceRepository->find($allianceId);
@@ -105,7 +104,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function mayEditFactionMode(Alliance $alliance, int $factionId): bool
     {
         if ($alliance->getFaction() === null) {

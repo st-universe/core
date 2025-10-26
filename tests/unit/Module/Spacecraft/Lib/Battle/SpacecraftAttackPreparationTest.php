@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -23,7 +22,7 @@ class SpacecraftAttackPreparationTest extends StuTestCase
 
     private SpacecraftAttackPreparationInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->fightLib = $this->mock(FightLibInterface::class);

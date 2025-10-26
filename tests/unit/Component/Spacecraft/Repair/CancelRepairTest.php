@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Repair;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -25,7 +24,7 @@ class CancelRepairTest extends StuTestCase
 
     private CancelRepairInterface $cancelRepair;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftRepo = $this->mock(SpacecraftRepositoryInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Action;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,7 +18,7 @@ final class DeleteColonyScan implements ActionControllerInterface
         private ColonyScanRepositoryInterface $colonyScanRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colonyScan = $this->colonyScanRepository->find(request::getIntFatal('id'));
@@ -35,7 +34,7 @@ final class DeleteColonyScan implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

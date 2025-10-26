@@ -2,13 +2,12 @@
 
 namespace Stu\Module\Config\Model;
 
-use Override;
 
 final class MapSettings extends AbstractSettings implements MapSettingsInterface
 {
     private const string SETTING_ENCRYPTION_KEY = 'encryptionKey';
 
-    #[Override]
+    #[\Override]
     public function getEncryptionKey(): ?string
     {
         if ($this->settingsCore->exists(self::SETTING_ENCRYPTION_KEY)) {

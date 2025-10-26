@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -15,7 +14,7 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
 
     public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $txtTemplate = _('Der Plot "%s" wurde gelöscht, da er veraltet ist und keine Beiträge enthält.');

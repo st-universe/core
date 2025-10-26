@@ -9,7 +9,6 @@ use DI\Definition\AutowireDefinition;
 use DI\Definition\FactoryDefinition;
 use DI\Definition\Source\MutableDefinitionSource;
 use Mockery\MockInterface;
-use Override;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -22,7 +21,7 @@ class StuContainerTest extends StuTestCase
 
     private StuContainer $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->definitionSource = $this->mock(MutableDefinitionSource::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use InvalidArgumentException;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
@@ -41,7 +40,7 @@ class ModuleSelector implements ModuleSelectorInterface
         private ?SpacecraftBuildplan $buildplan = null
     ) {}
 
-    #[Override]
+    #[\Override]
     public function isMandatory(): bool
     {
         if ($this->isSpecial()) {
@@ -52,7 +51,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $moduleLevels->isMandatory($this->getModuleType());
     }
 
-    #[Override]
+    #[\Override]
     public function isSpecial(): bool
     {
         return $this->getModuleType()->isSpecialSystemType();
@@ -63,13 +62,13 @@ class ModuleSelector implements ModuleSelectorInterface
         return new ModuleScreenTab($this);
     }
 
-    #[Override]
+    #[\Override]
     public function allowMultiple(): bool
     {
         return $this->isSpecial();
     }
 
-    #[Override]
+    #[\Override]
     public function render(): string
     {
         $this->twigPage->setTemplate(self::TEMPLATE);
@@ -78,19 +77,19 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->twigPage->render();
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return $this->moduleType;
     }
 
-    #[Override]
+    #[\Override]
     public function allowEmptySlot(): bool
     {
         return !$this->isSpecial() && !$this->isMandatory();
     }
 
-    #[Override]
+    #[\Override]
     public function isEmptySlot(): bool
     {
         return $this->allowEmptySlot()
@@ -98,19 +97,19 @@ class ModuleSelector implements ModuleSelectorInterface
             && !$this->hasSelectedModule();
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleDescription(): string
     {
         return $this->getModuleType()->getDescription();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->user->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getRump(): SpacecraftRump
     {
         return $this->rump;
@@ -127,7 +126,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $shipRumpRole;
     }
 
-    #[Override]
+    #[\Override]
     public function getAvailableModules(): array
     {
         if ($this->moduleSelectorEntries === null) {
@@ -169,19 +168,19 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->moduleSelectorEntries;
     }
 
-    #[Override]
+    #[\Override]
     public function hasSelectedModule(): bool
     {
         return $this->getSelectedModules() !== [];
     }
 
-    #[Override]
+    #[\Override]
     public function getSelectedModuleCount(): int
     {
         return count($this->getSelectedModules());
     }
 
-    #[Override]
+    #[\Override]
     public function getSelectedModules(): array
     {
         return array_filter(
@@ -190,13 +189,13 @@ class ModuleSelector implements ModuleSelectorInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getHost(): Colony|Spacecraft
     {
         return $this->host;
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildplan(): ?SpacecraftBuildplan
     {
         return $this->buildplan;
@@ -215,7 +214,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->shipRumpModuleLevel;
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleTypeLevel(): int
     {
         if ($this->isSpecial()) {
@@ -226,7 +225,7 @@ class ModuleSelector implements ModuleSelectorInterface
             ->getDefaultLevel($this->getModuleType());
     }
 
-    #[Override]
+    #[\Override]
     public function getAddon(): ?ModuleSelectorAddonInterface
     {
         return $this->addon;

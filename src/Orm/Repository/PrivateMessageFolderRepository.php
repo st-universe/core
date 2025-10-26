@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -16,13 +15,13 @@ use Stu\Orm\Entity\User;
  */
 final class PrivateMessageFolderRepository extends EntityRepository implements PrivateMessageFolderRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): PrivateMessageFolder
     {
         return new PrivateMessageFolder();
     }
 
-    #[Override]
+    #[\Override]
     public function save(PrivateMessageFolder $post): void
     {
         $em = $this->getEntityManager();
@@ -31,7 +30,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function delete(PrivateMessageFolder $post): void
     {
         $em = $this->getEntityManager();
@@ -40,7 +39,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getOrderedByUser(User $user): array
     {
         return $this->findBy(
@@ -52,7 +51,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndSpecial(int $userId, PrivateMessageFolderTypeEnum $folderType): ?PrivateMessageFolder
     {
         return $this->findOneBy([
@@ -61,7 +60,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxOrderIdByUser(User $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
@@ -74,7 +73,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateAllNonNpcFolders(): void
     {
         $this->getEntityManager()->createQuery(

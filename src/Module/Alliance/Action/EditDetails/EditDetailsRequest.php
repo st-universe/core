@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditDetails;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class EditDetailsRequest implements EditDetailsRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->tidyString(
@@ -19,7 +18,7 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getHomepage(): string
     {
         return $this->tidyString(
@@ -27,7 +26,7 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return $this->tidyString(
@@ -35,19 +34,19 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getFactionMode(): int
     {
         return $this->parameter('factionid')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getAcceptApplications(): int
     {
         return $this->parameter('acceptapp')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getRgbCode(): string
     {
         return $this->tidyString(
@@ -55,13 +54,13 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getJobIdFounder(): int
     {
         return $this->parameter('job_id_founder')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getJobTitleFounder(): string
     {
         return $this->tidyString(
@@ -69,13 +68,13 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getJobIdSuccessor(): int
     {
         return $this->parameter('job_id_successor')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getJobTitleSuccessor(): string
     {
         return $this->tidyString(
@@ -83,13 +82,13 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getJobIdDiplomatic(): int
     {
         return $this->parameter('job_id_diplomatic')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getJobTitleDiplomatic(): string
     {
         return $this->tidyString(

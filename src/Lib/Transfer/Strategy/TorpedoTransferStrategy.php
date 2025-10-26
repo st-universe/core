@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\Colony;
 
 class TorpedoTransferStrategy implements TransferStrategyInterface
 {
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         bool $isUnload,
         StorageEntityWrapperInterface $source,
@@ -41,7 +40,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $source,

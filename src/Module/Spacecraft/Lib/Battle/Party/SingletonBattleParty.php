@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -20,13 +19,13 @@ class SingletonBattleParty extends AbstractBattleParty
         $this->isStation = $leader->get()->isStation();
     }
 
-    #[Override]
+    #[\Override]
     public function initMembers(): Collection
     {
         return $this->createSingleton($this->leader);
     }
 
-    #[Override]
+    #[\Override]
     public function isStation(): bool
     {
         return $this->isStation;

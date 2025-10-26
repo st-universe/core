@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\ToggleDockPmAutoRead;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,7 +18,7 @@ final class ToggleDockPmAutoRead implements ActionControllerInterface
 
     public function __construct(private StationLoaderInterface $stationLoader, private TradePostRepositoryInterface $tradePostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
@@ -45,7 +44,7 @@ final class ToggleDockPmAutoRead implements ActionControllerInterface
         $this->tradePostRepository->save($tradePost);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

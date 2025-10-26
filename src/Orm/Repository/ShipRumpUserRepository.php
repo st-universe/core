@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\ShipRumpUser;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\ShipRumpUser;
  */
 final class ShipRumpUserRepository extends EntityRepository implements ShipRumpUserRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function isAvailableForUser(int $rumpId, int $userId): bool
     {
         return $this->count([
@@ -22,13 +21,13 @@ final class ShipRumpUserRepository extends EntityRepository implements ShipRumpU
         ]) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): ShipRumpUser
     {
         return new ShipRumpUser();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ShipRumpUser $shipRumpUser): void
     {
         $em = $this->getEntityManager();

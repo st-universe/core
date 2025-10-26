@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -20,7 +19,7 @@ final class StationLoader implements StationLoaderInterface
         private SpacecraftLoaderInterface $spacecraftLoader
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getByIdAndUser(
         int $stationId,
         int $userId,
@@ -42,7 +41,7 @@ final class StationLoader implements StationLoaderInterface
         return $spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getWrapperByIdAndUser(
         int $stationId,
         int $userId,
@@ -64,7 +63,7 @@ final class StationLoader implements StationLoaderInterface
         return $wrapper;
     }
 
-    #[Override]
+    #[\Override]
     public function getWrappersBySourceAndUserAndTarget(
         int $stationId,
         int $userId,
@@ -82,7 +81,7 @@ final class StationLoader implements StationLoaderInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function find(int $stationId, bool $checkForEntityLock = true): ?StationWrapperInterface
     {
         $wrapper = $this->spacecraftLoader->find(

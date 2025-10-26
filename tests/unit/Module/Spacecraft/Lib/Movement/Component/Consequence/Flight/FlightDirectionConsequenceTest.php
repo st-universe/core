@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -30,7 +29,7 @@ class FlightDirectionConsequenceTest extends StuTestCase
 
     private MockInterface&FlightRouteInterface $flightRoute;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->updateFlightDirection = $this->mock(UpdateFlightDirectionInterface::class);

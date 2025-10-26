@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
-use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -26,7 +25,7 @@ final class ShowByPosition implements ViewControllerInterface
         private StarmapUiFactoryInterface $starmapUiFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship =  $this->spacecraftLoader->getByIdAndUser(

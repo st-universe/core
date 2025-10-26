@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Wormhole;
 
-use Override;
 use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\WormholeEntry;
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\User;
 
 final class WormholeEntryPrivilegeUtility implements WormholeEntryPrivilegeUtilityInterface
 {
-    #[Override]
+    #[\Override]
     public function checkPrivilegeFor(WormholeEntry $wormholeEntry, User|Spacecraft $source): bool
     {
         try {

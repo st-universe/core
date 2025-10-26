@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ToggleFleetVisibility;
 
-use Override;
 use request;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,7 +18,7 @@ final class ToggleFleetVisibility implements ActionControllerInterface
 
     public function __construct(private readonly SessionStorageInterface $sessionStorage) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $fleetId = request::getIntFatal('fleet');
@@ -32,7 +31,7 @@ final class ToggleFleetVisibility implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

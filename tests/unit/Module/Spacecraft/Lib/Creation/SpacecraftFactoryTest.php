@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Orm\Entity\Ship;
@@ -21,7 +20,7 @@ class SpacecraftFactoryTest extends StuTestCase
 
     private SpacecraftFactoryInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->rump = $this->mock(SpacecraftRump::class);

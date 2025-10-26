@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Message;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 
 class Message implements MessageInterface
@@ -18,25 +17,25 @@ class Message implements MessageInterface
         private array $msg = []
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSenderId(): int
     {
         return $this->senderId;
     }
 
-    #[Override]
+    #[\Override]
     public function getRecipientId(): ?int
     {
         return $this->recipientId;
     }
 
-    #[Override]
+    #[\Override]
     public function getMessage(): array
     {
         return $this->msg;
     }
 
-    #[Override]
+    #[\Override]
     public function add(?string $msg): void
     {
         if ($msg === null) {
@@ -46,7 +45,7 @@ class Message implements MessageInterface
         $this->msg[] = $msg;
     }
 
-    #[Override]
+    #[\Override]
     public function addInformation(?string $information): InformationInterface
     {
         $this->add($information);
@@ -54,7 +53,7 @@ class Message implements MessageInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addInformationf(string $information, ...$args): InformationInterface
     {
         $this->add(vsprintf(
@@ -65,7 +64,7 @@ class Message implements MessageInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addMessageMerge(array $msg): void
     {
         if ($msg === []) {
@@ -75,7 +74,7 @@ class Message implements MessageInterface
         $this->msg = array_merge($this->msg, $msg);
     }
 
-    #[Override]
+    #[\Override]
     public function isEmpty(): bool
     {
         return $this->msg === [];

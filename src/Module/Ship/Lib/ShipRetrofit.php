@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -32,7 +31,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function updateBy(Ship $ship, SpacecraftBuildplan $newBuildplan, Colony $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();

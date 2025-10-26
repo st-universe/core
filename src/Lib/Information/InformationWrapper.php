@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Information;
 
-use Override;
 
 class InformationWrapper implements InformationInterface
 {
@@ -15,7 +14,7 @@ class InformationWrapper implements InformationInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function addInformation(?string $information): InformationInterface
     {
         if ($information !== null) {
@@ -25,7 +24,7 @@ class InformationWrapper implements InformationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function addInformationf(string $information, ...$args): InformationInterface
     {
         $this->addInformation(vsprintf(

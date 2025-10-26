@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
@@ -19,13 +18,13 @@ final class GameState implements GameStateInterface
         private readonly GameConfigRepositoryInterface $gameConfigRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getGameState(): GameStateEnum
     {
         return GameStateEnum::from($this->getGameConfig()[self::CONFIG_GAMESTATE]->getValue());
     }
 
-    #[Override]
+    #[\Override]
     public function checkGameState(bool $isAdmin): void
     {
         $gameState = $this->getGameState();

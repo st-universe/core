@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -18,7 +17,7 @@ final class SpacecraftUiFactory implements SpacecraftUiFactoryInterface
         private FactionRepositoryInterface $factionRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createWormholeRestrictionItem(
         WormholeRestriction $restriction
     ): WormholeRestrictionItem {

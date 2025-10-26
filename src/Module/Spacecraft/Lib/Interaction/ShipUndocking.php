@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
-use Override;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -23,7 +22,7 @@ final class ShipUndocking implements ShipUndockingInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function undockShip(Station $station, Ship $dockedShip): void
     {
         $this->cancelRepair->cancelRepair($dockedShip);
@@ -44,7 +43,7 @@ final class ShipUndocking implements ShipUndockingInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function undockAllDocked(Station $station): bool
     {
         $dockedShips = $station->getDockedShips();

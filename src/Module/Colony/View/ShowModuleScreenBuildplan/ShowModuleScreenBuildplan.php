@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -28,7 +27,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

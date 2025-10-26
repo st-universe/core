@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance\Event;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\StuTestCase;
@@ -20,7 +19,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
 
     private DiplomaticRelationProposedEvent $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->alliance = $this->mock(Alliance::class);

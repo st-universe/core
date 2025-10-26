@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
-use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
@@ -22,7 +21,7 @@ final class RenameBuildplan implements ActionControllerInterface
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -85,7 +84,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

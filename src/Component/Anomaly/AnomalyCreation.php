@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
@@ -21,7 +20,7 @@ final class AnomalyCreation implements AnomalyCreationInterface
         private readonly AnomalyTypeRepositoryInterface $anomalyTypeRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function create(
         AnomalyTypeEnum $type,
         ?Location $location,

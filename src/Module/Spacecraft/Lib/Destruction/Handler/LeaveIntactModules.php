@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
@@ -19,7 +18,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

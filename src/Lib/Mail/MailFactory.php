@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Mail;
 
-use Override;
 use Stu\Module\Config\StuConfigInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -14,7 +13,7 @@ class MailFactory implements MailFactoryInterface
         private StuConfigInterface $stuConfig
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createStuMail(): StuMailInterface
     {
         return new StuMail(

@@ -6,7 +6,6 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\User;
@@ -22,7 +21,7 @@ class KnCommentWrapperTest extends StuTestCase
 
     private KnCommentWrapper $tal;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

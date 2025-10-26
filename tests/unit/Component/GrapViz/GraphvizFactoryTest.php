@@ -6,14 +6,13 @@ namespace Stu\Component\GrapViz;
 
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
-use Override;
 use Stu\StuTestCase;
 
 class GraphvizFactoryTest extends StuTestCase
 {
     private GraphVizFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new GraphVizFactory();

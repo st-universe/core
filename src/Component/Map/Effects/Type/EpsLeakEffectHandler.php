@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects\Type;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -15,13 +14,13 @@ class EpsLeakEffectHandler implements EffectHandlerInterface
 {
     public function __construct(private StuRandom $stuRandom) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         // not needed
     }
 
-    #[Override]
+    #[\Override]
     public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
@@ -31,7 +30,7 @@ class EpsLeakEffectHandler implements EffectHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $spacecraft = $wrapper->get();

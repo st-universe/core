@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Exception\MaintenanceGameStateException;
@@ -21,7 +20,7 @@ class GameStateTest extends StuTestCase
 
     private GameStateInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);

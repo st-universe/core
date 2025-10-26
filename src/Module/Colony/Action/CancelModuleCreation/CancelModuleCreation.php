@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -30,7 +29,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -97,7 +96,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         $this->colonyRepository->save($colony);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

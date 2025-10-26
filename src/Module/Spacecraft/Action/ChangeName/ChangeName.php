@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\ChangeName;
 
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,7 +24,7 @@ final class ChangeName implements ActionControllerInterface
         private ChangeNameRequestInterface $changeNameRequest
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -68,7 +67,7 @@ final class ChangeName implements ActionControllerInterface
         $game->getInfo()->addInformation("Der Schiffname wurde geändert");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

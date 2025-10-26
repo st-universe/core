@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -16,7 +15,7 @@ class AlertedShipInformationTest extends StuTestCase
 {
     private AlertedShipInformationInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new AlertedShipInformation();

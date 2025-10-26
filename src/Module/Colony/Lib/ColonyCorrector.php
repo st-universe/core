@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Lib;
 
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -26,7 +25,7 @@ class ColonyCorrector implements ColonyCorrectorInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function correct(bool $doDump = true): void
     {
         $this->loggerUtil->init('CoCo', LogLevelEnum::ERROR);

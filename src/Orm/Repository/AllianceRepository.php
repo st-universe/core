@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\Alliance;
 
 /**
@@ -13,13 +12,13 @@ use Stu\Orm\Entity\Alliance;
  */
 final class AllianceRepository extends EntityRepository implements AllianceRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): Alliance
     {
         return new Alliance();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Alliance $post): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Alliance $post): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function findAllOrdered(): array
     {
         return $this->findBy(
@@ -44,7 +43,7 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         );
     }
 
-    #[Override]
+    #[\Override]
     public function findByApplicationState(bool $acceptApplications): array
     {
         return $this->findBy(

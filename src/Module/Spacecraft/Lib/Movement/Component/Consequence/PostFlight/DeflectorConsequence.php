@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -17,13 +16,13 @@ class DeflectorConsequence extends AbstractFlightConsequence implements PostFlig
 {
     public function __construct(private ApplyFieldDamageInterface $applyFieldDamage) {}
 
-    #[Override]
+    #[\Override]
     protected function skipWhenTractored(): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     protected function triggerSpecific(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

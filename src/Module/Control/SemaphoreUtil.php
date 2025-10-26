@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Override;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
 use Stu\Module\Config\StuConfigInterface;
@@ -17,13 +16,13 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function __construct(private readonly StuConfigInterface $stuConfig) {}
 
-    #[Override]
+    #[\Override]
     public function isSemaphoreAlreadyAcquired(int $key): bool
     {
         return array_key_exists($key, self::$semaphores);
     }
 
-    #[Override]
+    #[\Override]
     public function acquireSemaphore(int $key): null|int|SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
@@ -65,7 +64,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function releaseSemaphore(null|int|SysvSemaphore $semaphore, bool $doRemove = false): void
     {
         if (!$this->isSemaphoreUsageActive() || !$semaphore instanceof SysvSemaphore) {
@@ -75,7 +74,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->release($semaphore, $doRemove);
     }
 
-    #[Override]
+    #[\Override]
     public function releaseAllSemaphores(bool $doRemove = false): void
     {
         if (!$this->isSemaphoreUsageActive()) {

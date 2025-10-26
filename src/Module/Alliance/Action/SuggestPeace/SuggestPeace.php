@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
-use Override;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -18,7 +17,7 @@ final class SuggestPeace implements ActionControllerInterface
 
     public function __construct(private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $relation = $this->allianceRelationRepository->find($this->suggestPeaceRequest->getRelationId());
@@ -81,7 +80,7 @@ final class SuggestPeace implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Frieden wurde angeboten'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

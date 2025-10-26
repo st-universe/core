@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -18,7 +17,7 @@ final class SpacecraftCountDataProviderFactory implements SpacecraftCountDataPro
         private StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getDataProvider(int $id, SpacecraftCountLayerTypeEnum $type): AbstractPanelLayerDataProvider
     {
 

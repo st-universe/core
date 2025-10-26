@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowScan;
 
-use Override;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -31,7 +30,7 @@ final class ShowScan implements ViewControllerInterface
         private readonly AchievementManagerInterface $achievementManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

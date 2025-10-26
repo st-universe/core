@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -69,7 +68,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -243,7 +242,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         return $spacecraft->getStarsystemMap()->getColony();
     }
 
-    #[Override]
+    #[\Override]
     public function getViewContext(): ViewContext
     {
         return $this->viewContext;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
@@ -26,7 +25,7 @@ final class SpawnPirateFleet implements ActionControllerInterface
         private ShipRepositoryInterface $shipRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -83,7 +82,7 @@ final class SpawnPirateFleet implements ActionControllerInterface
         ));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

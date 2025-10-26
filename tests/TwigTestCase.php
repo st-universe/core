@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use Override;
 use request;
 use Spatie\Snapshots\MatchesSnapshots;
 use Stu\Module\Control\ComponentSetupInterface;
@@ -21,14 +20,14 @@ abstract class TwigTestCase extends IntegrationTestCase
 
     private static bool $isTemplateEngineSetup = false;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
         $this->setupTemplateEngine();
     }
 
-    #[Override]
+    #[\Override]
     public function tearDown(): void
     {
         parent::tearDown();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
@@ -30,7 +29,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function launch(Spacecraft $spacecraft): ?Spacecraft
     {
         $shipRump = $this->spacecraftRumpRepository->find($spacecraft->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);

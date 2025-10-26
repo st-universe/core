@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,7 +26,7 @@ final class Register implements ActionControllerInterface
     /**
      * @todo add registration without sms
      */
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         if (!$this->config->get('game.registration.enabled')) {
@@ -114,7 +113,7 @@ final class Register implements ActionControllerInterface
         return $mobileNumber === '' ? null : $mobileNumber;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

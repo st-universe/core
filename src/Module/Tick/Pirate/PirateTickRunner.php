@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Pirate;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -36,7 +35,7 @@ final class PirateTickRunner implements TickRunnerInterface
         $this->loggerUtil = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         if ($this->transactionTickRunner->isGameStateReset()) {

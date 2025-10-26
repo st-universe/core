@@ -8,14 +8,13 @@ use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
-use Override;
 
 final class StuBbCodeDefinitionSet implements CodeDefinitionSet
 {
     /** @var array<CodeDefinition> */
     private ?array $definitions = null;
 
-    #[Override]
+    #[\Override]
     public function getCodeDefinitions(): array
     {
         if ($this->definitions === null) {

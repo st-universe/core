@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Torpedo;
 
 use InvalidArgumentException;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Ship;
@@ -30,7 +29,7 @@ class ShipTorpedoManagerTest extends StuTestCase
 
     private ShipTorpedoManagerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

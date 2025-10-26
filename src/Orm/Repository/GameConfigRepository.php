@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Entity\GameConfig;
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\GameConfig;
  */
 final class GameConfigRepository extends EntityRepository implements GameConfigRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(GameConfig $item): void
     {
         $em = $this->getEntityManager();
@@ -26,7 +25,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getByOption(int $optionId): ?GameConfig
     {
         return $this->findOneBy([
@@ -34,7 +33,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function updateGameState(GameStateEnum $state, Connection $connection): void
     {
         $connection->update(

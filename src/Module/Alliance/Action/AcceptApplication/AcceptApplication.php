@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -28,7 +27,7 @@ final class AcceptApplication implements ActionControllerInterface
         private AllianceApplicationRepositoryInterface $allianceApplicationRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Applications::VIEW_IDENTIFIER);
@@ -103,7 +102,7 @@ final class AcceptApplication implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

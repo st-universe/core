@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\EditDetails;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -33,7 +32,7 @@ final class EditDetails implements ActionControllerInterface
         private AllianceApplicationRepositoryInterface $allianceApplicationRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -162,7 +161,7 @@ final class EditDetails implements ActionControllerInterface
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

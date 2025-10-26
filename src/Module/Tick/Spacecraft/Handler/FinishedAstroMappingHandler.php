@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Lib\Information\InformationInterface;
@@ -24,7 +23,7 @@ class FinishedAstroMappingHandler implements SpacecraftTickHandlerInterface
         private GameControllerInterface $game
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

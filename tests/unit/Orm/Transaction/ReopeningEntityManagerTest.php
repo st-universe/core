@@ -8,7 +8,6 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Transaction\EntityManagerFactoryInterface;
 use Stu\StuTestCase;
 
@@ -21,7 +20,7 @@ class ReopeningEntityManagerTest extends StuTestCase
 
     private ReopeningEntityManager $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityManagerFactory = $this->mock(EntityManagerFactoryInterface::class);

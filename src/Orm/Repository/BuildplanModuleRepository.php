@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\BuildplanModule;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\BuildplanModule;
  */
 final class BuildplanModuleRepository extends EntityRepository implements BuildplanModuleRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByBuildplan(int $buildplanId): array
     {
         return $this->findBy(
@@ -22,13 +21,13 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         );
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): BuildplanModule
     {
         return new BuildplanModule();
     }
 
-    #[Override]
+    #[\Override]
     public function save(BuildplanModule $obj): void
     {
         $em = $this->getEntityManager();
@@ -36,7 +35,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em->persist($obj);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(BuildplanModule $obj): void
     {
         $em = $this->getEntityManager();
@@ -45,7 +44,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em->flush(); //TODO really neccessary?
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByBuildplan(int $buildplanId): void
     {
         $this->getEntityManager()

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationWrapper;
@@ -23,7 +22,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     public const int FIRINGMODE_RANDOM = 1;
     public const int FIRINGMODE_FOCUS = 2;
 
-    #[Override]
+    #[\Override]
     public function fire(
         EnergyAttackerInterface $attacker,
         BattlePartyInterface $targetPool,
@@ -107,7 +106,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         }
     }
 
-    #[Override]
+    #[\Override]
     public function fireAtBuilding(
         EnergyAttackerInterface $attacker,
         PlanetField $target,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -20,7 +19,7 @@ final class DeleteAvatar implements ActionControllerInterface
 
     public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -59,7 +58,7 @@ final class DeleteAvatar implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Das Bild wurde gelöscht'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

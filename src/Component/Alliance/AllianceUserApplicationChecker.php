@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Override;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
@@ -18,7 +17,7 @@ final class AllianceUserApplicationChecker implements AllianceUserApplicationChe
         private AllianceApplicationRepositoryInterface $allianceApplicationRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function mayApply(
         User $user,
         Alliance $alliance

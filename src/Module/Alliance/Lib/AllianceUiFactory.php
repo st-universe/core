@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
@@ -25,7 +24,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createManagementListItem(
         Alliance $alliance,
         User $user,
@@ -42,7 +41,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createAllianceListItem(
         Alliance $alliance
     ): AllianceListItem {
@@ -51,7 +50,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createAllianceMemberWrapper(
         User $user,
         Alliance $alliance
@@ -63,7 +62,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createAllianceRelationWrapper(
         Alliance $alliance,
         AllianceRelation $allianceRelation

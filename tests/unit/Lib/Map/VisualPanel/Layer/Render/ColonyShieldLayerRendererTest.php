@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\ColonyShieldData;
 use Stu\StuTestCase;
@@ -16,7 +15,7 @@ class ColonyShieldLayerRendererTest extends StuTestCase
 
     private LayerRendererInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->panel = mock(AbstractVisualPanel::class);

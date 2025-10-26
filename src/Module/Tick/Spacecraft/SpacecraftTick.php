@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft;
 
-use Override;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LogTypeEnum;
@@ -27,7 +26,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         private readonly array $handlers
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         foreach ($this->spacecraftRepository->getPlayerSpacecraftsForTick() as $spacecraft) {
@@ -35,7 +34,7 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
         }
     }
 
-    #[Override]
+    #[\Override]
     public function workSpacecraft(SpacecraftWrapperInterface $wrapper): void
     {
         $informationWrapper = $this->informationFactory->createInformationWrapper();

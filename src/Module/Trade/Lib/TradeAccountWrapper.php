@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Override;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
@@ -23,43 +22,43 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
 
     public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository, private TradePost $tradePost, private int $userId) {}
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->tradePost->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getStation(): Station
     {
         return $this->tradePost->getStation();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostDescription(): string
     {
         return $this->tradePost->getDescription();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostName(): string
     {
         return $this->tradePost->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostbyUser(): bool
     {
         return $this->tradePost->getUserId() === $this->userId;
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostIsNPC(): bool
     {
         return $this->tradePost->getUser()->isNpc();
     }
 
-    #[Override]
+    #[\Override]
     public function getStorage(): array
     {
         if ($this->storage === null) {
@@ -71,7 +70,7 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
         return $this->storage;
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -81,7 +80,7 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getOfferStorage(): array
     {
         return $this->tradeOfferRepository->getGroupedSumByTradePostAndUser(
@@ -90,13 +89,13 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTradeNetwork(): int
     {
         return $this->tradePost->getTradeNetwork();
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeTransferCapacity(): int
     {
         return $this->tradePost->getTransferCapacity() - $this->tradeTransferRepository->getSumByPostAndUser(
@@ -105,31 +104,31 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTransferCapacity(): int
     {
         return $this->tradePost->getTransferCapacity();
     }
 
-    #[Override]
+    #[\Override]
     public function isOverStorage(): bool
     {
         return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageCapacity(): int
     {
         return $this->tradePost->getStorage();
     }
 
-    #[Override]
+    #[\Override]
     public function getLicenseCount(): int
     {
         return $this->tradeLicenseRepository->getAmountByTradePost($this->tradePost->getId());
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeStorage(): int
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());

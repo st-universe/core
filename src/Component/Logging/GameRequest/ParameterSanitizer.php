@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
-use Override;
 use Stu\Orm\Entity\GameRequest;
 
 /**
@@ -22,7 +21,7 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
         'oldpass',
     ];
 
-    #[Override]
+    #[\Override]
     public function sanitize(
         GameRequest $gameRequest
     ): GameRequest {

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -16,7 +15,7 @@ class HistoryEntryCreation implements SpacecraftDestructionHandlerInterface
         private EntryCreatorInterface $entryCreator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,

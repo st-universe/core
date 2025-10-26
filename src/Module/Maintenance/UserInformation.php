@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -22,7 +21,7 @@ final class UserInformation implements MaintenanceHandlerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $currentTime = $this->stuTime->time();

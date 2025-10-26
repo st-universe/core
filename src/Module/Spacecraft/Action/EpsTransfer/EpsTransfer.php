@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\EpsTransfer;
 
-use Override;
 use request;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
@@ -27,7 +26,7 @@ final class EpsTransfer implements ActionControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -110,7 +109,7 @@ final class EpsTransfer implements ActionControllerInterface
         $game->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

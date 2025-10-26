@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -29,7 +28,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByCoordinates(
         int $starSystemId,
         int $sx,
@@ -42,7 +41,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByBoundaries(PanelBoundaries $boundaries): array
     {
         return $this->getByCoordinateRange(
@@ -54,7 +53,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getByCoordinateRange(
         int $starSystemId,
         int $startSx,
@@ -85,7 +84,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -106,7 +105,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -144,7 +143,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getColonyShieldData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -174,7 +173,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -193,7 +192,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -214,7 +213,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
 
     // TODO: Show impassable only for cartographed systems. 
     // Currently, it does not display any impassable areas.
-    #[Override]
+    #[\Override]
     public function getImpassableBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -234,7 +233,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -262,7 +261,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
 
-    #[Override]
+    #[\Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()->createNativeQuery(
@@ -282,7 +281,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getLssBlockadeLocations(PanelBoundaries $boundaries): array
     {
         $rsm = new ResultSetMapping();
@@ -312,7 +311,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, int $time, ResultSetMapping $rsm): array
     {
         $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
@@ -357,7 +356,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             'timeThreshold' => $maxAge
         ])->getResult();
     }
-    #[Override]
+    #[\Override]
     public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, int $time, ResultSetMapping $rsm, ?int $rumpId = null): array
     {
         $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
@@ -422,7 +421,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return $query->setParameters($parameters)->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getRandomSystemMapIdsForAstroMeasurement(int $starSystemId, int $location): array
     {
         $result = [];
@@ -508,13 +507,13 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return array_map(fn(array $data) => $data['id'], $result);
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): StarSystemMap
     {
         return new StarSystemMap();
     }
 
-    #[Override]
+    #[\Override]
     public function save(StarSystemMap $starSystemMap): void
     {
         $em = $this->getEntityManager();
@@ -522,7 +521,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $em->persist($starSystemMap);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByStarSystem(StarSystem $starSystem): void
     {
         $this->getEntityManager()->createQuery(

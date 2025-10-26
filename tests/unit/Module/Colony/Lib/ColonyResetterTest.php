@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\Colony;
@@ -93,7 +92,7 @@ class ColonyResetterTest extends StuTestCase
 
     private ColonyResetterInterface $resetter;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);

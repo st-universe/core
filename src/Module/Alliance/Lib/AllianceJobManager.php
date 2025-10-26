@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceMemberJob;
@@ -17,7 +16,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         private AllianceMemberJobRepositoryInterface $allianceMemberJobRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function assignUserToJob(User $user, AllianceJob $job): void
     {
         $existing = $this->allianceMemberJobRepository->getByUserAndJob($user, $job->getId());
@@ -33,7 +32,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         $this->allianceMemberJobRepository->save($assignment);
     }
 
-    #[Override]
+    #[\Override]
     public function removeUserFromJob(User $user, AllianceJob $job): void
     {
         $assignment = $this->allianceMemberJobRepository->getByUserAndJob($user, $job->getId());
@@ -45,7 +44,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         $this->allianceMemberJobRepository->delete($assignment);
     }
 
-    #[Override]
+    #[\Override]
     public function removeUserFromAllJobs(User $user, Alliance $alliance): void
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
@@ -57,7 +56,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function hasUserJob(User $user, Alliance $alliance): bool
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
@@ -71,7 +70,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserJobs(User $user, Alliance $alliance): array
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
@@ -86,7 +85,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         return $jobs;
     }
 
-    #[Override]
+    #[\Override]
     public function hasUserFounderPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
@@ -100,7 +99,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function hasUserSuccessorPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
@@ -114,7 +113,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function hasUserDiplomaticPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);

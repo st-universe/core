@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\CrewRace;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\CrewRace;
  */
 final class CrewRaceRepository extends EntityRepository implements CrewRaceRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByFaction(int $factionId): array
     {
         return $this->findBy([

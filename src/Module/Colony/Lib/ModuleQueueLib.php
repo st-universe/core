@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\Building;
@@ -15,13 +14,13 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
 {
     public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private StorageManagerInterface $storageManager) {}
 
-    #[Override]
+    #[\Override]
     public function cancelModuleQueues(Colony $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, [$buildingFunction->value]);
     }
 
-    #[Override]
+    #[\Override]
     public function cancelModuleQueuesForBuilding(Colony $colony, Building $building): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, $building->getFunctions()->getKeys());

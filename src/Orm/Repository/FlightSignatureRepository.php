@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
@@ -22,13 +21,13 @@ use Stu\Orm\Entity\User;
  */
 final class FlightSignatureRepository extends EntityRepository implements FlightSignatureRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): FlightSignature
     {
         return new FlightSignature();
     }
 
-    #[Override]
+    #[\Override]
     public function saveAll(array $array): void
     {
         $em = $this->getEntityManager();
@@ -38,14 +37,14 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         }
     }
 
-    #[Override]
+    #[\Override]
     public function save(FlightSignature $item): void
     {
         $em = $this->getEntityManager();
         $em->persist($item);
     }
 
-    #[Override]
+    #[\Override]
     public function getVisibleSignatureCount(Colony $colony): int
     {
         return (int) $this->getEntityManager()
@@ -81,7 +80,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
 
 
 
-    #[Override]
+    #[\Override]
     public function getVisibleSignatures(int $locationId, int $ignoreId): array
     {
         return $this->getEntityManager()
@@ -114,7 +113,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return $rsm;
     }
 
-    #[Override]
+    #[\Override]
     public function getSignatureRange(): array
     {
         return $this->getEntityManager()
@@ -128,7 +127,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSignatureRangeForShip(int $shipId): array
     {
         return $this->getEntityManager()
@@ -143,7 +142,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSignatureRangeForUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -158,7 +157,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSignatureRangeForAlly(int $allyId): array
     {
         return $this->getEntityManager()
@@ -174,7 +173,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function deleteOldSignatures(int $threshold): void
     {
         $q = $this->getEntityManager()
@@ -188,7 +187,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $q->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getFlightsTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -221,7 +220,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSignaturesForUser(User $user): int
     {
         return (int)$this
@@ -245,7 +244,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     /**
      * @return array<array{FlightSignature, Spacecraft}>
      */
-    #[Override]
+    #[\Override]
     public function getSignaturesInSensorRange(
         int $user_id,
         int $cx,

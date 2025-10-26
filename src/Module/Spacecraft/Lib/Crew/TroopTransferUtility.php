@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
-use Override;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\Crew;
@@ -22,7 +21,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getFreeQuarters(Spacecraft $ship): int
     {
         $free = $this->shipCrewCalculator->getMaxCrewCountByShip($ship) - $ship->getCrewCount();
@@ -30,7 +29,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return max(0, $free);
     }
 
-    #[Override]
+    #[\Override]
     public function getBeamableTroopCount(Spacecraft $spacecraft): int
     {
         $buildplan = $spacecraft->getBuildplan();
@@ -43,7 +42,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return max(0, $free);
     }
 
-    #[Override]
+    #[\Override]
     public function ownCrewOnTarget(User $user, EntityWithCrewAssignmentsInterface $target): int
     {
         return $target->getCrewAssignments()
@@ -52,7 +51,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
             ->count();
     }
 
-    #[Override]
+    #[\Override]
     public function foreignerCount(Spacecraft $spacecraft): int
     {
         $count = 0;
@@ -68,7 +67,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return $count;
     }
 
-    #[Override]
+    #[\Override]
     public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target): void
     {
         // TODO create CrewSlotAssignment

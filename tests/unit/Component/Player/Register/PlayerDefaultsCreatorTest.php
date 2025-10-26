@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Register;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\Layer;
@@ -41,7 +40,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
     private PlayerDefaultsCreatorInterface $defaultsCreator;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->privateMessageFolderRepository = Mockery::mock(PrivateMessageFolderRepositoryInterface::class);

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipDisassembly;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ShowShipDisassemblyRequest implements ShowShipDisassemblyRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getColonyId(): int
     {
         return $this->parameter('id')->int()->required();

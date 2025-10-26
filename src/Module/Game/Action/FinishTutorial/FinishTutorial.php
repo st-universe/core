@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Action\FinishTutorial;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +21,7 @@ final class FinishTutorial implements ActionControllerInterface
         private TutorialStepRepositoryInterface $tutorialStepRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Noop::VIEW_IDENTIFIER);
@@ -53,7 +52,7 @@ final class FinishTutorial implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
-use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -12,13 +11,13 @@ class RegisterRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
-    #[Override]
+    #[\Override]
     protected function getRequestClass(): string
     {
         return RegisterRequest::class;
     }
 
-    #[Override]
+    #[\Override]
     public static function requestVarsDataProvider(): array
     {
         return [
@@ -34,7 +33,7 @@ class RegisterRequestTest extends RequestTestCase
         ];
     }
 
-    #[Override]
+    #[\Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

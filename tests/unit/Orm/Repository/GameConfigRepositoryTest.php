@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\ORM\UnitOfWork;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Entity\GameConfig;
@@ -25,7 +24,7 @@ class GameConfigRepositoryTest extends StuTestCase
 
     private GameConfigRepository $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->mock(EntityManagerInterface::class);

@@ -6,7 +6,6 @@ namespace Stu\Module\Index\View\ShowRegistration;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\Lib\FactionItem;
 use Stu\Module\Index\Lib\UiItemFactoryInterface;
@@ -26,7 +25,7 @@ class ShowRegistrationTest extends StuTestCase
 
     private ShowRegistration $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->showRegistrationRequest = $this->mock(ShowRegistrationRequestInterface::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeleteFleet;
 
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class DeleteFleet implements ActionControllerInterface
 
     public function __construct(private DeleteFleetRequestInterface $deleteFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader, private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->shipLoader->getByIdAndUser($this->deleteFleetRequest->getShipId(), $game->getUser()->getId());
@@ -49,7 +48,7 @@ final class DeleteFleet implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Flotte wurde aufgelöst'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

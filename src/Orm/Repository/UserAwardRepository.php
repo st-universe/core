@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\UserAward;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\UserAward;
  */
 final class UserAwardRepository extends EntityRepository implements UserAwardRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(UserAward $award): void
     {
         $em = $this->getEntityManager();
@@ -21,7 +20,7 @@ final class UserAwardRepository extends EntityRepository implements UserAwardRep
         $em->persist($award);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(UserAward $award): void
     {
         $em = $this->getEntityManager();
@@ -30,7 +29,7 @@ final class UserAwardRepository extends EntityRepository implements UserAwardRep
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): UserAward
     {
         return new UserAward();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects\Type;
 
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -25,13 +24,13 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
         private StuTime $stuTime
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         // not needed
     }
 
-    #[Override]
+    #[\Override]
     public function addFlightInformation(Location $location, MessageCollectionInterface $messages): void
     {
         $messages->addInformationf(
@@ -41,7 +40,7 @@ class NfsMalfunctionCooldownEffectHandler implements EffectHandlerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $spacecraft = $wrapper->get();

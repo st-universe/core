@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -12,13 +11,13 @@ use Stu\Orm\Entity\Ship;
 
 final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::TRANSWARP_COIL;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -31,13 +30,13 @@ final class TranswarpCoilShipSystem extends AbstractSpacecraftSystemType impleme
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getCooldownSeconds(): int
     {
         return 300;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 55;

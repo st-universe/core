@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\CancelShipRepair;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -21,7 +20,7 @@ final class CancelShipRepair implements ActionControllerInterface
 
     public function __construct(private StationShipRepairRepositoryInterface $stationShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -57,7 +56,7 @@ final class CancelShipRepair implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

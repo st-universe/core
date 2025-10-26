@@ -7,7 +7,6 @@ namespace Stu\Module\Trade\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
-use Override;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
@@ -30,13 +29,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         private User $user
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[Override]
+    #[\Override]
     public function getStorageSum(): int
     {
         if ($this->storageSum === null) {
@@ -48,13 +47,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storageSum;
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeStorage(): int
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
 
-    #[Override]
+    #[\Override]
     public function getStorage(): Collection
     {
         if ($this->storage === null) {
@@ -68,7 +67,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storage;
     }
 
-    #[Override]
+    #[\Override]
     public function upperStorage(int $commodityId, int $amount): void
     {
         $storage = $this->getStorage();
@@ -91,7 +90,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $this->storageRepository->save($stor);
     }
 
-    #[Override]
+    #[\Override]
     public function lowerStorage(int $commodityId, int $amount): void
     {
         $storage = $this->getStorage();

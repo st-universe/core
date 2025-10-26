@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Ship;
@@ -20,7 +19,7 @@ final class OrbitShipWrappersRetriever implements OrbitShipWrappersRetrieverInte
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function retrieve(Colony $colony): Collection
     {
         $shipsOnLocation = $colony->getLocation()

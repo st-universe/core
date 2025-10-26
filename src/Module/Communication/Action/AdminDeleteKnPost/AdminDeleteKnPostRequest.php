@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AdminDeleteKnPost;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class AdminDeleteKnPostRequest implements AdminDeleteKnPostRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getKnId(): int
     {
         return $this->parameter('knid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getReason(): string
     {
         return $this->parameter('reason')->string()->defaultsTo('');

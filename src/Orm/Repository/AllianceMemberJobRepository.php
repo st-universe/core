@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\AllianceMemberJob;
 use Stu\Orm\Entity\User;
 
@@ -14,27 +13,27 @@ use Stu\Orm\Entity\User;
  */
 final class AllianceMemberJobRepository extends EntityRepository implements AllianceMemberJobRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): AllianceMemberJob
     {
         return new AllianceMemberJob();
     }
 
-    #[Override]
+    #[\Override]
     public function save(AllianceMemberJob $allianceMemberJob): void
     {
         $em = $this->getEntityManager();
         $em->persist($allianceMemberJob);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(AllianceMemberJob $allianceMemberJob): void
     {
         $em = $this->getEntityManager();
         $em->remove($allianceMemberJob);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->createQueryBuilder('amj')
@@ -44,7 +43,7 @@ final class AllianceMemberJobRepository extends EntityRepository implements Alli
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByJob(int $jobId): array
     {
         return $this->createQueryBuilder('amj')
@@ -54,7 +53,7 @@ final class AllianceMemberJobRepository extends EntityRepository implements Alli
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -67,7 +66,7 @@ final class AllianceMemberJobRepository extends EntityRepository implements Alli
         ])->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByJob(int $jobId): void
     {
         $this->getEntityManager()->createQuery(
@@ -80,7 +79,7 @@ final class AllianceMemberJobRepository extends EntityRepository implements Alli
         ])->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndJob(User $user, int $jobId): ?AllianceMemberJob
     {
         return $this->findOneBy([

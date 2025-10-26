@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Provider;
 
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -21,7 +20,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getManagerProviderColony(Colony $colony): ManagerProviderInterface
     {
         return new ManagerProviderColony(
@@ -33,7 +32,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getManagerProviderStation(StationWrapperInterface $wrapper): ManagerProviderInterface
     {
         return new ManagerProviderStation(

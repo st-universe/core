@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Register;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Override;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
@@ -28,7 +27,7 @@ class PlayerCreatorTest extends MockeryTestCase
 
     private PlayerCreatorInterface $creator;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);

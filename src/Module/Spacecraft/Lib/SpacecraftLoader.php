@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -37,7 +36,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         private readonly LockManagerInterface $lockManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getByIdAndUser(
         int $spacecraftId,
         int $userId,
@@ -54,7 +53,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         )->getSource()->get();
     }
 
-    #[Override]
+    #[\Override]
     public function getWrapperByIdAndUser(
         int $spacecraftId,
         int $userId,
@@ -71,7 +70,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         )->getSource();
     }
 
-    #[Override]
+    #[\Override]
     public function getWrappersBySourceAndUserAndTarget(
         int $spacecraftId,
         int $userId,
@@ -139,7 +138,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface
     {
         if ($checkForEntityLock) {
@@ -154,7 +153,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         return $this->acquireSemaphores($spacecraft, null)->getSource();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Spacecraft $spacecraft): void
     {
         $this->spacecraftRepository->save($spacecraft);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
@@ -25,13 +24,13 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::TRACTOR_BEAM;
     }
 
-    #[Override]
+    #[\Override]
     public function checkActivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $spacecraft = $wrapper->get();
@@ -65,7 +64,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function checkDeactivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         if ($wrapper->get()->getWarpDriveState()) {
@@ -76,19 +75,19 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyUsageForActivation(): int
     {
         return 2;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumption(): int
     {
         return 2;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
@@ -112,7 +111,7 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

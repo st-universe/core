@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Orm\Entity\Faction;
 use Stu\StuTestCase;
 
@@ -17,7 +16,7 @@ class FactionItemTest extends StuTestCase
 
     private FactionItem $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->faction = $this->mock(Faction::class);

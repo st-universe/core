@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShiplistFleet;
 
-use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolationException;
@@ -24,7 +23,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
         private readonly SessionStorageInterface $sessionStorage
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

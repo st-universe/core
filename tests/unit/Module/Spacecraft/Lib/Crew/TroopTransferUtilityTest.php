@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Crew;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\Colony;
@@ -28,7 +27,7 @@ class TroopTransferUtilityTest extends StuTestCase
 
     private MockInterface&Ship $ship;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);

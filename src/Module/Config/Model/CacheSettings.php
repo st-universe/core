@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-use Override;
 
 final class CacheSettings extends AbstractSettings implements CacheSettingsInterface
 {
@@ -11,13 +10,13 @@ final class CacheSettings extends AbstractSettings implements CacheSettingsInter
     private const string SETTING_REDIS_HOST = 'redis_host';
     private const string SETTING_REDIS_PORT = 'redis_port';
 
-    #[Override]
+    #[\Override]
     public function useRedis(): bool
     {
         return $this->settingsCore->getBooleanConfigValue(self::SETTING_USE_REDIS, true);
     }
 
-    #[Override]
+    #[\Override]
     public function getRedisSocket(): ?string
     {
         if ($this->settingsCore->exists(self::SETTING_REDIS_SOCKET)) {
@@ -27,13 +26,13 @@ final class CacheSettings extends AbstractSettings implements CacheSettingsInter
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getRedisHost(): string
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_REDIS_HOST);
     }
 
-    #[Override]
+    #[\Override]
     public function getRedisPort(): int
     {
         return $this->settingsCore->getIntegerConfigValue(self::SETTING_REDIS_PORT);

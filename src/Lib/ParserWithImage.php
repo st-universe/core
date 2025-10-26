@@ -3,7 +3,6 @@
 namespace Stu\Lib;
 
 use JBBCode\Parser;
-use Override;
 
 final class ParserWithImage implements ParserWithImageInterface
 {
@@ -11,7 +10,7 @@ final class ParserWithImage implements ParserWithImageInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function parse($str)
     {
         return $this->bbcodeParser->parse($str);

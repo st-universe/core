@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\PostKnComment;
 
-use Override;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class PostKnComment implements ActionControllerInterface
 
     public function __construct(private PostKnCommentRequestInterface $postKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
@@ -92,7 +91,7 @@ final class PostKnComment implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

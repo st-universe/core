@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Register;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
@@ -28,7 +27,7 @@ class LocalPlayerCreatorTest extends StuTestCase
 
     private LocalPlayerCreator $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

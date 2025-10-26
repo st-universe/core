@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -43,7 +42,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function remove(Spacecraft $spacecraft, ?bool $truncateCrew = false): void
     {
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);

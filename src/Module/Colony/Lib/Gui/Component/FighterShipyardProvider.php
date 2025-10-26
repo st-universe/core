@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -11,7 +10,7 @@ final class FighterShipyardProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

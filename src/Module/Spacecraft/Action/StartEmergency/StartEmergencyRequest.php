@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\StartEmergency;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 /**
@@ -14,7 +13,7 @@ final class StartEmergencyRequest implements StartEmergencyRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getEmergencyText(): string
     {
         return $this->tidyString(
@@ -22,7 +21,7 @@ final class StartEmergencyRequest implements StartEmergencyRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getShipId(): int
     {
         return $this->parameter('id')->int()->required();

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\DatabaseUser;
  */
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function truncateByUserId(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -30,7 +29,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function findFor(int $databaseEntryId, int $userId): ?DatabaseUser
     {
         return $this->findOneBy([
@@ -39,7 +38,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function exists(int $userId, int $databaseEntryId): bool
     {
         return $this->count([
@@ -48,20 +47,20 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         ]) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): DatabaseUser
     {
         return new DatabaseUser();
     }
 
-    #[Override]
+    #[\Override]
     public function save(DatabaseUser $entry): void
     {
         $em = $this->getEntityManager();
         $em->persist($entry);
     }
 
-    #[Override]
+    #[\Override]
     public function getTopList(): array
     {
         $rsm = new ResultSetMapping();
@@ -90,7 +89,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->getArrayResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCountForUser(int $userId): int
     {
         return (int) $this->getEntityManager()
@@ -111,7 +110,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function hasUserCompletedCategoryAndLayer(int $userId, int $categoryId, ?int $ignoredDatabaseEntryId = null, ?int $layerId = null): bool
     {
         $layerCondition = $layerId === null ? 'de.layer_id IS NULL' : 'de.layer_id = :layerId';

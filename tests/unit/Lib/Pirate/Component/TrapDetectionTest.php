@@ -6,7 +6,6 @@ namespace Stu\Lib\Pirate\Component;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
@@ -28,7 +27,7 @@ class TrapDetectionTest extends StuTestCase
 
     private TrapDetectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->alertedShipsDetection = $this->mock(AlertedShipsDetectionInterface::class);

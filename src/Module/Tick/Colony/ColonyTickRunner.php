@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Override;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 
@@ -19,7 +18,7 @@ class ColonyTickRunner implements TickRunnerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->transactionTickRunner->runWithResetCheck(

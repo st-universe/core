@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\RenameBoard;
 
-use Override;
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
@@ -12,13 +11,13 @@ class RenameBoardRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
-    #[Override]
+    #[\Override]
     protected function getRequestClass(): string
     {
         return RenameBoardRequest::class;
     }
 
-    #[Override]
+    #[\Override]
     public static function requestVarsDataProvider(): array
     {
         return [
@@ -28,7 +27,7 @@ class RenameBoardRequestTest extends RequestTestCase
         ];
     }
 
-    #[Override]
+    #[\Override]
     public static function requiredRequestVarsDataProvider(): array
     {
         return [

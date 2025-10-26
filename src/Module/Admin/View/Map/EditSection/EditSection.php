@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map\EditSection;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
@@ -36,7 +35,7 @@ final class EditSection implements ViewControllerInterface
         private MapRepositoryInterface $mapRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->request->getLayerId();

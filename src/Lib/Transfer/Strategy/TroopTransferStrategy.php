@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Strategy;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
@@ -22,7 +21,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         private TroopTransferUtilityInterface $troopTransferUtility,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         bool $isUnload,
         StorageEntityWrapperInterface $source,
@@ -61,7 +60,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $source,

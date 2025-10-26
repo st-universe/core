@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion;
 use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
@@ -29,7 +28,7 @@ class PlayerDeletionTest extends StuTestCase
 
     private PlayerDeletionInterface $playerDeletion;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

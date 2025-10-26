@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
@@ -34,7 +33,7 @@ class ColonizationCheckerTest extends StuTestCase
 
     private ?ColonizationChecker $checker;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);

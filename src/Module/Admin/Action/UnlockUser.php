@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
@@ -22,7 +21,7 @@ final class UnlockUser implements ActionControllerInterface
         private readonly UserLockRepositoryInterface $userLockRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Playerlist::VIEW_IDENTIFIER);
@@ -56,7 +55,7 @@ final class UnlockUser implements ActionControllerInterface
         $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

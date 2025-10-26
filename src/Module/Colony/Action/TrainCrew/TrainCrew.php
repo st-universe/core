@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\TrainCrew;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -23,7 +22,7 @@ final class TrainCrew implements ActionControllerInterface
 
     public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ColonyLoaderInterface $colonyLoader, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ColonyRepositoryInterface $colonyRepository, private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -106,7 +105,7 @@ final class TrainCrew implements ActionControllerInterface
         $game->getInfo()->addInformationf(_('Es werden %d Crew auf dieser Kolonie ausgebildet'), $count);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

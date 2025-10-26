@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
-use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
 use Stu\Module\Config\StuConfigInterface;
@@ -20,7 +19,7 @@ final class ManualColonyTick implements ActionControllerInterface
 
     public function __construct(private ManualColonyTickRequestInterface $request, private ColonyTickManagerInterface $colonyTickManager, private ColonyTickInterface $colonyTick, private ColonyRepositoryInterface $colonyRepository, private StuConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -75,7 +74,7 @@ final class ManualColonyTick implements ActionControllerInterface
         $game->getInfo()->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

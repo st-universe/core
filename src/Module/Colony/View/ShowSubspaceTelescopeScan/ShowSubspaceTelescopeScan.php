@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
@@ -38,7 +37,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

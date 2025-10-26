@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Repository\LocationRepositoryInterface;
@@ -27,7 +26,7 @@ final class IgnoringSubspaceDataProvider extends AbstractSubspaceDataProvider
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getIgnoringSubspaceLayerData(
@@ -38,7 +37,7 @@ final class IgnoringSubspaceDataProvider extends AbstractSubspaceDataProvider
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         return $this->starSystemMapRepository->getIgnoringSubspaceLayerData(

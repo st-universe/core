@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
-use Override;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Orm\Entity\Map;
@@ -27,7 +26,7 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
         private array $postFlightConsequences
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getRouteForMapDestination(
         Map|StarSystemMap $destination,
         bool $isTranswarp = false
@@ -35,13 +34,13 @@ final class FlightRouteFactory implements FlightRouteFactoryInterface
         return $this->getFlightRoutePrototype()->setDestination($destination, $isTranswarp);
     }
 
-    #[Override]
+    #[\Override]
     public function getRouteForWormholeDestination(WormholeEntry $destination, bool $isEntry): FlightRouteInterface
     {
         return $this->getFlightRoutePrototype()->setDestinationViaWormhole($destination, $isEntry);
     }
 
-    #[Override]
+    #[\Override]
     public function getRouteForCoordinateDestination(Spacecraft $spacecraft, int $x, int $y): FlightRouteInterface
     {
         return $this->getFlightRoutePrototype()->setDestinationViaCoordinates($spacecraft, $x, $y);

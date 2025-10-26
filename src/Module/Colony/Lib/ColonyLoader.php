@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -18,7 +17,7 @@ final class ColonyLoader implements ColonyLoaderInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function loadWithOwnerValidation(int $colonyId, int $userId, bool $checkForEntityLock = true): Colony
     {
         $colony = $this->loadInternal($colonyId, $checkForEntityLock);
@@ -30,7 +29,7 @@ final class ColonyLoader implements ColonyLoaderInterface
         return $colony;
     }
 
-    #[Override]
+    #[\Override]
     public function load(int $colonyId, bool $checkForEntityLock = true): Colony
     {
         return $this->loadInternal($colonyId, $checkForEntityLock);

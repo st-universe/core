@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\View\ShowResearch;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -20,7 +19,7 @@ final class ShowResearch implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

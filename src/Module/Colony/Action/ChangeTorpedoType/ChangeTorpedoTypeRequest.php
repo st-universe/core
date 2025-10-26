@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ChangeTorpedoType;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ChangeTorpedoTypeRequest implements ChangeTorpedoTypeRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getTorpedoId(): int
     {
         return $this->parameter('torpid')->int()->required();

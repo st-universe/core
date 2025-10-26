@@ -6,7 +6,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
-use Override;
 use Stu\Orm\Entity\Alliance;
 
 /**
@@ -18,7 +17,7 @@ final class RelationItemVertexBuilder implements RelationItemVertexBuilderInterf
     {
     }
 
-    #[Override]
+    #[\Override]
     public function build(
         Graph $graph,
         Alliance $alliance

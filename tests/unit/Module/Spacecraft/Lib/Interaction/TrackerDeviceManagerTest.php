@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -26,7 +25,7 @@ class TrackerDeviceManagerTest extends StuTestCase
 
     private TrackerDeviceManagerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

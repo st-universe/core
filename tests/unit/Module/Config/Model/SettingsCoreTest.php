@@ -6,7 +6,6 @@ namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Config\StuConfigException;
 use Stu\StuTestCase;
 
@@ -16,7 +15,7 @@ class SettingsCoreTest extends StuTestCase
 
     private SettingsCoreInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->config = $this->mock(ConfigInterface::class);

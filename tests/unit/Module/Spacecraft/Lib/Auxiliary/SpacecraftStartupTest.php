@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Auxiliary;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -27,7 +26,7 @@ class SpacecraftStartupTest extends StuTestCase
 
     private SpacecraftStartupInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

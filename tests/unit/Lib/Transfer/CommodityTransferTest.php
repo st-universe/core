@@ -6,7 +6,6 @@ namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\Information\InformationWrapper;
@@ -29,7 +28,7 @@ class CommodityTransferTest extends StuTestCase
     private CommodityTransferInterface $subject;
 
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->storageManager = $this->mock(StorageManagerInterface::class);

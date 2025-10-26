@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Route;
 
 use InvalidArgumentException;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
@@ -23,7 +22,7 @@ class LoadWaypointsTest extends StuTestCase
 
     private LoadWaypointsInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->mapRepository = $this->mock(MapRepositoryInterface::class);

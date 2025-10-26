@@ -13,7 +13,6 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Mockery;
-use Override;
 use Stu\Component\Database\AchievementManager;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
@@ -39,7 +38,7 @@ abstract class IntegrationTestCase extends StuTestCase
     protected static bool $isSchemaInitializationNeeded = true;
     private static ?StuContainer $INTTEST_CONTAINER = null;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->initializeSchemaAndTestdataIfNeeded();
@@ -47,7 +46,7 @@ abstract class IntegrationTestCase extends StuTestCase
         $this->setupServiceMocks();
     }
 
-    #[Override]
+    #[\Override]
     public function tearDown(): void
     {
         $dic = $this->getContainer();

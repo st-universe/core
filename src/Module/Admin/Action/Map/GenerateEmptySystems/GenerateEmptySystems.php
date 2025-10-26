@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\GenerateEmptySystems;
 
-use Override;
 use request;
 use Stu\Component\StarSystem\GenerateEmptySystemsInterface;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
@@ -17,7 +16,7 @@ final class GenerateEmptySystems implements ActionControllerInterface
 
     public function __construct(private GenerateEmptySystemsInterface $generateEmptySystems) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowMapEditor::VIEW_IDENTIFIER);
@@ -27,7 +26,7 @@ final class GenerateEmptySystems implements ActionControllerInterface
         $game->getInfo()->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

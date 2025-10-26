@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Component;
 
-use Override;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +23,7 @@ final class MessageFolderComponent implements ComponentInterface
         private PrivateMessageUiFactoryInterface $commUiFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Component\Spacecraft\System\Data\AbstractReactorSystemData;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -19,13 +18,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
 
     public function __construct(private SpacecraftWrapperInterface $wrapper, private AbstractReactorSystemData $reactorSystemData) {}
 
-    #[Override]
+    #[\Override]
     public function get(): AbstractReactorSystemData
     {
         return $this->reactorSystemData;
     }
 
-    #[Override]
+    #[\Override]
     public function getEpsProduction(): int
     {
         if ($this->epsProduction === null) {
@@ -66,7 +65,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->warpdriveProduction;
     }
 
-    #[Override]
+    #[\Override]
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveValues === null) {
@@ -75,7 +74,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->effectiveValues['eps'];
     }
 
-    #[Override]
+    #[\Override]
     public function getEffectiveWarpDriveProduction(): int
     {
         if ($this->effectiveValues === null) {
@@ -114,26 +113,26 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return ['eps' => $effEpsProd, 'warpdrive' => $effWdProd];
     }
 
-    #[Override]
+    #[\Override]
     public function getUsage(): int
     {
         return $this->getEffectiveEpsProduction()
             + $this->getEffectiveWarpDriveProduction() * $this->wrapper->get()->getRump()->getFlightEcost();
     }
 
-    #[Override]
+    #[\Override]
     public function getCapacity(): int
     {
         return $this->reactorSystemData->getCapacity();
     }
 
-    #[Override]
+    #[\Override]
     public function getOutput(): int
     {
         return $this->reactorSystemData->getOutput();
     }
 
-    #[Override]
+    #[\Override]
     public function setOutput(int $output): ReactorWrapperInterface
     {
         $this->reactorSystemData->setOutput($output)->update();
@@ -141,7 +140,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getOutputCappedByLoad(): int
     {
         if ($this->getOutput() > $this->getLoad()) {
@@ -151,13 +150,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this->getOutput();
     }
 
-    #[Override]
+    #[\Override]
     public function getLoad(): int
     {
         return $this->reactorSystemData->getLoad();
     }
 
-    #[Override]
+    #[\Override]
     public function setLoad(int $load): ReactorWrapperInterface
     {
         $this->reactorSystemData->setLoad($load)->update();
@@ -165,7 +164,7 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function changeLoad(int $amount): ReactorWrapperInterface
     {
         $this->reactorSystemData->setLoad($this->reactorSystemData->getLoad() + $amount)->update();
@@ -173,13 +172,13 @@ final class ReactorWrapper implements ReactorWrapperInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function isHealthy(): bool
     {
         return $this->wrapper->get()->isSystemHealthy($this->reactorSystemData->getSystemType());
     }
 
-    #[Override]
+    #[\Override]
     public function getReactorLoadStyle(): string
     {
         $load = $this->getLoad();

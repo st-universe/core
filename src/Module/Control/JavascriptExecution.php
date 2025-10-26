@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 
 final class JavascriptExecution implements JavascriptExecutionInterface
@@ -10,7 +9,7 @@ final class JavascriptExecution implements JavascriptExecutionInterface
     /** @var array<int, array<string>> */
     private static array $execjs = [];
 
-    #[Override]
+    #[\Override]
     public function getExecuteJS(JavascriptExecutionTypeEnum $when): ?array
     {
         if (!array_key_exists($when->value, self::$execjs)) {
@@ -20,7 +19,7 @@ final class JavascriptExecution implements JavascriptExecutionInterface
         return self::$execjs[$when->value];
     }
 
-    #[Override]
+    #[\Override]
     public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when): void
     {
         match ($when) {
@@ -33,7 +32,7 @@ final class JavascriptExecution implements JavascriptExecutionInterface
         };
     }
 
-    #[Override]
+    #[\Override]
     public static function reset(): void
     {
         self::$execjs = [];

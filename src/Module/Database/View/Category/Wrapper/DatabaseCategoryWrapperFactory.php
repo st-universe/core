@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Wrapper;
 
-use Override;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\User;
@@ -24,7 +23,7 @@ final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFac
         private DatabaseEntryRepositoryInterface $databaseEntryRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createDatabaseCategoryWrapper(
         DatabaseCategory $databaseCategory,
         User $user,
@@ -39,7 +38,7 @@ final class DatabaseCategoryWrapperFactory implements DatabaseCategoryWrapperFac
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDatabaseCategoryEntryWrapper(
         DatabaseEntry $databaseEntry,
         User $user

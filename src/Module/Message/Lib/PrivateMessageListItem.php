@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Contact;
@@ -27,7 +26,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         private readonly User $currentUser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSender(): User
     {
         if ($this->sender === null) {
@@ -36,13 +35,13 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->sender;
     }
 
-    #[Override]
+    #[\Override]
     public function getDate(): int
     {
         return $this->message->getDate();
     }
 
-    #[Override]
+    #[\Override]
     public function isMarkableAsNew(): bool
     {
         if ($this->message->getNew() === false) {
@@ -57,7 +56,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function isMarkableAsReceipt(): bool
     {
         $inboxPm = $this->message->getInboxPm();
@@ -79,37 +78,37 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         return !$inboxPm->getNew();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->message->getText();
     }
 
-    #[Override]
+    #[\Override]
     public function getHref(): ?string
     {
         return $this->message->getHref();
     }
 
-    #[Override]
+    #[\Override]
     public function getNew(): bool
     {
         return $this->message->getNew();
     }
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->message->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function displayUserLinks(): bool
     {
         return $this->getSender()->getId() !== UserConstants::USER_NOONE;
     }
 
-    #[Override]
+    #[\Override]
     public function senderIsContact(): ?Contact
     {
         if ($this->sendercontact === null) {
@@ -121,7 +120,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->sendercontact;
     }
 
-    #[Override]
+    #[\Override]
     public function hasTranslation(): bool
     {
         $text = $this->getText();

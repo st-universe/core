@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\CreateKnPlot;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class CreateKnPlotRequest implements CreateKnPlotRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(
@@ -19,7 +18,7 @@ final class CreateKnPlotRequest implements CreateKnPlotRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getTitle(): string
     {
         return $this->tidyString(

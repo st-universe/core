@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
@@ -38,7 +37,7 @@ class ManageBatteryTest extends StuTestCase
 
     private ManageBattery $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);

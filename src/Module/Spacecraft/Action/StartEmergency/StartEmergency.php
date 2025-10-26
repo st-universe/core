@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\StartEmergency;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -28,7 +27,7 @@ final class StartEmergency implements ActionControllerInterface
         private StartEmergencyRequestInterface $startEmergencyRequest
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -67,7 +66,7 @@ final class StartEmergency implements ActionControllerInterface
         $game->getInfo()->addInformation('Das Notrufsignal wurde gestartet');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

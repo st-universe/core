@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 use Stu\Orm\Entity\TholianWeb;
@@ -12,13 +11,13 @@ use Stu\Orm\Entity\TholianWeb;
  */
 class TholianWebWrapper extends SpacecraftWrapper
 {
-    #[Override]
+    #[\Override]
     public function get(): TholianWeb
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
         return null;

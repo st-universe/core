@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\StarSystemMap;
 
 final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 {
-    #[Override]
+    #[\Override]
     public function updateWhenTraversing(
         Location $oldWaypoint,
         Location $waypoint,
@@ -57,7 +56,7 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 
         return $flightDirection;
     }
-    #[Override]
+    #[\Override]
     public function updateWhenSystemExit(SpacecraftWrapperInterface $wrapper, StarSystemMap $starsystemMap): void
     {
         if ($wrapper->get()->getRump()->isEscapePods()) {

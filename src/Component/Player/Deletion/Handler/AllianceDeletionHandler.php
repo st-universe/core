@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Override;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -21,7 +20,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function delete(User $user): void
     {
         $alliance = $user->getAlliance();

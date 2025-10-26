@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Map;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\Layer;
@@ -17,7 +16,7 @@ class EncodedMapTest extends StuTestCase
 
     private EncodedMapInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->stuConfig = $this->mock(StuConfigInterface::class);

@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -29,7 +28,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function intercept(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Destruction;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\SpacecraftDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,7 +23,7 @@ class SpacecraftDestructionTest extends StuTestCase
     /** @var SpacecraftDestructionInterface */
     private $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Config\Model;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Config\StuConfigSettingEnum;
 use Stu\StuTestCase;
 
@@ -15,7 +14,7 @@ class SettingsCacheTest extends StuTestCase
 
     private SettingsCacheInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->settingsFactory = $this->mock(SettingsFactoryInterface::class);

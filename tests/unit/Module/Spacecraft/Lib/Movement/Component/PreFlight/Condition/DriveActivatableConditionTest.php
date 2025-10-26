@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
@@ -26,7 +25,7 @@ class DriveActivatableConditionTest extends StuTestCase
 
     private MockInterface&ConditionCheckResult $conditionCheckResult;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->activatorDeactivatorHelper = $this->mock(ActivatorDeactivatorHelperInterface::class);

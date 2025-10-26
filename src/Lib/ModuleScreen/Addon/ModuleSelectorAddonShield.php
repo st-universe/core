@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Override;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
@@ -19,7 +18,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
     /**
      * return array<int, array{factionId: int, gradientColor: string, modificator: int}>
      */
-    #[Override]
+    #[\Override]
     public function getModificators(Module $module): array
     {
         /** @var array<int, int[]> */

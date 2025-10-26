@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeactivateShields;
 
-use Override;
 use request;
 
 use Stu\Component\Building\BuildingFunctionEnum;
@@ -25,7 +24,7 @@ final class DeactivateShields implements ActionControllerInterface
         private BuildingActionInterface $buildingAction
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
@@ -52,7 +51,7 @@ final class DeactivateShields implements ActionControllerInterface
         $game->getInfo()->addInformation("Die Schilde wurden bei der Deaktivierung komplett entladen");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

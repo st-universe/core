@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -21,13 +20,13 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
         private TrackerDeviceManagerInterface $trackerDeviceManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::LSS;
     }
 
-    #[Override]
+    #[\Override]
     public function checkDeactivationConditions(SpacecraftWrapperInterface $wrapper, string &$reason): bool
     {
         $trackerData = $wrapper instanceof ShipWrapperInterface ? $wrapper->getTrackerSystemData() : null;
@@ -41,7 +40,7 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function deactivate(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
@@ -57,7 +56,7 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
         }
     }
 
-    #[Override]
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

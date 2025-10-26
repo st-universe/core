@@ -7,7 +7,6 @@ namespace Stu\Lib\Session;
 use DateTime;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\User;
@@ -21,7 +20,7 @@ class SessionFactoryTest extends StuTestCase
 
     private SessionStringFactoryInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);

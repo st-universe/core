@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\User;
 
@@ -16,7 +15,7 @@ use Stu\Orm\Entity\User;
  */
 final class PirateWrathRepository extends EntityRepository implements PirateWrathRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(PirateWrath $wrath): void
     {
         $em = $this->getEntityManager();
@@ -24,7 +23,7 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
         $em->persist($wrath);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(PirateWrath $wrath): void
     {
         $em = $this->getEntityManager();
@@ -32,7 +31,7 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): PirateWrath
     {
         return new PirateWrath();
@@ -41,7 +40,7 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
     /**
      * @return PirateWrath[]
      */
-    #[Override]
+    #[\Override]
     public function getPirateWrathTop10(): array
     {
         return $this->getEntityManager()
@@ -60,7 +59,7 @@ final class PirateWrathRepository extends EntityRepository implements PirateWrat
     /**
      * @return PirateWrath[]
      */
-    #[Override]
+    #[\Override]
     public function getByUser(User $user): array
     {
         return $this->findBy(

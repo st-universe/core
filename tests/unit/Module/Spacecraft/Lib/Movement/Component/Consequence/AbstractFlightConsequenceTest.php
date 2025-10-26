@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence;
 
 use Closure;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
@@ -67,13 +66,13 @@ class AbstractFlightConsequenceTest extends StuTestCase
                 private MessageCollectionInterface $messages,
             ) {}
 
-            #[Override]
+            #[\Override]
             protected function skipWhenTractored(): bool
             {
                 return $this->skipWhenTractored;
             }
 
-            #[Override]
+            #[\Override]
             protected  function triggerSpecific(
                 SpacecraftWrapperInterface $wrapper,
                 FlightRouteInterface $flightRoute,
@@ -156,13 +155,13 @@ class AbstractFlightConsequenceTest extends StuTestCase
                 private MessageCollectionInterface $messages,
             ) {}
 
-            #[Override]
+            #[\Override]
             protected function skipWhenTractored(): bool
             {
                 return $this->skipWhenTractored;
             }
 
-            #[Override]
+            #[\Override]
             protected  function triggerSpecific(
                 SpacecraftWrapperInterface $wrapper,
                 FlightRouteInterface $flightRoute,

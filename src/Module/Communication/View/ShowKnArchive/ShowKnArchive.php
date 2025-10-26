@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchive;
 
-use Override;
 use request;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\GameEnum;
@@ -22,7 +21,7 @@ final class ShowKnArchive implements ViewControllerInterface
         private KnArchiveFactoryInterface $knArchiveFactory,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $version = $this->showKnArchiveRequest->getVersion();

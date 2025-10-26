@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Session;
 
-use Override;
 use Stu\Exception\SessionInvalidException;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -20,7 +19,7 @@ final class SessionStorage implements SessionStorageInterface
     /**
      * @api
      */
-    #[Override]
+    #[\Override]
     public function storeSessionData(string|int $key, mixed $value, bool $isSingleValue = false): void
     {
         $stored = false;
@@ -64,7 +63,7 @@ final class SessionStorage implements SessionStorageInterface
     /**
      * @api
      */
-    #[Override]
+    #[\Override]
     public function deleteSessionData(string $key, mixed $value = null): void
     {
         $user = $this->getUserMandatory();
@@ -90,7 +89,7 @@ final class SessionStorage implements SessionStorageInterface
     /**
      * @api
      */
-    #[Override]
+    #[\Override]
     public function hasSessionValue(string $key, mixed $value): bool
     {
         $data = $this->getSessionDataUnserialized($this->getUserMandatory());
@@ -103,7 +102,7 @@ final class SessionStorage implements SessionStorageInterface
     /**
      * @api
      */
-    #[Override]
+    #[\Override]
     public function getSessionValue(string $key): mixed
     {
         $data = $this->getSessionDataUnserialized($this->getUserMandatory());
@@ -123,7 +122,7 @@ final class SessionStorage implements SessionStorageInterface
         return $user;
     }
 
-    #[Override]
+    #[\Override]
     public function reset(): void
     {
         $this->sessionDataPerUser = [];

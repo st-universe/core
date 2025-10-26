@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class CreateTopicRequest implements CreateTopicRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getBoardId(): int
     {
         return $this->parameter('boardid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getTopicTitle(): string
     {
         return $this->tidyString(
@@ -25,7 +24,7 @@ final class CreateTopicRequest implements CreateTopicRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteIgnores;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class DeleteIgnoresRequest implements DeleteIgnoresRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getIgnoreIds(): array
     {
         return $this->parameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);

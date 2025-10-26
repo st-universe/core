@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\View\ShowComponent;
 
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -28,7 +27,7 @@ class ShowComponentTest extends StuTestCase
 
     private ViewControllerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->componentRegistration = $this->mock(ComponentRegistrationInterface::class);

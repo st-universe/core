@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\AddShipLog;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,7 +22,7 @@ final class AddShipLog implements ActionControllerInterface
         private ShipLogRepositoryInterface $shipLogRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -50,7 +49,7 @@ final class AddShipLog implements ActionControllerInterface
         $game->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

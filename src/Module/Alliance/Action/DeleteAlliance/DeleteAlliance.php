@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
@@ -24,7 +23,7 @@ final class DeleteAlliance implements ActionControllerInterface
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -51,7 +50,7 @@ final class DeleteAlliance implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Allianz wurde gelöscht'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

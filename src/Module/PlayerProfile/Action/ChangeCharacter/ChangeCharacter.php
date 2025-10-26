@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerProfile\Action\ChangeCharacter;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ChangeCharacter implements ActionControllerInterface
 
     public function __construct(private ChangeCharacterRequestInterface $request, private UserCharacterRepositoryInterface $userCharactersRepository, private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $characterId = $this->request->getCharacterId();
@@ -87,7 +86,7 @@ final class ChangeCharacter implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Charakter wurde erfolgreich bearbeitet.'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

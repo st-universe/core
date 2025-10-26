@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\RegenerateSystem;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
@@ -20,7 +19,7 @@ final class RegenerateSystem implements ActionControllerInterface
 
     public function __construct(private StarSystemRepositoryInterface $starSystemRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSystem::VIEW_IDENTIFIER);
@@ -57,7 +56,7 @@ final class RegenerateSystem implements ActionControllerInterface
         $game->getInfo()->addInformation('Das System wurde neu generiert.');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

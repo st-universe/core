@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\DeleteDockPrivilege;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +17,7 @@ final class DeleteDockPrivilege implements ActionControllerInterface
 
     public function __construct(private StationLoaderInterface $stationLoader, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -43,7 +42,7 @@ final class DeleteDockPrivilege implements ActionControllerInterface
         $this->dockingPrivilegeRepository->delete($privilege);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

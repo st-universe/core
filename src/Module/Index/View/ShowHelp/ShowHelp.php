@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\View\ShowHelp;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -17,7 +16,7 @@ final class ShowHelp implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Hilfe - Star Trek Universe'));

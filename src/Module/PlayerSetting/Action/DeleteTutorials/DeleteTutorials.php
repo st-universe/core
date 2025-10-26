@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\DeleteTutorials;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
@@ -15,7 +14,7 @@ final class DeleteTutorials implements ActionControllerInterface
 
     public function __construct(private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -27,7 +26,7 @@ final class DeleteTutorials implements ActionControllerInterface
     }
 
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Damage;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
@@ -29,7 +28,7 @@ class ApplyFieldDamageTest extends StuTestCase
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->applyDamage = $this->mock(ApplyDamageInterface::class);

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
-use Override;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -27,7 +26,7 @@ class LowerHull implements ManagerComponentInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         $this->lowerTrumfieldHull();

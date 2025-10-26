@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -45,7 +44,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
     private ShipTakeoverManagerInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

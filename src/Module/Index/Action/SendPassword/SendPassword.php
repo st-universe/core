@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\SendPassword;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,7 +25,7 @@ final class SendPassword implements ActionControllerInterface
         private ConfigInterface $config
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
@@ -77,7 +76,7 @@ Das Star Trek Universe Team\n
         $game->getInfo()->addInformation(_('Die eMail wurde verschickt'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

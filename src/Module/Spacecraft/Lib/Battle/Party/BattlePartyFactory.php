@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -19,28 +18,28 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createAlertStateBattleParty(
         SpacecraftWrapperInterface $leaderWrapper
     ): AlertStateBattleParty {
         return new AlertStateBattleParty($leaderWrapper, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createIncomingBattleParty(
         SpacecraftWrapperInterface $leaderWrapper
     ): IncomingBattleParty {
         return new IncomingBattleParty($leaderWrapper, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createRoundBasedBattleParty(
         BattlePartyInterface $battleParty
     ): RoundBasedBattleParty {
         return new RoundBasedBattleParty($battleParty, $this->spacecraftRepository, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createAttackingBattleParty(
         SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
         bool $isAttackingShieldsOnly
@@ -48,28 +47,28 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
         return new AttackingBattleParty($wrapper, $this->stuRandom, $isAttackingShieldsOnly);
     }
 
-    #[Override]
+    #[\Override]
     public function createAttackedBattleParty(
         SpacecraftWrapperInterface $wrapper
     ): AttackedBattleParty {
         return new AttackedBattleParty($wrapper, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createSingletonBattleParty(
         SpacecraftWrapperInterface $wrapper
     ): SingletonBattleParty {
         return new SingletonBattleParty($wrapper, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createMixedBattleParty(
         Collection $wrappers
     ): MixedBattleParty {
         return new MixedBattleParty($wrappers, $this->stuRandom);
     }
 
-    #[Override]
+    #[\Override]
     public function createColonyDefendingBattleParty(
         Ship $leader
     ): ColonyDefendingBattleParty {

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -21,13 +20,13 @@ use Stu\Orm\Entity\PlanetField;
  */
 final class PlanetFieldRepository extends EntityRepository implements PlanetFieldRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): PlanetField
     {
         return new PlanetField();
     }
 
-    #[Override]
+    #[\Override]
     public function save(PlanetField $planetField): void
     {
         $em = $this->getEntityManager();
@@ -35,7 +34,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         $em->persist($planetField);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(PlanetField $planetField): void
     {
         $em = $this->getEntityManager();
@@ -44,7 +43,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetField
     {
         return $this->findOneBy([
@@ -53,7 +52,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetField
     {
         return $this->findOneBy([
@@ -62,7 +61,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): array
     {
         return $this->findBy([
@@ -71,7 +70,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyConsumingByHost(
         PlanetFieldHostInterface $host,
         array $state = [0, 1],
@@ -100,7 +99,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyProducingByHost(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()->createQuery(
@@ -118,7 +117,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getHousingProvidingByHost(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()->createQuery(
@@ -136,7 +135,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getWorkerConsumingByHost(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()->createQuery(
@@ -154,7 +153,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getWorkerConsumingByColonyAndState(
         int $colonyId,
         array $state = [0, 1],
@@ -182,7 +181,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCommodityConsumingByHostAndCommodity(
         PlanetFieldHostInterface $host,
         int $commodityId,
@@ -212,7 +211,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCommodityProducingByHostAndCommodity(PlanetFieldHostInterface $host, int $commodityId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -231,7 +230,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByHostAndBuilding(PlanetFieldHostInterface $host, int $buildingId): int
     {
         return $this->count([
@@ -240,7 +239,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -257,7 +256,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByColonyAndBuildingFunctionAndState(
         PlanetFieldHostInterface $host,
         array $buildingFunctions,
@@ -284,7 +283,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndBuildingFunction(
         int $colonyId,
         array $buildingFunctionIds
@@ -306,7 +305,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxShieldsOfHost(PlanetFieldHostInterface $host): int
     {
         $rsm = new ResultSetMapping();
@@ -336,7 +335,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getInConstructionByUser(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -352,7 +351,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByConstructionFinish(int $finishTime): array
     {
         return $this->getEntityManager()->createQuery(
@@ -365,7 +364,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyWithBuilding(PlanetFieldHostInterface $host): array
     {
         return $this->getEntityManager()->createQuery(
@@ -385,7 +384,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyProductionByHost(
         PlanetFieldHostInterface $host,
         array $excludedFields = [-1]
@@ -409,7 +408,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()->createQuery(

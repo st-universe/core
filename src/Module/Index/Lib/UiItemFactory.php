@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Lib;
 
-use Override;
 use Stu\Orm\Entity\Faction;
 
 /**
@@ -12,7 +11,7 @@ use Stu\Orm\Entity\Faction;
  */
 final class UiItemFactory implements UiItemFactoryInterface
 {
-    #[Override]
+    #[\Override]
     public function createFactionItem(
         Faction $faction,
         int $currentPlayerCount

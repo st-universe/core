@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\BuildingFunction;
 
@@ -13,43 +12,43 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     /** @param array<BuildingFunction> $buildingfunctions */
     public function __construct(private array $buildingfunctions) {}
 
-    #[Override]
+    #[\Override]
     public function isTorpedoFab(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::TORPEDO_FAB);
     }
 
-    #[Override]
+    #[\Override]
     public function isAirfield(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::AIRFIELD);
     }
 
-    #[Override]
+    #[\Override]
     public function isFighterShipyard(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::FIGHTER_SHIPYARD);
     }
 
-    #[Override]
+    #[\Override]
     public function isAcademy(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::ACADEMY);
     }
 
-    #[Override]
+    #[\Override]
     public function isFabHall(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::FABRICATION_HALL);
     }
 
-    #[Override]
+    #[\Override]
     public function isTechCenter(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::TECH_CENTER);
     }
 
-    #[Override]
+    #[\Override]
     public function isShipyard(): bool
     {
         return array_any(
@@ -58,7 +57,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getShipyardBuildingFunctionId(): ?int
     {
         return array_find(
@@ -67,7 +66,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         )?->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function isModuleFab(): bool
     {
         return array_any(
@@ -76,19 +75,19 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function isWarehouse(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::WAREHOUSE);
     }
 
-    #[Override]
+    #[\Override]
     public function isSubspaceTelescope(): bool
     {
         return $this->hasFunction(BuildingFunctionEnum::SUBSPACE_TELESCOPE);
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleFabBuildingFunctionId(): ?int
     {
         return array_find(
@@ -97,7 +96,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         )?->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getFabHallBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
@@ -108,7 +107,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getTechCenterBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {
@@ -119,7 +118,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getSubspaceTelescopeBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctions as $func) {

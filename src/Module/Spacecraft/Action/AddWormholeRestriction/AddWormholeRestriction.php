@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\AddWormholeRestriction;
 
-use Override;
 use request;
 use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum as RestrictionTypeEnum;
@@ -28,7 +27,7 @@ final class AddWormholeRestriction implements ActionControllerInterface
         private UserRepositoryInterface $userRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
 
@@ -72,7 +71,7 @@ final class AddWormholeRestriction implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

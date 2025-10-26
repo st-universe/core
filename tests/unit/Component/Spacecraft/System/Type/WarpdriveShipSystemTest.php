@@ -6,7 +6,6 @@ namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\Event\WarpdriveActivationEvent;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -32,7 +31,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     private MockInterface&Ship $ship;
     private MockInterface&ShipWrapperInterface $wrapper;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);

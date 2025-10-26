@@ -4,7 +4,6 @@ namespace Stu\Component\Spacecraft\System;
 
 use Doctrine\Common\Collections\Collection;
 use JsonMapper\JsonMapperInterface;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -17,7 +16,7 @@ class SystemDataDeserializer implements SystemDataDeserializerInterface
         private JsonMapperInterface $jsonMapper
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSpecificShipSystem(
         Spacecraft $spacecraft,
         SpacecraftSystemTypeEnum $systemType,

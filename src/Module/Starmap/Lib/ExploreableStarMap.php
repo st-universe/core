@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Override;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\StarSystem;
@@ -69,92 +68,92 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     #[JoinColumn(name: 'region_id', referencedColumnName: 'id')]
     private ?MapRegion $adminRegion = null;
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->id;
     }
 
-    #[Override]
+    #[\Override]
     public function getCx(): int
     {
         return $this->cx;
     }
 
-    #[Override]
+    #[\Override]
     public function getCy(): int
     {
         return $this->cy;
     }
 
-    #[Override]
+    #[\Override]
     public function getFieldId(): int
     {
         return $this->field_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getLayer(): int
     {
         return $this->layer_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getBordertypeId(): ?int
     {
         return $this->bordertype_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getMapped(): ?int
     {
         return $this->mapped;
     }
 
-    #[Override]
+    #[\Override]
     public function getSystemName(): ?string
     {
         return $this->system_name;
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostId(): ?int
     {
         return $this->tradepost_id;
     }
 
-    #[Override]
+    #[\Override]
     public function getRegionDescription(): ?string
     {
         return $this->region_description;
     }
 
-    #[Override]
+    #[\Override]
     public function setRegionDescription(string $regiondescription): ExploreableStarMap
     {
         $this->region_description = $regiondescription;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getMapBorderType(): ?MapBorderType
     {
         return $this->mapBorderType;
     }
 
-    #[Override]
+    #[\Override]
     public function getAdminRegion(): ?MapRegion
     {
         return $this->adminRegion;
     }
 
-    #[Override]
+    #[\Override]
     public function getInfluenceArea(): ?StarSystem
     {
         return $this->influenceArea;

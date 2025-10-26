@@ -7,7 +7,6 @@ namespace Stu\Component\Spacecraft\System;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Spacecraft\System\Exception\AlreadyActiveException;
@@ -40,7 +39,7 @@ class SpacecraftSystemManagerTest extends StuTestCase
 
     private SpacecraftSystemManagerInterface $manager;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
-use Override;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
@@ -17,7 +16,7 @@ final class MapLayerRenderer implements LayerRendererInterface
     public function __construct(private Layer $layer, private EncodedMapInterface $encodedMap) {}
 
     /** @param MapData $data */
-    #[Override]
+    #[\Override]
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(

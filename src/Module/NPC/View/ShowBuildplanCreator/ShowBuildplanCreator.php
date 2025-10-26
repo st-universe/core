@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\View\ShowBuildplanCreator;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
@@ -28,7 +27,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
         private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = request::getInt('userId');

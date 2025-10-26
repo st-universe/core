@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\NPC\Action;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +23,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private NPCLogRepositoryInterface $npcLogRepository, private SpacecraftRemoverInterface $spacecraftRemover, private CrewRepositoryInterface $crewRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
@@ -136,7 +135,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
         $spacecraft->getCrewAssignments()->clear();
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

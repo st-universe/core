@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\NPCList;
 
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -35,7 +34,7 @@ final class NPCList implements ViewControllerInterface
         private Parser $parser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $sort_field = $this->npcListRequest->getSortField();

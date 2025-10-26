@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\NoResultException;
-use Override;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -33,7 +32,7 @@ use Stu\Orm\Entity\UserRegistration;
  */
 final class ColonyRepository extends EntityRepository implements ColonyRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): Colony
     {
         $colony = new Colony();
@@ -43,7 +42,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return $colony;
     }
 
-    #[Override]
+    #[\Override]
     public function save(Colony $colony): void
     {
         $em = $this->getEntityManager();
@@ -51,7 +50,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em->persist($colony);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Colony $colony): void
     {
         $em = $this->getEntityManager();
@@ -60,7 +59,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em->flush(); //TODO really neccessary?
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByUser(User $user, ColonyTypeEnum $colonyType): int
     {
         return (int) $this->getEntityManager()
@@ -80,7 +79,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStartingByFaction(int $factionId): array
     {
         return $this->getEntityManager()
@@ -114,7 +113,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getForeignColoniesInBroadcastRange(
         StarSystemMap $systemMap,
         User $user
@@ -142,7 +141,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
     {
         return $this->getEntityManager()
@@ -162,7 +161,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getColonized(): array
     {
         return $this->getEntityManager()
@@ -178,7 +177,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getColoniesNetWorth(): array
     {
         $rsm = new ResultSetMapping();
@@ -206,7 +205,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getColoniesProductionNetWorth(): array
     {
         $rsm = new ResultSetMapping();
@@ -235,7 +234,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getSatisfiedWorkerTop10(): array
     {
         $rsm = new ResultSetMapping();
@@ -273,7 +272,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPirateTargets(SpacecraftWrapperInterface $wrapper): array
     {
         $layer = $wrapper->get()->getLayer();
@@ -335,7 +334,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getClosestColonizableColonyDistance(SpacecraftWrapperInterface $wrapper): ?int
     {
         $spacecraft = $wrapper->get();

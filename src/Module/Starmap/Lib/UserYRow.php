@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
@@ -47,7 +46,7 @@ class UserYRow extends YRow
     /**
      * @return array<ExplorableStarMapItemInterface>
      */
-    #[Override]
+    #[\Override]
     public function getFields(): array
     {
         $layer = $this->layer;

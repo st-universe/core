@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowDockingControl;
 
-use Override;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -20,7 +19,7 @@ final class ShowDockingControl implements ViewControllerInterface
 
     public function __construct(private AllianceRepositoryInterface $allianceRepository, private StationUiFactoryInterface $stationUiFactory, private StationLoaderInterface $stationLoader) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

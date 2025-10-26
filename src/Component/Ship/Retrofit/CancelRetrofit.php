@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Retrofit;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -29,7 +28,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function cancelRetrofit(Ship $ship): bool
     {
         $state = $ship->getState();

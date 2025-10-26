@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
-use Override;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,7 +15,7 @@ final class DoColonyCorrection implements ActionControllerInterface
 
     public function __construct(private ColonyCorrectorInterface $colonyCorrector) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
@@ -32,7 +31,7 @@ final class DoColonyCorrection implements ActionControllerInterface
         $game->getInfo()->addInformation("Korrektur der Kolonien wurde durchgeführt!");
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

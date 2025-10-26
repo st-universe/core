@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ManualColonyTickRequest implements ManualColonyTickRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getColonyId(): ?int
     {
         return $this->parameter('colonyid')->int()->defaultsTo(null);
     }
 
-    #[Override]
+    #[\Override]
     public function getGroupId(): ?int
     {
         return $this->parameter('groupid')->int()->defaultsTo(null);

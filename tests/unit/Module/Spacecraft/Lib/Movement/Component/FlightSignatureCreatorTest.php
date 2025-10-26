@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -31,7 +30,7 @@ class FlightSignatureCreatorTest extends StuTestCase
 
     private FlightSignatureCreator $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->flightSignatureRepository = $this->mock(FlightSignatureRepositoryInterface::class);

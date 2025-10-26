@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
@@ -44,7 +43,7 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $this->loggerUtil->init('DEL', LogLevelEnum::ERROR);

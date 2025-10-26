@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\SaveJobs;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -25,7 +24,7 @@ final class SaveJobs implements ActionControllerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -130,7 +129,7 @@ final class SaveJobs implements ActionControllerInterface
         $game->getInfo()->addInformation('Die Allianz-Rollen wurden gespeichert');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

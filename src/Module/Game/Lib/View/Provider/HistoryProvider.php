@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +23,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
         private readonly Parser $bbcodeParser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();

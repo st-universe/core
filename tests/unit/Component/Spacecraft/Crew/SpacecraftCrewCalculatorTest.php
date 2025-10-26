@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Crew;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
@@ -19,7 +18,7 @@ class SpacecraftCrewCalculatorTest extends StuTestCase
 
     private SpacecraftCrewCalculatorInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->shipRumpCategoryRoleCrewRepository = $this->mock(ShipRumpCategoryRoleCrewRepositoryInterface::class);

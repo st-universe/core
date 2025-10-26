@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SubspaceData;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 
 abstract class AbstractSubspaceDataProvider extends AbstractPanelLayerDataProvider
 {
-    #[Override]
+    #[\Override]
     protected function getDataClassString(): string
     {
         return SubspaceData::class;
     }
 
-    #[Override]
+    #[\Override]
     protected function addFieldResults(ResultSetMapping $rsm): void
     {
         $rsm->addFieldResult('d', 'd1c', 'd1c');

@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
@@ -16,7 +15,7 @@ final class ModuleSelectorAddonFactory implements ModuleSelectorAddonFactoryInte
         private GradientColorInterface $gradientColor
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createModuleSelectorAddon(SpacecraftModuleTypeEnum $moduleType): ?ModuleSelectorAddonInterface
     {
         switch ($moduleType) {

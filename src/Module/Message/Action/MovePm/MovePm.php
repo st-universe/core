@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\MovePm;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -16,7 +15,7 @@ final class MovePm implements ActionControllerInterface
 
     public function __construct(private MovePmRequestInterface $movePmRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -44,7 +43,7 @@ final class MovePm implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Die Nachricht wurde verschoben'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

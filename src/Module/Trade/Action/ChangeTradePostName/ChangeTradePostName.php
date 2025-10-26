@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\ChangeTradePostName;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,7 +16,7 @@ final class ChangeTradePostName implements ActionControllerInterface
 
     public function __construct(private ChangeTradePostNameRequestInterface $changeTradePostNameRequest, private TradePostRepositoryInterface $tradePostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $text = $this->changeTradePostNameRequest->getNewName();
@@ -56,7 +55,7 @@ final class ChangeTradePostName implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Name des Handelsposten wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

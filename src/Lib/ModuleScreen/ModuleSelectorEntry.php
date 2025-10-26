@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -30,7 +29,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     ) {}
 
 
-    #[Override]
+    #[\Override]
     public function isChosen(): bool
     {
         if ($this->buildplan !== null) {
@@ -60,13 +59,13 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 
 
 
-    #[Override]
+    #[\Override]
     public function isDisabled(): bool
     {
         return $this->getStoredAmount() < 1;
     }
 
-    #[Override]
+    #[\Override]
     public function getStoredAmount(): int
     {
         /** @var Storage|null */
@@ -79,19 +78,19 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         return $storage->getAmount();
     }
 
-    #[Override]
+    #[\Override]
     public function getModule(): Module
     {
         return $this->module;
     }
 
-    #[Override]
+    #[\Override]
     public function getNeededCrew(): int
     {
         return $this->module->getCrewByFactionAndRumpLvl($this->user->getFaction(), $this->rump);
     }
 
-    #[Override]
+    #[\Override]
     public function getValue(): int
     {
         return $this->module
@@ -100,7 +99,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
             ->getValue($this->module);
     }
 
-    #[Override]
+    #[\Override]
     public function getSecondvalue(): ?int
     {
         return $this->module
@@ -109,7 +108,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
             ->getSecondValue($this->module);
     }
 
-    #[Override]
+    #[\Override]
     public function getModuleLevelClass(): string
     {
         $moduleLevels = $this->shipRumpModuleLevel;
@@ -124,7 +123,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         return '';
     }
 
-    #[Override]
+    #[\Override]
     public function getAddonValues(): array
     {
         $addon = $this->moduleSelector->getAddon();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\AllianceJob;
 
 /**
@@ -13,27 +12,27 @@ use Stu\Orm\Entity\AllianceJob;
  */
 final class AllianceJobRepository extends EntityRepository implements AllianceJobRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): AllianceJob
     {
         return new AllianceJob();
     }
 
-    #[Override]
+    #[\Override]
     public function save(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(AllianceJob $post): void
     {
         $em = $this->getEntityManager();
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->createQueryBuilder('aj')
@@ -43,7 +42,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByAlliance(int $allianceId): void
     {
         $this->getEntityManager()->createQuery(
@@ -56,7 +55,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ])->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getJobsWithFounderPermission(int $allianceId): array
     {
         return $this->createQueryBuilder('aj')
@@ -67,7 +66,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getJobsWithSuccessorPermission(int $allianceId): array
     {
         return $this->createQueryBuilder('aj')
@@ -78,7 +77,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getJobsWithDiplomaticPermission(int $allianceId): array
     {
         return $this->createQueryBuilder('aj')
@@ -89,7 +88,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByAllianceAndTitle(int $allianceId, string $title): ?AllianceJob
     {
         return $this->createQueryBuilder('aj')

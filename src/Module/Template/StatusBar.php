@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-use Override;
 
 class StatusBar implements StatusBarInterface
 {
@@ -18,48 +17,48 @@ class StatusBar implements StatusBarInterface
 
     private float $sizeModifier = 1;
 
-    #[Override]
+    #[\Override]
     public function setColor(StatusBarColorEnum $color): StatusBarInterface
     {
         $this->color = $color;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setLabel(string $label): StatusBarInterface
     {
         $this->label = $label;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setMaxValue(int $maxValue): StatusBarInterface
     {
         $this->maxValue = $maxValue;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setValue(int $value): StatusBarInterface
     {
         $this->value = $value;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setSizeModifier(float $modifier): StatusBarInterface
     {
         $this->sizeModifier = $modifier;
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function __toString(): string
     {
         return $this->render();
     }
 
-    #[Override]
+    #[\Override]
     public function render(): string
     {
         if ($this->maxValue === 0 && $this->value === 0) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWritePm;
 
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
@@ -38,7 +37,7 @@ final class ShowWritePm implements ViewControllerInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

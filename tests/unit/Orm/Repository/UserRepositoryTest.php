@@ -7,7 +7,6 @@ namespace Orm\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepository;
@@ -21,7 +20,7 @@ class UserRepositoryTest extends StuTestCase
 
     private UserRepository $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->mock(EntityManagerInterface::class);

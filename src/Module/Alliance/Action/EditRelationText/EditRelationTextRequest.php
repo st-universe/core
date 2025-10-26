@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditRelationText;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class EditRelationTextRequest implements EditRelationTextRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getRelationId(): int
     {
         return $this->queryParameter('relationid')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

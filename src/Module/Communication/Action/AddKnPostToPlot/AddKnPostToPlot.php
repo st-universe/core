@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 
-use Override;
 use request;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
@@ -27,7 +26,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
     public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -94,7 +93,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

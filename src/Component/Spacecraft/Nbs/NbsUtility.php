@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Nbs;
 
-use Override;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
@@ -26,13 +25,13 @@ final class NbsUtility implements NbsUtilityInterface
         private StationRepositoryInterface $stationRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function isTachyonActive(Spacecraft $spacecraft): bool
     {
         return $this->tachyonScanRepository->isTachyonScanActiveByShipLocationAndOwner($spacecraft);
     }
 
-    #[Override]
+    #[\Override]
     public function setNbsTemplateVars(
         Spacecraft $spacecraft,
         GameControllerInterface $game,

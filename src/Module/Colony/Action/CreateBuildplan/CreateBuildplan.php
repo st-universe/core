@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CreateBuildplan;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 
 use request;
 use RuntimeException;
@@ -47,7 +46,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -221,7 +220,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $plan->getId());
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

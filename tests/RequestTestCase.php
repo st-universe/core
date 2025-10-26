@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -30,7 +29,7 @@ abstract class RequestTestCase extends StuTestCase
      */
     abstract protected function getRequestClass(): string;
 
-    #[Override]
+    #[\Override]
     protected function tearDown(): void
     {
         // reset vars

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
 use InvalidArgumentException;
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Module\Control\StuTime;
@@ -32,7 +31,7 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSignatures(
         Spacecraft $spacecraft,
         DirectionEnum $direction,

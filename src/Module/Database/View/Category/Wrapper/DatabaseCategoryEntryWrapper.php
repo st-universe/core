@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Wrapper;
 
-use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
@@ -33,7 +32,7 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
      * @todo Refactor this
      * @see \Stu\Module\Database\View\DatabaseEntry\DatabaseEntry
      */
-    #[Override]
+    #[\Override]
     public function getObject(): mixed
     {
         return match ($this->databaseEntry->getCategory()->getId()) {
@@ -44,7 +43,7 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
         };
     }
 
-    #[Override]
+    #[\Override]
     public function wasDiscovered(): bool
     {
         if ($this->wasEntryDiscovered === null) {
@@ -63,25 +62,25 @@ final class DatabaseCategoryEntryWrapper implements DatabaseCategoryEntryWrapper
         return $this->wasEntryDiscovered;
     }
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->databaseEntry->getId();
     }
 
-    #[Override]
+    #[\Override]
     public function getObjectId(): int
     {
         return $this->databaseEntry->getObjectId();
     }
 
-    #[Override]
+    #[\Override]
     public function getDescription(): string
     {
         return $this->databaseEntry->getDescription();
     }
 
-    #[Override]
+    #[\Override]
     public function getDiscoveryDate(): int
     {
         if ($this->wasDiscovered() === false) {

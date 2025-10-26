@@ -6,7 +6,6 @@ namespace Stu\Lib\Component;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
@@ -24,7 +23,7 @@ class ComponentLoaderTest extends StuTestCase
 
     private ComponentLoaderInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->componentRegistration = $this->mock(ComponentRegistrationInterface::class);
@@ -36,7 +35,7 @@ class ComponentLoaderTest extends StuTestCase
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function tearDown(): void
     {
         StuMocks::get()->reset();

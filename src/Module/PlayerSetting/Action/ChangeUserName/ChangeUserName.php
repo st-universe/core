@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
 use JBBCode\Parser;
-use Override;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class ChangeUserName implements ActionControllerInterface
 
     public function __construct(private ChangeUserNameRequestInterface $changeUserNameRequest, private Parser $bbcodeParser, private UserRepositoryInterface $userRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $text = $this->changeUserNameRequest->getName();
@@ -68,7 +67,7 @@ final class ChangeUserName implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Dein Name wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

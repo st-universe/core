@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -19,13 +18,13 @@ use Stu\Orm\Entity\StarSystem;
  */
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): StarSystem
     {
         return new StarSystem();
     }
 
-    #[Override]
+    #[\Override]
     public function save(StarSystem $storage): void
     {
         $em = $this->getEntityManager();
@@ -33,7 +32,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
         $em->persist($storage);
     }
 
-    #[Override]
+    #[\Override]
     public function getByLayer(int $layerId): array
     {
         return $this->getEntityManager()
@@ -57,7 +56,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()
@@ -74,7 +73,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNumberOfSystemsToGenerate(Layer $layer): int
     {
         return (int) $this->getEntityManager()
@@ -96,7 +95,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPreviousStarSystem(StarSystem $current): ?StarSystem
     {
         return $this->getEntityManager()
@@ -120,7 +119,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNextStarSystem(StarSystem $current): ?StarSystem
     {
         return $this->getEntityManager()
@@ -144,7 +143,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPirateHides(SpacecraftWrapperInterface $wrapper): array
     {
         $layer = $wrapper->get()->getLayer();

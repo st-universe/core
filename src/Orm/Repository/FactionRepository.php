@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\User;
  */
 final class FactionRepository extends EntityRepository implements FactionRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByChooseable(bool $chooseable): array
     {
         return $this->findBy([
@@ -23,7 +22,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getPlayableFactionsPlayerCount(): array
     {
         return $this
@@ -47,7 +46,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function save(Faction $faction): void
     {
         $em = $this->getEntityManager();

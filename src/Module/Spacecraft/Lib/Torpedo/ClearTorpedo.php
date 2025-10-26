@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Torpedo;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -19,7 +18,7 @@ final class ClearTorpedo implements ClearTorpedoInterface
         private StorageRepositoryInterface $storageRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function clearTorpedoStorage(SpacecraftWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();

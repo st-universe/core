@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Override;
 use Stu\StuTestCase;
 
 class ShipTest extends StuTestCase
 {
     private Ship $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->subject = new Ship($this->mock(SpacecraftCondition::class));

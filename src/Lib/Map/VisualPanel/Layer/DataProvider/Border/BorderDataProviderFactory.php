@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Border;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -22,7 +21,7 @@ final class BorderDataProviderFactory implements BorderDataProviderFactoryInterf
         private AstroEntryRepositoryInterface $astroEntryRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getDataProvider(?SpacecraftWrapperInterface $currentWrapper, ?bool $isOnShipLevel): AbstractPanelLayerDataProvider
     {
         if ($currentWrapper === null) {

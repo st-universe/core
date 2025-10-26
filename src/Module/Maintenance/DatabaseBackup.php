@@ -3,14 +3,13 @@
 namespace Stu\Module\Maintenance;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 
 final class DatabaseBackup implements MaintenanceHandlerInterface
 {
     public function __construct(private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $this->cleanup();

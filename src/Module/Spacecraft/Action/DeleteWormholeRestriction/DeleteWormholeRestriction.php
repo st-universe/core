@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DeleteWormholeRestriction;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class DeleteWormholeRestriction implements ActionControllerInterface
         private WormholeEntryRepositoryInterface $wormholeEntryRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
 
@@ -44,7 +43,7 @@ final class DeleteWormholeRestriction implements ActionControllerInterface
         $this->wormholeRestrictionRepository->delete($restriction);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
@@ -33,7 +32,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
         private BattlePartyFactoryInterface $battlePartyFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function attack(
         SpacecraftWrapperInterface|FleetWrapperInterface $sourceWrapper,
         SpacecraftWrapperInterface $targetWrapper,

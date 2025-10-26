@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Action\StandBy;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use request;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -29,7 +28,7 @@ class StandByTest extends StuTestCase
 
     private ActionControllerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);

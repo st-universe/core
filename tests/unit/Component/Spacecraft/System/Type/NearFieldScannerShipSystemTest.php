@@ -6,7 +6,6 @@ namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -36,7 +35,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
 
     private NearFieldScannerShipSystem $system;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

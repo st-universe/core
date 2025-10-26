@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Orm\Entity\Ship;
@@ -17,7 +16,7 @@ class ConditionCheckResultTest extends StuTestCase
 
     private MockInterface&FlightCompany $flightCompany;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);

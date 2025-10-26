@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
@@ -13,7 +12,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

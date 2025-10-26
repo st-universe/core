@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
@@ -15,7 +14,7 @@ final class DatabaseProvider implements ViewComponentProviderInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $game->setTemplateVar(

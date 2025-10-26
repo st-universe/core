@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\AttackSpacecraft;
 
-use Override;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
@@ -35,7 +34,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $info = $game->getInfo();
@@ -123,7 +122,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

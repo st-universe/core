@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\BasicTradeBuy;
 
-use Override;
 use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -23,7 +22,7 @@ final class BasicTradeBuy implements ActionControllerInterface
 
     public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
@@ -104,7 +103,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $game->getInfo()->addInformation('Die Waren wurden gekauft');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

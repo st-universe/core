@@ -6,14 +6,13 @@ namespace Stu\Module\Logging;
 
 use Mockery\MockInterface;
 use Monolog\Logger;
-use Override;
 use Stu\StuTestCase;
 
 class StuLoggerTest extends StuTestCase
 {
     private MockInterface&Logger $mockLogger;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->mockLogger = $this->mock(Logger::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceLayerTypeEnum;
@@ -28,13 +27,13 @@ class SystemScanPanel extends AbstractVisualPanel
         parent::__construct($panelLayerCreation, $loggerUtil);
     }
 
-    #[Override]
+    #[\Override]
     protected function createBoundaries(): PanelBoundaries
     {
         return PanelBoundaries::fromSystem($this->system);
     }
 
-    #[Override]
+    #[\Override]
     protected function loadLayers(): void
     {
         $currentSpacecraft = $this->currentWrapper->get();
@@ -53,7 +52,7 @@ class SystemScanPanel extends AbstractVisualPanel
         $this->layers = $panelLayerCreation->build($this);
     }
 
-    #[Override]
+    #[\Override]
     protected function getEntryCallable(): callable
     {
         return fn(int $x, int $y): SystemScanPanelEntry => new SystemScanPanelEntry(
@@ -64,7 +63,7 @@ class SystemScanPanel extends AbstractVisualPanel
         );
     }
 
-    #[Override]
+    #[\Override]
     protected function getPanelViewportPercentage(): int
     {
         return 33;

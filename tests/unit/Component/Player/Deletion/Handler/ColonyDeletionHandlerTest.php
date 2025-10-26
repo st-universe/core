@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Doctrine\Common\Collections\Collection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
@@ -28,7 +27,7 @@ class ColonyDeletionHandlerTest extends StuTestCase
 
     private PlayerDeletionHandlerInterface $handler;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->colonyResetter = $this->mock(ColonyResetterInterface::class);

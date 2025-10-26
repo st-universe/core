@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -24,7 +23,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
         private AlertDetectionInterface $alertDetection,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function doItAll(
         SpacecraftWrapperInterface $incomingWrapper,
         InformationInterface $informations,
@@ -61,7 +60,7 @@ final class AlertReactionFacade implements AlertReactionFacadeInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performAttackCycle(
         AlertedBattlePartyInterface $alertedParty,
         IncomingBattleParty $incomingParty,

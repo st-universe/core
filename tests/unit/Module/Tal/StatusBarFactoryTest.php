@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-use Override;
 use Stu\StuTestCase;
 
 class StatusBarFactoryTest extends StuTestCase
 {
     private StatusBarFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->subject = new StatusBarFactory();

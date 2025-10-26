@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStation;
 
-use Override;
 use request;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
@@ -35,7 +34,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         private ColonyLibFactoryInterface $colonyLibFactory,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function appendNavigationPart(GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
     {
         $game->appendNavigationPart('station.php', _('Stationen'));
@@ -43,7 +42,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(int $spacecraftId, GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
     {
         $station = $this->stationLoader->getByIdAndUser(
@@ -148,7 +147,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
         }
     }
-    #[Override]
+    #[\Override]
     public function getViewContext(): ViewContext
     {
         return new ViewContext(ModuleEnum::STATION, ShowSpacecraft::VIEW_IDENTIFIER);

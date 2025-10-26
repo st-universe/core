@@ -6,7 +6,6 @@ namespace Stu\Module\Control\Component;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Override;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
@@ -29,7 +28,7 @@ class ViewExecutionTest extends StuTestCase
 
     private ViewExecution $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->controllerDiscovery = $this->mock(ControllerDiscoveryInterface::class);

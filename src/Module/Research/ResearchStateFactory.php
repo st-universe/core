@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -23,7 +22,7 @@ final class ResearchStateFactory implements ResearchStateFactoryInterface
         private readonly CreateUserAwardInterface $createUserAward
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createResearchState(): ResearchStateInterface
     {
         return new ResearchState(

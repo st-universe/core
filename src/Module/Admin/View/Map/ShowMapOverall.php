@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use InvalidArgumentException;
-use Override;
 use request;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -27,7 +26,7 @@ final class ShowMapOverall implements ViewControllerInterface
         private EncodedMapInterface $encodedMap
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = request::getIntFatal('layerid');

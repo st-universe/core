@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\StuTestCase;
@@ -17,7 +16,7 @@ class ProcessTickCommandTest extends StuTestCase
 
     private ProcessTickCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->processTickRunner = $this->mock(ProcessTickRunner::class);

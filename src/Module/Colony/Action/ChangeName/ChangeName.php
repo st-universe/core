@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ChangeName;
 
 use JBBCode\Parser;
-use Override;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\CleanTextUtils;
@@ -22,7 +21,7 @@ final class ChangeName implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private Parser $bbCodeParser, private ColonyRepositoryInterface $colonyRepository, private ChangeNameRequestInterface $changeNameRequest) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -62,7 +61,7 @@ final class ChangeName implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Koloniename wurde geändert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

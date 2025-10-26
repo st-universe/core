@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\Action\SaveNote;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class SaveNoteRequest implements SaveNoteRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getNoteId(): int
     {
         return $this->parameter('note')->int()->defaultsTo(0);
     }
 
-    #[Override]
+    #[\Override]
     public function getTitle(): string
     {
         return $this->tidyString(
@@ -25,7 +24,7 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

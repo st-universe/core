@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 
 final class ColonyCorrectorHandler implements MaintenanceHandlerInterface
@@ -13,7 +12,7 @@ final class ColonyCorrectorHandler implements MaintenanceHandlerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         $this->colonyCorrector->correct(false);

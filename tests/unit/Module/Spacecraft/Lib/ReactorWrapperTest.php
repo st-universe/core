@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\AbstractReactorSystemData;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
@@ -20,7 +19,7 @@ class ReactorWrapperTest extends StuTestCase
 
     private ReactorWrapperInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->wrapper = $this->mock(ShipWrapperInterface::class);

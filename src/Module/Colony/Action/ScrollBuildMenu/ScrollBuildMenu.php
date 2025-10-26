@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
@@ -21,7 +20,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
 
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -66,7 +65,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

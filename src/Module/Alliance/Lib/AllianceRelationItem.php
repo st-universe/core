@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Override;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\User;
@@ -15,13 +14,13 @@ final class AllianceRelationItem implements AllianceRelationItemInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function getRelation(): AllianceRelation
     {
         return $this->allianceRelation;
     }
 
-    #[Override]
+    #[\Override]
     public function getOpponent(): Alliance
     {
         if ($this->allianceRelation->getOpponent() === $this->currentUser->getAlliance()) {
@@ -31,7 +30,7 @@ final class AllianceRelationItem implements AllianceRelationItemInterface
         return $this->allianceRelation->getOpponent();
     }
 
-    #[Override]
+    #[\Override]
     public function offerIsSend(): bool
     {
         return $this->allianceRelation->getAlliance() === $this->currentUser->getAlliance();

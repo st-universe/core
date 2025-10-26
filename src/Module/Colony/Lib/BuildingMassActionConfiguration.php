@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -22,7 +21,7 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
     {
     }
 
-    #[Override]
+    #[\Override]
     public function getConfigurations(): array
     {
         return [

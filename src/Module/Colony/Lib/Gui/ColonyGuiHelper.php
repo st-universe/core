@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui;
 
-use Override;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
@@ -15,7 +14,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
     public function __construct(private ComponentRegistrationInterface $componentRegistration) {}
 
-    #[Override]
+    #[\Override]
     public function registerMenuComponents(
         ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
@@ -36,7 +35,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function registerComponents(
         PlanetFieldHostInterface $host,
         GameControllerInterface $game,

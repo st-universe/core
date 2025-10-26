@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\SetKnMark;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class SetKnMarkRequest implements SetKnMarkRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getKnOffset(): int
     {
         return $this->parameter('markid')->int()->required();

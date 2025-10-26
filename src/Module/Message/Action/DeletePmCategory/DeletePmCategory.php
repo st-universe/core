@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeletePmCategory;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -20,7 +19,7 @@ final class DeletePmCategory implements ActionControllerInterface
         private PrivateMessageRepositoryInterface $privateMessageRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $timestamp = time();
@@ -41,7 +40,7 @@ final class DeletePmCategory implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Ordner wurde gelöscht'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

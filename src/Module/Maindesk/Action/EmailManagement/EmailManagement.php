@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\Action\EmailManagement;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Lib\AccountNotVerifiedException;
@@ -37,7 +36,7 @@ final class EmailManagement implements
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $emailInput = request::postString('email');
@@ -108,7 +107,7 @@ final class EmailManagement implements
         throw new AccountNotVerifiedException('E-Mail-Adresse wurde auf ' . $newEmail . ' aktualisiert und eine neue Aktivierungs-E-Mail wurde versendet');
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

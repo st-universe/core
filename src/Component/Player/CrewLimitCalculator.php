@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player;
 
-use Override;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Orm\Entity\User;
 
@@ -14,7 +13,7 @@ final class CrewLimitCalculator implements CrewLimitCalculatorInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function getGlobalCrewLimit(User $user): int
     {
         $limit = 0;

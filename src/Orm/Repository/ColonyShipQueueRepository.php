@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyShipQueue;
@@ -15,13 +14,13 @@ use Stu\Orm\Entity\ColonyShipQueue;
  */
 final class ColonyShipQueueRepository extends EntityRepository implements ColonyShipQueueRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): ColonyShipQueue
     {
         return new ColonyShipQueue();
     }
 
-    #[Override]
+    #[\Override]
     public function save(ColonyShipQueue $post): void
     {
         $em = $this->getEntityManager();
@@ -29,7 +28,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(ColonyShipQueue $queue): void
     {
         $em = $this->getEntityManager();
@@ -43,7 +42,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         $em->flush(); //TODO really neccessary?
     }
 
-    #[Override]
+    #[\Override]
     public function stopQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
@@ -61,7 +60,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function restartQueueByColonyAndBuildingFunction(int $colonyId, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
@@ -84,7 +83,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByColonyAndBuildingFunctionAndMode(int $colonyId, BuildingFunctionEnum $buildingFunction, int $mode): int
     {
         return $this->count([
@@ -94,7 +93,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([
@@ -102,7 +101,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByColonyAndMode(int $colonyId, int $mode): array
     {
         return $this->findBy([
@@ -111,7 +110,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy([
@@ -119,7 +118,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndMode(int $userId, int $mode): array
     {
         return $this->findBy([
@@ -128,7 +127,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getCountByBuildplan(int $buildplanId): int
     {
         return $this->count([
@@ -136,7 +135,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getFinishedJobs(): array
     {
         return $this->getEntityManager()
@@ -153,7 +152,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByColony(Colony $colony): void
     {
         $this->getEntityManager()
@@ -169,7 +168,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByColonyAndBuildingFunction(Colony $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->getEntityManager()
@@ -186,7 +185,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()
@@ -202,7 +201,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): ?ColonyShipQueue
     {
         return $this->findOneBy([

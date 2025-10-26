@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\PostKnComment;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class PostKnCommentRequest implements PostKnCommentRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getKnId(): int
     {
         return $this->parameter('knid')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

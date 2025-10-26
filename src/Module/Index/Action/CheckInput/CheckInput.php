@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
-use Override;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
@@ -25,7 +24,7 @@ final class CheckInput implements ActionControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
@@ -99,7 +98,7 @@ final class CheckInput implements ActionControllerInterface
         return (bool) preg_match('/00..[1-9]\d/', $mobile);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchive;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ShowKnArchiveRequest implements ShowKnArchiveRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getVersion(): string
     {
         return $this->parameter('version')->string()->defaultsToIfEmpty('v1.0');
     }
 
-    #[Override]
+    #[\Override]
     public function getPage(): int
     {
         return $this->parameter('page')->int()->defaultsTo(1);
     }
 
-    #[Override]
+    #[\Override]
     public function getMark(): int
     {
         return $this->parameter('mark')->int()->defaultsTo(0);

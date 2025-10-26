@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\View\ShowTutorialCloseButton;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -12,7 +11,7 @@ final class ShowTutorialCloseButton implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TUTORIAL_CLOSE';
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $factionId = $game->getUser()->getFactionId();

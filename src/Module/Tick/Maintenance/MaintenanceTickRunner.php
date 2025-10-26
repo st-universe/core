@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick\Maintenance;
 
 use Doctrine\DBAL\Connection;
-use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
@@ -27,7 +26,7 @@ class MaintenanceTickRunner implements TickRunnerInterface
         private readonly array $handlerList
     ) {}
 
-    #[Override]
+    #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->setGameState(GameStateEnum::MAINTENANCE);

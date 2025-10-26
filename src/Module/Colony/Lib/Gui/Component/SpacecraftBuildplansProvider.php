@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
@@ -19,7 +18,7 @@ final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInte
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

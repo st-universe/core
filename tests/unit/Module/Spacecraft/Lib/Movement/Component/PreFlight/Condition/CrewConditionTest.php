@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,7 +23,7 @@ class CrewConditionTest extends StuTestCase
 
     private MockInterface&ConditionCheckResult $conditionCheckResult;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);

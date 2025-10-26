@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Spacecraft;
@@ -14,7 +13,7 @@ class TrojanHorseNotifier implements TrojanHorseNotifierInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[Override]
+    #[\Override]
     public function informUsersAboutTrojanHorse(
         Spacecraft $incomingSpacecraft,
         ?Spacecraft $tractoringSpacecraft,

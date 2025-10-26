@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
-use Override;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
@@ -27,7 +26,7 @@ class NpcShipHandling implements ManagerComponentInterface
         private readonly InformationFactoryInterface $informationFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function work(): void
     {
         foreach ($this->spacecraftRepository->getNpcSpacecraftsForTick() as $spacecraft) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\CommoditiesOverview;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;
@@ -21,7 +20,7 @@ class CommoditiesOverviewTest extends StuTestCase
 
     private CommoditiesOverview $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);

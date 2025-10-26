@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RouteModeEnum;
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\StarSystemMap;
 
 class EnoughWarpdriveCondition implements PreFlightConditionInterface
 {
-    #[Override]
+    #[\Override]
     public function check(
         SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute,

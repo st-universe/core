@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowPodsLocations;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -16,7 +15,7 @@ final class ShowPodsLocations implements ViewControllerInterface
 
     public function __construct(private ShipRepositoryInterface $shipRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

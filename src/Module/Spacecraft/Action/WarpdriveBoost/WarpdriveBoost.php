@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\WarpdriveBoost;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -27,7 +26,7 @@ final class WarpdriveBoost implements ActionControllerInterface
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -61,7 +60,7 @@ final class WarpdriveBoost implements ActionControllerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

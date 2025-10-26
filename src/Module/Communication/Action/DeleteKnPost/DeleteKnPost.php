@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnPost;
 
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,7 +16,7 @@ final class DeleteKnPost implements ActionControllerInterface
 
     public function __construct(private DeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -37,7 +36,7 @@ final class DeleteKnPost implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

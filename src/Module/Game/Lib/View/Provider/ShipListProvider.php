@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,7 +22,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
         private readonly SessionStorageInterface $sessionStorage
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

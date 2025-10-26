@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
 use Stu\Orm\Entity\Colony;
@@ -20,7 +19,7 @@ final class ColonyCreation implements ColonyCreationInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[Override]
+    #[\Override]
     public function create(StarSystemMap $systemMap, string $name): Colony
     {
         $colonyClass = $systemMap->getFieldType()->getColonyClass();

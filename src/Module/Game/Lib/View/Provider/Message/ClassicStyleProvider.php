@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
@@ -29,7 +28,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

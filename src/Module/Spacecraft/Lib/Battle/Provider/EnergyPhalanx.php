@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
-use Override;
 use RuntimeException;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Location;
@@ -16,19 +15,19 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
 {
     public function __construct(private Colony $colony, private ModuleRepositoryInterface $moduleRepository) {}
 
-    #[Override]
+    #[\Override]
     public function hasSufficientEnergy(int $amount): bool
     {
         return $this->getEps() >= $amount;
     }
 
-    #[Override]
+    #[\Override]
     public function isAvoidingHullHits(Spacecraft $target): bool
     {
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getFiringMode(): int
     {
         $weapon = $this->getWeapon();
@@ -41,13 +40,13 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return $this->colony->getChangeable()->getEps();
     }
 
-    #[Override]
+    #[\Override]
     public function reduceEps(int $amount): void
     {
         $this->colony->getChangeable()->lowerEps($amount);
     }
 
-    #[Override]
+    #[\Override]
     public function getUserId(): int
     {
         return $this->colony->getUser()->getId();
@@ -58,19 +57,19 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return in_array($this->colony->getUser()->getFactionId(), [2, 3]);
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->isDisruptor() ? 'Orbitale Disruptorphalanx' : 'Orbitale Phaserphalanx';
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserState(): bool
     {
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getHitChance(): int
     {
         return $this->isDisruptor() ? 67 : 86;
@@ -81,7 +80,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return $this->isDisruptor() ? 3 : 1;
     }
 
-    #[Override]
+    #[\Override]
     public function getWeaponModule(): Module
     {
         if ($this->module === null) {
@@ -96,31 +95,31 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return $this->module;
     }
 
-    #[Override]
+    #[\Override]
     public function getEnergyWeaponBaseDamage(): int
     {
         return $this->isDisruptor() ? 180 : 250;
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserVolleys(): int
     {
         return $this->isDisruptor() ? 5 : 3;
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserShieldDamageFactor(): int
     {
         return 200;
     }
 
-    #[Override]
+    #[\Override]
     public function getPhaserHullDamageFactor(): int
     {
         return 100;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->colony->getLocation();

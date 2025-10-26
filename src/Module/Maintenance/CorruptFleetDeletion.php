@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Maintenance;
 
-use Override;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -13,7 +12,7 @@ final class CorruptFleetDeletion implements MaintenanceHandlerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(): void
     {
         foreach ($this->fleetRepository->getNonNpcFleetList() as $fleet) {

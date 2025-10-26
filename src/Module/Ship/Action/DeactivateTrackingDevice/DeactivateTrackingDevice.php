@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeactivateTrackingDevice;
 
-use Override;
 use request;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -20,7 +19,7 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
 
     public function __construct(private ShipLoaderInterface $shipLoader, private ActivatorDeactivatorHelperInterface $helper) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -40,7 +39,7 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
         $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACKER, $game->getInfo());
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

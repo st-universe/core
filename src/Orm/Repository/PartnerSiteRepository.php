@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\PartnerSite;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\PartnerSite;
  */
 final class PartnerSiteRepository extends EntityRepository implements PartnerSiteRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getOrdered(): array
     {
         return $this->findBy(

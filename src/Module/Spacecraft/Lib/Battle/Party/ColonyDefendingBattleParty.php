@@ -3,13 +3,12 @@
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedBattlePartyInterface
 {
-    #[Override]
+    #[\Override]
     public function initMembers(): Collection
     {
         $fleetWrapper = $this->leader->getFleetWrapper();
@@ -24,13 +23,13 @@ class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedB
         }
     }
 
-    #[Override]
+    #[\Override]
     public function getAttackCause(): SpacecraftAttackCauseEnum
     {
         return SpacecraftAttackCauseEnum::COLONY_DEFENSE;
     }
 
-    #[Override]
+    #[\Override]
     public function getAlertDescription(): string
     {
         return '[b][color=orange]Kolonie-Verteidigung[/color][/b]';

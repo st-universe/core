@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\MapFieldType;
 
 /**
@@ -13,7 +12,7 @@ use Stu\Orm\Entity\MapFieldType;
  */
 final class MapFieldTypeRepository extends EntityRepository implements MapFieldTypeRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(MapFieldType $map): void
     {
         $em = $this->getEntityManager();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use Override;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
@@ -16,7 +15,7 @@ final class ResetCaches implements ActionControllerInterface
 
     public function __construct(private CacheItemPoolInterface $cache) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
@@ -32,7 +31,7 @@ final class ResetCaches implements ActionControllerInterface
         $game->getInfo()->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Communication\Kn;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\Template\StatusBar;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
@@ -26,7 +25,7 @@ class KnItemTest extends StuTestCase
 
     private KnItemInterface $item;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->bbcodeParser = $this->mock(KnBbCodeParser::class);

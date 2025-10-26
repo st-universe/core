@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowArchiveSearchResult;
 
-use Override;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
         private KnArchiveFactoryInterface $knArchiveFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

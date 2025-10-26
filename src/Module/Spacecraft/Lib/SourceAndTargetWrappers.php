@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 /**
@@ -21,19 +20,19 @@ class SourceAndTargetWrappers implements SourceAndTargetWrappersInterface
      */
     public function __construct(private $source) {}
 
-    #[Override]
+    #[\Override]
     public function getSource(): SpacecraftWrapperInterface
     {
         return $this->source;
     }
 
-    #[Override]
+    #[\Override]
     public function getTarget(): ?SpacecraftWrapperInterface
     {
         return $this->target;
     }
 
-    #[Override]
+    #[\Override]
     public function setTarget(?SpacecraftWrapperInterface $wrapper): void
     {
         $this->target = $wrapper;

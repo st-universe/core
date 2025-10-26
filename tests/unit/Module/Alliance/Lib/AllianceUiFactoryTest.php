@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -28,7 +27,7 @@ class AllianceUiFactoryTest extends StuTestCase
 
     private AllianceUiFactory $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftRumpRepository = $this->mock(SpacecraftRumpRepositoryInterface::class);

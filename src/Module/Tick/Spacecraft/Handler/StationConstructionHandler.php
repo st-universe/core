@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\Information\InformationInterface;
@@ -16,7 +15,7 @@ class StationConstructionHandler implements SpacecraftTickHandlerInterface
         private StationUtilityInterface $stationUtility
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

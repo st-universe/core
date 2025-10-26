@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -35,7 +34,7 @@ use Stu\Orm\Entity\UserRegistration;
  */
 final class StationRepository extends EntityRepository implements StationRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function save(Station $station): void
     {
         $em = $this->getEntityManager();
@@ -43,7 +42,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         $em->persist($station);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Station $station): void
     {
         $em = $this->getEntityManager();
@@ -51,7 +50,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         $em->remove($station);
     }
 
-    #[Override]
+    #[\Override]
     public function getByUser(int $userId): array
     {
         return $this->findBy(
@@ -62,7 +61,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getForeignStationsInBroadcastRange(Spacecraft $spacecraft): array
     {
         $layer = $spacecraft->getLayer();
@@ -107,7 +106,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getTradePostsWithoutDatabaseEntry(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -122,7 +121,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         )->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUplink(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
@@ -160,7 +159,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStationConstructions(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -180,7 +179,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStationScannerResults(
         Spacecraft $spacecraft,
         bool $showCloaked = false,
@@ -245,13 +244,13 @@ final class StationRepository extends EntityRepository implements StationReposit
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getStationOnLocation(Location $location): ?Station
     {
         return $this->findOneBy(['location' => $location]);
     }
 
-    #[Override]
+    #[\Override]
     public function getStationsByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -274,7 +273,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getPiratePhalanxTargets(SpacecraftWrapperInterface $wrapper): array
     {
         $layer = $wrapper->get()->getLayer();
@@ -327,7 +326,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByUserAndRump(User $user, SpacecraftRump $rump): array
     {
         return $this->findBy([

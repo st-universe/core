@@ -7,7 +7,6 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 use Exception;
 use Mockery\MockInterface;
 use Monolog\Level;
-use Override;
 use Psr\Log\LoggerInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
@@ -18,7 +17,7 @@ class LogfileAdapterTest extends StuTestCase
 
     protected LogfileAdapter $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->logger = $this->mock(LoggerInterface::class);

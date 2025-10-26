@@ -7,7 +7,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AlertStateBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
@@ -29,7 +28,7 @@ class AlertDetectionTest extends StuTestCase
 
     private AlertDetectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected

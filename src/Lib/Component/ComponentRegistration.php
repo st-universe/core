@@ -6,7 +6,6 @@ namespace Stu\Lib\Component;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 
 final class ComponentRegistration implements ComponentRegistrationInterface
 {
@@ -22,7 +21,7 @@ final class ComponentRegistration implements ComponentRegistrationInterface
         $this->registeredComponents = new ArrayCollection();
     }
 
-    #[Override]
+    #[\Override]
     public function addComponentUpdate(
         ComponentEnumInterface $componentEnum,
         ?EntityWithComponentsInterface $entity = null,
@@ -37,7 +36,7 @@ final class ComponentRegistration implements ComponentRegistrationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function registerComponent(ComponentEnumInterface $componentEnum, ?EntityWithComponentsInterface $entity = null): ComponentRegistrationInterface
     {
         $id = $this->getId($componentEnum);
@@ -48,19 +47,19 @@ final class ComponentRegistration implements ComponentRegistrationInterface
         return $this;
     }
 
-    #[Override]
+    #[\Override]
     public function getRegisteredComponents(): Collection
     {
         return $this->registeredComponents;
     }
 
-    #[Override]
+    #[\Override]
     public function getComponentUpdates(): Collection
     {
         return $this->componentUpdates;
     }
 
-    #[Override]
+    #[\Override]
     public function resetComponents(): void
     {
         $this->componentUpdates->clear();

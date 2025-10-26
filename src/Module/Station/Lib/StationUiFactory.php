@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Lib;
 
-use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -29,7 +28,7 @@ final class StationUiFactory implements StationUiFactoryInterface
         private PanelLayerCreationInterface $panelLayerCreation
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSystemScanPanel(
         SpacecraftWrapperInterface $currentWrapper,
         User $user,
@@ -45,7 +44,7 @@ final class StationUiFactory implements StationUiFactoryInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createDockingPrivilegeItem(
         DockingPrivilege $dockingPrivilege
     ): DockingPrivilegeItem {

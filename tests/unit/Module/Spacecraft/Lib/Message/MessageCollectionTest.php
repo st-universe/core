@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Message;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\StuTestCase;
 
@@ -15,7 +14,7 @@ class MessageCollectionTest extends StuTestCase
 
     private MessageCollectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);

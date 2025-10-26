@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreationConfigInterface;
@@ -17,13 +16,13 @@ class ShipCreationConfig implements SpacecraftCreationConfigInterface
         private int $buildplanId
     ) {}
 
-    #[Override]
+    #[\Override]
     public function getSpacecraft(): ?Spacecraft
     {
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function getSpecialSystemModules(): Collection
     {
         $buildplan = $this->buildplanRepository->find($this->buildplanId);

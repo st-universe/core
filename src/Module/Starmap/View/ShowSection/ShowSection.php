@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
-use Override;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\DirectionEnum;
@@ -25,7 +24,7 @@ final class ShowSection implements ViewControllerInterface
 
     public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $layerId = $this->showSectionRequest->getLayerId();

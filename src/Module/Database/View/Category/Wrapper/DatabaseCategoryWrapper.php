@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Wrapper;
 
-use Override;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -21,44 +20,44 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
         private ?int $layer = null
     ) {}
 
-    #[Override]
+    #[\Override]
     public function isCategoryStarSystemTypes(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STAR_SYSTEM_TYPE->value;
     }
 
-    #[Override]
+    #[\Override]
     public function isCategoryStarSystems(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STARSYSTEM->value;
     }
 
-    #[Override]
+    #[\Override]
     public function isCategoryTradePosts(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::TRADEPOST->value;
     }
 
-    #[Override]
+    #[\Override]
     public function isCategoryColonyClasses(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::COLONY_CLASS->value;
     }
 
-    #[Override]
+    #[\Override]
     public function isCategoryRumpTypes(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::SHIPRUMP->value
             || $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::STATIONRUMP->value;
     }
 
-    #[Override]
+    #[\Override]
     public function isCategoryRegion(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::REGION->value;
     }
 
-    #[Override]
+    #[\Override]
     public function displayDefaultList(): bool
     {
         return !$this->isCategoryStarSystems()
@@ -69,7 +68,7 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
             && !$this->isCategoryRegion();
     }
 
-    #[Override]
+    #[\Override]
     public function getEntries(): array
     {
         if ($this->isCategoryStarSystems()) {
@@ -98,7 +97,7 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getId(): int
     {
         return $this->databaseCategory->getId();

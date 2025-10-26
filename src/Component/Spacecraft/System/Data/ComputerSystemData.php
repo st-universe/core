@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Override;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -17,7 +16,7 @@ class ComputerSystemData extends AbstractSystemData
     public DirectionEnum $flightDirection = DirectionEnum::NON;
     public SpacecraftAlertStateEnum $alertState = SpacecraftAlertStateEnum::ALERT_GREEN;
 
-    #[Override]
+    #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::COMPUTER;

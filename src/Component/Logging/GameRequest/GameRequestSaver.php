@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
-use Override;
 use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
 use Stu\Orm\Entity\GameRequest;
 
@@ -15,7 +14,7 @@ final class GameRequestSaver implements GameRequestSaverInterface
 {
     public function __construct(private ParameterSanitizerInterface $parameterSanitizer, private GameRequestLoggerInterface $gameRequstLogger) {}
 
-    #[Override]
+    #[\Override]
     public function save(
         GameRequest $gameRequest,
         bool $errorOccured = false

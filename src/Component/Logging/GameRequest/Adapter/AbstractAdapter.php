@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
 use Monolog\Level;
-use Override;
 use Stu\Orm\Entity\GameRequest;
 
 abstract class AbstractAdapter implements GameRequestLoggerInterface
 {
-    #[Override]
+    #[\Override]
     public function info(
         GameRequest $gameRequest,
         bool $isRequestCheck = true
@@ -22,7 +21,7 @@ abstract class AbstractAdapter implements GameRequestLoggerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function error(
         GameRequest $gameRequest,
         bool $isRequestCheck = true

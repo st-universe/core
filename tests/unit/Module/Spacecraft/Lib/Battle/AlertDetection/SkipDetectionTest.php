@@ -6,7 +6,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
@@ -29,7 +28,7 @@ class SkipDetectionTest extends StuTestCase
 
     private SkipDetectionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\Researched;
 
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\Researched;
  */
 final class BuildingFieldAlternativeRepository extends EntityRepository implements BuildingFieldAlternativeRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternative
     {
         return $this->findOneBy([
@@ -23,7 +22,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): array
     {
         return $this->getEntityManager()

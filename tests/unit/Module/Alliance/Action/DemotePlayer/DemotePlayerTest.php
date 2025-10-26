@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -35,7 +34,7 @@ class DemotePlayerTest extends StuTestCase
 
     private int $playerId = 33;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->demotePlayerRequest = $this->mock(DemotePlayerRequestInterface::class);

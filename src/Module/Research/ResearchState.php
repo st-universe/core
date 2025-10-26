@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Override;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -27,7 +26,7 @@ final class ResearchState implements ResearchStateInterface
         private readonly CreateUserAwardInterface $createUserAward,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function advance(Researched $state, int $amount): int
     {
         $active = $state->getActive();
@@ -43,7 +42,7 @@ final class ResearchState implements ResearchStateInterface
         return max(0, $amount - $active);
     }
 
-    #[Override]
+    #[\Override]
     public function finish(Researched $state): void
     {
         $state->setActive(0);

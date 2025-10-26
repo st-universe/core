@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Repair;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -39,7 +38,7 @@ final class RepairUtil implements RepairUtilInterface
     ) {}
 
     //REPAIR STUFF
-    #[Override]
+    #[\Override]
     public function determineSpareParts(SpacecraftWrapperInterface $wrapper, bool $tickBased): array
     {
         $isRepairStationBonus = $this->isRepairStationBonus($wrapper);
@@ -114,7 +113,7 @@ final class RepairUtil implements RepairUtilInterface
         return $neededSystemComponents;
     }
 
-    #[Override]
+    #[\Override]
     public function enoughSparePartsOnEntity(
         array $neededParts,
         Colony|Spacecraft $entity,
@@ -198,7 +197,7 @@ final class RepairUtil implements RepairUtilInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function consumeSpareParts(array $neededParts, Colony|Spacecraft $entity): void
     {
         foreach ($neededParts as $commodityKey => $amount) {
@@ -220,7 +219,7 @@ final class RepairUtil implements RepairUtilInterface
 
     //SELFREPAIR STUFF
 
-    #[Override]
+    #[\Override]
     public function determineFreeEngineerCount(Spacecraft $ship): int
     {
         $engineerCount = 0;
@@ -241,7 +240,7 @@ final class RepairUtil implements RepairUtilInterface
         return $engineerCount; //$engineerOptions;
     }
 
-    #[Override]
+    #[\Override]
     public function determineRepairOptions(SpacecraftWrapperInterface $wrapper): array
     {
         $repairOptions = [];
@@ -268,7 +267,7 @@ final class RepairUtil implements RepairUtilInterface
         return $repairOptions;
     }
 
-    #[Override]
+    #[\Override]
     public function createRepairTask(Spacecraft $ship, SpacecraftSystemTypeEnum $systemType, int $repairType, int $finishTime): void
     {
         $obj = $this->repairTaskRepository->prototype();
@@ -282,7 +281,7 @@ final class RepairUtil implements RepairUtilInterface
         $this->repairTaskRepository->save($obj);
     }
 
-    #[Override]
+    #[\Override]
     public function determineHealingPercentage(int $repairType): int
     {
         $percentage = 0;
@@ -298,7 +297,7 @@ final class RepairUtil implements RepairUtilInterface
         return $percentage;
     }
 
-    #[Override]
+    #[\Override]
     public function instantSelfRepair(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $systemType, int $healingPercentage): bool
     {
         return $this->internalSelfRepair(
@@ -308,7 +307,7 @@ final class RepairUtil implements RepairUtilInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function selfRepair(Spacecraft $spacecraft, RepairTask $repairTask): bool
     {
         $systemType = $repairTask->getSystemType();
@@ -347,7 +346,7 @@ final class RepairUtil implements RepairUtilInterface
         return $result;
     }
 
-    #[Override]
+    #[\Override]
     public function isRepairStationBonus(SpacecraftWrapperInterface $wrapper): bool
     {
         $ship = $wrapper->get();
@@ -360,7 +359,7 @@ final class RepairUtil implements RepairUtilInterface
         return $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::REPAIR_SHIPYARD);
     }
 
-    #[Override]
+    #[\Override]
     public function getRepairDuration(SpacecraftWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();
@@ -378,7 +377,7 @@ final class RepairUtil implements RepairUtilInterface
         return $ticks;
     }
 
-    #[Override]
+    #[\Override]
     public function getRepairDurationPreview(SpacecraftWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();

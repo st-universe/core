@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Orm\Entity\LotteryTicket;
 
 /**
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\LotteryTicket;
  */
 final class LotteryTicketRepository extends EntityRepository implements LotteryTicketRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): LotteryTicket
     {
         return new LotteryTicket();
     }
 
-    #[Override]
+    #[\Override]
     public function save(LotteryTicket $lotteryticket): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
         $em->persist($lotteryticket);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByPeriod(string $period): int
     {
         return $this->count([
@@ -36,7 +35,7 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getAmountByPeriodAndUser(string $period, int $userId): int
     {
         return $this->count([
@@ -45,13 +44,13 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getByPeriod(string $period): array
     {
         return $this->findBy(['period' => $period, 'is_winner' => null]);
     }
 
-    #[Override]
+    #[\Override]
     public function getLotteryHistory(): array
     {
         $rsm = new ResultSetMapping();

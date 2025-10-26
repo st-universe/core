@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -16,7 +15,7 @@ final class ServertimeComponent implements ComponentInterface
 {
     public function __construct(private ConfigInterface $config) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $game->setTemplateVar('GAMETURN', $game->getCurrentRound()->getTurn());

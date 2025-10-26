@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Researched;
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\User;
  */
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function hasUserFinishedResearch(User $user, array $researchIds): bool
     {
         return $this->getEntityManager()
@@ -31,7 +30,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getSingleScalarResult() > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function getListByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -48,7 +47,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getFinishedListByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -62,7 +61,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getCurrentResearch(User $user): array
     {
         return $this->getEntityManager()
@@ -79,7 +78,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getFor(int $researchId, int $userId): ?Researched
     {
         return $this->findOneBy([
@@ -88,7 +87,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function save(Researched $researched): void
     {
         $em = $this->getEntityManager();
@@ -97,7 +96,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em->flush(); //TODO really neccessary?
     }
 
-    #[Override]
+    #[\Override]
     public function delete(Researched $researched): void
     {
         $em = $this->getEntityManager();
@@ -106,13 +105,13 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): Researched
     {
         return new Researched();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateForUser(int $userId): void
     {
         $this->getEntityManager()
@@ -126,7 +125,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->execute();
     }
 
-    #[Override]
+    #[\Override]
     public function getResearchedPoints(): array
     {
         $rsm = new ResultSetMapping();

@@ -6,7 +6,6 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Application;
 use Mockery\MockInterface;
-use Override;
 use Stu\CliInteractorHelper;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
 use Stu\StuTestCase;
@@ -17,7 +16,7 @@ class SpacecraftTickCommandTest extends StuTestCase
 
     private SpacecraftTickCommand $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftTickRunner = $this->mock(SpacecraftTickRunner::class);

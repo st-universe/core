@@ -7,7 +7,6 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Monolog\Logger;
-use Override;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\StuLogger;
@@ -23,7 +22,7 @@ class IonStormMovementTest extends StuTestCase
 
     private IonStormMovement $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         StuLogger::setMock(new Logger('test'));

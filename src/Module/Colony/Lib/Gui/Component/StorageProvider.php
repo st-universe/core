@@ -3,7 +3,6 @@
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -15,7 +14,7 @@ final class StorageProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

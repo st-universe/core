@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Override;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
@@ -33,7 +32,7 @@ final class FightLib implements FightLibInterface
         private InformationFactoryInterface $informationFactory
     ) {}
 
-    #[Override]
+    #[\Override]
     public function ready(
         SpacecraftWrapperInterface $wrapper,
         bool $isUndockingMandatory,
@@ -102,7 +101,7 @@ final class FightLib implements FightLibInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function canAttackTarget(
         Spacecraft $spacecraft,
         Spacecraft|SpacecraftNfsItem $target,
@@ -153,7 +152,7 @@ final class FightLib implements FightLibInterface
         return $ownFleetId !== $targetFleetId;
     }
 
-    #[Override]
+    #[\Override]
     public function getAttackersAndDefenders(
         SpacecraftWrapperInterface|FleetWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
@@ -187,7 +186,7 @@ final class FightLib implements FightLibInterface
             || $object->isWarped());
     }
 
-    #[Override]
+    #[\Override]
     public function calculateHealthPercentage(Ship $target): int
     {
         $shipCount = 0;

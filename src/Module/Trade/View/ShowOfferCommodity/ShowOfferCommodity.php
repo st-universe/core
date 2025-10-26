@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferCommodity;
 
-use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
@@ -20,7 +19,7 @@ final class ShowOfferCommodity implements ViewControllerInterface
     {
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $commodity = $this->commodityRepository->find($this->showOfferCommodityRequest->getCommodityId());

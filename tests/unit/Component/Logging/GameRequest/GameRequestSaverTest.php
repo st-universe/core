@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
@@ -18,7 +17,7 @@ class GameRequestSaverTest extends StuTestCase
 
     private GameRequestSaver $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->parameterSanitizer = $this->mock(ParameterSanitizerInterface::class);

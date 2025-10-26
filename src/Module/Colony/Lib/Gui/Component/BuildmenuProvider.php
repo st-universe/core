@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Override;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
@@ -14,7 +13,7 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
 {
     public function __construct(private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    #[Override]
+    #[\Override]
     public function setTemplateVariables(
         $entity,
         GameControllerInterface $game

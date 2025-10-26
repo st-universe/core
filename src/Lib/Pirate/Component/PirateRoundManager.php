@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Override;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
@@ -23,7 +22,7 @@ class PirateRoundManager implements PirateRoundManagerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
-    #[Override]
+    #[\Override]
     public function decreasePrestige(int $amount): void
     {
         if ($amount < 1) {
@@ -53,7 +52,7 @@ class PirateRoundManager implements PirateRoundManagerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function addUserStats(User $user, int $prestige): void
     {
         $currentRound = $this->pirateRoundRepository->getCurrentActiveRound();

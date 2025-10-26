@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserProfileVisitor;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\UserProfileVisitor;
  */
 final class UserProfileVisitorRepository extends EntityRepository implements UserProfileVisitorRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function isVisitRegistered(User $user, User $visitor): bool
     {
         return $this->count([
@@ -24,13 +23,13 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
         ]) !== 0;
     }
 
-    #[Override]
+    #[\Override]
     public function prototype(): UserProfileVisitor
     {
         return new UserProfileVisitor();
     }
 
-    #[Override]
+    #[\Override]
     public function save(UserProfileVisitor $userProfileVisitor): void
     {
         $em = $this->getEntityManager();
@@ -39,7 +38,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
         $em->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function getRecent(int $userId): array
     {
         return $this->getEntityManager()
@@ -56,7 +55,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByUser(User $user): void
     {
         $q = $this->getEntityManager()->createQuery(

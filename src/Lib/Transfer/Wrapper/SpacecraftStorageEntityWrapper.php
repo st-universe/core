@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Wrapper;
 
-use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -29,25 +28,25 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     // GENERAL
-    #[Override]
+    #[\Override]
     public function get(): EntityWithStorageInterface
     {
         return $this->spacecraft;
     }
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->spacecraft->getUser();
     }
 
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return $this->spacecraft->getName();
     }
 
-    #[Override]
+    #[\Override]
     public function canTransfer(InformationInterface $information): bool
     {
         if (!$this->spacecraft->hasEnoughCrew()) {
@@ -58,20 +57,20 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         return true;
     }
 
-    #[Override]
+    #[\Override]
     public function getLocation(): Location
     {
         return $this->spacecraft->getLocation();
     }
 
     // COMMODITIES
-    #[Override]
+    #[\Override]
     public function getBeamFactor(): int
     {
         return $this->spacecraft->getRump()->getBeamFactor();
     }
 
-    #[Override]
+    #[\Override]
     public function transfer(
         bool $isUnload,
         StorageEntityWrapperInterface $target,
@@ -82,31 +81,31 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     // CREW
-    #[Override]
+    #[\Override]
     public function getMaxTransferrableCrew(bool $isTarget, User $user): int
     {
         return $this->crewLogic->getMaxTransferrableCrew($this->spacecraft, $isTarget, $user);
     }
 
-    #[Override]
+    #[\Override]
     public function getFreeCrewSpace(User $user): int
     {
         return $this->crewLogic->getFreeCrewSpace($this->spacecraft, $user);
     }
 
-    #[Override]
+    #[\Override]
     public function checkCrewStorage(int $amount, bool $isUnload, InformationInterface $information): bool
     {
         return $this->crewLogic->checkCrewStorage($this->spacecraftWrapper, $amount, $isUnload, $information);
     }
 
-    #[Override]
+    #[\Override]
     public function acceptsCrewFrom(int $amount, User $user, InformationInterface $information): bool
     {
         return $this->crewLogic->acceptsCrewFrom($this->spacecraftWrapper, $amount, $user, $information);
     }
 
-    #[Override]
+    #[\Override]
     public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
     {
         $this->crewLogic->postCrewTransfer($this->spacecraftWrapper, $foreignCrewChangeAmount, $information);
@@ -114,37 +113,37 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
 
     // TORPEDOS
 
-    #[Override]
+    #[\Override]
     public function getTorpedo(): ?TorpedoType
     {
         return $this->spacecraft->getTorpedo();
     }
 
-    #[Override]
+    #[\Override]
     public function getTorpedoCount(): int
     {
         return $this->spacecraft->getTorpedoCount();
     }
 
-    #[Override]
+    #[\Override]
     public function getMaxTorpedos(): int
     {
         return $this->spacecraft->getMaxTorpedos();
     }
 
-    #[Override]
+    #[\Override]
     public function canTransferTorpedos(InformationInterface $information): bool
     {
         return $this->torpedoLogic->canTransferTorpedos($this->spacecraft, $information);
     }
 
-    #[Override]
+    #[\Override]
     public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
     {
         return $this->torpedoLogic->canStoreTorpedoType($this->spacecraft, $torpedoType, $information);
     }
 
-    #[Override]
+    #[\Override]
     public function changeTorpedo(int $changeAmount, TorpedoType $type): void
     {
         $this->shipTorpedoManager->changeTorpedo(

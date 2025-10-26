@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -22,7 +21,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
 
     public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
-    #[Override]
+    #[\Override]
     public function hasActiveFunction(
         PlanetFieldHostInterface $host,
         BuildingFunctionEnum $function,
@@ -35,7 +34,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
             : $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED], $ignoredFieldIds);
     }
 
-    #[Override]
+    #[\Override]
     public function hasFunction(
         PlanetFieldHostInterface $host,
         BuildingFunctionEnum $function
@@ -43,7 +42,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
         return $this->hasBuildingWithFunction($host, $function, [self::STATE_DISABLED, self::STATE_ENABLED]);
     }
 
-    #[Override]
+    #[\Override]
     public function getBuildingWithFunctionCount(
         PlanetFieldHostInterface $host,
         BuildingFunctionEnum $function,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Control;
 
 use BadMethodCallException;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -27,7 +26,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         private readonly GameControllerInterface $game
     ) {}
 
-    #[Override]
+    #[\Override]
     public function setAlertState(
         SpacecraftWrapperInterface|int $target,
         SpacecraftAlertStateEnum $alertState
@@ -52,7 +51,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         }
     }
 
-    #[Override]
+    #[\Override]
     public function setAlertStateFleet(
         int $shipId,
         SpacecraftAlertStateEnum $alertState

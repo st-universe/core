@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TholianWeb;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -48,7 +47,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         //TODO other web spinners in fleet should join
@@ -164,7 +163,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         return $target;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

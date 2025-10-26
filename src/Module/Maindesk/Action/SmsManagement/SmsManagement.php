@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\Action\SmsManagement;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use request;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Lib\AccountNotVerifiedException;
@@ -39,7 +38,7 @@ final class SmsManagement implements
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $mobileInput = request::postString('mobile') ?: '';
@@ -195,7 +194,7 @@ final class SmsManagement implements
         return $displayMobile;
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

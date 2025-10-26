@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
@@ -17,7 +16,7 @@ use Stu\Orm\Entity\Terraforming;
  */
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, ColonyClass $colonyClass): array
     {
         if ($userId == UserConstants::USER_NOONE) {

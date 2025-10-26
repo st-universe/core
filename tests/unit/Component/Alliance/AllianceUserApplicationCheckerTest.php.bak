@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
@@ -23,7 +22,7 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
 
     private AllianceUserApplicationChecker $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);

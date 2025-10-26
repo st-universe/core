@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\ActivateSystem;
 
 use Mockery\MockInterface;
-use Override;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -21,7 +20,7 @@ class ActivateSystemTest extends ActionControllerTestCase
 
     private ActionControllerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

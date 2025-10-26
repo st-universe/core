@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,7 +22,7 @@ final class ShowKnComments implements ViewControllerInterface
         private readonly ConfigInterface $config,
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();

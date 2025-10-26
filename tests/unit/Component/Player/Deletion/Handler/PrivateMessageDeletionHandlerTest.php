@@ -7,7 +7,6 @@ namespace Component\Player\Deletion\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
@@ -19,7 +18,7 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
 
     private PrivateMessageDeletionHandler $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->mock(EntityManagerInterface::class);

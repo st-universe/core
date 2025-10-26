@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\Scrapping;
 
-use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
@@ -39,7 +38,7 @@ final class Scrapping implements ActionControllerInterface
         private StuRandom $random
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -142,7 +141,7 @@ final class Scrapping implements ActionControllerInterface
         $this->stationRepository->save($station);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

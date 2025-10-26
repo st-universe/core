@@ -4,7 +4,6 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Override;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -33,19 +32,19 @@ abstract class AbstractBattleParty implements BattlePartyInterface
      */
     abstract protected function initMembers(): Collection;
 
-    #[Override]
+    #[\Override]
     public function getUser(): User
     {
         return $this->user;
     }
 
-    #[Override]
+    #[\Override]
     public function getLeader(): SpacecraftWrapperInterface
     {
         return $this->leader;
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
     {
         if ($this->members === null) {
@@ -59,7 +58,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getRandomActiveMember(): SpacecraftWrapperInterface
     {
         $activeMembers = $this->getActiveMembers();
@@ -71,26 +70,26 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return $randomActiveMember;
     }
 
-    #[Override]
+    #[\Override]
     public function isDefeated(): bool
     {
         return $this->getActiveMembers()->isEmpty();
     }
 
 
-    #[Override]
+    #[\Override]
     public function isStation(): bool
     {
         return $this->isStation;
     }
 
-    #[Override]
+    #[\Override]
     public function isAttackingShieldsOnly(): bool
     {
         return $this->isAttackingShieldsOnly;
     }
 
-    #[Override]
+    #[\Override]
     public function isActive(): bool
     {
         return $this->getActiveMembers()
@@ -105,13 +104,13 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         return new ArrayCollection([$wrapper->get()->getId() => $wrapper]);
     }
 
-    #[Override]
+    #[\Override]
     public function count(): int
     {
         return $this->getActiveMembers()->count();
     }
 
-    #[Override]
+    #[\Override]
     public function getPrivateMessageType(): PrivateMessageFolderTypeEnum
     {
         return $this->isStation()

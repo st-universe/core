@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use Mockery\MockInterface;
-use Override;
 use RuntimeException;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -34,7 +33,7 @@ class ManageTorpedoTest extends StuTestCase
 
     private ManageTorpedo $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);

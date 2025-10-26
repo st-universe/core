@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map\Effects;
 
-use Override;
 use RuntimeException;
 use Stu\Component\Map\Effects\Type\EffectHandlerInterface;
 use Stu\Lib\Information\InformationInterface;
@@ -22,7 +21,7 @@ final class EffectHandling implements EffectHandlingInterface
         private array $handlerList
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(SpacecraftWrapperInterface $wrapper, InformationInterface $information): void
     {
         $this->walkEffects($wrapper->get()->getLocation(), function (EffectHandlerInterface $handler) use ($wrapper, $information): void {
@@ -30,7 +29,7 @@ final class EffectHandling implements EffectHandlingInterface
         });
     }
 
-    #[Override]
+    #[\Override]
     public function addFlightInformationForActiveEffects(Location $location, MessageCollectionInterface $messages): void
     {
         $this->walkEffects($location, function (EffectHandlerInterface $handler) use ($location, $messages): void {
@@ -38,7 +37,7 @@ final class EffectHandling implements EffectHandlingInterface
         });
     }
 
-    #[Override]
+    #[\Override]
     public function handleIncomingSpacecraft(SpacecraftWrapperInterface $wrapper, MessageCollectionInterface $messages): void
     {
         $this->walkEffects($wrapper->get()->getLocation(), function (EffectHandlerInterface $handler) use ($wrapper, $messages): void {

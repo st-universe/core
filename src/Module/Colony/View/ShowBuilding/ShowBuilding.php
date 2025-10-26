@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuilding;
 
-use Override;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,7 +21,7 @@ final class ShowBuilding implements ViewControllerInterface
 
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShowBuildingRequestInterface $showBuildingRequest, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private BuildingRepositoryInterface $buildingRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\EditContactComment;
 
-use Override;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class EditContactCommentRequest implements EditContactCommentRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    #[Override]
+    #[\Override]
     public function getContactId(): int
     {
         return $this->parameter('edit_contact')->int()->required();
     }
 
-    #[Override]
+    #[\Override]
     public function getText(): string
     {
         return $this->tidyString(

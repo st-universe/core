@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
@@ -26,7 +25,7 @@ final class ColonySurface implements ColonySurfaceInterface
 {
     public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private BuildingRepositoryInterface $buildingRepository, private ColonyRepositoryInterface $colonyRepository, private ResearchedRepositoryInterface $researchedRepository, private PlanetGeneratorInterface $planetGenerator, private EntityManagerInterface $entityManager, private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever, private PlanetFieldHostInterface $host, private ?int $buildingId, private bool $showUnderground) {}
 
-    #[Override]
+    #[\Override]
     public function getSurface(): array
     {
         try {
@@ -87,7 +86,7 @@ final class ColonySurface implements ColonySurfaceInterface
         return false;
     }
 
-    #[Override]
+    #[\Override]
     public function getSurfaceTileStyle(): string
     {
         $width = $this->planetGenerator->loadColonyClassConfig($this->host->getColonyClass()->getId())['sizew'];
@@ -99,7 +98,7 @@ final class ColonySurface implements ColonySurfaceInterface
         return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
-    #[Override]
+    #[\Override]
     public function updateSurface(): void
     {
         $host = $this->host;
@@ -149,7 +148,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager->flush();
     }
 
-    #[Override]
+    #[\Override]
     public function hasShipyard(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
@@ -159,7 +158,7 @@ final class ColonySurface implements ColonySurfaceInterface
         ) > 0;
     }
 
-    #[Override]
+    #[\Override]
     public function hasAirfield(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftRump;
 
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
-    #[Override]
+    #[\Override]
     public function calculateModuleValue(
         SpacecraftRump $rump,
         Module $module,
@@ -44,7 +43,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         return $value;
     }
 
-    #[Override]
+    #[\Override]
     public function calculateDamageImpact(SpacecraftRump $rump, Module $module): string
     {
         $moduleLevel = $rump->getBaseValues()->getModuleLevel();
@@ -61,7 +60,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         return _('Normal');
     }
 
-    #[Override]
+    #[\Override]
     public function calculateEvadeChance(SpacecraftRump $rump, Module $module): int
     {
         $moduleLevel = $rump->getBaseValues()->getModuleLevel();

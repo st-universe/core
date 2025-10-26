@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
-use Override;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
@@ -17,7 +16,7 @@ class LifeSupportCheckHandler implements SpacecraftTickHandlerInterface
         private readonly SpacecraftLeaverInterface $spacecraftLeaver
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handleSpacecraftTick(
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $information

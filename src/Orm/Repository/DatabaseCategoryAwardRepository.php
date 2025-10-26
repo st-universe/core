@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\DatabaseCategoryAward;
 
 /**
@@ -14,7 +13,7 @@ use Stu\Orm\Entity\DatabaseCategoryAward;
 final class DatabaseCategoryAwardRepository extends EntityRepository implements DatabaseCategoryAwardRepositoryInterface
 {
 
-    #[Override]
+    #[\Override]
     public function findByCategoryIdAndLayerId(int $categoryId, ?int $layerId): ?DatabaseCategoryAward
     {
         return $this->findOneBy([

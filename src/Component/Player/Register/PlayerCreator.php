@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
@@ -31,7 +30,7 @@ class PlayerCreator implements PlayerCreatorInterface
         private UserRefererRepositoryInterface $userRefererRepository
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createWithMobileNumber(
         string $loginName,
         string $emailAddress,
@@ -92,7 +91,7 @@ class PlayerCreator implements PlayerCreatorInterface
         return (bool) preg_match('/00..[1-9]\d/', $mobile);
     }
 
-    #[Override]
+    #[\Override]
     public function createPlayer(
         string $loginName,
         string $emailAddress,

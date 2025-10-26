@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\DeleteAccount;
 
-use Override;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,7 +14,7 @@ final class DeleteAccount implements ActionControllerInterface
 
     public function __construct(private RequestDeletionConfirmation $requestDeletionConfirmation) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $this->requestDeletionConfirmation->request($game->getUser());
@@ -25,7 +24,7 @@ final class DeleteAccount implements ActionControllerInterface
         );
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return true;

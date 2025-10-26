@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuTime;
@@ -25,7 +24,7 @@ class ShieldRegenerationTest extends StuTestCase
 
     private ProcessTickHandlerInterface $subject;
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);

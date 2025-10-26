@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Override;
 use Stu\Orm\Entity\StationShipRepair;
 
 /**
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\StationShipRepair;
  */
 final class StationShipRepairRepository extends EntityRepository implements StationShipRepairRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): StationShipRepair
     {
         return new StationShipRepair();
     }
 
-    #[Override]
+    #[\Override]
     public function getByStation(int $stationId): array
     {
         return $this->findBy([
@@ -28,7 +27,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         ], ['id' => 'asc']);
     }
 
-    #[Override]
+    #[\Override]
     public function getByShip(int $shipId): ?StationShipRepair
     {
         return $this->findOneBy([
@@ -36,7 +35,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         ]);
     }
 
-    #[Override]
+    #[\Override]
     public function getMostRecentJobs(): array
     {
         $rsm = new ResultSetMapping();
@@ -58,7 +57,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function save(StationShipRepair $stationShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -66,7 +65,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         $em->persist($stationShipRepair);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(StationShipRepair $stationShipRepair): void
     {
         $em = $this->getEntityManager();
@@ -74,7 +73,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         $em->remove($stationShipRepair);
     }
 
-    #[Override]
+    #[\Override]
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(

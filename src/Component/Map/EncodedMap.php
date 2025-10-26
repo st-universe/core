@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Map;
 
-use Override;
 use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\Layer;
@@ -15,7 +14,7 @@ class EncodedMap implements EncodedMapInterface
 
     public function __construct(private StuConfigInterface $stuConfig) {}
 
-    #[Override]
+    #[\Override]
     public function getEncodedMapPath(int $mapFieldType, Layer $layer): string
     {
         $key = $this->getKey();

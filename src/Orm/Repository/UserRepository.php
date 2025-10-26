@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\FallbackUserDoesNotExistException;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -23,7 +22,7 @@ use Stu\Orm\Entity\UserSetting;
  */
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): User
     {
         $user = new User();
@@ -32,7 +31,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $user;
     }
 
-    #[Override]
+    #[\Override]
     public function save(User $post): void
     {
         $em = $this->getEntityManager();
@@ -40,7 +39,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em->persist($post);
     }
 
-    #[Override]
+    #[\Override]
     public function delete(User $post): void
     {
         $em = $this->getEntityManager();
@@ -48,7 +47,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em->remove($post);
     }
 
-    #[Override]
+    #[\Override]
     public function getByResetToken(string $resetToken): ?User
     {
         return $this->getEntityManager()
@@ -66,7 +65,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
@@ -100,7 +99,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getIdleRegistrations(
         int $idleTimeThreshold
     ): array {
@@ -121,7 +120,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByEmail(string $email): ?User
     {
         return $this->getEntityManager()
@@ -139,7 +138,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByMobile(string $mobile, string $mobileHash): ?User
     {
         return $this->getEntityManager()->createQuery(
@@ -158,7 +157,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByLogin(string $loginName): ?User
     {
         return $this->getEntityManager()
@@ -176,7 +175,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getOneOrNullResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getByAlliance(Alliance $alliance): array
     {
         return $this->findBy(
@@ -189,7 +188,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         );
     }
 
-    #[Override]
+    #[\Override]
     public function getList(
         string $sortField,
         string $sortOrder,
@@ -214,7 +213,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $query->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNPCAdminList(
         string $sortField,
         string $sortOrder,
@@ -239,7 +238,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $query->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getFriendsByUserAndAlliance(User $user, ?Alliance $alliance): array
     {
         return $this->getEntityManager()->createQuery(
@@ -258,7 +257,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): array
     {
         return $this->getEntityManager()->createQuery(
@@ -291,7 +290,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveAmount(): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -302,7 +301,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getInactiveAmount(int $days): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -319,7 +318,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getVacationAmount(): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -338,7 +337,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getActiveAmountRecentlyOnline(int $threshold): int
     {
         return (int) $this->getEntityManager()->createQuery(
@@ -352,7 +351,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getSingleScalarResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNpcList(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -366,7 +365,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getNonNpcList(): array
     {
         return $this->getEntityManager()->createQuery(
@@ -377,7 +376,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameter('firstUserId', UserConstants::USER_FIRST_ID)->getResult();
     }
 
-    #[Override]
+    #[\Override]
 
     public function getNonNpcListbyFaction(int $factionid): array
     {
@@ -394,7 +393,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->getResult();
     }
 
-    #[Override]
+    #[\Override]
     public function getFallbackUser(): User
     {
         $user = $this->find(UserConstants::USER_NOONE);

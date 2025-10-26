@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Override;
 use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\User;
 
@@ -14,13 +13,13 @@ use Stu\Orm\Entity\User;
  */
 final class OpenedAdventDoorRepository extends EntityRepository implements OpenedAdventDoorRepositoryInterface
 {
-    #[Override]
+    #[\Override]
     public function prototype(): OpenedAdventDoor
     {
         return new OpenedAdventDoor();
     }
 
-    #[Override]
+    #[\Override]
     public function save(OpenedAdventDoor $openedadventdoor): void
     {
         $em = $this->getEntityManager();
@@ -28,7 +27,7 @@ final class OpenedAdventDoorRepository extends EntityRepository implements Opene
         $em->persist($openedadventdoor);
     }
 
-    #[Override]
+    #[\Override]
     public function getOpenedDoorsCountOfToday(User $user): int
     {
         return count($this->findBy([

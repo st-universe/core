@@ -12,7 +12,6 @@ use Exception;
 use Mockery;
 use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
-use Override;
 use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
 use Stu\Component\Admin\Reset\Communication\PmResetInterface;
 use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
@@ -54,7 +53,7 @@ class ResetManagerTest extends StuTestCase
 
     private ResetManager $manager;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         vfsStream::setup('tmpDir');

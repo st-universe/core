@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\CreateKnPlot;
 
-use Override;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +16,7 @@ final class CreateKnPlot implements ActionControllerInterface
 
     public function __construct(private CreateKnPlotRequestInterface $createKnPlotRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $title = $this->createKnPlotRequest->getTitle();
@@ -55,7 +54,7 @@ final class CreateKnPlot implements ActionControllerInterface
         $game->setView(ShowPlotList::VIEW_IDENTIFIER);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

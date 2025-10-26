@@ -7,7 +7,6 @@ namespace Stu\Lib\Request;
 use MPScholten\RequestParser\Config;
 use MPScholten\RequestParser\RequestParser;
 use MPScholten\RequestParser\RequestParserFactory;
-use Override;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
@@ -22,7 +21,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
         $this->config = $config;
     }
 
-    #[Override]
+    #[\Override]
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
@@ -31,7 +30,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
         );
     }
 
-    #[Override]
+    #[\Override]
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(

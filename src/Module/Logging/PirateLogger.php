@@ -6,7 +6,6 @@ namespace Stu\Module\Logging;
 
 use JBBCode\Parser;
 use Monolog\Logger;
-use Override;
 use RuntimeException;
 
 final class PirateLogger implements PirateLoggerInterface
@@ -17,13 +16,13 @@ final class PirateLogger implements PirateLoggerInterface
         private Parser $parser
     ) {}
 
-    #[Override]
+    #[\Override]
     public function init(): void
     {
         $this->logger = StuLogger::getLogger(LogTypeEnum::PIRATE);
     }
 
-    #[Override]
+    #[\Override]
     public function log(string $message): void
     {
         if ($this->logger === null) {
@@ -33,7 +32,7 @@ final class PirateLogger implements PirateLoggerInterface
         LogLevelEnum::INFO->log($this->parser->parse($message)->getAsText(), $this->logger);
     }
 
-    #[Override]
+    #[\Override]
     public function logf(string $information, ...$args): void
     {
         $this->log(vsprintf(

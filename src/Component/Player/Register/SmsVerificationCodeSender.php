@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Orm\Entity\User;
@@ -17,7 +16,7 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
         private ConfigInterface $config
     ) {}
 
-    #[Override]
+    #[\Override]
     public function send(User $player, string $code): void
     {
         $body = <<<EOT

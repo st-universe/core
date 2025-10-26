@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
-use Override;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\User;
@@ -25,7 +24,7 @@ final class SelectedTechFactory implements SelectedTechFactoryInterface
         private ConfigInterface $config
     ) {}
 
-    #[Override]
+    #[\Override]
     public function createSelectedTech(
         Research $research,
         User $currentUser

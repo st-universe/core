@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
@@ -41,7 +40,7 @@ class SpacecraftConfiguratorTest extends StuTestCase
 
     private SpacecraftConfiguratorInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);

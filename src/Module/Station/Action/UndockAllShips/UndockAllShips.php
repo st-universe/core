@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\UndockAllShips;
 
-use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +20,7 @@ final class UndockAllShips implements ActionControllerInterface
         private ShipUndockingInterface $shipUndocking
     ) {}
 
-    #[Override]
+    #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -36,7 +35,7 @@ final class UndockAllShips implements ActionControllerInterface
         $game->getInfo()->addInformationf('Alle %d Schiffe wurden erfolgreich abgedockt', $dockedShipsCount);
     }
 
-    #[Override]
+    #[\Override]
     public function performSessionCheck(): bool
     {
         return false;

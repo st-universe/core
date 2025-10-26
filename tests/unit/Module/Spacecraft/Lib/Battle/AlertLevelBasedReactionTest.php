@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Mockery\MockInterface;
-use Override;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -27,7 +26,7 @@ class AlertLevelBasedReactionTest extends StuTestCase
 
     private AlertLevelBasedReactionInterface $subject;
 
-    #[Override]
+    #[\Override]
     public function setUp(): void
     {
         //injected
