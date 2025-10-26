@@ -20,6 +20,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         private readonly StuTime $stuTime
     ) {}
 
+    #[\Override]
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
@@ -33,7 +34,6 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
 
         if ($isMatrixScannerHealthy && $isSubspaceScannerActive) {
-
             $subspaceSystemData = $wrapper->getSubspaceSystemData();
             if ($subspaceSystemData === null) {
                 return;
@@ -56,8 +56,10 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         );
     }
 
-    private function setAnalyzedSignature(SubspaceSystemData $subspaceSystemData, GameControllerInterface $game): void
-    {
+    private function setAnalyzedSignature(
+        SubspaceSystemData $subspaceSystemData,
+        GameControllerInterface $game
+    ): void {
         $flightSigId = $subspaceSystemData->getFlightSigId();
         if ($flightSigId) {
             $flightSig = $this->flightSignatureRepository->find($flightSigId);
@@ -65,8 +67,11 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         }
     }
 
-    private function setAnalyzeTime(int $time, SubspaceSystemData $subspaceSystemData, GameControllerInterface $game): void
-    {
+    private function setAnalyzeTime(
+        int $time,
+        SubspaceSystemData $subspaceSystemData,
+        GameControllerInterface $game
+    ): void {
         $analyzeTime = $subspaceSystemData->getAnalyzeTime();
         if ($analyzeTime) {
             $currentTime = $time;
@@ -79,8 +84,11 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         }
     }
 
-    private function setSignatures(SpacecraftWrapperInterface $wrapper, int $time, GameControllerInterface $game): void
-    {
+    private function setSignatures(
+        SpacecraftWrapperInterface $wrapper,
+        int $time,
+        GameControllerInterface $game
+    ): void {
         $spacecraft = $wrapper->get();
         $location = $spacecraft->getLocation();
 
@@ -99,7 +107,6 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         }
 
         if ($cx && $cy && $layerId) {
-
             $timeThreshold = $time - (12 * 3600);
             $sensorRange = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 

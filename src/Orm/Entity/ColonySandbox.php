@@ -54,7 +54,12 @@ class ColonySandbox implements PlanetFieldHostInterface
     /**
      * @var ArrayCollection<int, PlanetField>
      */
-    #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'sandbox', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(
+        targetEntity: PlanetField::class,
+        mappedBy: 'sandbox',
+        indexBy: 'field_id',
+        fetch: 'EXTRA_LAZY'
+    )]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
@@ -67,11 +72,13 @@ class ColonySandbox implements PlanetFieldHostInterface
         $this->planetFields = new ArrayCollection();
     }
 
+    #[\Override]
     public function getId(): int
     {
         return $this->id;
     }
 
+    #[\Override]
     public function getUser(): User
     {
         return $this->getColony()->getUser();
@@ -89,6 +96,7 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->name;
@@ -100,6 +108,7 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this;
     }
 
+    #[\Override]
     public function getWorkers(): int
     {
         return $this->bev_work;
@@ -122,11 +131,13 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this;
     }
 
+    #[\Override]
     public function getPopulation(): int
     {
         return $this->getMaxBev();
     }
 
+    #[\Override]
     public function getMaxEps(): int
     {
         return $this->max_eps;
@@ -138,6 +149,7 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this;
     }
 
+    #[\Override]
     public function getMaxStorage(): int
     {
         return $this->max_storage;
@@ -160,6 +172,7 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this;
     }
 
+    #[\Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
@@ -175,26 +188,31 @@ class ColonySandbox implements PlanetFieldHostInterface
         return $this->getColony()->getSurfaceWidth();
     }
 
+    #[\Override]
     public function getColonyClass(): ColonyClass
     {
         return $this->getColony()->getColonyClass();
     }
 
+    #[\Override]
     public function isColony(): bool
     {
         return false;
     }
 
+    #[\Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::SANDBOX;
     }
 
+    #[\Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColonySandbox::VIEW_IDENTIFIER;
     }
 
+    #[\Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return in_array($menu, [
@@ -206,6 +224,7 @@ class ColonySandbox implements PlanetFieldHostInterface
         ]);
     }
 
+    #[\Override]
     public function getComponentParameters(): string
     {
         return sprintf(

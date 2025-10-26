@@ -164,11 +164,13 @@ class Anomaly implements SpacecraftDestroyerInterface
         return !$this->getChildren()->isEmpty();
     }
 
+    #[\Override]
     public function getUserId(): int
     {
         return UserConstants::USER_NOONE;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->getAnomalyType()->getName();

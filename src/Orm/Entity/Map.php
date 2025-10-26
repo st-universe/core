@@ -81,6 +81,7 @@ class Map extends Location
         $this->wormholeEntries = new ArrayCollection();
     }
 
+    #[\Override]
     public function getLayer(): ?Layer
     {
         if ($this->layer === null) {
@@ -89,6 +90,7 @@ class Map extends Location
         return $this->layer;
     }
 
+    #[\Override]
     public function getX(): int
     {
         if ($this->getCx() === null) {
@@ -97,6 +99,7 @@ class Map extends Location
         return $this->getCx();
     }
 
+    #[\Override]
     public function getY(): int
     {
         if ($this->getCy() === null) {
@@ -220,6 +223,7 @@ class Map extends Location
         return $borderType->getColor();
     }
 
+    #[\Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;
@@ -244,8 +248,9 @@ class Map extends Location
         );
     }
 
+    #[\Override]
     public function getSectorString(): string
     {
-        return  $this->getCx() . '|' . $this->getCy();
+        return $this->getCx() . '|' . $this->getCy();
     }
 }

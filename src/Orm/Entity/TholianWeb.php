@@ -34,11 +34,13 @@ class TholianWeb extends Spacecraft
         $this->capturedSpacecrafts = new ArrayCollection();
     }
 
+    #[\Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::THOLIAN_WEB;
     }
 
+    #[\Override]
     public function getFleet(): ?Fleet
     {
         return null;
@@ -86,6 +88,7 @@ class TholianWeb extends Spacecraft
         $this->finished_time = $time;
     }
 
+    #[\Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         throw new BadMethodCallException('unsupported operation');

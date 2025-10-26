@@ -60,11 +60,13 @@ class Station extends Spacecraft
         $this->dockingPrivileges = new ArrayCollection();
     }
 
+    #[\Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::STATION;
     }
 
+    #[\Override]
     public function getFleet(): ?Fleet
     {
         return null;
@@ -105,6 +107,7 @@ class Station extends Spacecraft
         return $this;
     }
 
+    #[\Override]
     public function getModules(): array
     {
         $constructionProgress = $this->getConstructionProgress();
@@ -113,21 +116,15 @@ class Station extends Spacecraft
         }
 
         $parentModules = parent::getModules();
-        $parentModuleIds = array_map(
-            fn(Module $module): int => $module->getId(),
-            $parentModules
-        );
+        $parentModuleIds = array_map(fn(Module $module): int => $module->getId(), $parentModules);
 
         $specialModules = $constructionProgress
             ->getSpecialModules()
-            ->filter(
-                fn(ConstructionProgressModule $progressModule): bool =>
-                !in_array($progressModule->getModule()->getId(), $parentModuleIds)
-            )
-            ->map(
-                fn(ConstructionProgressModule $progressModule): Module =>
-                $progressModule->getModule()
-            )
+            ->filter(fn(ConstructionProgressModule $progressModule): bool => !in_array(
+                $progressModule->getModule()->getId(),
+                $parentModuleIds
+            ))
+            ->map(fn(ConstructionProgressModule $progressModule): Module => $progressModule->getModule())
             ->toArray();
 
         return $parentModules + $specialModules;
@@ -145,9 +142,10 @@ class Station extends Spacecraft
     {
         $state = $this->getCondition()->getState();
 
-        return ($state === SpacecraftStateEnum::UNDER_CONSTRUCTION)
-            || ($state === SpacecraftStateEnum::UNDER_SCRAPPING)
-            ? 50 : $this->getRump()->getDockingSlots();
+        return $state === SpacecraftStateEnum::UNDER_CONSTRUCTION
+        || $state === SpacecraftStateEnum::UNDER_SCRAPPING
+            ? 50
+            : $this->getRump()->getDockingSlots();
     }
 
     public function hasFreeDockingSlots(): bool
@@ -196,6 +194,7 @@ class Station extends Spacecraft
         return $this->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM);
     }
 
+    #[\Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::STATION;

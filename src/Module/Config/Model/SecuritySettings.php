@@ -6,6 +6,7 @@ class SecuritySettings extends AbstractSettings implements SecuritySettingsInter
 {
     private const string SETTING_MASTER_PASSWORD = 'masterPassword';
 
+    #[\Override]
     public function getMasterPassword(): ?string
     {
         if ($this->settingsCore->exists(self::SETTING_MASTER_PASSWORD)) {

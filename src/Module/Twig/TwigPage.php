@@ -15,7 +15,9 @@ final class TwigPage implements TwigPageInterface
     /** @var array<mixed> */
     private array $variables = [];
 
-    public function __construct(private Environment $environment) {}
+    public function __construct(
+        private Environment $environment
+    ) {}
 
     #[\Override]
     public function setVar(string $var, mixed $value, bool $isGlobal = false): void
@@ -51,9 +53,10 @@ final class TwigPage implements TwigPageInterface
             throw new RuntimeException('render not possible if template is not set');
         }
 
-        return  $this->environment->load($this->template);
+        return $this->environment->load($this->template);
     }
 
+    #[\Override]
     public function resetVariables(): void
     {
         $this->template = null;

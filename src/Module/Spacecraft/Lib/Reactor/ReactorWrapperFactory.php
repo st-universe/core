@@ -12,6 +12,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 
 class ReactorWrapperFactory implements ReactorWrapperFactoryInterface
 {
+    #[\Override]
     public function createReactorWrapper(SpacecraftWrapper $wrapper): ?ReactorWrapperInterface
     {
         $reactorSystemData = null;

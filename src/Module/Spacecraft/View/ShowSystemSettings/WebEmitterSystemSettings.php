@@ -19,12 +19,12 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
         private TholianWebRepositoryInterface $tholianWebRepository
     ) {}
 
+    #[\Override]
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
         GameControllerInterface $game
     ): void {
-
         if (!$wrapper instanceof ShipWrapperInterface) {
             throw new RuntimeException('this should not happen');
         }
@@ -36,7 +36,11 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
 
         $emitter = $wrapper->getWebEmitterSystemData();
         if ($emitter === null) {
-            throw new SanityCheckException('no web emitter installed', null, ShowSystemSettings::VIEW_IDENTIFIER);
+            throw new SanityCheckException(
+                'no web emitter installed',
+                null,
+                ShowSystemSettings::VIEW_IDENTIFIER
+            );
         }
 
         $webUnderConstruction = $emitter->getWebUnderConstruction();
@@ -58,9 +62,16 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
         if ($web === null) {
             // wenn keines da und isUseable -> dann Targetliste
             if ($emitter->isUseable()) {
-                $possibleTargetList = $ship->getLocation()
+                $possibleTargetList = $ship
+                    ->getLocation()
                     ->getSpacecraftsWithoutVacation()
-                    ->filter(fn(Spacecraft $target): bool => !$target->isCloaked() && !$target->isWarped() && $target !== $ship);
+                    ->filter(
+                        fn(Spacecraft $target): bool => (
+                            !$target->isCloaked()
+                            && !$target->isWarped()
+                            && $target !== $ship
+                        )
+                    );
 
                 $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {

@@ -8,6 +8,7 @@ use Stu\Module\Control\Router\FallbackRouteException;
 
 class UserLockedFallbackHandler implements FallbackHandlerInterface
 {
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/index/accountLocked.twig');

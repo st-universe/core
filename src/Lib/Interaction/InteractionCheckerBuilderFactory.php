@@ -11,6 +11,7 @@ class InteractionCheckerBuilderFactory implements InteractionCheckerBuilderFacto
         private InteractionMemberFactoryInterface $interactionMemberFactory
     ) {}
 
+    #[\Override]
     public function createInteractionChecker(): SourceSetup
     {
         $customizedInteractionChecker = new CustomizedInteractionChecker();

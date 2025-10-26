@@ -20,6 +20,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         private readonly StuTime $stuTime
     ) {}
 
+    #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
@@ -72,10 +73,10 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         $distanceInSeconds = $timestamp - $messageTimestamp;
 
         if ($distanceInSeconds < TimeConstants::ONE_DAY_IN_SECONDS) {
-            return date("H:i", $messageTimestamp);
+            return date('H:i', $messageTimestamp);
         }
         if ($distanceInSeconds < TimeConstants::SEVEN_DAYS_IN_SECONDS) {
-            return match ((int)date("N", $messageTimestamp)) {
+            return match ((int) date('N', $messageTimestamp)) {
                 1 => 'Montag',
                 2 => 'Dienstag',
                 3 => 'Mittwoch',

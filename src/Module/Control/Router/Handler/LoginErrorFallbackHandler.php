@@ -7,6 +7,7 @@ use Stu\Module\Control\Router\FallbackRouteException;
 
 class LoginErrorFallbackHandler implements FallbackHandlerInterface
 {
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $game->setTemplateVar('LOGIN_ERROR', $e->getMessage());

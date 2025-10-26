@@ -71,7 +71,12 @@ class StarSystem implements EntityWithAstroEntryInterface
     private Collection $fields;
 
     /** @var ArrayCollection<int, AstronomicalEntry> */
-    #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'starSystem', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(
+        targetEntity: AstronomicalEntry::class,
+        mappedBy: 'starSystem',
+        indexBy: 'user_id',
+        fetch: 'EXTRA_LAZY'
+    )]
     private Collection $astronomicalEntries;
 
     public function __construct()
@@ -219,6 +224,7 @@ class StarSystem implements EntityWithAstroEntryInterface
         return $this->is_wormhole;
     }
 
+    #[\Override]
     public function getAstronomicalEntries(): Collection
     {
         return $this->astronomicalEntries;

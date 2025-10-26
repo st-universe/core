@@ -55,6 +55,7 @@ class Trumfield implements
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 
+    #[\Override]
     public function getId(): int
     {
         return $this->id;
@@ -82,11 +83,13 @@ class Trumfield implements
         return $this;
     }
 
+    #[\Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
+    #[\Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -96,27 +99,28 @@ class Trumfield implements
         );
     }
 
+    #[\Override]
     public function getMaxStorage(): int
     {
         return $this->getStorageSum();
     }
 
+    #[\Override]
     public function getBeamableStorage(): Collection
     {
         return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
+    #[\Override]
     public function getCrewAssignments(): Collection
     {
         return new ArrayCollection();
     }
 
+    #[\Override]
     public function getLocation(): Map|StarSystemMap
     {
-        if (
-            $this->location instanceof Map
-            || $this->location instanceof StarSystemMap
-        ) {
+        if ($this->location instanceof Map || $this->location instanceof StarSystemMap) {
             return $this->location;
         }
 
@@ -130,21 +134,25 @@ class Trumfield implements
         return $this;
     }
 
+    #[\Override]
     public function getUser(): ?User
     {
         return null;
     }
 
+    #[\Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::TRUMFIELD;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->getTransferEntityType()->getName();
     }
 
+    #[\Override]
     public function getHref(): string
     {
         return '';

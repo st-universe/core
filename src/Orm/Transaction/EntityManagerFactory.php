@@ -14,6 +14,7 @@ class EntityManagerFactory implements EntityManagerFactoryInterface
         private Configuration $configuration
     ) {}
 
+    #[\Override]
     public function createEntityManager(?Connection $connection = null): EntityManagerInterface
     {
         return new EntityManager(

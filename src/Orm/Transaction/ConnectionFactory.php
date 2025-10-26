@@ -19,6 +19,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
         private SqlLogger $sqlLogger
     ) {}
 
+    #[\Override]
     public function createConnection(): Connection
     {
         $configuration = null;
@@ -30,8 +31,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
         //use sqlite database
         if ($this->stuConfig->getDbSettings()->useSqlite()) {
             $dsnParser = new DsnParser(['sqlite' => 'pdo_sqlite']);
-            $connectionParams = $dsnParser
-                ->parse($this->stuConfig->getDbSettings()->getSqliteDsn());
+            $connectionParams = $dsnParser->parse($this->stuConfig->getDbSettings()->getSqliteDsn());
 
             return DriverManager::getConnection($connectionParams, $configuration);
         }
@@ -41,8 +41,8 @@ class ConnectionFactory implements ConnectionFactoryInterface
             'user' => $this->config->get('db.user'),
             'password' => $this->config->get('db.pass'),
             'dbname' => $this->config->get('db.database'),
-            'host'  => $this->config->get('db.host'),
-            'charset' => 'utf8',
+            'host' => $this->config->get('db.host'),
+            'charset' => 'utf8'
         ], $configuration);
     }
 }
