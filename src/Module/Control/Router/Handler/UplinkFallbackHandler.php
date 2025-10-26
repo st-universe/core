@@ -8,6 +8,7 @@ use Stu\Module\Control\Router\FallbackRouteException;
 
 class UplinkFallbackHandler implements FallbackHandlerInterface
 {
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $game->getInfo()->addInformation('Diese Aktion ist per Uplink nicht möglich!');

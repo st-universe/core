@@ -10,7 +10,8 @@ use Stu\Orm\Entity\LotteryWinnerBuildplan;
 /**
  * @extends EntityRepository<LotteryWinnerBuildplan>
  */
-final class LotteryWinnerBuildplanRepository extends EntityRepository implements LotteryWinnerBuildplanRepositoryInterface
+final class LotteryWinnerBuildplanRepository extends EntityRepository implements
+    LotteryWinnerBuildplanRepositoryInterface
 {
     #[\Override]
     public function prototype(): LotteryWinnerBuildplan
@@ -29,6 +30,7 @@ final class LotteryWinnerBuildplanRepository extends EntityRepository implements
     /**
      * @return LotteryWinnerBuildplan[]
      */
+    #[\Override]
     public function findByFactionId(?int $factionId): array
     {
         return $this->getEntityManager()

@@ -49,8 +49,8 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     #[\Override]
     public function canTransfer(InformationInterface $information): bool
     {
-        if ($this->colony->getWorkers() + $this->colony->getChangeable()->getWorkless() === 0) {
-            $information->addInformation("Es lebt niemand auf dieser Kolonie");
+        if (($this->colony->getWorkers() + $this->colony->getChangeable()->getWorkless()) === 0) {
+            $information->addInformation('Es lebt niemand auf dieser Kolonie');
             return false;
         }
 
@@ -64,6 +64,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     // COMMODITIES
+    #[\Override]
     public function getBeamFactor(): int
     {
         return $this->colony->getBeamFactor();
@@ -75,7 +76,6 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         StorageEntityWrapperInterface $target,
         InformationInterface $information
     ): void {
-
         $transferTarget = $isUnload ? $target->get() : $this->colony;
         if ($transferTarget->getMaxStorage() <= $transferTarget->getStorageSum()) {
             $information->addInformationf('%s: Der Lagerraum ist voll', $target->getName());
@@ -87,11 +87,11 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
 
         $storage = $isUnload ? $this->colony->getStorage() : $target->get()->getBeamableStorage();
         if ($storage->isEmpty()) {
-            $information->addInformation("Keine Waren zum Beamen vorhanden");
+            $information->addInformation('Keine Waren zum Beamen vorhanden');
             return;
         }
         if (count($commodities) == 0 || $gcount === []) {
-            $information->addInformation("Es wurden keine Waren zum Beamen ausgewählt");
+            $information->addInformation('Es wurden keine Waren zum Beamen ausgewählt');
             return;
         }
 
@@ -122,7 +122,6 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
 
         $informationArray = $informations->getInformations();
         if (count($informationArray) > 1) {
-
             foreach ($informationArray as $info) {
                 $information->addInformation($info);
             }
@@ -161,8 +160,11 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[\Override]
-    public function postCrewTransfer(int $foreignCrewChangeAmount, StorageEntityWrapperInterface $other, InformationInterface $information): void
-    {
+    public function postCrewTransfer(
+        int $foreignCrewChangeAmount,
+        StorageEntityWrapperInterface $other,
+        InformationInterface $information
+    ): void {
         // nothing to do here
     }
 

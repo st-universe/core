@@ -10,7 +10,8 @@ use Stu\Orm\Entity\RpgPlotMemberArchiv;
 /**
  * @extends EntityRepository<RpgPlotMemberArchiv>
  */
-final class RpgPlotMemberArchivRepository extends EntityRepository implements RpgPlotMemberArchivRepositoryInterface
+final class RpgPlotMemberArchivRepository extends EntityRepository implements
+    RpgPlotMemberArchivRepositoryInterface
 {
     #[\Override]
     public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMemberArchiv
@@ -51,6 +52,7 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
         ]);
     }
 
+    #[\Override]
     public function getByPlotFormerId(int $plotFormerId): array
     {
         return $this->findBy([
@@ -61,11 +63,13 @@ final class RpgPlotMemberArchivRepository extends EntityRepository implements Rp
     #[\Override]
     public function truncateAllEntities(): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s pm',
-                RpgPlotMemberArchiv::class
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s pm',
+                    RpgPlotMemberArchiv::class
+                )
             )
-        )->execute();
+            ->execute();
     }
 }

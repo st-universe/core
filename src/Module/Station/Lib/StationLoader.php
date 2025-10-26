@@ -7,8 +7,8 @@ namespace Stu\Module\Station\Lib;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 
 final class StationLoader implements StationLoaderInterface
 {
@@ -26,7 +26,6 @@ final class StationLoader implements StationLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): Station {
-
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             $stationId,
             $userId,
@@ -48,7 +47,6 @@ final class StationLoader implements StationLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): StationWrapperInterface {
-
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $stationId,
             $userId,
@@ -71,7 +69,6 @@ final class StationLoader implements StationLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface {
-
         return $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
@@ -96,6 +93,7 @@ final class StationLoader implements StationLoaderInterface
         return $wrapper;
     }
 
+    #[\Override]
     public function save(Spacecraft $station): void
     {
         $this->spacecraftLoader->save($station);

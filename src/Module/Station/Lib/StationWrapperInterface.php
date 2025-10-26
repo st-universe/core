@@ -8,6 +8,7 @@ use Stu\Orm\Entity\Station;
 
 interface StationWrapperInterface extends SpacecraftWrapperInterface
 {
+    #[\Override]
     public function get(): Station;
 
     public function canBeScrapped(): bool;

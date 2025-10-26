@@ -19,6 +19,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         private SpacecraftSystemRepositoryInterface $shipSystemRepository
     ) {}
 
+    #[\Override]
     public function createShipSystemsByModuleList(
         Spacecraft $spacecraft,
         Collection $buildplanModules,
@@ -36,7 +37,6 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
             $this->createShipSystem($systemType, $spacecraft, $module);
         }
     }
-
 
     /** @return array<int, Module|null>  */
     private function getDefaultSystems(Spacecraft $spacecraft): array
@@ -91,10 +91,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
             $module = $buildplanmodule->getModule();
 
             $systemType = $module->getSystemType();
-            if (
-                $systemType === null
-                && $module->getType()->hasCorrespondingSystemType()
-            ) {
+            if ($systemType === null && $module->getType()->hasCorrespondingSystemType()) {
                 $systemType = $module->getType()->getSystemType();
             }
 
@@ -111,8 +108,10 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
     /**
      * @param array<int, Module|null> $systems
      */
-    private function addSpecialSystems(SpacecraftCreationConfigInterface $specialSystemsProvider, array &$systems): void
-    {
+    private function addSpecialSystems(
+        SpacecraftCreationConfigInterface $specialSystemsProvider,
+        array &$systems
+    ): void {
         foreach ($specialSystemsProvider->getSpecialSystemModules() as $module) {
             $this->addSpecialSystem($module, $systems);
         }

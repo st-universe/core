@@ -12,6 +12,7 @@ class FallbackRouter implements FallbackRouterInterface
         private array $handlers
     ) {}
 
+    #[\Override]
     public function showFallbackSite(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $className = get_class($e);

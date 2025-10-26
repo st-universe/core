@@ -41,7 +41,8 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         }
 
         //create new user entry
-        $userEntry = $this->databaseUserRepository->prototype()
+        $userEntry = $this->databaseUserRepository
+            ->prototype()
             ->setUser($user)
             ->setDatabaseEntry($databaseEntry)
             ->setDate(time());
@@ -52,12 +53,18 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
-            $this->checkForCategoryCompletion($user, $databaseEntry->getCategory(), $databaseEntryId, $databaseEntry->getLayerId());
+            $this->checkForCategoryCompletion(
+                $user,
+                $databaseEntry->getCategory(),
+                $databaseEntryId,
+                $databaseEntry->getLayerId()
+            );
         }
 
         return $databaseEntry;
     }
 
+    #[\Override]
     public function checkForCategoryCompletion(
         User $user,
         DatabaseCategory $category,
@@ -67,16 +74,32 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         if ($ignoredDatabaseEntryId === null && $layerId === null) {
             $layerIds = $this->databaseEntryRepository->getDistinctLayerIdsByCategory($category->getId());
             foreach ($layerIds as $currentLayerId) {
-                if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), null, $currentLayerId)) {
-                    $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId($category->getId(), $currentLayerId);
+                if ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer(
+                    $user->getId(),
+                    $category->getId(),
+                    null,
+                    $currentLayerId
+                )) {
+                    $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId(
+                        $category->getId(),
+                        $currentLayerId
+                    );
 
                     if ($categoryAward !== null && $categoryAward->getAward() !== null) {
                         $this->createUserAward->createAwardForUser($user, $categoryAward->getAward());
                     }
                 }
             }
-        } elseif ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer($user->getId(), $category->getId(), $ignoredDatabaseEntryId, $layerId)) {
-            $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId($category->getId(), $layerId);
+        } elseif ($this->databaseUserRepository->hasUserCompletedCategoryAndLayer(
+            $user->getId(),
+            $category->getId(),
+            $ignoredDatabaseEntryId,
+            $layerId
+        )) {
+            $categoryAward = $this->databaseCategoryAwardRepository->findByCategoryIdAndLayerId(
+                $category->getId(),
+                $layerId
+            );
             if ($categoryAward !== null && $categoryAward->getAward() !== null) {
                 $this->createUserAward->createAwardForUser($user, $categoryAward->getAward());
             }

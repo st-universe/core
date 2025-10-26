@@ -32,6 +32,7 @@ class StorageEntityWrapperFactory implements StorageEntityWrapperFactoryInterfac
         private readonly SpacecraftStorageTorpedoLogic $spacecraftStorageTorpedoLogic
     ) {}
 
+    #[\Override]
     public function wrapStorageEntity(EntityWithStorageInterface $entity): StorageEntityWrapperInterface
     {
         if ($entity instanceof Colony) {

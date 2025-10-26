@@ -90,7 +90,12 @@ class Colony implements
     /**
      * @var ArrayCollection<int, PlanetField>
      */
-    #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'colony', indexBy: 'field_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(
+        targetEntity: PlanetField::class,
+        mappedBy: 'colony',
+        indexBy: 'field_id',
+        fetch: 'EXTRA_LAZY'
+    )]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
@@ -142,6 +147,7 @@ class Colony implements
         $this->crewTrainings = new ArrayCollection();
     }
 
+    #[\Override]
     public function getId(): int
     {
         return $this->id;
@@ -174,6 +180,7 @@ class Colony implements
         return $this->getStarsystemMap()->getSy();
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->name;
@@ -241,6 +248,7 @@ class Colony implements
         return $this;
     }
 
+    #[\Override]
     public function getColonyClass(): ColonyClass
     {
         return $this->colonyClass;
@@ -252,6 +260,7 @@ class Colony implements
         return $this;
     }
 
+    #[\Override]
     public function getStorageSum(): int
     {
         return array_reduce(
@@ -266,6 +275,7 @@ class Colony implements
         return $this->starsystem_map;
     }
 
+    #[\Override]
     public function getLocation(): Map|StarSystemMap
     {
         return $this->getStarsystemMap();
@@ -288,16 +298,19 @@ class Colony implements
         return 10;
     }
 
+    #[\Override]
     public function getPlanetFields(): Collection
     {
         return $this->planetFields;
     }
 
+    #[\Override]
     public function getBeamableStorage(): Collection
     {
         return CommodityTransfer::excludeNonBeamable($this->storage);
     }
 
+    #[\Override]
     public function getStorage(): Collection
     {
         return $this->storage;
@@ -329,6 +342,7 @@ class Colony implements
         return $this->blockers;
     }
 
+    #[\Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;
@@ -349,6 +363,7 @@ class Colony implements
         return $this->getUserId() === UserConstants::USER_NOONE;
     }
 
+    #[\Override]
     public function getUser(): User
     {
         return $this->user;
@@ -360,6 +375,7 @@ class Colony implements
         return $this;
     }
 
+    #[\Override]
     public function getWorkers(): int
     {
         return $this->getChangeable()->getWorkers();
@@ -375,16 +391,19 @@ class Colony implements
         return $this->getChangeable()->getMaxBev();
     }
 
+    #[\Override]
     public function getMaxEps(): int
     {
         return $this->getChangeable()->getMaxEps();
     }
 
+    #[\Override]
     public function getMaxStorage(): int
     {
         return $this->getChangeable()->getMaxStorage();
     }
 
+    #[\Override]
     public function getPopulation(): int
     {
         return $this->getChangeable()->getPopulation();
@@ -395,31 +414,37 @@ class Colony implements
         return $this->getStarsystemMap()->getSectorString();
     }
 
+    #[\Override]
     public function isColony(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getHostType(): PlanetFieldHostTypeEnum
     {
         return PlanetFieldHostTypeEnum::COLONY;
     }
 
+    #[\Override]
     public function getDefaultViewIdentifier(): string
     {
         return ShowColony::VIEW_IDENTIFIER;
     }
 
+    #[\Override]
     public function isMenuAllowed(ColonyMenuEnum $menu): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::COLONY;
     }
 
+    #[\Override]
     public function getHref(): string
     {
         return sprintf(
@@ -430,6 +455,7 @@ class Colony implements
         );
     }
 
+    #[\Override]
     public function getComponentParameters(): string
     {
         return sprintf(

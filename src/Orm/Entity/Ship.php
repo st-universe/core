@@ -47,6 +47,7 @@ class Ship extends Spacecraft
     #[OneToOne(targetEntity: ColonyShipQueue::class, mappedBy: 'ship')]
     private ?ColonyShipQueue $colonyShipQueue = null;
 
+    #[\Override]
     public function getType(): SpacecraftTypeEnum
     {
         return SpacecraftTypeEnum::SHIP;
@@ -74,6 +75,7 @@ class Ship extends Spacecraft
         return $this;
     }
 
+    #[\Override]
     public function getFleet(): ?Fleet
     {
         return $this->fleet;
@@ -99,8 +101,7 @@ class Ship extends Spacecraft
     {
         $dockedTo = $this->getDockedTo();
 
-        return $dockedTo !== null
-            && $dockedTo->getTradePost() !== null;
+        return $dockedTo !== null && $dockedTo->getTradePost() !== null;
     }
 
     public function getTractoringSpacecraft(): ?Spacecraft
@@ -122,7 +123,7 @@ class Ship extends Spacecraft
     public function setDockedTo(?Station $dockedTo): Ship
     {
         $currentDockedTo = $this->dockedTo;
-        if($dockedTo === null && $currentDockedTo !== null) {
+        if ($dockedTo === null && $currentDockedTo !== null) {
             $currentDockedTo->getDockedShips()->removeElement($this);
         }
 
@@ -135,6 +136,7 @@ class Ship extends Spacecraft
         return StationUtility::canShipBuildConstruction($this);
     }
 
+    #[\Override]
     public function isWarped(): bool
     {
         $tractoringShip = $this->getTractoringSpacecraft();
@@ -172,6 +174,7 @@ class Ship extends Spacecraft
         return $this;
     }
 
+    #[\Override]
     public function getTransferEntityType(): TransferEntityTypeEnum
     {
         return TransferEntityTypeEnum::SHIP;

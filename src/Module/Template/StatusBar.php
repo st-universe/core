@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Template;
 
-
 class StatusBar implements StatusBarInterface
 {
     private StatusBarColorEnum $color = StatusBarColorEnum::EMPTY;
@@ -52,7 +51,6 @@ class StatusBar implements StatusBarInterface
         return $this;
     }
 
-    #[\Override]
     public function __toString(): string
     {
         return $this->render();
@@ -65,7 +63,9 @@ class StatusBar implements StatusBarInterface
             return $this->getStatusBar(StatusBarColorEnum::GREY, 50);
         }
 
-        $pro = $this->maxValue === 0 ? 100 : max(0, @round((100 / $this->maxValue) * min($this->value, $this->maxValue)));
+        $pro = $this->maxValue === 0
+            ? 100
+            : max(0, @round((100 / $this->maxValue) * min($this->value, $this->maxValue)));
         $bar = $this->getStatusBar(
             $this->color,
             ceil($pro / 2)

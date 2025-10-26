@@ -10,15 +10,17 @@ use Stu\Orm\Entity\ConstructionProgress;
 class StationCreator implements StationCreatorInterface
 {
     /** @param SpacecraftCreatorInterface<StationWrapperInterface> $spacecraftCreator */
-    public function __construct(private SpacecraftCreatorInterface $spacecraftCreator) {}
+    public function __construct(
+        private SpacecraftCreatorInterface $spacecraftCreator
+    ) {}
 
+    #[\Override]
     public function createBy(
         int $userId,
         int $rumpId,
         int $buildplanId,
         ConstructionProgress $progress
     ): SpacecraftConfiguratorInterface {
-
         return $this->spacecraftCreator->createBy(
             $userId,
             $rumpId,

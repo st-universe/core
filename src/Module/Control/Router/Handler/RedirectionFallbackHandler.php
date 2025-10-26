@@ -16,12 +16,13 @@ class RedirectionFallbackHandler implements FallbackHandlerInterface
     ) {}
 
     /** @param RedirectionException $e */
+    #[\Override]
     public function handle(FallbackRouteException $e, GameControllerInterface $game): void
     {
         $this->gameRequestSaver->save($game->getGameRequest());
         $this->entityManager->flush();
         $this->entityManager->commit();
         header('Location: ' . $e->getHref());
-        exit;
+        exit();
     }
 }

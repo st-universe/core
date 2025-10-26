@@ -8,13 +8,12 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Lib\Map\VisualPanel\Layer\Data\BorderData;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class CartographyBorderDataProvider extends AbstractBorderDataProvider
 {
-
     public function __construct(
         private Spacecraft $currentSpacecraft,
         protected MapRepositoryInterface $mapRepository,
@@ -35,6 +34,7 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
         $rsm->addFieldResult('d', 'complementary_color', 'complementary_color');
     }
 
+    #[\Override]
     protected function provideDataForMap(PanelBoundaries $boundaries): array
     {
         return $this->mapRepository->getCartographingData(
@@ -44,6 +44,7 @@ final class CartographyBorderDataProvider extends AbstractBorderDataProvider
         );
     }
 
+    #[\Override]
     protected function provideDataForSystemMap(PanelBoundaries $boundaries): array
     {
         return $this->starSystemMapRepository->getCartographingData(

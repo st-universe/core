@@ -6,8 +6,8 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Map\EncodedMapInterface;
-use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
@@ -32,7 +32,6 @@ use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
-
 
 final class ShowDatabaseEntry implements ViewControllerInterface
 {
@@ -62,7 +61,11 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         $categoryId = $this->databaseEntryRequest->getCategoryId();
 
         if (!$this->databaseUserRepository->exists($userId, $entryId)) {
-            throw new AccessViolationException(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
+            throw new AccessViolationException(sprintf(
+                _('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'),
+                $userId,
+                $entryId
+            ));
         }
 
         /**
@@ -84,7 +87,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
             sprintf(
                 'database.php?%s=1&cat=%d',
                 Category::VIEW_IDENTIFIER,
-                $categoryId,
+                $categoryId
             ),
             $category->getDescription()
         );
@@ -93,7 +96,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 'database.php?%s=1&cat=%d&ent=%d',
                 self::VIEW_IDENTIFIER,
                 $categoryId,
-                $entryId,
+                $entryId
             ),
             sprintf(
                 _('Eintrag: %s'),
@@ -137,10 +140,18 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                             $cx = $field->getCx();
                             $cy = $field->getCy();
 
-                            if ($cx < $minX) $minX = $cx;
-                            if ($cx > $maxX) $maxX = $cx;
-                            if ($cy < $minY) $minY = $cy;
-                            if ($cy > $maxY) $maxY = $cy;
+                            if ($cx < $minX) {
+                                $minX = $cx;
+                            }
+                            if ($cx > $maxX) {
+                                $maxX = $cx;
+                            }
+                            if ($cy < $minY) {
+                                $minY = $cy;
+                            }
+                            if ($cy > $maxY) {
+                                $maxY = $cy;
+                            }
                         }
 
                         $layer = $mapFields[0]->getLayer();
@@ -163,7 +174,13 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                             );
                         }
 
-                        $mapData = $this->prepareRegionMapData($mapFields, $allMapFields, $minX, $maxX, $minY, $maxY);
+                        $mapData = $this->prepareRegionMapData(
+                            $allMapFields,
+                            $minX,
+                            $maxX,
+                            $minY,
+                            $maxY
+                        );
                         $game->setTemplateVar('MAP_DATA', $mapData);
                     }
                 }
@@ -175,7 +192,6 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 }
 
                 if ($rump->isStation()) {
-
                     $plan = $this->spacecraftBuildplanRepository->getStationBuildplanByRump($rump->getId());
                     $game->setTemplateVar('PLAN', $plan);
                     if ($plan !== null) {
@@ -188,25 +204,26 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
                         if ($energymodule !== false) {
                             $energyModule = $energymodule->getModule();
-                            $energy = $energyModule
-                                ->getType()
-                                ->getModuleRumpWrapperCallable()($rump, $plan)
-                                ->getValue($energyModule);
+                            $energy = $energyModule->getType()->getModuleRumpWrapperCallable()(
+                                $rump,
+                                $plan
+                            )->getValue($energyModule);
 
                             $game->setTemplateVar('EPS', $energy);
                         }
 
-
                         $sensormodule = $mods->filter(
-                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
+                            fn($mod): bool => (
+                                $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
+                            )
                         )->first();
 
                         if ($sensormodule !== false) {
                             $sensorModule = $sensormodule->getModule();
-                            $sensor = $sensorModule
-                                ->getType()
-                                ->getModuleRumpWrapperCallable()($rump, $plan)
-                                ->getValue($sensorModule);
+                            $sensor = $sensorModule->getType()->getModuleRumpWrapperCallable()(
+                                $rump,
+                                $plan
+                            )->getValue($sensorModule);
 
                             $game->setTemplateVar('SENSORRANGE', $sensor);
                         }
@@ -222,19 +239,23 @@ final class ShowDatabaseEntry implements ViewControllerInterface
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);
                 if ($starSystem === null) {
-                    throw new SanityCheckException(sprintf('starSystemId %d does not exist', $entry_object_id));
+                    throw new SanityCheckException(sprintf(
+                        'starSystemId %d does not exist',
+                        $entry_object_id
+                    ));
                 }
                 $data = [];
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
 
                 $renderer = new SystemLayerRenderer();
-                $panel = new class() implements PanelAttributesInterface
-                {
+                $panel = new class() implements PanelAttributesInterface {
+                    #[\Override]
                     public function getHeightAndWidth(): string
                     {
                         return 'height: 30px; width: 30px;';
                     }
 
+                    #[\Override]
                     public function getFontSize(): string
                     {
                         return '';
@@ -243,7 +264,6 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
                 foreach ($starSystem->getFields() as $obj) {
                     $data['fields'][$obj->getSY()][] = [
-
                         'rendered' => $renderer->render($this->createMapData($obj), $panel),
                         'colony' => $obj->getColony(),
                         'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
@@ -252,7 +272,10 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 $data['xaxis'] = range(1, $starSystem->getMaxX());
                 $game->setTemplateVar('SYSTEM', $starSystem);
                 $game->setTemplateVar('DATA', $data);
-                $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($game->getUser(), $entry_object_id));
+                $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList(
+                    $game->getUser(),
+                    $entry_object_id
+                ));
                 break;
         }
     }
@@ -284,7 +307,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         return new MapData(
             $systemMap->getSx(),
             $systemMap->getSy(),
-            $systemMap->getFieldId(),
+            $systemMap->getFieldId()
         );
     }
 
@@ -301,9 +324,11 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
     private function showPmHref(StarSystemMap $map, User $user): bool
     {
-        return $map->getColony() !== null
+        return
+            $map->getColony() !== null
             && !$map->getColony()->isFree()
-            && $map->getColony()->getUser()->getId() !== $user->getId();
+            && $map->getColony()->getUser()->getId() !== $user->getId()
+        ;
     }
 
     /**
@@ -314,7 +339,9 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn(User $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(
+                fn(User $user) => $user->getColonyScans()->toArray()
+            ));
         } else {
             $unfilteredScans = $user->getColonyScans()->toArray();
         }
@@ -342,15 +369,17 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         return $latestScans;
     }
 
-
-
     /**
-     * @param array<Map> $mapFields
      * @param array<Map> $allMapFields
      * @return array{head_row: array<int>, fields: array<array{row: int, fields: array<array{cx: int, cy: int, style: string, icon_path: string, title: string}>}>}
      */
-    private function prepareRegionMapData(array $mapFields, array $allMapFields, int $minX, int $maxX, int $minY, int $maxY): array
-    {
+    private function prepareRegionMapData(
+        array $allMapFields,
+        int $minX,
+        int $maxX,
+        int $minY,
+        int $maxY
+    ): array {
         $headRow = range($minX, $maxX);
 
         $fieldMap = [];
@@ -402,7 +431,11 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                             );
                             $fieldData['icon_path'] = sprintf('region/%s', $encodedPath);
                         } else {
-                            $fieldData['icon_path'] = sprintf('region/%d/%d.png', $layer->getId(), $fieldType->getId());
+                            $fieldData['icon_path'] = sprintf(
+                                'region/%d/%d.png',
+                                $layer->getId(),
+                                $fieldType->getId()
+                            );
                         }
                     }
                 }

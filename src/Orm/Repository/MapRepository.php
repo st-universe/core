@@ -15,10 +15,9 @@ use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\StarSystemMap;
-
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<Map>
@@ -167,30 +166,36 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     #[\Override]
     public function getNormalBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx AS x, l.cy AS y
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx AS x, l.cy AS y
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId()
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId()
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array
-    {
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT DISTINCT 
+    public function getCartographingData(
+        PanelBoundaries $boundaries,
+        ResultSetMapping $rsm,
+        array $locations
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT DISTINCT 
                     l.cx AS x, 
                     l.cy AS y, 
                     CASE 
@@ -202,23 +207,25 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND l.cy BETWEEN :yStart AND :yEnd
                 AND l.layer_id = :layerId
                 ORDER BY cartographing DESC',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'fieldIds' => $locations
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'fieldIds' => $locations
+            ])
+            ->getResult();
     }
-
 
     #[\Override]
     public function getRegionBorderData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx AS x, l.cy AS y,
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx AS x, l.cy AS y,
                 (SELECT al.rgb_code FROM stu_alliances al
                     JOIN stu_user u ON al.id = u.allys_id
                     JOIN stu_spacecraft sc ON u.id = sc.user_id
@@ -244,22 +251,28 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getImpassableBorderData(PanelBoundaries $boundaries, User $user, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT DISTINCT 
+    public function getImpassableBorderData(
+        PanelBoundaries $boundaries,
+        User $user,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT DISTINCT 
                 l.cx AS x, 
                 l.cy AS y,
                 CASE 
@@ -282,23 +295,25 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
               AND l.cy BETWEEN :yStart AND :yEnd
               AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'userId' => $user->getId()
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'userId' => $user->getId()
+            ])
+            ->getResult();
     }
-
 
     #[\Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx AS x, l.cy AS y,
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx AS x, l.cy AS y,
                 (SELECT array_to_string(array(SELECT a.anomaly_type_id FROM stu_anomaly a WHERE a.location_id = m.id), \',\')) as anomalytypes
             FROM stu_map m
             JOIN stu_location l
@@ -306,14 +321,16 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId()
+            ])
+            ->getResult();
     }
 
     #[\Override]
@@ -324,8 +341,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm->addScalarResult('cy', 'y', 'integer');
         $rsm->addScalarResult('effects', 'effects', 'string');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'WITH bbox AS (
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'WITH bbox AS (
                 SELECT id, field_id, cx, cy
                 FROM stu_location
                 WHERE layer_id = :layerId
@@ -337,21 +355,24 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             FROM bbox l
             JOIN stu_map_ftypes mft ON mft.id = l.field_id
             JOIN stu_map m ON m.id = l.id',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId()
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId()
+            ])
+            ->getResult();
     }
 
     #[\Override]
     public function getSpacecraftCountLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy AS y, mft.effects as effects,
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy AS y, mft.effects as effects,
                 (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     JOIN stu_location l2
                     ON b.location_id = l2.id
@@ -382,44 +403,52 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
+            ])
+            ->getResult();
     }
-
 
     #[\Override]
     public function getMapLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy AS y, ft.type
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy AS y, ft.type
                 FROM stu_map m
                 JOIN stu_location l
                 ON m.id = l.id
                 JOIN stu_map_ftypes ft ON ft.id = l.field_id
                 WHERE l.cx BETWEEN :xStart AND :xEnd AND l.cy BETWEEN :yStart AND :yEnd
                 AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId()
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getUserSpacecraftCountLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
+    public function getUserSpacecraftCountLayerData(
+        PanelBoundaries $boundaries,
+        int $userId,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -434,22 +463,28 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'userId' => $userId
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'userId' => $userId
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getAllianceSpacecraftCountLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
+    public function getAllianceSpacecraftCountLayerData(
+        PanelBoundaries $boundaries,
+        int $allianceId,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy as y,
              (SELECT count(distinct s.id)
                     FROM stu_spacecraft s
                     JOIN stu_location spl
@@ -466,22 +501,28 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'allyId' => $allianceId
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'allyId' => $allianceId
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getSpacecraftCountLayerDataForSpacecraft(PanelBoundaries $boundaries, int $spacecraftId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
+    public function getSpacecraftCountLayerDataForSpacecraft(
+        PanelBoundaries $boundaries,
+        int $spacecraftId,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -496,15 +537,17 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'spacecraftId' => $spacecraftId
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'spacecraftId' => $spacecraftId
+            ])
+            ->getResult();
     }
 
     #[\Override]
@@ -582,8 +625,11 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[\Override]
-    public function getRandomMapIdsForAstroMeasurement(int $regionId, int $maxPercentage, int $location): array
-    {
+    public function getRandomMapIdsForAstroMeasurement(
+        int $regionId,
+        int $maxPercentage,
+        int $location
+    ): array {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
 
@@ -613,7 +659,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ])
             ->getResult();
 
-        $amount = (int)ceil(count($mapIdResultSet) * $maxPercentage / 100);
+        $amount = (int) ceil((count($mapIdResultSet) * $maxPercentage) / 100);
         $subset = array_slice($mapIdResultSet, 0, $amount);
 
         return array_map(fn(array $data) => $data['id'], $subset);
@@ -625,14 +671,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
 
-        $borderCriteria = $isAtBorder ?
-            sprintf(
+        $borderCriteria = $isAtBorder
+            ? sprintf(
                 'AND (l.cx in (1, %d) OR l.cy in (1, %d))',
                 $layer->getWidth(),
                 $layer->getHeight()
             ) : '';
 
-        $randomMapId =  (int)$this->getEntityManager()
+        $randomMapId = (int) $this->getEntityManager()
             ->createNativeQuery(
                 sprintf(
                     'SELECT m.id
@@ -667,12 +713,17 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[\Override]
-    public function getIgnoringSubspaceLayerData(PanelBoundaries $boundaries, int $ignoreUserId, int $time, ResultSetMapping $rsm): array
-    {
+    public function getIgnoringSubspaceLayerData(
+        PanelBoundaries $boundaries,
+        int $ignoreUserId,
+        int $time,
+        ResultSetMapping $rsm
+    ): array {
         $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
                 (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id != :ignoreUserId
@@ -701,23 +752,26 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 WHERE l.cx BETWEEN :xStart AND :xEnd
                 AND l.cy BETWEEN :yStart AND :yEnd
                 AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'ignoreUserId' => $ignoreUserId,
-            'timeThreshold' => $maxAge
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'ignoreUserId' => $ignoreUserId,
+                'timeThreshold' => $maxAge
+            ])
+            ->getResult();
     }
 
     #[\Override]
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy as y, mft.effects as effects,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
@@ -736,21 +790,27 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId()
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId()
+            ])
+            ->getResult();
     }
 
     #[\Override]
-    public function getUserSubspaceLayerData(PanelBoundaries $boundaries, int $userId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
+    public function getUserSubspaceLayerData(
+        PanelBoundaries $boundaries,
+        int $userId,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id = :userId
@@ -771,16 +831,19 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'userId' => $userId
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'userId' => $userId
+            ])
+            ->getResult();
     }
+
     /**
      * @return array<int, string>
      */
@@ -804,9 +867,16 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $conditions;
     }
+
     #[\Override]
-    public function getShipSubspaceLayerData(PanelBoundaries $boundaries, int $shipId, int $time, ResultSetMapping $rsm, bool $cloaked_check = false, ?int $rumpId = null): array
-    {
+    public function getShipSubspaceLayerData(
+        PanelBoundaries $boundaries,
+        int $shipId,
+        int $time,
+        ResultSetMapping $rsm,
+        bool $cloaked_check = false,
+        ?int $rumpId = null
+    ): array {
         $maxAge = $time - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         $conditions = $this->getDynamicQueryConditions($cloaked_check, $rumpId);
 
@@ -816,25 +886,33 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     WHERE fs1.location_id = l.id
                     AND fs1.ship_id = :shipId
                     AND fs1.time > :timeThreshold
-                    ' . $conditions[0] . '
+                    '
+            . $conditions[0]
+            . '
                     AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
                 (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                     WHERE fs2.location_id = l.id
                     AND fs2.ship_id = :shipId
                     AND fs2.time > :timeThreshold
-                    ' . $conditions[1] . '
+                    '
+            . $conditions[1]
+            . '
                     AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
                 (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                     WHERE fs3.location_id = l.id
                     AND fs3.ship_id = :shipId
                     AND fs3.time > :timeThreshold
-                    ' . $conditions[2] . '
+                    '
+            . $conditions[2]
+            . '
                     AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
                 (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                     WHERE fs4.location_id = l.id
                     AND fs4.ship_id = :shipId
                     AND fs4.time > :timeThreshold
-                    ' . $conditions[3] . '
+                    '
+            . $conditions[3]
+            . '
                     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
@@ -850,7 +928,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             'yEnd' => $boundaries->getMaxY(),
             'layerId' => $boundaries->getParentId(),
             'shipId' => $shipId,
-            'timeThreshold' => $maxAge,
+            'timeThreshold' => $maxAge
         ];
 
         if ($cloaked_check) {
@@ -865,10 +943,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[\Override]
-    public function getAllianceSubspaceLayerData(PanelBoundaries $boundaries, int $allianceId, ResultSetMapping $rsm): array
-    {
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT l.id, l.cx as x, l.cy as y,
+    public function getAllianceSubspaceLayerData(
+        PanelBoundaries $boundaries,
+        int $allianceId,
+        ResultSetMapping $rsm
+    ): array {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT l.id, l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 JOIN stu_user u1 ON fs1.user_id = u1.id
                 WHERE fs1.location_id = l.id
@@ -893,33 +975,38 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
             AND l.layer_id = :layerId',
-            $rsm
-        )->setParameters([
-            'xStart' => $boundaries->getMinX(),
-            'xEnd' => $boundaries->getMaxX(),
-            'yStart' => $boundaries->getMinY(),
-            'yEnd' => $boundaries->getMaxY(),
-            'layerId' => $boundaries->getParentId(),
-            'allyId' => $allianceId
-        ])->getResult();
+                $rsm
+            )
+            ->setParameters([
+                'xStart' => $boundaries->getMinX(),
+                'xEnd' => $boundaries->getMaxX(),
+                'yStart' => $boundaries->getMinY(),
+                'yEnd' => $boundaries->getMaxY(),
+                'layerId' => $boundaries->getParentId(),
+                'allyId' => $allianceId
+            ])
+            ->getResult();
     }
 
+    #[\Override]
     public function getUniqueInfluenceAreaIds(int $layerId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('influence_area_id', 'influence_area_id', 'integer');
 
-        $query = $this->getEntityManager()->createNativeQuery(
-            'SELECT DISTINCT m.influence_area_id
+        $query = $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT DISTINCT m.influence_area_id
             FROM stu_map m
             JOIN stu_location l ON m.id = l.id
             WHERE m.influence_area_id IS NOT NULL
             AND l.layer_id = :layerId
             ORDER BY m.influence_area_id ASC',
-            $rsm
-        )->setParameters([
-            'layerId' => $layerId
-        ]);
+                $rsm
+            )
+            ->setParameters([
+                'layerId' => $layerId
+            ]);
 
         return array_map('intval', array_column($query->getResult(), 'influence_area_id'));
     }

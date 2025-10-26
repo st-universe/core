@@ -40,7 +40,12 @@ class MapRegion implements EntityWithAstroEntryInterface
     private ?DatabaseEntry $databaseEntry = null;
 
     /** @var ArrayCollection<int, AstronomicalEntry> */
-    #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'region', indexBy: 'user_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(
+        targetEntity: AstronomicalEntry::class,
+        mappedBy: 'region',
+        indexBy: 'user_id',
+        fetch: 'EXTRA_LAZY'
+    )]
     private Collection $astronomicalEntries;
 
     public function __construct()
@@ -77,6 +82,7 @@ class MapRegion implements EntityWithAstroEntryInterface
         return $this;
     }
 
+    #[\Override]
     public function getAstronomicalEntries(): Collection
     {
         return $this->astronomicalEntries;

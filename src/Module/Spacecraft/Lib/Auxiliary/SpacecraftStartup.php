@@ -18,6 +18,7 @@ class SpacecraftStartup implements SpacecraftStartupInterface
         private readonly ActivatorDeactivatorHelperInterface $helper
     ) {}
 
+    #[\Override]
     public function startup(SpacecraftWrapperInterface $wrapper, array $additionalSystemTypes = []): void
     {
         $isSaveNeeded = false;
@@ -25,12 +26,23 @@ class SpacecraftStartup implements SpacecraftStartupInterface
         $wrapper
             ->get()
             ->getSystems()
-            ->filter(fn(SpacecraftSystem $system): bool => !$system->getMode()->isActivated() && $system->isHealthy())
-            ->map(fn(SpacecraftSystem $system): SpacecraftSystemTypeInterface =>  $this->spacecraftSystemManager->lookupSystem($system->getSystemType()))
-            ->filter(fn(SpacecraftSystemTypeInterface $systemType): bool => $systemType->getDefaultMode()->isActivated()
-                || in_array($systemType->getSystemType(), $additionalSystemTypes))
-            ->forAll(function (int $key, SpacecraftSystemTypeInterface $systemType) use ($wrapper, &$isSaveNeeded): bool {
-                $isSaveNeeded = $this->helper->activate($wrapper, $systemType->getSystemType(), new InformationWrapper()) || $isSaveNeeded;
+            ->filter(
+                fn(SpacecraftSystem $system): bool => !$system->getMode()->isActivated()
+                && $system->isHealthy()
+            )
+            ->map(fn(SpacecraftSystem $system): SpacecraftSystemTypeInterface => $this->spacecraftSystemManager->lookupSystem($system->getSystemType()))
+            ->filter(
+                fn(SpacecraftSystemTypeInterface $systemType): bool => $systemType
+                    ->getDefaultMode()
+                    ->isActivated() || in_array($systemType->getSystemType(), $additionalSystemTypes)
+            )
+            ->forAll(function (int $key, SpacecraftSystemTypeInterface $systemType) use (
+                $wrapper,
+                &$isSaveNeeded
+            ): bool {
+                $isSaveNeeded =
+                    $this->helper->activate($wrapper, $systemType->getSystemType(), new InformationWrapper())
+                    || $isSaveNeeded;
                 return true;
             });
 

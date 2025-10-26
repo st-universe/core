@@ -19,13 +19,19 @@ class InteractionMemberFactory implements InteractionMemberFactoryInterface
         private CommodityTransferInterface $commodityTransfer
     ) {}
 
+    #[\Override]
     public function createMember(EntityWithInteractionCheckInterface $entity): InteractionMemberInterface
     {
         if ($entity instanceof Colony) {
             return new ColonyMember($this->tholianWebUtil, $entity);
         }
         if ($entity instanceof Spacecraft) {
-            return new SpacecraftMember($this->nbsUtility, $this->tholianWebUtil, $this->commodityTransfer, $entity);
+            return new SpacecraftMember(
+                $this->nbsUtility,
+                $this->tholianWebUtil,
+                $this->commodityTransfer,
+                $entity
+            );
         }
         if ($entity instanceof Trumfield) {
             return new TrumfieldMember($entity);

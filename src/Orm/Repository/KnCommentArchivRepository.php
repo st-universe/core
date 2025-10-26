@@ -16,21 +16,16 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
     #[\Override]
     public function getByPost(int $postId): array
     {
-        return $this->findBy(
-            ['post_id' => $postId],
-            ['id' => 'desc'],
-        );
+        return $this->findBy(['post_id' => $postId], ['id' => 'desc']);
     }
 
     /**
      * @return list<KnCommentArchiv>
      */
+    #[\Override]
     public function getByPostFormerId(int $postFormerId): array
     {
-        return $this->findBy(
-            ['post_id' => $postFormerId],
-            ['id' => 'desc'],
-        );
+        return $this->findBy(['post_id' => $postFormerId], ['id' => 'desc']);
     }
 
     #[\Override]
@@ -39,6 +34,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
         return $this->count(['post_id' => $post, 'deleted' => null]);
     }
 
+    #[\Override]
     public function getAmountByFormerId(int $postFormerId): int
     {
         return $this->count(['post_id' => $postFormerId, 'deleted' => null]);
@@ -72,12 +68,7 @@ final class KnCommentArchivRepository extends EntityRepository implements KnComm
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s c WHERE c.user_id = :userId',
-                    KnCommentArchiv::class
-                )
-            )
+            ->createQuery(sprintf('DELETE FROM %s c WHERE c.user_id = :userId', KnCommentArchiv::class))
             ->setParameters(['userId' => $userId])
             ->execute();
     }

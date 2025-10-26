@@ -26,13 +26,13 @@ class UpdatePirateRoundPrestige implements SpacecraftDestructionHandlerInterface
         $this->logger = $loggerUtilFactory->getPirateLogger();
     }
 
+    #[\Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,
         SpacecraftDestructionCauseEnum $cause,
         InformationInterface $informations
     ): void {
-
         $spacecraft = $destroyedSpacecraftWrapper->get();
         $userOfDestroyed = $spacecraft->getUser();
 

@@ -122,7 +122,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         spacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool {
-
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper === null) {
             throw new RuntimeException('ship not in fleet');
@@ -148,12 +147,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return true;
     }
 
+    #[\Override]
     public function setLssMode(
         int $shipId,
         SpacecraftLssModeEnum $lssMode,
         GameControllerInterface $game
     ): void {
-
         $lss = $this->getTargetWrapper(
             $shipId,
             true,
@@ -167,9 +166,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $lss->setMode($lssMode)->update();
 
         if ($lssMode->isBorderMode()) {
-            $game->getInfo()->addInformationf("%s für die Langstreckensensoren aktiviert", $lssMode->getDescription());
+            $game->getInfo()->addInformationf(
+                '%s für die Langstreckensensoren aktiviert',
+                $lssMode->getDescription()
+            );
         } else {
-            $game->getInfo()->addInformation("Filter für Langstreckensensoren wurde deaktiviert");
+            $game->getInfo()->addInformation('Filter für Langstreckensensoren wurde deaktiviert');
         }
     }
 }

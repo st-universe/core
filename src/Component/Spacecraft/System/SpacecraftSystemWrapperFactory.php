@@ -6,6 +6,7 @@ use Stu\Orm\Entity\Spacecraft;
 
 class SpacecraftSystemWrapperFactory implements SpacecraftSystemWrapperFactoryInterface
 {
+    #[\Override]
     public function create(Spacecraft $spacecraft, SpacecraftSystemTypeEnum $type): ?SpacecraftSystemWrapper
     {
         if (!$spacecraft->hasSpacecraftSystem($type)) {

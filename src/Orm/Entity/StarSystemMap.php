@@ -49,6 +49,7 @@ class StarSystemMap extends Location
         $this->wormholeEntries = new ArrayCollection();
     }
 
+    #[\Override]
     public function getLayer(): ?Layer
     {
         return $this->layer;
@@ -66,6 +67,7 @@ class StarSystemMap extends Location
         return $this;
     }
 
+    #[\Override]
     public function getX(): int
     {
         return $this->getSx();
@@ -83,6 +85,7 @@ class StarSystemMap extends Location
         return $this;
     }
 
+    #[\Override]
     public function getY(): int
     {
         return $this->getSy();
@@ -125,6 +128,7 @@ class StarSystemMap extends Location
         return null;
     }
 
+    #[\Override]
     protected function getWormholeEntries(): Collection
     {
         return $this->wormholeEntries;
@@ -145,6 +149,7 @@ class StarSystemMap extends Location
         return $parentMap->getSectorId();
     }
 
+    #[\Override]
     public function getSectorString(): string
     {
         return sprintf(

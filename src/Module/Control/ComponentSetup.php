@@ -15,6 +15,7 @@ class ComponentSetup implements ComponentSetupInterface
         private ComponentLoaderInterface $componentLoader
     ) {}
 
+    #[\Override]
     public function setup(GameControllerInterface $game): void
     {
         if ($game->hasUser() && $this->privateMessageRepository->hasRecentMessage($game->getUser())) {
