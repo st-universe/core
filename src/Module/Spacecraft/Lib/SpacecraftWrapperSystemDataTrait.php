@@ -16,9 +16,11 @@ use Stu\Component\Spacecraft\System\Data\SubspaceSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Orm\Entity\Spacecraft;
 
 trait SpacecraftWrapperSystemDataTrait
 {
+    /** @return SpacecraftWrapper<Spacecraft> */
     private function getThis(): SpacecraftWrapper
     {
         if (!$this instanceof SpacecraftWrapper) {
