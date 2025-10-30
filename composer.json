@@ -113,7 +113,7 @@
     }
   ],
   "scripts": {
-    "mago:init": "@php vendor/bin/mago init",
+    "mago:analyze": "@php vendor/bin/mago analyze --fix --fmt",
     "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
     "integrationtests": "@php vendor/bin/phpunit --testsuite 'STU integration'",
     "stan": "phpstan",
