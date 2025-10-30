@@ -48,7 +48,6 @@ final class ShowColonization implements ViewControllerInterface
 
         $layer = $colony->getSystem()->getLayer();
         $userColonies = $game->getUser()->getColonies();
-        $colocount = count($userColonies);
 
         if ($layer) {
             if ($layer->isNoobzone()) {
@@ -56,6 +55,13 @@ final class ShowColonization implements ViewControllerInterface
                     $game->getInfo()->addInformation(sprintf(_('Im %s kann man nur eine Kolonie gründen <br>solang das Siedlerpatent nicht älter als 5 Monate ist. <br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
                     return;
                 }
+
+                $coloniesInLayer = array_filter(
+                    $userColonies->toArray(),
+                    fn($col) => $col->getSystem()->getLayer() === $layer
+                );
+                $colocount = count($coloniesInLayer);
+
                 if ($colocount >= 4) {
                     $game->getInfo()->addInformation(sprintf(_('Im %s können nur maximal 4 Kolonien gegründet werden.<br>Such dir eine Kolonie in einem anderen Sektor'), $layer->getName()));
                     return;
