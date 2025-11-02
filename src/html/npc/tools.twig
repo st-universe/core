@@ -2,42 +2,47 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
-<form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
+<form action="/npc/index.php" method="post" name="toolsform1" id="toolsform1">
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-    <div>
-        <h2>Waren Tool</h2>
-        Spacecraft ID: <input type="text" size="5" name="spacecraftid" id="spacecraftid" />
-        Kolonie ID: <input type="text" size="5" name="colonyid" id="colonyid" />
-        Ware: <select name="commodityid" id="commoditySelect" style="width:10%;">
-            <option value="0">----------------------</option>
-            {% for data in SELECTABLE_COMMODITIES %}
-            {% if COMMODITY_ID == data.getId %}
-            <option value="{{ data.getId }}" selected="1">
-                {{ data.getName }}
-            </option>
-            {% else %}
-            <option value="{{ data.getId }}">
-                {{ data.getName }}
-            </option>
-            {% endif %}
-            {% endfor %}
-        </select>
-        Anzahl: <input type="text" size="5" name="amount" id="amount" />
-        Grund: <input type="text" size="20" name="reason" id="reason" />
+    <div class="divhead">Waren Tool</div>
+    <div class="divbody">
+        Spacecraft ID: <input type="text" size="5" name="spacecraftid" id="commodity_spacecraftid" />
+        Kolonie ID: <input type="text" size="5" name="colonyid" id="commodity_colonyid" />
+        Grund: <input type="text" size="20" name="reason" id="commodity_reason" />
+        <br />
+        <br />
+        <div id="commodityRowsContainer">
+            <div class="commodity-row" data-row-index="0">
+                Ware: <select name="commodities[0][id]" class="commoditySelect" style="width:10%;">
+                    <option value="0">----------------------</option>
+                    {% for data in SELECTABLE_COMMODITIES %}
+                    <option value="{{ data.getId }}">
+                        {{ data.getName }}
+                    </option>
+                    {% endfor %}
+                </select>
+                Anzahl: <input type="text" size="5" name="commodities[0][amount]" class="commodityAmount" />
+                <br />
+                <br />
+            </div>
+        </div>
+        <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRow()" />
+        <input type="button" class="button" id="removeLastCommodityBtn" value="Letzte löschen"
+            onclick="removeLastCommodityRow()" style="display:none;" />
+        <br />
+        <br />
         <input type="submit" class="button" name="B_COMMODITY_CHEAT" value="Ware ercheaten" id="commoditycheatbutton" />
     </div>
 </form>
-
-<div style="margin-top: 20px;">
-    <h2>History Tools</h2>
-    <br>
-    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
-        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+<br />
+<form action="/npc/index.php" method="post" name="toolsform2" id="toolsform2">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">History Tools</div>
+    <div class="divbody">
         <div>
-            <h2>History Eintrag erstellen</h2>
             Text: <input type="text" size="100" name="historytext" id="historytext" />
-            <br>
-            <br>
+            <br />
+            <br />
             Kategorie: <select name="historytype" id="historyTypeSelect" style="width:10%;">
                 {% for type in HISTORY_TYPES %}
                 <option value="{{ type.id }}">
@@ -45,11 +50,11 @@
                 </option>
                 {% endfor %}
             </select>
-            <br>
-            <br>
+            <br />
+            <br />
             Grund: <input type="text" size="20" name="reason" id="reason" />
-            <br>
-            <br>
+            <br />
+            <br />
             X: <input type="text" size="5" name="x" id="x" />
             Y: <input type="text" size="5" name="y" id="y" />
             Layer: <select name="layer" id="layerSelect" style="width:10%;">
@@ -61,67 +66,55 @@
                 {% endif %}
                 {% endfor %}
             </select> (Nicht zwingend nötig, aber wünschenswert (Nur Warp-Map Koordinaten angeben))
-            <br>
-            <br>
+            <br />
+            <br />
             <input type="submit" class="button" name="B_CREATE_HISTORY_ENTRY" value="History Eintrag erstellen"
                 id="createhistorybutton" />
         </div>
-    </form>
-    <br>
-</div>
-
-<div style="margin-top: 20px;">
-    <h2>Schiff Tools</h2>
-    <br>
-    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
-        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    </div>
+</form>
+<br />
+<form action="/npc/index.php" method="post" name="toolsform3" id="toolsform3">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">Spacecraft Tools</div>
+    <div class="divbody">
         <div>
-            <h2>Schiffe löschen</h2>
             Spacecraft IDs: <input type="text" size="20" name="spacecraftid" id="spacecraftid" />
             Grund: <input type="text" size="20" name="reason" id="reason" />
             <input type="submit" class="button" name="B_DELETE_SPACECRAFT" value="Schiff(e) löschen"
                 id="deleteshipbutton" />
             (Trennung mit Komma ermöglicht löschen mehrerer Spacecrafts)
         </div>
-    </form>
-    <br>
-    <form action="/npc/index.php" method="get" style="display: inline;">
-        <input type="hidden" name="SHOW_BUILDPLAN_CREATOR" value="1">
-        <input type="submit" class="button" value="Bauplan erstellen">
-    </form>
-    <br>
-    <br>
-    <form action="/npc/index.php" method="get" style="display: inline;">
-        <input type="hidden" name="SHOW_SHIP_CREATOR" value="1">
-        <input type="submit" class="button" value="Schiff erstellen">
-    </form>
-</div>
-
-<div style="margin-top: 20px;">
-    <h2>Prestige Tools</h2>
-    <br>
-    <form action="/npc/index.php" method="post" name="toolsform" id="toolsform">
-        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <br />
         <div>
-            <h2>Prestige hinzufügen/abziehen</h2>
+            <a href="/npc/?SHOW_BUILDPLAN_CREATOR=1">Bauplan erstellen</a>
+            <br />
+            <a href="/npc/?SHOW_SHIP_CREATOR=1">Schiff erstellen</a>
+        </div>
+    </div>
+</form>
+<br />
+<form action="/npc/index.php" method="post" name="toolsform4" id="toolsform4">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">Prestige Tools</div>
+    <div class="divbody">
+        <div>
             User ID: <input type="text" size="5" name="userid" id="userid" />
             Prestige Wert: <input type="text" size="5" name="prestigeamount" id="prestigeamount" /> (positive oder
             negative Werte möglich)
-            <br>
-            <br>
+            <br />
+            <br />
             Beschreibung: <input type="text" size="100" name="prestigedescription" id="prestigedescription" /> (Fürs
             Prestige Log des Users. Sollte
             mit "X Prestige erhalten/abgezogen für...." beginnen)
-            <br>
-            <br>
+            <br />
+            <br />
             Grund: <input type="text" size="20" name="reason" id="reason" />
-            <br>
-            <br>
+            <br />
+            <br />
             <input type="submit" class="button" name="B_PRESTIGE_CHEAT" value="Prestige anpassen"
                 id="prestigecheatbutton" />
         </div>
-    </form>
-</div>
-
-
+    </div>
+</form>
 {% endblock %}
