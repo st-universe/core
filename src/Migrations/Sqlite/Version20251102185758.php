@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251022192158 extends AbstractMigration
+final class Version20251102185758 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -314,6 +314,16 @@ final class Version20251022192158 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_notes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, date INTEGER NOT NULL, title VARCHAR(255) NOT NULL, text CLOB NOT NULL, CONSTRAINT FK_838C60EBA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX note_user_idx ON stu_notes (user_id)');
         $this->addSql('CREATE TABLE stu_npc_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL)');
+        $this->addSql('CREATE TABLE stu_npc_quest_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, quest_id INTEGER NOT NULL, user_id INTEGER NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, deleted INTEGER DEFAULT NULL, mode INTEGER NOT NULL, CONSTRAINT FK_58B6461D209E9EF4 FOREIGN KEY (quest_id) REFERENCES stu_npc_quests (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_58B6461DA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX npc_quest_log_quest_idx ON stu_npc_quest_log (quest_id)');
+        $this->addSql('CREATE INDEX npc_quest_log_user_idx ON stu_npc_quest_log (user_id)');
+        $this->addSql('CREATE TABLE stu_npc_quest_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, quest_id INTEGER NOT NULL, user_id INTEGER NOT NULL, mode INTEGER NOT NULL, reward_received BOOLEAN DEFAULT 0 NOT NULL, CONSTRAINT FK_54C0581209E9EF4 FOREIGN KEY (quest_id) REFERENCES stu_npc_quests (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX npc_quest_user_quest_idx ON stu_npc_quest_user (quest_id)');
+        $this->addSql('CREATE INDEX npc_quest_user_user_idx ON stu_npc_quest_user (user_id)');
+        $this->addSql('CREATE TABLE stu_npc_quests (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title CLOB NOT NULL, text CLOB NOT NULL, factions CLOB DEFAULT NULL, prestige INTEGER DEFAULT NULL, commodity_reward CLOB DEFAULT NULL, spacecrafts CLOB DEFAULT NULL, award_id INTEGER DEFAULT NULL, time INTEGER NOT NULL, start INTEGER NOT NULL, application_end INTEGER NOT NULL, "end" INTEGER DEFAULT NULL, secret CLOB DEFAULT NULL, approval_required BOOLEAN NOT NULL, applicant_max INTEGER DEFAULT NULL, plot_id INTEGER DEFAULT NULL, CONSTRAINT FK_F77F13CAA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_F77F13CA3D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_F77F13CA680D0B01 FOREIGN KEY (plot_id) REFERENCES stu_plots (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX npc_quest_user_idx ON stu_npc_quests (user_id)');
+        $this->addSql('CREATE INDEX npc_quest_award_idx ON stu_npc_quests (award_id)');
+        $this->addSql('CREATE INDEX npc_quest_plot_idx ON stu_npc_quests (plot_id)');
         $this->addSql('CREATE TABLE stu_opened_advent_door (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, day INTEGER NOT NULL, year INTEGER NOT NULL, time INTEGER NOT NULL)');
         $this->addSql('CREATE TABLE stu_partnersite (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, text CLOB NOT NULL, banner VARCHAR(200) NOT NULL)');
         $this->addSql('CREATE TABLE stu_pirate_round (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, start INTEGER NOT NULL, end_time INTEGER DEFAULT NULL, max_prestige INTEGER NOT NULL, actual_prestige INTEGER NOT NULL, faction_winner INTEGER DEFAULT NULL)');
@@ -669,6 +679,9 @@ final class Version20251022192158 extends AbstractMigration
         $this->addSql('DROP TABLE stu_news');
         $this->addSql('DROP TABLE stu_notes');
         $this->addSql('DROP TABLE stu_npc_log');
+        $this->addSql('DROP TABLE stu_npc_quest_log');
+        $this->addSql('DROP TABLE stu_npc_quest_user');
+        $this->addSql('DROP TABLE stu_npc_quests');
         $this->addSql('DROP TABLE stu_opened_advent_door');
         $this->addSql('DROP TABLE stu_partnersite');
         $this->addSql('DROP TABLE stu_pirate_round');

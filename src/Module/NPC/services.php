@@ -21,9 +21,15 @@ use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
 use Stu\Module\NPC\View\ShowPlayerList\ShowPlayerList;
 use Stu\Module\NPC\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
 use Stu\Module\NPC\View\ShowPlayerDetails\ShowPlayerDetails;
+use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\NPC\Action\RenameBuildplan;
 use Stu\Module\NPC\Action\SaveWelcomeMessage;
 use Stu\Module\NPC\Action\LogPlayerDetails;
+use Stu\Module\NPC\Action\CreateNPCQuest\CreateNPCQuest;
+use Stu\Module\NPC\Action\AcceptQuestApplication\AcceptQuestApplication;
+use Stu\Module\NPC\Action\RejectQuestApplication\RejectQuestApplication;
+use Stu\Module\NPC\Action\InviteQuestUsers\InviteQuestUsers;
+use Stu\Module\NPC\Action\ExcludeQuestUsers\ExcludeQuestUsers;
 
 use function DI\autowire;
 
@@ -38,7 +44,12 @@ return [
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
         DeleteSpacecraft::ACTION_IDENTIFIER => autowire(DeleteSpacecraft::class),
         SaveWelcomeMessage::ACTION_IDENTIFIER => autowire(SaveWelcomeMessage::class),
-        LogPlayerDetails::ACTION_IDENTIFIER => autowire(LogPlayerDetails::class)
+        LogPlayerDetails::ACTION_IDENTIFIER => autowire(LogPlayerDetails::class),
+        CreateNPCQuest::ACTION_IDENTIFIER => autowire(CreateNPCQuest::class),
+        AcceptQuestApplication::ACTION_IDENTIFIER => autowire(AcceptQuestApplication::class),
+        RejectQuestApplication::ACTION_IDENTIFIER => autowire(RejectQuestApplication::class),
+        InviteQuestUsers::ACTION_IDENTIFIER => autowire(InviteQuestUsers::class),
+        ExcludeQuestUsers::ACTION_IDENTIFIER => autowire(ExcludeQuestUsers::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -49,6 +60,7 @@ return [
         ShowNPCSettings::VIEW_IDENTIFIER => autowire(ShowNPCSettings::class),
         ShowPlayerList::VIEW_IDENTIFIER => autowire(ShowPlayerList::class),
         ShowPlayerDetails::VIEW_IDENTIFIER => autowire(ShowPlayerDetails::class),
-        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class)
+        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class),
+        ShowNPCQuests::VIEW_IDENTIFIER => autowire(ShowNPCQuests::class)
     ]
 ];

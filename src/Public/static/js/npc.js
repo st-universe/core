@@ -171,4 +171,150 @@ function updateRemoveButton() {
 
 document.addEventListener('DOMContentLoaded', function () {
     initNpcLogData();
+    updateRemoveCommodityRewardButton();
+    updateRemoveSpacecraftRewardButton();
 });
+
+function toggleQuestCreator() {
+    const questCreator = document.getElementById('questCreator');
+    const header = questCreator.previousElementSibling;
+
+    if (questCreator.style.display === 'none') {
+        questCreator.style.display = 'block';
+        header.innerHTML = '▼ Neue Quest erstellen';
+    } else {
+        questCreator.style.display = 'none';
+        header.innerHTML = '▶ Neue Quest erstellen';
+    }
+}
+
+function addCommodityRewardRow() {
+    const container = document.getElementById('commodityRewardContainer');
+    const rows = container.querySelectorAll('.commodity-reward-row');
+    const newIndex = rows.length;
+
+    const newRow = document.createElement('div');
+    newRow.className = 'commodity-reward-row';
+    newRow.setAttribute('data-row-index', newIndex);
+
+    const firstSelect = document.querySelector('.commoditySelect');
+    let optionsHtml = '';
+    for (let i = 0; i < firstSelect.options.length; i++) {
+        optionsHtml += '<option value="' + firstSelect.options[i].value + '">' + firstSelect.options[i].text + '</option>';
+    }
+
+    newRow.innerHTML = 'Ware: <select name="commodities[' + newIndex + '][id]" class="commoditySelect" style="width:15%;">' +
+        optionsHtml +
+        '</select> ' +
+        'Anzahl: <input type="number" name="commodities[' + newIndex + '][amount]" min="1" max="10000" style="width: 80px;" />' +
+        '<br /><br />';
+
+    container.appendChild(newRow);
+    updateRemoveCommodityRewardButton();
+}
+
+function removeLastCommodityRewardRow() {
+    const container = document.getElementById('commodityRewardContainer');
+    const rows = container.querySelectorAll('.commodity-reward-row');
+
+    if (rows.length > 1) {
+        rows[rows.length - 1].remove();
+        updateRemoveCommodityRewardButton();
+    }
+}
+
+function updateRemoveCommodityRewardButton() {
+    const container = document.getElementById('commodityRewardContainer');
+    const rows = container.querySelectorAll('.commodity-reward-row');
+    const removeBtn = document.getElementById('removeLastCommodityRewardBtn');
+
+    if (rows.length > 1) {
+        removeBtn.style.display = 'inline';
+    } else {
+        removeBtn.style.display = 'none';
+    }
+}
+
+function addSpacecraftRewardRow() {
+    const container = document.getElementById('spacecraftRewardContainer');
+    const rows = container.querySelectorAll('.spacecraft-reward-row');
+    const newIndex = rows.length;
+
+    const newRow = document.createElement('div');
+    newRow.className = 'spacecraft-reward-row';
+    newRow.setAttribute('data-row-index', newIndex);
+
+    newRow.innerHTML = 'Bauplan ID: <input type="number" name="spacecrafts[' + newIndex + '][buildplan_id]" min="1" style="width: 80px;" /> ' +
+        'Anzahl: <input type="number" name="spacecrafts[' + newIndex + '][amount]" min="1" max="100" style="width: 80px;" />' +
+        '<br /><br />';
+
+    container.appendChild(newRow);
+    updateRemoveSpacecraftRewardButton();
+}
+
+function removeLastSpacecraftRewardRow() {
+    const container = document.getElementById('spacecraftRewardContainer');
+    const rows = container.querySelectorAll('.spacecraft-reward-row');
+
+    if (rows.length > 1) {
+        rows[rows.length - 1].remove();
+        updateRemoveSpacecraftRewardButton();
+    }
+}
+
+function updateRemoveSpacecraftRewardButton() {
+    const container = document.getElementById('spacecraftRewardContainer');
+    const rows = container.querySelectorAll('.spacecraft-reward-row');
+    const removeBtn = document.getElementById('removeLastSpacecraftRewardBtn');
+
+    if (rows.length > 1) {
+        removeBtn.style.display = 'inline';
+    } else {
+        removeBtn.style.display = 'none';
+    }
+}
+
+function toggleQuestCreator() {
+    const creator = document.getElementById('questCreator');
+    const header = document.getElementById('questCreatorHeader');
+    if (creator.style.display === 'none') {
+        creator.style.display = 'block';
+        header.innerHTML = '▼ Neue Quest erstellen';
+    } else {
+        creator.style.display = 'none';
+        header.innerHTML = '▶ Neue Quest erstellen';
+    }
+}
+
+function toggleMyQuests() {
+    const myQuests = document.getElementById('myQuests');
+    const header = document.getElementById('myQuestsHeader');
+    if (myQuests.style.display === 'none') {
+        myQuests.style.display = 'block';
+        header.innerHTML = '▼ Meine Quests';
+    } else {
+        myQuests.style.display = 'none';
+        header.innerHTML = '▶ Meine Quests';
+    }
+}
+
+function toggleQuestDetails(questId) {
+    const details = document.getElementById('questDetails' + questId);
+    const header = document.getElementById('questHeader' + questId);
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+        header.innerHTML = header.innerHTML.replace('▶', '▼');
+    } else {
+        details.style.display = 'none';
+        header.innerHTML = header.innerHTML.replace('▼', '▶');
+    }
+}
+
+function toggleQuestUserManagement(questId) {
+    const management = document.getElementById('questUserManagement' + questId);
+    if (management.style.display === 'none') {
+        management.style.display = 'block';
+    } else {
+        management.style.display = 'none';
+    }
+}
