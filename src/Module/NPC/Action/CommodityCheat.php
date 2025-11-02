@@ -30,6 +30,7 @@ final class CommodityCheat implements ActionControllerInterface
         $user = $game->getUser();
         $text = '';
         $colony = null;
+        $spacecraft = null;
 
         // only Admins or NPC can trigger
         if (!$game->isAdmin() && !$game->isNpc()) {
@@ -40,29 +41,64 @@ final class CommodityCheat implements ActionControllerInterface
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
             $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;
-        } else {
-            $spacecraftId = request::postInt('spacecraftid');
-            $colonyId = request::postInt('colonyid');
-            $commodityId = request::postInt('commodityid');
-            $amount = request::postInt('amount');
-            $reason = request::postString('reason');
+        }
 
-            if ($spacecraftId != null && $colonyId != null) {
-                $game->getInfo()->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
+        $spacecraftId = request::postInt('spacecraftid');
+        $colonyId = request::postInt('colonyid');
+        $reason = request::postString('reason');
+        $commodities = request::postArray('commodities');
+
+        if ($spacecraftId !== 0 && $colonyId !== 0) {
+            $game->getInfo()->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
+            return;
+        }
+
+        if ($spacecraftId === 0 && $colonyId === 0) {
+            $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
+            return;
+        }
+
+        if ($game->getUser()->isNpc() && $reason === '') {
+            $game->getInfo()->addInformation("Grund fehlt");
+            return;
+        }
+
+        if (empty($commodities)) {
+            $game->getInfo()->addInformation("Keine Waren angegeben");
+            return;
+        }
+
+        if ($spacecraftId !== 0) {
+            $wrapper = $this->spacecraftLoader->find($spacecraftId);
+
+            if ($wrapper === null) {
+                throw new SpacecraftDoesNotExistException(_('Spacecraft does not exist!'));
+            }
+            $spacecraft = $wrapper->get();
+        }
+
+        if ($colonyId !== 0) {
+            $colony = $this->colonyRepository->find($colonyId);
+            if ($colony === null) {
+                $game->getInfo()->addInformation("Kolonie existiert nicht");
+                return;
+            }
+        }
+
+        $validatedCommodities = [];
+        $commodityList = [];
+
+        foreach ($commodities as $commodityData) {
+            if (!isset($commodityData['id']) || !isset($commodityData['amount'])) {
+                $game->getInfo()->addInformation("Ungültige Wareneingabe");
                 return;
             }
 
-            if ($spacecraftId != null) {
-                $wrapper = $this->spacecraftLoader->find($spacecraftId);
+            $commodityId = (int)$commodityData['id'];
+            $amount = (int)$commodityData['amount'];
 
-                if ($wrapper === null) {
-                    throw new SpacecraftDoesNotExistException(_('Spacecraft does not exist!'));
-                }
-                $spacecraft = $wrapper->get();
-            }
-
-            if ($colonyId != null) {
-                $colony = $this->colonyRepository->find($colonyId);
+            if ($commodityId <= 0) {
+                continue;
             }
 
             if ($amount < 1) {
@@ -70,60 +106,74 @@ final class CommodityCheat implements ActionControllerInterface
                 return;
             }
 
-            if ($game->getUser()->isNpc() && $reason === '') {
-                $game->getInfo()->addInformation("Grund fehlt");
-                return;
-            }
-
             $commodity = $this->commodityRepository->find($commodityId);
 
             if ($commodity === null) {
-                $game->getInfo()->addInformation("Ungültige Ware");
+                $game->getInfo()->addInformation("Ungültige Ware mit ID: " . $commodityId);
                 return;
             }
 
-            if ($spacecraftId != null) {
+            $validatedCommodities[] = [
+                'commodity' => $commodity,
+                'amount' => $amount
+            ];
+
+            $commodityList[] = sprintf('%d %s', $amount, $commodity->getName());
+        }
+
+        if (empty($validatedCommodities)) {
+            $game->getInfo()->addInformation("Keine gültigen Waren ausgewählt");
+            return;
+        }
+
+        $commodityListString = implode(', ', $commodityList);
+
+        foreach ($validatedCommodities as $validatedCommodity) {
+            if ($spacecraft !== null) {
                 $this->storageManager->upperStorage(
                     $spacecraft,
-                    $commodity,
-                    $amount
-                );
-                $text = sprintf(
-                    '%s hat dem Spacecraft %s (%d) von Spieler %s (%d) %d %s hinzugefügt. Grund: %s',
-                    $user->getName(),
-                    $spacecraft->getName(),
-                    $spacecraft->getId(),
-                    $spacecraft->getUser()->getName(),
-                    $spacecraft->getUser()->getId(),
-                    $amount,
-                    $commodity->getName(),
-                    $reason
+                    $validatedCommodity['commodity'],
+                    $validatedCommodity['amount']
                 );
             }
-            if ($colony) {
+            if ($colony !== null) {
                 $this->storageManager->upperStorage(
                     $colony,
-                    $commodity,
-                    $amount
-                );
-                $text = sprintf(
-                    '%s hat der Kolonie %s (%d) von Spieler %s (%d) %d %s hinzugefügt. Grund: %s',
-                    $user->getName(),
-                    $colony->getName(),
-                    $colony->getId(),
-                    $colony->getUser()->getName(),
-                    $colony->getUser()->getId(),
-                    $amount,
-                    $commodity->getName(),
-                    $reason
+                    $validatedCommodity['commodity'],
+                    $validatedCommodity['amount']
                 );
             }
-
-            if ($game->getUser()->isNpc()) {
-                $this->createEntry($text, $user->getId());
-            }
-            $game->getInfo()->addInformation("Waren hinzugefügt");
         }
+
+        if ($spacecraft !== null) {
+            $text = sprintf(
+                '%s hat dem Spacecraft %s (%d) von Spieler %s (%d) folgende Waren hinzugefügt: %s. Grund: %s',
+                $user->getName(),
+                $spacecraft->getName(),
+                $spacecraft->getId(),
+                $spacecraft->getUser()->getName(),
+                $spacecraft->getUser()->getId(),
+                $commodityListString,
+                $reason
+            );
+        }
+        if ($colony !== null) {
+            $text = sprintf(
+                '%s hat der Kolonie %s (%d) von Spieler %s (%d) folgende Waren hinzugefügt: %s. Grund: %s',
+                $user->getName(),
+                $colony->getName(),
+                $colony->getId(),
+                $colony->getUser()->getName(),
+                $colony->getUser()->getId(),
+                $commodityListString,
+                $reason
+            );
+        }
+
+        if ($game->getUser()->isNpc()) {
+            $this->createEntry($text, $user->getId());
+        }
+        $game->getInfo()->addInformation("Waren hinzugefügt");
     }
 
     private function createEntry(

@@ -121,6 +121,54 @@ function showPlayerDetails(userId) {
 
 
 
+function addCommodityRow() {
+    const container = document.getElementById('commodityRowsContainer');
+    const rows = container.querySelectorAll('.commodity-row');
+    const newIndex = rows.length;
+
+    const newRow = document.createElement('div');
+    newRow.className = 'commodity-row';
+    newRow.setAttribute('data-row-index', newIndex);
+
+    const firstSelect = document.querySelector('.commoditySelect');
+    let optionsHtml = '';
+    for (let i = 0; i < firstSelect.options.length; i++) {
+        optionsHtml += '<option value="' + firstSelect.options[i].value + '">' + firstSelect.options[i].text + '</option>';
+    }
+
+    newRow.innerHTML = 'Ware: <select name="commodities[' + newIndex + '][id]" class="commoditySelect" style="width:10%;">' +
+        optionsHtml +
+        '</select> ' +
+        'Anzahl: <input type="text" size="5" name="commodities[' + newIndex + '][amount]" class="commodityAmount" />' +
+        '<br /><br />';
+
+    container.appendChild(newRow);
+
+    updateRemoveButton();
+}
+
+function removeLastCommodityRow() {
+    const container = document.getElementById('commodityRowsContainer');
+    const rows = container.querySelectorAll('.commodity-row');
+
+    if (rows.length > 1) {
+        rows[rows.length - 1].remove();
+        updateRemoveButton();
+    }
+}
+
+function updateRemoveButton() {
+    const container = document.getElementById('commodityRowsContainer');
+    const rows = container.querySelectorAll('.commodity-row');
+    const removeBtn = document.getElementById('removeLastCommodityBtn');
+
+    if (rows.length > 1) {
+        removeBtn.style.display = 'inline';
+    } else {
+        removeBtn.style.display = 'none';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     initNpcLogData();
 });
