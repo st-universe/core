@@ -1,0 +1,658 @@
+{% extends "html/npcdefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+
+<div class="divhead" onclick="toggleQuestCreator()" style="cursor: pointer;" id="questCreatorHeader">
+    {% if QUEST_CREATOR_OPEN %}▼ Neue Quest erstellen{% else %}▶ Neue Quest erstellen{% endif %}
+</div>
+<div class="divbody" id="questCreator"
+    style="{% if QUEST_CREATOR_OPEN %}display: block;{% else %}display: none;{% endif %}">
+    <form action="/npc/index.php" method="post" name="createquest" id="createquest">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+
+        <table class="tcal">
+            <tr>
+                <td class="m">Titel:</td>
+                <td><input type="text" name="title" style="width: 400px;" maxlength="200"
+                        value="{{ FORM_TITLE|default('') }}" required /></td>
+            </tr>
+            <tr>
+                <td class="m">Beschreibung:</td>
+                <td><textarea name="text" style="width: 600px; height: 150px;"
+                        required>{{ FORM_TEXT|default('') }}</textarea></td>
+            </tr>
+            <tr>
+                <td class="m">Fraktionen:</td>
+                <td>
+                    {% for faction in PLAYABLE_FACTIONS %}
+                    <label><input type="checkbox" name="factions[]" value="{{ faction.getId }}" {% if
+                            FORM_SELECTED_FACTIONS is defined and faction.getId in FORM_SELECTED_FACTIONS %}checked{%
+                            endif %}> {{ faction.getName }}</label><br>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Prestige Belohnung:</td>
+                <td><input type="number" name="prestige" min="1" value="{{ FORM_PRESTIGE|default('') }}" />
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <div class="divhead">Waren-Belohnung</div>
+        <div class="divbody">
+            <div id="commodityRewardContainer">
+                {% if FORM_COMMODITIES is defined and FORM_COMMODITIES|length > 0 %}
+                {% for index, commodity in FORM_COMMODITIES %}
+                <div class="commodity-reward-row" data-row-index="{{ index }}">
+                    Ware: <select name="commodities[{{ index }}][id]" class="commoditySelect" style="width:15%;">
+                        <option value="0">----------------------</option>
+                        {% for selectableCommodity in SELECTABLE_COMMODITIES %}
+                        <option value="{{ selectableCommodity.getId }}" {% if commodity.id is defined and
+                            commodity.id==selectableCommodity.getId %}selected{% endif %}>{{ selectableCommodity.getName
+                            }}</option>
+                        {% endfor %}
+                    </select>
+                    Anzahl: <input type="number" name="commodities[{{ index }}][amount]" min="1" style="width: 80px;"
+                        value="{{ commodity.amount|default('') }}" />
+                    <br><br>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="commodity-reward-row" data-row-index="0">
+                    Ware: <select name="commodities[0][id]" class="commoditySelect" style="width:15%;">
+                        <option value="0">----------------------</option>
+                        {% for commodity in SELECTABLE_COMMODITIES %}
+                        <option value="{{ commodity.getId }}">{{ commodity.getName }}</option>
+                        {% endfor %}
+                    </select>
+                    Anzahl: <input type="number" name="commodities[0][amount]" min="1" style="width: 80px;" />
+                    <br><br>
+                </div>
+                {% endif %}
+            </div>
+            <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRewardRow()" />
+            <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte löschen"
+                onclick="removeLastCommodityRewardRow()" style="display:none;" />
+        </div>
+
+        <br>
+        <div class="divhead">Raumschiff-Belohnung</div>
+        <div class="divbody">
+            <div id="spacecraftRewardContainer">
+                {% if FORM_SPACECRAFTS is defined and FORM_SPACECRAFTS|length > 0 %}
+                {% for index, spacecraft in FORM_SPACECRAFTS %}
+                <div class="spacecraft-reward-row" data-row-index="{{ index }}">
+                    Raumschiff ID: <input type="number" name="spacecrafts[{{ index }}][id]" min="1" style="width: 80px;"
+                        value="{{ spacecraft.id|default('') }}" />
+                    Anzahl: <input type="number" name="spacecrafts[{{ index }}][amount]" min="1" style="width: 80px;"
+                        value="{{ spacecraft.amount|default('') }}" />
+                    <br><br>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="spacecraft-reward-row" data-row-index="0">
+                    Raumschiff ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;" />
+                    Anzahl: <input type="number" name="spacecrafts[0][amount]" min="1" style="width: 80px;" />
+                    <br><br>
+                </div>
+                {% endif %}
+            </div>
+            <input type="button" class="button" value="Weiteres Raumschiff" onclick="addSpacecraftRewardRow()" />
+            <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte löschen"
+                onclick="removeLastSpacecraftRewardRow()" style="display:none;" />
+        </div>
+
+        <br>
+        <table class="tcal">
+            <tr>
+                <td class="m">Award ID:</td>
+                <td><input type="number" name="award_id" min="1" value="{{ FORM_AWARD_ID|default('') }}" /></td>
+            </tr>
+            <tr>
+                <td class="m">Start:</td>
+                <td>
+                    Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ"
+                        value="{{ FORM_START_DATE|default('') }}" required style="width: 100px;" />
+                    Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM"
+                        value="{{ FORM_START_TIME|default('') }}" required style="width: 60px;" />
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Anmeldeschluss:</td>
+                <td>
+                    Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ"
+                        value="{{ FORM_APPLICATION_END_DATE|default('') }}" required style="width: 100px;" />
+                    Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM"
+                        value="{{ FORM_APPLICATION_END_TIME|default('') }}" required style="width: 60px;" />
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Geheim für Fraktionen:</td>
+                <td>
+                    {% for faction in PLAYABLE_FACTIONS %}
+                    <label><input type="checkbox" name="secret_factions[]" value="{{ faction.getId }}" {% if
+                            FORM_SELECTED_SECRET_FACTIONS is defined and faction.getId in FORM_SELECTED_SECRET_FACTIONS
+                            %}checked{% endif %}> {{ faction.getName }}</label><br>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Bestätigung nach Bewerbung:</td>
+                <td><input type="checkbox" name="approval_required" value="1" {% if FORM_APPROVAL_REQUIRED is defined
+                        and FORM_APPROVAL_REQUIRED %}checked{% endif %} /></td>
+            </tr>
+            <tr>
+                <td class="m">Maximale Teilnehmer:</td>
+                <td><input type="number" name="applicant_max" min="1" value="{{ FORM_APPLICANT_MAX|default('') }}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Plot ID:</td>
+                <td><input type="number" name="plot_id" min="1" value="{{ FORM_PLOT_ID|default('') }}" /></td>
+            </tr>
+        </table>
+
+        <br>
+        <input type="submit" class="button" name="B_CREATE_NPC_QUEST" value="Quest erstellen" />
+    </form>
+</div>
+
+<br>
+<div class="divhead" onclick="toggleMyQuests()" style="cursor: pointer;" id="myQuestsHeader">▶ Meine Quests</div>
+<div class="divbody" id="myQuests" style="display: none;">
+
+    <div class="divhead">Aktive eigene Quests</div>
+    <div class="divbody">
+        {% if MY_ACTIVE_QUESTS|length > 0 %}
+        {% for quest in MY_ACTIVE_QUESTS %}
+        <div class="box" style="margin-bottom: 15px;">
+            <div class="box_title" onclick="toggleQuestDetails({{ quest.getId }})" style="cursor: pointer;"
+                id="questHeader{{ quest.getId }}">▶ Quest #{{ quest.getId }}: {{ quest.getTitle }}</div>
+            <div class="box_body" id="questDetails{{ quest.getId }}" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>Beschreibung:</strong><br>
+                        {{ quest.getText|nl2br }}<br><br>
+
+                        <strong>Zeiten:</strong><br>
+                        Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        Anmeldeschluss: {{ quest.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        {% if quest.getEnd %}
+                        Ende: {{ quest.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        {% endif %}
+                        <br>
+
+                        <strong>Teilnehmer:</strong> {{ quest.getQuestUsers|length }}
+                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}
+                        <a href="javascript:void(0);" onclick="toggleQuestUserManagement({{ quest.getId }})"
+                            class="linkbutton" style="margin-left: 10px; font-size: 80%;">Verwaltung</a><br>
+                        {% if quest.isApprovalRequired %}
+                        <span style="color: orange;">⚠ Bestätigung erforderlich</span><br>
+                        {% endif %}
+                        {% if quest.getPlotId %}
+                        Plot ID: {{ quest.getPlotId }}<br>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% if quest.getPrestige or quest.getCommodityReward or quest.getSpacecrafts or quest.getAwardId
+                        %}
+                        <strong>Belohnungen:</strong><br>
+                        {% if quest.getPrestige %}
+                        <img src="/assets/buttons/prestige.png" title="Prestige" /> {{ quest.getPrestige }} Prestige<br>
+                        {% endif %}
+
+                        {% if quest.getCommodityReward %}
+                        {% for commodityId, amount in quest.getCommodityReward %}
+                        <img src="/assets/commodities/{{ commodityId }}.png" title="Ware" /> {{ amount }}&nbsp;&nbsp;
+                        {% endfor %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getSpacecrafts %}
+                        {% for buildplanId, amount in quest.getSpacecrafts %}
+                        {% set buildplan = BUILDPLANS[buildplanId] is defined ? BUILDPLANS[buildplanId] : null %}
+                        {{ amount }}x
+                        {% if buildplan %}
+                        <img src="/assets/ships/{{ buildplan.getRump.getId }}.png" title="{{ buildplan.getName }}" />
+                        {% for module in buildplan.getModules %}
+                        <img style="margin-right: 5px;"
+                            src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                            title="{{ module.getModule.getName }}" />
+                        {% endfor %}
+                        <img src="/assets/buttons/crew.png" title="Benötigte Crew" /> {{ buildplan.getCrew }}
+                        {% else %}
+                        <img src="/assets/buttons/bauplan.png" title="Unbekannter Bauplan" /> ID {{ buildplanId }}
+                        {% endif %}
+                        <br>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if quest.getAwardId %}
+                        Award ID: {{ quest.getAwardId }}<br>
+                        {% endif %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getFactions %}
+                        <strong>Sichtbar für Fraktionen:</strong><br>
+                        {% for factionId in quest.getFactions %}
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        {% if faction.getId == factionId %}
+                        {{ faction.getName }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getSecret %}
+                        <strong>Geheim für Fraktionen:</strong><br>
+                        {% for factionId in quest.getSecret %}
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        {% if faction.getId == factionId %}
+                        {{ faction.getName }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div id="questUserManagement{{ quest.getId }}"
+                    style="display: none; margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+
+                    {% set activeMembers = quest.getQuestUsers|filter(u => u.getMode.value == 1) %}
+                    {% if activeMembers|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Aktive Mitglieder ({{ activeMembers|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in activeMembers %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set applicants = quest.getQuestUsers|filter(u => u.getMode.value == 2) %}
+                    {% if applicants|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Bewerber ({{ applicants|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in applicants %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <form method="post" action="/npc/index.php" style="display: inline;">
+                                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                        <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                        <input type="hidden" name="quest_user_id" value="{{ questUser.getId }}" />
+                                        <input type="submit" name="B_ACCEPT_QUEST_APPLICATION" value="Annehmen"
+                                            class="button" style="font-size: 70%; padding: 2px; margin-right: 3px;" />
+                                        <input type="submit" name="B_REJECT_QUEST_APPLICATION" value="Ablehnen"
+                                            class="button" style="font-size: 70%; padding: 2px;" />
+                                    </form>
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set invited = quest.getQuestUsers|filter(u => u.getMode.value == 3) %}
+                    {% if invited|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Eingeladen ({{ invited|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in invited %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set rejected = quest.getQuestUsers|filter(u => u.getMode.value == 4) %}
+                    {% if rejected|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Abgelehnt/Ausgeschlossen ({{ rejected|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in rejected %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="box">
+                        <div class="box_title">Aktionen</div>
+                        <div class="box_body">
+                            <form method="post" action="/npc/index.php" style="margin-bottom: 10px;">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                <strong>User einladen:</strong><br>
+                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
+                                    style="width: 300px; margin-top: 5px;" />
+                                <input type="submit" name="B_INVITE_QUEST_USERS" value="Einladen" class="button" />
+                            </form>
+
+                            <form method="post" action="/npc/index.php">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                <strong>User ausschließen:</strong><br>
+                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
+                                    style="width: 300px; margin-top: 5px;" />
+                                <input type="submit" name="B_EXCLUDE_QUEST_USERS" value="Ausschließen" class="button" />
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="text-align: center; padding: 20px; color: #666;">
+            Keine aktiven eigenen Quests vorhanden
+        </div>
+        {% endif %}
+    </div>
+
+    <br>
+
+    <div class="divhead">Abgeschlossene eigene Quests</div>
+    <div class="divbody">
+        {% if MY_FINISHED_QUESTS|length > 0 %}
+        {% for quest in MY_FINISHED_QUESTS %}
+        <div class="box" style="margin-bottom: 15px;">
+            <div class="box_title" onclick="toggleQuestDetails({{ quest.getId }})" style="cursor: pointer;"
+                id="questHeader{{ quest.getId }}">▶ Quest #{{ quest.getId }}: {{ quest.getTitle }}</div>
+            <div class="box_body" id="questDetails{{ quest.getId }}" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>Beschreibung:</strong><br>
+                        {{ quest.getText|nl2br }}<br><br>
+
+                        <strong>Zeiten:</strong><br>
+                        Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        Anmeldeschluss: {{ quest.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        Ende: {{ quest.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                        <br>
+
+                        <strong>Teilnehmer:</strong> {{ quest.getQuestUsers|length }}
+                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}
+                        <a href="javascript:void(0);" onclick="toggleQuestUserManagement({{ quest.getId }})"
+                            class="linkbutton" style="margin-left: 10px; font-size: 80%;">Verwaltung</a><br>
+                        {% if quest.isApprovalRequired %}
+                        <span style="color: orange;">⚠ Bestätigung erforderlich</span><br>
+                        {% endif %}
+                        {% if quest.getPlotId %}
+                        Plot ID: {{ quest.getPlotId }}<br>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% if quest.getPrestige or quest.getCommodityReward or quest.getSpacecrafts or quest.getAwardId
+                        %}
+                        <strong>Belohnungen:</strong><br>
+                        {% if quest.getPrestige %}
+                        <img src="/assets/buttons/prestige.png" title="Prestige" /> {{ quest.getPrestige }} Prestige<br>
+                        {% endif %}
+
+                        {% if quest.getCommodityReward %}
+                        {% for commodityId, amount in quest.getCommodityReward %}
+                        <img src="/assets/commodities/{{ commodityId }}.png" title="Ware" /> {{ amount }}&nbsp;&nbsp;
+                        {% endfor %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getSpacecrafts %}
+                        {% for buildplanId, amount in quest.getSpacecrafts %}
+                        {% set buildplan = BUILDPLANS[buildplanId] is defined ? BUILDPLANS[buildplanId] : null %}
+                        {{ amount }}x
+                        {% if buildplan %}
+                        <img src="/assets/ships/{{ buildplan.getRump.getId }}.png" title="{{ buildplan.getName }}" />
+                        {% for module in buildplan.getModules %}
+                        <img style="margin-right: 5px;"
+                            src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                            title="{{ module.getModule.getName }}" />
+                        {% endfor %}
+                        <img src="/assets/buttons/crew.png" title="Benötigte Crew" /> {{ buildplan.getCrew }}
+                        {% else %}
+                        <img src="/assets/buttons/bauplan.png" title="Unbekannter Bauplan" /> ID {{ buildplanId }}
+                        {% endif %}
+                        <br>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if quest.getAwardId %}
+                        Award ID: {{ quest.getAwardId }}<br>
+                        {% endif %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getFactions %}
+                        <strong>Sichtbar für Fraktionen:</strong><br>
+                        {% for factionId in quest.getFactions %}
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        {% if faction.getId == factionId %}
+                        {{ faction.getName }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        <br>
+                        {% endif %}
+
+                        {% if quest.getSecret %}
+                        <strong>Geheim für Fraktionen:</strong><br>
+                        {% for factionId in quest.getSecret %}
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        {% if faction.getId == factionId %}
+                        {{ faction.getName }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div id="questUserManagement{{ quest.getId }}"
+                    style="display: none; margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+
+                    {% set activeMembers = quest.getQuestUsers|filter(u => u.getMode.value == 1) %}
+                    {% if activeMembers|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Aktive Mitglieder ({{ activeMembers|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in activeMembers %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set applicants = quest.getQuestUsers|filter(u => u.getMode.value == 2) %}
+                    {% if applicants|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Bewerber ({{ applicants|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in applicants %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <form method="post" action="/npc/index.php" style="display: inline;">
+                                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                        <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                        <input type="hidden" name="quest_user_id" value="{{ questUser.getId }}" />
+                                        <input type="submit" name="B_ACCEPT_QUEST_APPLICATION" value="Annehmen"
+                                            class="button" style="font-size: 70%; padding: 2px; margin-right: 3px;" />
+                                        <input type="submit" name="B_REJECT_QUEST_APPLICATION" value="Ablehnen"
+                                            class="button" style="font-size: 70%; padding: 2px;" />
+                                    </form>
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set invited = quest.getQuestUsers|filter(u => u.getMode.value == 3) %}
+                    {% if invited|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Eingeladen ({{ invited|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in invited %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% set rejected = quest.getQuestUsers|filter(u => u.getMode.value == 4) %}
+                    {% if rejected|length > 0 %}
+                    <div class="box" style="margin-bottom: 10px;">
+                        <div class="box_title">Abgelehnt/Ausgeschlossen ({{ rejected|length }})</div>
+                        <div class="box_body">
+                            {% for questUser in rejected %}
+                            {% set user = questUser.getUser %}
+                            {% if user %}
+                            <div class="allianceMember" style="margin-bottom: 5px;">
+                                <div style="width: 25px; height: 25px;">
+                                    <img src="/assets/avatars/{{ user.getId }}_small.png"
+                                        style="width: 25px; height: 25px;" />
+                                </div>
+                                <div>{{ user.getName|bbcode }}</div>
+                                <div class="allianceMemberButtons">
+                                    <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                                </div>
+                                <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="box">
+                        <div class="box_title">Aktionen</div>
+                        <div class="box_body">
+                            <form method="post" action="/npc/index.php" style="margin-bottom: 10px;">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                <strong>User einladen:</strong><br>
+                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
+                                    style="width: 300px; margin-top: 5px;" />
+                                <input type="submit" name="B_INVITE_QUEST_USERS" value="Einladen" class="button" />
+                            </form>
+
+                            <form method="post" action="/npc/index.php">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                                <strong>User ausschließen:</strong><br>
+                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
+                                    style="width: 300px; margin-top: 5px;" />
+                                <input type="submit" name="B_EXCLUDE_QUEST_USERS" value="Ausschließen" class="button" />
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="text-align: center; padding: 20px; color: #666;">
+            Keine abgeschlossenen eigenen Quests vorhanden
+        </div>
+        {% endif %}
+    </div>
+
+
+</div>
+
+<div id="questUserManagementTemplate" style="display: none;">
+</div>
+
+{% endblock %}

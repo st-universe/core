@@ -92,6 +92,9 @@ use Stu\Orm\Entity\Names;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\NPCLog;
+use Stu\Orm\Entity\NPCQuest;
+use Stu\Orm\Entity\NPCQuestLog;
+use Stu\Orm\Entity\NPCQuestUser;
 use Stu\Orm\Entity\OpenedAdventDoor;
 use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PirateSetup;
@@ -254,6 +257,9 @@ return [
     NewsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(News::class),
     NoteRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Note::class),
     NPCLogRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(NPCLog::class),
+    NPCQuestRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(NPCQuest::class),
+    NPCQuestLogRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(NPCQuestLog::class),
+    NPCQuestUserRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(NPCQuestUser::class),
     OpenedAdventDoorRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(OpenedAdventDoor::class),
     NamesRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Names::class),
     PartnerSiteRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PartnerSite::class),

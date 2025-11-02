@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#121220">
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/lib/Sortable.min.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/default.js"></script>
+    <script src="/static/js/npc.js"></script>
+    <title>NPC Quests</title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+</head>
+
+<body onload="startUp();">
+    <div id="popupWindow" class="popup" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+<script>
+    appendJsAsync('/static/js/popup.js');
+</script>
+    <div class="container">
+        <div class="header">
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&uuml;ck zu Spielmodus">
+                <br>
+                <span style="color: orange; font-size: 150%;">Klick f&uuml;hrt zur&uuml;ck aufs Maindesk</span>
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_TOOLS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_TOOLS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="NPC Tools">
+        <div class="navitem_title">NPC Tools</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_NPC_SETTINGS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_NPC_SETTINGS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="NPC Settings">
+        <div class="navitem_title">NPC Settings</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_NPC_LOG=1'; }" onmouseover="cp('nav_item_history','navigation/menu_history1', 'png')" onmouseout="cp('nav_item_history','navigation/menu_history0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_NPC_LOG=1">
+        <img class="navitem_img" src="/assets/navigation/menu_history0.png" id="nav_item_history" title="NPC Log">
+        <div class="navitem_title">NPC Log</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_NPC_QUESTS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_NPC_QUESTS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="NPC Quests">
+        <div class="navitem_title">NPC Quests</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/npc/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+    <a class="navitem_link" href="/npc/?SHOW_PLAYER_LIST=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="User">
+        <div class="navitem_title">User</div>
+    </a>
+</div>
+
+
+            </div>
+            <div id="innerContent" class="innerContent">
+                
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="/npc/?SHOW_NPC_QUESTS=1">
+            NPC Quests
+        </a>
+                    </div>
+</div>
+<br>
+
+<div id="result" style="display: none;">..</div>
+
+<div class="divhead" onclick="toggleQuestCreator()" style="cursor: pointer;" id="questCreatorHeader">
+    &#9654; Neue Quest erstellen</div>
+<div class="divbody" id="questCreator" style="display: none;">
+    <form action="/npc/index.php" method="post" name="createquest" id="createquest">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+
+        <table class="tcal">
+            <tr>
+                <td class="m">Titel:</td>
+                <td><input type="text" name="title" style="width: 400px;" maxlength="200" value="" required></td>
+            </tr>
+            <tr>
+                <td class="m">Beschreibung:</td>
+                <td><textarea name="text" style="width: 600px; height: 150px;" required></textarea></td>
+            </tr>
+            <tr>
+                <td class="m">Fraktionen:</td>
+                <td>
+                                        <label><input type="checkbox" name="factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
+                                        <label><input type="checkbox" name="factions[]" value="2"> Romulanisches Imperium</label><br>
+                                        <label><input type="checkbox" name="factions[]" value="3"> Klingonisches Imperium</label><br>
+                                        <label><input type="checkbox" name="factions[]" value="4"> Cardassianische Union</label><br>
+                                        <label><input type="checkbox" name="factions[]" value="5"> Ferengi Allianz</label><br>
+                                    </td>
+            </tr>
+            <tr>
+                <td class="m">Prestige Belohnung:</td>
+                <td>
+<input type="number" name="prestige" min="1" value="">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <div class="divhead">Waren-Belohnung</div>
+        <div class="divbody">
+            <div id="commodityRewardContainer">
+                                <div class="commodity-reward-row" data-row-index="0">
+                    Ware: <select name="commodities[0][id]" class="commoditySelect" style="width:15%;">
+                        <option value="0">----------------------</option>
+                                                <option value="1">Nahrung</option>
+                                                <option value="2">Baumaterial</option>
+                                                <option value="3">Chemische Komponenten</option>
+                                                <option value="4">Transparentes Aluminium</option>
+                                                <option value="5">Deuterium</option>
+                                                <option value="6">Antimaterie</option>
+                                                <option value="7">Plasma</option>
+                                                <option value="8">Dilithium</option>
+                                                <option value="11">Iridium-Erz</option>
+                                                <option value="12">Galazit-Erz</option>
+                                                <option value="13">Nitrium-Erz</option>
+                                                <option value="14">Magnesit-Erz</option>
+                                                <option value="15">Kelbonit-Erz</option>
+                                                <option value="16">Talgonit-Erz</option>
+                                                <option value="19">Tritanium-Erz</option>
+                                                <option value="20">Iridium</option>
+                                                <option value="21">Duranium</option>
+                                                <option value="22">Galazit</option>
+                                                <option value="23">Nitrium</option>
+                                                <option value="24">Magnesit</option>
+                                                <option value="25">Kelbonit</option>
+                                                <option value="26">Talgonit</option>
+                                                <option value="29">Tritanium</option>
+                                                <option value="32">Hochenergie-Plasma</option>
+                                                <option value="31">Isolineare Speicherchips</option>
+                                                <option value="33">Nitrium-Schaltkreise</option>
+                                                <option value="34">Subraum-Feldspulen</option>
+                                                <option value="35">Metaphasen-Konverter</option>
+                                                <option value="36">Mikrodyne-Modulator</option>
+                                                <option value="40">Chateau Picard</option>
+                                                <option value="41">Bat'leth</option>
+                                                <option value="42">Container</option>
+                                                <option value="43">selbstdichtende Schaftbolzen</option>
+                                                <option value="44">Kontaminiertes-Warpplasma</option>
+                                                <option value="45">Werkzeugkoffer</option>
+                                                <option value="46">Blutwein</option>
+                                                <option value="47">Targ</option>
+                                                <option value="48">Tribble</option>
+                                                <option value="49">Romulanisches Ale</option>
+                                                <option value="50">Latinum</option>
+                                                <option value="52">Kanar</option>
+                                                <option value="53">Slug-O-Cola</option>
+                                                <option value="54">Ger&auml;t 2</option>
+                                                <option value="55">verwanzte Replikation von Ger&auml;t 2</option>
+                                                <option value="56">legend&auml;res Bat'leth</option>
+                                                <option value="57">Floppy</option>
+                                                <option value="58">Klingonischer Saboteur</option>
+                                                <option value="60">Adventspunkt</option>
+                                                <option value="61">Raumkraut</option>
+                                                <option value="62">Schnupftabak</option>
+                                                <option value="63">Deuterium Partikel</option>
+                                                <option value="64">Antimaterie Partikel</option>
+                                                <option value="65">Plasma Partikel</option>
+                                                <option value="66">Hoch-Energie Plasma Partikel</option>
+                                                <option value="67">Tritanium Partikel</option>
+                                                <option value="68">Talgonium Gas</option>
+                                                <option value="69">Nitrium Partikel</option>
+                                                <option value="70">Metaphasen Gas</option>
+                                                <option value="71">Galonium Gas</option>
+                                                <option value="72">Kelbonium Gas</option>
+                                                <option value="73">Osterei</option>
+                                                <option value="81">Micro-Photonentorpedo</option>
+                                                <option value="82">Leichter Photonentorpedo</option>
+                                                <option value="83">Photonentorpedo</option>
+                                                <option value="84">Quantentorpedo</option>
+                                                <option value="85">Schwerer Quantentorpedo</option>
+                                                <option value="86">Plasmatorpedo</option>
+                                                <option value="87">Schwerer Plasmatorpedo</option>
+                                                <option value="88">Boje</option>
+                                                <option value="110">Tomatensch&auml;ler</option>
+                                                <option value="1000">Scheiben vakuumgetrockneter Hux</option>
+                                                <option value="9999">Der Zonk</option>
+                                                <option value="10001">Ersatzteil</option>
+                                                <option value="10002">Systemkomponente</option>
+                                                <option value="10101">Monotanium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="10102">Monotanium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="10103">Monotanium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="10104">Monotanium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="10105">Monotanium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="10106">Monotanium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="10111">Duranium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="10112">Duranium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="10113">Duranium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="10114">Duranium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="10115">Duranium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="10116">Duranium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="10121">Tritanium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="10122">Tritanium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="10123">Tritanium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="10124">Tritanium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="10125">Tritanium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="10126">Tritanium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="10201">Elektromagnetische-Schilde (Klasse 1)</option>
+                                                <option value="10202">Elektromagnetische-Schilde (Klasse 2)</option>
+                                                <option value="10203">Elektromagnetische-Schilde (Klasse 3)</option>
+                                                <option value="10204">Elektromagnetische-Schilde (Klasse 4)</option>
+                                                <option value="10205">Elektromagnetische-Schilde (Klasse 5)</option>
+                                                <option value="10206">Elektromagnetische-Schilde (Klasse 6)</option>
+                                                <option value="10211">Phasische-Schilde (Klasse 1)</option>
+                                                <option value="10212">Phasische-Schilde (Klasse 2)</option>
+                                                <option value="10213">Phasische-Schilde (Klasse 3)</option>
+                                                <option value="10214">Phasische-Schilde (Klasse 4)</option>
+                                                <option value="10215">Phasische-Schilde (Klasse 5)</option>
+                                                <option value="10216">Phasische-Schilde (Klasse 6)</option>
+                                                <option value="10221">Plasmatische-Schilde (Klasse 1)</option>
+                                                <option value="10222">Plasmatische-Schilde (Klasse 2)</option>
+                                                <option value="10223">Plasmatische-Schilde (Klasse 3)</option>
+                                                <option value="10224">Plasmatische-Schilde (Klasse 4)</option>
+                                                <option value="10225">Plasmatische-Schilde (Klasse 5)</option>
+                                                <option value="10226">Plasmatische-Schilde (Klasse 6)</option>
+                                                <option value="10271">Kazon-Schilde (Klasse 1)</option>
+                                                <option value="10272">Kazon-Schilde (Klasse 2)</option>
+                                                <option value="10273">Kazon-Schilde (Klasse 3)</option>
+                                                <option value="10274">Kazon-Schilde (Klasse 4)</option>
+                                                <option value="10275">Kazon-Schilde (Klasse 5)</option>
+                                                <option value="10276">Kazon-Schilde (Klasse 6)</option>
+                                                <option value="10301">EPS-Gitter (Klasse 1)</option>
+                                                <option value="10302">EPS-Gitter (Klasse 2)</option>
+                                                <option value="10303">EPS-Gitter (Klasse 3)</option>
+                                                <option value="10304">EPS-Gitter (Klasse 4)</option>
+                                                <option value="10305">EPS-Gitter (Klasse 5)</option>
+                                                <option value="10306">EPS-Gitter (Klasse 6)</option>
+                                                <option value="10351">Ferengi EPS-Gitter (Klasse 1)</option>
+                                                <option value="10352">Ferengi EPS-Gitter (Klasse 2)</option>
+                                                <option value="10353">Ferengi EPS-Gitter (Klasse 3)</option>
+                                                <option value="10354">Ferengi EPS-Gitter (Klasse 4)</option>
+                                                <option value="10355">Ferengi EPS-Gitter (Klasse 5)</option>
+                                                <option value="10356">Ferengi EPS-Gitter (Klasse 6)</option>
+                                                <option value="10401">Impulsantrieb (Klasse 1)</option>
+                                                <option value="10402">Impulsantrieb (Klasse 2)</option>
+                                                <option value="10403">Impulsantrieb (Klasse 3)</option>
+                                                <option value="10404">Impulsantrieb (Klasse 4)</option>
+                                                <option value="10405">Impulsantrieb (Klasse 5)</option>
+                                                <option value="10406">Impulsantrieb (Klasse 6)</option>
+                                                <option value="10431">Klingonischer Impulsantrieb (Klasse 1)</option>
+                                                <option value="10432">Klingonischer Impulsantrieb (Klasse 2)</option>
+                                                <option value="10433">Klingonischer Impulsantrieb (Klasse 3)</option>
+                                                <option value="10434">Klingonischer Impulsantrieb (Klasse 4)</option>
+                                                <option value="10435">Klingonischer Impulsantrieb (Klasse 5)</option>
+                                                <option value="10436">Klingonischer Impulsantrieb (Klasse 6)</option>
+                                                <option value="10501">Warpkern (Klasse 1)</option>
+                                                <option value="10502">Warpkern (Klasse 2)</option>
+                                                <option value="10503">Warpkern (Klasse 3)</option>
+                                                <option value="10504">Warpkern (Klasse 4)</option>
+                                                <option value="10505">Warpkern (Klasse 5)</option>
+                                                <option value="10506">Warpkern (Klasse 6)</option>
+                                                <option value="10511">F&ouml;derations Warpkern (Klasse 1)</option>
+                                                <option value="10512">F&ouml;derations Warpkern (Klasse 2)</option>
+                                                <option value="10513">F&ouml;derations Warpkern (Klasse 3)</option>
+                                                <option value="10514">F&ouml;derations Warpkern (Klasse 4)</option>
+                                                <option value="10515">F&ouml;derations Warpkern (Klasse 5)</option>
+                                                <option value="10516">F&ouml;derations Warpkern (Klasse 6)</option>
+                                                <option value="10521">Romulanischer Singularit&auml;tsreaktor (Klasse 1)</option>
+                                                <option value="10522">Romulanischer Singularit&auml;tsreaktor (Klasse 2)</option>
+                                                <option value="10523">Romulanischer Singularit&auml;tsreaktor (Klasse 3)</option>
+                                                <option value="10524">Romulanischer Singularit&auml;tsreaktor (Klasse 4)</option>
+                                                <option value="10525">Romulanischer Singularit&auml;tsreaktor (Klasse 5)</option>
+                                                <option value="10526">Romulanischer Singularit&auml;tsreaktor (Klasse 6)</option>
+                                                <option value="10601">Sensorenphalanx (Klasse 1)</option>
+                                                <option value="10602">Sensorenphalanx (Klasse 2)</option>
+                                                <option value="10603">Sensorenphalanx (Klasse 3)</option>
+                                                <option value="10604">Sensorenphalanx (Klasse 4)</option>
+                                                <option value="10605">Sensorenphalanx (Klasse 5)</option>
+                                                <option value="10606">Sensorenphalanx (Klasse 6)</option>
+                                                <option value="10641">Cardassianische Sensorenphalanx (Klasse 1)</option>
+                                                <option value="10642">Cardassianische Sensorenphalanx (Klasse 2)</option>
+                                                <option value="10643">Cardassianische Sensorenphalanx (Klasse 3)</option>
+                                                <option value="10644">Cardassianische Sensorenphalanx (Klasse 4)</option>
+                                                <option value="10645">Cardassianische Sensorenphalanx (Klasse 5)</option>
+                                                <option value="10646">Cardassianische Sensorenphalanx (Klasse 6)</option>
+                                                <option value="10701">F&ouml;derations Phaser (Klasse 1)</option>
+                                                <option value="10702">F&ouml;derations Phaser (Klasse 2)</option>
+                                                <option value="10703">F&ouml;derations Phaser (Klasse 3)</option>
+                                                <option value="10704">F&ouml;derations Phaser (Klasse 4)</option>
+                                                <option value="10705">F&ouml;derations Phaser (Klasse 5)</option>
+                                                <option value="10706">F&ouml;derations Phaser (Klasse 6)</option>
+                                                <option value="10721">Romulanischer Disruptor (Klasse 1)</option>
+                                                <option value="10722">Romulanischer Disruptor (Klasse 2)</option>
+                                                <option value="10723">Romulanischer Disruptor (Klasse 3)</option>
+                                                <option value="10724">Romulanischer Disruptor (Klasse 4)</option>
+                                                <option value="10725">Romulanischer Disruptor (Klasse 5)</option>
+                                                <option value="10726">Romulanischer Disruptor (Klasse 6)</option>
+                                                <option value="10731">Klingonischer Disruptor (Klasse 1)</option>
+                                                <option value="10732">Klingonischer Disruptor (Klasse 2)</option>
+                                                <option value="10733">Klingonischer Disruptor (Klasse 3)</option>
+                                                <option value="10734">Klingonischer Disruptor (Klasse 4)</option>
+                                                <option value="10735">Klingonischer Disruptor (Klasse 5)</option>
+                                                <option value="10736">Klingonischer Disruptor (Klasse 6)</option>
+                                                <option value="10741">Cardassianischer Spiralwellendisruptor (Klasse 1)</option>
+                                                <option value="10742">Cardassianischer Spiralwellendisruptor (Klasse 2)</option>
+                                                <option value="10743">Cardassianischer Spiralwellendisruptor (Klasse 3)</option>
+                                                <option value="10744">Cardassianischer Spiralwellendisruptor (Klasse 4)</option>
+                                                <option value="10745">Cardassianischer Spiralwellendisruptor (Klasse 5)</option>
+                                                <option value="10746">Cardassianischer Spiralwellendisruptor (Klasse 6)</option>
+                                                <option value="10751">Ferengi Phaser (Klasse 1)</option>
+                                                <option value="10752">Ferengi Phaser (Klasse 2)</option>
+                                                <option value="10753">Ferengi Phaser (Klasse 3)</option>
+                                                <option value="10754">Ferengi Phaser (Klasse 4)</option>
+                                                <option value="10755">Ferengi Phaser (Klasse 5)</option>
+                                                <option value="10756">Ferengi Phaser (Klasse 6)</option>
+                                                <option value="10771">Kazon Phaser (Klasse 1)</option>
+                                                <option value="10772">Kazon Phaser (Klasse 2)</option>
+                                                <option value="10773">Kazon Phaser (Klasse 3)</option>
+                                                <option value="10774">Kazon Phaser (Klasse 4)</option>
+                                                <option value="10775">Kazon Phaser (Klasse 5)</option>
+                                                <option value="10776">Kazon Phaser (Klasse 6)</option>
+                                                <option value="10801">Torpedobank (Klasse 1)</option>
+                                                <option value="10802">Torpedobank (Klasse 2)</option>
+                                                <option value="10803">Torpedobank (Klasse 3)</option>
+                                                <option value="10804">Torpedobank (Klasse 4)</option>
+                                                <option value="10805">Torpedobank (Klasse 5)</option>
+                                                <option value="10806">Torpedobank (Klasse 6)</option>
+                                                <option value="10831">Klingonische Torpedobank (Klasse 1)</option>
+                                                <option value="10832">Klingonische Torpedobank (Klasse 2)</option>
+                                                <option value="10833">Klingonische Torpedobank (Klasse 3)</option>
+                                                <option value="10834">Klingonische Torpedobank (Klasse 4)</option>
+                                                <option value="10835">Klingonische Torpedobank (Klasse 5)</option>
+                                                <option value="10836">Klingonische Torpedobank (Klasse 6)</option>
+                                                <option value="10901">Warpantrieb (Klasse 1)</option>
+                                                <option value="10902">Warpantrieb (Klasse 2)</option>
+                                                <option value="10903">Warpantrieb (Klasse 3)</option>
+                                                <option value="10904">Warpantrieb (Klasse 4)</option>
+                                                <option value="10905">Warpantrieb (Klasse 5)</option>
+                                                <option value="10906">Warpantrieb (Klasse 6)</option>
+                                                <option value="10911">F&ouml;derations Warpantrieb (Klasse 1)</option>
+                                                <option value="10912">F&ouml;derations Warpantrieb (Klasse 2)</option>
+                                                <option value="10913">F&ouml;derations Warpantrieb (Klasse 3)</option>
+                                                <option value="10914">F&ouml;derations Warpantrieb (Klasse 4)</option>
+                                                <option value="10915">F&ouml;derations Warpantrieb (Klasse 5)</option>
+                                                <option value="10916">F&ouml;derations Warpantrieb (Klasse 6)</option>
+                                                <option value="11101">ablative Monotanium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="11102">ablative Monotanium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="11103">ablative Monotanium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="11104">ablative Monotanium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="11105">ablative Monotanium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="11106">ablative Monotanium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="11111">ablative Duranium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="11112">ablative Duranium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="11113">ablative Duranium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="11114">ablative Duranium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="11115">ablative Duranium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="11116">ablative Duranium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="11121">ablative Tritanium-H&uuml;llenpanzerung (Klasse 1)</option>
+                                                <option value="11122">ablative Tritanium-H&uuml;llenpanzerung (Klasse 2)</option>
+                                                <option value="11123">ablative Tritanium-H&uuml;llenpanzerung (Klasse 3)</option>
+                                                <option value="11124">ablative Tritanium-H&uuml;llenpanzerung (Klasse 4)</option>
+                                                <option value="11125">ablative Tritanium-H&uuml;llenpanzerung (Klasse 5)</option>
+                                                <option value="11126">ablative Tritanium-H&uuml;llenpanzerung (Klasse 6)</option>
+                                                <option value="11201">Polarische-Schilde (Klasse 1)</option>
+                                                <option value="11202">Polarische-Schilde (Klasse 2)</option>
+                                                <option value="11203">Polarische-Schilde (Klasse 3)</option>
+                                                <option value="11204">Polarische-Schilde (Klasse 4)</option>
+                                                <option value="11205">Polarische-Schilde (Klasse 5)</option>
+                                                <option value="11206">Polarische-Schilde (Klasse 6)</option>
+                                                <option value="11501">Fusionsreaktor (Klasse 1)</option>
+                                                <option value="11701">F&ouml;derations Puls-Phaser (Klasse 1)</option>
+                                                <option value="11702">F&ouml;derations Puls-Phaser (Klasse 2)</option>
+                                                <option value="11703">F&ouml;derations Puls-Phaser (Klasse 3)</option>
+                                                <option value="11704">F&ouml;derations Puls-Phaser (Klasse 4)</option>
+                                                <option value="11705">F&ouml;derations Puls-Phaser (Klasse 5)</option>
+                                                <option value="11706">F&ouml;derations Puls-Phaser (Klasse 6)</option>
+                                                <option value="11721">Romulanischer Puls-Disruptor (Klasse 1)</option>
+                                                <option value="11722">Romulanischer Puls-Disruptor (Klasse 2)</option>
+                                                <option value="11723">Romulanischer Puls-Disruptor (Klasse 3)</option>
+                                                <option value="11724">Romulanischer Puls-Disruptor (Klasse 4)</option>
+                                                <option value="11725">Romulanischer Puls-Disruptor (Klasse 5)</option>
+                                                <option value="11726">Romulanischer Puls-Disruptor (Klasse 6)</option>
+                                                <option value="11731">Klingonischer Puls-Disruptor (Klasse 1)</option>
+                                                <option value="11732">Klingonischer Puls-Disruptor (Klasse 2)</option>
+                                                <option value="11733">Klingonischer Puls-Disruptor (Klasse 3)</option>
+                                                <option value="11734">Klingonischer Puls-Disruptor (Klasse 4)</option>
+                                                <option value="11735">Klingonischer Puls-Disruptor (Klasse 5)</option>
+                                                <option value="11736">Klingonischer Puls-Disruptor (Klasse 6)</option>
+                                                <option value="11741">Cardassianischer Puls-Disruptor (Klasse 1)</option>
+                                                <option value="11742">Cardassianischer Puls-Disruptor (Klasse 2)</option>
+                                                <option value="11743">Cardassianischer Puls-Disruptor (Klasse 3)</option>
+                                                <option value="11744">Cardassianischer Puls-Disruptor (Klasse 4)</option>
+                                                <option value="11745">Cardassianischer Puls-Disruptor (Klasse 5)</option>
+                                                <option value="11746">Cardassianischer Puls-Disruptor (Klasse 6)</option>
+                                                <option value="11751">Ferengi Puls-Phaser (Klasse 1)</option>
+                                                <option value="11752">Ferengi Puls-Phaser (Klasse 2)</option>
+                                                <option value="11753">Ferengi Puls-Phaser (Klasse 3)</option>
+                                                <option value="11754">Ferengi Puls-Phaser (Klasse 4)</option>
+                                                <option value="11755">Ferengi Puls-Phaser (Klasse 5)</option>
+                                                <option value="11756">Ferengi Puls-Phaser (Klasse 6)</option>
+                                                <option value="11771">Kazon Pulsphaser (Klasse 1)</option>
+                                                <option value="11772">Kazon Pulsphaser (Klasse 2)</option>
+                                                <option value="11773">Kazon Pulsphaser (Klasse 3)</option>
+                                                <option value="11774">Kazon Puslphaser (Klasse 4)</option>
+                                                <option value="11775">Kazon Pulsphaser (Klasse 5)</option>
+                                                <option value="11776">Kazon Pulsphaser (Klasse 6)</option>
+                                                <option value="11801">Mehrfach-Torpedogesch&uuml;tz (Klasse 1)</option>
+                                                <option value="11802">Mehrfach-Torpedogesch&uuml;tz (Klasse 2)</option>
+                                                <option value="11803">Mehrfach-Torpedogesch&uuml;tz (Klasse 3)</option>
+                                                <option value="11804">Mehrfach-Torpedogesch&uuml;tz (Klasse 4)</option>
+                                                <option value="11805">Mehrfach-Torpedogesch&uuml;tz (Klasse 5)</option>
+                                                <option value="11806">Mehrfach-Torpedogesch&uuml;tz (Klasse 6)</option>
+                                                <option value="11807">RPG-Modul</option>
+                                                <option value="11841">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 1)</option>
+                                                <option value="11842">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 2)</option>
+                                                <option value="11843">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 3)</option>
+                                                <option value="11844">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 4)</option>
+                                                <option value="11845">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 5)</option>
+                                                <option value="11846">Cardassianisches Mehrfach-Torpedogesch&uuml;tz (Klasse 6)</option>
+                                                <option value="11901">Computer (Klasse 1)</option>
+                                                <option value="11902">Computer (Klasse 2)</option>
+                                                <option value="11903">Computer (Klasse 3)</option>
+                                                <option value="11904">Computer (Klasse 4)</option>
+                                                <option value="11905">Computer (Klasse 5)</option>
+                                                <option value="11906">Computer (Klasse 6)</option>
+                                                <option value="11921">Romulanischer Computer (Klasse 1)</option>
+                                                <option value="11922">Romulanischer Computer (Klasse 2)</option>
+                                                <option value="11923">Romulanischer Computer (Klasse 3)</option>
+                                                <option value="11924">Romulanischer Computer (Klasse 4)</option>
+                                                <option value="11925">Romulanischer Computer (Klasse 5)</option>
+                                                <option value="11926">Romulanischer Computer (Klasse 6)</option>
+                                                <option value="19001">Tarnvorrichtung</option>
+                                                <option value="19003">Tachyon-Scanner</option>
+                                                <option value="19005">Crewtransport-Modul</option>
+                                                <option value="19006">Astrometrie-Labor</option>
+                                                <option value="19007">Subraumfeldscanner</option>
+                                                <option value="19008">Matrixsensoren</option>
+                                                <option value="19009">Torpedotransportmodul</option>
+                                                <option value="19010">Shuttlerampe</option>
+                                                <option value="19070">Transwarp-Spule</option>
+                                                <option value="19071">Netzspinner</option>
+                                                <option value="19072">Marker</option>
+                                                <option value="19073">Bussard-Kollektor</option>
+                                                <option value="19074">Ferengi Bussard-Kollektor</option>
+                                                <option value="19075">Aggregations-System</option>
+                                                <option value="19076">Ferengi Aggregations-System</option>
+                                            </select>
+                    Anzahl: <input type="number" name="commodities[0][amount]" min="1" style="width: 80px;">
+                    <br><br>
+                </div>
+                            </div>
+            <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRewardRow()">
+            <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte l&ouml;schen" onclick="removeLastCommodityRewardRow()" style="display:none;">
+        </div>
+
+        <br>
+        <div class="divhead">Raumschiff-Belohnung</div>
+        <div class="divbody">
+            <div id="spacecraftRewardContainer">
+                                <div class="spacecraft-reward-row" data-row-index="0">
+                    Raumschiff ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;">
+                    Anzahl: <input type="number" name="spacecrafts[0][amount]" min="1" style="width: 80px;">
+                    <br><br>
+                </div>
+                            </div>
+            <input type="button" class="button" value="Weiteres Raumschiff" onclick="addSpacecraftRewardRow()">
+            <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte l&ouml;schen" onclick="removeLastSpacecraftRewardRow()" style="display:none;">
+        </div>
+
+        <br>
+        <table class="tcal">
+            <tr>
+                <td class="m">Award ID:</td>
+                <td><input type="number" name="award_id" min="1" value=""></td>
+            </tr>
+            <tr>
+                <td class="m">Start:</td>
+                <td>
+                    Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
+                    Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM" value="" required style="width: 60px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Anmeldeschluss:</td>
+                <td>
+                    Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
+                    Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM" value="" required style="width: 60px;">
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Geheim f&uuml;r Fraktionen:</td>
+                <td>
+                                        <label><input type="checkbox" name="secret_factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
+                                        <label><input type="checkbox" name="secret_factions[]" value="2"> Romulanisches Imperium</label><br>
+                                        <label><input type="checkbox" name="secret_factions[]" value="3"> Klingonisches Imperium</label><br>
+                                        <label><input type="checkbox" name="secret_factions[]" value="4"> Cardassianische Union</label><br>
+                                        <label><input type="checkbox" name="secret_factions[]" value="5"> Ferengi Allianz</label><br>
+                                    </td>
+            </tr>
+            <tr>
+                <td class="m">Best&auml;tigung nach Bewerbung:</td>
+                <td><input type="checkbox" name="approval_required" value="1"></td>
+            </tr>
+            <tr>
+                <td class="m">Maximale Teilnehmer:</td>
+                <td>
+<input type="number" name="applicant_max" min="1" value="">
+                </td>
+            </tr>
+            <tr>
+                <td class="m">Plot ID:</td>
+                <td><input type="number" name="plot_id" min="1" value=""></td>
+            </tr>
+        </table>
+
+        <br>
+        <input type="submit" class="button" name="B_CREATE_NPC_QUEST" value="Quest erstellen">
+    </form>
+</div>
+
+<br>
+<div class="divhead" onclick="toggleMyQuests()" style="cursor: pointer;" id="myQuestsHeader">&#9654; Meine Quests</div>
+<div class="divbody" id="myQuests" style="display: none;">
+
+    <div class="divhead">Aktive eigene Quests</div>
+    <div class="divbody">
+                <div style="text-align: center; padding: 20px; color: #666;">
+            Keine aktiven eigenen Quests vorhanden
+        </div>
+            </div>
+
+    <br>
+
+    <div class="divhead">Abgeschlossene eigene Quests</div>
+    <div class="divbody">
+                <div style="text-align: center; padding: 20px; color: #666;">
+            Keine abgeschlossenen eigenen Quests vorhanden
+        </div>
+            </div>
+
+
+</div>
+
+<div id="questUserManagementTemplate" style="display: none;">
+</div>
+
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>
