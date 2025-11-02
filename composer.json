@@ -44,7 +44,6 @@
     "crunzphp/crunz": "^3.4",
     "cweagans/composer-patches": "^1.7",
     "devster/ubench": "^2",
-    "doctrine/annotations": "^2.0",
     "doctrine/migrations": "^3.8",
     "doctrine/orm": "^3.0",
     "doctrine/persistence": "^4.0",
