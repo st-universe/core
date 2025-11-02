@@ -1,5 +1,5 @@
---- a/JBBCode/Parser.php   2025-07-06 09:49:56.849569800 -0300
-+++ b/JBBCode/Parser.php   2025-07-06 09:57:23.776283600 -0300
+--- a/JBBCode/Parser.php
++++ b/JBBCode/Parser.php
 @@ -60,7 +60,7 @@
       * @return Parser
       */
