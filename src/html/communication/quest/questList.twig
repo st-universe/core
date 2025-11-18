@@ -1,0 +1,57 @@
+{% block body %}
+{% for quest in QUEST_LIST %}
+<div class="plotListItem">
+  <div>
+    <div class="plotTitle">
+      <a href="?SHOW_QUEST=1&questid={{ quest.getId }}">{{ quest.getTitle }}</a>
+      {% if SHOW_STATUS == 'active' and quest.getId not in USER_QUEST_IDS %}
+      {% set currentTime = "now"|date('U') %}
+      {% if quest.getApplicationEnd > currentTime %}
+      <span style="color: #15ff00; font-size: 90%; margin-left: 10px;">Bewerbung möglich</span>
+      {% endif %}
+      {% endif %}
+      {% if SHOW_STATUS == 'active' and quest.getId in USER_QUEST_IDS %}
+      {% set userQuestData = quest.getQuestUsers|filter(u => u.getUserId == app.user.getId)|first %}
+      {% if userQuestData and userQuestData.getMode.value == 3 %}
+      <span style="color: #c2b942; font-size: 90%; margin-left: 10px;">Eingeladen</span>
+      {% endif %}
+      {% endif %}
+    </div>
+    <div>
+      {% set activeMembersCount = quest.getQuestUsers|filter(u => u.getMode.value == 1)|length %}
+      {{ activeMembersCount }} Teilnehmer
+      {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}
+
+      {% if quest.getId in USER_QUEST_IDS %}
+      {% set userQuestData = quest.getQuestUsers|filter(u => u.getUserId == app.user.getId)|first %}
+      {% if userQuestData %}
+      - <span style="color: #c2b942;">{{ userQuestData.getMode.getDescription }}</span>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div>
+    <div>
+      Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}
+    </div>
+    <div>
+      <span>Status:</span>
+      {% if quest.getEnd is null %}
+      <span style="color: #15ff00;">Aktiv</span>
+      {% else %}
+      <span>Beendet am {{ quest.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div>
+    {% if quest.getPrestige %}
+    <img src="/assets/buttons/prestige.png" title="Prestige" style="vertical-align: middle;" /> {{ quest.getPrestige
+    }}<br>
+    {% endif %}
+    {% if quest.getPlot %}
+    <span style="font-size: 90%;">Plot: {{ quest.getPlot.getTitle }}</span>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

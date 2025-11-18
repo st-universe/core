@@ -1,0 +1,196 @@
+{% if QUEST is defined %}
+<div class="box" style="margin-bottom: 15px;">
+    <div class="box_title">Quest: {{ QUEST.getTitle }}</div>
+    <div class="box_body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <strong>Beschreibung:</strong><br>
+                {{ QUEST.getText|bbcode|nl2br|raw }}<br><br>
+
+                <strong>Quest-Leiter:</strong><br>
+                {{ QUEST.getUser.getName|bbcode }}<br><br>
+
+                <strong>Zeiten:</strong><br>
+                Start: {{ QUEST.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                Anmeldeschluss: {{ QUEST.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                {% if QUEST.getEnd %}
+                Ende: {{ QUEST.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
+                {% else %}
+                <span style="color: #15ff00;">Status: Aktiv</span><br>
+                {% set currentTime = "now"|date('U') %}
+                {% if QUEST.getApplicationEnd > currentTime %}
+                <span style="color: #15ff00; font-size: 90%;">Bewerbungen möglich bis {{
+                    QUEST.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}</span><br>
+                {% else %}
+                <span style="color: #ff1500; font-size: 90%;">✗ Anmeldeschluss abgelaufen</span><br>
+                {% endif %}
+                {% endif %}
+                <br>
+
+                {% set activeMembers = QUEST.getQuestUsers|filter(u => u.getMode.value == 1) %}
+                <strong>Teilnehmer:</strong> {{ activeMembers|length }}
+                {% if QUEST.getApplicantMax %} / {{ QUEST.getApplicantMax }}{% endif %}<br>
+
+                {% if QUEST.isApprovalRequired %}
+                <span style="color: orange;">Bestätigung erforderlich</span><br>
+                {% endif %}
+
+                {% if QUEST.getPlot %}
+                <strong>Plot:</strong> {{ QUEST.getPlot.getTitle }}<br>
+                <a href="/comm.php?SHOW_PLOT=1&plotid={{ QUEST.getPlot.getId }}" class="linkbutton" target="_blank"
+                    style="font-size: 80%; margin-top: 5px; display: inline-block;">Zum Plot</a><br>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if QUEST.getPrestige or QUEST.getCommodityReward or QUEST.getSpacecrafts or QUEST.getAwardId %}
+                <strong>Belohnungen:</strong><br>
+                {% if QUEST.getPrestige %}
+                <img src="/assets/buttons/prestige.png" title="Prestige" /> {{ QUEST.getPrestige }} Prestige<br>
+                {% endif %}
+
+                {% if QUEST.getCommodityReward %}
+                {% for commodityId, amount in QUEST.getCommodityReward %}
+                <img src="/assets/commodities/{{ commodityId }}.png" title="Ware" /> {{ amount }}&nbsp;&nbsp;
+                {% endfor %}
+                <br>
+                {% endif %}
+
+                {% if QUEST.getSpacecrafts %}
+                {% for buildplanId, amount in QUEST.getSpacecrafts %}
+                {% set buildplan = BUILDPLANS[buildplanId] is defined ? BUILDPLANS[buildplanId] : null %}
+                {{ amount }}x
+                {% if buildplan %}
+                <img src="/assets/ships/{{ buildplan.getRump.getId }}.png" title="{{ buildplan.getName }}" />
+                {% for module in buildplan.getModules %}
+                <img style="margin-right: 5px;" src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
+                    title="{{ module.getModule.getName }}" />
+                {% endfor %}
+                <img src="/assets/buttons/crew.png" title="Benötigte Crew" /> {{ buildplan.getCrew }}
+                {% else %}
+                <img src="/assets/buttons/bauplan.png" title="Unbekannter Bauplan" /> ID {{ buildplanId }}
+                {% endif %}
+                <br>
+                {% endfor %}
+                {% endif %}
+
+                {% if QUEST.getAwardId %}
+                Award ID: {{ QUEST.getAwardId }}<br>
+                {% endif %}
+                <br>
+                {% endif %}
+
+                {% if QUEST.getFactions %}
+                <strong>Zugelassene Fraktionen:</strong><br>
+                {% for factionId in QUEST.getFactions %}
+                {% for faction in PLAYABLE_FACTIONS %}
+                {% if faction.getId == factionId %}
+                {{ faction.getName }}<br>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+                <br>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if activeMembers|length > 0 %}
+        <div style="margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+            <strong>Aktive Teilnehmer ({{ activeMembers|length }}):</strong>
+            <div style="margin-top: 10px;">
+                {% for questUser in activeMembers %}
+                {% set user = questUser.getUser %}
+                {% if user %}
+                <div class="allianceMember" style="margin-bottom: 5px;">
+                    <div style="width: 25px; height: 25px;">
+                        <img src="/assets/avatars/{{ user.getId }}_small.png" style="width: 25px; height: 25px;" />
+                    </div>
+                    <div>{{ user.getName|bbcode }}</div>
+                    <div class="allianceMemberButtons">
+                        <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
+                    </div>
+                    <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% if CAN_CLAIM_REWARD %}
+        <input type="hidden" id="session_string_quest" value="{{ SESSIONSTRING }}" />
+        <div style="margin-top: 10px;">
+            {% if HAS_PHYSICAL_REWARDS %}
+            <input type="button" class="button" value="Belohnung erhalten"
+                onclick="showQuestColonySelection({{ QUEST.getId }})" />
+            {% else %}
+            <input type="button" class="button" value="Belohnung erhalten"
+                onclick="claimQuestRewardDirect({{ QUEST.getId }})" />
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if CAN_APPLY or CAN_ACCEPT_INVITATION or USER_STATUS %}
+        <div style="margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+            {% if USER_STATUS %}
+            {% if USER_STATUS.value == 1 %}
+            <div style="color: #15ff00; font-weight: bold;">Du nimmst an dieser Quest teil</div>
+            {% elseif USER_STATUS.value == 2 %}
+            <div style="color: #c2b942; font-weight: bold;">Deine Bewerbung wird geprüft</div>
+            {% elseif USER_STATUS.value == 3 %}
+            <div style="color: #c2b942; font-weight: bold;">Du bist zu dieser Quest eingeladen</div>
+            {% if CAN_ACCEPT_INVITATION %}
+            <form method="post" action="comm.php" style="margin-top: 10px;">
+                <input type="hidden" name="SHOW_QUEST" value="1" />
+                <input type="hidden" name="questid" value="{{ QUEST.getId }}" />
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="submit" name="B_ACCEPT_QUEST_INVITATION" value="Einladung annehmen" class="button" />
+                <input type="submit" name="B_REJECT_QUEST_INVITATION" value="Einladung ablehnen" class="button" />
+            </form>
+            {% endif %}
+            {% elseif USER_STATUS.value == 4 %}
+            <div style="color: #ff1500; font-weight: bold;">Du wurdest für diese Quest abgelehnt oder hast die
+                Einladung abgelehnt</div>
+            {% endif %}
+            {% elseif CAN_APPLY %}
+            <form method="post" action="comm.php">
+                <input type="hidden" name="SHOW_QUEST" value="1" />
+                <input type="hidden" name="questid" value="{{ QUEST.getId }}" />
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="submit" name="B_APPLY_FOR_QUEST" value="Für Quest bewerben" class="button" />
+                {% if QUEST.isApprovalRequired %}
+                <div style="margin-top: 5px; font-size: 90%; color: #999;">Diese Quest erfordert eine Bestätigung durch
+                    den Quest-Leiter.</div>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+            <strong style="font-size: 110%;">Quest-Ticker:</strong>
+
+            {% if QUEST_LOGS|length > 0 %}
+            <div style="margin-top: 10px;">
+                {% for log in QUEST_LOGS %}
+                {% if log.getMode == 1 %}
+                <div style="margin-bottom: 8px; padding: 5px; background-color: #0f0f0f;">
+                    <span style="color: #8d8d8d; font-size: 90%;">{{ log.getDate|date('d.m.Y H:i',
+                        'Europe/Berlin') }}</span> - {{ log.getText|bbcode|raw }}
+                </div>
+                {% elseif log.getMode == 2 %}
+                <div style="margin-bottom: 10px;">
+                    <div class="divhead">{{ log.getDate|date('d.m.Y H:i', 'Europe/Berlin') }}</div>
+                    <div class="divbody">{{ log.getText|bbcode|raw }}</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="margin-top: 10px; padding: 10px; text-align: center; color: #666;">
+                Noch keine Einträge im Quest-Ticker vorhanden.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}

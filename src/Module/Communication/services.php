@@ -44,10 +44,24 @@ use Stu\Module\Communication\Action\PostKnComment\PostKnCommentRequestInterface;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPost;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequest;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
+use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitation;
+use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitationRequest;
+use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitationRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
+use Stu\Module\Communication\Action\ApplyForQuest\ApplyForQuest;
+use Stu\Module\Communication\Action\ApplyForQuest\ApplyForQuestRequest;
+use Stu\Module\Communication\Action\ApplyForQuest\ApplyForQuestRequestInterface;
+use Stu\Module\Communication\Action\AcceptQuestInvitation\AcceptQuestInvitation;
+use Stu\Module\Communication\Action\AcceptQuestInvitation\AcceptQuestInvitationRequest;
+use Stu\Module\Communication\Action\AcceptQuestInvitation\AcceptQuestInvitationRequestInterface;
+use Stu\Module\Communication\Action\ClaimQuestReward\ClaimQuestReward;
+use Stu\Module\Communication\Action\ClaimQuestReward\ClaimQuestRewardRequest;
+use Stu\Module\Communication\Action\ClaimQuestReward\ClaimQuestRewardRequestInterface;
 use Stu\Module\Communication\Lib\NewKnPostNotificator;
+use Stu\Module\Communication\Lib\PlotMemberService;
+use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePost;
 use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePostRequest;
 use Stu\Module\Communication\View\ShowAdminDeletePost\ShowAdminDeletePostRequestInterface;
@@ -86,6 +100,13 @@ use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
+use Stu\Module\Communication\View\ShowQuestList\ShowQuestList;
+use Stu\Module\Communication\View\ShowQuest\ShowQuest;
+use Stu\Module\Communication\View\ShowQuest\ShowQuestRequest;
+use Stu\Module\Communication\View\ShowQuest\ShowQuestRequestInterface;
+use Stu\Module\Communication\View\ShowQuestColonySelection\ShowQuestColonySelection;
+use Stu\Module\Communication\View\ShowQuestColonySelection\ShowQuestColonySelectionRequest;
+use Stu\Module\Communication\View\ShowQuestColonySelection\ShowQuestColonySelectionRequestInterface;
 use Stu\Module\Communication\View\ShowSearchResult\ShowPostIdSearchResult;
 use Stu\Module\Communication\View\ShowSearchResult\ShowPostSearchResult;
 use Stu\Module\Communication\View\ShowSearchResult\ShowSearchResultRequest;
@@ -109,6 +130,9 @@ return [
     ShowKnCharacterRequestInterface::class => autowire(ShowKnCharacterRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
+    ShowQuestRequestInterface::class => autowire(ShowQuestRequest::class),
+    ApplyForQuestRequestInterface::class => autowire(ApplyForQuestRequest::class),
+    AcceptQuestInvitationRequestInterface::class => autowire(AcceptQuestInvitationRequest::class),
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
     ShowEditKnRequestInterface::class => autowire(ShowEditKnRequest::class),
     AddKnPostRequestInterface::class => autowire(AddKnPostRequest::class),
@@ -128,6 +152,10 @@ return [
     ShowKnArchivePlotListRequestInterface::class => autowire(ShowKnArchivePlotListRequest::class),
     ShowKnArchivePlotRequestInterface::class => autowire(ShowKnArchivePlotRequest::class),
     ShowArchiveSearchResultRequestInterface::class => autowire(ShowArchiveSearchResultRequest::class),
+    RejectQuestInvitationRequestInterface::class => autowire(RejectQuestInvitationRequest::class),
+    ClaimQuestRewardRequestInterface::class => autowire(ClaimQuestRewardRequest::class),
+    ShowQuestColonySelectionRequestInterface::class => autowire(ShowQuestColonySelectionRequest::class),
+    PlotMemberServiceInterface::class => autowire(PlotMemberService::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AdminDeleteKnPost::ACTION_IDENTIFIER => autowire(AdminDeleteKnPost::class),
@@ -148,7 +176,11 @@ return [
         CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
-        KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class)
+        KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class),
+        ApplyForQuest::ACTION_IDENTIFIER => autowire(ApplyForQuest::class),
+        AcceptQuestInvitation::ACTION_IDENTIFIER => autowire(AcceptQuestInvitation::class),
+        RejectQuestInvitation::ACTION_IDENTIFIER => autowire(RejectQuestInvitation::class),
+        ClaimQuestReward::ACTION_IDENTIFIER => autowire(ClaimQuestReward::class)
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -157,6 +189,8 @@ return [
         ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
         ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
         ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
+        ShowQuestList::VIEW_IDENTIFIER => autowire(ShowQuestList::class),
+        ShowQuest::VIEW_IDENTIFIER => autowire(ShowQuest::class),
         ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
         ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
         ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
@@ -173,6 +207,7 @@ return [
         ShowUserArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowUserArchiveSearchResult::class),
         ShowPostIdArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdArchiveSearchResult::class),
         ShowPostArchiveSearchResult::VIEW_IDENTIFIER => autowire(ShowPostArchiveSearchResult::class),
-        ShowKnArchivePlot::VIEW_IDENTIFIER => autowire(ShowKnArchivePlot::class)
+        ShowKnArchivePlot::VIEW_IDENTIFIER => autowire(ShowKnArchivePlot::class),
+        ShowQuestColonySelection::VIEW_IDENTIFIER => autowire(ShowQuestColonySelection::class)
     ],
 ];

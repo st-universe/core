@@ -1,0 +1,37 @@
+{% block body %}
+{% if ACTIVE_QUESTS %}
+<div class="divhead">Aktive Quests</div>
+<div class="plotList">
+  {% set QUEST_LIST = ACTIVE_QUESTS %}
+  {% set SHOW_STATUS = 'active' %}
+  {% include 'html/communication/quest/questList.twig' %}
+</div>
+<br>
+{% endif %}
+
+{% if PARTICIPATED_QUESTS %}
+<div class="divhead">Abgeschlossene Quests an denen du teilgenommen hast</div>
+<div class="plotList">
+  {% set QUEST_LIST = PARTICIPATED_QUESTS %}
+  {% set SHOW_STATUS = 'participated' %}
+  {% include 'html/communication/quest/questList.twig' %}
+</div>
+<br>
+{% endif %}
+
+{% if OTHER_ENDED_QUESTS %}
+<div class="divhead">Alle anderen beendeten Quests</div>
+<div class="plotList">
+  {% set QUEST_LIST = OTHER_ENDED_QUESTS %}
+  {% set SHOW_STATUS = 'ended' %}
+  {% include 'html/communication/quest/questList.twig' %}
+</div>
+{% endif %}
+
+{% if not ACTIVE_QUESTS and not PARTICIPATED_QUESTS and not OTHER_ENDED_QUESTS %}
+<div class="divhead">Keine Quests verfügbar</div>
+<div class="divbody" style="text-align: center; padding: 20px;">
+  Aktuell sind keine Quests verfügbar.
+</div>
+{% endif %}
+{% endblock %}

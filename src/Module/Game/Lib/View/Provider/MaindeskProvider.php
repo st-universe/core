@@ -21,6 +21,8 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -42,7 +44,9 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         private readonly ColonyLimitCalculatorInterface $colonyLimitCalculator,
         private readonly PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         private readonly CrewLimitCalculatorInterface $crewLimitCalculator,
-        private readonly CrewCountRetrieverInterface $crewCountRetriever
+        private readonly CrewCountRetrieverInterface $crewCountRetriever,
+        private readonly NPCQuestRepositoryInterface $npcQuestRepository,
+        private readonly NPCQuestUserRepositoryInterface $npcQuestUserRepository
     ) {}
 
     #[\Override]
@@ -144,6 +148,8 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             'CREW_COUNT_SHIPS',
             $this->crewCountRetriever->getAssignedToShipsCount($user)
         );
+
+        $this->setActiveQuests($game);
     }
 
     private function setPotentialEmergencies(GameControllerInterface $game): void
@@ -161,5 +167,49 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         }
 
         $game->setTemplateVar('EMERGENCYWRAPPERS', $emergencyWrappers);
+    }
+
+    private function setActiveQuests(GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
+        $userFactionId = $user->getFactionId();
+
+        $userQuestIds = [];
+        $userQuests = $this->npcQuestUserRepository->findBy(['user_id' => $user->getId()]);
+        foreach ($userQuests as $userQuest) {
+            $userQuestIds[] = $userQuest->getQuestId();
+        }
+
+        $allActiveQuests = $this->npcQuestRepository->getActiveQuests();
+        $visibleQuests = [];
+
+        foreach ($allActiveQuests as $quest) {
+            $isParticipant = in_array($quest->getId(), $userQuestIds);
+
+            $canSeeFactions = $quest->getFactions();
+            $secretFactions = $quest->getSecret();
+
+            $canSeeQuest = false;
+            if ($canSeeFactions === null || in_array($userFactionId, $canSeeFactions)) {
+                $canSeeQuest = true;
+            }
+
+            if ($secretFactions !== null && !in_array($userFactionId, $secretFactions)) {
+                $canSeeQuest = false;
+            }
+
+            if ($isParticipant) {
+                $canSeeQuest = true;
+            }
+
+            if ($canSeeQuest) {
+                $visibleQuests[] = $quest;
+            }
+        }
+
+        $recentQuests = array_slice($visibleQuests, 0, 3);
+
+        $game->setTemplateVar('ACTIVE_QUESTS', $recentQuests);
+        $game->setTemplateVar('ACTIVE_QUEST_COUNT', count($visibleQuests));
     }
 }

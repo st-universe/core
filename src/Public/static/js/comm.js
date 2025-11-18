@@ -173,3 +173,40 @@ function searchKnArchive(action) {
 
 	window.location.href = '/comm.php?' + action + '=1&search=' + encodeURIComponent(searchValue) + '&version=' + encodeURIComponent(version) + '&sstr=' + sessionString;
 }
+
+function showQuestColonySelection(questId) {
+	updatePopup("comm.php?SHOW_QUEST_COLONY_SELECTION=1&questid=" + questId, 500);
+}
+
+function selectColony(colonyId) {
+	var items = document.querySelectorAll('.colony-select-item');
+	items.forEach(function (item) {
+		item.classList.remove('selected');
+	});
+
+	var selectedItem = document.querySelector('.colony-select-item[data-colony-id="' + colonyId + '"]');
+	if (selectedItem) {
+		selectedItem.classList.add('selected');
+	}
+
+	document.getElementById('selected_colony_id').value = colonyId;
+	document.getElementById('claim_button').disabled = false;
+}
+
+function claimQuestReward() {
+	var colonyId = document.getElementById('selected_colony_id').value;
+	var questId = document.forms['colonySelectionForm'].questid.value;
+	var sessionString = document.forms['colonySelectionForm'].sstr.value;
+
+	if (!colonyId || colonyId === '0') {
+		alert('Bitte wähle eine Kolonie aus');
+		return;
+	}
+
+	window.location.href = '/comm.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&colonyid=' + colonyId + '&sstr=' + sessionString;
+}
+
+function claimQuestRewardDirect(questId) {
+	var sessionString = document.getElementById('session_string_quest').value;
+	window.location.href = '/comm.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&sstr=' + sessionString;
+}

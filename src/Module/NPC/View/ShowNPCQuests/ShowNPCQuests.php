@@ -7,9 +7,12 @@ namespace Stu\Module\NPC\View\ShowNPCQuests;
 use Override;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\NPCQuest;
+use Stu\Orm\Entity\NPCQuestLog;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class ShowNPCQuests implements ViewControllerInterface
@@ -20,6 +23,7 @@ final class ShowNPCQuests implements ViewControllerInterface
         private FactionRepositoryInterface $factionRepository,
         private CommodityRepositoryInterface $commodityRepository,
         private NPCQuestRepositoryInterface $npcQuestRepository,
+        private NPCQuestLogRepositoryInterface $npcQuestLogRepository,
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
     ) {}
 
@@ -47,6 +51,7 @@ final class ShowNPCQuests implements ViewControllerInterface
         $game->setTemplateVar('MY_ACTIVE_QUESTS', $myActiveQuests);
         $game->setTemplateVar('MY_FINISHED_QUESTS', $myFinishedQuests);
         $game->setTemplateVar('BUILDPLANS', $this->loadBuildplans($myActiveQuests, $myFinishedQuests));
+        $game->setTemplateVar('QUEST_LOGS', $this->loadQuestLogs($myActiveQuests, $myFinishedQuests));
     }
 
     /**
@@ -81,5 +86,25 @@ final class ShowNPCQuests implements ViewControllerInterface
         }
 
         return $buildplans;
+    }
+
+    /**
+     * @param array<NPCQuest> $activeQuests
+     * @param array<NPCQuest> $finishedQuests
+     * @return array<int, array<NPCQuestLog>>
+     */
+    private function loadQuestLogs(array $activeQuests, array $finishedQuests): array
+    {
+        $questLogs = [];
+        $allQuests = array_merge($activeQuests, $finishedQuests);
+
+        foreach ($allQuests as $quest) {
+            $logs = $this->npcQuestLogRepository->getActiveByQuest($quest->getId());
+            if (!empty($logs)) {
+                $questLogs[$quest->getId()] = $logs;
+            }
+        }
+
+        return $questLogs;
     }
 }
