@@ -2257,3 +2257,17 @@ label.linkbutton:hover {
 .job-permissions label {
   margin-right: 20px;
 }
+
+.colony-select-item {
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.colony-select-item:hover {
+  background-color: #262323 !important;
+  border-color: #4b4b4b !important;
+}
+
+.colony-select-item.selected {
+  background-color: #1a3a1a !important;
+  border-color: #15ff00 !important;
+}

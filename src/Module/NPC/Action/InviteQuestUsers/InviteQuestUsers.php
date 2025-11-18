@@ -10,6 +10,10 @@ use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,7 +25,9 @@ final class InviteQuestUsers implements ActionControllerInterface
     public function __construct(
         private NPCQuestRepositoryInterface $npcQuestRepository,
         private NPCQuestUserRepositoryInterface $npcQuestUserRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private NPCQuestLogRepositoryInterface $npcQuestLogRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[Override]
@@ -58,6 +64,7 @@ final class InviteQuestUsers implements ActionControllerInterface
         }
 
         $invitedCount = 0;
+        $invitedUsers = [];
 
         foreach ($userIds as $userId) {
             $user = $this->userRepository->find($userId);
@@ -81,14 +88,44 @@ final class InviteQuestUsers implements ActionControllerInterface
 
                 $this->npcQuestUserRepository->save($questUser);
                 $invitedCount++;
+                $invitedUsers[] = $user;
             } else if ($existingQuestUser->getMode() === QuestUserModeEnum::REJECTED_EXCLUDED) {
                 $existingQuestUser->setMode(QuestUserModeEnum::INVITED);
                 $this->npcQuestUserRepository->save($existingQuestUser);
                 $invitedCount++;
+                $invitedUsers[] = $user;
             }
         }
 
         if ($invitedCount > 0) {
+            foreach ($invitedUsers as $invitedUser) {
+                $logEntry = $this->npcQuestLogRepository->prototype();
+                $logEntry->setQuestId($questId);
+                $logEntry->setQuest($quest);
+                $logEntry->setUserId($game->getUser()->getId());
+                $logEntry->setUser($game->getUser());
+                $logEntry->setMode(1);
+                $logEntry->setDate(time());
+                $logEntry->setText(sprintf(
+                    'Spieler %s (ID: %d) wurde zur Quest "%s" (ID: %d) eingeladen',
+                    $invitedUser->getName(),
+                    $invitedUser->getId(),
+                    $quest->getTitle(),
+                    $quest->getId()
+                ));
+                $this->npcQuestLogRepository->save($logEntry);
+                $this->privateMessageSender->send(
+                    UserConstants::USER_NOONE,
+                    $invitedUser->getId(),
+                    sprintf(
+                        'Du wurdest zur Quest "%s" eingeladen',
+                        $quest->getTitle()
+                    ),
+                    PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
+                    sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
+
+                );
+            }
             $game->getInfo()->addInformation(sprintf('%d User wurden zur Quest eingeladen', $invitedCount));
         } else {
             $game->getInfo()->addInformation('Keine neuen User wurden eingeladen');
@@ -98,6 +135,6 @@ final class InviteQuestUsers implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return true;
+        return false;
     }
 }

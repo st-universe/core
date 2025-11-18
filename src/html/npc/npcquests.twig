@@ -11,37 +11,92 @@
     <form action="/npc/index.php" method="post" name="createquest" id="createquest">
         <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
-        <table class="tcal">
-            <tr>
-                <td class="m">Titel:</td>
-                <td><input type="text" name="title" style="width: 400px;" maxlength="200"
-                        value="{{ FORM_TITLE|default('') }}" required /></td>
-            </tr>
-            <tr>
-                <td class="m">Beschreibung:</td>
-                <td><textarea name="text" style="width: 600px; height: 150px;"
-                        required>{{ FORM_TEXT|default('') }}</textarea></td>
-            </tr>
-            <tr>
-                <td class="m">Fraktionen:</td>
-                <td>
-                    {% for faction in PLAYABLE_FACTIONS %}
-                    <label><input type="checkbox" name="factions[]" value="{{ faction.getId }}" {% if
-                            FORM_SELECTED_FACTIONS is defined and faction.getId in FORM_SELECTED_FACTIONS %}checked{%
-                            endif %}> {{ faction.getName }}</label><br>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Prestige Belohnung:</td>
-                <td><input type="number" name="prestige" min="1" value="{{ FORM_PRESTIGE|default('') }}" />
-                </td>
-            </tr>
-        </table>
+        <div class="divhead">Quest-Einstellungen</div>
+        <div class="divbody">
+            <table class="tcal">
+                <tr>
+                    <td class="m">Titel:</td>
+                    <td><input type="text" name="title" style="width: 400px;" maxlength="200"
+                            value="{{ FORM_TITLE|default('') }}" required /></td>
+                </tr>
+                <tr>
+                    <td class="m">Beschreibung:</td>
+                    <td><textarea name="text" style="width: 600px; height: 150px;"
+                            required>{{ FORM_TEXT|default('') }}</textarea></td>
+                </tr>
+                <tr>
+                    <td class="m">Fraktionen die sich bewerben können:</td>
+                    <td>
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        <label><input type="checkbox" name="factions[]" value="{{ faction.getId }}" {% if
+                                FORM_SELECTED_FACTIONS is defined and faction.getId in FORM_SELECTED_FACTIONS
+                                %}checked{% endif %}> {{ faction.getName }}</label><br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Fraktionen die diese Quest sehen können:</td>
+                    <td>
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        <label><input type="checkbox" name="secret_factions[]" value="{{ faction.getId }}" {% if
+                                FORM_SELECTED_SECRET_FACTIONS is defined and faction.getId in
+                                FORM_SELECTED_SECRET_FACTIONS %}checked{% endif %}> {{ faction.getName }}</label><br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Start:</td>
+                    <td>
+                        Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ"
+                            value="{{ FORM_START_DATE|default('') }}" required style="width: 100px;" />
+                        Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM"
+                            value="{{ FORM_START_TIME|default('') }}" required style="width: 60px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Anmeldeschluss:</td>
+                    <td>
+                        Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ"
+                            value="{{ FORM_APPLICATION_END_DATE|default('') }}" required style="width: 100px;" />
+                        Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM"
+                            value="{{ FORM_APPLICATION_END_TIME|default('') }}" required style="width: 60px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Bestätigung nach Bewerbung:</td>
+                    <td><input type="checkbox" name="approval_required" value="1" {% if FORM_APPROVAL_REQUIRED is
+                            defined and FORM_APPROVAL_REQUIRED %}checked{% endif %} /></td>
+                </tr>
+                <tr>
+                    <td class="m">Maximale Teilnehmer:</td>
+                    <td><input type="number" name="applicant_max" min="1"
+                            value="{{ FORM_APPLICANT_MAX|default('') }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Plot ID:</td>
+                    <td><input type="number" name="plot_id" min="1" value="{{ FORM_PLOT_ID|default('') }}" /></td>
+                </tr>
+            </table>
+        </div>
 
         <br>
-        <div class="divhead">Waren-Belohnung</div>
+        <div class="divhead">Belohnungen</div>
         <div class="divbody">
+            <table class="tcal">
+                <tr>
+                    <td class="m">Prestige Belohnung:</td>
+                    <td><input type="number" name="prestige" min="1" value="{{ FORM_PRESTIGE|default('') }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Award ID:</td>
+                    <td><input type="number" name="award_id" min="1" value="{{ FORM_AWARD_ID|default('') }}" /></td>
+                </tr>
+            </table>
+
+            <br>
+            <strong>Waren-Belohnung:</strong><br><br>
             <div id="commodityRewardContainer">
                 {% if FORM_COMMODITIES is defined and FORM_COMMODITIES|length > 0 %}
                 {% for index, commodity in FORM_COMMODITIES %}
@@ -75,16 +130,14 @@
             <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRewardRow()" />
             <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte löschen"
                 onclick="removeLastCommodityRewardRow()" style="display:none;" />
-        </div>
 
-        <br>
-        <div class="divhead">Raumschiff-Belohnung</div>
-        <div class="divbody">
+            <br><br>
+            <strong>Raumschiff-Belohnung:</strong><br><br>
             <div id="spacecraftRewardContainer">
                 {% if FORM_SPACECRAFTS is defined and FORM_SPACECRAFTS|length > 0 %}
                 {% for index, spacecraft in FORM_SPACECRAFTS %}
                 <div class="spacecraft-reward-row" data-row-index="{{ index }}">
-                    Raumschiff ID: <input type="number" name="spacecrafts[{{ index }}][id]" min="1" style="width: 80px;"
+                    Bauplan ID: <input type="number" name="spacecrafts[{{ index }}][id]" min="1" style="width: 80px;"
                         value="{{ spacecraft.id|default('') }}" />
                     Anzahl: <input type="number" name="spacecrafts[{{ index }}][amount]" min="1" style="width: 80px;"
                         value="{{ spacecraft.amount|default('') }}" />
@@ -93,7 +146,7 @@
                 {% endfor %}
                 {% else %}
                 <div class="spacecraft-reward-row" data-row-index="0">
-                    Raumschiff ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;" />
+                    Bauplan ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;" />
                     Anzahl: <input type="number" name="spacecrafts[0][amount]" min="1" style="width: 80px;" />
                     <br><br>
                 </div>
@@ -103,56 +156,6 @@
             <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte löschen"
                 onclick="removeLastSpacecraftRewardRow()" style="display:none;" />
         </div>
-
-        <br>
-        <table class="tcal">
-            <tr>
-                <td class="m">Award ID:</td>
-                <td><input type="number" name="award_id" min="1" value="{{ FORM_AWARD_ID|default('') }}" /></td>
-            </tr>
-            <tr>
-                <td class="m">Start:</td>
-                <td>
-                    Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ"
-                        value="{{ FORM_START_DATE|default('') }}" required style="width: 100px;" />
-                    Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM"
-                        value="{{ FORM_START_TIME|default('') }}" required style="width: 60px;" />
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Anmeldeschluss:</td>
-                <td>
-                    Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ"
-                        value="{{ FORM_APPLICATION_END_DATE|default('') }}" required style="width: 100px;" />
-                    Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM"
-                        value="{{ FORM_APPLICATION_END_TIME|default('') }}" required style="width: 60px;" />
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Geheim für Fraktionen:</td>
-                <td>
-                    {% for faction in PLAYABLE_FACTIONS %}
-                    <label><input type="checkbox" name="secret_factions[]" value="{{ faction.getId }}" {% if
-                            FORM_SELECTED_SECRET_FACTIONS is defined and faction.getId in FORM_SELECTED_SECRET_FACTIONS
-                            %}checked{% endif %}> {{ faction.getName }}</label><br>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Bestätigung nach Bewerbung:</td>
-                <td><input type="checkbox" name="approval_required" value="1" {% if FORM_APPROVAL_REQUIRED is defined
-                        and FORM_APPROVAL_REQUIRED %}checked{% endif %} /></td>
-            </tr>
-            <tr>
-                <td class="m">Maximale Teilnehmer:</td>
-                <td><input type="number" name="applicant_max" min="1" value="{{ FORM_APPLICANT_MAX|default('') }}" />
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Plot ID:</td>
-                <td><input type="number" name="plot_id" min="1" value="{{ FORM_PLOT_ID|default('') }}" /></td>
-            </tr>
-        </table>
 
         <br>
         <input type="submit" class="button" name="B_CREATE_NPC_QUEST" value="Quest erstellen" />
@@ -174,7 +177,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
                         <strong>Beschreibung:</strong><br>
-                        {{ quest.getText|nl2br }}<br><br>
+                        {{ quest.getText|bbcode|nl2br|raw }}<br><br>
 
                         <strong>Zeiten:</strong><br>
                         Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
@@ -184,15 +187,32 @@
                         {% endif %}
                         <br>
 
-                        <strong>Teilnehmer:</strong> {{ quest.getQuestUsers|length }}
-                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}
+                        {% set activeMembers = quest.getQuestUsers|filter(u => u.getMode.value == 1) %}
+                        {% set applicants = quest.getQuestUsers|filter(u => u.getMode.value == 2) %}
+                        {% set invited = quest.getQuestUsers|filter(u => u.getMode.value == 3) %}
+                        {% set rejected = quest.getQuestUsers|filter(u => u.getMode.value == 4) %}
+
+                        <strong>Teilnehmer:</strong> {{ activeMembers|length }}
+                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}<br>
+                        {% if applicants|length > 0 %}
+                        <strong>Bewerber:</strong> {{ applicants|length }}<br>
+                        {% endif %}
+                        {% if invited|length > 0 %}
+                        <strong>Eingeladen:</strong> {{ invited|length }}<br>
+                        {% endif %}
+                        {% if rejected|length > 0 %}
+                        <strong>Ausgeschlossen:</strong> {{ rejected|length }}<br>
+                        {% endif %}
+                        <br>
                         <a href="javascript:void(0);" onclick="toggleQuestUserManagement({{ quest.getId }})"
-                            class="linkbutton" style="margin-left: 10px; font-size: 80%;">Verwaltung</a><br>
+                            class="linkbutton" style="font-size: 80%;">Verwaltung</a><br>
                         {% if quest.isApprovalRequired %}
                         <span style="color: orange;">⚠ Bestätigung erforderlich</span><br>
                         {% endif %}
-                        {% if quest.getPlotId %}
-                        Plot ID: {{ quest.getPlotId }}<br>
+                        {% if quest.getPlot %}
+                        <strong>Plot:</strong> {{ quest.getPlot.getTitle }}<br>
+                        <a href="/comm.php?SHOW_PLOT=1&plotid={{ quest.getPlot.getId }}" class="linkbutton"
+                            style="font-size: 80%; margin-top: 5px;" target="_blank">Zum Plot</a><br>
                         {% endif %}
                     </div>
 
@@ -237,7 +257,7 @@
                         {% endif %}
 
                         {% if quest.getFactions %}
-                        <strong>Sichtbar für Fraktionen:</strong><br>
+                        <strong>Fraktionen die sich bewerben können:</strong><br>
                         {% for factionId in quest.getFactions %}
                         {% for faction in PLAYABLE_FACTIONS %}
                         {% if faction.getId == factionId %}
@@ -249,7 +269,7 @@
                         {% endif %}
 
                         {% if quest.getSecret %}
-                        <strong>Geheim für Fraktionen:</strong><br>
+                        <strong>Fraktionen die diese Quest sehen können:</strong><br>
                         {% for factionId in quest.getSecret %}
                         {% for faction in PLAYABLE_FACTIONS %}
                         {% if faction.getId == factionId %}
@@ -259,6 +279,50 @@
                         {% endfor %}
                         {% endif %}
                     </div>
+                </div>
+
+                <div style="margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+                    <strong style="font-size: 110%;">Quest-Ticker:</strong>
+
+                    {% if QUEST_LOGS[quest.getId] is defined and QUEST_LOGS[quest.getId]|length > 0 %}
+                    <div style="margin-top: 10px;">
+                        {% for log in QUEST_LOGS[quest.getId] %}
+                        {% if log.getMode == 1 %}
+                        <div style="margin-bottom: 8px; padding: 5px; background-color: #0f0f0f;">
+                            <span style="color: #8d8d8d; font-size: 90%;">{{ log.getDate|date('d.m.Y H:i',
+                                'Europe/Berlin') }}</span> - {{ log.getText|bbcode|raw }}
+                        </div>
+                        {% elseif log.getMode == 2 %}
+                        <div style="margin-bottom: 10px;">
+                            <div class="divhead">{{ log.getDate|date('d.m.Y H:i', 'Europe/Berlin') }}</div>
+                            <div class="divbody">{{ log.getText|bbcode|raw }}</div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if quest.getEnd is null %}
+                    <div style="margin-top: 15px;">
+                        <table class="tcal">
+                            <tr>
+                                <th>Neuer Eintrag hinzufügen</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea id="questLogText{{ quest.getId }}" style="width: 100%; height: 80px;"
+                                        placeholder="Text eingeben (mindestens 3 Zeichen)..."></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <input type="button" class="button" value="Eintrag hinzufügen"
+                                        onclick="postQuestLogEntry({{ quest.getId }})" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div id="questUserManagement{{ quest.getId }}"
@@ -304,15 +368,12 @@
                                 </div>
                                 <div>{{ user.getName|bbcode }}</div>
                                 <div class="allianceMemberButtons">
-                                    <form method="post" action="/npc/index.php" style="display: inline;">
-                                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                        <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
-                                        <input type="hidden" name="quest_user_id" value="{{ questUser.getId }}" />
-                                        <input type="submit" name="B_ACCEPT_QUEST_APPLICATION" value="Annehmen"
-                                            class="button" style="font-size: 70%; padding: 2px; margin-right: 3px;" />
-                                        <input type="submit" name="B_REJECT_QUEST_APPLICATION" value="Ablehnen"
-                                            class="button" style="font-size: 70%; padding: 2px;" />
-                                    </form>
+                                    <input type="button" value="Annehmen" class="button"
+                                        onclick="acceptQuestApplication({{ quest.getId }}, {{ questUser.getId }})"
+                                        style="font-size: 70%; padding: 2px; margin-right: 3px;" />
+                                    <input type="button" value="Ablehnen" class="button"
+                                        onclick="rejectQuestApplication({{ quest.getId }}, {{ questUser.getId }})"
+                                        style="font-size: 70%; padding: 2px;" />
                                 </div>
                                 <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
                             </div>
@@ -372,28 +433,34 @@
                     </div>
                     {% endif %}
 
+                    {% if quest.getEnd is null %}
                     <div class="box">
                         <div class="box_title">Aktionen</div>
                         <div class="box_body">
-                            <form method="post" action="/npc/index.php" style="margin-bottom: 10px;">
-                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                            <div style="margin-bottom: 10px;">
                                 <strong>User einladen:</strong><br>
-                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
-                                    style="width: 300px; margin-top: 5px;" />
-                                <input type="submit" name="B_INVITE_QUEST_USERS" value="Einladen" class="button" />
-                            </form>
+                                <input type="text" id="inviteUserIds{{ quest.getId }}"
+                                    placeholder="User IDs (kommagetrennt)" style="width: 300px; margin-top: 5px;" />
+                                <input type="button" value="Einladen" class="button"
+                                    onclick="inviteQuestUsers({{ quest.getId }})" />
+                            </div>
 
-                            <form method="post" action="/npc/index.php">
-                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                            <div style="margin-bottom: 15px;">
                                 <strong>User ausschließen:</strong><br>
-                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
-                                    style="width: 300px; margin-top: 5px;" />
-                                <input type="submit" name="B_EXCLUDE_QUEST_USERS" value="Ausschließen" class="button" />
-                            </form>
+                                <input type="text" id="excludeUserIds{{ quest.getId }}"
+                                    placeholder="User IDs (kommagetrennt)" style="width: 300px; margin-top: 5px;" />
+                                <input type="button" value="Ausschließen" class="button"
+                                    onclick="excludeQuestUsers({{ quest.getId }})" />
+                            </div>
+
+                            <div style="border-top: 1px solid #4b4b4b; padding-top: 15px;">
+                                <input type="button" value="Quest beenden" class="button"
+                                    onclick="endNPCQuest({{ quest.getId }})"
+                                    style="background-color: #8b001e; font-weight: bold;" />
+                            </div>
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
             </div>
@@ -419,7 +486,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
                         <strong>Beschreibung:</strong><br>
-                        {{ quest.getText|nl2br }}<br><br>
+                        {{ quest.getText|bbcode|nl2br|raw }}<br><br>
 
                         <strong>Zeiten:</strong><br>
                         Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
@@ -427,15 +494,32 @@
                         Ende: {{ quest.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
                         <br>
 
-                        <strong>Teilnehmer:</strong> {{ quest.getQuestUsers|length }}
-                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}
+                        {% set activeMembers = quest.getQuestUsers|filter(u => u.getMode.value == 1) %}
+                        {% set applicants = quest.getQuestUsers|filter(u => u.getMode.value == 2) %}
+                        {% set invited = quest.getQuestUsers|filter(u => u.getMode.value == 3) %}
+                        {% set rejected = quest.getQuestUsers|filter(u => u.getMode.value == 4) %}
+
+                        <strong>Teilnehmer:</strong> {{ activeMembers|length }}
+                        {% if quest.getApplicantMax %} / {{ quest.getApplicantMax }}{% endif %}<br>
+                        {% if applicants|length > 0 %}
+                        <strong>Bewerber:</strong> {{ applicants|length }}<br>
+                        {% endif %}
+                        {% if invited|length > 0 %}
+                        <strong>Eingeladen:</strong> {{ invited|length }}<br>
+                        {% endif %}
+                        {% if rejected|length > 0 %}
+                        <strong>Ausgeschlossen:</strong> {{ rejected|length }}<br>
+                        {% endif %}
+                        <br>
                         <a href="javascript:void(0);" onclick="toggleQuestUserManagement({{ quest.getId }})"
-                            class="linkbutton" style="margin-left: 10px; font-size: 80%;">Verwaltung</a><br>
+                            class="linkbutton" style="font-size: 80%;">Verwaltung</a><br>
                         {% if quest.isApprovalRequired %}
                         <span style="color: orange;">⚠ Bestätigung erforderlich</span><br>
                         {% endif %}
-                        {% if quest.getPlotId %}
-                        Plot ID: {{ quest.getPlotId }}<br>
+                        {% if quest.getPlot %}
+                        <strong>Plot:</strong> {{ quest.getPlot.getTitle }}<br>
+                        <a href="/comm.php?SHOW_PLOT=1&plotid={{ quest.getPlot.getId }}" class="linkbutton"
+                            style="font-size: 80%; margin-top: 5px;" target="_blank">Zum Plot</a><br>
                         {% endif %}
                     </div>
 
@@ -480,7 +564,7 @@
                         {% endif %}
 
                         {% if quest.getFactions %}
-                        <strong>Sichtbar für Fraktionen:</strong><br>
+                        <strong>Fraktionen die sich bewerben können:</strong><br>
                         {% for factionId in quest.getFactions %}
                         {% for faction in PLAYABLE_FACTIONS %}
                         {% if faction.getId == factionId %}
@@ -492,7 +576,7 @@
                         {% endif %}
 
                         {% if quest.getSecret %}
-                        <strong>Geheim für Fraktionen:</strong><br>
+                        <strong>Fraktionen die diese Quest sehen können:</strong><br>
                         {% for factionId in quest.getSecret %}
                         {% for faction in PLAYABLE_FACTIONS %}
                         {% if faction.getId == factionId %}
@@ -502,6 +586,50 @@
                         {% endfor %}
                         {% endif %}
                     </div>
+                </div>
+
+                <div style="margin-top: 15px; border-top: 1px solid #4b4b4b; padding-top: 15px;">
+                    <strong style="font-size: 110%;">Quest-Ticker:</strong>
+
+                    {% if QUEST_LOGS[quest.getId] is defined and QUEST_LOGS[quest.getId]|length > 0 %}
+                    <div style="margin-top: 10px;">
+                        {% for log in QUEST_LOGS[quest.getId] %}
+                        {% if log.getMode == 1 %}
+                        <div style="margin-bottom: 8px; padding: 5px; background-color: #0f0f0f;">
+                            <span style="color: #8d8d8d; font-size: 90%;">{{ log.getDate|date('d.m.Y H:i',
+                                'Europe/Berlin') }}</span> - {{ log.getText|bbcode|raw }}
+                        </div>
+                        {% elseif log.getMode == 2 %}
+                        <div style="margin-bottom: 10px;">
+                            <div class="divhead">{{ log.getDate|date('d.m.Y H:i', 'Europe/Berlin') }}</div>
+                            <div class="divbody">{{ log.getText|bbcode|raw }}</div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if quest.getEnd is null %}
+                    <div style="margin-top: 15px;">
+                        <table class="tcal">
+                            <tr>
+                                <th>Neuer Eintrag hinzufügen</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <textarea id="questLogText{{ quest.getId }}" style="width: 100%; height: 80px;"
+                                        placeholder="Text eingeben (mindestens 3 Zeichen)..."></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <input type="button" class="button" value="Eintrag hinzufügen"
+                                        onclick="postQuestLogEntry({{ quest.getId }})" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div id="questUserManagement{{ quest.getId }}"
@@ -547,15 +675,12 @@
                                 </div>
                                 <div>{{ user.getName|bbcode }}</div>
                                 <div class="allianceMemberButtons">
-                                    <form method="post" action="/npc/index.php" style="display: inline;">
-                                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                        <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
-                                        <input type="hidden" name="quest_user_id" value="{{ questUser.getId }}" />
-                                        <input type="submit" name="B_ACCEPT_QUEST_APPLICATION" value="Annehmen"
-                                            class="button" style="font-size: 70%; padding: 2px; margin-right: 3px;" />
-                                        <input type="submit" name="B_REJECT_QUEST_APPLICATION" value="Ablehnen"
-                                            class="button" style="font-size: 70%; padding: 2px;" />
-                                    </form>
+                                    <input type="button" value="Annehmen" class="button"
+                                        onclick="acceptQuestApplication({{ quest.getId }}, {{ questUser.getId }})"
+                                        style="font-size: 70%; padding: 2px; margin-right: 3px;" />
+                                    <input type="button" value="Ablehnen" class="button"
+                                        onclick="rejectQuestApplication({{ quest.getId }}, {{ questUser.getId }})"
+                                        style="font-size: 70%; padding: 2px;" />
                                 </div>
                                 <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
                             </div>
@@ -615,28 +740,34 @@
                     </div>
                     {% endif %}
 
+                    {% if quest.getEnd is null %}
                     <div class="box">
                         <div class="box_title">Aktionen</div>
                         <div class="box_body">
-                            <form method="post" action="/npc/index.php" style="margin-bottom: 10px;">
-                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                            <div style="margin-bottom: 10px;">
                                 <strong>User einladen:</strong><br>
-                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
-                                    style="width: 300px; margin-top: 5px;" />
-                                <input type="submit" name="B_INVITE_QUEST_USERS" value="Einladen" class="button" />
-                            </form>
+                                <input type="text" id="inviteUserIds{{ quest.getId }}"
+                                    placeholder="User IDs (kommagetrennt)" style="width: 300px; margin-top: 5px;" />
+                                <input type="button" value="Einladen" class="button"
+                                    onclick="inviteQuestUsers({{ quest.getId }})" />
+                            </div>
 
-                            <form method="post" action="/npc/index.php">
-                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                                <input type="hidden" name="quest_id" value="{{ quest.getId }}" />
+                            <div style="margin-bottom: 15px;">
                                 <strong>User ausschließen:</strong><br>
-                                <input type="text" name="user_ids" placeholder="User IDs (kommagetrennt)"
-                                    style="width: 300px; margin-top: 5px;" />
-                                <input type="submit" name="B_EXCLUDE_QUEST_USERS" value="Ausschließen" class="button" />
-                            </form>
+                                <input type="text" id="excludeUserIds{{ quest.getId }}"
+                                    placeholder="User IDs (kommagetrennt)" style="width: 300px; margin-top: 5px;" />
+                                <input type="button" value="Ausschließen" class="button"
+                                    onclick="excludeQuestUsers({{ quest.getId }})" />
+                            </div>
+
+                            <div style="border-top: 1px solid #4b4b4b; padding-top: 15px;">
+                                <input type="button" value="Quest beenden" class="button"
+                                    onclick="endNPCQuest({{ quest.getId }})"
+                                    style="background-color: #8b001e; font-weight: bold;" />
+                            </div>
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
             </div>

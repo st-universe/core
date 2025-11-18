@@ -30,6 +30,8 @@ use Stu\Module\NPC\Action\AcceptQuestApplication\AcceptQuestApplication;
 use Stu\Module\NPC\Action\RejectQuestApplication\RejectQuestApplication;
 use Stu\Module\NPC\Action\InviteQuestUsers\InviteQuestUsers;
 use Stu\Module\NPC\Action\ExcludeQuestUsers\ExcludeQuestUsers;
+use Stu\Module\NPC\Action\AddQuestLogEntry\AddQuestLogEntry;
+use Stu\Module\NPC\Action\EndNPCQuest\EndNPCQuest;
 
 use function DI\autowire;
 
@@ -49,7 +51,9 @@ return [
         AcceptQuestApplication::ACTION_IDENTIFIER => autowire(AcceptQuestApplication::class),
         RejectQuestApplication::ACTION_IDENTIFIER => autowire(RejectQuestApplication::class),
         InviteQuestUsers::ACTION_IDENTIFIER => autowire(InviteQuestUsers::class),
-        ExcludeQuestUsers::ACTION_IDENTIFIER => autowire(ExcludeQuestUsers::class)
+        ExcludeQuestUsers::ACTION_IDENTIFIER => autowire(ExcludeQuestUsers::class),
+        AddQuestLogEntry::ACTION_IDENTIFIER => autowire(AddQuestLogEntry::class),
+        EndNPCQuest::ACTION_IDENTIFIER => autowire(EndNPCQuest::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

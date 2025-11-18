@@ -318,3 +318,186 @@ function toggleQuestUserManagement(questId) {
         management.style.display = 'none';
     }
 }
+
+function postQuestLogEntry(questId) {
+    const textArea = document.getElementById('questLogText' + questId);
+    const text = textArea.value.trim();
+
+    if (text.length < 3) {
+        alert('Der Eintrag muss mindestens 3 Zeichen lang sein.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('B_ADD_QUEST_LOG_ENTRY', '1');
+    formData.append('quest_id', questId);
+    formData.append('log_text', text);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
+            if (newQuestDetails) {
+                const currentQuestDetails = document.getElementById('questDetails' + questId);
+                currentQuestDetails.innerHTML = newQuestDetails.innerHTML;
+            }
+
+            textArea.value = '';
+        })
+        .catch(error => {
+            console.error('Fehler beim Hinzufügen des Log-Eintrags:', error);
+            alert('Fehler beim Hinzufügen des Eintrags.');
+        });
+}
+
+function acceptQuestApplication(questId, questUserId) {
+    const formData = new FormData();
+    formData.append('B_ACCEPT_QUEST_APPLICATION', '1');
+    formData.append('quest_id', questId);
+    formData.append('quest_user_id', questUserId);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
+            if (newQuestDetails) {
+                const currentQuestDetails = document.getElementById('questDetails' + questId);
+                currentQuestDetails.innerHTML = newQuestDetails.innerHTML;
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Annehmen der Bewerbung:', error);
+        });
+}
+
+function rejectQuestApplication(questId, questUserId) {
+    const formData = new FormData();
+    formData.append('B_REJECT_QUEST_APPLICATION', '1');
+    formData.append('quest_id', questId);
+    formData.append('quest_user_id', questUserId);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
+            if (newQuestDetails) {
+                const currentQuestDetails = document.getElementById('questDetails' + questId);
+                currentQuestDetails.innerHTML = newQuestDetails.innerHTML;
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Ablehnen der Bewerbung:', error);
+        });
+}
+
+function inviteQuestUsers(questId) {
+    const userIdsInput = document.getElementById('inviteUserIds' + questId);
+    const userIds = userIdsInput.value.trim();
+
+    if (!userIds) {
+        alert('Bitte User-IDs eingeben.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('B_INVITE_QUEST_USERS', '1');
+    formData.append('quest_id', questId);
+    formData.append('user_ids', userIds);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
+            if (newQuestDetails) {
+                const currentQuestDetails = document.getElementById('questDetails' + questId);
+                currentQuestDetails.innerHTML = newQuestDetails.innerHTML;
+            }
+
+            userIdsInput.value = '';
+        })
+        .catch(error => {
+            console.error('Fehler beim Einladen von Usern:', error);
+        });
+}
+
+function excludeQuestUsers(questId) {
+    const userIdsInput = document.getElementById('excludeUserIds' + questId);
+    const userIds = userIdsInput.value.trim();
+
+    if (!userIds) {
+        alert('Bitte User-IDs eingeben.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('B_EXCLUDE_QUEST_USERS', '1');
+    formData.append('quest_id', questId);
+    formData.append('user_ids', userIds);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
+            if (newQuestDetails) {
+                const currentQuestDetails = document.getElementById('questDetails' + questId);
+                currentQuestDetails.innerHTML = newQuestDetails.innerHTML;
+            }
+
+            userIdsInput.value = '';
+        })
+        .catch(error => {
+            console.error('Fehler beim Ausschließen von Usern:', error);
+        });
+}
+
+function endNPCQuest(questId) {
+    if (!confirm('Möchtest du diese Quest wirklich beenden?')) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('B_END_NPC_QUEST', '1');
+    formData.append('quest_id', questId);
+
+    fetch('/npc/index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(html => {
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Fehler beim Beenden der Quest:', error);
+        });
+}

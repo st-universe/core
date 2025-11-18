@@ -10,6 +10,7 @@ use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,7 +22,8 @@ final class ExcludeQuestUsers implements ActionControllerInterface
     public function __construct(
         private NPCQuestRepositoryInterface $npcQuestRepository,
         private NPCQuestUserRepositoryInterface $npcQuestUserRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private NPCQuestLogRepositoryInterface $npcQuestLogRepository
     ) {}
 
     #[Override]
@@ -58,6 +60,7 @@ final class ExcludeQuestUsers implements ActionControllerInterface
         }
 
         $excludedCount = 0;
+        $excludedUsers = [];
 
         foreach ($userIds as $userId) {
             $user = $this->userRepository->find($userId);
@@ -75,6 +78,7 @@ final class ExcludeQuestUsers implements ActionControllerInterface
                 $existingQuestUser->setMode(QuestUserModeEnum::REJECTED_EXCLUDED);
                 $this->npcQuestUserRepository->save($existingQuestUser);
                 $excludedCount++;
+                $excludedUsers[] = $user;
             } else {
                 $questUser = $this->npcQuestUserRepository->prototype();
                 $questUser->setQuestId($questId);
@@ -85,10 +89,28 @@ final class ExcludeQuestUsers implements ActionControllerInterface
 
                 $this->npcQuestUserRepository->save($questUser);
                 $excludedCount++;
+                $excludedUsers[] = $user;
             }
         }
 
         if ($excludedCount > 0) {
+            foreach ($excludedUsers as $excludedUser) {
+                $logEntry = $this->npcQuestLogRepository->prototype();
+                $logEntry->setQuestId($questId);
+                $logEntry->setQuest($quest);
+                $logEntry->setUserId($game->getUser()->getId());
+                $logEntry->setUser($game->getUser());
+                $logEntry->setMode(1);
+                $logEntry->setDate(time());
+                $logEntry->setText(sprintf(
+                    'Spieler %s (ID: %d) wurde von der Quest "%s" (ID: %d) ausgeschlossen',
+                    $excludedUser->getName(),
+                    $excludedUser->getId(),
+                    $quest->getTitle(),
+                    $quest->getId()
+                ));
+                $this->npcQuestLogRepository->save($logEntry);
+            }
             $game->getInfo()->addInformation(sprintf('%d User wurden von der Quest ausgeschlossen', $excludedCount));
         } else {
             $game->getInfo()->addInformation('Keine User wurden ausgeschlossen');
@@ -98,6 +120,6 @@ final class ExcludeQuestUsers implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return true;
+        return false;
     }
 }

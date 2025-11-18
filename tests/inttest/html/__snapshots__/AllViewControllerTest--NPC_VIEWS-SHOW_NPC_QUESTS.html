@@ -116,36 +116,86 @@
     <form action="/npc/index.php" method="post" name="createquest" id="createquest">
         <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
 
-        <table class="tcal">
-            <tr>
-                <td class="m">Titel:</td>
-                <td><input type="text" name="title" style="width: 400px;" maxlength="200" value="" required></td>
-            </tr>
-            <tr>
-                <td class="m">Beschreibung:</td>
-                <td><textarea name="text" style="width: 600px; height: 150px;" required></textarea></td>
-            </tr>
-            <tr>
-                <td class="m">Fraktionen:</td>
-                <td>
-                                        <label><input type="checkbox" name="factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
-                                        <label><input type="checkbox" name="factions[]" value="2"> Romulanisches Imperium</label><br>
-                                        <label><input type="checkbox" name="factions[]" value="3"> Klingonisches Imperium</label><br>
-                                        <label><input type="checkbox" name="factions[]" value="4"> Cardassianische Union</label><br>
-                                        <label><input type="checkbox" name="factions[]" value="5"> Ferengi Allianz</label><br>
-                                    </td>
-            </tr>
-            <tr>
-                <td class="m">Prestige Belohnung:</td>
-                <td>
-<input type="number" name="prestige" min="1" value="">
-                </td>
-            </tr>
-        </table>
+        <div class="divhead">Quest-Einstellungen</div>
+        <div class="divbody">
+            <table class="tcal">
+                <tr>
+                    <td class="m">Titel:</td>
+                    <td><input type="text" name="title" style="width: 400px;" maxlength="200" value="" required></td>
+                </tr>
+                <tr>
+                    <td class="m">Beschreibung:</td>
+                    <td><textarea name="text" style="width: 600px; height: 150px;" required></textarea></td>
+                </tr>
+                <tr>
+                    <td class="m">Fraktionen die sich bewerben k&ouml;nnen:</td>
+                    <td>
+                                                <label><input type="checkbox" name="factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
+                                                <label><input type="checkbox" name="factions[]" value="2"> Romulanisches Imperium</label><br>
+                                                <label><input type="checkbox" name="factions[]" value="3"> Klingonisches Imperium</label><br>
+                                                <label><input type="checkbox" name="factions[]" value="4"> Cardassianische Union</label><br>
+                                                <label><input type="checkbox" name="factions[]" value="5"> Ferengi Allianz</label><br>
+                                            </td>
+                </tr>
+                <tr>
+                    <td class="m">Fraktionen die diese Quest sehen k&ouml;nnen:</td>
+                    <td>
+                                                <label><input type="checkbox" name="secret_factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
+                                                <label><input type="checkbox" name="secret_factions[]" value="2"> Romulanisches Imperium</label><br>
+                                                <label><input type="checkbox" name="secret_factions[]" value="3"> Klingonisches Imperium</label><br>
+                                                <label><input type="checkbox" name="secret_factions[]" value="4"> Cardassianische Union</label><br>
+                                                <label><input type="checkbox" name="secret_factions[]" value="5"> Ferengi Allianz</label><br>
+                                            </td>
+                </tr>
+                <tr>
+                    <td class="m">Start:</td>
+                    <td>
+                        Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
+                        Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM" value="" required style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Anmeldeschluss:</td>
+                    <td>
+                        Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
+                        Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM" value="" required style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Best&auml;tigung nach Bewerbung:</td>
+                    <td><input type="checkbox" name="approval_required" value="1"></td>
+                </tr>
+                <tr>
+                    <td class="m">Maximale Teilnehmer:</td>
+                    <td>
+<input type="number" name="applicant_max" min="1" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Plot ID:</td>
+                    <td><input type="number" name="plot_id" min="1" value=""></td>
+                </tr>
+            </table>
+        </div>
 
         <br>
-        <div class="divhead">Waren-Belohnung</div>
+        <div class="divhead">Belohnungen</div>
         <div class="divbody">
+            <table class="tcal">
+                <tr>
+                    <td class="m">Prestige Belohnung:</td>
+                    <td>
+<input type="number" name="prestige" min="1" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="m">Award ID:</td>
+                    <td><input type="number" name="award_id" min="1" value=""></td>
+                </tr>
+            </table>
+
+            <br>
+            <strong>Waren-Belohnung:</strong><br><br>
             <div id="commodityRewardContainer">
                                 <div class="commodity-reward-row" data-row-index="0">
                     Ware: <select name="commodities[0][id]" class="commoditySelect" style="width:15%;">
@@ -488,14 +538,12 @@
                             </div>
             <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRewardRow()">
             <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte l&ouml;schen" onclick="removeLastCommodityRewardRow()" style="display:none;">
-        </div>
 
-        <br>
-        <div class="divhead">Raumschiff-Belohnung</div>
-        <div class="divbody">
+            <br><br>
+            <strong>Raumschiff-Belohnung:</strong><br><br>
             <div id="spacecraftRewardContainer">
                                 <div class="spacecraft-reward-row" data-row-index="0">
-                    Raumschiff ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;">
+                    Bauplan ID: <input type="number" name="spacecrafts[0][id]" min="1" style="width: 80px;">
                     Anzahl: <input type="number" name="spacecrafts[0][amount]" min="1" style="width: 80px;">
                     <br><br>
                 </div>
@@ -503,52 +551,6 @@
             <input type="button" class="button" value="Weiteres Raumschiff" onclick="addSpacecraftRewardRow()">
             <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte l&ouml;schen" onclick="removeLastSpacecraftRewardRow()" style="display:none;">
         </div>
-
-        <br>
-        <table class="tcal">
-            <tr>
-                <td class="m">Award ID:</td>
-                <td><input type="number" name="award_id" min="1" value=""></td>
-            </tr>
-            <tr>
-                <td class="m">Start:</td>
-                <td>
-                    Datum: <input type="text" name="start_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
-                    Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM" value="" required style="width: 60px;">
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Anmeldeschluss:</td>
-                <td>
-                    Datum: <input type="text" name="application_end_date" placeholder="TT.MM.JJJJ" value="" required style="width: 100px;">
-                    Uhrzeit: <input type="text" name="application_end_time" placeholder="HH:MM" value="" required style="width: 60px;">
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Geheim f&uuml;r Fraktionen:</td>
-                <td>
-                                        <label><input type="checkbox" name="secret_factions[]" value="1"> Vereinte F&ouml;deration der Planeten</label><br>
-                                        <label><input type="checkbox" name="secret_factions[]" value="2"> Romulanisches Imperium</label><br>
-                                        <label><input type="checkbox" name="secret_factions[]" value="3"> Klingonisches Imperium</label><br>
-                                        <label><input type="checkbox" name="secret_factions[]" value="4"> Cardassianische Union</label><br>
-                                        <label><input type="checkbox" name="secret_factions[]" value="5"> Ferengi Allianz</label><br>
-                                    </td>
-            </tr>
-            <tr>
-                <td class="m">Best&auml;tigung nach Bewerbung:</td>
-                <td><input type="checkbox" name="approval_required" value="1"></td>
-            </tr>
-            <tr>
-                <td class="m">Maximale Teilnehmer:</td>
-                <td>
-<input type="number" name="applicant_max" min="1" value="">
-                </td>
-            </tr>
-            <tr>
-                <td class="m">Plot ID:</td>
-                <td><input type="number" name="plot_id" min="1" value=""></td>
-            </tr>
-        </table>
 
         <br>
         <input type="submit" class="button" name="B_CREATE_NPC_QUEST" value="Quest erstellen">

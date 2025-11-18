@@ -50,10 +50,6 @@ final class CreateNPCQuest implements ActionControllerInterface
         $commodities = request::postArray('commodities');
         $spacecrafts = request::postArray('spacecrafts');
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation('Work in Progress...');
-            return;
-        }
 
         if (empty($title)) {
             $game->getInfo()->addInformation('Titel muss ausgefüllt werden');
@@ -112,6 +108,20 @@ final class CreateNPCQuest implements ActionControllerInterface
             return;
         }
 
+        if ($plotId > 0) {
+            $plot = $this->rpgPlotRepository->find($plotId);
+            if ($plot === null) {
+                $game->getInfo()->addInformation('Der angegebene Plot existiert nicht');
+                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                return;
+            }
+            if ($plot->getUserId() !== $user->getId()) {
+                $game->getInfo()->addInformation('Du bist nicht der Ersteller dieses Plots');
+                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                return;
+            }
+        }
+
         $validatedFactions = $this->validateFactions($factionIds);
         $validatedSecretFactions = $this->validateFactions($secretFactionIds);
         $validatedCommodities = $this->validateCommodities($commodities);
@@ -141,7 +151,7 @@ final class CreateNPCQuest implements ActionControllerInterface
 
         if ($plotId > 0) {
             $plot = $this->rpgPlotRepository->find($plotId);
-            if ($plot !== null) {
+            if ($plot !== null && $plot->getUserId() === $user->getId()) {
                 $quest->setPlotId($plotId);
                 $quest->setPlot($plot);
             }
