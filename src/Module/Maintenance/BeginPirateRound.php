@@ -44,12 +44,38 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
         }
 
         $endTime = $lastRound->getEndTime();
+        $seconds = $endTime - $lastRound->getStart();
+        $days = (int)ceil($seconds / 86400);
 
-        if ($endTime !== null && $this->isBetween45And46DaysAgo($endTime)) {
+        if ($endTime !== null && $this->isBetween45And46DaysAgo($endTime) && $this->isAroundDecember($days)) {
             $this->handleOldRoundAndCreateNew();
             return;
         }
     }
+
+    private function isAroundDecember(int $days): bool
+    {
+        $now   = time();
+        $month = (int)date('n', $now);
+        $day   = (int)date('j', $now);
+
+
+        if ($month === 11 && $day >= (30 - $days + 1)) {
+            return false;
+        }
+
+        if ($month === 12) {
+            return false;
+        }
+
+
+        if ($month === 1 && $day <= $days) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     private function getLastPirateRound(): ?PirateRound
     {

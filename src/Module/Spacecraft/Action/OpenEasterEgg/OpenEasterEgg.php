@@ -117,6 +117,7 @@ final class OpenEasterEgg implements ActionControllerInterface
         $openedDoor
             ->setUserId($user->getId())
             ->setDay((int)date("j"))
+            ->setMonth((int)date("n"))
             ->setYear((int)date("Y"))
             ->setTime(time());
 
