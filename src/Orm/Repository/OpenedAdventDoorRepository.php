@@ -33,6 +33,7 @@ final class OpenedAdventDoorRepository extends EntityRepository implements Opene
         return count($this->findBy([
             'user_id' => $user->getId(),
             'day' => (int)date("j"),
+            'month' => (int)date("n"),
             'year' => (int)date("Y"),
         ]));
     }

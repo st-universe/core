@@ -29,6 +29,9 @@ class OpenedAdventDoor
     private int $day;
 
     #[Column(type: 'integer')]
+    private int $month;
+
+    #[Column(type: 'integer')]
     private int $year;
 
     #[Column(type: 'integer')]
@@ -50,6 +53,13 @@ class OpenedAdventDoor
     public function setDay(int $day): OpenedAdventDoor
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function setMonth(int $month): OpenedAdventDoor
+    {
+        $this->month = $month;
 
         return $this;
     }

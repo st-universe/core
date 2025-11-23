@@ -72,7 +72,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $openedDoors = $this->openedAdventDoorRepository->getOpenedDoorsCountOfToday($user);
 
         //check for nicholas present
-        if ((int)date("j") === 6 && $openedDoors === 1) {
+        if ((int)date("j") === 6 && (int)date("n") === 12 && $openedDoors === 1) {
             $this->nicholasPresent($game);
             $this->createOpenedAdventDoor($user);
             return;
@@ -114,6 +114,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $openedDoor
             ->setUserId($user->getId())
             ->setDay((int)date("j"))
+            ->setMonth((int)date("n"))
             ->setYear((int)date("Y"))
             ->setTime(time());
 
