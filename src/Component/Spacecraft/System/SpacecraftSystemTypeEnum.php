@@ -43,6 +43,7 @@ enum SpacecraftSystemTypeEnum: int
     case BUSSARD_COLLECTOR = 31;
     case AGGREGATION_SYSTEM = 32;
     case WARPDRIVE_BOOSTER = 33;
+    case WARPCORE_CHARGE_TRANSFER = 34;
 
     public function getDescription(): string
     {
@@ -80,7 +81,8 @@ enum SpacecraftSystemTypeEnum: int
             Self::SINGULARITY_REACTOR => "Singularitätsreaktor",
             Self::BUSSARD_COLLECTOR => "Bussardkollektor",
             Self::AGGREGATION_SYSTEM => "Aggregationssystem",
-            Self::WARPDRIVE_BOOSTER => "Warpantrieb Booster"
+            Self::WARPDRIVE_BOOSTER => "Warpantrieb Booster",
+            Self::WARPCORE_CHARGE_TRANSFER => "Warpkern Ladungstransfer",
         };
     }
 

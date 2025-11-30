@@ -26,6 +26,7 @@ enum ModuleSpecialAbilityEnum: int
     case AGGREGATION_SYSTEM = 15;
     case WARPDRIVE_BOOST = 16;
     case ION_STORM_DAMAGE_REDUCTION = 17;
+    case WARPCORE_CHARGE_TRANSFER = 18;
 
     public function getDescription(): string
     {
@@ -45,7 +46,8 @@ enum ModuleSpecialAbilityEnum: int
             self::BUSSARD_COLLECTOR => 'Bussard-Kollektor',
             self::AGGREGATION_SYSTEM => 'Aggregationssystem',
             self::WARPDRIVE_BOOST => 'Warpdrive Boost',
-            self::ION_STORM_DAMAGE_REDUCTION => 'Ionensturmresistenz'
+            self::ION_STORM_DAMAGE_REDUCTION => 'Ionensturmresistenz',
+            self::WARPCORE_CHARGE_TRANSFER => 'Warpkern Ladungstransfer',
         };
     }
 
