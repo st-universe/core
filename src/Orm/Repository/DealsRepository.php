@@ -47,15 +47,10 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT count(d.id) FROM %s d
                     WHERE d.start < :actime AND d.end > :actime
                     AND d.auction = FALSE
-                    AND (d.faction = (SELECT f 
-                                    FROM %s u 
-                                    JOIN %s f
-                                    WITH u.faction = f
-                                    WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL)',
                     Deals::class,
-                    User::class,
-                    Faction::class
+                    User::class
                 )
             )
             ->setParameters([
@@ -75,7 +70,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime
                     AND d.auction = FALSE AND d.want_prestige IS NULL
                     AND d.buildplan_id IS NULL AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -98,7 +93,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime
                     AND d.auction = FALSE AND d.want_prestige IS NULL
                     AND d.buildplan_id > 0 AND d.ship = TRUE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -120,7 +115,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE
                     AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -143,7 +138,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime
                     AND d.auction = FALSE AND d.want_commodity IS NULL
                     AND d.buildplan_id IS NULL AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -166,7 +161,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      WHERE d.start < :actime AND d.end > :actime
                      AND d.auction = FALSE AND d.want_commodity IS NULL
                      AND d.buildplan_id > 0 AND d.ship = TRUE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -188,7 +183,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE
                      AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -209,15 +204,10 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 sprintf(
                     'SELECT count(d.id) FROM %s d WHERE d.start < :actime
                         AND d.end > :actime AND d.auction = TRUE
-                        AND (d.faction = (SELECT f 
-                                    FROM %s u 
-                                    JOIN %s f
-                                    WITH u.faction = f
-                                    WHERE u.id = :userId)
+                        AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL)',
                     Deals::class,
-                    User::class,
-                    Faction::class
+                    User::class
                 )
             )
             ->setParameters([
@@ -236,7 +226,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -258,7 +248,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -280,7 +270,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -302,7 +292,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -324,7 +314,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -346,7 +336,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.id ASC',
                     Deals::class,
                     User::class
@@ -370,15 +360,10 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                         AND (d.end + 2592000) > :actime
                         AND d.auction = TRUE
                         AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
-                        AND (d.faction = (SELECT f 
-                                        FROM %s u 
-                                        JOIN %s f
-                                        WITH u.faction = f
-                                        WHERE u.id = :userId)
+                        AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL)',
                     Deals::class,
-                    User::class,
-                    Faction::class
+                    User::class
                 )
             )
             ->setParameters([
@@ -423,7 +408,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     AND (d.end + 2592000) > :actime
                     AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                     AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
-                    AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                    AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
@@ -448,7 +433,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0
                      AND d.ship = TRUE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
@@ -472,7 +457,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0
                      AND d.ship = FALSE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
@@ -496,7 +481,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                       AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                       AND d.auction = TRUE AND d.want_commodity IS NULL
                       AND d.buildplan_id IS NULL AND d.ship = FALSE
-                      AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                      AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
@@ -520,7 +505,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0
                      AND d.ship = TRUE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
@@ -544,7 +529,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_commodity IS NULL
                      AND d.buildplan_id > 0 AND d.ship = FALSE
-                     AND (d.faction = (SELECT u.faction FROM %s u WHERE u.id = :userId)
+                     AND (d.faction = (SELECT f FROM %s u JOIN u.faction f WHERE u.id = :userId)
                         OR d.faction IS NULL) ORDER BY d.end DESC',
                     Deals::class,
                     User::class
