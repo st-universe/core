@@ -180,7 +180,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             $userQuestIds[] = $userQuest->getQuestId();
         }
 
-        $allActiveQuests = $this->npcQuestRepository->getActiveQuests();
+        $allActiveQuests = $this->npcQuestRepository->findAll();
         $visibleQuests = [];
 
         foreach ($allActiveQuests as $quest) {
@@ -202,7 +202,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
                 $canSeeQuest = true;
             }
 
-            if ($canSeeQuest) {
+            if ($canSeeQuest && $quest->getEnd() === null) {
                 $visibleQuests[] = $quest;
             }
         }
