@@ -32,14 +32,14 @@
   </div>
   <div>
     <div>
-      Start: {{ quest.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}
+      Start: {{ quest.getStart|stuDateTime }}
     </div>
     <div>
       <span>Status:</span>
       {% if quest.getEnd is null %}
       <span style="color: #15ff00;">Aktiv</span>
       {% else %}
-      <span>Beendet am {{ quest.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}</span>
+      <span>Beendet am {{ quest.getEnd|stuDateTime }}</span>
       {% endif %}
     </div>
   </div>

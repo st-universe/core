@@ -20,7 +20,8 @@
             von {{ quest.getUser.getName|bbcode }} - {{ activeMembersCount }}{% if quest.getApplicantMax %} /
             {{ quest.getApplicantMax }}{% endif %} Teilnehmer - {{ textPreview }}
         </td>
-        <td>Start: {{quest.getStart|stuDateTime}}</td>
+        <td{% if quest.getStart < "now" |date('U') %} style="color: #4CAF50;" {% endif %}>Start:
+            {{quest.getStart|stuDateTime}}</td>
     </tr>
     {% endfor %}
 </table>

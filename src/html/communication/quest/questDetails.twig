@@ -1,4 +1,5 @@
 {% if QUEST is defined %}
+{% from 'html/macros.twig' import userAvatar, pmWindow %}
 <div class="box" style="margin-bottom: 15px;">
     <div class="box_title">Quest: {{ QUEST.getTitle }}</div>
     <div class="box_body">
@@ -11,19 +12,18 @@
                 {{ QUEST.getUser.getName|bbcode }}<br><br>
 
                 <strong>Zeiten:</strong><br>
-                Start: {{ QUEST.getStart|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
-                Anmeldeschluss: {{ QUEST.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
-                {% if QUEST.getEnd %}
-                Ende: {{ QUEST.getEnd|date('d.m.Y H:i', 'Europe/Berlin') }}<br>
-                {% else %}
-                <span style="color: #15ff00;">Status: Aktiv</span><br>
+                Start: {{ QUEST.getStart|stuDateTime }}<br>
                 {% set currentTime = "now"|date('U') %}
                 {% if QUEST.getApplicationEnd > currentTime %}
                 <span style="color: #15ff00; font-size: 90%;">Bewerbungen möglich bis {{
-                    QUEST.getApplicationEnd|date('d.m.Y H:i', 'Europe/Berlin') }}</span><br>
+                    QUEST.getApplicationEnd|stuDateTime }}</span><br>
                 {% else %}
                 <span style="color: #ff1500; font-size: 90%;">✗ Anmeldeschluss abgelaufen</span><br>
-                {% endif %}
+                {% endif %}<br>
+                {% if QUEST.getEnd %}
+                Ende: {{ QUEST.getEnd|stuDateTime }}<br>
+                {% else %}
+                <span style="color: #15ff00;">Status: Aktiv</span><br>
                 {% endif %}
                 <br>
 
@@ -103,13 +103,13 @@
                 {% if user %}
                 <div class="allianceMember" style="margin-bottom: 5px;">
                     <div style="width: 25px; height: 25px;">
-                        <img src="/assets/avatars/{{ user.getId }}_small.png" style="width: 25px; height: 25px;" />
+                        {{ userAvatar(user) }}
                     </div>
                     <div>{{ user.getName|bbcode }}</div>
                     <div class="allianceMemberButtons">
+                        {{ pmWindow(USER, user.getId) }}
                         <img src="/assets/rassen/{{ user.getFactionId }}s.png" />
                     </div>
-                    <div class="{{ user.isOnline ? 'online' : 'offline' }}"> </div>
                 </div>
                 {% endif %}
                 {% endfor %}
