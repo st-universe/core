@@ -234,18 +234,31 @@ final class StationUtility implements StationUtilityInterface
         $specialModules = $progress->getSpecialModules();
         $recycledModules = [];
 
-        foreach ($specialModules as $progressModule) {
-            $module = $progressModule->getModule();
+        foreach ($buildplanModules as $buildplanModule) {
+            $module = $buildplanModule->getModule();
             $moduleId = $module->getId();
+            $moduleCount = $buildplanModule->getModuleCount();
 
-            $amount = 1;
-
-            foreach ($buildplanModules as $buildplanModule) {
-                if ($buildplanModule->getModuleId() === $moduleId) {
-                    $moduleCount = $buildplanModule->getModuleCount();
-                    $amount = $this->stuRandom->rand(1, $moduleCount);
+            $isSpecialModule = false;
+            foreach ($specialModules as $progressModule) {
+                if ($progressModule->getModule()->getId() === $moduleId) {
+                    $isSpecialModule = true;
                     break;
                 }
+            }
+
+            if ($isSpecialModule) {
+                $amount = 1;
+            } else {
+                if ($this->stuRandom->rand(1, 100) <= 33) {
+                    $amount = 0;
+                } else {
+                    $amount = $this->stuRandom->rand(1, $moduleCount);
+                }
+            }
+
+            if ($amount === 0) {
+                continue;
             }
 
             $this->storageManager->upperStorage(
@@ -268,7 +281,6 @@ final class StationUtility implements StationUtilityInterface
             }
         }
 
-        // transform to construction
         $rumpId = $station->getUser()->getFactionId() + SpacecraftRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
         $rump = $this->spacecraftRumpRepository->find($rumpId);
         if ($rump === null) {
@@ -286,10 +298,8 @@ final class StationUtility implements StationUtilityInterface
 
         $this->stationRepository->save($station);
 
-        // delete progress modules
         $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
 
-        // set progress finished
         $progress->setRemainingTicks(0);
         $this->constructionProgressRepository->save($progress);
     }
