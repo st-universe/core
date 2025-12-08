@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
@@ -319,5 +321,31 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 Spacecraft::class
             )
         )->execute();
+    }
+
+    #[\Override]
+    public function getNearbySpacecraftsForWarpcoreTransfer(Spacecraft $spacecraft): Collection
+    {
+        $location = $spacecraft->getLocation();
+
+        $spacecrafts = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.location = :location
+                AND s.id != :spacecraftId',
+                Spacecraft::class
+            )
+        )->setParameters([
+            'location' => $location,
+            'spacecraftId' => $spacecraft->getId()
+        ])->getResult();
+
+        $filteredSpacecrafts = array_filter($spacecrafts, function (Spacecraft $ship): bool {
+            return !$ship->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) &&
+                !$ship->getSystemState(SpacecraftSystemTypeEnum::SHIELDS) &&
+                $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE);
+        });
+
+        return new ArrayCollection($filteredSpacecrafts);
     }
 }

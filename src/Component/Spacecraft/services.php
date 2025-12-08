@@ -63,6 +63,7 @@ use Stu\Component\Spacecraft\System\Type\TranswarpCoilShipSystem;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Component\Spacecraft\System\Type\WarpcoreShipSystem;
+use Stu\Component\Spacecraft\System\Type\WarpCoreTransferShipSystem;
 use Stu\Component\Spacecraft\System\Type\WarpdriveBoosterShipSystem;
 use Stu\Component\Spacecraft\System\Type\WarpdriveShipSystem;
 use Stu\Component\Spacecraft\System\Type\WebEmitterShipSystem;
@@ -115,7 +116,8 @@ return [
             SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregationSystemShipSystem::class),
             SpacecraftSystemTypeEnum::RPG_MODULE->value => autowire(RPGShipSystem::class),
             SpacecraftSystemTypeEnum::SINGULARITY_REACTOR->value => autowire(SingularityShipSystem::class),
-            SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER->value => autowire(WarpdriveBoosterShipSystem::class)
+            SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER->value => autowire(WarpdriveBoosterShipSystem::class),
+            SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER->value => autowire(WarpCoreTransferShipSystem::class)
         ],
         autowire(StuTime::class)
     ),
