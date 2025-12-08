@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowWarpcoreChargeTransfer;
 
-
+use request;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
-use request;
 
 final class ShowWarpcoreChargeTransfer implements ViewControllerInterface
 {
@@ -33,7 +31,7 @@ final class ShowWarpcoreChargeTransfer implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->spacecraftLoader->getByIdAndUser(
+        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
