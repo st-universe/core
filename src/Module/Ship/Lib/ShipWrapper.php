@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Spacecraft\System\Data\AstroLaboratorySystemData;
 use Stu\Component\Spacecraft\System\Data\BussardCollectorSystemData;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
+use Stu\Component\Spacecraft\System\Data\WarpcoreChargeTransferSystemData;
 use Stu\Component\Spacecraft\System\Data\WebEmitterSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
@@ -15,6 +16,7 @@ use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Ship;
 
 //TODO increase coverage
+
 /**
  * @extends SpacecraftWrapper<Ship>
  */
@@ -149,6 +151,14 @@ final class ShipWrapper extends SpacecraftWrapper implements ShipWrapperInterfac
         return $this->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::ASTRO_LABORATORY,
             AstroLaboratorySystemData::class
+        );
+    }
+
+    public function getWarpcoreChargeTransferSystemData(): ?WarpcoreChargeTransferSystemData
+    {
+        return $this->getSpecificShipSystem(
+            SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER,
+            WarpcoreChargeTransferSystemData::class
         );
     }
 }

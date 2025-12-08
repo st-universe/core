@@ -69,6 +69,7 @@ enum ModuleSpecialAbilityEnum: int
             self::BUSSARD_COLLECTOR => SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR,
             self::AGGREGATION_SYSTEM => SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM,
             self::WARPDRIVE_BOOST => SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER,
+            self::WARPCORE_CHARGE_TRANSFER => SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER,
             default => null
         };
     }

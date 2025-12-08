@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\Map;
@@ -65,4 +66,9 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
     public function getAllTractoringSpacecrafts(): array;
 
     public function truncateAllSpacecrafts(): void;
+
+    /**
+     * @return Collection<int, Spacecraft>
+     */
+    public function getNearbySpacecraftsForWarpcoreTransfer(Spacecraft $spacecraft): Collection;
 }

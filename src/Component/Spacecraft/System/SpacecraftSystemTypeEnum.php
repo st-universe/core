@@ -97,10 +97,11 @@ enum SpacecraftSystemTypeEnum: int
             self::UPLINK,
             self::WARPDRIVE,
             self::CLOAK => 'html/spacecraft/system/systemWithOnOff.twig',
-            self::THOLIAN_WEB,
+                        self::THOLIAN_WEB,
             self::SUBSPACE_SCANNER,
             self::AGGREGATION_SYSTEM,
-            self::BUSSARD_COLLECTOR => 'html/spacecraft/system/openSettingsWhenHealthy.twig',
+            self::BUSSARD_COLLECTOR,
+            self::WARPCORE_CHARGE_TRANSFER => 'html/spacecraft/system/openSettingsWhenHealthy.twig',
             default => null
         };
     }
@@ -139,10 +140,11 @@ enum SpacecraftSystemTypeEnum: int
             self::ASTRO_LABORATORY => 'map',
             self::CONSTRUCTION_HUB => 'rep',
             self::THOLIAN_WEB => 'net',
-            self::AGGREGATION_SYSTEM => 'aggsys',
+                        self::AGGREGATION_SYSTEM => 'aggsys',
             self::BUSSARD_COLLECTOR => 'bussard',
             self::UPLINK => 'uplink',
             self::WARPDRIVE => 'warp',
+            self::WARPCORE_CHARGE_TRANSFER => 'wct',
             default => throw new BadMethodCallException(sprintf('no icon defined for system type: %s', $this->name))
         };
     }

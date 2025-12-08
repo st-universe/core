@@ -265,10 +265,15 @@ use Stu\Module\Spacecraft\View\ShowSystemSettings\AggregrationSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\BussardCollectorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\ShowSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\SystemSettingsProviderInterface;
+use Stu\Module\Spacecraft\View\ShowSystemSettings\WarpcoreChargeTransferSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\WebEmitterSystemSettings;
 use Stu\Module\Spacecraft\View\ShowSystemSettings\SubspaceSensorSystemSettings;
 use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
+use Stu\Module\Spacecraft\View\ShowWarpcoreChargeTransfer\ShowWarpcoreChargeTransfer;
+use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreCharge;
+use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreChargeRequest;
+use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreChargeRequestInterface;
 
 use function DI\autowire;
 use function DI\get;
@@ -375,6 +380,7 @@ return [
     MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
+    TransferWarpcoreChargeRequestInterface::class => autowire(TransferWarpcoreChargeRequest::class),
     SpacecraftLoaderInterface::class => autowire(SpacecraftLoader::class),
     SpacecraftFactoryInterface::class => autowire(SpacecraftFactory::class),
     SpacecraftConfiguratorFactoryInterface::class => autowire(SpacecraftConfiguratorFactory::class),
@@ -410,7 +416,8 @@ return [
         SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM->value => autowire(AggregrationSystemSettings::class),
         SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR->value => autowire(BussardCollectorSystemSettings::class),
         SpacecraftSystemTypeEnum::THOLIAN_WEB->value => autowire(WebEmitterSystemSettings::class),
-        SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->value => autowire(SubspaceSensorSystemSettings::class)
+        SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->value => autowire(SubspaceSensorSystemSettings::class),
+        SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER->value => autowire(WarpcoreChargeTransferSystemSettings::class)
     ],
     'SPACECRAFT_ACTIONS' => [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
@@ -480,7 +487,8 @@ return [
         TransferToAccount::ACTION_IDENTIFIER => autowire(TransferToAccount::class),
         TransferFromAccount::ACTION_IDENTIFIER => autowire(TransferFromAccount::class),
         WarpdriveBoost::ACTION_IDENTIFIER => autowire(WarpdriveBoost::class),
-        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
+        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
+        TransferWarpcoreCharge::ACTION_IDENTIFIER => autowire(TransferWarpcoreCharge::class)
     ],
     'SPACECRAFT_VIEWS' => [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
@@ -505,6 +513,7 @@ return [
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
         ShowTransfer::VIEW_IDENTIFIER => get(ShowTransfer::class),
         ShowWasteMenu::VIEW_IDENTIFIER => autowire(ShowWasteMenu::class),
+        ShowWarpcoreChargeTransfer::VIEW_IDENTIFIER => autowire(ShowWarpcoreChargeTransfer::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
         ShowWormholeControl::VIEW_IDENTIFIER => autowire(ShowWormholeControl::class),
         ShowWormholeRestrictions::VIEW_IDENTIFIER => autowire(ShowWormholeRestrictions::class),

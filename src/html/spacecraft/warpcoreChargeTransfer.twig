@@ -1,0 +1,100 @@
+{% from 'html/macros.twig' import onClickSpacecraft %}
+
+<div class="popup">
+    {% if SYSTEMWARNING %}
+    <table class="tcal">
+        <tr>
+            <th colspan="2">Warpkern Ladungstransfer</th>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center; color: red;">
+                {{ WARNING_MESSAGE|default('System nicht verfügbar') }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <input type="button" value="Schließen" onclick="closePopup();" />
+            </td>
+        </tr>
+    </table>
+    {% else %}
+    <form action="ship.php" method="post" name="warpcorechargetransferform">
+        <input type="hidden" name="id" value="{{ SPACECRAFT.getId }}" />
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <input type="hidden" name="SHOW_WARPCORE_CHARGE_TRANSFER" value="1" />
+
+        <table class="tcal">
+            <tr>
+                <th colspan="4">Warpkern Ladungstransfer</th>
+            </tr>
+            <tr>
+                <th>Klasse</th>
+                <th>Name</th>
+                <th>Warpkern</th>
+                <th>Transfer</th>
+            </tr>
+            {% for group in SPACECRAFT_GROUPS %}
+            <tr>
+                <td colspan="4">
+                    {{ group.getName|bbcode }}
+                    {% if group.getUser %}
+                    <span> von </span>
+                    {{ group.getUser.getName|bbcode }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% for wrapper in group.getWrappers %}
+            {% set ship = wrapper.get %}
+            {% set shipId = ship.getId %}
+            {% set rumpId = ship.getRumpId %}
+            <tr class="row">
+                <td>
+                    <input type="hidden" name="spacecrafts[]" value="{{ ship.getId }}" />
+                    {% if wrapper.isSelectable %}
+                    <a {{ onClickSpacecraft(ship) }}>
+                        <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
+                    </a>
+                    {% else %}
+                    <img src="assets/ships/{{ rumpId }}.png" title="{{ ship.getRumpName }}" />
+                    {% endif %}
+                </td>
+                {% if wrapper.isSelectable %}
+                <td>
+                    <a {{ onClickSpacecraft(ship) }}>{{ ship.getName|bbcode }}</a>
+                </td>
+                {% else %}
+                <td>{{ ship.getName|bbcode }}</td>
+                {% endif %}
+                <td>
+                    {% set reactor = wrapper.getReactorWrapper %}
+                    {% if reactor %}
+                    <div>
+                        <img class="center" onclick="this.up('div').down('input').value={{ reactor.getCapacity }}"
+                            src="assets/buttons/{{ reactor.get.getIcon }}" title="Warpkern Ladung" />
+                        {% if wrapper.isSelectable %}
+                        <span style="{{ reactor.getReactorLoadStyle }}">{{ reactor.getLoad }}/{{ reactor.getCapacity
+                            }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% set reactor = wrapper.getReactorWrapper %}
+                    {% if reactor %}
+                    <div>
+                        <input type="text" size="3" name="warpcore_transfer[{{ shipId }}]" />
+                        <span>Max.</span> {{ reactor.getCapacity - reactor.getLoad }}
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </table>
+        </table>
+        <br />
+        <input type="submit" style="cursor: pointer" name="B_TRANSFER_WARPCORE_CHARGE" value="Transfer ausführen" />
+        <input type="button" value="Schließen" onclick="closePopup();" />
+    </form>
+    {% endif %}
+</div>
