@@ -30,7 +30,7 @@ final class WarpcoreChargeTransferSystemSettings implements SystemSettingsProvid
         }
 
         if (
-            !$spacecraft->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) ||
+            $spacecraft->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) ||
             $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SHIELDS)
         ) {
             $game->setTemplateVar('SYSTEMWARNING', true);

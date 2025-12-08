@@ -8,6 +8,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Colony;
 
@@ -41,5 +42,11 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
             $this->troopTransferUtility,
             $this->storageManager
         );
+    }
+
+    #[\Override]
+    public function getManagerProviderSpacecraft(SpacecraftWrapperInterface $wrapper): ManagerProviderInterface
+    {
+        return new ManagerProviderSpacecraft($wrapper);
     }
 }

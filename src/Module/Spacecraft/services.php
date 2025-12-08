@@ -272,8 +272,6 @@ use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Spacecraft\View\ShowWarpcoreChargeTransfer\ShowWarpcoreChargeTransfer;
 use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreCharge;
-use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreChargeRequest;
-use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreChargeRequestInterface;
 
 use function DI\autowire;
 use function DI\get;
@@ -380,7 +378,6 @@ return [
     MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
-    TransferWarpcoreChargeRequestInterface::class => autowire(TransferWarpcoreChargeRequest::class),
     SpacecraftLoaderInterface::class => autowire(SpacecraftLoader::class),
     SpacecraftFactoryInterface::class => autowire(SpacecraftFactory::class),
     SpacecraftConfiguratorFactoryInterface::class => autowire(SpacecraftConfiguratorFactory::class),
