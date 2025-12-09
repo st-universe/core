@@ -80,8 +80,10 @@ final class CrewLimitations implements ManagerComponentInterface
             }
 
             $amount++;
-            $this->crewRepository->delete($crewAssignment->getCrew());
+            $crew = $crewAssignment->getCrew();
+            $crewAssignment->clearAssignment();
             $this->shipCrewRepository->delete($crewAssignment);
+            $this->crewRepository->delete($crew);
         }
 
         if ($amount > 0) {
@@ -107,8 +109,10 @@ final class CrewLimitations implements ManagerComponentInterface
             }
 
             $amount++;
-            $this->crewRepository->delete($crewAssignment->getCrew());
+            $crew = $crewAssignment->getCrew();
+            $crewAssignment->clearAssignment();
             $this->shipCrewRepository->delete($crewAssignment);
+            $this->crewRepository->delete($crew);
         }
 
         if ($amount > 0) {
@@ -134,8 +138,10 @@ final class CrewLimitations implements ManagerComponentInterface
             }
 
             $amount++;
-            $this->crewRepository->delete($crewAssignment->getCrew());
+            $crew = $crewAssignment->getCrew();
+            $crewAssignment->clearAssignment();
             $this->shipCrewRepository->delete($crewAssignment);
+            $this->crewRepository->delete($crew);
         }
 
         if ($amount > 0) {

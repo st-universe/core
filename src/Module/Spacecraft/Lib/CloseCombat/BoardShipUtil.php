@@ -75,8 +75,10 @@ class BoardShipUtil implements BoardShipUtilInterface
 
         $ship = $wrapper->get();
         $ship->getCrewAssignments()->removeElement($killedCrewAssignment);
-        $this->crewRepository->delete($killedCrewAssignment->getCrew());
+        $crew = $killedCrewAssignment->getCrew();
+        $killedCrewAssignment->clearAssignment();
         $this->crewAssignmentRepository->delete($killedCrewAssignment);
+        $this->crewRepository->delete($crew);
 
         if ($ship->getCrewAssignments()->isEmpty()) {
             $this->spacecraftShutdown->shutdown($wrapper, true);

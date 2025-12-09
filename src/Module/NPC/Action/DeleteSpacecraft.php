@@ -127,9 +127,15 @@ final class DeleteSpacecraft implements ActionControllerInterface
 
     private function letCrewDie(Spacecraft $spacecraft): void
     {
+        $crewArray = [];
         foreach ($spacecraft->getCrewAssignments() as $shipCrew) {
-            $this->crewRepository->delete($shipCrew->getCrew());
+            $crewArray[] = $shipCrew->getCrew();
+            $shipCrew->clearAssignment();
             $this->shipCrewRepository->delete($shipCrew);
+        }
+
+        foreach ($crewArray as $crew) {
+            $this->crewRepository->delete($crew);
         }
 
         $spacecraft->getCrewAssignments()->clear();
