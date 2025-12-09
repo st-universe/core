@@ -107,9 +107,15 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private function resetCrew(Colony $colony): void
     {
+        $crewArray = [];
         foreach ($colony->getCrewAssignments() as $crewAssignment) {
+            $crewArray[] = $crewAssignment->getCrew();
+            $crewAssignment->clearAssignment();
             $this->shipCrewRepository->delete($crewAssignment);
-            $this->crewRepository->delete($crewAssignment->getCrew());
+        }
+
+        foreach ($crewArray as $crew) {
+            $this->crewRepository->delete($crew);
         }
     }
 
