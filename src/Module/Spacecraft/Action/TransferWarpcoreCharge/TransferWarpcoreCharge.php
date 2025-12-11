@@ -10,11 +10,13 @@ use Stu\Lib\SpacecraftManagement\Manager\ManageWarpcoreTransfer;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderSpacecraft;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Module\Spacecraft\View\ShowWarpcoreChargeTransfer\ShowWarpcoreChargeTransfer;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class TransferWarpcoreCharge implements ActionControllerInterface
@@ -29,13 +31,14 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private InteractionCheckerInterface $interactionChecker,
-        private ManageWarpcoreTransfer $manageWarpcoreTransfer
+        private ManageWarpcoreTransfer $manageWarpcoreTransfer,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowWarpcoreChargeTransfer::VIEW_IDENTIFIER);
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -73,6 +76,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         }
 
         $msg = [];
+        $transfersByUser = [];
 
         $managerProvider = new ManagerProviderSpacecraft($wrapper);
 
@@ -81,43 +85,98 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         ];
 
         foreach ($shipIds as $shipId) {
-            $msg = array_merge($msg, $this->handleShip($values, $managerProvider, (int)$shipId, $wrapper));
+            $targetShip = $this->spacecraftRepository->find((int)$shipId);
+            if ($targetShip === null) {
+                continue;
+            }
+            if ($targetShip->isCloaked()) {
+                continue;
+            }
+            if (!$this->interactionChecker->checkPosition($spacecraft, $targetShip)) {
+                continue;
+            }
+
+            $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetShip);
+
+            $messages = $this->manageWarpcoreTransfer->manage($targetWrapper, $values, $managerProvider);
+
+            if (!empty($messages) && $spacecraft->getUser() !== $targetShip->getUser()) {
+                $targetUserId = $targetShip->getUser()->getId();
+                if (!isset($transfersByUser[$targetUserId])) {
+                    $transfersByUser[$targetUserId] = [
+                        'transfers' => [],
+                        'sectorString' => $targetShip->getSectorString()
+                    ];
+                }
+
+                $transfersByUser[$targetUserId]['transfers'][] = [
+                    'shipName' => $targetShip->getName()
+                ];
+            }
+
+            $msg = array_merge($msg, $messages);
+
+            $this->spacecraftRepository->save($targetShip);
         }
 
         $this->spacecraftRepository->save($spacecraft);
+
+        $this->sendPrivateMessages($transfersByUser, $managerProvider, $spacecraft);
 
         $game->getInfo()->addInformationArray($msg, true);
     }
 
     /**
-     * @param array<string, array<int|string, mixed>> $values
-     *
-     * @return array<string>
+     * @param array<int, array<string, mixed>> $transfersByUser
      */
-    private function handleShip(
-        array $values,
+    private function sendPrivateMessages(
+        array $transfersByUser,
         ManagerProviderSpacecraft $managerProvider,
-        int $shipId,
-        SpacecraftWrapperInterface $sourceWrapper
-    ): array {
-        $ship = $this->spacecraftRepository->find($shipId);
-        if ($ship === null) {
-            return [];
+        \Stu\Orm\Entity\Spacecraft $sourceSpacecraft
+    ): void {
+        $sourceUser = $sourceSpacecraft->getUser();
+
+        foreach ($transfersByUser as $targetUserId => $data) {
+            if ($targetUserId === $sourceUser->getId()) {
+                continue;
+            }
+
+            $transfers = $data['transfers'];
+            $sectorString = $data['sectorString'];
+
+            if (empty($transfers)) {
+                continue;
+            }
+
+            if (count($transfers) === 1) {
+                $transfer = $transfers[0];
+                $message = sprintf(
+                    'Die %s hat in Sektor %s den Warpkern der %s aufgeladen',
+                    $managerProvider->getName(),
+                    $sectorString,
+                    $transfer['shipName']
+                );
+            } else {
+                $shipList = [];
+                foreach ($transfers as $transfer) {
+                    $shipList[] = $transfer['shipName'];
+                }
+
+                $message = sprintf(
+                    'Die %s hat in Sektor %s die Warpkerne folgender Schiffe aufgeladen:\n%s',
+                    $managerProvider->getName(),
+                    $sectorString,
+                    implode(', ', $shipList)
+                );
+            }
+
+            $this->privateMessageSender->send(
+                $sourceUser->getId(),
+                $targetUserId,
+                $message,
+                PrivateMessageFolderTypeEnum::SPECIAL_TRADE
+            );
         }
-        if ($ship->isCloaked()) {
-            return [];
-        }
-        if (!$this->interactionChecker->checkPosition($sourceWrapper->get(), $ship)) {
-            return [];
-        }
-
-        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($ship);
-
-        $msg = $this->manageWarpcoreTransfer->manage($wrapper, $values, $managerProvider);
-
-        $this->spacecraftRepository->save($ship);
-
-        return $msg;
     }
 
     #[\Override]

@@ -71,9 +71,9 @@ class ManageWarpcoreTransfer implements ManagerInterface
         $managerProvider->lowerReactorLoad((int)$actualTransfer);
 
         return [sprintf(
-            'Warpkern-Ladung von %d an %s übertragen',
-            $actualTransfer,
-            $targetSpacecraft->getName()
+            '%s: Der Warpkern wurde um %d Einheiten aufgeladen',
+            $targetSpacecraft->getName(),
+            $actualTransfer
         )];
     }
 }

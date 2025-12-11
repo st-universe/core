@@ -182,11 +182,14 @@ class ColonyResetterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($crew);
-        $this->crewRepository->shouldReceive('delete')
-            ->with($crew)
+        $crewAssignment->shouldReceive('clearAssignment')
+            ->withNoArgs()
             ->once();
         $this->shipCrewRepository->shouldReceive('delete')
             ->with($crewAssignment)
+            ->once();
+        $this->crewRepository->shouldReceive('delete')
+            ->with($crew)
             ->once();
         $this->crewTrainingRepository->shouldReceive('truncateByColony')
             ->with($colony)

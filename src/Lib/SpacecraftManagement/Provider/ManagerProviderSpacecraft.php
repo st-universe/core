@@ -41,8 +41,7 @@ class ManagerProviderSpacecraft implements ManagerProviderInterface
         $spacecraft = $this->wrapper->get();
 
         return sprintf(
-            '%s %s',
-            $spacecraft->getRump()->getName(),
+            '%s',
             $spacecraft->getName(),
         );
     }
@@ -109,5 +108,10 @@ class ManagerProviderSpacecraft implements ManagerProviderInterface
         }
 
         $reactor->changeLoad(-$amount);
+    }
+
+    public function getWrapper(): SpacecraftWrapperInterface
+    {
+        return $this->wrapper;
     }
 }
