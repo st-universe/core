@@ -1,9 +1,6 @@
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
 <div class="popup">
-    {% if not IS_ADMIN %}
-    todo
-    {% else %}
     {% if SYSTEMWARNING %}
     <table class="tcal">
         {{ WARNING_MESSAGE|default('System nicht verfügbar') }}
@@ -74,6 +71,5 @@
         <br />
         <input type="submit" style="cursor: pointer" name="B_TRANSFER_WARPCORE_CHARGE" value="Transfer" />
     </form>
-    {% endif %}
     {% endif %}
 </div>
