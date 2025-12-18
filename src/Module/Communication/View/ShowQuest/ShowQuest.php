@@ -9,6 +9,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Component\Quest\QuestUserModeEnum;
@@ -24,7 +25,8 @@ final class ShowQuest implements ViewControllerInterface
         private NPCQuestLogRepositoryInterface $npcQuestLogRepository,
         private NPCQuestUserRepositoryInterface $npcQuestUserRepository,
         private FactionRepositoryInterface $factionRepository,
-        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private CommodityRepositoryInterface $commodityRepository
     ) {}
 
     #[\Override]
@@ -150,6 +152,7 @@ final class ShowQuest implements ViewControllerInterface
         $game->setTemplateVar('USER_STATUS', $userStatus);
         $game->setTemplateVar('CURRENT_TIME', $currentTime);
         $game->setTemplateVar('BUILDPLANS', $this->loadBuildplans($quest));
+        $game->setTemplateVar('COMMODITIES', $this->loadCommodities($quest));
         $game->setTemplateVar('CAN_CLAIM_REWARD', $canClaimReward);
         $game->setTemplateVar('HAS_PHYSICAL_REWARDS', $hasPhysicalRewards);
     }
@@ -174,5 +177,27 @@ final class ShowQuest implements ViewControllerInterface
         }
 
         return $buildplans;
+    }
+
+    /**
+     * @param NPCQuest $quest
+     * @return array<int, object>
+     */
+    private function loadCommodities(NPCQuest $quest): array
+    {
+        $commodityReward = $quest->getCommodityReward();
+        if (!$commodityReward) {
+            return [];
+        }
+
+        $commodities = [];
+        foreach ($commodityReward as $commodityId => $amount) {
+            $commodity = $this->commodityRepository->find($commodityId);
+            if ($commodity !== null) {
+                $commodities[$commodityId] = $commodity;
+            }
+        }
+
+        return $commodities;
     }
 }
