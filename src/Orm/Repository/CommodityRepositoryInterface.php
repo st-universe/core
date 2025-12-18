@@ -40,6 +40,11 @@ interface CommodityRepositoryInterface extends ObjectRepository
     public function getTradeableNPC(): array;
 
     /**
+     * @return array<Commodity>
+     */
+    public function getTradeableAdmin(): array;
+
+    /**
      * Returns a dict of all commodities, indexed by its id
      *
      * @return array<int, Commodity>
