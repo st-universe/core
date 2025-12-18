@@ -79,6 +79,15 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     }
 
     #[\Override]
+    public function getTradeableAdmin(): array
+    {
+        return $this->findBy([
+            'view' => true,
+            'type' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD
+        ], ['sort' => 'asc']);
+    }
+
+    #[\Override]
     public function getAll(): array
     {
         return $this->getEntityManager()

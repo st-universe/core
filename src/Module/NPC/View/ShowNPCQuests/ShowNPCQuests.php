@@ -46,8 +46,14 @@ final class ShowNPCQuests implements ViewControllerInterface
         $myActiveQuests = $this->npcQuestRepository->getActiveQuestsByUser($userId);
         $myFinishedQuests = $this->npcQuestRepository->getFinishedQuestsByUser($userId);
 
+        if ($game->isAdmin()) {
+            $commodityList = $this->commodityRepository->getTradeableAdmin();
+        } else {
+            $commodityList = $this->commodityRepository->getTradeableNPC();
+        }
+
         $game->setTemplateVar('PLAYABLE_FACTIONS', $this->factionRepository->getByChooseable(true));
-        $game->setTemplateVar('SELECTABLE_COMMODITIES', $this->commodityRepository->getTradeableNPC());
+        $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
         $game->setTemplateVar('MY_ACTIVE_QUESTS', $myActiveQuests);
         $game->setTemplateVar('MY_FINISHED_QUESTS', $myFinishedQuests);
         $game->setTemplateVar('BUILDPLANS', $this->loadBuildplans($myActiveQuests, $myFinishedQuests));

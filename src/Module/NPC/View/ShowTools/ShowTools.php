@@ -19,7 +19,11 @@ final class ShowTools implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $commodityList = $this->commodityRepository->getTradeableNPC();
+        if ($game->isAdmin()) {
+            $commodityList = $this->commodityRepository->getTradeableAdmin();
+        } else {
+            $commodityList = $this->commodityRepository->getTradeableNPC();
+        }
 
         $historyTypes = [];
         foreach (HistoryTypeEnum::cases() as $type) {
