@@ -41,6 +41,9 @@ class Commodity
     #[Column(type: 'boolean')]
     private bool $bound = false;
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $cheatable = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class Commodity
     public function setType(int $typeId): Commodity
     {
         $this->type = $typeId;
+
+        return $this;
+    }
+
+    public function getCheatable(): ?bool
+    {
+        return $this->cheatable;
+    }
+
+    public function setCheatable(?bool $cheatable): Commodity
+    {
+        $this->cheatable = $cheatable;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251123181830 extends AbstractMigration
+final class Version20251218121844 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -160,7 +160,7 @@ final class Version20251123181830 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_colony_scan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER NOT NULL, user_id INTEGER NOT NULL, colony_user_id INTEGER NOT NULL, colony_name VARCHAR(255) DEFAULT NULL, colony_user_name VARCHAR(255) NOT NULL, mask CLOB NOT NULL, date INTEGER NOT NULL, CONSTRAINT FK_2853B5FC96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2853B5FCA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_2853B5FC96ADBADE ON stu_colony_scan (colony_id)');
         $this->addSql('CREATE INDEX IDX_2853B5FCA76ED395 ON stu_colony_scan (user_id)');
-        $this->addSql('CREATE TABLE stu_commodity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, sort SMALLINT NOT NULL, "view" BOOLEAN NOT NULL, type SMALLINT NOT NULL, npc_commodity BOOLEAN NOT NULL, bound BOOLEAN NOT NULL)');
+        $this->addSql('CREATE TABLE stu_commodity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, sort SMALLINT NOT NULL, "view" BOOLEAN NOT NULL, type SMALLINT NOT NULL, npc_commodity BOOLEAN NOT NULL, bound BOOLEAN NOT NULL, cheatable BOOLEAN DEFAULT NULL)');
         $this->addSql('CREATE INDEX commodity_sort_idx ON stu_commodity (sort)');
         $this->addSql('CREATE TABLE stu_construction_progress (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, station_id INTEGER NOT NULL, remaining_ticks INTEGER NOT NULL, CONSTRAINT FK_57D2AD0421BDB235 FOREIGN KEY (station_id) REFERENCES stu_station (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_57D2AD0421BDB235 ON stu_construction_progress (station_id)');
