@@ -73,6 +73,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     {
         return $this->findBy([
             'view' => true,
+            'cheatable' => false,
             'type' => CommodityTypeConstants::COMMODITY_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }
