@@ -51,7 +51,9 @@
 
                 {% if QUEST.getCommodityReward %}
                 {% for commodityId, amount in QUEST.getCommodityReward %}
-                <img src="/assets/commodities/{{ commodityId }}.png" title="Ware" /> {{ amount }}&nbsp;&nbsp;
+                {% set commodity = COMMODITIES[commodityId] is defined ? COMMODITIES[commodityId] : null %}
+                <img src="/assets/commodities/{{ commodityId }}.png"
+                    title="{{ commodity ? commodity.getName : 'Ware' }}" /> {{ amount }}&nbsp;&nbsp;
                 {% endfor %}
                 <br>
                 {% endif %}
