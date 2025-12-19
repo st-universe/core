@@ -39,17 +39,6 @@ final class DeactivateSystem implements ActionControllerInterface
         $fleetWrapper = request::getInt('isfleet') ? $wrapper->getFleetWrapper() : null;
         $systemType = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
 
-        $tractoredShipWrapper = null;
-        $tractoredShips = [];
-
-        if ($this->isAlertReactionCheckNeeded($systemType)) {
-            if ($fleetWrapper === null) {
-                $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
-            } else {
-                $tractoredShips = $this->getTractoredShipWrappers($fleetWrapper);
-            }
-        }
-
         if ($fleetWrapper === null) {
             $success = $this->helper->deactivate(
                 $wrapper,
@@ -65,7 +54,7 @@ final class DeactivateSystem implements ActionControllerInterface
         }
 
         if ($success && $this->isAlertReactionCheckNeeded($systemType)) {
-            $this->triggerAlertReaction($wrapper, $tractoredShipWrapper, $tractoredShips, $game->getInfo());
+            $this->triggerAlertReaction($fleetWrapper, $wrapper, $game->getInfo());
             if ($wrapper->get()->getCondition()->isDestroyed()) {
                 return;
             }
@@ -83,54 +72,25 @@ final class DeactivateSystem implements ActionControllerInterface
         };
     }
 
-    /** 
-     * @param array<int, array{0: Ship, 1: SpacecraftWrapperInterface}> $tractoredShips 
-     */
-    private function triggerAlertReaction(
-        SpacecraftWrapperInterface $wrapper,
-        ?SpacecraftWrapperInterface $tractoredShipWrapper,
-        array $tractoredShips,
-        InformationInterface $info
-    ): void {
+    private function triggerAlertReaction(?FleetWrapperInterface $fleetWrapper, SpacecraftWrapperInterface $wrapper, InformationInterface $info): void
+    {
         $spacecraft = $wrapper->get();
-        $wasAliveBeforeAlert = !$spacecraft->getCondition()->isDestroyed();
 
         //Alarm-Rot check for ship
         $this->alertReactionFacade->doItAll($wrapper, $info);
 
-        if ($tractoredShipWrapper !== null) {
-            $tractoringShipForCheck = $spacecraft->getCondition()->isDestroyed() ? null : $spacecraft;
-            $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringShipForCheck);
+        if ($fleetWrapper === null) {
+            $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
-            if (
-                $wasAliveBeforeAlert
-                && $spacecraft->getCondition()->isDestroyed()
-                && !$tractoredShipWrapper->get()->getCondition()->isDestroyed()
-            ) {
-                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, null);
+            //Alarm-Rot check for traktor ship
+            if ($traktoredShipWrapper !== null) {
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $info, $spacecraft);
             }
-        } else if (!empty($tractoredShips)) {
-            $tractoringShipsStateBeforeAlert = [];
-
-            foreach ($tractoredShips as [$tractoringShip, $tractoredShipWrapper]) {
-                $tractoringShipsStateBeforeAlert[$tractoringShip->getId()] = !$tractoringShip->getCondition()->isDestroyed();
-            }
-
-            foreach ($tractoredShips as [$tractoringShip, $tractoredShipWrapper]) {
-                $tractoringShipForCheck = $tractoringShip->getCondition()->isDestroyed() ? null : $tractoringShip;
-                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringShipForCheck);
-            }
-
-            foreach ($tractoredShips as [$tractoringShip, $tractoredShipWrapper]) {
-                $wasAliveBeforeAlert = $tractoringShipsStateBeforeAlert[$tractoringShip->getId()] ?? false;
-
-                if (
-                    $wasAliveBeforeAlert
-                    && $tractoringShip->getCondition()->isDestroyed()
-                    && !$tractoredShipWrapper->get()->getCondition()->isDestroyed()
-                ) {
-                    $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, null);
-                }
+        } else {
+            $tractoredShips = $this->getTractoredShipWrappers($fleetWrapper);
+            //Alarm-Rot check for tractored ships
+            foreach ($tractoredShips as [$tractoringShipWrapper, $tractoredShipWrapper]) {
+                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringShipWrapper);
             }
         }
     }
