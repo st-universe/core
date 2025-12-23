@@ -253,20 +253,6 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
     }
 
     #[\Override]
-    public function truncateBySpacecraft(Spacecraft $spacecraft): void
-    {
-        $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s ca WHERE ca.spacecraft = :spacecraft',
-                    CrewAssignment::class
-                )
-            )
-            ->setParameter('spacecraft', $spacecraft)
-            ->execute();
-    }
-
-    #[\Override]
     public function truncateByUser(User $user): void
     {
         $this->getEntityManager()
