@@ -20,6 +20,14 @@ use Stu\Orm\Entity\Location;
 class LocationRepository extends EntityRepository implements LocationRepositoryInterface
 {
     #[\Override]
+    public function save(Location $location): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($location);
+    }
+
+    #[\Override]
     public function getForSubspaceEllipseCreation(): array
     {
         $rsm = new ResultSetMapping();
