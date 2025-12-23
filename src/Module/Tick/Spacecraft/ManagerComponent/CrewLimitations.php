@@ -200,14 +200,16 @@ final class CrewLimitations implements ManagerComponentInterface
         $crewArray = [];
         foreach ($randomSpacecraft->getCrewAssignments() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();
+            $this->shipCrewRepository->delete($shipCrew);
         }
         $randomSpacecraft->getCrewAssignments()->clear();
 
         //remove crew
-        $this->shipCrewRepository->truncateBySpacecraft($randomSpacecraft);
         foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);
         }
+
+        //save randomSpacecraft?
 
         $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomSpacecraft->getName());
         $this->privateMessageSender->send(

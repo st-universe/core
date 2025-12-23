@@ -61,8 +61,6 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
      */
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array;
 
-    public function truncateBySpacecraft(Spacecraft $spacecraft): void;
-
     public function truncateByUser(User $user): void;
 
     public function hasCrewOnForeignStation(User $user): bool;
