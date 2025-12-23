@@ -100,10 +100,6 @@
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/st-universe/assets.git"
-    },
-    {
-      "type": "git",
       "url": "https://github.com/st-universe/planet-generator.git"
     },
     {
