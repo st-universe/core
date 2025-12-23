@@ -13,6 +13,8 @@ use Stu\Orm\Entity\Location;
  */
 interface LocationRepositoryInterface extends ObjectRepository
 {
+    public function save(Location $location): void;
+
     /**
      * @return array<Location>
      */

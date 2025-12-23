@@ -13,11 +13,13 @@ use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\StuTestCase;
 
 class IonStormMovementTest extends StuTestCase
 {
     private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
+    private MockInterface&LocationRepositoryInterface $locationRepository;
     private MockInterface&StuRandom $stuRandom;
 
     private IonStormMovement $subject;
@@ -28,10 +30,12 @@ class IonStormMovementTest extends StuTestCase
         StuLogger::setMock(new Logger('test'));
 
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);
+        $this->locationRepository = $this->mock(LocationRepositoryInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->subject = new IonStormMovement(
             $this->anomalyRepository,
+            $this->locationRepository,
             $this->stuRandom
         );
     }
@@ -190,6 +194,13 @@ class IonStormMovementTest extends StuTestCase
             ->once();
         $this->anomalyRepository->shouldReceive('delete')
             ->with($childOnBorder)
+            ->once();
+
+        $this->locationRepository->shouldReceive('save')
+            ->with($childLocation)
+            ->once();
+        $this->locationRepository->shouldReceive('save')
+            ->with($newLocation)
             ->once();
 
         $this->subject->moveStorm($root, $ionStormData, $locationPool);

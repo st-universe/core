@@ -11,11 +11,13 @@ use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
+use Stu\Orm\Repository\LocationRepositoryInterface;
 
 class IonStormMovement
 {
     public function __construct(
         private readonly AnomalyRepositoryInterface $anomalyRepository,
+        private readonly LocationRepositoryInterface $locationRepository,
         private readonly StuRandom $stuRandom
     ) {}
 
@@ -68,5 +70,7 @@ class IonStormMovement
         ), LogTypeEnum::ANOMALY);
 
         $this->anomalyRepository->save($child);
+        $this->locationRepository->save($currentLocation);
+        $this->locationRepository->save($newLocation);
     }
 }
