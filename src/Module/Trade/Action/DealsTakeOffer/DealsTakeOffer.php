@@ -188,9 +188,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             if ($buildplan !== null) {
                 if ($selectedDeal->getShip() === true) {
                     $this->createShip($buildplan, $tradePost, $userId);
-                }
-
-                if (($selectedDeal->getShip() ?? false)) {
+                } else {
                     $this->copyBuildplan($buildplan, $user);
                 }
             }
