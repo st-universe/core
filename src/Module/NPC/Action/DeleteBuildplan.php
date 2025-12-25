@@ -9,6 +9,9 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 
 final class DeleteBuildplan implements ActionControllerInterface
 {
@@ -16,7 +19,8 @@ final class DeleteBuildplan implements ActionControllerInterface
 
     public function __construct(
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
-        private NPCLogRepositoryInterface $npcLogRepository
+        private NPCLogRepositoryInterface $npcLogRepository,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[\Override]
@@ -30,9 +34,23 @@ final class DeleteBuildplan implements ActionControllerInterface
         }
 
         $buildplan = $this->spacecraftBuildplanRepository->find($buildplanId);
-        if ($buildplan === null || $buildplan->getUserId() !== $userId) {
+        if ($buildplan === null) {
             $game->getInfo()->addInformation('Der Bauplan konnte nicht gelöscht werden');
             return;
+        }
+
+        if ($buildplan->getUserId() !== $userId) {
+            $this->privateMessageSender->send(
+                UserConstants::USER_NOONE,
+                $buildplan->getUserId(),
+                sprintf(
+                    'Der Spieler %s hat deine Bauplan %s gelöscht',
+                    $game->getUser()->getName(),
+                    $buildplan->getName()
+                ),
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
+
+            );
         }
 
         $crewCount = $buildplan->getCrew();
