@@ -28,6 +28,14 @@ class ColonyMember implements InteractionMemberInterface
         InteractionMemberInterface $other,
         callable $shouldCheck
     ): ?InteractionCheckType {
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_SOURCE_UNBLOCKED)
+            && $this->colony->isBlocked()
+        ) {
+            return InteractionCheckType::EXPECT_SOURCE_UNBLOCKED;
+        }
+
         return null;
     }
 
@@ -49,6 +57,13 @@ class ColonyMember implements InteractionMemberInterface
             && $this->tholianWebUtil->isTargetOutsideFinishedTholianWeb($other->get(), $this->colony)
         ) {
             return InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB;
+        }
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_UNBLOCKED)
+            && $this->colony->isBlocked()
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_UNBLOCKED;
         }
 
         return null;
