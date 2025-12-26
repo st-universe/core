@@ -33,7 +33,7 @@ class CallbackExecution
         }
 
         $actionMs = $this->stuTime->hrtime() - $startTime;
-        $game->getGameRequest()->setActionMs((int)$actionMs / 1_000_000);
+        $game->getGameRequest()->setActionMs((int)ceil($actionMs / 1_000_000));
     }
 
     private function executeCallback(ModuleEnum $module, GameControllerInterface $game): void

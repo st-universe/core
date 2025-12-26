@@ -39,7 +39,7 @@ class ViewExecution
         }
 
         $viewMs = $this->stuTime->hrtime() - $startTime;
-        $game->getGameRequest()->setViewMs((int)$viewMs / 1_000_000);
+        $game->getGameRequest()->setViewMs((int)ceil($viewMs / 1_000_000));
     }
 
     private function executeView(ModuleEnum $module, GameControllerInterface $game): void
