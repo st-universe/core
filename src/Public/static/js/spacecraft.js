@@ -271,12 +271,12 @@ function adjustCellWidth(image) {
   }
 }
 
-var reactorOutput = null;
-var epsUsage = null;
-var flightCost = null;
-var missingEps = null;
-var currentWarpdrive = null;
-var maxWarpdrive = null;
+let reactorOutput = null;
+let epsUsage = null;
+let flightCost = null;
+let missingEps = null;
+let currentWarpdrive = null;
+let maxWarpdrive = null;
 
 function setReactorSplitConstants(output, usage, cost, meps, wd, mwd) {
   reactorOutput = output;
@@ -288,10 +288,9 @@ function setReactorSplitConstants(output, usage, cost, meps, wd, mwd) {
 }
 
 function updateReactorValues() {
-  value = document.getElementById("warpdriveSplit").value;
 
   // calculate absolute values
-  const warpdriveSplit = parseInt(value);
+  const warpdriveSplit = Number.parseInt(document.getElementById("warpdriveSplit")?.value ?? 0);
   const maxWarpdriveGain = Math.max(
     0,
     Math.floor((reactorOutput - epsUsage) / flightCost)
@@ -305,10 +304,16 @@ function updateReactorValues() {
       : reactorOutput - warpDriveProduction * flightCost;
 
   // set input labels
-  document.getElementById("calculatedEPS").textContent =
-    epsProduction > 0 ? "+" + epsProduction : String(epsProduction);
-  document.getElementById("calculatedWarpDrive").textContent =
-    warpDriveProduction > 0 ? "+" + warpDriveProduction : "0";
+  const calculatedEPSEl = document.getElementById("calculatedEPS");
+  if (calculatedEPSEl) {
+    calculatedEPSEl.textContent =
+      epsProduction > 0 ? "+" + epsProduction : String(epsProduction);
+  }
+  const calculatedWarpDriveEl = document.getElementById("calculatedWarpDrive");
+  if (calculatedWarpDriveEl) {
+    calculatedWarpDriveEl.textContent =
+      warpDriveProduction > 0 ? "+" + warpDriveProduction : "0";
+  }
 
   // calculate effective values
   let epsChange = epsProduction - epsUsage;
@@ -316,9 +321,8 @@ function updateReactorValues() {
   let effEpsProduction = Math.min(missingEps, epsChange);
   let effWarpdriveProduction = Math.min(missingWarpdrive, warpDriveProduction);
 
-  autoCarryOver = document.getElementById("autoCarryOver").checked;
-  if (autoCarryOver) {
-    excess = Math.max(
+  if (document.getElementById("autoCarryOver")?.checked ?? true) {
+    let excess = Math.max(
       0,
       reactorOutput -
       epsUsage -
@@ -335,14 +339,23 @@ function updateReactorValues() {
   }
 
   // set effective labels
-  document.getElementById("effectiveEps").textContent =
-    effEpsProduction > 0 ? "+" + effEpsProduction : String(effEpsProduction);
-  document.getElementById("effectiveWarpdrive").textContent =
-    effWarpdriveProduction > 0
-      ? "+" + effWarpdriveProduction
-      : String(effWarpdriveProduction);
-  document.getElementById("reactorUsage").textContent =
-    epsUsage + effEpsProduction + effWarpdriveProduction * flightCost;
+  const effectiveEpsEl = document.getElementById("effectiveEps");
+  if (effectiveEpsEl) {
+    effectiveEpsEl.textContent =
+      effEpsProduction > 0 ? "+" + effEpsProduction : String(effEpsProduction);
+  }
+  const effectiveWarpdriveEl = document.getElementById("effectiveWarpdrive");
+  if (effectiveWarpdriveEl) {
+    effectiveWarpdriveEl.textContent =
+      effWarpdriveProduction > 0
+        ? "+" + effWarpdriveProduction
+        : String(effWarpdriveProduction);
+  }
+  const reactorUsageEl = document.getElementById("reactorUsage");
+  if (reactorUsageEl) {
+    reactorUsageEl.textContent =
+      epsUsage + effEpsProduction + effWarpdriveProduction * flightCost;
+  }
 }
 
 var saveTimeout;

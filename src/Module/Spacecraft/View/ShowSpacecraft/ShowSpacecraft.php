@@ -211,8 +211,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $epsSystem = $wrapper->getEpsSystemData();
 
         if (
-            $warpDriveSystem !== null
-            && $epsSystem !== null
+            $epsSystem !== null
             && $reactor !== null
         ) {
             $ship = $wrapper->get();
@@ -223,13 +222,11 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
                 $wrapper->getEpsUsage(),
                 $ship->getRump()->getFlightEcost(),
                 $epsSystem->getMaxEps() - $epsSystem->getEps(),
-                $warpDriveSystem->getWarpDrive(),
-                $warpDriveSystem->getMaxWarpdrive()
+                $warpDriveSystem?->getWarpDrive() ?? 0,
+                $warpDriveSystem?->getMaxWarpdrive() ?? 0
             ), JavascriptExecutionTypeEnum::AFTER_RENDER);
-            $game->addExecuteJS(sprintf(
-                'updateReactorValues(%d);',
-                $warpDriveSystem->getWarpDriveSplit(),
-            ), JavascriptExecutionTypeEnum::AFTER_RENDER);
+            $game->addExecuteJS('updateReactorValues();',
+                JavascriptExecutionTypeEnum::AFTER_RENDER);
         }
     }
 
