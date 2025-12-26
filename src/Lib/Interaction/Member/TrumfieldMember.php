@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\Interaction\Member;
 
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
@@ -31,6 +32,14 @@ class TrumfieldMember implements InteractionMemberInterface
         InteractionMemberInterface $other,
         callable $shouldCheck
     ): ?InteractionCheckType {
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM)
+            && $this->trumfield->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM;
+        }
+
         return null;
     }
 
