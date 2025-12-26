@@ -1,6 +1,8 @@
 <?php
 // router.php
 
+ini_set('max_execution_time', '0');
+
 $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 // Absolute Pfade sauber bauen (WINDOWS-SAFE)
