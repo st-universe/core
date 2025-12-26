@@ -45,7 +45,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     private ?int $epsUsage = null;
 
     /**
-     * @param T $spacecraft
+     * @param T&Spacecraft $spacecraft
      */
     public function __construct(
         protected readonly Spacecraft $spacecraft,
