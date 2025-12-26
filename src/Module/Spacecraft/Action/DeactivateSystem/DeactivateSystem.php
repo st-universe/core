@@ -11,11 +11,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 final class DeactivateSystem implements ActionControllerInterface
 {
@@ -74,38 +75,37 @@ final class DeactivateSystem implements ActionControllerInterface
 
     private function triggerAlertReaction(?FleetWrapperInterface $fleetWrapper, SpacecraftWrapperInterface $wrapper, InformationInterface $info): void
     {
-        $spacecraft = $wrapper->get();
+        $tractoredShips = $this->getTractoredShipWrappers($fleetWrapper, $wrapper);
 
         //Alarm-Rot check for ship
         $this->alertReactionFacade->doItAll($wrapper, $info);
 
-        if ($fleetWrapper === null) {
-            $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
-
-            //Alarm-Rot check for traktor ship
-            if ($traktoredShipWrapper !== null) {
-                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $info, $spacecraft);
-            }
-        } else {
-            $tractoredShips = $this->getTractoredShipWrappers($fleetWrapper);
-            //Alarm-Rot check for tractored ships
-            foreach ($tractoredShips as [$tractoringShipWrapper, $tractoredShipWrapper]) {
-                $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringShipWrapper);
-            }
+        //Alarm-check for tractored ships
+        foreach ($tractoredShips as [$tractoringSpacecraftWrapper, $tractoredShipWrapper]) {
+            $this->alertReactionFacade->doItAll($tractoredShipWrapper, $info, $tractoringSpacecraftWrapper);
         }
     }
 
-    /** @return array<int, array{0: Ship, 1: SpacecraftWrapperInterface}> */
-    private function getTractoredShipWrappers(FleetWrapperInterface $fleetWrapper): array
+    /** @return array<int, array{0: Spacecraft, 1: ShipWrapperInterface}> */
+    private function getTractoredShipWrappers(?FleetWrapperInterface $fleetWrapper, SpacecraftWrapperInterface $wrapper): array
     {
-        /** @var array<int, array{0: Ship, 1: SpacecraftWrapperInterface}> */
+        /** @var array<int, array{0: Spacecraft, 1: ShipWrapperInterface}> */
         $result = [];
 
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+        if ($fleetWrapper === null) {
+            $traktoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
-            $tractoredWrapper = $wrapper->getTractoredShipWrapper();
-            if ($tractoredWrapper !== null) {
-                $result[] = [$wrapper->get(), $tractoredWrapper];
+            if ($traktoredShipWrapper !== null) {
+                $result[] = [$wrapper->get(), $traktoredShipWrapper];
+            }
+
+        } else {
+            foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+                
+                $tractoredWrapper = $wrapper->getTractoredShipWrapper();
+                if ($tractoredWrapper !== null) {
+                    $result[] = [$wrapper->get(), $tractoredWrapper];
+                }
             }
         }
 
