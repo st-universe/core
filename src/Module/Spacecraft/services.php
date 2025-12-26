@@ -272,6 +272,7 @@ use Stu\Module\Spacecraft\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Spacecraft\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Spacecraft\View\ShowWarpcoreChargeTransfer\ShowWarpcoreChargeTransfer;
 use Stu\Module\Spacecraft\Action\TransferWarpcoreCharge\TransferWarpcoreCharge;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoredBeam;
 
 use function DI\autowire;
 use function DI\get;
@@ -394,6 +395,7 @@ return [
         ->constructorParameter(
             'destructionHandlers',
             [
+                autowire(ClearTractoredBeam::class),
                 autowire(CrewEvacuation::class),
                 autowire(HistoryEntryCreation::class),
                 autowire(UpdatePirateRoundPrestige::class),
