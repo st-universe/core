@@ -316,7 +316,7 @@ final class GameController implements GameControllerInterface
         ob_end_flush();
 
         // SAVE META DATA
-        $this->getGameRequest()->setRenderMs((int)$renderMs / 1_000_000);
+        $this->getGameRequest()->setRenderMs((int)ceil($renderMs / 1_000_000));
     }
 
     private function checkUserLock(GameRequest $gameRequest): void
