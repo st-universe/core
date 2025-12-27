@@ -122,8 +122,8 @@ abstract class Spacecraft implements
     )]
     private ?SpacecraftCondition $condition;
 
-    #[OneToOne(targetEntity: Ship::class)]
-    #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id')]
+    #[OneToOne(targetEntity: Ship::class, inversedBy: 'tractoringSpacecraft')]
+    #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id', nullable: true)]
     private ?Ship $tractoredShip = null;
 
     #[ManyToOne(targetEntity: TholianWeb::class)]
@@ -399,7 +399,21 @@ abstract class Spacecraft implements
 
     public function setTractoredShip(?Ship $ship): Spacecraft
     {
+        if ($this->tractoredShip === $ship) {
+            return $this;
+        }
+    
+        $old = $this->tractoredShip;
         $this->tractoredShip = $ship;
+    
+        if ($old !== null) {
+            $old->setTractoringSpacecraft(null);
+        }
+    
+        if ($ship !== null && $ship->getTractoringSpacecraft() !== $this) {
+            $ship->setTractoringSpacecraft($this);
+        }
+
         return $this;
     }
 
