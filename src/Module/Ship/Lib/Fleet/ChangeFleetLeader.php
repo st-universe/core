@@ -56,7 +56,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
             $this->logger->logf('new leader of fleetId %d now is shipId %d', $fleet->getId(), $newLeader->getId());
 
             $fleet->setLeadShip($newLeader);
-            $this->fleetRepository->save($fleet);
             $this->entityManager->flush();
         }
 

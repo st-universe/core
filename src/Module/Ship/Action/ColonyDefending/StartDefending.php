@@ -12,7 +12,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StartDefending implements ActionControllerInterface
 {
@@ -20,7 +19,6 @@ final class StartDefending implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private FleetRepositoryInterface $fleetRepository,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
@@ -65,7 +63,6 @@ final class StartDefending implements ActionControllerInterface
         }
 
         $fleet->setDefendedColony($currentColony);
-        $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s verteidigt'), $currentColony->getName(), $fleet->getName());
         $game->getInfo()->addInformation($text);
