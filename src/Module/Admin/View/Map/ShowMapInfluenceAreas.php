@@ -64,7 +64,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
-        foreach ($this->mapRepository->getAllOrdered($layer->getId()) as $data) {
+        foreach ($this->mapRepository->getAllOrdered($layer) as $data) {
             $col = null;
 
             if ($startY !== $data->getCy()) {

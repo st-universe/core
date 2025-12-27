@@ -19,6 +19,7 @@ use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
@@ -78,10 +79,12 @@ final class StationRepository extends EntityRepository implements StationReposit
                      WITH s.location_id = m.id
                      LEFT JOIN %s l
                      WITH m.id = l.id
+                     LEFT JOIN %s ly
+                     WITH l.layer = ly
                      LEFT JOIN %s sm
                      WITH s.location_id = sm.id
                      WHERE s.user_id NOT IN (:ignoreIds)
-                     AND (:layerId = 0 OR (l.layer_id = :layerId
+                     AND (:layerId = 0 OR (ly.id = :layerId
                         AND l.cx BETWEEN (:cx - 1) AND (:cx + 1)
                         AND l.cy BETWEEN (:cy - 1) AND (:cy + 1)))
                      AND (:systemId = 0 OR (sm.systems_id = :systemId
@@ -91,6 +94,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                     Spacecraft::class,
                     Map::class,
                     Location::class,
+                    Layer::class,
                     StarSystemMap::class
                 )
             )
@@ -293,7 +297,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 JOIN %s ur WITH ur.user = u
                 LEFT JOIN %s w WITH u = w.user
                 WHERE r.role_id = :phalanxRoleId
-                AND l.layer_id = :layerId
+                AND l.layer = :layer
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
                 AND u.id >= :firstUserId
@@ -315,7 +319,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
-                'layerId' => $layer->getId(),
+                'layer' => $layer,
                 'firstUserId' => UserConstants::USER_FIRST_ID,
                 'stateActive' => UserStateEnum::ACTIVE->value,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,

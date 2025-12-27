@@ -57,8 +57,8 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             return;
         }
 
-        $allMapWithSystem = $this->mapRepository->getAllWithSystem($layerId);
-        $allMapWithoutSystem = $this->mapRepository->getAllWithoutSystem($layerId);
+        $allMapWithSystem = $this->mapRepository->getAllWithSystem($layer);
+        $allMapWithoutSystem = $this->mapRepository->getAllWithoutSystem($layer);
 
         $this->loadMapByCoords($allMapWithoutSystem);
 

@@ -93,7 +93,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     ) AND sm.systems_id IN (
                         SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
                             SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
-                        ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer_id IN (SELECT ly.id FROM %s ly WHERE ly.is_colonizable = :true))
+                        ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer IN (SELECT ly FROM %s ly WHERE ly.is_colonizable = :true))
                     )',
                     Colony::class,
                     StarSystemMap::class,
@@ -302,7 +302,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH u = w.user
                 WHERE l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
-                AND l.layer_id = :layer
+                AND l.layer.id = :layerId
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND ur.creation < :fourMonthEarlier
@@ -323,7 +323,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
-                'layer' => $layer,
+                'layerId' => $layer->getId(),
                 'firstUserId' => UserConstants::USER_FIRST_ID,
                 'stateActive' => UserStateEnum::ACTIVE->value,
                 'fourMonthEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
@@ -428,7 +428,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                         WITH c.colonyClass = cc
                         WHERE c.user_id = :nooneUserId
                         AND cc.allow_start = :allowStart
-                        AND l.layer_id = :currentLayerId',
+                        AND l.layer.id = :currentLayerId',
                     Colony::class,
                     StarSystemMap::class,
                     StarSystem::class,

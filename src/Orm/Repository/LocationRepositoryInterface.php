@@ -27,5 +27,5 @@ interface LocationRepositoryInterface extends ObjectRepository
 
     public function getRandomLocation(): Location;
 
-    public function getByCoordinates(int $x, int $y, int $layerId): ?Location;
+    public function getByCoordinates(int $x, int $y, Layer $layer): ?Location;
 }

@@ -23,17 +23,17 @@ interface MapRepositoryInterface extends ObjectRepository
     /**
      * @return array<Map>
      */
-    public function getAllOrdered(int $layerId): array;
+    public function getAllOrdered(Layer $layer): array;
 
     /**
      * @return array<int, Map>
      */
-    public function getAllWithSystem(int $layerId): array;
+    public function getAllWithSystem(Layer $layer): array;
 
     /**
      * @return array<int, Map>
      */
-    public function getAllWithoutSystem(int $layerId): array;
+    public function getAllWithoutSystem(Layer $layer): array;
 
     public function getByCoordinates(?Layer $layer, int $cx, int $cy): ?Map;
 
