@@ -50,8 +50,6 @@ final class RenameFleet implements ActionControllerInterface
 
         $fleet->setName($newName);
 
-        $this->fleetRepository->save($fleet);
-
         $game->getInfo()->addInformation(_('Der Name der Flotte wurde geändert'));
     }
 

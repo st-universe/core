@@ -15,7 +15,6 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -30,7 +29,6 @@ final class ColonyResetter implements ColonyResetterInterface
         private readonly ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         private readonly ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
-        private readonly FleetRepositoryInterface $fleetRepository,
         private readonly CrewRepositoryInterface $crewRepository,
         private readonly CrewTrainingRepositoryInterface $crewTrainingRepository,
         private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
@@ -85,7 +83,6 @@ final class ColonyResetter implements ColonyResetterInterface
             }
 
             $blockerFleet->setBlockedColony(null);
-            $this->fleetRepository->save($blockerFleet);
         }
 
         $colony->getBlockers()->clear();
@@ -99,7 +96,6 @@ final class ColonyResetter implements ColonyResetterInterface
             }
 
             $defenderFleet->setDefendedColony(null);
-            $this->fleetRepository->save($defenderFleet);
         }
 
         $colony->getDefenders()->clear();

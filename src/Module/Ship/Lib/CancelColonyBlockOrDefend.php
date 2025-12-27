@@ -13,14 +13,12 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterface
 {
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private FleetRepositoryInterface $fleetRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -80,7 +78,6 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 $colony->getName()
             ));
             $fleet->setDefendedColony(null);
-            $this->fleetRepository->save($fleet);
         }
 
         if ($fleet->getBlockedColony() !== null) {
@@ -118,7 +115,6 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 $colony->getName()
             ));
             $fleet->setBlockedColony(null);
-            $this->fleetRepository->save($fleet);
         }
     }
 }

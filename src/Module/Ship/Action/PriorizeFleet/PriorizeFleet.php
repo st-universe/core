@@ -25,8 +25,6 @@ final class PriorizeFleet implements ActionControllerInterface
 
         $fleet->setSort($this->fleetRepository->getHighestSortByUser($game->getUser()->getId()));
 
-        $this->fleetRepository->save($fleet);
-
         $game->getInfo()->addInformation(_('Die Flotte wurde nach oben sortiert'));
     }
 
