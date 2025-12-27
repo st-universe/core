@@ -61,7 +61,7 @@
     "sebastian/diff": "^7.0",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
-    "symfony/mailer": "^7.1.5",
+    "symfony/mailer": "^8.0.0",
     "twig/twig": "^3.6"
   },
   "require-dev": {
