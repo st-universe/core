@@ -81,7 +81,7 @@ class Colony implements
 
     #[OneToOne(targetEntity: StarSystemMap::class, inversedBy: 'colony')]
     #[JoinColumn(name: 'starsystem_map_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private StarSystemMap $starsystem_map;
+    private StarSystemMap $starsystemMap;
 
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
@@ -272,7 +272,7 @@ class Colony implements
 
     public function getStarsystemMap(): StarSystemMap
     {
-        return $this->starsystem_map;
+        return $this->starsystemMap;
     }
 
     #[\Override]
@@ -283,7 +283,7 @@ class Colony implements
 
     public function setStarsystemMap(StarSystemMap $systemMap): Colony
     {
-        $this->starsystem_map = $systemMap;
+        $this->starsystemMap = $systemMap;
 
         return $this;
     }

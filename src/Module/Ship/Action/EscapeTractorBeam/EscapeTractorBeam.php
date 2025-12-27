@@ -24,7 +24,6 @@ use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
 {
@@ -36,7 +35,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
         private ShipLoaderInterface $shipLoader,
         private ApplyDamageInterface $applyDamage,
         private SystemDamageInterface $systemDamage,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftDestructionInterface $spacecraftDestruction,
         private AlertReactionFacadeInterface $alertReactionFacade,
@@ -107,8 +105,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
         }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-
-        $this->spacecraftRepository->save($ship);
     }
 
     private function escape(
@@ -122,8 +118,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $tractoringShip->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->setStatus(0);
         $this->spacecraftSystemManager->deactivate($tractoringShipWrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true); // forced active deactivation
-
-        $this->spacecraftRepository->save($tractoringShip);
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),

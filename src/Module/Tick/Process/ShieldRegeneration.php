@@ -58,8 +58,6 @@ final class ShieldRegeneration implements ProcessTickHandlerInterface
             $condition->changeShield($rate);
 
             $shieldSystemData->setShieldRegenerationTimer($time)->update();
-
-            $this->spacecraftRepository->save($spacecraft);
         }
     }
 }

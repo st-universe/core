@@ -34,7 +34,7 @@ class StarSystemMap extends Location
     #[JoinColumn(name: 'systems_id', nullable: false, referencedColumnName: 'id')]
     private StarSystem $starSystem;
 
-    #[OneToOne(targetEntity: Colony::class, mappedBy: 'starsystem_map')]
+    #[OneToOne(targetEntity: Colony::class, mappedBy: 'starsystemMap')]
     private ?Colony $colony = null;
 
     /**

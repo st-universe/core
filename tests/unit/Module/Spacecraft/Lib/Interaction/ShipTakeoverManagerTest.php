@@ -24,14 +24,12 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipTakeoverManagerTest extends StuTestCase
 {
     private MockInterface&ShipTakeoverRepositoryInterface $shipTakeoverRepository;
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&StorageRepositoryInterface $storageRepository;
     private MockInterface&CreatePrestigeLogInterface $createPrestigeLog;
     private MockInterface&LeaveFleetInterface $leaveFleet;
@@ -49,7 +47,6 @@ class ShipTakeoverManagerTest extends StuTestCase
     {
         //injected
         $this->shipTakeoverRepository = $this->mock(ShipTakeoverRepositoryInterface::class);
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
@@ -63,7 +60,6 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->subject = new ShipTakeoverManager(
             $this->shipTakeoverRepository,
-            $this->spacecraftRepository,
             $this->storageRepository,
             $this->createPrestigeLog,
             $this->leaveFleet,
@@ -409,9 +405,6 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
             ->once();
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
 
         $this->createPrestigeLog->shouldReceive('createLog')
             ->with(
@@ -508,9 +501,6 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
-            ->once();
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
             ->once();
 
         $this->createPrestigeLog->shouldReceive('createLog')
@@ -645,13 +635,6 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->shipTakeoverRepository->shouldReceive('delete')
             ->with($takeover)
-            ->once();
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->target)
             ->once();
 
         $this->storageRepository->shouldReceive('save')

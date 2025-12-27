@@ -27,7 +27,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -37,7 +36,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private InteractionCheckerInterface $interactionChecker,
         private ActivatorDeactivatorHelperInterface $helper,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
@@ -171,8 +169,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
-        $this->spacecraftRepository->save($ship);
-        $this->spacecraftRepository->save($target);
 
         $this->privateMessageSender->send(
             $userId,

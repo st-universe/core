@@ -115,11 +115,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
             }
 
             $msg = array_merge($msg, $messages);
-
-            $this->spacecraftRepository->save($targetShip);
         }
-
-        $this->spacecraftRepository->save($spacecraft);
 
         $this->sendPrivateMessages($transfersByUser, $managerProvider, $spacecraft);
 

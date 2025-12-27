@@ -195,8 +195,6 @@ final class CrewLimitations implements ManagerComponentInterface
             $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_GREEN);
         }
 
-        $this->spacecraftRepository->save($randomSpacecraft);
-
         $crewArray = [];
         foreach ($randomSpacecraft->getCrewAssignments() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();

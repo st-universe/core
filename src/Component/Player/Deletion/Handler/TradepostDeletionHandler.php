@@ -8,7 +8,6 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -19,7 +18,6 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
     public function __construct(
         private TradePostRepositoryInterface $tradePostRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private UserRepositoryInterface $userRepository,
         private StorageRepositoryInterface $storageRepository,
         private EntryCreatorInterface $entryCreator,
@@ -66,7 +64,6 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $station->setUser($fallbackUser);
             $station->setName(self::ORPHANED_TRADEPOST_NAME);
             $station->getCondition()->setDisabled(true);
-            $this->spacecraftRepository->save($station);
 
             //change torpedo owner
             if ($station->getTorpedoStorage() !== null) {

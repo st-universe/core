@@ -16,7 +16,6 @@ use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
 {
@@ -24,7 +23,6 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         private CancelMiningInterface $cancelMining,
         private CancelRepairInterface $cancelRepair,
         private AstroEntryLibInterface $astroEntryLib,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private TholianWebUtilInterface $tholianWebUtil,
         private ShipTakeoverManagerInterface $shipTakeoverManager,
         private CancelRetrofitInterface $cancelRetrofit
@@ -64,7 +62,6 @@ final class SpacecraftStateChanger implements SpacecraftStateChangerInterface
         }
 
         $ship->getCondition()->setState($newState);
-        $this->spacecraftRepository->save($ship);
     }
 
     #[\Override]

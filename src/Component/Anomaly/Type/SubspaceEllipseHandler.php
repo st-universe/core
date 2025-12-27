@@ -20,7 +20,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\LocationRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
@@ -29,7 +28,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
     public function __construct(
         private readonly LocationRepositoryInterface $locationRepository,
         private readonly AnomalyCreationInterface $anomalyCreation,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private readonly SystemDamageInterface $systemDamage,
         private readonly PrivateMessageSenderInterface $privateMessageSender,
@@ -111,8 +109,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             }
 
             $messageCollection->add($message);
-
-            $this->spacecraftRepository->save($spacecraft);
         }
 
         $this->informSpacecraftOwnersAboutConsequences(

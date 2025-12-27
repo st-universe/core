@@ -26,14 +26,12 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\LocationRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SubspaceEllipseHandlerTest extends StuTestCase
 {
     private MockInterface&LocationRepositoryInterface $locationRepository;
     private MockInterface&AnomalyCreationInterface $anomalyCreation;
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
     private MockInterface&SystemDamageInterface $systemDamage;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
@@ -50,7 +48,6 @@ class SubspaceEllipseHandlerTest extends StuTestCase
     {
         $this->locationRepository = $this->mock(LocationRepositoryInterface::class);
         $this->anomalyCreation = $this->mock(AnomalyCreationInterface::class);
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $this->systemDamage = $this->mock(SystemDamageInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
@@ -63,7 +60,6 @@ class SubspaceEllipseHandlerTest extends StuTestCase
         $this->subject = new SubspaceEllipseHandler(
             $this->locationRepository,
             $this->anomalyCreation,
-            $this->spacecraftRepository,
             $this->spacecraftWrapperFactory,
             $this->systemDamage,
             $this->privateMessageSender,
@@ -292,11 +288,6 @@ class SubspaceEllipseHandlerTest extends StuTestCase
         $basesMessageCollecton->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($spacecraftWithDepletedShields);
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($spacecraftWithFilledShields);
 
         $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
             ->with(

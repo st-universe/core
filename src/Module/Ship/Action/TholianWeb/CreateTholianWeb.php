@@ -109,7 +109,6 @@ final class CreateTholianWeb implements ActionControllerInterface
         //link spacecrafts to web
         foreach ($possibleCatches as $target) {
             $target->setHoldingWeb($web);
-            $this->spacecraftRepository->save($target);
             $web->getCapturedSpacecrafts()->add($target);
 
             //notify target owner

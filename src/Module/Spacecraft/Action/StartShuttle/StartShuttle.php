@@ -18,7 +18,6 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class StartShuttle implements ActionControllerInterface
 {
@@ -26,7 +25,6 @@ final class StartShuttle implements ActionControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftLoaderInterface $spacecraftLoader,
         private ShipCreatorInterface $shipCreator,
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
@@ -154,7 +152,6 @@ final class StartShuttle implements ActionControllerInterface
         ) {
             $this->helper->deactivate($ship->getId(), SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game->getInfo());
         }
-        $this->spacecraftRepository->save($ship);
     }
 
     #[\Override]

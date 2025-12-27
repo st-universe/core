@@ -16,12 +16,10 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftShutdownTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
     private MockInterface&LeaveFleetInterface $leaveFleet;
     private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
@@ -33,14 +31,12 @@ class SpacecraftShutdownTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
         $this->shipUndocking = $this->mock(ShipUndockingInterface::class);
 
         $this->subject = new SpacecraftShutdown(
-            $this->spacecraftRepository,
             $this->spacecraftSystemManager,
             $this->leaveFleet,
             $this->spacecraftStateChanger,
@@ -85,10 +81,6 @@ class SpacecraftShutdownTest extends StuTestCase
 
         $this->spacecraftStateChanger->shouldReceive('changeState')
             ->with($wrapper, SpacecraftStateEnum::NONE)
-            ->once();
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($ship)
             ->once();
 
         if ($doLeaveFleet !== null) {
@@ -139,10 +131,6 @@ class SpacecraftShutdownTest extends StuTestCase
             ->with($wrapper, SpacecraftStateEnum::NONE)
             ->once();
 
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($station)
-            ->once();
-
         if ($doLeaveFleet !== null) {
             $this->subject->shutdown($wrapper, $doLeaveFleet);
         } else {
@@ -174,10 +162,6 @@ class SpacecraftShutdownTest extends StuTestCase
             ->once();
 
         $this->shipUndocking->shouldReceive('undockAllDocked')
-            ->with($station)
-            ->once();
-
-        $this->spacecraftRepository->shouldReceive('save')
             ->with($station)
             ->once();
 

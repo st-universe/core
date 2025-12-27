@@ -75,9 +75,6 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
             );
         }
 
-        $attackersRoundBasedBattleParty->saveActiveMembers();
-        $defendersRoundBasedBattleParty->saveActiveMembers();
-
         return $messages;
     }
 }

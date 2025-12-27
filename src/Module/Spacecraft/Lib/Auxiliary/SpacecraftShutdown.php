@@ -12,12 +12,10 @@ use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftShutdown implements SpacecraftShutdownInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private LeaveFleetInterface $leaveFleet,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
@@ -44,6 +42,5 @@ final class SpacecraftShutdown implements SpacecraftShutdownInterface
         if ($spacecraft->hasComputer()) {
             $wrapper->getComputerSystemDataMandatory()->setAlertStateGreen()->update();
         }
-        $this->spacecraftRepository->save($spacecraft);
     }
 }

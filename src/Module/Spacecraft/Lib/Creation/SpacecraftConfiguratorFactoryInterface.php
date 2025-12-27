@@ -8,9 +8,9 @@ interface SpacecraftConfiguratorFactoryInterface
 {
     /**
      * @template T of SpacecraftWrapperInterface
-     * 
+     *
      * @psalm-param T $wrapper
-     * 
+     *
      * @return SpacecraftConfiguratorInterface<T>
      */
     public function createSpacecraftConfigurator($wrapper): SpacecraftConfiguratorInterface;

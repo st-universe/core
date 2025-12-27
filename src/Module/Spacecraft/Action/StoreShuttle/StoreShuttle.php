@@ -129,8 +129,6 @@ final class StoreShuttle implements ActionControllerInterface
         $this->entityManager->flush();
 
         $this->spacecraftRemover->remove($shuttle);
-
-        $this->spacecraftLoader->save($spacecraft);
     }
 
     #[\Override]
