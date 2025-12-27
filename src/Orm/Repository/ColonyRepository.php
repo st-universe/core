@@ -87,7 +87,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 sprintf(
                     'SELECT c FROM %s c INDEX BY c.id
                      JOIN %s sm
-                     WITH c.starsystem_map = sm
+                     WITH c.starsystemMap = sm
                      WHERE c.user_id = :userId AND c.colonyClass IN (
                         SELECT cc FROM %s cc WHERE cc.allow_start = :allowStart
                     ) AND sm.systems_id IN (
@@ -123,7 +123,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 sprintf(
                     'SELECT c FROM %s c
                      JOIN %s sm
-                     WITH c.starsystem_map = sm
+                     WITH c.starsystemMap = sm
                      WHERE c.user_id NOT IN (:ignoreIds)
                      AND sm.systems_id = :systemId
                      AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
@@ -287,7 +287,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             sprintf(
                 'SELECT c FROM %s c
                 JOIN %s sm
-                WITH c.starsystem_map = sm
+                WITH c.starsystemMap = sm
                 JOIN %s s
                 WITH sm.systems_id = s.id
                 JOIN %s m
@@ -369,7 +369,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'SELECT MIN(ABS(sm.sx - :sx) + ABS(sm.sy - :sy)) as distance
                         FROM %s c
                         JOIN %s sm
-                        WITH c.starsystem_map = sm
+                        WITH c.starsystemMap = sm
                         JOIN %s cc
                         WITH c.colonyClass = cc
                         WHERE c.user_id = :nooneUserId
@@ -417,7 +417,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     'SELECT MIN(ABS(l.cx - :currentX) + ABS(l.cy - :currentY)) as distance
                         FROM %s c
                         JOIN %s sm
-                        WITH c.starsystem_map = sm
+                        WITH c.starsystemMap = sm
                         JOIN %s s
                         WITH sm.systems_id = s.id
                         JOIN %s m

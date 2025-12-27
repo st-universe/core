@@ -15,12 +15,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftSystem;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftStartupTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
     private MockInterface&ActivatorDeactivatorHelperInterface $helper;
 
@@ -30,12 +28,10 @@ class SpacecraftStartupTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->helper = $this->mock(ActivatorDeactivatorHelperInterface::class);
 
         $this->subject = new SpacecraftStartup(
-            $this->spacecraftRepository,
             $this->spacecraftSystemManager,
             $this->helper
         );
@@ -87,8 +83,6 @@ class SpacecraftStartupTest extends StuTestCase
             ->with($wrapper, SpacecraftSystemTypeEnum::NBS, Mockery::any())
             ->once()
             ->andReturn(false);
-
-        $this->spacecraftRepository->shouldNotHaveBeenCalled();
 
         $this->subject->startup($wrapper, [
             SpacecraftSystemTypeEnum::NBS,
@@ -221,10 +215,6 @@ class SpacecraftStartupTest extends StuTestCase
             ->with($wrapper, SpacecraftSystemTypeEnum::PHASER, Mockery::any())
             ->once()
             ->andReturn(true);
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($ship)
-            ->once();
 
         $this->subject->startup($wrapper, [
             SpacecraftSystemTypeEnum::NBS,

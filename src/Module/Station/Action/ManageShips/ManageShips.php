@@ -72,8 +72,6 @@ final class ManageShips implements ActionControllerInterface
             $msg = array_merge($msg, $this->handleShip($values, $managerProvider, (int)$shipId, $station));
         }
 
-        $this->spacecraftRepository->save($station);
-
         $game->getInfo()->addInformationArray($msg, true);
     }
 
@@ -101,11 +99,7 @@ final class ManageShips implements ActionControllerInterface
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($ship);
 
-        $msg = $this->handleManagers->handle($wrapper, $values, $managerProvider);
-
-        $this->spacecraftRepository->save($ship);
-
-        return $msg;
+        return $this->handleManagers->handle($wrapper, $values, $managerProvider);
     }
 
     #[\Override]

@@ -8,13 +8,11 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class CancelRepair implements CancelRepairInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private RepairTaskRepositoryInterface $repairTaskRepository,
         private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         private StationShipRepairRepositoryInterface $stationShipRepairRepository
@@ -46,6 +44,5 @@ final class CancelRepair implements CancelRepairInterface
     private function setStateNoneAndSave(Spacecraft $ship): void
     {
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
-        $this->spacecraftRepository->save($ship);
     }
 }

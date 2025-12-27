@@ -8,13 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class RoundBasedBattlePartyTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&BattlePartyInterface $battleParty;
     private MockInterface&StuRandom $stuRandom;
 
@@ -23,7 +20,6 @@ class RoundBasedBattlePartyTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->battleParty = $this->mock(BattlePartyInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
     }
@@ -37,7 +33,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $result = $this->subject->get();
@@ -74,7 +70,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $this->subject->use(1);
@@ -92,7 +88,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $result = $this->subject->isDone();
@@ -113,7 +109,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $this->subject->use(0);
@@ -131,7 +127,7 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $result = $this->subject->isDone();
@@ -162,58 +158,12 @@ class RoundBasedBattlePartyTest extends StuTestCase
 
         $this->subject =  new RoundBasedBattleParty(
             $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
+            $this->stuRandom
         );
 
         $result = $this->subject->getRandomUnused();
 
         $this->assertSame($wrapper0, $result);
         $this->assertTrue($this->subject->isDone());
-    }
-
-    public function testSaveActiveMembers(): void
-    {
-        $wrapper0 = $this->mock(ShipWrapperInterface::class);
-        $wrapper1 = $this->mock(ShipWrapperInterface::class);
-        $ship0 = $this->mock(Ship::class);
-        $ship1 = $this->mock(Ship::class);
-
-        $this->battleParty->shouldReceive('getActiveMembers')
-            ->with(true)
-            ->once()
-            ->andReturn(new ArrayCollection([
-                0 => $wrapper0,
-                1 => $wrapper1
-            ]));
-        $this->battleParty->shouldReceive('getActiveMembers')
-            ->with(false, false)
-            ->once()
-            ->andReturn(new ArrayCollection([
-                0 => $wrapper0,
-                1 => $wrapper1
-            ]));
-
-        $wrapper0->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($ship0);
-        $wrapper1->shouldReceive('get')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($ship1);
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($ship0)
-            ->once();
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($ship1)
-            ->once();
-
-        $this->subject =  new RoundBasedBattleParty(
-            $this->battleParty,
-            $this->spacecraftRepository, $this->stuRandom
-        );
-
-        $this->subject->saveActiveMembers();
     }
 }

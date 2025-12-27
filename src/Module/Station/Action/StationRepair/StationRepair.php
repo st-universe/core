@@ -49,8 +49,6 @@ final class StationRepair implements ActionControllerInterface
 
         $station->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
-        $this->stationLoader->save($station);
-
         $duration = $this->repairUtil->getRepairDuration($wrapper);
 
         $game->getInfo()->addInformationf(

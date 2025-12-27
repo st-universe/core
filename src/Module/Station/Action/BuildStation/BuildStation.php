@@ -159,8 +159,6 @@ final class BuildStation implements ActionControllerInterface
         $station->getCondition()->setHull(intdiv($baseHull, 2));
         $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
-        $this->spacecraftRepository->save($station);
-
         $progress = $station->getConstructionProgress() ?? $this->constructionProgressRepository->prototype();
         $progress->setStation($station);
         $progress->setRemainingTicks($rump->getBuildtime());

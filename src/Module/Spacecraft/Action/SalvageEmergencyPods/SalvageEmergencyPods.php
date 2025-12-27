@@ -112,8 +112,6 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
 
         $epsSystem->lowerEps(1)->update();
-
-        $this->spacecraftLoader->save($spacecraft);
     }
 
     /**

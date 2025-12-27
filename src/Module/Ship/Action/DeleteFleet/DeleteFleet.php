@@ -39,8 +39,6 @@ final class DeleteFleet implements ActionControllerInterface
         foreach ($fleet->getShips() as $fleetShip) {
             $fleetShip->setFleet(null);
             $fleetShip->setIsFleetLeader(false);
-
-            $this->shipLoader->save($fleetShip);
         }
 
         $this->fleetRepository->delete($fleet);

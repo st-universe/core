@@ -153,12 +153,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         return $this->acquireSemaphores($spacecraft, null)->getSource();
     }
 
-    #[\Override]
-    public function save(Spacecraft $spacecraft): void
-    {
-        $this->spacecraftRepository->save($spacecraft);
-    }
-
     /**
      * @return SourceAndTargetWrappersInterface<SpacecraftWrapperInterface>
      */

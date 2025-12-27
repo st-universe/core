@@ -15,13 +15,11 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class AlertStateManagerTest extends StuTestCase
 {
     private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&SystemActivation $systemActivation;
     private MockInterface&SystemDeactivation $systemDeactivation;
     private MockInterface&GameControllerInterface $game;
@@ -35,7 +33,6 @@ class AlertStateManagerTest extends StuTestCase
     {
         //injected
         $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->systemActivation = $this->mock(SystemActivation::class);
         $this->systemDeactivation = $this->mock(SystemDeactivation::class);
         $this->game = $this->mock(GameControllerInterface::class);
@@ -44,7 +41,6 @@ class AlertStateManagerTest extends StuTestCase
 
         $this->subject = new AlertStateManager(
             $this->spacecraftLoader,
-            $this->spacecraftRepository,
             $this->systemActivation,
             $this->systemDeactivation,
             $this->game,
@@ -120,10 +116,6 @@ class AlertStateManagerTest extends StuTestCase
                 ->with($this->target, $expectedDectivation, $info)
                 ->once();
         }
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($spacecraft)
-            ->times(2);
 
         $info->shouldReceive('addInformation')
             ->with($expectedInfo)

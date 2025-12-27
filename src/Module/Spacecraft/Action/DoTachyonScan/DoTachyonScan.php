@@ -13,7 +13,6 @@ use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class DoTachyonScan implements ActionControllerInterface
@@ -23,8 +22,7 @@ final class DoTachyonScan implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private TachyonScanRepositoryInterface $tachyonScanRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository
+        private TachyonScanRepositoryInterface $tachyonScanRepository
     ) {}
 
     #[\Override]
@@ -73,7 +71,6 @@ final class DoTachyonScan implements ActionControllerInterface
         $this->tachyonScanRepository->save($tachyonScan);
 
         $epsSystem->lowerEps(TachyonScannerShipSystem::SCAN_EPS_COST)->update();
-        $this->spacecraftRepository->save($ship);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED, true);

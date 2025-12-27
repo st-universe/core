@@ -37,6 +37,4 @@ interface SpacecraftLoaderInterface
     ): SourceAndTargetWrappersInterface;
 
     public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface;
-
-    public function save(Spacecraft $spacecraft): void;
 }

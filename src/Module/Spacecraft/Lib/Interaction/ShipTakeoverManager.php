@@ -18,14 +18,12 @@ use Stu\Orm\Entity\ShipTakeover;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipTakeoverRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShipTakeoverManager implements ShipTakeoverManagerInterface
 {
     public function __construct(
         private ShipTakeoverRepositoryInterface $shipTakeoverRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private StorageRepositoryInterface $storageRepository,
         private CreatePrestigeLogInterface $createPrestigeLog,
         private LeaveFleetInterface $leaveFleet,
@@ -308,7 +306,6 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
     private function changeShipOwner(Spacecraft $ship, User $user): void
     {
         $ship->setUser($user);
-        $this->spacecraftRepository->save($ship);
 
         // change storage owner
         foreach ($ship->getStorage() as $storage) {
@@ -358,6 +355,5 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         $takeover->getTargetSpacecraft()->setTakeoverPassive(null);
 
         $this->shipTakeoverRepository->delete($takeover);
-        $this->spacecraftRepository->save($sourceShip);
     }
 }

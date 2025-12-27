@@ -78,8 +78,6 @@ final class CreateCrew implements ActionControllerInterface
             $spacecraft->getCrewAssignments()->add($crewAssignment);
         }
 
-        $this->spacecraftRepository->save($spacecraft);
-
         $game->getInfo()->addInformation(sprintf(
             '%d Crew wurde für das Raumschiff %s (ID: %d) von Spieler %s erstellt',
             $amount,

@@ -12,7 +12,6 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 /**
@@ -31,7 +30,6 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
         private readonly ShipTorpedoManagerInterface $torpedoManager,
         private readonly CrewCreatorInterface $crewCreator,
         private readonly CrewAssignmentRepositoryInterface $shipCrewRepository,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly AlertStateManagerInterface $alertStateManager,
         private readonly SpacecraftStartupInterface $spacecraftStartup
     ) {}
@@ -203,8 +201,6 @@ class SpacecraftConfigurator implements SpacecraftConfiguratorInterface
     #[\Override]
     public function finishConfiguration(): SpacecraftWrapperInterface
     {
-        $this->spacecraftRepository->save($this->wrapper->get());
-
         return $this->wrapper;
     }
 }

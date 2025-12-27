@@ -61,9 +61,6 @@ final class ChangeFleetFleader implements ActionControllerInterface
         $ship->setIsFleetLeader(false);
         $target->setIsFleetLeader(true);
 
-        $this->shipLoader->save($ship);
-        $this->shipLoader->save($target);
-
         $game->getInfo()->addInformation(sprintf(_('Die %s führt nun die Flotte an'), $target->getName()));
     }
 

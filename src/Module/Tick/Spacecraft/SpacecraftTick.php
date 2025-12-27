@@ -68,8 +68,6 @@ final class SpacecraftTick implements SpacecraftTickInterface, ManagerComponentI
                 $startTime
             );
         }
-
-        $this->spacecraftRepository->save($spacecraft);
     }
 
     private function potentialLog(Spacecraft $spacecraft, SpacecraftTickHandlerInterface $handler, float $startTime): void
