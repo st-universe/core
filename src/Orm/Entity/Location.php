@@ -42,19 +42,13 @@ abstract class Location
     private int $id;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $layer_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
     private ?int $cx = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $cy = null;
 
-    #[Column(type: 'integer')]
-    private int $field_id = 0;
-
     #[ManyToOne(targetEntity: Layer::class)]
-    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'layer_id', nullable: true, referencedColumnName: 'id')]
     protected ?Layer $layer;
 
     #[ManyToOne(targetEntity: MapFieldType::class)]
@@ -124,7 +118,7 @@ abstract class Location
 
     public function getFieldId(): int
     {
-        return $this->field_id;
+        return $this->mapFieldType->getId();
     }
 
     public function getFieldType(): MapFieldType

@@ -42,7 +42,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
                 'SELECT de FROM %s de WHERE de.category_id = :categoryId AND de.id IN (
                         SELECT ss.database_id FROM %s ss WHERE ss.id IN (
                             SELECT m.systems_id FROM %s m WHERE m.id IN (
-                                SELECT l.id FROM %s l WHERE l.layer_id = :layerId
+                                SELECT l.id FROM %s l WHERE l.layer = :layer
                             )
                         )
                     )',
@@ -54,7 +54,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
             ->setParameter('categoryId', $categoryId);
 
         if ($layer !== null) {
-            $query->setParameter('layerId', $layer);
+            $query->setParameter('layer', $layer);
         } else {
             return $this->findBy(['category_id' => $categoryId]);
         }
@@ -70,7 +70,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
                 'SELECT de FROM %s de WHERE de.category_id = :categoryId AND de.id IN (
                         SELECT mr.database_id FROM %s mr WHERE mr.id IN (
                             SELECT m.region_id FROM %s m WHERE m.id IN (
-                                SELECT l.id FROM %s l WHERE l.layer_id = :layerId
+                                SELECT l.id FROM %s l WHERE l.layer = :layer
                             )
                         )
                     )',
@@ -82,7 +82,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
             ->setParameter('categoryId', $categoryId);
 
         if ($layer !== null) {
-            $query->setParameter('layerId', $layer);
+            $query->setParameter('layer', $layer);
         } else {
             return $this->findBy(['category_id' => $categoryId]);
         }
@@ -97,7 +97,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
             ->createQuery(sprintf(
                 'SELECT de FROM %s de WHERE de.category_id = :categoryId AND de.object_id IN (
                         SELECT s.id FROM %s s WHERE s.location_id IN (
-                                SELECT l.id FROM %s l WHERE l.layer_id = :layerId
+                                SELECT l.id FROM %s l WHERE l.layer = :layer
                             
                         )
                     )',
@@ -108,7 +108,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
             ->setParameter('categoryId', $categoryId);
 
         if ($layer !== null) {
-            $query->setParameter('layerId', $layer);
+            $query->setParameter('layer', $layer);
         } else {
             return $this->findBy(['category_id' => $categoryId]);
         }

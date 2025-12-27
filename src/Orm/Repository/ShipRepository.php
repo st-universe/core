@@ -273,7 +273,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH ur.user = u
                 LEFT JOIN %s w
                 WITH u = w.user
-                WHERE l.layer_id = :layerId
+                WHERE l.layer = :layer
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
                 AND (s.fleet_id IS NULL OR s.is_fleet_leader = :true)
@@ -294,7 +294,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
-                'layerId' => $layer->getId(),
+                'layer' => $layer,
                 'firstUserId' => UserConstants::USER_FIRST_ID,
                 'stateActive' => UserStateEnum::ACTIVE->value,
                 'eightWeeksEarlier' => time() - TimeConstants::EIGHT_WEEKS_IN_SECONDS,
@@ -322,7 +322,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s l
                 WITH s.location_id = l.id
-                WHERE l.layer_id = :layerId
+                WHERE l.layer = :layer
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
                 AND s.id != :shipId
@@ -336,7 +336,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
-                'layerId' => $layer->getId(),
+                'layer' => $layer,
                 'shipId' => $wrapper->get()->getId(),
                 'kazonUserId' => UserConstants::USER_NPC_KAZON
             ])
