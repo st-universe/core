@@ -8,7 +8,6 @@ use RuntimeException;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\Spacecraft;
 
 final class ShipLoader implements ShipLoaderInterface
 {
@@ -91,11 +90,5 @@ final class ShipLoader implements ShipLoaderInterface
         }
 
         return $wrapper;
-    }
-
-    #[\Override]
-    public function save(Spacecraft $ship): void
-    {
-        $this->spacecraftLoader->save($ship);
     }
 }

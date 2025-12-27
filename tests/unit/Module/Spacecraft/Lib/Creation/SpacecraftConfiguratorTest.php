@@ -21,7 +21,6 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -32,7 +31,6 @@ class SpacecraftConfiguratorTest extends StuTestCase
     private MockInterface&ShipTorpedoManagerInterface $torpedoManager;
     private MockInterface&CrewCreatorInterface $crewCreator;
     private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&AlertStateManagerInterface $alertStateManager;
     private MockInterface&SpacecraftStartupInterface $spacecraftStartup;
 
@@ -48,7 +46,6 @@ class SpacecraftConfiguratorTest extends StuTestCase
         $this->torpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->alertStateManager = $this->mock(AlertStateManagerInterface::class);
         $this->spacecraftStartup = $this->mock(SpacecraftStartupInterface::class);
 
@@ -65,7 +62,6 @@ class SpacecraftConfiguratorTest extends StuTestCase
             $this->torpedoManager,
             $this->crewCreator,
             $this->shipCrewRepository,
-            $this->spacecraftRepository,
             $this->alertStateManager,
             $this->spacecraftStartup
         );
@@ -357,10 +353,6 @@ class SpacecraftConfiguratorTest extends StuTestCase
 
     public function testFinishConfiguration(): void
     {
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->spacecraft)
-            ->once();
-
         $result = $this->subject->finishConfiguration();
 
         $this->assertSame($this->wrapper, $result);

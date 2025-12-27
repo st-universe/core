@@ -129,10 +129,6 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->fleetRepository->shouldReceive('save')
-            ->with($fleet)
-            ->once();
-
         $this->shipRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();

@@ -14,14 +14,11 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class InterceptShipCore implements InterceptShipCoreInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private AlertReactionFacadeInterface $alertReactionFacade,
         private PrivateMessageSenderInterface $privateMessageSender,
@@ -85,7 +82,6 @@ final class InterceptShipCore implements InterceptShipCoreInterface
     {
         try {
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
-            $this->spacecraftRepository->save($wrapper->get());
 
             $tractoredWrapper = $wrapper->getTractoredShipWrapper();
             if ($tractoredWrapper !== null) {
@@ -95,6 +91,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
                 $wrappersToToggleAlertReaction->add($wrapper);
             }
         } catch (AlreadyOffException) {
+            // nothing to do here
         }
     }
 }

@@ -10,14 +10,12 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TholianWeb;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 use Stu\StuTestCase;
 
 class TholianWebUtilTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&TholianWebRepositoryInterface $tholianWebRepository;
     private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
     private MockInterface&StuTime $stuTime;
@@ -30,7 +28,6 @@ class TholianWebUtilTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->tholianWebRepository = $this->mock(TholianWebRepositoryInterface::class);
         $this->shipSystemRepository = $this->mock(SpacecraftSystemRepositoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
@@ -38,7 +35,6 @@ class TholianWebUtilTest extends StuTestCase
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new TholianWebUtil(
-            $this->spacecraftRepository,
             $this->tholianWebRepository,
             $this->shipSystemRepository,
             $this->stuTime,

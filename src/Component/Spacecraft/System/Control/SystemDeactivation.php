@@ -10,13 +10,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class SystemDeactivation
 {
     public function __construct(
-        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager
     ) {}
 
     public function deactivateIntern(
@@ -29,7 +27,6 @@ class SystemDeactivation
 
         try {
             $this->spacecraftSystemManager->deactivate($wrapper, $type);
-            $this->spacecraftRepository->save($ship);
             $informations->addInformationf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName);
             return true;
         } catch (AlreadyOffException) {

@@ -110,13 +110,6 @@ class SpacecraftAttackCycleTest extends StuTestCase
             ->with($spacecraftAttacker, $defenders, SpacecraftAttackCauseEnum::BOARD_SHIP, $messages)
             ->once();
 
-        $roundBasedAttackers->shouldReceive('saveActiveMembers')
-            ->withNoArgs()
-            ->once();
-        $roundBasedDefenders->shouldReceive('saveActiveMembers')
-            ->withNoArgs()
-            ->once();
-
         $this->messageFactory->shouldReceive('createMessageCollection')
             ->withNoArgs()
             ->once()

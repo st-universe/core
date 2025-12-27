@@ -11,8 +11,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -24,8 +22,6 @@ final class ShowSensorScan implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_SENSOR_SCAN';
 
     public const int ENERGY_COST_SECTOR_SCAN = 15;
-
-    private LoggerUtilInterface $loggerUtil;
 
     /** @var array<int> */
     private array $fadedSignaturesUncloaked = [];
@@ -39,18 +35,14 @@ final class ShowSensorScan implements ViewControllerInterface
         private StarSystemMapRepositoryInterface $starSystemMapRepository,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
         private NbsUtilityInterface $nbsUtility,
-        private EncodedMapInterface $encodedMap,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        private EncodedMapInterface $encodedMap
     ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-
-        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -75,8 +67,6 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $sysid = request::getIntFatal('systemid');
-
-        $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
         $field = $station->getLocation();
         $stationCx = $field->getCx();
@@ -134,16 +124,12 @@ final class ShowSensorScan implements ViewControllerInterface
         $game->setTemplateFile('html/station/sensorScan.twig');
 
         $epsSystem->lowerEps(self::ENERGY_COST_SECTOR_SCAN)->update();
-        $this->stationLoader->save($station);
 
         //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
         $tachyonActive = $station->getSystemState(SpacecraftSystemTypeEnum::TACHYON_SCANNER);
 
         if ($sysid !== 0) {
-            $this->loggerUtil->log('system!');
             $game->setTemplateVar('SYSTEM_INTERN', true);
-        } else {
-            $this->loggerUtil->log('not:system!');
         }
 
         $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, $mapField);

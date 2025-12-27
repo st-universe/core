@@ -9,13 +9,11 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 use Stu\StuTestCase;
 
 class CancelRepairTest extends StuTestCase
 {
-    private SpacecraftRepositoryInterface&MockInterface $spacecraftRepo;
     private RepairTaskRepositoryInterface&MockInterface $repairTaskRepo;
     private ColonyShipRepairRepositoryInterface&MockInterface $colonyShipRepairRepo;
     private StationShipRepairRepositoryInterface&MockInterface $stationShipRepairRepo;
@@ -27,7 +25,6 @@ class CancelRepairTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->spacecraftRepo = $this->mock(SpacecraftRepositoryInterface::class);
         $this->repairTaskRepo = $this->mock(RepairTaskRepositoryInterface::class);
         $this->colonyShipRepairRepo = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->stationShipRepairRepo = $this->mock(StationShipRepairRepositoryInterface::class);
@@ -35,7 +32,6 @@ class CancelRepairTest extends StuTestCase
         $this->ship = $this->mock(Ship::class);
 
         $this->cancelRepair = new CancelRepair(
-            $this->spacecraftRepo,
             $this->repairTaskRepo,
             $this->colonyShipRepairRepo,
             $this->stationShipRepairRepo
@@ -67,9 +63,6 @@ class CancelRepairTest extends StuTestCase
         $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
             ->once();
-        $this->spacecraftRepo->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
         $this->colonyShipRepairRepo->shouldReceive('truncateByShipId')
             ->with(42)
             ->once();
@@ -94,9 +87,6 @@ class CancelRepairTest extends StuTestCase
             ->andReturn(42);
         $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
-            ->once();
-        $this->spacecraftRepo->shouldReceive('save')
-            ->with($this->ship)
             ->once();
         $this->repairTaskRepo->shouldReceive('truncateByShipId')
             ->with(42)

@@ -11,7 +11,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TholianWeb;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -20,7 +19,6 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
     public function __construct(
         private TholianWebRepositoryInterface $tholianWebRepository,
         private SpacecraftSystemRepositoryInterface $spacecraftSystemRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private TholianWebUtilInterface $tholianWebUtil
     ) {}
@@ -40,7 +38,6 @@ class TholianWebDestruction implements SpacecraftDestructionHandlerInterface
 
         foreach ($tholianWeb->getCapturedSpacecrafts() as $spacecraft) {
             $spacecraft->setHoldingWeb(null);
-            $this->spacecraftRepository->save($spacecraft);
         }
 
         $owningSpacecraftSystem = $this->spacecraftSystemRepository->getWebOwningShipSystem($tholianWeb->getId());

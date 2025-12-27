@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class RoundBasedBattleParty
 {
@@ -16,7 +15,6 @@ class RoundBasedBattleParty
 
     public function __construct(
         private BattlePartyInterface $battleParty,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private StuRandom $stuRandom
     ) {
         $this->unUsedIds = new ArrayCollection($battleParty->getActiveMembers(true)->getKeys());
@@ -63,13 +61,5 @@ class RoundBasedBattleParty
         $this->use($random->get()->getId());
 
         return $random;
-    }
-
-    public function saveActiveMembers(): void
-    {
-        foreach ($this->get()->getActiveMembers(false, false) as $wrapper) {
-
-            $this->spacecraftRepository->save($wrapper->get());
-        }
     }
 }

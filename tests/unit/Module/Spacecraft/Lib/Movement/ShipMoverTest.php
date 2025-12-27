@@ -19,12 +19,10 @@ use Stu\Module\Spacecraft\Lib\Movement\FlightCompany;
 use Stu\Module\Spacecraft\Lib\Movement\FlightCompanyFactory;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipMoverTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spaceRepository;
     private MockInterface&FlightCompanyFactory $flightCompanyFactory;
     private MockInterface&ShipMovementInformationAdderInterface $shipMovementInformationAdder;
     private MockInterface&LeaveFleetInterface $leaveFleet;
@@ -36,7 +34,6 @@ class ShipMoverTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->spaceRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->flightCompanyFactory = $this->mock(FlightCompanyFactory::class);
         $this->shipMovementInformationAdder = $this->mock(ShipMovementInformationAdderInterface::class);
         $this->leaveFleet = $this->mock(LeaveFleetInterface::class);
@@ -44,7 +41,6 @@ class ShipMoverTest extends StuTestCase
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
 
         $this->subject = new ShipMover(
-            $this->spaceRepository,
             $this->flightCompanyFactory,
             $this->shipMovementInformationAdder,
             $this->leaveFleet,
@@ -62,11 +58,6 @@ class ShipMoverTest extends StuTestCase
         $map = $this->mock(Map::class);
         $messageCollection = $this->mock(MessageCollectionInterface::class);
 
-        $ship->shouldReceive('getTractoredShip')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-
         $wrapper->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($ship);
@@ -81,10 +72,6 @@ class ShipMoverTest extends StuTestCase
             ->once()
             ->andReturn($flightCompany);
 
-        $flightCompany->shouldReceive('getActiveMembers')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(new ArrayCollection([$wrapper]));
         $flightCompany->shouldReceive('isFlightPossible')
             ->with($flightRoute, $messageCollection)
             ->once()
@@ -143,7 +130,7 @@ class ShipMoverTest extends StuTestCase
             ->andReturn(false);
         $flightCompany->shouldReceive('getActiveMembers')
             ->withNoArgs()
-            ->times(5)
+            ->times(3)
             ->andReturn(new ArrayCollection([$wrapper]));
         $flightCompany->shouldReceive('isEmpty')
             ->withNoArgs()
@@ -240,10 +227,6 @@ class ShipMoverTest extends StuTestCase
         $this->alertReactionFacade->shouldReceive('doItAll')
             ->twice();
 
-        $this->spaceRepository->shouldReceive('save')
-            ->with($ship)
-            ->once();
-
         $this->shipMovementInformationAdder->shouldReceive('reachedDestination')
             ->with($ship, true, RouteModeEnum::FLIGHT, $messageCollection)
             ->once();
@@ -280,7 +263,7 @@ class ShipMoverTest extends StuTestCase
             ->andReturn(false);
         $flightCompany->shouldReceive('getActiveMembers')
             ->withNoArgs()
-            ->times(4)
+            ->times(2)
             ->andReturn(
                 new ArrayCollection([$wrapper]), //initTractoredShips
                 new ArrayCollection([$wrapper]), //moveShipsByOneField

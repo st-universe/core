@@ -9,13 +9,11 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class RepairTaskJobs implements ProcessTickHandlerInterface
 {
     public function __construct(
         private RepairTaskRepositoryInterface $repairTaskRepository,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private RepairUtilInterface $repairUtil,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
@@ -46,7 +44,6 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
             }
 
             $isSuccess = $this->repairUtil->selfRepair($spacecraft, $repairTask);
-            $this->spacecraftRepository->save($spacecraft);
 
             if ($isSuccess) {
                 $msg = sprintf(

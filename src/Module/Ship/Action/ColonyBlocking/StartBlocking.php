@@ -13,7 +13,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StartBlocking implements ActionControllerInterface
 {
@@ -22,7 +21,6 @@ final class StartBlocking implements ActionControllerInterface
     public function __construct(
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private ShipLoaderInterface $shipLoader,
-        private FleetRepositoryInterface $fleetRepository,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
@@ -76,7 +74,6 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         $fleet->setBlockedColony($currentColony);
-        $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s blockiert'), $currentColony->getName(), $fleet->getName());
         $game->getInfo()->addInformation($text);

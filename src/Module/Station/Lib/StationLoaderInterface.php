@@ -31,6 +31,4 @@ interface StationLoaderInterface
     ): SourceAndTargetWrappersInterface;
 
     public function find(int $stationId, bool $checkForEntityLock = true): ?StationWrapperInterface;
-
-    public function save(Station $station): void;
 }

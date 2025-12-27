@@ -12,7 +12,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class StopDefending implements ActionControllerInterface
 {
@@ -20,7 +19,6 @@ final class StopDefending implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private FleetRepositoryInterface $fleetRepository,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
@@ -51,7 +49,6 @@ final class StopDefending implements ActionControllerInterface
         }
 
         $fleet->setDefendedColony(null);
-        $this->fleetRepository->save($fleet);
 
         $text = sprintf(_('Die Flotte %s hat die Verteidigung der Kolonie %s beendet'), $fleet->getName(), $currentColony->getName());
         $game->getInfo()->addInformation($text);

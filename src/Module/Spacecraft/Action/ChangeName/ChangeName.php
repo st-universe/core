@@ -62,8 +62,6 @@ final class ChangeName implements ActionControllerInterface
 
         $ship->setName($value);
 
-        $this->spacecraftLoader->save($ship);
-
         $game->getInfo()->addInformation("Der Schiffname wurde geändert");
     }
 

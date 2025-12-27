@@ -19,13 +19,11 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class SystemActivation
 {
     public function __construct(
         private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly TemplateHelperInterface $templateHelper
     ) {}
 
@@ -40,15 +38,10 @@ class SystemActivation
 
         try {
             $this->spacecraftSystemManager->activate($wrapper, $type, false, $isDryRun);
-            $this->spacecraftRepository->save($spacecraft);
-            if ($logger instanceof InformationInterface) {
-                $logger->addInformationf(_('%s: System %s aktiviert'), $spacecraft->getName(), $systemName);
-            }
+            $this->logInfo(sprintf(_('%s: System %s aktiviert'), $spacecraft->getName(), $systemName), $logger);
             return true;
         } catch (AlreadyActiveException) {
-            if ($logger instanceof InformationInterface) {
-                $logger->addInformationf(_('%s: System %s ist bereits aktiviert'), $spacecraft->getName(), $systemName);
-            }
+            $this->logInfo(sprintf(_('%s: System %s ist bereits aktiviert'), $spacecraft->getName(), $systemName), $logger);
         } catch (SystemNotActivatableException) {
             $this->logError($spacecraft, sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $spacecraft->getName(), $systemName), $logger);
         } catch (InsufficientEnergyException $e) {
@@ -86,6 +79,13 @@ class SystemActivation
             $logger->addInformation($message);
         } elseif ($spacecraft instanceof Ship) {
             $logger->addBlockedShip($spacecraft, $message);
+        }
+    }
+
+    private function logInfo(string $message, ConditionCheckResult|InformationInterface $logger): void
+    {
+        if ($logger instanceof InformationInterface) {
+            $logger->addInformation($message);
         }
     }
 }

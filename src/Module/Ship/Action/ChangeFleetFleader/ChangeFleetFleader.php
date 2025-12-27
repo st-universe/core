@@ -10,13 +10,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ChangeFleetFleader implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_FLEET_LEADER';
 
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader) {}
+    public function __construct(private ShipLoaderInterface $shipLoader) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -56,13 +55,9 @@ final class ChangeFleetFleader implements ActionControllerInterface
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $fleet->setLeadShip($target);
-        $this->fleetRepository->save($fleet);
 
         $ship->setIsFleetLeader(false);
         $target->setIsFleetLeader(true);
-
-        $this->shipLoader->save($ship);
-        $this->shipLoader->save($target);
 
         $game->getInfo()->addInformation(sprintf(_('Die %s führt nun die Flotte an'), $target->getName()));
     }

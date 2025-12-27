@@ -11,7 +11,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class AlertStateManager implements AlertStateManagerInterface
 {
@@ -20,7 +19,6 @@ final class AlertStateManager implements AlertStateManagerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader*/
     public function __construct(
         private readonly SpacecraftLoaderInterface $spacecraftLoader,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly SystemActivation $systemActivation,
         private readonly SystemDeactivation $systemDeactivation,
         private readonly GameControllerInterface $game
@@ -110,7 +108,6 @@ final class AlertStateManager implements AlertStateManagerInterface
 
         try {
             $alertMsg = $wrapper->setAlertState($alertState);
-            $this->spacecraftRepository->save($ship);
 
             if ($alertMsg !== null) {
                 $this->game->getInfo()->addInformationf('%s: [b][color=FAFA03]%s[/color][/b]', $ship->getName(), $alertMsg);
@@ -128,8 +125,6 @@ final class AlertStateManager implements AlertStateManagerInterface
             SpacecraftAlertStateEnum::ALERT_GREEN =>
             $this->setAlertGreen($wrapper)
         };
-
-        $this->spacecraftRepository->save($ship);
 
         return true;
     }

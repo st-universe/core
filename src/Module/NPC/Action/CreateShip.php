@@ -170,8 +170,6 @@ final class CreateShip implements ActionControllerInterface
             throw new InvalidArgumentException(sprintf('User with id %d not found', $userId));
         }
 
-        $rump = $buildplan->getRump();
-
         for ($i = 0; $i < $stationCount; $i++) {
             if ($inConstruction) {
                 $this->createStationUnderConstruction($user->getId(), $buildplan, $field, $wantedSpecialModules);

@@ -133,8 +133,6 @@ final class SalvageCrew implements ActionControllerInterface
         }
 
         $epsSystem->lowerEps(1)->update();
-
-        $this->shipLoader->save($ship);
     }
 
     #[\Override]

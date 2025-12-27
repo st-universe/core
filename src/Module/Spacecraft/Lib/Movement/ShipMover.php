@@ -13,12 +13,10 @@ use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private FlightCompanyFactory $flightCompanyFactory,
         private ShipMovementInformationAdderInterface $shipMovementInformationAdder,
         private LeaveFleetInterface $leaveFleet,
@@ -35,7 +33,6 @@ final class ShipMover implements ShipMoverInterface
         $messages = $this->messageFactory->createMessageCollection();
 
         $flightCompany = $this->flightCompanyFactory->create($leadWrapper);
-        $initialTractoredShips = $this->initTractoredShips($flightCompany);
 
         // fly until destination arrived
         $hasTravelled = $this->travelFlightRoute(
@@ -48,9 +45,6 @@ final class ShipMover implements ShipMoverInterface
         if (!$hasTravelled) {
             return $messages;
         }
-
-        // save all ships
-        $this->saveShips($flightCompany, $initialTractoredShips);
 
         // add post flight informations
         $this->postFlightInformations(
@@ -172,46 +166,10 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    /**
-     * @return array<Ship>
-     */
-    private function initTractoredShips(FlightCompany $flightCompany): array
-    {
-        $tractoredShips = [];
-
-        foreach ($flightCompany->getActiveMembers() as $fleetShipWrapper) {
-            $fleetShip = $fleetShipWrapper->get();
-
-            $tractoredShip = $fleetShip->getTractoredShip();
-            if (
-                $tractoredShip !== null
-            ) {
-                $tractoredShips[] = $tractoredShip;
-            }
-        }
-
-        return $tractoredShips;
-    }
-
     private function leaveFleet(Spacecraft $ship, MessageCollectionInterface $messages): void
     {
         if ($ship instanceof Ship && $this->leaveFleet->leaveFleet($ship)) {
             $messages->addInformationf('Die %s hat die Flotte verlassen', $ship->getName());
-        }
-    }
-
-    /**
-     * @param array<Ship> $initialTractoredShips
-     */
-    private function saveShips(FlightCompany $flightCompany, array $initialTractoredShips): void
-    {
-        foreach ($flightCompany->getActiveMembers() as $wrapper) {
-            $ship = $wrapper->get();
-            $this->spacecraftRepository->save($ship);
-        }
-
-        foreach ($initialTractoredShips as $tractoredShip) {
-            $this->spacecraftRepository->save($tractoredShip);
         }
     }
 

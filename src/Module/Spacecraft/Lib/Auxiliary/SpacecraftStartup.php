@@ -8,12 +8,10 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class SpacecraftStartup implements SpacecraftStartupInterface
 {
     public function __construct(
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private readonly ActivatorDeactivatorHelperInterface $helper
     ) {}
@@ -21,8 +19,6 @@ class SpacecraftStartup implements SpacecraftStartupInterface
     #[\Override]
     public function startup(SpacecraftWrapperInterface $wrapper, array $additionalSystemTypes = []): void
     {
-        $isSaveNeeded = false;
-
         $wrapper
             ->get()
             ->getSystems()
@@ -36,18 +32,9 @@ class SpacecraftStartup implements SpacecraftStartupInterface
                     ->getDefaultMode()
                     ->isActivated() || in_array($systemType->getSystemType(), $additionalSystemTypes)
             )
-            ->forAll(function (int $key, SpacecraftSystemTypeInterface $systemType) use (
-                $wrapper,
-                &$isSaveNeeded
-            ): bool {
-                $isSaveNeeded =
-                    $this->helper->activate($wrapper, $systemType->getSystemType(), new InformationWrapper())
-                    || $isSaveNeeded;
+            ->forAll(function (int $key, SpacecraftSystemTypeInterface $systemType) use ($wrapper): bool {
+                $this->helper->activate($wrapper, $systemType->getSystemType(), new InformationWrapper());
                 return true;
             });
-
-        if ($isSaveNeeded) {
-            $this->spacecraftRepository->save($wrapper->get());
-        }
     }
 }

@@ -14,12 +14,10 @@ use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private EntityManagerInterface $entityManager
     ) {}
@@ -98,7 +96,6 @@ final class TractorBeamShipSystem extends AbstractSpacecraftSystemType implement
         if ($tractoredShip !== null) {
 
             $spacecraft->setTractoredShip(null);
-            $this->spacecraftRepository->save($spacecraft);
             $this->entityManager->flush();
 
             $this->privateMessageSender->send(

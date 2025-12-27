@@ -8,12 +8,10 @@ use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 class BattlePartyFactory implements BattlePartyFactoryInterface
 {
     public function __construct(
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private readonly StuRandom $stuRandom
     ) {}
@@ -36,7 +34,7 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
     public function createRoundBasedBattleParty(
         BattlePartyInterface $battleParty
     ): RoundBasedBattleParty {
-        return new RoundBasedBattleParty($battleParty, $this->spacecraftRepository, $this->stuRandom);
+        return new RoundBasedBattleParty($battleParty, $this->stuRandom);
     }
 
     #[\Override]

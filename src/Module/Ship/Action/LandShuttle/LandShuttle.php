@@ -18,7 +18,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class LandShuttle implements ActionControllerInterface
 {
@@ -28,7 +27,6 @@ final class LandShuttle implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private StorageManagerInterface $storageManager,
         private EntityManagerInterface $entityManager,
         private TroopTransferUtilityInterface $troopTransferUtility,
@@ -132,8 +130,6 @@ final class LandShuttle implements ActionControllerInterface
         $this->entityManager->flush();
 
         $this->spacecraftRemover->remove($shuttle);
-
-        $this->spacecraftRepository->save($target);
     }
 
     #[\Override]

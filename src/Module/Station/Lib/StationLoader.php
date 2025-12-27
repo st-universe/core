@@ -7,7 +7,6 @@ namespace Stu\Module\Station\Lib;
 use RuntimeException;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 
 final class StationLoader implements StationLoaderInterface
@@ -91,11 +90,5 @@ final class StationLoader implements StationLoaderInterface
         }
 
         return $wrapper;
-    }
-
-    #[\Override]
-    public function save(Spacecraft $station): void
-    {
-        $this->spacecraftLoader->save($station);
     }
 }

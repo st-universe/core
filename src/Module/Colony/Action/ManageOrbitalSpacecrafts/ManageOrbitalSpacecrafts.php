@@ -92,11 +92,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
 
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
-        $msg = $this->handleManagers->handle($wrapper, $values, $managerProvider);
-
-        $this->spacecraftRepository->save($spacecraft);
-
-        return $msg;
+        return $this->handleManagers->handle($wrapper, $values, $managerProvider);
     }
 
     #[\Override]

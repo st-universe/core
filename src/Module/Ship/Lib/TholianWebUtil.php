@@ -23,7 +23,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\TholianWeb;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -32,7 +31,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private TholianWebRepositoryInterface $tholianWebRepository,
         private SpacecraftSystemRepositoryInterface $shipSystemRepository,
         private StuTime $stuTime,
@@ -62,7 +60,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
 
         $spacecraft->setHoldingWeb(null);
-        $this->spacecraftRepository->save($spacecraft);
     }
 
     #[\Override]
@@ -176,7 +173,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $ship = $wrapper->get();
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
-        $this->spacecraftRepository->save($ship);
 
         //update finish time last
         return $this->updateWebFinishTime($web, -1);

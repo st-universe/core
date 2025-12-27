@@ -35,7 +35,6 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 //TODO unit tests
 final class IonStormHandler implements AnomalyHandlerInterface
@@ -48,7 +47,6 @@ final class IonStormHandler implements AnomalyHandlerInterface
         private LocationRepositoryInterface $locationRepository,
         private LayerRepositoryInterface $layerRepository,
         private AnomalyCreationInterface $anomalyCreation,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private LocationPoolFactory $locationPoolFactory,
         private IonStormPropagation $ionStormPropagation,
         private IonStormMovement $ionStormMovement,
@@ -169,8 +167,6 @@ final class IonStormHandler implements AnomalyHandlerInterface
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
             $informations->addInformation('Die Schilde sind ausgefallen');
         }
-
-        $this->spacecraftRepository->save($spacecraft);
     }
 
     private function getIonStormData(Anomaly $root): IonStormData
@@ -221,8 +217,6 @@ final class IonStormHandler implements AnomalyHandlerInterface
 
             $informations->addInformationf('Der %s ist ausgefallen und kann vorerst nicht mehr aktiviert werden', $systemType->getDescription());
         }
-
-        $this->spacecraftRepository->save($spacecraft);
     }
 
     private function damageSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, InformationInterface $informations, int $damagePercentage): void

@@ -53,8 +53,6 @@ final class LeaveFleet implements ActionControllerInterface
         $fleet->getShips()->removeElement($ship);
         $ship->setFleet(null);
 
-        $this->shipLoader->save($ship);
-
         $game->getInfo()->addInformation(
             sprintf(_('Die %s hat die Flotte verlassen'), $ship->getName())
         );

@@ -14,12 +14,10 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class InterceptShipCoreTest extends StuTestCase
 {
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&SpacecraftSystemManagerInterface $spacecraftSystemManager;
     private MockInterface&AlertReactionFacadeInterface $alertReactionFacade;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
@@ -37,7 +35,6 @@ class InterceptShipCoreTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
@@ -58,7 +55,6 @@ class InterceptShipCoreTest extends StuTestCase
             ->andReturn($this->target);
 
         $this->subject = new InterceptShipCore(
-            $this->spacecraftRepository,
             $this->spacecraftSystemManager,
             $this->alertReactionFacade,
             $this->privateMessageSender,
@@ -113,13 +109,6 @@ class InterceptShipCoreTest extends StuTestCase
             ->once();
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with($this->targetWrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
-            ->once();
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->target)
             ->once();
 
         $this->alertReactionFacade->shouldReceive('doItAll')

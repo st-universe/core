@@ -14,7 +14,6 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class DockTractoredShip implements ActionControllerInterface
 {
@@ -22,7 +21,6 @@ final class DockTractoredShip implements ActionControllerInterface
 
     public function __construct(
         private StationLoaderInterface $stationLoader,
-        private SpacecraftRepositoryInterface $spacecraftRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private ActivatorDeactivatorHelperInterface $helper
     ) {}
@@ -80,9 +78,6 @@ final class DockTractoredShip implements ActionControllerInterface
         $epsSystem->lowerEps(1)->update();
         $tractoredShip->setDockedTo($station);
         $station->getDockedShips()->set($tractoredShip->getId(), $tractoredShip);
-
-        $this->stationLoader->save($station);
-        $this->spacecraftRepository->save($tractoredShip);
 
         $game->getInfo()->addInformation('Andockvorgang abgeschlossen');
         $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());

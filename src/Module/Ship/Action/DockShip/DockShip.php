@@ -141,8 +141,6 @@ final class DockShip implements ActionControllerInterface
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo($target);
 
-        $this->shipLoader->save($ship);
-
         $this->privateMessageSender->send(
             $userId,
             $target->getUser()->getId(),
@@ -203,18 +201,18 @@ final class DockShip implements ActionControllerInterface
             try {
                 $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::SHIELDS);
             } catch (SpacecraftSystemException) {
+                // nothing to do here
             }
-
+            
             try {
                 $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             } catch (SpacecraftSystemException) {
+                // nothing to do here
             }
 
             $fleetShip->setDockedTo($target);
 
             $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
-
-            $this->shipLoader->save($fleetShip);
 
             $freeSlots--;
         }

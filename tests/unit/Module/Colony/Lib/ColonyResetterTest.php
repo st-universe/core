@@ -21,7 +21,6 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -61,11 +60,6 @@ class ColonyResetterTest extends StuTestCase
     private $planetFieldRepository;
 
     /**
-     * @var null|MockInterface|FleetRepositoryInterface
-     */
-    private $fleetRepository;
-
-    /**
      * @var null|MockInterface|CrewRepositoryInterface
      */
     private $crewRepository;
@@ -101,7 +95,6 @@ class ColonyResetterTest extends StuTestCase
         $this->colonyTerraformingRepository = Mockery::mock(ColonyTerraformingRepositoryInterface::class);
         $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
-        $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
         $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
@@ -115,7 +108,6 @@ class ColonyResetterTest extends StuTestCase
             $this->colonyTerraformingRepository,
             $this->colonyShipQueueRepository,
             $this->planetFieldRepository,
-            $this->fleetRepository,
             $this->crewRepository,
             $this->crewTrainingRepository,
             $this->shipCrewRepository,
@@ -143,10 +135,6 @@ class ColonyResetterTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $this->fleetRepository->shouldReceive('save')
-            ->with($blockerFleet)
-            ->once();
-
         $blockerFleetCollection = new ArrayCollection([$blockerFleet]);
         $colony->shouldReceive('getBlockers')
             ->withNoArgs()
@@ -158,10 +146,6 @@ class ColonyResetterTest extends StuTestCase
 
         $defenderFleet->shouldReceive('setDefendedColony')
             ->with(null)
-            ->once();
-
-        $this->fleetRepository->shouldReceive('save')
-            ->with($defenderFleet)
             ->once();
 
         $defenderFleetCollection = new ArrayCollection([$defenderFleet]);

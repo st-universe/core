@@ -61,8 +61,6 @@ final class CreateFleet implements ActionControllerInterface
         $spacecraft->setFleet($fleet);
         $spacecraft->setIsFleetLeader(true);
 
-        $this->shipLoader->save($spacecraft);
-
         $game->getInfo()->addInformation(_('Die Flotte wurde erstellt'));
     }
 

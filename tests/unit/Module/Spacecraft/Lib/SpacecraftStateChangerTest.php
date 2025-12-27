@@ -18,7 +18,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftStateChangerTest extends StuTestCase
@@ -27,7 +26,6 @@ class SpacecraftStateChangerTest extends StuTestCase
     private MockInterface&CancelRepairInterface $cancelRepair;
     private MockInterface&CancelRetrofitInterface $cancelRetrofit;
     private MockInterface&AstroEntryLibInterface $astroEntryLib;
-    private MockInterface&SpacecraftRepositoryInterface $spacecraftRepository;
     private MockInterface&TholianWebUtilInterface $tholianWebUtil;
     private MockInterface&ShipTakeoverManagerInterface $shipTakeoverManager;
 
@@ -45,7 +43,6 @@ class SpacecraftStateChangerTest extends StuTestCase
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->cancelRetrofit = $this->mock(CancelRetrofitInterface::class);
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
-        $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);
         $this->shipTakeoverManager = $this->mock(ShipTakeoverManagerInterface::class);
 
@@ -64,7 +61,6 @@ class SpacecraftStateChangerTest extends StuTestCase
             $this->cancelMining,
             $this->cancelRepair,
             $this->astroEntryLib,
-            $this->spacecraftRepository,
             $this->tholianWebUtil,
             $this->shipTakeoverManager,
             $this->cancelRetrofit
@@ -105,10 +101,6 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-
         $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
@@ -127,10 +119,6 @@ class SpacecraftStateChangerTest extends StuTestCase
             ->with(SpacecraftStateEnum::NONE)
             ->once();
 
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-
         $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
     }
 
@@ -147,10 +135,6 @@ class SpacecraftStateChangerTest extends StuTestCase
 
         $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
-            ->once();
-
-        $this->spacecraftRepository->shouldReceive('save')
-            ->with($this->ship)
             ->once();
 
         $this->subject->changeState($this->wrapper, SpacecraftStateEnum::NONE);
