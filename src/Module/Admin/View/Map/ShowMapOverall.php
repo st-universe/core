@@ -55,7 +55,7 @@ final class ShowMapOverall implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
-        foreach ($this->mapRepository->getAllOrdered($layerId) as $data) {
+        foreach ($this->mapRepository->getAllOrdered($layer) as $data) {
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;

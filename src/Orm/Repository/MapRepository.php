@@ -28,12 +28,12 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getAmountByLayer(Layer $layer): int
     {
         return $this->count([
-            'layer_id' => $layer->getId()
+            'layer' => $layer
         ]);
     }
 
     #[\Override]
-    public function getAllOrdered(int $layerId): array
+    public function getAllOrdered(Layer $layer): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -41,20 +41,20 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     'SELECT m FROM %s m
                     JOIN %s l
                     WITH m.id = l.id
-                    WHERE l.layer_id = :layerId
+                    WHERE l.layer = :layer
                     ORDER BY l.cy, l.cx',
                     Map::class,
                     Location::class
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layer' => $layer
             ])
             ->getResult();
     }
 
     #[\Override]
-    public function getAllWithSystem(int $layerId): array
+    public function getAllWithSystem(Layer $layer): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -62,20 +62,20 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     'SELECT m FROM %s m INDEX BY m.id
                     JOIN %s l
                     WITH m.id = l.id
-                    WHERE l.layer_id = :layerId
+                    WHERE l.layer = :layer
                     AND m.systems_id IS NOT null',
                     Map::class,
                     Location::class
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layer' => $layer
             ])
             ->getResult();
     }
 
     #[\Override]
-    public function getAllWithoutSystem(int $layerId): array
+    public function getAllWithoutSystem(Layer $layer): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -83,14 +83,14 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     'SELECT m FROM %s m INDEX BY m.id
                     JOIN %s l
                     WITH m.id = l.id
-                    WHERE l.layer_id = :layerId
+                    WHERE l.layer = :layer
                     AND m.systems_id IS null',
                     Map::class,
                     Location::class
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layer' => $layer
             ])
             ->getResult();
     }
@@ -103,7 +103,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         }
 
         return $this->findOneBy([
-            'layer_id' => $layer->getId(),
+            'layer' => $layer,
             'cx' => $cx,
             'cy' => $cy
         ]);
@@ -136,12 +136,15 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     'SELECT m FROM %s m
                     JOIN %s l
                     WITH m.id = l.id
+                    JOIN %s ly
+                    WITH l.layer = ly
                     WHERE l.cx BETWEEN :startCx AND :endCx
                     AND l.cy BETWEEN :startCy AND :endCy
-                    AND l.layer_id = :layerId
-                    ORDER BY l.cy %3$s, l.cx %3$s',
+                    AND ly.id = :layerId
+                    ORDER BY l.cy %4$s, l.cx %4$s',
                     Map::class,
                     Location::class,
+                    Layer::class,
                     $sortAscending ? 'ASC' : 'DESC'
                 )
             )
@@ -640,7 +643,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_location l ON m.id = l.id
                 JOIN stu_map_ftypes mf ON l.field_id = mf.id
                 WHERE m.region_id = :regionId
-                AND 
+                AND
                     mf.passable = :true
                     AND NOT EXISTS (
                         SELECT 1

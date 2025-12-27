@@ -189,12 +189,12 @@ class LocationRepository extends EntityRepository implements LocationRepositoryI
     }
 
     #[\Override]
-    public function getByCoordinates(int $x, int $y, int $layerId): ?Location
+    public function getByCoordinates(int $x, int $y, Layer $layer): ?Location
     {
         return $this->findOneBy([
             'cx' => $x,
             'cy' => $y,
-            'layer_id' => $layerId
+            'layer' => $layer
         ]);
     }
 }

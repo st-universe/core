@@ -43,11 +43,14 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                     WITH m.systems_id = s.id
                     JOIN %s l
                     WITH m.id = l.id
-                    WHERE l.layer_id  = :layerId
+                    JOIN %s ly
+                    WITH l.layer = ly
+                    WHERE ly.id = :layerId
                     ORDER BY s.name ASC',
                     StarSystem::class,
                     Map::class,
-                    Location::class
+                    Location::class,
+                    Layer::class
                 )
             )
             ->setParameters([
@@ -163,7 +166,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 WITH m.id = l.id
                 WHERE l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
-                AND l.layer_id = :layerId',
+                AND l.layer = :layer',
                 StarSystem::class,
                 Map::class,
                 Location::class
@@ -174,7 +177,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 'maxX' => $location->getCx() + $range,
                 'minY' => $location->getCy() - $range,
                 'maxY' => $location->getCy() + $range,
-                'layerId' => $layer->getId()
+                'layer' => $layer
             ])
             ->getResult();
     }

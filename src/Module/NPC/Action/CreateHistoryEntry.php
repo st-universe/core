@@ -12,12 +12,17 @@ use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class CreateHistoryEntry implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_HISTORY_ENTRY';
 
-    public function __construct(private NPCLogRepositoryInterface $npcLogRepository, private EntryCreatorInterface $entryCreator, private LocationRepositoryInterface $locationRepository) {}
+    public function __construct(
+        private readonly NPCLogRepositoryInterface $npcLogRepository,
+        private readonly EntryCreatorInterface $entryCreator,
+        private readonly LocationRepositoryInterface $locationRepository,
+        private readonly LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -35,7 +40,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
         $historyText = request::postString('historytext');
         $x = request::postIntFatal('x');
         $y = request::postIntFatal('y');
-        $layer = request::postIntFatal('layer');
+        $layer = $this->layerRepository->find(request::postIntFatal('layer')) ?? throw new \RuntimeException('Layer not found');
 
         if (($x !== 0 && $y === 0) || ($x === 0 && $y !== 0)) {
             $game->getInfo()->addInformation("X und Y Koordinaten müssen beide gesetzt oder beide leer sein");
@@ -87,11 +92,11 @@ final class CreateHistoryEntry implements ActionControllerInterface
 
     private function createReasonEntry(
         string $text,
-        int $UserId
+        int $userId
     ): void {
         $entry = $this->npcLogRepository->prototype();
         $entry->setText($text);
-        $entry->setSourceUserId($UserId);
+        $entry->setSourceUserId($userId);
         $entry->setDate(time());
 
         $this->npcLogRepository->save($entry);
