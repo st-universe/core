@@ -19,5 +19,15 @@ if ($uri === '/') {
     return true;
 }
 
+if (str_starts_with($uri, '/admin')) {
+    require_once $publicDir . '/admin/index.php';
+    return true;
+}
+
+if (str_starts_with($uri, '/npc')) {
+    require_once $publicDir . '/npc/index.php';
+    return true;
+}
+
 http_response_code(404);
 return true;
