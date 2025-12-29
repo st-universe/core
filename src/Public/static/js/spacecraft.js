@@ -334,7 +334,7 @@ function updateReactorValues() {
     effEpsProduction = Math.min(missingEps, epsChange);
     effWarpdriveProduction = Math.min(
       missingWarpdrive,
-      warpDriveProduction + Math.floor(excess / flightCost)
+      warpDriveProduction + (excess == 0 ? 0 : Math.floor(excess / flightCost))
     );
   }
 
