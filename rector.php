@@ -18,6 +18,7 @@ use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
 use Rector\Php81\Rector\Class_\MyCLabsClassToEnumRector;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\PostRector\Rector\NameImportingPostRector;
 
 /**
  * Execute on command line via 'vendor/bin/rector process'
@@ -44,6 +45,7 @@ return static function (RectorConfig $rectorConfig): void {
         //SetList::TYPE_DECLARATION,    //last 2025-06-03
         //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03
         //LevelSetList::UP_TO_PHP_84,
+        SetList::PHP_85
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13
     ]);
 
@@ -63,7 +65,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         SimplifyBoolIdenticalTrueRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
-        PostIncDecToPreIncDecRector::class
+        PostIncDecToPreIncDecRector::class,
+        NameImportingPostRector::class,   //replaces  #[\Override] by  #[Override] with import of Override
     ]);
 
     /**
