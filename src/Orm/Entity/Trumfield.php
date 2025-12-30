@@ -51,7 +51,7 @@ class Trumfield implements
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, inversedBy: 'trumfields')]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 

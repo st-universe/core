@@ -49,7 +49,7 @@ class Station extends Spacecraft
     #[OrderBy(['privilege_mode' => 'DESC'])]
     private Collection $dockingPrivileges;
 
-    #[OneToOne(targetEntity: StarSystem::class)]
+    #[OneToOne(targetEntity: StarSystem::class, inversedBy: 'station')]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystem $influenceArea = null;
 

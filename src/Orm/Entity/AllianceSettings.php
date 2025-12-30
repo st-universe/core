@@ -29,7 +29,7 @@ class AllianceSettings
     #[Column(type: 'string')]
     private string $value = '';
 
-    #[ManyToOne(targetEntity: Alliance::class)]
+    #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'settings')]
     #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Alliance $alliance;
 

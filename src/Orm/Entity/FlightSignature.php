@@ -59,7 +59,7 @@ class FlightSignature
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
     private SpacecraftRump $rump;
 
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, inversedBy: 'signatures')]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 
