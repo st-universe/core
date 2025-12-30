@@ -57,7 +57,7 @@ final class ShowEditKn implements ViewControllerInterface
 
             $game->setTemplateVar(
                 'ACTIVE_RPG_PLOTS',
-                $this->rpgPlotRepository->getActiveByUser($game->getUser()->getId())
+                $this->rpgPlotRepository->getActiveByUser($post->getUserId())
             );
             $game->setTemplateVar('POST', $post);
         }
