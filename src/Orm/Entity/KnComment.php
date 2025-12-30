@@ -43,7 +43,7 @@ class KnComment
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: KnPost::class)]
+    #[ManyToOne(targetEntity: KnPost::class, inversedBy: 'comments')]
     #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private KnPost $post;
 

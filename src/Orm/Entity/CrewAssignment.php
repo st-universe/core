@@ -27,15 +27,15 @@ class CrewAssignment
     #[Column(type: 'smallint', nullable: true, enumType: CrewTypeEnum::class)]
     private ?CrewTypeEnum $slot = null;
 
-    #[ManyToOne(targetEntity: Spacecraft::class)]
+    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'crew')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Spacecraft $spacecraft = null;
 
-    #[ManyToOne(targetEntity: Colony::class)]
+    #[ManyToOne(targetEntity: Colony::class, inversedBy: 'crewAssignments')]
     #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Colony $colony = null;
 
-    #[ManyToOne(targetEntity: TradePost::class)]
+    #[ManyToOne(targetEntity: TradePost::class, inversedBy: 'crewAssignments')]
     #[JoinColumn(name: 'tradepost_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?TradePost $tradepost = null;
 

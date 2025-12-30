@@ -126,7 +126,7 @@ abstract class Spacecraft implements
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id', nullable: true)]
     private ?Ship $tractoredShip = null;
 
-    #[ManyToOne(targetEntity: TholianWeb::class)]
+    #[ManyToOne(targetEntity: TholianWeb::class, inversedBy: 'capturedSpacecrafts')]
     #[JoinColumn(name: 'holding_web_id', referencedColumnName: 'id')]
     private ?TholianWeb $holdingWeb = null;
 
@@ -166,7 +166,7 @@ abstract class Spacecraft implements
     #[OrderBy(['commodity_id' => 'ASC'])]
     private Collection $storage;
 
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, inversedBy: 'spacecrafts')]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 

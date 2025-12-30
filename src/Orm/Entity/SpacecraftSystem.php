@@ -54,7 +54,7 @@ class SpacecraftSystem
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Module $module = null;
 
-    #[ManyToOne(targetEntity: Spacecraft::class)]
+    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'systems')]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 

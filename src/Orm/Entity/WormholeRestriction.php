@@ -24,7 +24,7 @@ class WormholeRestriction
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[ManyToOne(targetEntity: WormholeEntry::class)]
+    #[ManyToOne(targetEntity: WormholeEntry::class, inversedBy: 'restrictions')]
     #[JoinColumn(name: 'wormhole_entry_id', nullable: false, referencedColumnName: 'id')]
     private WormholeEntry $wormholeEntry;
 

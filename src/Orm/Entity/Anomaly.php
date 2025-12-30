@@ -51,11 +51,11 @@ class Anomaly implements SpacecraftDestroyerInterface
     #[JoinColumn(name: 'anomaly_type_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private AnomalyType $anomalyType;
 
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, inversedBy: 'anomalies')]
     #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
     private ?Location $location;
 
-    #[ManyToOne(targetEntity: Anomaly::class)]
+    #[ManyToOne(targetEntity: Anomaly::class, inversedBy: 'children')]
     #[JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
     private ?Anomaly $parent;
 

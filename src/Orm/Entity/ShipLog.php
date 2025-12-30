@@ -37,7 +37,7 @@ class ShipLog
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: Spacecraft::class)]
+    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'logbook')]
     #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Spacecraft $spacecraft = null;
 
