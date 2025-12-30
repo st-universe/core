@@ -83,7 +83,7 @@ class Colony implements
     #[JoinColumn(name: 'starsystem_map_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private StarSystemMap $starsystemMap;
 
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'colonies')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
     private User $user;
 

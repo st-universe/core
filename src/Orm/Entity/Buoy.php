@@ -31,11 +31,11 @@ class Buoy
     #[Column(type: 'integer')]
     private int $location_id = 0;
 
-    #[ManyToOne(targetEntity: Location::class)]
+    #[ManyToOne(targetEntity: Location::class, inversedBy: 'buoys')]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'buoys')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;
 
