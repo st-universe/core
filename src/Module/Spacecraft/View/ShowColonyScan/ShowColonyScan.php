@@ -73,6 +73,9 @@ final class ShowColonyScan implements ViewControllerInterface
             throw new SanityCheckException('ship has no eps system installed');
         }
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
 
         if ($epsSystem->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
             $game->getInfo()->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
