@@ -1,6 +1,6 @@
 # Welcome to Mago!
 # For full documentation, see https://mago.carthage.software/tools/overview
-php-version = "8.4.13"
+php-version = "8.5.1"
 
 [source]
 paths = ["src/"]
