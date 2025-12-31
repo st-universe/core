@@ -23,7 +23,7 @@ update:force
 	composer update
 
 dev-serve:force
-	php -S localhost:1337 -t src/Public/ router.php
+	composer dev:serve
 
 dev-create-db:force
 	docker-compose up -d stu-db
