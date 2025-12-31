@@ -12,12 +12,10 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipUndockingTest extends StuTestCase
 {
-    private MockInterface&ShipRepositoryInterface $shipRepository;
     private MockInterface&CancelRepairInterface $cancelRepair;
     private MockInterface&CancelRetrofitInterface $cancelRetrofit;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
@@ -28,13 +26,11 @@ class ShipUndockingTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->cancelRetrofit = $this->mock(CancelRetrofitInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->subject = new ShipUndocking(
-            $this->shipRepository,
             $this->cancelRepair,
             $this->cancelRetrofit,
             $this->privateMessageSender
@@ -111,13 +107,6 @@ class ShipUndockingTest extends StuTestCase
             ->with($ship1)
             ->once();
         $this->cancelRetrofit->shouldReceive('cancelRetrofit')
-            ->with($ship2)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
-            ->with($ship1)
-            ->once();
-        $this->shipRepository->shouldReceive('save')
             ->with($ship2)
             ->once();
 

@@ -19,7 +19,7 @@ final class ShowStationCosts implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $ship = $this->stationLoader->getByIdAndUser(
+        $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId(),
             false,
@@ -43,11 +43,11 @@ final class ShowStationCosts implements ViewControllerInterface
 
         $mods = [];
         foreach ($plan->getModulesOrdered() as $mod) {
-            $mods[] = new StationCostWrapper($mod, $ship->getStorage()->get($mod->getModule()->getCommodityId()));
+            $mods[] = new StationCostWrapper($mod, $station->getStorage()->get($mod->getModule()->getCommodityId()));
         }
         $game->setTemplateVar('MODS', $mods);
 
-        $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($ship);
+        $dockedWorkbees = $station->getDockedWorkbeeCount();
         $game->setTemplateVar('DOCKED', $dockedWorkbees);
         $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $plan->getRump()->getNeededWorkbees() ? 'red' : 'green');
     }

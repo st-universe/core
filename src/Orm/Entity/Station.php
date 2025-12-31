@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -173,15 +172,11 @@ class Station extends Spacecraft
 
     public function getDockedWorkbeeCount(): int
     {
-        $count = 0;
-
-        foreach ($this->getDockedShips() as $ships) {
-            if ($ships->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::SHUTTLE) {
-                $count += 1;
-            }
-        }
-
-        return $count;
+        return $this->getDockedShips()
+            ->filter(fn(Ship $docked): bool => $docked->hasEnoughCrew()
+                && !$docked->getUser()->isVacationRequestOldEnough()
+                && $docked->getRump()->isWorkbee())
+            ->count();
     }
 
     public function getConstructionHubState(): bool
