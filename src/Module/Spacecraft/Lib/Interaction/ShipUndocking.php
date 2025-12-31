@@ -10,12 +10,10 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipUndocking implements ShipUndockingInterface
 {
     public function __construct(
-        private ShipRepositoryInterface $shipRepository,
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit,
         private PrivateMessageSenderInterface $privateMessageSender
@@ -28,7 +26,6 @@ final class ShipUndocking implements ShipUndockingInterface
         $this->cancelRepair->cancelRepair($dockedShip);
         $this->cancelRetrofit->cancelRetrofit($dockedShip);
         $dockedShip->setDockedTo(null);
-        $this->shipRepository->save($dockedShip);
 
         $this->privateMessageSender->send(
             $station->getUser()->getId(),

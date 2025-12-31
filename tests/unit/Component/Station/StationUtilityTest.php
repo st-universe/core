@@ -67,58 +67,15 @@ class StationUtilityTest extends StuTestCase
     public function testGetDockedWorkbeeCount(): void
     {
         $station = $this->mock(Station::class);
-        $docked1 = $this->mock(Ship::class);
-        $docked2 = $this->mock(Ship::class);
-        $docked3 = $this->mock(Ship::class);
-        $docked4 = $this->mock(Ship::class);
 
-        $station->shouldReceive('getDockedShips')
+        $station->shouldReceive('getDockedWorkbeeCount')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$docked1, $docked2, $docked3, $docked4]));
+            ->andReturn(42);
 
-        $docked1->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $docked2->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-        $docked2->shouldReceive('getUser->isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        $docked3->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-        $docked3->shouldReceive('getUser->isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $docked3->shouldReceive('getRump->isWorkbee')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $docked4->shouldReceive('hasEnoughCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-        $docked4->shouldReceive('getUser->isVacationRequestOldEnough')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $docked4->shouldReceive('getRump->isWorkbee')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         $result = $this->subject->getDockedWorkbeeCount($station);
 
-        $this->assertEquals(1, $result);
+        $this->assertEquals(42, $result);
     }
 }

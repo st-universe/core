@@ -114,11 +114,7 @@ final class StationUtility implements StationUtilityInterface
     #[\Override]
     public function getDockedWorkbeeCount(Station $station): int
     {
-        return $station->getDockedShips()
-            ->filter(fn(Ship $docked): bool => $docked->hasEnoughCrew()
-                && !$docked->getUser()->isVacationRequestOldEnough()
-                && $docked->getRump()->isWorkbee())
-            ->count();
+        return $station->getDockedWorkbeeCount();
     }
 
     #[\Override]

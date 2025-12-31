@@ -12,8 +12,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -28,8 +26,6 @@ final class DockFleet implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DOCK_FLEET';
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         private StationLoaderInterface $stationLoader,
         private FleetRepositoryInterface $fleetRepository,
@@ -39,15 +35,12 @@ final class DockFleet implements ActionControllerInterface
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -59,22 +52,17 @@ final class DockFleet implements ActionControllerInterface
 
         $station = $wrapper->get();
 
-        $this->loggerUtil->log('A');
         $targetFleet = $this->fleetRepository->find(request::getIntFatal('fid'));
         if ($targetFleet === null) {
-            $this->loggerUtil->log('B');
             return;
         }
         if (!$this->interactionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
-            $this->loggerUtil->log('C');
             return;
         }
         if ($targetFleet->getUser()->getId() !== $game->getUser()->getId()) {
-            $this->loggerUtil->log('D');
             return;
         }
         if (!$station->isStation()) {
-            $this->loggerUtil->log('E');
             return;
         }
 
@@ -95,11 +83,9 @@ final class DockFleet implements ActionControllerInterface
         $station = $stationWrapper->get();
         $epsSystem = $stationWrapper->getEpsSystemData();
 
-        $this->loggerUtil->log('F');
         $msg = [_("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName()];
         $freeSlots = $station->getFreeDockingSlotCount();
         foreach ($targetFleet->getShips() as $ship) {
-            $this->loggerUtil->log('G');
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
