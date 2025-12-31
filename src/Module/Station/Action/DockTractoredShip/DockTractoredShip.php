@@ -77,7 +77,6 @@ final class DockTractoredShip implements ActionControllerInterface
 
         $epsSystem->lowerEps(1)->update();
         $tractoredShip->setDockedTo($station);
-        $station->getDockedShips()->set($tractoredShip->getId(), $tractoredShip);
 
         $game->getInfo()->addInformation('Andockvorgang abgeschlossen');
         $this->helper->deactivate($stationId, SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());

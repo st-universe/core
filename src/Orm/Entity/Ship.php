@@ -120,14 +120,23 @@ class Ship extends Spacecraft
         return $this->dockedTo;
     }
 
-    public function setDockedTo(?Station $dockedTo): Ship
+    public function setDockedTo(?Station $station): Ship
     {
-        $currentDockedTo = $this->dockedTo;
-        if ($dockedTo === null && $currentDockedTo !== null) {
-            $currentDockedTo->getDockedShips()->removeElement($this);
+        if ($this->dockedTo === $station) {
+            return $this;
         }
 
-        $this->dockedTo = $dockedTo;
+        $old = $this->dockedTo;
+        $this->dockedTo = $station;
+
+        if ($old !== null) {
+            $old->getDockedShips()->removeElement($this);
+        }
+
+        if ($station !== null && !$station->getDockedShips()->contains($this)) {
+            $station->getDockedShips()->add($this);
+        }
+
         return $this;
     }
 

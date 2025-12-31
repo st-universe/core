@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Stu\StuTestCase;
 
 class ShipTest extends StuTestCase
@@ -62,16 +63,19 @@ class ShipTest extends StuTestCase
     public function testSetDockedToExpectUndockingIfDocked(): void
     {
         $station = $this->mock(Station::class);
-        $station->shouldReceive('getDockedShips->removeElement')
-            ->with($this->subject)
-            ->once();
+        $dockedShips = new ArrayCollection();
+        $station->shouldReceive('getDockedShips')
+            ->withNoArgs()
+            ->andReturn($dockedShips);
 
+        // ADDING
         $this->subject->setDockedTo($station);
-
         $this->assertSame($station, $this->subject->getDockedTo());
+        $this->assertTrue($dockedShips->contains($this->subject));
 
+        // REMOVAL
         $this->subject->setDockedTo(null);
-
         $this->assertNull($this->subject->getDockedTo());
+        $this->assertTrue($dockedShips->isEmpty());
     }
 }
