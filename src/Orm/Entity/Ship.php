@@ -23,9 +23,6 @@ class Ship extends Spacecraft
     #[Column(type: 'integer', nullable: true)]
     private ?int $fleet_id = null;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $docked_to_id = null;
-
     // used for sorting
     #[Column(type: 'boolean')]
     private bool $is_fleet_leader = false;
@@ -35,7 +32,7 @@ class Ship extends Spacecraft
     private ?Fleet $fleet = null;
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockedShips')]
-    #[JoinColumn(name: 'docked_to_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'docked_to_id', nullable: true, referencedColumnName: 'id')]
     private ?Station $dockedTo = null;
 
     #[OneToOne(targetEntity: Spacecraft::class, mappedBy: 'tractoredShip')]
@@ -140,12 +137,7 @@ class Ship extends Spacecraft
             return $this;
         }
 
-        $old = $this->dockedTo;
         $this->dockedTo = $station;
-
-        if ($old !== null) {
-            $old->getDockedShips()->removeElement($this);
-        }
 
         if ($station !== null && !$station->getDockedShips()->contains($this)) {
             $station->getDockedShips()->add($this);
