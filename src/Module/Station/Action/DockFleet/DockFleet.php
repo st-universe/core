@@ -20,7 +20,6 @@ use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DockFleet implements ActionControllerInterface
 {
@@ -29,7 +28,6 @@ final class DockFleet implements ActionControllerInterface
     public function __construct(
         private StationLoaderInterface $stationLoader,
         private FleetRepositoryInterface $fleetRepository,
-        private ShipRepositoryInterface $shipRepository,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private InteractionCheckerInterface $interactionChecker,
         private CancelRepairInterface $cancelRepair,
@@ -126,8 +124,6 @@ final class DockFleet implements ActionControllerInterface
             $ship->setDockedTo($station);
 
             $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK);
-
-            $this->shipRepository->save($ship);
 
             $freeSlots--;
         }

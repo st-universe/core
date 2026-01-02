@@ -6,17 +6,14 @@ namespace Stu\Component\Ship\Mining;
 
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class CancelMining implements CancelMiningInterface
 {
 
     public function __construct(
-        private ShipRepositoryInterface $shipRepository,
-        private MiningQueueRepositoryInterface $miningQueueRepository,
+        private MiningQueueRepositoryInterface $miningQueueRepository
     ) {}
 
     #[\Override]
@@ -34,14 +31,8 @@ final class CancelMining implements CancelMiningInterface
             if ($miningQueue !== null) {
                 $this->miningQueueRepository->truncateByShipId($ship->getId());
             }
-            $this->setStateNoneAndSave($ship);
+            $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
         }
         return false;
-    }
-
-    private function setStateNoneAndSave(Ship $ship): void
-    {
-        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
-        $this->shipRepository->save($ship);
     }
 }

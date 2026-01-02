@@ -12,13 +12,16 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UndockShip implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_UNDOCK';
 
-    public function __construct(private ShipLoaderInterface $shipLoader, private ShipRepositoryInterface $shipRepository, private CancelRepairInterface $cancelRepair, private CancelRetrofitInterface $cancelRetrofit) {}
+    public function __construct(
+        private ShipLoaderInterface $shipLoader,
+        private CancelRepairInterface $cancelRepair,
+        private CancelRetrofitInterface $cancelRetrofit
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -75,8 +78,6 @@ final class UndockShip implements ActionControllerInterface
                 }
                 $ship->setDockedTo(null);
                 $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
-
-                $this->shipRepository->save($ship);
             }
             $game->getInfo()->addInformationArray($msg, true);
             return;
@@ -99,8 +100,6 @@ final class UndockShip implements ActionControllerInterface
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo(null);
-
-        $this->shipRepository->save($ship);
 
         $game->getInfo()->addInformation('Abdockvorgang abgeschlossen');
     }

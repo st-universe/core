@@ -13,13 +13,11 @@ use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class ChangeFleetLeaderTest extends StuTestCase
 {
     private MockInterface&FleetRepositoryInterface $fleetRepository;
-    private MockInterface&ShipRepositoryInterface $shipRepository;
     private MockInterface&CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
     private MockInterface&EntityManagerInterface $entityManager;
 
@@ -32,7 +30,6 @@ class ChangeFleetLeaderTest extends StuTestCase
     {
         //injected
         $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->cancelColonyBlockOrDefend = $this->mock(CancelColonyBlockOrDefendInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
@@ -41,7 +38,6 @@ class ChangeFleetLeaderTest extends StuTestCase
 
         $this->subject = new ChangeFleetLeader(
             $this->fleetRepository,
-            $this->shipRepository,
             $this->cancelColonyBlockOrDefend,
             $this->entityManager,
             $this->initLoggerUtil()
@@ -77,10 +73,6 @@ class ChangeFleetLeaderTest extends StuTestCase
 
         $this->fleetRepository->shouldReceive('delete')
             ->with($fleet)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
-            ->with($this->ship)
             ->once();
 
         $this->subject->change($this->ship);
@@ -127,13 +119,6 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->once();
         $fleet->shouldReceive('getShips->removeElement')
             ->with($this->ship)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-        $this->shipRepository->shouldReceive('save')
-            ->with($otherShip)
             ->once();
 
         $this->entityManager->shouldReceive('flush')

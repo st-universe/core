@@ -12,7 +12,6 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ChangeFleetLeader implements ChangeFleetLeaderInterface
 {
@@ -20,7 +19,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
 
     public function __construct(
         private FleetRepositoryInterface $fleetRepository,
-        private ShipRepositoryInterface $shipRepository,
         private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         private EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -51,7 +49,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
             );
         } else {
             $newLeader->setIsFleetLeader(true);
-            $this->shipRepository->save($newLeader);
 
             $this->logger->logf('new leader of fleetId %d now is shipId %d', $fleet->getId(), $newLeader->getId());
 
@@ -63,7 +60,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
 
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);
-        $this->shipRepository->save($oldLeader);
 
         if ($newLeader === false) {
             $this->logger->logf('now deleting fleet %d', $fleet->getId());
