@@ -70,9 +70,4 @@ interface GameControllerInterface
     public function isAdmin(): bool;
 
     public function resetGameData(): void;
-
-    /**
-     * @return array{executionTime: float|string, memoryPeakUsage: float|string}
-     */
-    public function getBenchmarkResult(): array;
 }

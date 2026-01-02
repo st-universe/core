@@ -6,12 +6,18 @@ use Ubench;
 
 class BenchmarkResult implements BenchmarkResultInterface
 {
+    public function __construct(
+        private readonly Ubench $benchmark
+    ) {}
+
     #[\Override]
-    public function getResult(Ubench $benchmark): array
+    public function getResult(): array
     {
+        $this->benchmark->end();
+
         return [
-            'executionTime' => $benchmark->getTime(),
-            'memoryPeakUsage' => $benchmark->getMemoryPeak()
+            'executionTime' => $this->benchmark->getTime(),
+            'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
         ];
     }
 }
