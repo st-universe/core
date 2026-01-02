@@ -15,7 +15,6 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StartAstroMapping implements ActionControllerInterface
 {
@@ -23,7 +22,6 @@ final class StartAstroMapping implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private ShipRepositoryInterface $shipRepository,
         private AstroEntryRepositoryInterface $astroEntryRepository,
         private AstroEntryLibInterface $astroEntryLib
     ) {}
@@ -90,7 +88,6 @@ final class StartAstroMapping implements ActionControllerInterface
             throw new RuntimeException('this should not happen');
         }
         $astroLab->setAstroStartTurn($game->getCurrentRound()->getTurn())->update();
-        $this->shipRepository->save($ship);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->getInfo()->addInformation(sprintf(_("Die Kartographierung %s wird finalisiert"), $message));

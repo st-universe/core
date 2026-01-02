@@ -305,9 +305,6 @@ final class RetrofitShip implements ActionControllerInterface
 
         $ship->getCondition()->setState(SpacecraftStateEnum::RETROFIT);
 
-        $this->shipRepository->save($ship);
-
-
         $game->getInfo()->addInformationf(
             _('Die %s wird umgerüstet - Fertigstellung: %s'),
             $ship->getName(),

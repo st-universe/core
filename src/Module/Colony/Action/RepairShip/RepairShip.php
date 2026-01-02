@@ -118,8 +118,6 @@ final class RepairShip implements ActionControllerInterface
 
         $target->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
-        $this->shipRepository->save($target);
-
         $jobs = $this->colonyShipRepairRepository->getByColonyField(
             $colony->getId(),
             $field->getFieldId()

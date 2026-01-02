@@ -265,7 +265,6 @@ final class BuildConstruction implements ActionControllerInterface
         $epsSystem->lowerEps($workbeeEps->getMaxEps())->update();
 
         $this->shipRepository->save($workbee);
-        $this->shipRepository->save($ship);
 
         return $workbee;
     }

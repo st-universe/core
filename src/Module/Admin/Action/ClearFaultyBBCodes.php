@@ -57,7 +57,6 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
                 $textOnly = $this->bbCodeParser->parse($ship->getName())->getAsText();
 
                 $ship->setName($textOnly);
-                $this->shipRepository->save($ship);
             }
         }
         $game->getInfo()->addInformation("Schiffsnamen wurde bereinigt!");

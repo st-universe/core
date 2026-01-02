@@ -7,13 +7,10 @@ namespace Stu\Module\Ship\Lib\Fleet;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
 class LeaveFleetTest extends StuTestCase
 {
-    private MockInterface&ShipRepositoryInterface $shipRepository;
-
     private MockInterface&ChangeFleetLeaderInterface $changeFleetLeader;
 
     private MockInterface&Ship $ship;
@@ -24,14 +21,12 @@ class LeaveFleetTest extends StuTestCase
     public function setUp(): void
     {
         //injected
-        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->changeFleetLeader = $this->mock(ChangeFleetLeaderInterface::class);
 
         //params
         $this->ship = $this->mock(Ship::class);
 
         $this->subject = new LeaveFleet(
-            $this->shipRepository,
             $this->changeFleetLeader,
             $this->initLoggerUtil()
         );
@@ -73,10 +68,6 @@ class LeaveFleetTest extends StuTestCase
             ->with($this->ship)
             ->once();
 
-        $this->shipRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-
         $result = $this->subject->leaveFleet($this->ship);
 
         $this->assertTrue($result);
@@ -112,10 +103,6 @@ class LeaveFleetTest extends StuTestCase
             ->once();
 
         $fleet->shouldReceive('getShips->removeElement')
-            ->with($this->ship)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
             ->with($this->ship)
             ->once();
 

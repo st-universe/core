@@ -15,7 +15,6 @@ use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
@@ -24,7 +23,6 @@ final class RepairShip implements ActionControllerInterface
 
     public function __construct(
         private StationLoaderInterface $stationLoader,
-        private ShipRepositoryInterface $shipRepository,
         private StationUtilityInterface $stationUtility,
         private StationShipRepairRepositoryInterface $stationShipRepairRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
@@ -91,8 +89,6 @@ final class RepairShip implements ActionControllerInterface
         $this->stationShipRepairRepository->save($obj);
 
         $ship->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
-
-        $this->shipRepository->save($ship);
 
         $jobs = $this->stationShipRepairRepository->getByStation(
             $station->getId(),

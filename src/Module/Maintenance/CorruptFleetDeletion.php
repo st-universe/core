@@ -4,11 +4,10 @@ namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class CorruptFleetDeletion implements MaintenanceHandlerInterface
 {
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository)
+    public function __construct(private FleetRepositoryInterface $fleetRepository)
     {
     }
 
@@ -23,8 +22,6 @@ final class CorruptFleetDeletion implements MaintenanceHandlerInterface
                 foreach ($fleet->getShips() as $fleetShip) {
                     $fleetShip->setFleet(null);
                     $fleetShip->setIsFleetLeader(false);
-
-                    $this->shipRepository->save($fleetShip);
                 }
 
                 $this->fleetRepository->delete($fleet);

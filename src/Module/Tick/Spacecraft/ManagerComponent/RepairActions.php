@@ -22,12 +22,22 @@ use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class RepairActions implements ManagerComponentInterface
 {
-    public function __construct(private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private SpacecraftSystemManagerInterface $spacecraftSystemManager, private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository, private StationShipRepairRepositoryInterface $stationShipRepairRepository, private StorageManagerInterface $storageManager, private ModuleQueueRepositoryInterface $moduleQueueRepository, private RepairUtilInterface $repairUtil, private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyFunctionManagerInterface $colonyFunctionManager) {}
+    public function __construct(
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        private StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        private StorageManagerInterface $storageManager,
+        private ModuleQueueRepositoryInterface $moduleQueueRepository,
+        private RepairUtilInterface $repairUtil,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyFunctionManagerInterface $colonyFunctionManager
+    ) {}
 
     #[\Override]
     public function work(): void
@@ -117,7 +127,6 @@ final class RepairActions implements ManagerComponentInterface
 
             if ($this->repairShipOnEntity($ship, $colony, $isRepairStationBonus)) {
                 $this->colonyShipRepairRepository->delete($obj);
-                $this->shipRepository->save($ship);
             }
         }
     }
@@ -134,7 +143,6 @@ final class RepairActions implements ManagerComponentInterface
 
             if ($this->repairShipOnEntity($ship, $station, false)) {
                 $this->stationShipRepairRepository->delete($obj);
-                $this->shipRepository->save($ship);
             }
         }
     }
@@ -170,7 +178,6 @@ final class RepairActions implements ManagerComponentInterface
 
             $this->sendPrivateMessages($ship, $entity);
         }
-        $this->shipRepository->save($ship);
 
         return $repairFinished;
     }
