@@ -1,3 +1,4 @@
 <div class="footer">
-    Rendered in {{ BENCHMARK.executionTime }} - Memory usage: {{ BENCHMARK.memoryPeakUsage }}
+{% set benchmark = BENCHMARK.getResult %}
+    Rendered in {{ benchmark.executionTime }} - Memory usage: {{ benchmark.memoryPeakUsage }}
 </div>

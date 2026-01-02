@@ -29,7 +29,6 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
-use Ubench;
 
 final class GameController implements GameControllerInterface
 {
@@ -48,7 +47,6 @@ final class GameController implements GameControllerInterface
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly ComponentSetupInterface $componentSetup,
-        private readonly Ubench $benchmark,
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
         private readonly GameTwigRendererInterface $gameTwigRenderer,
         private readonly FallbackRouterInterface $fallbackRouter,
@@ -58,8 +56,7 @@ final class GameController implements GameControllerInterface
         private readonly GameStateInterface $gameState,
         private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly SessionStringFactoryInterface $sessionStringFactory,
-        private readonly SemaphoreUtilInterface $semaphoreUtil,
-        private readonly BenchmarkResultInterface $benchmarkResult
+        private readonly SemaphoreUtilInterface $semaphoreUtil
     ) {
         $this->gameData = new GameData();
     }
@@ -365,13 +362,5 @@ final class GameController implements GameControllerInterface
     public function resetGameData(): void
     {
         $this->gameData = new GameData();
-    }
-
-    #[\Override]
-    public function getBenchmarkResult(): array
-    {
-        $this->benchmark->end();
-
-        return $this->benchmarkResult->getResult($this->benchmark);
     }
 }

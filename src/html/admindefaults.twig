@@ -82,7 +82,7 @@
                 {% endblock %}
             </div>
             <div class="footer">
-                {% set benchmark = BENCHMARK %}
+                {% set benchmark = BENCHMARK.getResult %}
                 Rendered in {{ benchmark.executionTime }} - Memory usage: {{ benchmark.memoryPeakUsage }}
             </div>
         </div>

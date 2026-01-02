@@ -10,6 +10,7 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\JavascriptExecutionInterface;
@@ -31,7 +32,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly StuConfigInterface $stuConfig,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly JavascriptExecutionInterface $javascriptExecution,
-        private readonly AchievementManagerInterface $achievementManager
+        private readonly AchievementManagerInterface $achievementManager,
+        private readonly BenchmarkResultInterface $benchmarkResult
     ) {}
 
     #[\Override]
@@ -66,7 +68,7 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('JAVASCRIPTPATH', $this->getJavascriptPath(), true);
         $this->twigPage->setVar('IS_NPC', $game->isNpc());
         $this->twigPage->setVar('IS_ADMIN', $game->isAdmin());
-        $this->twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
+        $this->twigPage->setVar('BENCHMARK', $this->benchmarkResult);
         $this->twigPage->setVar('GAME_STATS', $this->getGameStats($game));
 
         if ($game->hasUser()) {
