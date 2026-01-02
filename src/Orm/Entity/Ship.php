@@ -31,7 +31,7 @@ class Ship extends Spacecraft
     private bool $is_fleet_leader = false;
 
     #[ManyToOne(targetEntity: Fleet::class, inversedBy: 'ships')]
-    #[JoinColumn(name: 'fleet_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'fleet_id', referencedColumnName: 'id', nullable: true)]
     private ?Fleet $fleet = null;
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockedShips')]
@@ -83,7 +83,21 @@ class Ship extends Spacecraft
 
     public function setFleet(?Fleet $fleet): Ship
     {
+        if ($this->fleet === $fleet) {
+            return $this;
+        }
+
+        $old = $this->fleet;
         $this->fleet = $fleet;
+
+        if ($old !== null) {
+            $old->getShips()->removeElement($this);
+        }
+
+        if ($fleet !== null && !$fleet->getShips()->contains($this)) {
+            $fleet->getShips()->set($this->getId(), $this);
+        }
+
         return $this;
     }
 

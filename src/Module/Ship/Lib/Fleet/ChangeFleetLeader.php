@@ -56,8 +56,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
             $this->entityManager->flush();
         }
 
-        $fleet->getShips()->removeElement($oldLeader);
-
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);
 
