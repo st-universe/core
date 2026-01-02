@@ -198,10 +198,10 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT DISTINCT 
-                    l.cx AS x, 
-                    l.cy AS y, 
-                    CASE 
+            'SELECT DISTINCT
+                    l.cx AS x,
+                    l.cy AS y,
+                    CASE
                         WHEN l.id IN (:fieldIds) THEN TRUE ELSE FALSE
                     END AS cartographing,
                     (SELECT mft.complementary_color FROM stu_map_ftypes mft where mft.id = l.field_id) AS complementary_color
@@ -275,18 +275,18 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT DISTINCT 
-                l.cx AS x, 
+            'SELECT DISTINCT
+                l.cx AS x,
                 l.cy AS y,
-                CASE 
-                    WHEN mf.passable = FALSE 
+                CASE
+                    WHEN mf.passable = FALSE
                          AND EXISTS (
-                            SELECT 1 
+                            SELECT 1
                             FROM stu_database_user du
                             JOIN stu_database_entrys de ON du.database_id = de.id
                             WHERE du.user_id = :userId
                             AND de.id = r.database_id
-                         ) 
+                         )
                     THEN FALSE
                     ELSE TRUE
                 END AS impassable,
@@ -375,11 +375,11 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy AS y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy AS y, mft.effects as effects,
                 (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     JOIN stu_location l2
                     ON b.location_id = l2.id
-                    WHERE l2.layer_id = l.layer_id 
+                    WHERE l2.layer_id = l.layer_id
                     AND l2.cx = l.cx
                     AND l2.cy = l.cy
                     AND NOT EXISTS (SELECT ss.id
@@ -390,7 +390,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     JOIN stu_location l2
                     ON c.location_id = l2.id
-                    WHERE l2.layer_id = l.layer_id 
+                    WHERE l2.layer_id = l.layer_id
                     AND l2.cx = l.cx
                     AND l2.cy = l.cy
                     AND EXISTS (SELECT ss2.id
@@ -726,7 +726,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
+            'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
                 (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id != :ignoreUserId
@@ -746,7 +746,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 WHERE fs4.location_id = l.id
                 AND fs4.user_id != :ignoreUserId
                 AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-                AND fs4.time > :timeThreshold) as d4c 
+                AND fs4.time > :timeThreshold) as d4c
                 FROM stu_location l
                 JOIN stu_map m
                 ON l.id = m.id
@@ -774,7 +774,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
@@ -786,7 +786,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
             (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                 WHERE fs4.location_id = l.id
-                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c
             FROM stu_location l
             JOIN stu_map_ftypes mft
             ON l.field_id = mft.id
@@ -813,7 +813,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy as y,
+            'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id = :userId
@@ -829,7 +829,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                 WHERE fs4.location_id = l.id
                 AND fs4.user_id = :userId
-                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c
             FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd
@@ -916,7 +916,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     '
             . $conditions[3]
             . '
-                    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+                    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
                 AND l.cy BETWEEN :yStart AND :yEnd
@@ -953,7 +953,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.id, l.cx as x, l.cy as y,
+            'SELECT l.id, l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 JOIN stu_user u1 ON fs1.user_id = u1.id
                 WHERE fs1.location_id = l.id
@@ -973,7 +973,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 JOIN stu_user u4 ON fs4.user_id = u4.id
                 WHERE fs4.location_id = l.id
                 AND u4.allys_id = :allyId
-                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c 
+                AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c
             FROM stu_location l
             WHERE l.cx BETWEEN :xStart AND :xEnd
             AND l.cy BETWEEN :yStart AND :yEnd

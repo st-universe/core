@@ -10,6 +10,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
@@ -257,18 +258,20 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $flightSignatures = $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT fs
-                FROM %s fs
-                JOIN %s m WITH fs.location_id = m.id
-                WHERE m.cx BETWEEN :minX AND :maxX
-                  AND m.cy BETWEEN :minY AND :maxY
-                  AND m.layer_id = :layerId
-                  AND fs.time >= :minTime
-                  AND fs.user_id != :userId
-                  AND fs.is_cloaked = false
-                ORDER BY fs.ship_id ASC, fs.rump_id ASC, fs.time DESC',
+                'SELECT fs
+                        FROM %s fs
+                        JOIN %s m WITH fs.location_id = m.id
+                        JOIN %s ly WITH m.layer = ly
+                        WHERE m.cx BETWEEN :minX AND :maxX
+                        AND m.cy BETWEEN :minY AND :maxY
+                        AND ly.id = :layerId
+                        AND fs.time >= :minTime
+                        AND fs.user_id != :userId
+                        AND fs.is_cloaked = false
+                        ORDER BY fs.ship_id ASC, fs.rump_id ASC, fs.time DESC',
                     FlightSignature::class,
-                    Map::class
+                Map::class,
+                Layer::class
                 )
             )
             ->setParameters([
