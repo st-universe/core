@@ -342,8 +342,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
         $filteredSpacecrafts = array_filter($spacecrafts, function (Spacecraft $ship): bool {
             return !$ship->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) &&
-                !$ship->getSystemState(SpacecraftSystemTypeEnum::SHIELDS) &&
-                $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE);
+                !$ship->getSystemState(SpacecraftSystemTypeEnum::SHIELDS) && (
+                    $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE) || $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR));
         });
 
         return new ArrayCollection($filteredSpacecrafts);
