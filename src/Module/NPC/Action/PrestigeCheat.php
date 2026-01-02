@@ -30,45 +30,45 @@ final class PrestigeCheat implements ActionControllerInterface
 
         // only Admins or NPC can trigger
         if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+            $game->getInfo()->addInformation(_(
+                '[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'
+            ));
             return;
         }
 
         $userId = request::postInt('userid');
         if ($userId === 0) {
-            $game->getInfo()->addInformation("Es wurde kein User ausgewählt");
+            $game->getInfo()->addInformation('Es wurde kein User ausgewählt');
             return;
         }
 
         $user = $this->userRepository->find($userId);
         if ($user === null) {
-            $game->getInfo()->addInformation("User existiert nicht");
+            $game->getInfo()->addInformation('User existiert nicht');
             return;
         }
 
         $amountStr = request::postString('prestigeamount');
         if ($amountStr === '' || $amountStr === false) {
-            $game->getInfo()->addInformation("Prestigewert fehlt");
+            $game->getInfo()->addInformation('Prestigewert fehlt');
             return;
         }
 
-        $amount = (int)$amountStr;
+        $amount = (int) $amountStr;
         if ($amount === 0) {
-            $game->getInfo()->addInformation("Prestigewert muss ungleich 0 sein");
+            $game->getInfo()->addInformation('Prestigewert muss ungleich 0 sein');
             return;
         }
 
         $description = request::postString('prestigedescription');
         if ($description === '' || $description === false) {
-            $game->getInfo()->addInformation("Beschreibung fehlt");
+            $game->getInfo()->addInformation('Beschreibung fehlt');
             return;
         }
 
-        $description = (string)$description;
-
         $reason = request::postString('reason');
         if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+            $game->getInfo()->addInformation('Grund fehlt');
             return;
         }
 
@@ -94,8 +94,8 @@ final class PrestigeCheat implements ActionControllerInterface
         }
 
         $game->getInfo()->addInformation(sprintf(
-            "Prestige wurde %s",
-            $amount > 0 ? "hinzugefügt" : "abgezogen"
+            'Prestige wurde %s',
+            $amount > 0 ? 'hinzugefügt' : 'abgezogen'
         ));
     }
 
