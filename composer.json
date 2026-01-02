@@ -89,6 +89,7 @@
     }
   },
   "config": {
+    "process-timeout": 0,
     "sort-packages": true,
     "allow-plugins": {
       "carthage-software/mago": true,
