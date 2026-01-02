@@ -80,8 +80,6 @@ abstract class AbstractJoinFleet
         }
         $ship->setFleet($fleet);
 
-        $fleet->getShips()->add($ship);
-
         $game->getInfo()->addInformation(sprintf(
             _('Die %s ist der Flotte %s beigetreten'),
             $ship->getName(),

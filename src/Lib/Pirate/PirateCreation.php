@@ -241,7 +241,6 @@ class PirateCreation implements PirateCreationInterface
         $this->logger->log(sprintf('    shipCount: %d', count($ships)));
 
         foreach ($ships as $ship) {
-            $fleet->getShips()->add($ship);
             $ship->setFleet($fleet);
             $this->shipRepository->save($ship);
         }

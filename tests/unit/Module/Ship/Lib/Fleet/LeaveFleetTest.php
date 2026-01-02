@@ -102,10 +102,6 @@ class LeaveFleetTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $fleet->shouldReceive('getShips->removeElement')
-            ->with($this->ship)
-            ->once();
-
         $result = $this->subject->leaveFleet($this->ship);
 
         $this->assertTrue($result);

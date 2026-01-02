@@ -25,8 +25,6 @@ final class LeaveFleet implements LeaveFleetInterface
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader->change($ship);
         } else {
-            $fleet->getShips()->removeElement($ship);
-
             $ship->setFleet(null);
             $ship->setIsFleetLeader(false);
             $ship->setFleetId(null);

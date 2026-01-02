@@ -54,8 +54,6 @@ final class CreateFleet implements ActionControllerInterface
         $fleet->setSort($this->fleetRepository->getHighestSortByUser($game->getUser()->getId()));
         $fleet->setIsFleetFixed($this->userSettingsProvider->getFleetFixedDefault($game->getUser()));
 
-        $fleet->getShips()->add($spacecraft);
-
         $this->fleetRepository->save($fleet);
 
         $spacecraft->setFleet($fleet);

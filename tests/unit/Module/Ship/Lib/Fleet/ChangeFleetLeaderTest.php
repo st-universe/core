@@ -76,8 +76,6 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->once();
 
         $this->subject->change($this->ship);
-
-        $this->assertTrue($fleetShips->isEmpty());
     }
 
     public function testChangeExpectLeaderChangeIfNotSingleShip(): void
@@ -116,9 +114,6 @@ class ChangeFleetLeaderTest extends StuTestCase
             ->andReturn($fleetShips);
         $fleet->shouldReceive('setLeadShip')
             ->with($otherShip)
-            ->once();
-        $fleet->shouldReceive('getShips->removeElement')
-            ->with($this->ship)
             ->once();
 
         $this->entityManager->shouldReceive('flush')
