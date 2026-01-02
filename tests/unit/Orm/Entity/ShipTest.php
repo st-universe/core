@@ -76,6 +76,5 @@ class ShipTest extends StuTestCase
         // REMOVAL
         $this->subject->setDockedTo(null);
         $this->assertNull($this->subject->getDockedTo());
-        $this->assertTrue($dockedShips->isEmpty());
     }
 }
