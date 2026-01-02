@@ -16,6 +16,7 @@ final class PlotMemberService implements PlotMemberServiceInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
+    #[\Override]
     public function addUserToPlotIfExists(NPCQuest $quest, User $user): void
     {
         $plot = $quest->getPlot();
@@ -28,7 +29,8 @@ final class PlotMemberService implements PlotMemberServiceInterface
             return;
         }
 
-        $member = $this->rpgPlotMemberRepository->prototype()
+        $member = $this->rpgPlotMemberRepository
+            ->prototype()
             ->setUser($user)
             ->setRpgPlot($plot);
 

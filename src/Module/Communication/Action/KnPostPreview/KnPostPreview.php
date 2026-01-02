@@ -33,14 +33,17 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setTemplateVar('PLOT_ID', $plotId);
         $game->setTemplateVar('MARK', $mark);
         $game->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
-        $text = (string)$text;
 
         $pattern = '/\[.*?\](*SKIP)(*FAIL)|[<>]/';
-        $safeText = preg_replace_callback($pattern, function ($matches) {
-            return $matches[0] === '<' ? '&lt;' : '&gt;';
-        }, $text);
+        $safeText = preg_replace_callback(
+            $pattern,
+            function ($matches) {
+                return $matches[0] === '<' ? '&lt;' : '&gt;';
+            },
+            $text
+        );
 
-        $safeText = (string)$safeText;
+        $safeText = (string) $safeText;
 
         $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($safeText)->getAsHTML());
 
