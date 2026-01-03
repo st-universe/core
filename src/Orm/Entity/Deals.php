@@ -72,11 +72,11 @@ class Deals
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'want_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?Commodity $wantedCommodity;
+    private ?Commodity $wantedCommodity = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
     #[JoinColumn(name: 'give_commodity', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?Commodity $giveCommodity;
+    private ?Commodity $giveCommodity = null;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
     #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id')]
