@@ -84,8 +84,8 @@ final class CreateDeal implements ActionControllerInterface
         }
 
         $isDeal = $dealType === 1;
-        if ($isDeal && $dealCount <= 0) {
-            $game->getInfo()->addInformation("Bei einem Deal muss die Anzahl größer als 0 sein");
+        if ($isDeal && $dealCount < 0) {
+            $game->getInfo()->addInformation("Bei einem Deal darf die Anzahl nicht negativ sein");
             return;
         }
 
