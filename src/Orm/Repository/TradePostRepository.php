@@ -47,9 +47,20 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
     #[\Override]
     public function getByUser(int $userId): array
     {
-        return $this->findBy(
-            ['user_id' => $userId]
-        );
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tp FROM %s tp
+                    JOIN %s u WITH tp.user = u
+                    WHERE u.id = :userId',
+                    TradePost::class,
+                    User::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+            ])
+            ->getResult();
     }
 
     #[\Override]
@@ -79,11 +90,14 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp FROM %s tp WHERE tp.user_id < :firstUserId AND tp.id IN (
+                'SELECT tp FROM %s tp
+                    JOIN %s u WITH tp.user = u
+                    WHERE u.id < :firstUserId AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     )',
-                    TradePost::class,
-                    TradeLicense::class
+                TradePost::class,
+                User::class,
+                TradeLicense::class
                 )
             )
             ->setParameters([
@@ -100,11 +114,14 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp FROM %s tp WHERE tp.user_id = 14 AND tp.id IN (
+                'SELECT tp FROM %s tp
+                    JOIN %s u WITH tp.user = u
+                    WHERE u.id = 14 AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id = :tradepostId
                     )',
-                    TradePost::class,
-                    TradeLicense::class
+                TradePost::class,
+                User::class,
+                TradeLicense::class
                 )
             )
             ->setParameters([
