@@ -39,7 +39,7 @@ class Anomaly implements SpacecraftDestroyerInterface
     private int $anomaly_type_id;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $location_id = null;
+    private ?int $locationId = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $parent_id = null;
@@ -52,7 +52,7 @@ class Anomaly implements SpacecraftDestroyerInterface
     private AnomalyType $anomalyType;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'anomalies')]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', nullable: true, referencedColumnName: 'id')]
     private ?Location $location;
 
     #[ManyToOne(targetEntity: Anomaly::class, inversedBy: 'children')]
@@ -62,7 +62,7 @@ class Anomaly implements SpacecraftDestroyerInterface
     /**
      * @var ArrayCollection<int, Anomaly>
      */
-    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'parent', indexBy: 'location_id')]
+    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'parent', indexBy: 'locationId')]
     private Collection $children;
 
     public function __construct()

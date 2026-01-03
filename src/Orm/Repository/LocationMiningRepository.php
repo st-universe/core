@@ -35,7 +35,8 @@ final class LocationMiningRepository extends EntityRepository implements Locatio
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT ml FROM %s ml
-                 WHERE ml.location_id = :locationId',
+                 JOIN ml.location l
+                 WHERE l.id = :locationId',
                 LocationMining::class
             )
         )->setParameters([

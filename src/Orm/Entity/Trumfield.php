@@ -41,9 +41,6 @@ class Trumfield implements
     #[Column(type: 'integer')]
     private int $former_rump_id = 0;
 
-    #[Column(type: 'integer')]
-    private int $location_id = 0;
-
     /**
      * @var ArrayCollection<int, Storage>
      */

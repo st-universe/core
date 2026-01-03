@@ -112,7 +112,7 @@ abstract class Spacecraft implements
     private ?int $database_id = null;
 
     #[Column(type: 'integer')]
-    private int $location_id = 0;
+    private int $locationId = 0;
 
     #[OneToOne(
         targetEntity: SpacecraftCondition::class,

@@ -51,10 +51,10 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
+                'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
                     FROM %s fs
                     JOIN %s ssm
-                    WITH fs.location_id = ssm.id
+                    WITH fs.location = ssm
                     WHERE (fs.is_cloaked = :false AND fs.time > :maxAgeUncloaked
                       OR fs.is_cloaked = :true AND fs.time > :maxAgeCloaked)
                     AND ssm.sx = :sx
@@ -87,9 +87,10 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT fs FROM %s fs
+                'SELECT fs FROM %s fs
+                    JOIN fs.location l
                     WHERE fs.time > :maxAge
-                    AND fs.location_id = :locationId
+                    AND l.id = :locationId
                     AND fs.user_id != :ignoreId
                     ORDER BY fs.time desc',
                     FlightSignature::class
@@ -260,7 +261,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 sprintf(
                 'SELECT fs
                         FROM %s fs
-                        JOIN %s m WITH fs.location_id = m.id
+                        JOIN %s m WITH fs.location = m
                         JOIN %s ly WITH m.layer = ly
                         WHERE m.cx BETWEEN :minX AND :maxX
                         AND m.cy BETWEEN :minY AND :maxY
@@ -269,7 +270,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                         AND fs.user_id != :userId
                         AND fs.is_cloaked = false
                         ORDER BY fs.ship_id ASC, fs.rump_id ASC, fs.time DESC',
-                    FlightSignature::class,
+                FlightSignature::class,
                 Map::class,
                 Layer::class
                 )

@@ -28,13 +28,11 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
             sprintf(
                 'SELECT count(ts.id)
                 FROM %s ts
-                JOIN %s l
-                WITH ts.location_id = l.id
+                JOIN ts.location l
                 WHERE ts.scan_time > :theTime
                 AND l.id = :locationId
                 AND ts.user_id = :userId',
-                TachyonScan::class,
-                Location::class
+                TachyonScan::class
             )
         )->setParameters([
             'locationId' => $spacecraft->getLocation()->getId(),

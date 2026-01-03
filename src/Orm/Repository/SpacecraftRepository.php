@@ -108,7 +108,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 AND sc.shield < s.maxShield
                 AND (SELECT count(ca.crew) FROM %s ca WHERE s = ca.spacecraft) >= bp.crew
                 AND NOT EXISTS (SELECT a FROM %s a
-                                WHERE a.location_id = s.location_id
+                                WHERE a.location = s.location
                                 AND a.anomaly_type_id in (:anomalyTypes)
                                 AND a.remaining_ticks > 0)',
                 Spacecraft::class,

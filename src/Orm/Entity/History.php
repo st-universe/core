@@ -42,11 +42,8 @@ class History
     #[Column(type: 'integer', nullable: true)]
     private ?int $target_user_id = 0;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $location_id = null;
-
     #[ManyToOne(targetEntity: Location::class)]
-    #[JoinColumn(name: 'location_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', nullable: true, referencedColumnName: 'id')]
     private ?Location $location;
 
     public function getId(): int

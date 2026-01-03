@@ -28,9 +28,6 @@ class Buoy
     #[Column(type: 'text')]
     private string $text;
 
-    #[Column(type: 'integer')]
-    private int $location_id = 0;
-
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'buoys')]
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;

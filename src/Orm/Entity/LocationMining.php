@@ -23,9 +23,6 @@ class LocationMining
     private int $id;
 
     #[Column(type: 'integer')]
-    private int $location_id;
-
-    #[Column(type: 'integer')]
     private int $commodity_id;
 
     #[Column(type: 'integer')]
@@ -52,12 +49,7 @@ class LocationMining
 
     public function getLocationId(): int
     {
-        return $this->location_id;
-    }
-
-    public function setLocationId(int $location_id): void
-    {
-        $this->location_id = $location_id;
+        return $this->location->getId();
     }
 
     public function getCommodityId(): int

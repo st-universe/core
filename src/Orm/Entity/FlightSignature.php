@@ -40,9 +40,6 @@ class FlightSignature
     #[Column(type: 'integer')]
     private int $time = 0;
 
-    #[Column(type: 'integer')]
-    private int $location_id = 0;
-
     #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
     private ?DirectionEnum $from_direction = null;
 

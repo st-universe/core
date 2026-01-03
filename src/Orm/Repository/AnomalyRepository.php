@@ -50,7 +50,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     public function getByLocationAndType(Location $location, AnomalyTypeEnum $type): ?Anomaly
     {
         return $this->findOneBy([
-            'location_id' => $location->getId(),
+            'location' => $location,
             'anomaly_type_id' => $type->value
         ]);
     }
@@ -105,7 +105,7 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
                     'SELECT SQRT(ABS(l.cx - :x) * ABS(l.cx - :x) + ABS(l.cy - :y) * ABS(l.cy - :y)) as foo
                     FROM %s a
                     JOIN %s m
-                    WITH a.location_id = m.id
+                    WITH a.location = m
                     JOIN %s l
                     WITH m.id = l.id
                     WHERE a.remaining_ticks > 0
