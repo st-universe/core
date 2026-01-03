@@ -16,6 +16,7 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Entity\UserSetting;
+use Stu\Orm\Entity\TradeLicense;
 
 /**
  * @extends EntityRepository<User>
@@ -403,5 +404,49 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         }
 
         return $user;
+    }
+
+    #[\Override]
+    public function getUsersWithActiveLicense(int $tradePostId, int $currentTime, ?int $factionId = null): array
+    {
+        $qb = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u
+                JOIN %s tl WITH tl.user = u
+                WHERE tl.posts_id = :tradePostId
+                AND tl.expired >= :currentTime
+                AND u.id >= :firstUserId',
+                User::class,
+                TradeLicense::class
+            )
+        )
+            ->setParameters([
+                'tradePostId' => $tradePostId,
+                'currentTime' => $currentTime,
+                'firstUserId' => UserConstants::USER_FIRST_ID
+            ]);
+
+        if ($factionId !== null) {
+            $qb = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                    JOIN %s tl WITH tl.user = u
+                    WHERE tl.posts_id = :tradePostId
+                    AND tl.expired >= :currentTime
+                    AND u.faction_id = :factionId
+                    AND u.id >= :firstUserId',
+                    User::class,
+                    TradeLicense::class
+                )
+            )
+                ->setParameters([
+                    'tradePostId' => $tradePostId,
+                    'currentTime' => $currentTime,
+                    'factionId' => $factionId,
+                    'firstUserId' => UserConstants::USER_FIRST_ID
+                ]);
+        }
+
+        return $qb->getResult();
     }
 }

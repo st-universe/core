@@ -147,4 +147,9 @@ interface DealsRepositoryInterface extends ObjectRepository
      * @return array<Deals>
      */
     public function getOwnEndedAuctionsBuildplansPrestige(int $userId): array;
+
+    /**
+     * @return array<Deals>
+     */
+    public function getRecentlyStartedDeals(int $timeThreshold): array;
 }

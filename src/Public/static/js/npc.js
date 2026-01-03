@@ -173,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initNpcLogData();
     updateRemoveCommodityRewardButton();
     updateRemoveSpacecraftRewardButton();
+    updateDealForm();
 });
 
 function toggleQuestCreator() {
@@ -500,4 +501,65 @@ function endNPCQuest(questId) {
         .catch(error => {
             console.error('Fehler beim Beenden der Quest:', error);
         });
+}
+
+function updateDealForm() {
+    const isDeal = document.getElementById('deal_type_deal').checked;
+    const dealCount = document.getElementById('deal_count');
+
+    const wantCommodityId = document.getElementById('want_commodity_id');
+    const wantCommodityAmount = document.getElementById('want_commodity_amount');
+    const wantPrestige = document.getElementById('want_prestige');
+
+    const giveCommodityId = document.getElementById('give_commodity_id');
+    const giveCommodityAmount = document.getElementById('give_commodity_amount');
+    const giveBuildplanId = document.getElementById('give_buildplan_id');
+    const giveTypeShip = document.getElementById('give_type_ship');
+    const giveTypeBuildplan = document.getElementById('give_type_buildplan');
+
+    if (isDeal) {
+        dealCount.disabled = false;
+    } else {
+        dealCount.disabled = true;
+        dealCount.value = '';
+    }
+
+    const hasWantCommodity = wantCommodityId.value !== '0' && wantCommodityAmount.value !== '';
+    const hasWantPrestige = wantPrestige.value !== '';
+
+    if (hasWantCommodity) {
+        wantPrestige.disabled = true;
+        wantPrestige.value = '';
+    } else if (hasWantPrestige) {
+        wantCommodityId.disabled = true;
+        wantCommodityAmount.disabled = true;
+        wantCommodityId.value = '0';
+        wantCommodityAmount.value = '';
+    } else {
+        wantCommodityId.disabled = false;
+        wantCommodityAmount.disabled = false;
+        wantPrestige.disabled = false;
+    }
+
+    const hasGiveCommodity = giveCommodityId.value !== '0' && giveCommodityAmount.value !== '';
+
+    if (hasGiveCommodity) {
+        giveBuildplanId.disabled = true;
+        giveTypeShip.disabled = true;
+        giveTypeBuildplan.disabled = true;
+        giveBuildplanId.value = '';
+    } else {
+        giveBuildplanId.disabled = false;
+        giveTypeShip.disabled = false;
+        giveTypeBuildplan.disabled = false;
+        if (giveBuildplanId.value !== '') {
+            giveCommodityId.disabled = true;
+            giveCommodityAmount.disabled = true;
+            giveCommodityId.value = '0';
+            giveCommodityAmount.value = '';
+        } else {
+            giveCommodityId.disabled = false;
+            giveCommodityAmount.disabled = false;
+        }
+    }
 }

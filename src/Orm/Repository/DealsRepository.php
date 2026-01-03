@@ -703,4 +703,23 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ])
             ->getResult();
     }
+
+    #[\Override]
+    public function getRecentlyStartedDeals(int $timeThreshold): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT d FROM %s d
+                    WHERE d.start BETWEEN :threshold AND :actime
+                    ORDER BY d.id ASC',
+                    Deals::class
+                )
+            )
+            ->setParameters([
+                'actime' => time(),
+                'threshold' => $timeThreshold,
+            ])
+            ->getResult();
+    }
 }
