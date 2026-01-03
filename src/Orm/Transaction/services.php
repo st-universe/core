@@ -7,6 +7,7 @@ namespace Stu\Orm\Transaction;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\ORMSetup;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
@@ -32,6 +33,7 @@ return [
             $c->get(CacheItemPoolInterface::class)
         );
         $emConfig->enableNativeLazyObjects(true);
+        $emConfig->setNamingStrategy(new UnderscoreNamingStrategy());
 
         return $emConfig;
     },

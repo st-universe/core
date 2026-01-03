@@ -181,11 +181,11 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(tl.id)
+                'SELECT COUNT(tl.id)
                     FROM %s tl
                     WHERE tl.user_id = :userId
                         AND tl.posts_id IN (
-                            SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetworkId
+                            SELECT tp.id FROM %s tp WHERE tp.tradeNetwork = :tradeNetworkId
                             )',
                     TradeLicense::class,
                     TradePost::class
