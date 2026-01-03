@@ -84,12 +84,7 @@ class Ship extends Spacecraft
             return $this;
         }
 
-        $old = $this->fleet;
         $this->fleet = $fleet;
-
-        if ($old !== null) {
-            $old->getShips()->removeElement($this);
-        }
 
         if ($fleet !== null && !$fleet->getShips()->contains($this)) {
             $fleet->getShips()->set($this->getId(), $this);
