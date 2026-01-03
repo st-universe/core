@@ -43,7 +43,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s f WHERE f.user_id = :user',
+                'DELETE FROM %s f WHERE f.user = :user',
                 Fleet::class
             )
         )
@@ -54,10 +54,17 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     #[\Override]
     public function getByUser(int $userId): array
     {
-        return $this->findBy(
-            ['user_id' => $userId],
-            ['sort' => 'desc', 'id' => 'desc']
-        );
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT f FROM %s f
+                    JOIN f.user u WHERE u.id = :userId
+                    ORDER BY f.sort DESC, f.id DESC',
+                    Fleet::class
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->getResult();
     }
 
     #[\Override]
@@ -67,7 +74,8 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             sprintf(
                 'SELECT COUNT(f)
                 FROM %s f
-                WHERE f.user_id = :userId',
+                JOIN f.user u
+                WHERE u.id = :userId',
                 Fleet::class
             )
         )->setParameter('userId', $userId)
@@ -105,7 +113,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT f FROM %s f WHERE f.user_id > :firstUserId',
+                'SELECT f FROM %s f JOIN f.user u WHERE u.id > :firstUserId',
                     Fleet::class
                 )
             )

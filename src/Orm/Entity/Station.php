@@ -38,7 +38,7 @@ class Station extends Spacecraft
      * @var ArrayCollection<int, Ship>
      */
     #[OneToMany(targetEntity: Ship::class, mappedBy: 'dockedTo')]
-    #[OrderBy(['fleet_id' => 'DESC', 'is_fleet_leader' => 'DESC'])]
+    #[OrderBy(['fleet_id' => 'DESC', 'isFleetLeader' => 'DESC'])]
     private Collection $dockedShips;
 
     /**
