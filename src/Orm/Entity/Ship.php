@@ -25,7 +25,7 @@ class Ship extends Spacecraft
 
     // used for sorting
     #[Column(type: 'boolean')]
-    private bool $is_fleet_leader = false;
+    private bool $isFleetLeader = false;
 
     #[ManyToOne(targetEntity: Fleet::class, inversedBy: 'ships')]
     #[JoinColumn(name: 'fleet_id', referencedColumnName: 'id', nullable: true)]
@@ -63,12 +63,12 @@ class Ship extends Spacecraft
 
     public function getIsFleetLeader(): bool
     {
-        return $this->getFleet() !== null && $this->is_fleet_leader;
+        return $this->getFleet() !== null && $this->isFleetLeader;
     }
 
     public function setIsFleetLeader(bool $isFleetLeader): Ship
     {
-        $this->is_fleet_leader = $isFleetLeader;
+        $this->isFleetLeader = $isFleetLeader;
         return $this;
     }
 

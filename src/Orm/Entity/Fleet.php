@@ -34,23 +34,11 @@ class Fleet
     #[Column(type: 'string', length: 200)]
     private string $name = '';
 
-    #[Column(type: 'integer')]
-    private int $user_id = 0;
-
-    #[Column(type: 'integer')]
-    private int $ships_id = 0;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $defended_colony_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $blocked_colony_id = null;
-
     #[Column(type: 'integer', nullable: true)]
     private ?int $sort = null;
 
     #[Column(type: 'boolean')]
-    private bool $is_fixed = false;
+    private bool $isFixed = false;
 
     private string $hiddenStyle;
 
@@ -62,7 +50,7 @@ class Fleet
      * @var ArrayCollection<int, Ship>
      */
     #[OneToMany(targetEntity: Ship::class, mappedBy: 'fleet', indexBy: 'id')]
-    #[OrderBy(['is_fleet_leader' => 'DESC', 'name' => 'ASC'])]
+    #[OrderBy(['isFleetLeader' => 'DESC', 'name' => 'ASC'])]
     private Collection $shiplist;
 
     #[OneToOne(targetEntity: Ship::class)]
@@ -70,11 +58,11 @@ class Fleet
     private Ship $fleetLeader;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'defenders')]
-    #[JoinColumn(name: 'defended_colony_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'defended_colony_id', nullable: true, referencedColumnName: 'id')]
     private ?Colony $defendedColony = null;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'blockers')]
-    #[JoinColumn(name: 'blocked_colony_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'blocked_colony_id', nullable: true, referencedColumnName: 'id')]
     private ?Colony $blockedColony = null;
 
     public function __construct()
@@ -100,7 +88,7 @@ class Fleet
 
     public function getUserId(): int
     {
-        return $this->user_id;
+        return $this->user->getId();
     }
 
     /**
@@ -174,12 +162,12 @@ class Fleet
 
     public function isFleetFixed(): bool
     {
-        return $this->is_fixed;
+        return $this->isFixed;
     }
 
     public function setIsFleetFixed(bool $isFixed): Fleet
     {
-        $this->is_fixed = $isFixed;
+        $this->isFixed = $isFixed;
         return $this;
     }
 

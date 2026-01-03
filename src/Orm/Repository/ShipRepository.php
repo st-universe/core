@@ -70,7 +70,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'location' => $location,
         ], [
             'fleet_id' => 'desc',
-            'is_fleet_leader' => 'desc',
+            'isFleetLeader' => 'desc',
             'id' => 'desc'
         ]);
     }
@@ -271,7 +271,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE l.layer = :layer
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
-                AND (s.fleet_id IS NULL OR s.is_fleet_leader = :true)
+                AND (s.fleet_id IS NULL OR s.isFleetLeader = :true)
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND ur.creation < :eightWeeksEarlier
@@ -347,7 +347,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ], [
             'location_id' => 'asc',
             'fleet_id' => 'asc',
-            'is_fleet_leader' => 'desc'
+            'isFleetLeader' => 'desc'
         ]);
     }
 }
