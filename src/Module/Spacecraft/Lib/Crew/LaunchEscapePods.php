@@ -43,7 +43,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $pods->setUser($this->userRepository->getFallbackUser());
         $pods->setRump($shipRump);
         $pods->setName(sprintf(_('Rettungskapseln von (%d)'), $spacecraft->getId()));
-        $pods->setMaxHuell(1);
+        $pods->setMaxHull(1);
         $pods->getCondition()->setHull(1);
 
         $pods->setLocation($spacecraft->getLocation());

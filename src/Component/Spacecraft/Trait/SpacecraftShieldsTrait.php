@@ -15,10 +15,10 @@ trait SpacecraftShieldsTrait
     public function getMaxShield(bool $isTheoretical = false): int
     {
         if ($isTheoretical || !$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
-            return $this->max_schilde;
+            return $this->maxShield;
         }
 
-        return (int) (ceil($this->max_schilde
+        return (int) (ceil($this->maxShield
             * $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus() / 100));
     }
 }

@@ -288,7 +288,7 @@ final class StationUtility implements StationUtilityInterface
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
-        $station->setMaxHuell($baseHull);
+        $station->setMaxHull($baseHull);
         $station->getCondition()->setHull($baseHull);
         $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
 
