@@ -72,17 +72,17 @@ final class StationRepository extends EntityRepository implements StationReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT st FROM %s st
+                'SELECT st FROM %s st
                      JOIN %s s
                      WITH st.id = s.id
                      LEFT JOIN %s m
-                     WITH s.location_id = m.id
+                     WITH s.location = m
                      LEFT JOIN %s l
                      WITH m.id = l.id
                      LEFT JOIN %s ly
                      WITH l.layer = ly
                      LEFT JOIN %s sm
-                     WITH s.location_id = sm.id
+                     WITH s.location = sm
                      WHERE s.user_id NOT IN (:ignoreIds)
                      AND (:layerId = 0 OR (ly.id = :layerId
                         AND l.cx BETWEEN (:cx - 1) AND (:cx + 1)
@@ -337,7 +337,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             'user_id' => $user->getId(),
             'rump_id' => $rump->getId()
         ], [
-            'location_id' => 'asc'
+            'locationId' => 'asc'
         ]);
     }
 }

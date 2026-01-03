@@ -32,9 +32,6 @@ class TachyonScan
     #[Column(type: 'integer')]
     private int $scan_time = 0;
 
-    #[Column(type: 'integer')]
-    private int $location_id = 0;
-
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;

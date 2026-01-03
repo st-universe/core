@@ -315,15 +315,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                JOIN %s l
-                WITH s.location_id = l.id
+                JOIN s.location l
                 WHERE l.layer = :layer
                 AND l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
                 AND s.id != :shipId
                 AND s.user_id = :kazonUserId',
-                Ship::class,
-                Location::class
+                Ship::class
             )
         )
             ->setParameters([
@@ -345,7 +343,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'user_id' => $user->getId(),
             'rump_id' => $rump->getId()
         ], [
-            'location_id' => 'asc',
+            'locationId' => 'asc',
             'fleet_id' => 'asc',
             'isFleetLeader' => 'desc'
         ]);

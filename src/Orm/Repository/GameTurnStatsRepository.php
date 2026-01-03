@@ -111,7 +111,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             sprintf(
                 'SELECT count(fs) FROM %s fs
                 JOIN %s sm
-                WITH fs.location_id = sm.id
+                WITH fs.location = sm
                 WHERE fs.time > :threshold',
                 FlightSignature::class,
                 StarSystemMap::class

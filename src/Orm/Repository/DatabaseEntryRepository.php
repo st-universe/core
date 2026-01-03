@@ -95,10 +95,9 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
     {
         $query = $this->getEntityManager()
             ->createQuery(sprintf(
-                'SELECT de FROM %s de WHERE de.category_id = :categoryId AND de.object_id IN (
-                        SELECT s.id FROM %s s WHERE s.location_id IN (
-                                SELECT l.id FROM %s l WHERE l.layer = :layer
-                            
+            'SELECT de FROM %s de WHERE de.category_id = :categoryId AND de.object_id IN (
+                        SELECT s.id FROM %s s WHERE s.location IN (
+                            SELECT l FROM %s l WHERE l.layer = :layer
                         )
                     )',
                 DatabaseEntry::class,
