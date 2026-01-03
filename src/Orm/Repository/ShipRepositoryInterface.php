@@ -11,6 +11,7 @@ use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
 
 /**
@@ -48,7 +49,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getWithTradeLicensePayment(
         int $userId,
-        int $tradePostShipId,
+        Station $tradePostStation,
         int $commodityId,
         int $amount
     ): array;
@@ -71,11 +72,6 @@ interface ShipRepositoryInterface extends ObjectRepository
         bool $showCloaked = false,
         Map|StarSystemMap|null $field = null
     ): array;
-
-    /**
-     * @return array<Ship>
-     */
-    public function getAllDockedShips(): array;
 
     /**
      * @return array<Ship>

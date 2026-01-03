@@ -40,9 +40,6 @@ class TradePost
     #[Column(type: 'text')]
     private string $description = '';
 
-    #[Column(type: 'integer')]
-    private int $station_id = 0;
-
     #[Column(type: 'smallint')]
     private int $trade_network = 0;
 
@@ -129,11 +126,6 @@ class TradePost
         $this->description = $description;
 
         return $this;
-    }
-
-    public function getStationId(): int
-    {
-        return $this->station_id;
     }
 
     public function getTradeNetwork(): int
