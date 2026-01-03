@@ -117,4 +117,144 @@
         </div>
     </div>
 </form>
+<br />
+{% if IS_FERENGI_NPC or IS_ADMIN %}
+<form action="/npc/index.php" method="post" name="toolsform5" id="toolsform5">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">Deals/Auktion</div>
+    <div class="divbody">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+            <div class="box">
+                <div class="box_title">Grundeinstellungen</div>
+                <div class="box_body">
+                    <div style="margin-bottom: 15px;">
+                        <strong>Art:</strong><br>
+                        <input type="radio" id="deal_type_deal" name="deal_type" value="1" checked
+                            onchange="updateDealForm()" />
+                        <label for="deal_type_deal">Deal</label>
+                        <input type="radio" id="deal_type_auction" name="deal_type" value="2"
+                            onchange="updateDealForm()" />
+                        <label for="deal_type_auction">Auktion</label>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Anzahl:</strong> <span class="dealFormHint" style="font-size: 80%; color: #888;">(nur
+                            bei Deals. Der Wert "0" entspricht unendlich)</span><br>
+                        <input type="number" id="deal_count" name="deal_count" min="0" value="1" style="width: 80px;" />
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Grund:</strong><br>
+                        <input type="text" size="20" name="reason" id="deal_reason" style="width: 100%;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="box_title">Fraktionen und Zeitraum</div>
+                <div class="box_body">
+                    <div style="margin-bottom: 15px;">
+                        <strong>Fraktionsbeschränkung:</strong><br>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 5px;">
+                            <div>
+                                <input type="radio" id="faction_restriction_none" name="faction_restriction" value="0"
+                                    checked />
+                                <label for="faction_restriction_none">Keine</label>
+                            </div>
+                            {% for faction in PLAYABLE_FACTIONS %}
+                            <div>
+                                <input type="radio" id="faction_restriction_{{ faction.getId }}"
+                                    name="faction_restriction" value="{{ faction.getId }}" />
+                                <label for="faction_restriction_{{ faction.getId }}">{{ faction.getName }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Zeitraum:</strong><br>
+                        <div style="margin: 5px 0;">
+                            Start: <input type="text" name="start_date" placeholder="TT.MM.JJJJ" required
+                                style="width: 100px;" />
+                            Uhrzeit: <input type="text" name="start_time" placeholder="HH:MM" required
+                                style="width: 60px;" />
+                        </div>
+                        <div>
+                            Ende: <input type="text" name="end_date" placeholder="TT.MM.JJJJ" required
+                                style="width: 100px;" />
+                            Uhrzeit: <input type="text" name="end_time" placeholder="HH:MM" required
+                                style="width: 60px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="box_title">Waren und Gegenleistungen</div>
+                <div class="box_body">
+                    <div style="margin-bottom: 15px;">
+                        <strong>Verlangte Ware:</strong><br>
+                        <div id="wantTypeContainer">
+                            <div id="wantCommodityContainer" style="margin-top: 5px;">
+                                Ware: <select name="want_commodity_id" id="want_commodity_id" class="commoditySelect"
+                                    style="width:50%;" onchange="updateDealForm()">
+                                    <option value="0">----------------------</option>
+                                    {% for commodity in SELECTABLE_COMMODITIES %}
+                                    <option value="{{ commodity.getId }}">
+                                        {{ commodity.getName }}
+                                    </option>
+                                    {% endfor %}
+                                </select><br>
+                                <div style="margin-top: 5px;">
+                                    Anzahl: <input type="number" name="want_commodity_amount" id="want_commodity_amount"
+                                        min="1" style="width: 80px;" onchange="updateDealForm()" />
+                                </div>
+                            </div>
+                            <div id="wantPrestigeContainer" style="margin-top: 10px;">
+                                <img src="/assets/buttons/prestige.png" title="Prestige" /> Prestige: <input
+                                    type="number" name="want_prestige" id="want_prestige" min="0" style="width: 80px;"
+                                    onchange="updateDealForm()" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>Angebotene Gegenleistung:</strong><br>
+                        <div id="giveTypeContainer">
+                            <div id="giveCommodityContainer" style="margin-top: 5px;">
+                                Ware: <select name="give_commodity_id" id="give_commodity_id" class="commoditySelect"
+                                    style="width:50%;" onchange="updateDealForm()">
+                                    <option value="0">----------------------</option>
+                                    {% for commodity in SELECTABLE_COMMODITIES %}
+                                    <option value="{{ commodity.getId }}">
+                                        {{ commodity.getName }}
+                                    </option>
+                                    {% endfor %}
+                                </select><br>
+                                <div style="margin-top: 5px;">
+                                    Anzahl: <input type="number" name="give_commodity_amount" id="give_commodity_amount"
+                                        min="1" style="width: 80px;" onchange="updateDealForm()" />
+                                </div>
+                            </div>
+                            <div id="giveBuildplanContainer" style="margin-top: 15px;">
+                                <div>
+                                    <input type="radio" id="give_type_ship" name="give_type" value="1" checked />
+                                    <label for="give_type_ship">Schiff</label>
+                                    <input type="radio" id="give_type_buildplan" name="give_type" value="2" />
+                                    <label for="give_type_buildplan">Bauplan</label>
+                                </div>
+                                <div style="margin-top: 5px;">
+                                    Bauplan ID: <input type="number" name="give_buildplan_id" id="give_buildplan_id"
+                                        min="1" style="width: 80px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <input type="submit" class="button" name="B_CREATE_DEAL" value="Deal/Auktion erstellen" />
+        </div>
+    </div>
+</form>
+{% endif %}
 {% endblock %}

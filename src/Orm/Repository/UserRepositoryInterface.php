@@ -110,4 +110,9 @@ interface UserRepositoryInterface extends ObjectRepository
      * Returns the game's default fallback user item
      */
     public function getFallbackUser(): User;
+
+    /**
+     * @return array<User>
+     */
+    public function getUsersWithActiveLicense(int $tradePostId, int $currentTime, ?int $factionId = null): array;
 }

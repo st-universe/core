@@ -33,6 +33,7 @@ use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
 use Stu\Module\Tick\Process\EndPirateRound;
+use Stu\Module\Tick\Process\NewDealsInformation;
 use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Process\RepairTaskJobs;
@@ -121,7 +122,8 @@ return [
         autowire(ShieldRegeneration::class),
         autowire(RepairTaskJobs::class),
         autowire(FinishTholianWebs::class),
-        autowire(EndPirateRound::class)
+        autowire(EndPirateRound::class),
+        autowire(NewDealsInformation::class)
     ],
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class)

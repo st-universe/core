@@ -32,6 +32,7 @@ use Stu\Module\NPC\Action\InviteQuestUsers\InviteQuestUsers;
 use Stu\Module\NPC\Action\ExcludeQuestUsers\ExcludeQuestUsers;
 use Stu\Module\NPC\Action\AddQuestLogEntry\AddQuestLogEntry;
 use Stu\Module\NPC\Action\EndNPCQuest\EndNPCQuest;
+use Stu\Module\NPC\Action\CreateDeal\CreateDeal;
 
 use function DI\autowire;
 
@@ -53,7 +54,8 @@ return [
         InviteQuestUsers::ACTION_IDENTIFIER => autowire(InviteQuestUsers::class),
         ExcludeQuestUsers::ACTION_IDENTIFIER => autowire(ExcludeQuestUsers::class),
         AddQuestLogEntry::ACTION_IDENTIFIER => autowire(AddQuestLogEntry::class),
-        EndNPCQuest::ACTION_IDENTIFIER => autowire(EndNPCQuest::class)
+        EndNPCQuest::ACTION_IDENTIFIER => autowire(EndNPCQuest::class),
+        CreateDeal::ACTION_IDENTIFIER => autowire(CreateDeal::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

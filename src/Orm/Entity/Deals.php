@@ -40,8 +40,8 @@ class Deals
     #[Column(type: 'integer', nullable: true)]
     private ?int $want_commodity = null;
 
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $give_commodity_amonut = null;
+    #[Column(type: 'integer', nullable: true, name: 'give_commodity_amonut')]
+    private ?int $give_commodity_amount = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $want_commodity_amount = null;
@@ -58,7 +58,7 @@ class Deals
     #[Column(type: 'integer')]
     private int $start;
 
-    #[Column(type: 'integer')]
+    #[Column(type: 'integer', name: '"end"')]
     private int $end;
 
     #[Column(type: 'integer', nullable: true)]
@@ -84,7 +84,8 @@ class Deals
 
     #[ManyToOne(targetEntity: Faction::class)]
     #[JoinColumn(name: 'faction_id', referencedColumnName: 'id')]
-    private ?Faction $faction;
+    private ?Faction $faction = null;
+
 
     /**
      * @var ArrayCollection<int, AuctionBid>
@@ -115,13 +116,25 @@ class Deals
         return $this->auction;
     }
 
+    public function getFaction(): ?Faction
+    {
+        return $this->faction;
+    }
+
+    public function setFaction(?Faction $faction): Deals
+    {
+        $this->faction = $faction;
+
+        return $this;
+    }
+
     public function getAmount(): ?int
     {
         return $this->amount;
     }
 
 
-    public function setAmount(int $amount): Deals
+    public function setAmount(?int $amount): Deals
     {
         $this->amount = $amount;
 
@@ -140,13 +153,27 @@ class Deals
 
     public function getGiveCommodityAmount(): ?int
     {
-        return $this->give_commodity_amonut;
+        return $this->give_commodity_amount;
+    }
+
+    public function setGiveCommodityAmount(int $amount): Deals
+    {
+        $this->give_commodity_amount = $amount;
+
+        return $this;
     }
 
 
     public function getWantCommodityAmount(): ?int
     {
         return $this->want_commodity_amount;
+    }
+
+    public function setWantCommodityAmount(int $amount): Deals
+    {
+        $this->want_commodity_amount = $amount;
+
+        return $this;
     }
 
     public function getWantPrestige(): ?int
@@ -188,6 +215,13 @@ class Deals
     public function getStart(): int
     {
         return $this->start;
+    }
+
+    public function setStart(int $start): Deals
+    {
+        $this->start = $start;
+
+        return $this;
     }
 
     public function getEnd(): int
