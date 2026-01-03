@@ -37,8 +37,8 @@ class TradePost
     #[Column(type: 'text')]
     private string $description = '';
 
-    #[Column(type: 'smallint')]
-    private int $trade_network = 0;
+    #[Column(name: 'trade_network', type: 'smallint')]
+    private int $tradeNetwork = 0;
 
     #[Column(type: 'smallint')]
     private int $level = 0;
@@ -127,12 +127,12 @@ class TradePost
 
     public function getTradeNetwork(): int
     {
-        return $this->trade_network;
+        return $this->tradeNetwork;
     }
 
     public function setTradeNetwork(int $tradeNetwork): TradePost
     {
-        $this->trade_network = $tradeNetwork;
+        $this->tradeNetwork = $tradeNetwork;
 
         return $this;
     }

@@ -18,8 +18,8 @@ use Stu\Orm\Repository\UserIpTableRepository;
 
 #[Table(name: 'stu_user_iptable')]
 #[Index(name: 'session_idx', columns: ['session'])]
-#[Index(name: 'iptable_start_idx', columns: ['startDate'])]
-#[Index(name: 'iptable_end_idx', columns: ['endDate'])]
+#[Index(name: 'iptable_start_idx', columns: ['start_date'])]
+#[Index(name: 'iptable_end_idx', columns: ['end_date'])]
 #[Index(name: 'iptable_ip_idx', columns: ['ip'])]
 #[Entity(repositoryClass: UserIpTableRepository::class)]
 #[TruncateOnGameReset]

@@ -244,8 +244,8 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT s FROM %s s WHERE
-                        s.tradepost_id IN (SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetwork) AND
+                'SELECT s FROM %s s WHERE
+                        s.tradepost_id IN (SELECT tp.id FROM %s tp WHERE tp.tradeNetwork = :tradeNetwork) AND
                         s.user_id = :userId AND s.commodity_id = :commodityId AND s.count >= :amount
                     ',
                     Storage::class,
