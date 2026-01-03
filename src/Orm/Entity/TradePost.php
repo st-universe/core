@@ -31,9 +31,6 @@ class TradePost
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer')]
-    private int $user_id = 0;
-
     #[Column(type: 'string')]
     private string $name = '';
 
@@ -89,7 +86,7 @@ class TradePost
 
     public function getUserId(): int
     {
-        return $this->user_id;
+        return $this->user->getId();
     }
 
     public function getUser(): User
