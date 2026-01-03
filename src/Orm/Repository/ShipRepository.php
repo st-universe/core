@@ -24,6 +24,7 @@ use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
@@ -103,21 +104,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     #[\Override]
     public function getWithTradeLicensePayment(
         int $userId,
-        int $tradePostShipId,
+        Station $tradePostStation,
         int $commodityId,
         int $amount
     ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.user_id = :userId AND s.docked_to_id = :tradePostShipId AND s.id IN (
-                    SELECT st.spacecraft_id FROM %s st WHERE st.commodity_id = :commodityId AND st.count >= :amount
+                'SELECT s FROM %s s
+                WHERE s.user_id = :userId
+                AND s.dockedTo = :tradePostStation
+                AND s.id IN (
+                    SELECT st.spacecraft_id
+                    FROM %s st
+                    WHERE st.commodity_id = :commodityId
+                    AND st.count >= :amount
                 )',
                 Ship::class,
                 Storage::class
             )
         )->setParameters([
             'userId' => $userId,
-            'tradePostShipId' => $tradePostShipId,
+            'tradePostStation' => $tradePostStation,
             'commodityId' => $commodityId,
             'amount' => $amount,
         ])->getResult();
@@ -237,18 +244,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
 
         return $query->getResult();
-    }
-
-    #[\Override]
-    public function getAllDockedShips(): array
-    {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
-                WHERE s.docked_to_id IS NOT NULL',
-                Ship::class
-            )
-        )->getResult();
     }
 
     #[\Override]

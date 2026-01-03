@@ -24,7 +24,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     public function __construct(
         private ShipLoaderInterface $shipLoader,
         private TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
+        private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
         private TradeLibFactoryInterface $tradeLibFactory,
         private TradePostRepositoryInterface $tradePostRepository,
         private StorageRepositoryInterface $storageRepository,
@@ -66,7 +66,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             return;
         }
 
-        $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
+        $licenseInfo = $this->tradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
         if ($licenseInfo === null) {
             $game->getInfo()->addInformation('Keine Lizenz verfügbar');
             return;
@@ -92,7 +92,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 'DOCKED_SHIPS_FOR_LICENSE',
                 $this->shipRepository->getWithTradeLicensePayment(
                     $userId,
-                    $tradepost->getStationId(),
+                    $tradepost->getStation(),
                     $commodityId,
                     $licenseCost
                 )
