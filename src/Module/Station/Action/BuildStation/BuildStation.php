@@ -153,7 +153,7 @@ final class BuildStation implements ActionControllerInterface
         $baseHull = $rump->getBaseValues()->getBaseHull();
 
         $station->setName(sprintf('%s in Bau', $rump->getName()));
-        $station->setMaxHuell($baseHull);
+        $station->setMaxHull($baseHull);
         $station->setRump($rump);
         $station->setBuildplan($plan);
         $station->getCondition()->setHull(intdiv($baseHull, 2));

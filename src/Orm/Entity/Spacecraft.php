@@ -97,10 +97,10 @@ abstract class Spacecraft implements
     private string $name = '';
 
     #[Column(type: 'integer', length: 6)]
-    private int $max_huelle = 0;
+    private int $maxHull = 0;
 
     #[Column(type: 'integer', length: 6)]
-    private int $max_schilde = 0;
+    private int $maxShield = 0;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $tractored_ship_id = null;
@@ -242,18 +242,18 @@ abstract class Spacecraft implements
 
     public function getMaxHull(): int
     {
-        return $this->max_huelle;
+        return $this->maxHull;
     }
 
-    public function setMaxHuell(int $maxHull): Spacecraft
+    public function setMaxHull(int $maxHull): Spacecraft
     {
-        $this->max_huelle = $maxHull;
+        $this->maxHull = $maxHull;
         return $this;
     }
 
     public function setMaxShield(int $maxShields): Spacecraft
     {
-        $this->max_schilde = $maxShields;
+        $this->maxShield = $maxShields;
         return $this;
     }
 

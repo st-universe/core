@@ -105,7 +105,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 WITH s.plan_id = bp.id
                 WHERE ss.system_type = :shieldType
                 AND ss.mode < :modeOn
-                AND sc.shield < s.max_schilde
+                AND sc.shield < s.maxShield
                 AND (SELECT count(ca.crew) FROM %s ca WHERE s = ca.spacecraft) >= bp.crew
                 AND NOT EXISTS (SELECT a FROM %s a
                                 WHERE a.location_id = s.location_id
@@ -217,7 +217,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             sprintf(
                 'SELECT sp.id as shipid, s.fleet_id as fleetid, sp.rump_id as rumpid , ss.mode as warpstate,
                     twd.mode as tractorwarpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
-                    sp.type as spacecrafttype, sp.name as shipname, sc.hull as hull, sp.max_huelle as maxhull,
+                    sp.type as spacecrafttype, sp.name as shipname, sc.hull as hull, sp.max_hull as maxhull,
                     sc.shield as shield, sp.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = sp.id AND sl.is_private = :false) as haslogbook,

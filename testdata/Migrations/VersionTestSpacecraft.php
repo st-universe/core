@@ -16,7 +16,7 @@ final class VersionTestSpacecraft extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_spacecraft (id, user_id, rump_id, plan_id, name, max_huelle, max_schilde, database_id, tractored_ship_id, holding_web_id, type, location_id)
+        $this->addSql('INSERT INTO stu_spacecraft (id, user_id, rump_id, plan_id, name, max_hull, max_shield, database_id, tractored_ship_id, holding_web_id, type, location_id)
             VALUES (42, 101, 6501, 2324, \'Aerie\', 819, 819, NULL, NULL, NULL, \'SHIP\', 15247),
                     (77, 101, 6501, 2324, \'Aerie Zwo\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204359),
                     (78, 101, 6501, 2324, \'Aerie Three\', 819, 819, NULL, NULL, NULL, \'SHIP\', 204359),

@@ -58,7 +58,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             [
                 'user_id' => $userId
             ],
-            ['max_huelle' => 'desc', 'id' => 'asc']
+            ['maxHull' => 'desc', 'id' => 'asc']
         );
     }
 
@@ -200,7 +200,7 @@ final class StationRepository extends EntityRepository implements StationReposit
             sprintf(
                 'SELECT s.id as shipid, s.rump_id as rumpid , ss.mode as warpstate,
                     COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
-                    s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_huelle as maxhull,
+                    s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_hull as maxhull,
                     sc.shield as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
                     (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,

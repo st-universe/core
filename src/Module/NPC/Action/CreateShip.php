@@ -201,7 +201,7 @@ final class CreateShip implements ActionControllerInterface
         $station->setRump($rump);
         $station->setBuildplan($buildplan);
         $station->setName(sprintf('%s in Bau', $rump->getName()));
-        $station->setMaxHuell($baseHull);
+        $station->setMaxHull($baseHull);
         $station->getCondition()->setHull(intdiv($baseHull, 2));
         $station->getCondition()->setState(SpacecraftStateEnum::UNDER_CONSTRUCTION);
         $station->setLocation($field);
@@ -253,7 +253,7 @@ final class CreateShip implements ActionControllerInterface
         $station->setRump($rump);
         $station->setBuildplan($buildplan);
         $station->setName($rump->getName());
-        $station->setMaxHuell($baseHull);
+        $station->setMaxHull($baseHull);
         $station->getCondition()->setHull($baseHull);
         $station->getCondition()->setState(SpacecraftStateEnum::NONE);
         $station->setLocation($field);

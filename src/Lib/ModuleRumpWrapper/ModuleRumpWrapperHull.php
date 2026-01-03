@@ -45,6 +45,6 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
             $condition->setHull($value);
         }
 
-        $wrapper->get()->setMaxHuell($value);
+        $wrapper->get()->setMaxHull($value);
     }
 }
