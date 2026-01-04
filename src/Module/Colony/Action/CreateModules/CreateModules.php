@@ -156,11 +156,16 @@ final class CreateModules implements ActionControllerInterface
 
                     if ($missingAmount > 0) {
                         $missingCommodities[] = [
+                            'id' => $commodityId,
                             'name' => $commodity->getName(),
                             'missing' => $missingAmount
                         ];
                     }
                 }
+
+                usort($missingCommodities, function (array $a, array $b): int {
+                    return $a['id'] <=> $b['id'];
+                });
 
                 $missingText = array_map(function (array $commodity): string {
                     return sprintf(
