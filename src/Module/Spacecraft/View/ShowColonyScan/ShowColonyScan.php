@@ -74,6 +74,7 @@ final class ShowColonyScan implements ViewControllerInterface
         }
 
         if (!$ship->hasEnoughCrew($game)) {
+            $game->setMacroInAjaxWindow('');
             return;
         }
 
