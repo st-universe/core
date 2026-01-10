@@ -203,7 +203,7 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         // raising does not need to collect
-        if ($bidType === self::BID_TYPE_RAISE_OTHER || $currentHighestBid === null) {
+        if ($bidType === self::BID_TYPE_RAISE_OTHER) {
             return true;
         }
 
@@ -233,7 +233,7 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         //give back to previous
-        if ($bidType === self::BID_TYPE_REVISE) {
+        if ($bidType === self::BID_TYPE_REVISE && $currentHighestBid !== null) {
 
             $wantedCommodity = $auction->getWantedCommodity();
             if ($wantedCommodity === null) {
