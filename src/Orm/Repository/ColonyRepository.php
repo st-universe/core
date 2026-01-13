@@ -294,6 +294,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH s.id = m.systems_id
                 JOIN %s l
                 WITH m.id = l.id
+                JOIN %s ly
+                WITH l.layer = ly
                 JOIN %s u
                 WITH c.user = u
                 JOIN %s ur
@@ -302,7 +304,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 WITH u = w.user
                 WHERE l.cx BETWEEN :minX AND :maxX
                 AND l.cy BETWEEN :minY AND :maxY
-                AND l.layer.id = :layerId
+                AND ly.id = :layerId
                 AND u.id >= :firstUserId
                 AND u.state >= :stateActive
                 AND ur.creation < :fourMonthEarlier
@@ -313,6 +315,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 StarSystem::class,
                 Map::class,
                 Location::class,
+                Layer::class,
                 User::class,
                 UserRegistration::class,
                 PirateWrath::class
@@ -424,16 +427,19 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                         WITH s.id = m.systems_id
                         JOIN %s l
                         WITH m.id = l.id
+                        JOIN %s ly
+                        WITH l.layer = ly
                         JOIN %s cc
                         WITH c.colonyClass = cc
                         WHERE c.user_id = :nooneUserId
                         AND cc.allow_start = :allowStart
-                        AND l.layer.id = :currentLayerId',
+                        AND ly.id = :currentLayerId',
                     Colony::class,
                     StarSystemMap::class,
                     StarSystem::class,
                     Map::class,
                     Location::class,
+                    Layer::class,
                     ColonyClass::class
                 )
             )
