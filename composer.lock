@@ -830,45 +830,45 @@
         },
         {
             "name": "crunzphp/crunz",
-            "version": "v3.8.1",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crunzphp/crunz.git",
-                "reference": "09276e03debd10c92f12e6fb4abc63e770aefce3"
+                "reference": "cc4a871d8fa1eeaad311bd90f78aab96ebe67401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crunzphp/crunz/zipball/09276e03debd10c92f12e6fb4abc63e770aefce3",
-                "reference": "09276e03debd10c92f12e6fb4abc63e770aefce3",
+                "url": "https://api.github.com/repos/crunzphp/crunz/zipball/cc4a871d8fa1eeaad311bd90f78aab96ebe67401",
+                "reference": "cc4a871d8fa1eeaad311bd90f78aab96ebe67401",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
                 "dragonmantank/cron-expression": "^3.4.0",
                 "laravel/serializable-closure": "^2.0",
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "psr/log": "^2.0 || ^3.0",
-                "symfony/config": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/console": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/dependency-injection": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/filesystem": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/lock": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/mailer": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/process": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/string": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/yaml": "^5.4.40 || ^6.4.10 || ^7.1.0"
+                "symfony/config": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/console": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/dependency-injection": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/filesystem": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/lock": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/mailer": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/process": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/string": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/yaml": "^6.4.25 || ^7.4.0 || ^8.0.0"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "2.28.3",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "friendsofphp/php-cs-fixer": "3.64",
+                "friendsofphp/php-cs-fixer": "3.90.0",
                 "phpstan/phpstan": "2.0.2",
                 "phpstan/phpstan-phpunit": "2.0.1",
                 "phpstan/phpstan-strict-rules": "2.0.0",
-                "phpunit/phpunit": "10.5.38",
-                "symfony/error-handler": "^5.4.40 || ^6.4.10 || ^7.1.0",
-                "symfony/phpunit-bridge": "^5.4.40 || ^6.4.10 || ^7.1.0"
+                "phpunit/phpunit": "10.5.60",
+                "symfony/error-handler": "^6.4.25 || ^7.4.0 || ^8.0.0",
+                "symfony/phpunit-bridge": "^6.4.25 || ^7.4.0 || ^8.0.0"
             },
             "bin": [
                 "crunz"
@@ -908,7 +908,7 @@
             ],
             "support": {
                 "issues": "https://github.com/crunzphp/crunz/issues",
-                "source": "https://github.com/crunzphp/crunz/tree/v3.8.1"
+                "source": "https://github.com/crunzphp/crunz/tree/v3.9.0"
             },
             "funding": [
                 {
@@ -916,7 +916,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-17T15:58:18+00:00"
+            "time": "2026-01-08T16:21:56+00:00"
         },
         {
             "name": "cweagans/composer-configurable-plugin",
@@ -10646,5 +10646,5 @@
         "ext-xsl": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
