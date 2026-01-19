@@ -47,7 +47,7 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
         $seconds = $endTime - $lastRound->getStart();
         $days = (int)ceil($seconds / 86400);
 
-        if ($endTime !== null && $this->isBetween45And46DaysAgo($endTime) && $this->isAroundDecember($days)) {
+        if ($endTime !== null && $this->is45DaysAgo($endTime) && $this->isAroundDecember($days)) {
             $this->handleOldRoundAndCreateNew();
             return;
         }
@@ -84,12 +84,13 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
         return empty($allRounds) ? null : $allRounds[0];
     }
 
-    private function isBetween45And46DaysAgo(int $timestamp): bool
+    private function is45DaysAgo(int $timestamp): bool
     {
-        $fortyFiveDaysAgo = time() - (45 * 24 * 60 * 60);
-        $fortySixDaysAgo = time() - (46 * 24 * 60 * 60);
+        $now = time();
+        $fortyFiveDaysAgo = $now - (45 * 24 * 60 * 60);
 
-        return $timestamp <= $fortyFiveDaysAgo && $timestamp > $fortySixDaysAgo;
+
+        return $timestamp <= $fortyFiveDaysAgo;
     }
 
     private function handleOldRoundAndCreateNew(): void
