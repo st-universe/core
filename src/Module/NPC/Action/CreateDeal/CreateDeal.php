@@ -177,8 +177,9 @@ final class CreateDeal implements ActionControllerInterface
         if ($hasGiveCommodity) {
             $deal->setGiveCommodity($giveCommodity);
             $deal->setGiveCommodityAmount($giveCommodityAmount);
-        } elseif ($hasGiveBuildplan) {
-            $deal->setBuildplanId($giveBuildplanId);
+        }
+        if ($hasGiveBuildplan) {
+            $deal->setBuildplan($buildplan);
             if ($giveType === 1) {
                 $deal->setShip(true);
             }

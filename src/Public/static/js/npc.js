@@ -525,7 +525,7 @@ function updateDealForm() {
     }
 
     const hasWantCommodity = wantCommodityId.value !== '0' && wantCommodityAmount.value !== '';
-    const hasWantPrestige = wantPrestige.value !== '';
+    const hasWantPrestige = wantPrestige.value !== '' && wantPrestige.value !== '0';
 
     if (hasWantCommodity) {
         wantPrestige.disabled = true;
@@ -542,24 +542,23 @@ function updateDealForm() {
     }
 
     const hasGiveCommodity = giveCommodityId.value !== '0' && giveCommodityAmount.value !== '';
+    const hasGiveBuildplan = giveBuildplanId.value !== '' && giveBuildplanId.value !== '0';
 
     if (hasGiveCommodity) {
         giveBuildplanId.disabled = true;
         giveTypeShip.disabled = true;
         giveTypeBuildplan.disabled = true;
         giveBuildplanId.value = '';
+    } else if (hasGiveBuildplan) {
+        giveCommodityId.disabled = true;
+        giveCommodityAmount.disabled = true;
+        giveCommodityId.value = '0';
+        giveCommodityAmount.value = '';
     } else {
         giveBuildplanId.disabled = false;
         giveTypeShip.disabled = false;
         giveTypeBuildplan.disabled = false;
-        if (giveBuildplanId.value !== '') {
-            giveCommodityId.disabled = true;
-            giveCommodityAmount.disabled = true;
-            giveCommodityId.value = '0';
-            giveCommodityAmount.value = '';
-        } else {
-            giveCommodityId.disabled = false;
-            giveCommodityAmount.disabled = false;
-        }
+        giveCommodityId.disabled = false;
+        giveCommodityAmount.disabled = false;
     }
 }

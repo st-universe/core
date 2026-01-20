@@ -220,7 +220,7 @@
                         <div id="giveTypeContainer">
                             <div id="giveCommodityContainer" style="margin-top: 5px;">
                                 Ware: <select name="give_commodity_id" id="give_commodity_id" class="commoditySelect"
-                                    style="width:50%;" onchange="updateDealForm()">
+                                    style="width:50%;" onchange="updateDealForm()" oninput="updateDealForm()">
                                     <option value="0">----------------------</option>
                                     {% for commodity in SELECTABLE_COMMODITIES %}
                                     <option value="{{ commodity.getId }}">
@@ -230,7 +230,8 @@
                                 </select><br>
                                 <div style="margin-top: 5px;">
                                     Anzahl: <input type="number" name="give_commodity_amount" id="give_commodity_amount"
-                                        min="1" style="width: 80px;" onchange="updateDealForm()" />
+                                        min="1" style="width: 80px;" onchange="updateDealForm()"
+                                        oninput="updateDealForm()" />
                                 </div>
                             </div>
                             <div id="giveBuildplanContainer" style="margin-top: 15px;">
@@ -242,7 +243,8 @@
                                 </div>
                                 <div style="margin-top: 5px;">
                                     Bauplan ID: <input type="number" name="give_buildplan_id" id="give_buildplan_id"
-                                        min="1" style="width: 80px;" />
+                                        min="1" style="width: 80px;" onchange="updateDealForm()"
+                                        oninput="updateDealForm()" />
                                 </div>
                             </div>
                         </div>
