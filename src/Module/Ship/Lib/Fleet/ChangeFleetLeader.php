@@ -38,32 +38,31 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
         $newLeader = current(
             array_filter(
                 $fleet->getShips()->toArray(),
-                fn(Ship $ship): bool => $ship !== $oldLeader
+                fn(Ship $ship): bool => $ship !== $oldLeader && !$ship->getCondition()->isDestroyed()
             )
         );
+
+        $oldLeader->setFleet(null);
+        $oldLeader->setIsFleetLeader(false);
 
         if ($newLeader === false) {
             $this->cancelColonyBlockOrDefend->work(
                 $oldLeader,
                 new InformationWrapper()
             );
+
+            $this->logger->logf('now deleting fleet %d', $fleet->getId());
+            $this->fleetRepository->delete($fleet);
         } else {
             $newLeader->setIsFleetLeader(true);
 
             $this->logger->logf('new leader of fleetId %d now is shipId %d', $fleet->getId(), $newLeader->getId());
 
             $fleet->setLeadShip($newLeader);
-            $this->entityManager->flush();
-        }
 
-        $oldLeader->setFleet(null);
-        $oldLeader->setIsFleetLeader(false);
-
-        if ($newLeader === false) {
-            $this->logger->logf('now deleting fleet %d', $fleet->getId());
-            $this->fleetRepository->delete($fleet);
-        } else {
             $this->logger->logf('changed fleet leader of fleet %d', $fleet->getId());
+
+            $this->entityManager->flush();
         }
     }
 }
