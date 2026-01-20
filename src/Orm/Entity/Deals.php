@@ -200,6 +200,13 @@ class Deals
         return $this;
     }
 
+    public function setBuildplan(?SpacecraftBuildplan $buildplan): Deals
+    {
+        $this->buildplan = $buildplan;
+
+        return $this;
+    }
+
     public function getShip(): ?bool
     {
         return $this->ship;
