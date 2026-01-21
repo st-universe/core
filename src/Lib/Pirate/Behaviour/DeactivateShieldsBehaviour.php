@@ -27,7 +27,7 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
                 continue;
             }
 
-            if ($ship->getStorage()->isEmpty()) {
+            if ($ship->getStorage()->isEmpty() && $ship->isShielded()) {
                 $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
             }
         }
