@@ -83,9 +83,16 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
+        try {
+            $fleetId = $fleet->getId();
+        } catch (\Error $e) {
+            $this->logger->log('pirateFleet was deleted, no reaction triggered');
+            return;
+        }
+
         $this->logger->log(sprintf(
             'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
-            $fleet->getId(),
+            $fleetId,
             $reactionTrigger->name,
             $triggerSpacecraft->getName(),
             $triggerSpacecraft->getId(),
@@ -96,18 +103,28 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
-
         $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
+
+        if ($fleet->getShips()->isEmpty()) {
+            $this->logger->log('pirateFleet was destroyed during action, no further reaction');
+            return;
+        }
+
         if (
             $reactionTrigger->triggerAlternativeReaction()
             &&  $alternativeBehaviour !== null
         ) {
             $this->logger->log(sprintf(
                 'pirateFleetId %d does alternative behaviour %s',
-                $fleet->getId(),
+                $fleetId,
                 $alternativeBehaviour->name
             ));
             $this->action($alternativeBehaviour, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
+
+            if ($fleet->getShips()->isEmpty()) {
+                $this->logger->log('pirateFleet was destroyed during alternative action, no further reaction');
+                return;
+            }
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
