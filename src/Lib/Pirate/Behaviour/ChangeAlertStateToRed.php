@@ -3,6 +3,7 @@
 namespace Stu\Lib\Pirate\Behaviour;
 
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
@@ -20,7 +21,14 @@ class ChangeAlertStateToRed implements PirateBehaviourInterface
     ): ?PirateBehaviourEnum {
 
         foreach ($fleet->getShipWrappers() as $wrapper) {
-            $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_RED);
+            $spacecraft = $wrapper->get();
+
+            if (
+                !$spacecraft->getCondition()->isDestroyed()
+                && $spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::COMPUTER)
+            ) {
+                $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_RED);
+            }
         }
 
         return null;

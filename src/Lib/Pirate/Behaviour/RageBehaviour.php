@@ -83,6 +83,11 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $this->pirateAttack->attackShip($fleet, $weakestTarget);
 
+        if ($fleet->get()->getShips()->isEmpty()) {
+            $this->logger->log('    pirate fleet was destroyed during attack, no further reaction');
+            return null;
+        }
+
         $pirateReaction->react(
             $fleet->get(),
             PirateReactionTriggerEnum::ON_RAGE,
