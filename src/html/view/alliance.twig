@@ -15,7 +15,11 @@
         {% if CAN_EDIT %}
         <a href="javascript:void(0);" onclick="switchInnerContent('EDIT_ALLIANCE', 'Allianz editieren');"
           class="linkbutton">Editieren</a>
+        {% endif %}
+        {% if CAN_MANAGE_APPLICATIONS %}
         <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
+        {% endif %}
+        {% if CAN_MANAGE_ALLIANCE %}
         <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
         {% endif %}
         {{ translationSwitcher(ALLIANCE.hasTranslation, 'allianceDescription', 'Allianzbeschreibung übersetzen') }}
@@ -66,14 +70,21 @@
     <div class="allianceMemberList">
       {% for data in MEMBERS %}
       <div class="allianceMember">
-        {{ userAvatar(data.getUser) }}
-        <div>{{ data.getUser.getName|bbcode }}</div>
-        <div class="allianceMemberButtons" id="{{ data.getUserId }}">
-          {{ pmWindow(USER, data.getUser.getId) }}
-          <img src="assets/rassen/{{ data.getUser.getFactionId }}s.png" />
+        {{ userAvatar(data.wrapper.getUser) }}
+        <div>
+          <div>{{ data.wrapper.getUser.getName|bbcode }}</div>
+          {% if data.jobs|length > 0 %}
+          <div style="font-size: 85%; margin-top: 2px;">
+            {{ data.jobs|join(', ') }}
+          </div>
+          {% endif %}
+        </div>
+        <div class="allianceMemberButtons" id="{{ data.wrapper.getUserId }}">
+          {{ pmWindow(USER, data.wrapper.getUser.getId) }}
+          <img src="assets/rassen/{{ data.wrapper.getUser.getFactionId }}s.png" />
         </div>
         {% if IS_IN_ALLIANCE %}
-        <div class="{{ data.getOnlineStateCssClass }}"> </div>
+        <div class="{{ data.wrapper.getOnlineStateCssClass }}"> </div>
         {% else %}
         <div> </div>
         {% endif %}

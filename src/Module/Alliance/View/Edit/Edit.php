@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Edit;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,5 +49,22 @@ final class Edit implements ViewControllerInterface
             'CAN_EDIT_FACTION_MODE',
             $this->allianceActionManager->mayEditFactionMode($alliance, $game->getUser()->getFactionId())
         );
+
+        $diplomaticPermissions = [];
+        $managementPermissions = [];
+
+        foreach (AllianceJobPermissionEnum::cases() as $permission) {
+            if (!$permission->isParentPermission() && $permission !== AllianceJobPermissionEnum::FOUNDER) {
+                $parent = $permission->getParentPermission();
+                if ($parent === AllianceJobPermissionEnum::DIPLOMATIC) {
+                    $diplomaticPermissions[] = $permission;
+                } elseif ($parent === AllianceJobPermissionEnum::SUCCESSOR) {
+                    $managementPermissions[] = $permission;
+                }
+            }
+        }
+
+        $game->setTemplateVar('DIPLOMATIC_PERMISSIONS', $diplomaticPermissions);
+        $game->setTemplateVar('MANAGEMENT_PERMISSIONS', $managementPermissions);
     }
 }

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\AllianceJobPermission;
 
 /**
  * @extends EntityRepository<AllianceJob>
@@ -38,6 +39,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         return $this->createQueryBuilder('aj')
             ->where('aj.alliance = :allianceId')
             ->setParameter('allianceId', $allianceId)
+            ->orderBy('aj.sort', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -56,34 +58,14 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
     }
 
     #[\Override]
-    public function getJobsWithFounderPermission(int $allianceId): array
+    public function getJobsWithPermission(int $allianceId, int $permissionType): array
     {
         return $this->createQueryBuilder('aj')
+            ->innerJoin('aj.permissions', 'ajp')
             ->where('aj.alliance = :allianceId')
-            ->andWhere('aj.is_founder_permission = true')
+            ->andWhere('ajp.permission = :permissionType')
             ->setParameter('allianceId', $allianceId)
-            ->getQuery()
-            ->getResult();
-    }
-
-    #[\Override]
-    public function getJobsWithSuccessorPermission(int $allianceId): array
-    {
-        return $this->createQueryBuilder('aj')
-            ->where('aj.alliance = :allianceId')
-            ->andWhere('aj.is_successor_permission = true')
-            ->setParameter('allianceId', $allianceId)
-            ->getQuery()
-            ->getResult();
-    }
-
-    #[\Override]
-    public function getJobsWithDiplomaticPermission(int $allianceId): array
-    {
-        return $this->createQueryBuilder('aj')
-            ->where('aj.alliance = :allianceId')
-            ->andWhere('aj.is_diplomatic_permission = true')
-            ->setParameter('allianceId', $allianceId)
+            ->setParameter('permissionType', $permissionType)
             ->getQuery()
             ->getResult();
     }

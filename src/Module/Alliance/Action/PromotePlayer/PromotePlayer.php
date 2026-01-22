@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -12,9 +13,6 @@ use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -42,7 +40,7 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
+        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
             throw new AccessViolationException();
         }
 
@@ -62,7 +60,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $userLosesFounderRights = false;
 
-        if ($job->hasFounderPermission()) {
+        if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
             if (!$this->allianceJobManager->hasUserFounderPermission($user, $alliance)) {
                 throw new AccessViolationException();
             }
@@ -95,8 +93,6 @@ final class PromotePlayer implements ActionControllerInterface
 
         $game->getInfo()->addInformation('Das Mitglied wurde befördert');
     }
-
-
 
     #[\Override]
     public function performSessionCheck(): bool

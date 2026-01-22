@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260103205759 extends AbstractMigration
+final class Version20260122084318 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,6 +25,8 @@ final class Version20260103205759 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E317119CA76ED395 ON stu_alliance_applications (user_id)');
         $this->addSql('CREATE TABLE stu_alliance_boards (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, alliance_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_5D868E4710A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX alliance_idx ON stu_alliance_boards (alliance_id)');
+        $this->addSql('CREATE TABLE stu_alliance_job_permission (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, permission INTEGER NOT NULL, job_id INTEGER NOT NULL, CONSTRAINT FK_8D17D65DBE04EA9 FOREIGN KEY (job_id) REFERENCES stu_alliances_jobs (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_8D17D65DBE04EA9 ON stu_alliance_job_permission (job_id)');
         $this->addSql('CREATE TABLE stu_alliance_member_job (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, job_id INTEGER NOT NULL, CONSTRAINT FK_81B01F0FA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_81B01F0FBE04EA9 FOREIGN KEY (job_id) REFERENCES stu_alliances_jobs (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_81B01F0FA76ED395 ON stu_alliance_member_job (user_id)');
         $this->addSql('CREATE INDEX IDX_81B01F0FBE04EA9 ON stu_alliance_member_job (job_id)');
@@ -214,7 +216,7 @@ final class Version20260103205759 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2042261BF61193E4 ON stu_fleets (defended_colony_id)');
         $this->addSql('CREATE INDEX IDX_2042261B9722AC5D ON stu_fleets (blocked_colony_id)');
         $this->addSql('CREATE INDEX fleet_user_idx ON stu_fleets (user_id)');
-        $this->addSql('CREATE TABLE stu_flight_sig (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, ship_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, time INTEGER NOT NULL, location_id INTEGER NOT NULL, from_direction SMALLINT DEFAULT NULL, to_direction SMALLINT DEFAULT NULL, ship_name VARCHAR(255) NOT NULL, is_cloaked BOOLEAN NOT NULL, CONSTRAINT FK_C789CFE12EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C789CFE164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_flight_sig (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, ship_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, time INTEGER NOT NULL, from_direction SMALLINT DEFAULT NULL, to_direction SMALLINT DEFAULT NULL, ship_name VARCHAR(255) NOT NULL, is_cloaked BOOLEAN NOT NULL, location_id INTEGER NOT NULL, CONSTRAINT FK_C789CFE12EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C789CFE164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C789CFE12EE98D4C ON stu_flight_sig (rump_id)');
         $this->addSql('CREATE INDEX IDX_C789CFE164D218E ON stu_flight_sig (location_id)');
         $this->addSql('CREATE INDEX flight_sig_user_idx ON stu_flight_sig (user_id)');
@@ -261,7 +263,7 @@ final class Version20260103205759 extends AbstractMigration
         $this->addSql('CREATE INDEX location_coords_idx ON stu_location (layer_id, cx, cy)');
         $this->addSql('CREATE INDEX location_coords_reverse_idx ON stu_location (layer_id, cy, cx)');
         $this->addSql('CREATE INDEX location_field_type_idx ON stu_location (field_id)');
-        $this->addSql('CREATE TABLE stu_location_mining (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, location_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, actual_amount INTEGER NOT NULL, max_amount INTEGER NOT NULL, depleted_at INTEGER DEFAULT NULL, CONSTRAINT FK_AC85C1AC64D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AC85C1ACB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_location_mining (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, commodity_id INTEGER NOT NULL, actual_amount INTEGER NOT NULL, max_amount INTEGER NOT NULL, depleted_at INTEGER DEFAULT NULL, location_id INTEGER NOT NULL, CONSTRAINT FK_AC85C1AC64D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AC85C1ACB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_AC85C1AC64D218E ON stu_location_mining (location_id)');
         $this->addSql('CREATE INDEX IDX_AC85C1ACB4ACC212 ON stu_location_mining (commodity_id)');
         $this->addSql('CREATE TABLE stu_lottery_buildplan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildplan_id INTEGER NOT NULL, chance INTEGER NOT NULL, faction_id INTEGER DEFAULT NULL, CONSTRAINT FK_E8141D9B8638E4E7 FOREIGN KEY (buildplan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -590,6 +592,7 @@ final class Version20260103205759 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE stu_alliance_applications');
         $this->addSql('DROP TABLE stu_alliance_boards');
+        $this->addSql('DROP TABLE stu_alliance_job_permission');
         $this->addSql('DROP TABLE stu_alliance_member_job');
         $this->addSql('DROP TABLE stu_alliance_posts');
         $this->addSql('DROP TABLE stu_alliance_settings');

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\AllianceMemberJob;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceMemberJobRepositoryInterface;
 
@@ -20,7 +20,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function assignUserToJob(User $user, AllianceJob $job): void
     {
         $existing = $this->allianceMemberJobRepository->getByUserAndJob($user, $job->getId());
-        
+
         if ($existing !== null) {
             return;
         }
@@ -36,7 +36,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function removeUserFromJob(User $user, AllianceJob $job): void
     {
         $assignment = $this->allianceMemberJobRepository->getByUserAndJob($user, $job->getId());
-        
+
         if ($assignment === null) {
             return;
         }
@@ -48,7 +48,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function removeUserFromAllJobs(User $user, Alliance $alliance): void
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
-        
+
         foreach ($assignments as $assignment) {
             if ($assignment->getJob()->getAlliance()->getId() === $alliance->getId()) {
                 $this->allianceMemberJobRepository->delete($assignment);
@@ -60,13 +60,13 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function hasUserJob(User $user, Alliance $alliance): bool
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
-        
+
         foreach ($assignments as $assignment) {
             if ($assignment->getJob()->getAlliance()->getId() === $alliance->getId()) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -75,13 +75,13 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     {
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
         $jobs = [];
-        
+
         foreach ($assignments as $assignment) {
             if ($assignment->getJob()->getAlliance()->getId() === $alliance->getId()) {
                 $jobs[] = $assignment->getJob();
             }
         }
-        
+
         return $jobs;
     }
 
@@ -89,13 +89,13 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function hasUserFounderPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
-        
+
         foreach ($jobs as $job) {
-            if ($job->hasFounderPermission()) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -103,13 +103,13 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function hasUserSuccessorPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
-        
+
         foreach ($jobs as $job) {
-            if ($job->hasSuccessorPermission()) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -117,13 +117,38 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function hasUserDiplomaticPermission(User $user, Alliance $alliance): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
-        
+
         foreach ($jobs as $job) {
-            if ($job->hasDiplomaticPermission()) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)) {
                 return true;
             }
         }
-        
+
+        return false;
+    }
+
+    #[\Override]
+    public function hasUserPermission(User $user, Alliance $alliance, int $permissionType): bool
+    {
+        $jobs = $this->getUserJobs($user, $alliance);
+
+        foreach ($jobs as $job) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
+                return true;
+            }
+
+            if ($job->hasPermission($permissionType)) {
+                return true;
+            }
+
+            $permissionEnum = AllianceJobPermissionEnum::tryFrom($permissionType);
+            if ($permissionEnum !== null && $permissionEnum->getParentPermission() !== null) {
+                if ($job->hasPermission($permissionEnum->getParentPermission()->value)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 }

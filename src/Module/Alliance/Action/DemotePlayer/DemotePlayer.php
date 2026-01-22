@@ -43,7 +43,7 @@ final class DemotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
+        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
             throw new AccessViolationException();
         }
 

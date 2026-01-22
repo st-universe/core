@@ -2271,3 +2271,36 @@ label.linkbutton:hover {
   background-color: #1a3a1a !important;
   border-color: #15ff00 !important;
 }
+
+.job-permissions-container {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid var(--color-53);
+}
+
+.job-permissions-section {
+  margin-bottom: 15px;
+}
+
+.job-permissions-header {
+  font-weight: bold;
+  font-size: 110%;
+  margin-bottom: 8px;
+  color: var(--color-23);
+}
+
+.job-permissions-list label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.job-permissions-list input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.job-toggle-permissions {
+  cursor: pointer;
+  padding: 2px 8px;
+  margin-left: 10px;
+}
