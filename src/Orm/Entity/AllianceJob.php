@@ -37,15 +37,6 @@ class AllianceJob
     #[Column(type: 'integer', nullable: true)]
     private ?int $sort = null;
 
-    #[Column(type: 'boolean', options: ['default' => false])]
-    private bool $is_founder_permission = false;
-
-    #[Column(type: 'boolean', options: ['default' => false])]
-    private bool $is_successor_permission = false;
-
-    #[Column(type: 'boolean', options: ['default' => false])]
-    private bool $is_diplomatic_permission = false;
-
     /**
      * @var ArrayCollection<int, AllianceMemberJob>
      */
