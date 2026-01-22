@@ -18,6 +18,26 @@ interface AllianceActionManagerInterface
 
     public function mayManageForeignRelations(Alliance $alliance, User $user): bool;
 
+    public function mayManageAlliance(Alliance $alliance, User $user): bool;
+
+    public function mayCreateAgreements(Alliance $alliance, User $user): bool;
+
+    public function mayEditDiplomaticDocuments(Alliance $alliance, User $user): bool;
+
+    public function mayManageApplications(Alliance $alliance, User $user): bool;
+
+    public function mayManageJobs(Alliance $alliance, User $user): bool;
+
+    public function mayViewColonies(Alliance $alliance, User $user): bool;
+
+    public function mayViewMemberData(Alliance $alliance, User $user): bool;
+
+    public function mayViewShips(Alliance $alliance, User $user): bool;
+
+    public function mayViewAllianceStorage(Alliance $alliance, User $user): bool;
+
+    public function mayViewAllianceHistory(Alliance $alliance, User $user): bool;
+
     public function sendMessage(int $allianceId, string $text): void;
 
     public function mayEditFactionMode(Alliance $alliance, int $factionId): bool;

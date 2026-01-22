@@ -7,6 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
@@ -24,7 +25,15 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker, private AllianceDescriptionRendererInterface $allianceDescriptionRenderer, private AllianceUiFactoryInterface $allianceUiFactory, private AllianceJobManagerInterface $allianceJobManager) {}
+    public function __construct(
+        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceRepositoryInterface $allianceRepository,
+        private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
+        private AllianceDescriptionRendererInterface $allianceDescriptionRenderer,
+        private AllianceUiFactoryInterface $allianceUiFactory,
+        private AllianceJobManagerInterface $allianceJobManager
+    ) {}
 
     #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
@@ -95,16 +104,46 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $this->allianceActionManager->mayManageForeignRelations($alliance, $user)
         );
         $game->setTemplateVar(
+            'CAN_MANAGE_APPLICATIONS',
+            $this->allianceActionManager->mayManageApplications($alliance, $user)
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_ALLIANCE_STORAGE',
+            $this->allianceActionManager->mayViewAllianceStorage($alliance, $user)
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_ALLIANCE_HISTORY',
+            $this->allianceActionManager->mayViewAllianceHistory($alliance, $user)
+        );
+        $game->setTemplateVar(
             'CAN_SIGNUP',
             $this->allianceUserApplicationChecker->mayApply($user, $alliance)
         );
-
         $game->setTemplateVar(
-            'MEMBERS',
-            $alliance->getMembers()->map(
-                fn(User $user): AllianceMemberWrapper => $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance)
-            )
+            'CAN_MANAGE_ALLIANCE',
+            $this->allianceActionManager->mayManageAlliance($alliance, $user)
         );
+
+        $membersWithJobs = $alliance->getMembers()->map(
+            function (User $user) use ($alliance): array {
+                $wrapper = $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance);
+
+                $userJobs = [];
+                foreach ($alliance->getJobs() as $job) {
+                    if ($job->hasUser($user) && $job->getTitle() !== null) {
+                        $userJobs[] = $job->getTitle();
+                    }
+                }
+
+                return [
+                    'wrapper' => $wrapper,
+                    'jobs' => $userJobs
+                ];
+            }
+        );
+
+        $game->setTemplateVar('MEMBERS', $membersWithJobs);
+
 
         $founderJobs = [];
         $successorJobs = [];
@@ -116,13 +155,13 @@ final class AllianceProvider implements ViewComponentProviderInterface
                 continue;
             }
 
-            if ($job->hasFounderPermission()) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
                 $founderJobs[] = $job;
-            } elseif ($job->hasSuccessorPermission()) {
+            } elseif ($job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)) {
                 $successorJobs[] = $job;
-            } elseif ($job->hasDiplomaticPermission()) {
+            } elseif ($job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)) {
                 $diplomaticJobs[] = $job;
-            } else {
+            } elseif ($job->hasPermission(AllianceJobPermissionEnum::ALLIANCE_LEADERSHIP->value)) {
                 $otherJobs[] = $job;
             }
         }
@@ -152,7 +191,6 @@ final class AllianceProvider implements ViewComponentProviderInterface
                 return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
             }
         )->first();
-
 
         $game->setTemplateVar(
             'FOUNDER_DESCRIPTION',

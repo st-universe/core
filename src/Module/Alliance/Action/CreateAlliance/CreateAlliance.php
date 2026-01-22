@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceJob;
+use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -31,7 +33,6 @@ final class CreateAlliance implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userId = $user->getId();
 
         $name = $this->createAllianceRequest->getName();
         $faction_mode = $this->createAllianceRequest->getFactionMode();
@@ -58,9 +59,24 @@ final class CreateAlliance implements ActionControllerInterface
         $founderJob->setAlliance($alliance);
         $founderJob->setTitle('Präsident');
         $founderJob->setSort(1);
-        $founderJob->setIsFounderPermission(true);
-        $founderJob->setIsSuccessorPermission(true);
-        $founderJob->setIsDiplomaticPermission(true);
+
+        $this->allianceJobRepository->save($founderJob);
+        $this->entityManager->flush();
+
+        $founderPermission = new AllianceJobPermission();
+        $founderPermission->setJob($founderJob);
+        $founderPermission->setPermission(AllianceJobPermissionEnum::FOUNDER->value);
+        $founderJob->getPermissions()->add($founderPermission);
+
+        $successorPermission = new AllianceJobPermission();
+        $successorPermission->setJob($founderJob);
+        $successorPermission->setPermission(AllianceJobPermissionEnum::SUCCESSOR->value);
+        $founderJob->getPermissions()->add($successorPermission);
+
+        $diplomaticPermission = new AllianceJobPermission();
+        $diplomaticPermission->setJob($founderJob);
+        $diplomaticPermission->setPermission(AllianceJobPermissionEnum::DIPLOMATIC->value);
+        $founderJob->getPermissions()->add($diplomaticPermission);
 
         $this->allianceJobRepository->save($founderJob);
         $this->entityManager->flush();

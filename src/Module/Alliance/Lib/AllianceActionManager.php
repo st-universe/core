@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Lib;
 
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -16,7 +17,6 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\AllianceMemberJobRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
@@ -63,7 +63,6 @@ final class AllianceActionManager implements AllianceActionManagerInterface
                 )
             );
 
-
             if ($result === false) {
                 throw new RuntimeException('alliance avatar could not be deleted');
             }
@@ -79,15 +78,128 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     #[\Override]
     public function mayEdit(Alliance $alliance, User $user): bool
     {
-        return $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
-            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance);
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::EDIT_ALLIANCE->value
+        );
     }
 
     #[\Override]
     public function mayManageForeignRelations(Alliance $alliance, User $user): bool
     {
-        return $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance)
-            || $this->mayEdit($alliance, $user);
+        return $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS->value)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS->value);
+    }
+
+    #[\Override]
+    public function mayCreateAgreements(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::CREATE_AGREEMENTS->value
+        )
+            || $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance);
+    }
+
+    #[\Override]
+    public function mayManageAlliance(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS->value)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_COLONIES->value)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_MEMBER_DATA->value)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS->value);
+    }
+
+    #[\Override]
+    public function mayEditDiplomaticDocuments(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS->value
+        ) || $this->allianceJobManager->hasUserFounderPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance)
+            || $this->allianceJobManager->hasUserDiplomaticPermission($user, $alliance);
+    }
+
+    #[\Override]
+    public function mayManageApplications(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::MANAGE_APPLICATIONS->value
+        );
+    }
+
+    #[\Override]
+    public function mayManageJobs(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::MANAGE_JOBS->value
+        );
+    }
+
+    #[\Override]
+    public function mayViewColonies(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_COLONIES->value
+        );
+    }
+
+    #[\Override]
+    public function mayViewMemberData(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_MEMBER_DATA->value
+        );
+    }
+
+    #[\Override]
+    public function mayViewShips(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_SHIPS->value
+        );
+    }
+
+    #[\Override]
+    public function mayViewAllianceStorage(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_ALLIANCE_STORAGE->value
+        );
+    }
+
+    #[\Override]
+    public function mayViewAllianceHistory(Alliance $alliance, User $user): bool
+    {
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_ALLIANCE_HISTORY->value
+        );
     }
 
     #[\Override]

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<AllianceJob>
@@ -32,17 +30,7 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     /**
      * @return array<AllianceJob>
      */
-    public function getJobsWithFounderPermission(int $allianceId): array;
-
-    /**
-     * @return array<AllianceJob>
-     */
-    public function getJobsWithSuccessorPermission(int $allianceId): array;
-
-    /**
-     * @return array<AllianceJob>
-     */
-    public function getJobsWithDiplomaticPermission(int $allianceId): array;
+    public function getJobsWithPermission(int $allianceId, int $permissionType): array;
 
     public function getByAllianceAndTitle(int $allianceId, string $title): ?AllianceJob;
 }

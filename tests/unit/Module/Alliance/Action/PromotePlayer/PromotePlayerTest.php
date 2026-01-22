@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -103,8 +103,8 @@ class PromotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        $job->shouldReceive('hasFounderPermission')
-            ->withNoArgs()
+        $job->shouldReceive('hasPermission')
+            ->with(AllianceJobPermissionEnum::FOUNDER->value)
             ->once()
             ->andReturn($isFounderJob);
         $job->shouldReceive('getAlliance')
@@ -150,7 +150,7 @@ class PromotePlayerTest extends StuTestCase
             ->once()
             ->andReturn(99);
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($alliance, $user)
             ->once()
             ->andReturn(true);

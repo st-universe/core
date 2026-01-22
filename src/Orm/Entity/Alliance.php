@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Alliance\Enum\AllianceJobTypeEnum;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\AllianceRepository;
@@ -63,7 +63,6 @@ class Alliance
     #[OneToMany(targetEntity: AllianceSettings::class, mappedBy: 'alliance')]
     private Collection $settings;
 
-
     /**
      * @var ArrayCollection<int, User>
      */
@@ -75,7 +74,6 @@ class Alliance
      */
     #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance')]
     private Collection $jobs;
-
 
     public function __construct()
     {
@@ -188,7 +186,7 @@ class Alliance
     public function getFounder(): AllianceJob
     {
         foreach ($this->jobs as $job) {
-            if ($job->hasFounderPermission()) {
+            if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
                 return $job;
             }
         }
@@ -198,7 +196,10 @@ class Alliance
     public function getSuccessor(): ?AllianceJob
     {
         foreach ($this->jobs as $job) {
-            if ($job->hasSuccessorPermission() && !$job->hasFounderPermission()) {
+            if (
+                $job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)
+                && !$job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)
+            ) {
                 return $job;
             }
         }
@@ -208,7 +209,11 @@ class Alliance
     public function getDiplomatic(): ?AllianceJob
     {
         foreach ($this->jobs as $job) {
-            if ($job->hasDiplomaticPermission() && !$job->hasFounderPermission() && !$job->hasSuccessorPermission()) {
+            if (
+                $job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)
+                && !$job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)
+                && !$job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)
+            ) {
                 return $job;
             }
         }
@@ -222,7 +227,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasFounderPermission()
+            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)
         ));
     }
 
@@ -233,7 +238,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasSuccessorPermission()
+            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)
         ));
     }
 
@@ -244,7 +249,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasDiplomaticPermission()
+            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)
         ));
     }
 
@@ -256,9 +261,6 @@ class Alliance
         return $this->members;
     }
 
-    /**
-     * Returns `true` if the founder is a npc
-     */
     public function isNpcAlliance(): bool
     {
         try {
@@ -277,8 +279,6 @@ class Alliance
     }
 
     /**
-     * Returns the alliance jobs, indexed by type
-     *
      * @return Collection<int, AllianceJob>
      */
     public function getJobs(): Collection

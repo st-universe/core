@@ -47,7 +47,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
             return;
         }
 
-        if (!$this->allianceActionManager->mayEdit($memberAlliance, $user)) {
+        if (!$this->allianceActionManager->mayManageAlliance($memberAlliance, $user)) {
             return;
         }
 

@@ -2,23 +2,31 @@
 <script src="{{ JAVASCRIPTPATH }}/js/ally.js"></script>
 <form action="alliance.php" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-	<div style="width: 505px; float: left;">
+	<div style="width: 32%; float: left;">
 		<div class="divhead">Name</div>
 		<div class="divbody">
-			<input type="text" style="width: 500px" name="name" value="{{ ALLIANCE.getName }}" />
+			<input type="text" style="width: 100%" name="name" value="{{ ALLIANCE.getName }}" />
 		</div>
 		<br />
 		<div class="divhead">Homepage</div>
 		<div class="divbody">
-			<input type="text" style="width: 500px" name="homepage" value="{{ ALLIANCE.getHomepage }}" />
+			<input type="text" style="width: 100%" name="homepage" value="{{ ALLIANCE.getHomepage }}" />
 		</div>
 		<br />
 		<div class="divhead">Beschreibung</div>
 		<div class="divbody">
-			<textarea name="description" style="width: 500px; height: 150px;">{{ ALLIANCE.getDescription }}</textarea>
+			<textarea name="description" style="width: 100%; height: 150px;">{{ ALLIANCE.getDescription }}</textarea>
+		</div>
+		<br />
+		<div class="divhead">Territorialfarbe</div>
+		<div class="divbody">
+			<input type="text" style="width: 100%" name="rgb" value="{{ ALLIANCE.getRgbCode }}" />
+		</div>
+		<div class="divbody">Dieser RGB-Farbcode kennzeichnet Kartenfelder, die der Allianz zugeordnet
+			werden können. Beispiel: #9ab5ef
 		</div>
 	</div>
-	<div style="margin-left: 5px; width: 200px; float: left;">
+	<div style="margin-left: 1%; width: 32%; float: left;">
 		<div class="divhead">Rassenallianz</div>
 		<div class="divbody">
 			<img src="assets/rassen/{{ USER.getFactionId }}s.png" />
@@ -30,8 +38,7 @@
 			{% endif %}
 		</div>
 		<br />
-		<div class=" divhead">Bewerbungen
-		</div>
+		<div class="divhead">Bewerbungen</div>
 		<div class="divbody">
 			<label>
 				{% set checked = ALLIANCE.getAcceptApplications ? 'checked="true"' : '' %}
@@ -43,6 +50,26 @@
 				<input type="radio" name="acceptapp" value="0" {{ checked }} />
 				verbieten
 			</label>
+		</div>
+		<br />
+		<div class="divhead">Allianzlogo</div>
+		<div class="divbody">
+			<table style="width: 100%">
+				<tr>
+					<td style="vertical-align: top;">
+						<input type="file" class="button" name="avatar" />
+						<input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button" />
+						<input type="submit" name="B_DELETE_AVATAR" value="Löschen" class="button" />
+					</td>
+				</tr>
+				{% if ALLIANCE.getAvatar %}
+				<tr>
+					<td>
+						{{ alliance_avatar(ALLIANCE) }}
+					</td>
+				</tr>
+				{% endif %}
+			</table>
 		</div>
 		<br />
 		<div class="divhead" style="color: #FF0000;">Löschung</div>
@@ -61,63 +88,71 @@
 			<input type="submit" class="button" name="B_UPDATE_ALLIANCE" value="Allianz editieren" />
 		</div>
 	</div>
-	<div style="padding-top: 10px; width: 505px; clear: both;">
-		<div class="divhead">Allianzlogo</div>
-		<div class="divbody">
-			<table style="width: 100%">
-				<tr>
-					<td style="vertical-align: top;">
-						<input type="file" class="button" name="avatar" />
-						<input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button" /> <input
-							type="submit" name="B_DELETE_AVATAR" value="Löschen" class="button" />
-					</td>
-				</tr>
-				{% if ALLIANCE.getAvatar %}
-				<tr>
-					<td>
-						{{ alliance_avatar(ALLIANCE) }}
-					</td>
-				</tr>
-				{% endif %}
-			</table>
-		</div>
-		<div class="divhead">Territorialfarbe</div>
-		<div class="divbody">
-			<input type="text" style="width: 500px" name="rgb" value="{{ ALLIANCE.getRgbCode }}" />
-		</div>
-		<div class="divbody">Dieser RGB-Farbcode kennzeichnet Kartenfelder, die der Allianz zugeordnet
-			werden können. Beispiel: #9ab5ef
-		</div>
-		<br />
+	<div style="margin-left: 1%; width: 32%; float: left;">
 		<div class="divhead">Allianz Rollen</div>
 		<div class="divbody">
 			<div id="alliance-jobs-container">
 				{% for job in ALLIANCE_JOBS %}
+				{% set hasFounderPermission = job.hasPermission(1) %}
 				<div class="alliance-job-item" data-job-id="{{ job.getId }}" data-sort="{{ job.getSort }}" {% if not
-					job.hasFounderPermission %}draggable="true" {% endif %}>
+					hasFounderPermission %}draggable="true" {% endif %}>
 					<div class="job-header">
-						{% if not job.hasFounderPermission %}
+						{% if not hasFounderPermission %}
 						<span class="drag-handle">&#9776;</span>
 						{% endif %}
 						<input type="text" class="job-title-input" value="{{ job.getTitle }}"
-							placeholder="Rollenbezeichnung" />
-						{% if not job.hasFounderPermission %}
-						<button type="button" class="button"
+							placeholder="Rollenbezeichnung" style="width: 60%;" />
+						{% if not hasFounderPermission %}
+						<button type="button" class="button job-toggle-permissions"
+							onclick="toggleJobPermissions({{ job.getId }})">
+							▼
+						</button>
+						<button type="button" class="button job-delete-btn"
 							onclick="deleteAllianceJob({{ job.getId }})">Löschen</button>
 						{% endif %}
 					</div>
-					{% if not job.hasFounderPermission %}
-					<div class="job-permissions">
-						<label>
-							<input type="checkbox" class="job-successor-check" {% if job.hasSuccessorPermission
-								%}checked{% endif %} />
-							Vize
-						</label>
-						<label>
-							<input type="checkbox" class="job-diplomatic-check" {% if job.hasDiplomaticPermission
-								%}checked{% endif %} />
-							Diplomat
-						</label>
+					{% if not hasFounderPermission %}
+					<div class="job-permissions-container" id="permissions-{{ job.getId }}" style="display: none;">
+						<div class="job-permissions-section">
+							<div class="job-permissions-header">Diplomatische Rechte</div>
+							<div class="job-permissions-list">
+								<label>
+									<input type="checkbox" class="job-permission-check parent-permission"
+										data-permission="3" data-parent="true" {% if job.hasPermission(3) %}checked{%
+										endif %} />
+									<strong>Diplomat</strong>
+								</label>
+								{% for permission in DIPLOMATIC_PERMISSIONS %}
+								<label style="margin-left: 20px;">
+									<input type="checkbox"
+										class="job-permission-check child-permission diplomatic-child"
+										data-permission="{{ permission.value }}" data-parent-permission="3" {% if
+										job.hasPermission(permission.value) %}checked{% endif %} />
+									{{ permission.getDescription() }}
+								</label>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="job-permissions-section">
+							<div class="job-permissions-header">Verwaltungsrechte</div>
+							<div class="job-permissions-list">
+								<label>
+									<input type="checkbox" class="job-permission-check parent-permission"
+										data-permission="2" data-parent="true" {% if job.hasPermission(2) %}checked{%
+										endif %} />
+									<strong>Vize</strong>
+								</label>
+								{% for permission in MANAGEMENT_PERMISSIONS %}
+								<label style="margin-left: 20px;">
+									<input type="checkbox"
+										class="job-permission-check child-permission management-child"
+										data-permission="{{ permission.value }}" data-parent-permission="2" {% if
+										job.hasPermission(permission.value) %}checked{% endif %} />
+									{{ permission.getDescription() }}
+								</label>
+								{% endfor %}
+							</div>
+						</div>
 					</div>
 					{% endif %}
 				</div>
@@ -129,3 +164,4 @@
 				speichern</button>
 		</div>
 	</div>
+</form>

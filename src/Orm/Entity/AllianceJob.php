@@ -52,9 +52,16 @@ class AllianceJob
     #[OneToMany(targetEntity: AllianceMemberJob::class, mappedBy: 'job', cascade: ['remove'])]
     private Collection $memberAssignments;
 
+    /**
+     * @var ArrayCollection<int, AllianceJobPermission>
+     */
+    #[OneToMany(targetEntity: AllianceJobPermission::class, mappedBy: 'job', cascade: ['persist', 'remove'])]
+    private Collection $permissions;
+
     public function __construct()
     {
         $this->memberAssignments = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function getId(): int
@@ -95,45 +102,30 @@ class AllianceJob
         return $this;
     }
 
-    public function hasFounderPermission(): bool
-    {
-        return $this->is_founder_permission;
-    }
-
-    public function setIsFounderPermission(bool $isFounderPermission): AllianceJob
-    {
-        $this->is_founder_permission = $isFounderPermission;
-        return $this;
-    }
-
-    public function hasSuccessorPermission(): bool
-    {
-        return $this->is_successor_permission;
-    }
-
-    public function setIsSuccessorPermission(bool $isSuccessorPermission): AllianceJob
-    {
-        $this->is_successor_permission = $isSuccessorPermission;
-        return $this;
-    }
-
-    public function hasDiplomaticPermission(): bool
-    {
-        return $this->is_diplomatic_permission;
-    }
-
-    public function setIsDiplomaticPermission(bool $isDiplomaticPermission): AllianceJob
-    {
-        $this->is_diplomatic_permission = $isDiplomaticPermission;
-        return $this;
-    }
-
     /**
      * @return Collection<int, AllianceMemberJob>
      */
     public function getMemberAssignments(): Collection
     {
         return $this->memberAssignments;
+    }
+
+    /**
+     * @return Collection<int, AllianceJobPermission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function hasPermission(int $permissionType): bool
+    {
+        foreach ($this->permissions as $permission) {
+            if ($permission->getPermission() === $permissionType) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

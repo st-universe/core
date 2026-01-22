@@ -67,7 +67,7 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($this->alliance, $this->user)
             ->once()
             ->andReturnFalse();
@@ -81,7 +81,7 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
@@ -102,7 +102,7 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
@@ -128,7 +128,7 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
@@ -158,7 +158,7 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
+        $this->allianceActionManager->shouldReceive('mayManageJobs')
             ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();

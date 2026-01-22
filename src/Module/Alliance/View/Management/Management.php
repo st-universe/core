@@ -10,12 +10,15 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-
 final class Management implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
-    public function __construct(private UserRepositoryInterface $userRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceUiFactoryInterface $allianceUiFactory) {}
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceUiFactoryInterface $allianceUiFactory
+    ) {}
 
     private function getCurrentUserMinSort(\Stu\Orm\Entity\Alliance $alliance, \Stu\Orm\Entity\User $user): int
     {
@@ -42,7 +45,7 @@ final class Management implements ViewControllerInterface
             return;
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
+        if (!$this->allianceActionManager->mayManageAlliance($alliance, $game->getUser())) {
             return;
         }
 
@@ -90,6 +93,22 @@ final class Management implements ViewControllerInterface
         $game->setTemplateVar(
             'USER_IS_FOUNDER',
             in_array($userId, array_map(fn($j) => $j->getUserId(), $alliance->getJobsWithFounderPermission()))
+        );
+        $game->setTemplateVar(
+            'CAN_MANAGE_JOBS',
+            $this->allianceActionManager->mayManageJobs($alliance, $game->getUser())
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_COLONIES',
+            $this->allianceActionManager->mayViewColonies($alliance, $game->getUser())
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_MEMBER_DATA',
+            $this->allianceActionManager->mayViewMemberData($alliance, $game->getUser())
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_SHIPS',
+            $this->allianceActionManager->mayViewShips($alliance, $game->getUser())
         );
     }
 }

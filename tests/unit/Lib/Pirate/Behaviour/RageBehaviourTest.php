@@ -305,6 +305,11 @@ class RageBehaviourTest extends StuTestCase
             ->with($this->fleetWrapper, $target)
             ->once();
 
+        $this->fleet->shouldReceive('getShips->isEmpty')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)
             ->once();
@@ -367,6 +372,11 @@ class RageBehaviourTest extends StuTestCase
         $this->pirateAttack->shouldReceive('attackShip')
             ->with($this->fleetWrapper, $target)
             ->once();
+
+        $this->fleet->shouldReceive('getShips->isEmpty')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)
@@ -515,6 +525,11 @@ class RageBehaviourTest extends StuTestCase
         $this->pirateAttack->shouldReceive('attackShip')
             ->with($this->fleetWrapper, $target2)
             ->once();
+
+        $this->fleet->shouldReceive('getShips->isEmpty')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $this->pirateReaction->shouldReceive('react')
             ->with($this->fleet, PirateReactionTriggerEnum::ON_RAGE, $ship, $reactionMetadata)

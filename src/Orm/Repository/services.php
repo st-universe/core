@@ -14,6 +14,7 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceMemberJob;
+use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Anomaly;
@@ -182,6 +183,7 @@ return [
     AllianceBoardTopicRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class),
     AllianceJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class),
     AllianceMemberJobRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceMemberJob::class),
+    AllianceJobPermissionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJobPermission::class),
     AllianceRelationRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
     AllianceSettingsRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceSettings::class),
     AnomalyTypeRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AnomalyType::class),

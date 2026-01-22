@@ -17,7 +17,11 @@ final class Relations implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository) {}
+    public function __construct(
+        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceRepositoryInterface $allianceRepository
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -63,5 +67,13 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
+        $game->setTemplateVar(
+            'CAN_CREATE_AGREEMENTS',
+            $this->allianceActionManager->mayCreateAgreements($alliance, $user)
+        );
+        $game->setTemplateVar(
+            'CAN_EDIT_DIPLOMATIC_DOCUMENTS',
+            $this->allianceActionManager->mayEditDiplomaticDocuments($alliance, $user)
+        );
     }
 }

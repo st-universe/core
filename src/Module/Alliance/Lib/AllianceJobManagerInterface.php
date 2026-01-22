@@ -26,4 +26,6 @@ interface AllianceJobManagerInterface
     public function hasUserSuccessorPermission(User $user, Alliance $alliance): bool;
 
     public function hasUserDiplomaticPermission(User $user, Alliance $alliance): bool;
+
+    public function hasUserPermission(User $user, Alliance $alliance, int $permissionType): bool;
 }
