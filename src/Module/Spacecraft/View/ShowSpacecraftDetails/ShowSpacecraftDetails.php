@@ -6,12 +6,14 @@ namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
 use request;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 
 final class ShowSpacecraftDetails implements ViewControllerInterface
 {
@@ -22,6 +24,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
+        private StationLoaderInterface $stationLoader,
         private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
 
@@ -39,6 +42,21 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
 
         $game->setPageTitle('Schiffsinformationen');
         $game->setMacroInAjaxWindow('html/spacecraft/spacecraftDetails.twig');
+
+
+        if ($wrapper->get()->isStation() && $game->getUser()->getAlliance() !== null) {
+            $station = $this->stationLoader->getByIdAndUser(
+                request::indInt('id'),
+                $userId,
+                false,
+                false
+            );
+
+            $rumpRoleId = $station->getRump()->getShipRumpRole()?->getId();
+            if (in_array($rumpRoleId, [SpacecraftRumpRoleEnum::DEPOT_SMALL, SpacecraftRumpRoleEnum::DEPOT_LARGE])) {
+                $game->setTemplateVar('CAN_MANAGE_ALLIANCE', $station->getAlliance() === null);
+            }
+        }
 
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('TRACTOR_PAYLOAD', $this->getTractorPayload($wrapper->get()));

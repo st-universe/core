@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
@@ -27,6 +28,9 @@ class Station extends Spacecraft
 {
     #[Column(type: 'integer', nullable: true)]
     private ?int $influence_area_id = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $ally_id = null;
 
     #[OneToOne(targetEntity: TradePost::class, mappedBy: 'station')]
     private ?TradePost $tradePost = null;
@@ -51,6 +55,11 @@ class Station extends Spacecraft
     #[OneToOne(targetEntity: StarSystem::class, inversedBy: 'station')]
     #[JoinColumn(name: 'influence_area_id', referencedColumnName: 'id')]
     private ?StarSystem $influenceArea = null;
+
+    #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'stations')]
+    #[JoinColumn(name: 'ally_id', referencedColumnName: 'id')]
+    private ?Alliance $alliance = null;
+
 
     public function __construct()
     {
@@ -91,6 +100,17 @@ class Station extends Spacecraft
     public function setInfluenceArea(?StarSystem $influenceArea): Station
     {
         $this->influenceArea = $influenceArea;
+        return $this;
+    }
+
+    public function getAlliance(): ?Alliance
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(?Alliance $alliance): Station
+    {
+        $this->alliance = $alliance;
         return $this;
     }
 
@@ -142,7 +162,7 @@ class Station extends Spacecraft
         $state = $this->getCondition()->getState();
 
         return $state === SpacecraftStateEnum::UNDER_CONSTRUCTION
-        || $state === SpacecraftStateEnum::UNDER_SCRAPPING
+            || $state === SpacecraftStateEnum::UNDER_SCRAPPING
             ? 50
             : $this->getRump()->getDockingSlots();
     }

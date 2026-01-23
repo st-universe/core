@@ -182,5 +182,18 @@
             </div>
             {% endfor %}
         </div>
+
+        <form action="station.php" method="post">
+            <input type="hidden" name="id" value="{{ SHIP.getId }}" />
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            {% if CAN_MANAGE_ALLIANCE is defined %}
+            <br />
+            {% if CAN_MANAGE_ALLIANCE %}
+            <input type="submit" class="button" name="B_ADD_TO_ALLIANCE" value="zur Allianz hinzufügen" />
+            {% else %}
+            <input type="submit" class="button" name="B_DELETE_FROM_ALLIANCE" value="von der Allianz entfernen" />
+            {% endif %}
+            {% endif %}
+        </form>
     </div>
 </div>

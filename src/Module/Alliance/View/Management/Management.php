@@ -8,7 +8,11 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\User;
 
 final class Management implements ViewControllerInterface
 {
@@ -17,10 +21,12 @@ final class Management implements ViewControllerInterface
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private AllianceActionManagerInterface $allianceActionManager,
-        private AllianceUiFactoryInterface $allianceUiFactory
+        private AllianceUiFactoryInterface $allianceUiFactory,
+        private StationRepositoryInterface $stationRepository,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    private function getCurrentUserMinSort(\Stu\Orm\Entity\Alliance $alliance, \Stu\Orm\Entity\User $user): int
+    private function getCurrentUserMinSort(Alliance $alliance, User $user): int
     {
         $minSort = null;
 
@@ -58,6 +64,11 @@ final class Management implements ViewControllerInterface
             );
         }
 
+        $stations = $this->stationRepository->getByAlliance($alliance->getId());
+        $stationWrappers = $this->spacecraftWrapperFactory->wrapSpacecrafts($stations);
+
+
+
         $game->setPageTitle('Allianz verwalten');
 
         $game->setNavigation([
@@ -89,6 +100,7 @@ final class Management implements ViewControllerInterface
         $game->setViewTemplate('html/alliance/alliancemanagement.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_JOBS', $availableJobs);
+        $game->setTemplateVar('ALLIANCE_STATIONS', $stationWrappers);
         $game->setTemplateVar('MEMBER_LIST', $list);
         $game->setTemplateVar(
             'USER_IS_FOUNDER',
@@ -109,6 +121,10 @@ final class Management implements ViewControllerInterface
         $game->setTemplateVar(
             'CAN_VIEW_SHIPS',
             $this->allianceActionManager->mayViewShips($alliance, $game->getUser())
+        );
+        $game->setTemplateVar(
+            'CAN_VIEW_ALLIANCE_STORAGE',
+            $this->allianceActionManager->mayViewAllianceStorage($alliance, $game->getUser())
         );
     }
 }

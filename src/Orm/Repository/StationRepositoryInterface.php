@@ -59,4 +59,7 @@ interface StationRepositoryInterface extends ObjectRepository
 
     /** @return array<Station> */
     public function getPiratePhalanxTargets(SpacecraftWrapperInterface $wrapper): array;
+
+    /** @return array<Station> */
+    public function getByAlliance(int $allianceId): array;
 }

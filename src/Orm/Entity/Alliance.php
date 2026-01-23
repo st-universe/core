@@ -75,11 +75,18 @@ class Alliance
     #[OneToMany(targetEntity: AllianceJob::class, mappedBy: 'alliance')]
     private Collection $jobs;
 
+    /**
+     * @var ArrayCollection<int, Station>
+     */
+    #[OneToMany(targetEntity: Station::class, mappedBy: 'alliance')]
+    private Collection $stations;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->settings = new ArrayCollection();
+        $this->stations = new ArrayCollection();
     }
 
     public function getId(): int
@@ -303,5 +310,13 @@ class Alliance
     public function getSettings(): Collection
     {
         return $this->settings;
+    }
+
+    /**
+     * @return Collection<int, Station>
+     */
+    public function getStations(): Collection
+    {
+        return $this->stations;
     }
 }

@@ -226,6 +226,12 @@ final class StationUtility implements StationUtilityInterface
             return;
         }
 
+        $rumpRoleId = $station->getRump()->getShipRumpRole()?->getId();
+        if ($rumpRoleId === SpacecraftRumpRoleEnum::DEPOT_SMALL || $rumpRoleId === SpacecraftRumpRoleEnum::DEPOT_LARGE) {
+            $station->setAlliance(null);
+            $this->stationRepository->save($station);
+        }
+
         $buildplanModules = $buildplan->getModules();
         $specialModules = $progress->getSpecialModules();
         $recycledModules = [];
