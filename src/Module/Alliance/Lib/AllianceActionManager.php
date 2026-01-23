@@ -16,6 +16,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
@@ -27,7 +28,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         private ConfigInterface $config,
-        private AllianceJobManagerInterface $allianceJobManager
+        private AllianceJobManagerInterface $allianceJobManager,
+        private StationRepositoryInterface $stationRepository
     ) {}
 
     #[\Override]
@@ -40,6 +42,12 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     public function delete(Alliance $alliance, bool $sendMesage = true): void
     {
         $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
+
+        foreach ($alliance->getStations() as $station) {
+            $station->setAlliance(null);
+            $this->stationRepository->save($station);
+        }
+
 
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
@@ -117,7 +125,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS->value)
             || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_COLONIES->value)
             || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_MEMBER_DATA->value)
-            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS->value);
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS->value)
+            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_ALLIANCE_STORAGE->value);
     }
 
     #[\Override]

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260122124254 extends AbstractMigration
+final class Version20260123171558 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -448,8 +448,9 @@ final class Version20260122124254 extends AbstractMigration
         $this->addSql('CREATE INDEX spacecraft_system_status_idx ON stu_spacecraft_system (status)');
         $this->addSql('CREATE INDEX spacecraft_system_type_idx ON stu_spacecraft_system (system_type)');
         $this->addSql('CREATE INDEX spacecraft_system_mode_idx ON stu_spacecraft_system (mode)');
-        $this->addSql('CREATE TABLE stu_station (influence_area_id INTEGER DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_C782E0C3915ABAF6 FOREIGN KEY (influence_area_id) REFERENCES stu_systems (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C782E0C3BF396750 FOREIGN KEY (id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_station (influence_area_id INTEGER DEFAULT NULL, ally_id INTEGER DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_C782E0C3915ABAF6 FOREIGN KEY (influence_area_id) REFERENCES stu_systems (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C782E0C31C6E3E76 FOREIGN KEY (ally_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C782E0C3BF396750 FOREIGN KEY (id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_C782E0C3915ABAF6 ON stu_station (influence_area_id)');
+        $this->addSql('CREATE INDEX IDX_C782E0C31C6E3E76 ON stu_station (ally_id)');
         $this->addSql('CREATE INDEX station_influence_area_idx ON stu_station (influence_area_id)');
         $this->addSql('CREATE TABLE stu_station_shiprepair (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, station_id INTEGER NOT NULL, ship_id INTEGER NOT NULL, CONSTRAINT FK_51875AF721BDB235 FOREIGN KEY (station_id) REFERENCES stu_station (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_51875AF7C256317D FOREIGN KEY (ship_id) REFERENCES stu_ship (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_51875AF721BDB235 ON stu_station_shiprepair (station_id)');

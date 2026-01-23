@@ -72,7 +72,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT st FROM %s st
+                    'SELECT st FROM %s st
                      JOIN %s s
                      WITH st.id = s.id
                      LEFT JOIN %s m
@@ -339,5 +339,13 @@ final class StationRepository extends EntityRepository implements StationReposit
         ], [
             'locationId' => 'asc'
         ]);
+    }
+
+    public function getByAlliance(int $allianceId): array
+    {
+        return $this->findBy(
+            ['ally_id' => $allianceId],
+            ['id' => 'ASC']
+        );
     }
 }

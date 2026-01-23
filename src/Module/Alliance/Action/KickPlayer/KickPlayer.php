@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KickPlayer implements ActionControllerInterface
@@ -23,7 +24,8 @@ final class KickPlayer implements ActionControllerInterface
         private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
-        private AllianceJobManagerInterface $allianceJobManager
+        private AllianceJobManagerInterface $allianceJobManager,
+        private StationRepositoryInterface $stationRepository
     ) {}
 
     #[\Override]
@@ -57,6 +59,13 @@ final class KickPlayer implements ActionControllerInterface
             $founderJob = $alliance->getFounder();
             $this->allianceJobManager->removeUserFromJob($player, $founderJob);
             $this->allianceJobManager->assignUserToJob($user, $founderJob);
+        }
+
+        foreach ($alliance->getStations() as $station) {
+            if ($station->getUser()->getId() === $playerId) {
+                $station->setAlliance(null);
+                $this->stationRepository->save($station);
+            }
         }
 
         $this->allianceJobManager->removeUserFromAllJobs($player, $alliance);

@@ -8,10 +8,12 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
+use Stu\Module\Station\Action\AddToAlliance\AddToAlliance;
 use Stu\Module\Station\Action\BuildShipyardShip\BuildShipyardShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
 use Stu\Module\Station\Action\CancelShipRepair\CancelShipRepair;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
+use Stu\Module\Station\Action\DeleteFromAlliance\DeleteFromAlliance;
 use Stu\Module\Station\Action\DockFleet\DockFleet;
 use Stu\Module\Station\Action\DockTractoredShip\DockTractoredShip;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
@@ -59,10 +61,12 @@ return [
     'STATION_ACTIONS' => [
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class),
+        AddToAlliance::ACTION_IDENTIFIER => autowire(AddToAlliance::class),
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
         BuildShipyardShip::ACTION_IDENTIFIER => autowire(BuildShipyardShip::class),
         CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
+        DeleteFromAlliance::ACTION_IDENTIFIER => autowire(DeleteFromAlliance::class),
         DockFleet::ACTION_IDENTIFIER => autowire(DockFleet::class),
         DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
         ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),

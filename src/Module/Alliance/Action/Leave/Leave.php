@@ -10,6 +10,7 @@ use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Leave implements ActionControllerInterface
@@ -19,7 +20,8 @@ final class Leave implements ActionControllerInterface
     public function __construct(
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
-        private AllianceJobManagerInterface $allianceJobManager
+        private AllianceJobManagerInterface $allianceJobManager,
+        private StationRepositoryInterface $stationRepository
     ) {}
 
     #[\Override]
@@ -33,7 +35,12 @@ final class Leave implements ActionControllerInterface
         $userId = $user->getId();
 
         $this->allianceJobManager->removeUserFromAllJobs($user, $alliance);
-
+        foreach ($alliance->getStations() as $station) {
+            if ($station->getUser()->getId() === $userId) {
+                $station->setAlliance(null);
+                $this->stationRepository->save($station);
+            }
+        }
         $user->setAlliance(null);
         $this->userRepository->save($user);
 

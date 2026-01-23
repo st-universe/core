@@ -91,4 +91,62 @@
     </tr>
     {% endfor %}
 </table>
+{% if CAN_VIEW_ALLIANCE_STORAGE %}
+{% if ALLIANCE_STATIONS|length > 0 %}
+<br /><br />
+<div class="divhead">Allianz-Depots</div>
+<br />
+<div style="display: grid; grid-template-columns: 49% 49%; grid-column-gap: 2%;">
+    {% for wrapper in ALLIANCE_STATIONS %}
+    {% set station = wrapper.get %}
+    <div style="margin-bottom: 20px;">
+        <table class="tcal">
+            <tr>
+                <th colspan="2">{{ station.getName|bbcode }}</th>
+            </tr>
+            <tr>
+                <td rowspan="4" style="width: 150px; text-align: center;">
+                    <img src="assets/ships/{{ station.getRump.getId }}.png" />
+                </td>
+                <td>
+                    <strong>Besitzer:</strong> {{ station.getUser.getName|bbcode }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Standort:</strong>
+                    <img src="/assets/buttons/layer_{{ station.getLocation.getLayer.getId }}.png"
+                        title="{{ station.getLocation.getLayer.getName }}" style="vertical-align: middle;" />
+                    {% if station.getSystem %}
+                    {{ station.getStarsystemMap.getSx }}|{{ station.getStarsystemMap.getSy }} ({{
+                    station.getSystem.getName }}-System {{ station.getSystem.getCx }}|{{ station.getSystem.getCy }})
+                    {% else %}
+                    {{ station.getSectorString }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="font-weight: bold; margin-top: 10px;">Waren im Lager:</div>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        {% for stor in station.getStorage %}
+                        <div style="display: inline-block; width: 80px; text-align: center; margin: 5px;">
+                            <img src="assets/commodities/{{ stor.getCommodity.getId }}.png"
+                                title="{{ stor.getCommodity.getName }}" />
+                            <div>{{ stor.getAmount }}</div>
+                        </div>
+                        {% endfor %}
+                        {% if station.getStorage|length == 0 %}
+                        <div style="padding: 10px">Lager ist leer</div>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endif %}
+
 {% endblock %}
