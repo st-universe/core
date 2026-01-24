@@ -109,6 +109,10 @@ final class ShowEventMap implements ViewControllerInterface
             if ($partialImage === false) {
                 throw new InvalidArgumentException('error creating partial image');
             }
+
+            // Convert the partial image to grayscale
+            imagecopymergegray($partialImage, $partialImage, 0, 0, 0, 0, 30, 30, 0);
+
             $types[$data->getFieldId()] = $partialImage;
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;
