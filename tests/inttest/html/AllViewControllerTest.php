@@ -150,6 +150,7 @@ class AllViewControllerTest extends TwigTestCase
             'buoyid' => 42,
 
             // COLONY
+            'colonyid' => 1234,
             'fid' => 26,
             'func' => 87,
             'buildingid' => 82010100,

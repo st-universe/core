@@ -114,6 +114,7 @@ use Stu\Module\Alliance\View\NewTopic\NewTopicRequest;
 use Stu\Module\Alliance\View\NewTopic\NewTopicRequestInterface;
 use Stu\Module\Alliance\View\Relations\Relations;
 use Stu\Module\Alliance\View\ShowEditPost\ShowEditPost;
+use Stu\Module\Alliance\View\ShowMemberColonyInfo\ShowMemberColonyInfo;
 use Stu\Module\Alliance\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Alliance\View\Topic\TopicRequest;
@@ -213,6 +214,7 @@ return [
         Create::VIEW_IDENTIFIER => autowire(Create::class),
         Edit::VIEW_IDENTIFIER => autowire(Edit::class),
         Relations::VIEW_IDENTIFIER => autowire(Relations::class),
+        ShowMemberColonyInfo::VIEW_IDENTIFIER => autowire(ShowMemberColonyInfo::class),
         ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class),
         DiplomaticRelations::VIEW_IDENTIFIER => autowire(DiplomaticRelations::class),
         ViewEditRelationText::VIEW_IDENTIFIER => autowire(ViewEditRelationText::class),

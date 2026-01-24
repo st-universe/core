@@ -37,8 +37,10 @@
         <td>
             {% if CAN_VIEW_COLONIES %}
             {% for col in data.getColonies %}
-            <img src="assets/planets/{{ col.getColonyClass.getId }}.png"
-                title="{{ col.getName|bbcode2txt }} {{ col.getSectorString }}" />
+            <a href="javascript:void(0);" onclick="showMemberColonyInfo(this, {{ col.getId }});">
+                <img src="assets/planets/{{ col.getColonyClass.getId }}.png"
+                    title="{{ col.getName|bbcode2txt }} {{ col.getSectorString }} (Klicke für Details)" />
+            </a>
             {% endfor %}
             {% else %}
             Keine Berechtigung

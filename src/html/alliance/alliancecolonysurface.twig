@@ -1,0 +1,270 @@
+<div style="display: flex; gap: 20px; padding: 2px;">
+    <div style="flex: 0 0 auto; margin-left: 2px;">
+        {% if EPS_STATUS_BAR is defined and EPS_BAR_TITLE_STRING is defined %}
+        <div class="box">
+            <div class="box_title">{{ EPS_BAR_TITLE_STRING }}</div>
+            <div class="box_body">
+                <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 12px; height: 12px;" />
+                {% autoescape false %}
+                {{ EPS_STATUS_BAR }}
+                {% endautoescape %}
+                {% if EPS_PRODUCTION is defined %}
+                {{ EPS_PRODUCTION|addPlusCharacter }}
+                {% endif %}
+            </div>
+        </div>
+        <br />
+        {% endif %}
+
+        {% if SHIELD_STATUS_BAR is defined and SHIELD_BAR_TITLE_STRING is defined %}
+        <div class="box">
+            <div class="box_title">{{ SHIELD_BAR_TITLE_STRING }}</div>
+            <div class="box_body">
+                <img src="/assets/buttons/shld.png" title="Schildstärke" style="width: 12px; height: 12px;" />
+                {% autoescape false %}
+                {{ SHIELD_STATUS_BAR }}
+                {% endautoescape %}
+            </div>
+        </div>
+        <br />
+        {% endif %}
+
+        <div style="{{ SURFACE.getSurfaceTileStyle }}">
+            {% for field in SURFACE.getSurface %}
+            {% set dayNightPrefix = getDayNightPrefix(field) %}
+            {% if not field.hasBuilding %}
+            <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;" id="field{{ field.getFieldId }}">
+                <div>
+                    <div>
+                        <img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
+                            src="assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png" />
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;" id="field{{ field.getFieldId }}">
+                <div
+                    style="background-image: url(assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png); width: 40px; height: 40px;">
+                    <img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
+                        src="assets/generated/buildings/{{ field.getBuildingId }}/{{ field.getBuilding.getBuildingType }}{{ field.getBuildingState }}{{ dayNightPrefix }}.png" />
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if STORAGE is defined %}
+        <br />
+        <table class="use" style="width: 433px;">
+            <tr>
+                <th>
+                    <span>Lager:</span> {{ STORAGE_SUM }}/{{ MAX_STORAGE }}
+                    ({{ STORAGE_SUM_PERCENT }}%)
+                </th>
+                <td>
+                    {% autoescape false %}
+                    {{ PRODUCTION_SUM|formatProductionValue }}
+                    {% endautoescape %}
+                </td>
+            </tr>
+            {% for stor in STORAGE %}
+            <tr class="row">
+                <td style="vertical-align: middle;">
+                    <div style="display: table-cell; width: 55px;">
+                        <img src="/assets/commodities/{{ stor.commodity.getId }}.png"
+                            title="{{ stor.commodity.getName }}" />
+                    </div>
+                    <div style="display: table-cell; width: 40px; vertical-align:middle;">
+                        {% if stor.storage %}
+                        {{ stor.storage.getAmount }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </div>
+                    <div style="display: table-cell; vertical-align: middle">{{ stor.commodity.getName }}</div>
+                </td>
+                <td style="vertical-align: middle;">
+                    {% if stor.production %}
+                    <span class="{{ stor.production.getCssClass }}">{{ stor.production.getProductionDisplay }}</span>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if EFFECTS is defined and EFFECTS %}
+        <br />
+        <div id="colonyeffects" style="white-space: normal; width: 433px;">
+            <div class="box">
+                <div class="box_title">Effekte</div>
+                <div class="box_body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px;">
+                        {% for data in EFFECTS %}
+                        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <img src="/assets/commodities/{{ data.commodity.getId }}.png"
+                                title="{{ data.commodity.getName }}" />
+                            <span style="word-wrap: break-word; white-space: normal; font-size: 0.9em;">
+                                {{ data.commodity.getName }}
+                            </span>
+                            <div class="{{ data.production.getCssClass }}" style="margin-top: 5px;">
+                                {{ data.production.getProductionDisplay }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div style="flex: 1; min-width: 0; margin-right: 2px; display: flex; flex-direction: column; gap: 10px;">
+        <div class="box">
+            <div class="box_title">Kolonieübersicht</div>
+            <div class="box_body">
+                <div style="margin-bottom: 10px;">
+                    <img src="/assets/planets/{{ COLONY.getColonyClass.getId }}.png"
+                        style="width: 30px; height: 30px;" />
+                    <span style="display: block; white-space:pre-line;">
+                        {{ COLONY.getPlanetName }} ({{ COLONY.getSX }}|{{ COLONY.getSY }})</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <img src="/assets/buttons/t_{{ COLONY_DAY_TIME_PREFIX }}.png" title="{{ COLONY_DAY_TIME_NAME }}" />
+                    <span>{{ COLONY_TIME_HOUR }}:{{ COLONY_TIME_MINUTE }} Uhr</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
+                    {{ COLONY.getRotationTime|formatSeconds }}
+                </div>
+                {% if COLONY.getSystem %}
+                <div style="margin-bottom: 10px;">
+                    <strong>Sternensystem:</strong><br>
+                    <img src="/assets/map/systemtypes/{{ COLONY.getSystem.getSystemType.getId }}.png"
+                        title="{{ COLONY.getSystem.getSystemType.getDescription }}" />
+                    <span style="display: block; white-space:pre-line;">{{ COLONY.getSystem.getName }}
+                        ({{ COLONY.getSystem.getCx }}|{{ COLONY.getSystem.getCy }})</span>
+                    <span style="display: block; white-space:pre-line;">
+                        Typ: {{COLONY.getSystem.getSystemType.getDescription }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box_title">Schilde + Orbitalverteidigung</div>
+            <div class="box_body">
+                <table class="tcal" style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%; white-space: normal; word-wrap: break-word;">Schildfrequenz (MHz):</td>
+                        <td style="width: 50%;">{{ COLONY.getChangeable.getShieldFrequency }}</td>
+                    </tr>
+                    {% set currentTorpedo = COLONY.getChangeable.getTorpedo %}
+                    {% if currentTorpedo %}
+                    <tr>
+                        <td style="white-space: normal; word-wrap: break-word;">Torpedo-Sorte:</td>
+                        <td style="white-space: normal; word-wrap: break-word;">{{ currentTorpedo.getName }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        {% if POPULATION_CALCULATOR is defined %}
+        {% set primaryEffectCommodity = FACTION.getPrimaryEffectCommodity %}
+        {% set secondaryEffectCommodity = FACTION.getSecondaryEffectCommodity %}
+        <div class="box">
+            <div class="box_title">Crewberechnung dieser Kolonie</div>
+            <div class="box_body">
+                <table class="tcal" style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%; white-space: normal; word-wrap: break-word;" class="darkbg">
+                            {{ primaryEffectCommodity.getName }}
+                        </td>
+                        <td style="width: 50%; white-space: normal; word-wrap: break-word;" class="darkbg">
+                            {{ secondaryEffectCommodity.getName }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="assets/commodities/{{ primaryEffectCommodity.getId }}.png"
+                                title="{{ primaryEffectCommodity.getName }}" />
+                            {{ POPULATION_CALCULATOR.getPositiveEffectPrimary }}
+                        </td>
+                        <td>
+                            <img src="assets/commodities/{{ secondaryEffectCommodity.getId }}.png"
+                                title="{{ secondaryEffectCommodity.getName }}" />
+                            {{ POPULATION_CALCULATOR.getPositiveEffectSecondary }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="white-space: normal; word-wrap: break-word;" class="darkbg">
+                            Bevölkerungsdichte
+                        </td>
+                        <td style="white-space: normal; word-wrap: break-word;" class="darkbg">Lebensstandard (%)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="/assets/bev/bev_free_5_{{ COLONY.getUser.getFactionId }}.png"
+                                title="Bevölkerung" />
+                            {{ POPULATION_CALCULATOR.getNegativeEffect }}
+                        </td>
+                        <td>
+                            <img src="/assets/commodities/1300.png" title="Lebensstandard (in Prozent)">
+                            {{ POPULATION_CALCULATOR.getLifeStandardPercentage }}%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="white-space: normal; word-wrap: break-word;" class="darkbg">Erzeugte Crew
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <img src="/assets/bev/bev_free_5_{{ COLONY.getUser.getFactionId }}.png"
+                                title="Bevölkerung" />
+                            {{ POPULATION_CALCULATOR.getCrewLimit }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <table id="colonypopulation" class="tcal population" style="width: 100%; table-layout: fixed;">
+            <tr>
+                <th colspan="3">Bevölkerung</th>
+            </tr>
+            <tr>
+                <td class="populationValue" style="white-space: normal; word-wrap: break-word;">
+                    <div>Gesamt</div>
+                    <img src="/assets/bev/bev_free_5_{{ COLONY.getUser.getFactionId }}.png" title="Bevölkerung" />
+                    {{ HOST.getPopulation }}
+                </td>
+                <td class="populationValue" style="white-space: normal; word-wrap: break-word;">
+                    <div>Arbeiter</div>
+                    <img src="/assets/bev/bev_used_5_{{ COLONY.getUser.getFactionId }}.png" title="Arbeiter" />
+                    {{ HOST.getWorkers }}
+                </td>
+                <td class="populationValue" style="white-space: normal; word-wrap: break-word;">
+                    <div>Verfügbar</div>
+                    <img src="/assets/bev/bev_unused_5_{{ COLONY.getUser.getFactionId }}.png"
+                        title="Freie Bevölkerung" />
+                    {{ HOST.getWorkless }}
+                </td>
+            </tr>
+            <tr>
+                <td class="populationValue" style="white-space: normal; word-wrap: break-word;" colspan="2">
+                    <div>Wohnraum</div>
+                    <img src="/assets/bev/bev_free_5_{{ COLONY.getUser.getFactionId }}.png" title="Wohnraum" />
+                    {{ HOST.getChangeable.getFreeHousing }} ({{ HOST.getMaxBev }})
+                </td>
+                <td class="populationValue" style="white-space: normal; word-wrap: break-word;">
+                    <div>Entwicklung</div>
+                    <img src="/assets/bev/bev_unused_5_{{ COLONY.getUser.getFactionId }}.png" title="Wachstum" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

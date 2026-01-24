@@ -5,6 +5,13 @@ function showMemberRumpInfo(obj, userid, rumpid) {
 	);
 }
 
+function showMemberColonyInfo(obj, colonyid) {
+	var pos = findObject(obj);
+	updatePopup('alliance.php?SHOW_MEMBER_COLONY_INFO=1&colonyid=' + colonyid,
+		850, pos[0] - 400, pos[1]
+	);
+}
+
 function showRelationText(relationid) {
 	var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 	var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
