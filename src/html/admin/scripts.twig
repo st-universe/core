@@ -65,6 +65,16 @@
             Layer-ID:<input type="text" size="5" name="pirate_layer" id="pirate_layer" value="{{ DEFAULT_LAYER }}" />
             X-Koordinate:<input type="text" size="5" name="pirate_cx" id="pirate_cx" />
             Y-Koordinate:<input type="text" size="5" name="pirate_cy" id="pirate_cy" />
+            <br /><br />
+            Setup:
+            <select name="pirate_setup_id" id="pirate_setup_id">
+                <option value="0">Zufällig</option>
+                {% for setup in PIRATE_SETUPS %}
+                <option value="{{ setup.getId() }}">{{ setup.getName()|bbcode|raw }} ({{ setup.getProbabilityWeight()
+                    }})</option>
+                {% endfor %}
+            </select>
+            <br /><br />
             <input type="submit" class="button" name="B_SPAWN_PIRATE_FLEET" value="Piratenflotte spawnen"
                 id="spawnpiratefleetbutton" />
         </div>

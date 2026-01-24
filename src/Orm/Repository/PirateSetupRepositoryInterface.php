@@ -10,4 +10,6 @@ use Stu\Orm\Entity\PirateSetup;
  */
 interface PirateSetupRepositoryInterface extends ObjectRepository
 {
+    /** @return array<PirateSetup> */
+    public function getAllOrderedByName(): array;
 }
