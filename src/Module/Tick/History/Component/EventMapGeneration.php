@@ -125,6 +125,8 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             }
         }
 
+        StuLogger::logf("saving event map for layer %d", $layer->getId());
+
         imagepng(
             $img,
             sprintf(
