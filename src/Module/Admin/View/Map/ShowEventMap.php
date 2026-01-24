@@ -45,6 +45,7 @@ final class ShowEventMap implements ViewControllerInterface
         }
 
         $scale = request::getInt('scale', 15);
+        $grayScale = request::has('grayscale');
         $width = $layer->getWidth() * $scale;
         $height = $layer->getHeight() * $scale;
 
@@ -115,6 +116,10 @@ final class ShowEventMap implements ViewControllerInterface
             $types[$data->getFieldId()] = $partialImage;
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, $scale, $scale, 30, 30);
             $curx += $scale;
+        }
+
+        if ($grayScale) {
+            imagefilter($img, IMG_FILTER_GRAYSCALE);
         }
 
         header("Content-type: image/png");
