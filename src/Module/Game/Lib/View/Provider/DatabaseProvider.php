@@ -6,6 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Image\ImageCreationInterface;
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
@@ -40,16 +41,19 @@ final class DatabaseProvider implements ViewComponentProviderInterface
             $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_MAP)
         );
 
-        // load event map from file
-        $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
-        $graph = imagecreatefrompng($historyFolder . '/layer_2.png');
-        if ($graph === false) {
-            throw new \InvalidArgumentException('error creating event map image from file');
-        }
+        if ($game->getUser()->getUserLayers()->get(MapEnum::DEFAULT_LAYER)?->getMappingType() === MapEnum::MAPTYPE_LAYER_EXPLORED) {
 
-        $game->setTemplateVar(
-            'HISTORY_EVENT_MAP',
-            $this->imageCreation->gdImageInSrc($graph)
-        );
+            // load event map from file
+            $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
+            $graph = imagecreatefrompng($historyFolder . '/layer_2.png');
+            if ($graph === false) {
+                return;
+            }
+
+            $game->setTemplateVar(
+                'HISTORY_EVENT_MAP',
+                $this->imageCreation->gdImageInSrc($graph)
+            );
+        }
     }
 }

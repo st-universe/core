@@ -61,7 +61,8 @@
 		<a href="?SHOW_COMMODITIES_OVERVIEW=1">Warenübersicht</a>
 	</div>
 </div>
-<div id="history-events" style="width: 300px; margin-left: 5px; float: left;">
+{% if HISTORY_EVENT_MAP %}
+<div id="history-events" style="width: 250px; margin-left: 5px; float: left;">
 	<div class="divhead">History Events</div>
 	<div class="divbody">
 		{% autoescape false %}
@@ -69,3 +70,4 @@
     	{% endautoescape %}
 	</div>
 </div>
+{% endif %}
