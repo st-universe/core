@@ -1,5 +1,5 @@
-{% macro alliance_avatar(alliance) %}
+{% macro alliance_avatar(alliance, style) %}
 {% if alliance.getAvatar %}
-<img src="{{ ASSET_PATHS.alliance }}/{{ alliance.getAvatar }}.png" style="max-width: 100%; height: auto;" />
+<img src="{{ ASSET_PATHS.alliance }}/{{ alliance.getAvatar }}.png" {% if style %}style="{{ style }}" {% endif %} />
 {% endif %}
 {% endmacro %}
