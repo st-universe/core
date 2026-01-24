@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Map;
 
 /**
  * @extends ObjectRepository<History>
@@ -40,7 +41,7 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function getAmountByType(int $typeId): int;
 
     /**
-     * @return array<int, int>
+     * @return array<int, array{0: Map, amount: int}>
      */
     public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): array;
 
