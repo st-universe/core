@@ -53,6 +53,7 @@ use Stu\Module\Admin\Action\Ticks\DoManualSpacecraftTick;
 use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\Noop\Noop;
+use Stu\Module\Admin\View\Map\ShowEventMap;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\Map\ShowMapOverall;
@@ -130,6 +131,7 @@ return [
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
+        ShowEventMap::VIEW_IDENTIFIER => autowire(ShowEventMap::class),
         ShowScripts::VIEW_IDENTIFIER => autowire(ShowScripts::class),
         ShowTicks::VIEW_IDENTIFIER => autowire(ShowTicks::class),
         EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
