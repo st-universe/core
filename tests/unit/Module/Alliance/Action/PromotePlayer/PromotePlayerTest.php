@@ -6,9 +6,8 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,7 +24,6 @@ class PromotePlayerTest extends StuTestCase
 {
     private MockInterface&PromotePlayerRequestInterface $promotePlayerRequest;
     private MockInterface&AllianceJobRepositoryInterface $allianceJobRepository;
-    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&UserRepositoryInterface $userRepository;
     private MockInterface&AllianceJobManagerInterface $allianceJobManager;
@@ -37,7 +35,6 @@ class PromotePlayerTest extends StuTestCase
     {
         $this->promotePlayerRequest = $this->mock(PromotePlayerRequestInterface::class);
         $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);
-        $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
@@ -45,7 +42,6 @@ class PromotePlayerTest extends StuTestCase
         $this->subject = new PromotePlayer(
             $this->promotePlayerRequest,
             $this->allianceJobRepository,
-            $this->allianceActionManager,
             $this->privateMessageSender,
             $this->userRepository,
             $this->allianceJobManager
@@ -122,8 +118,8 @@ class PromotePlayerTest extends StuTestCase
                 ->once()
                 ->andReturn([$user]);
 
-            $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-                ->with($user, $alliance)
+            $this->allianceJobManager->shouldReceive('hasUserPermission')
+                ->with($user, $alliance, AllianceJobPermissionEnum::FOUNDER)
                 ->once()
                 ->andReturnTrue();
             $this->allianceJobManager->shouldReceive('removeUserFromJob')
@@ -150,8 +146,8 @@ class PromotePlayerTest extends StuTestCase
             ->once()
             ->andReturn(99);
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($alliance, $user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturn(true);
 

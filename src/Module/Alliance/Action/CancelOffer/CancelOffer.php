@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -16,12 +17,18 @@ final class CancelOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    public function __construct(private CancelOfferRequestInterface $cancelOfferRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private CancelOfferRequestInterface $cancelOfferRequest,
+        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private AllianceJobManagerInterface $allianceJobManager,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $user = $game->getUser();
+        $alliance = $user->getAlliance();
 
         if ($alliance === null) {
             throw new AccessViolationException();
@@ -31,7 +38,11 @@ final class CancelOffer implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
+        if (
+            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+        ) {
             throw new AccessViolationException();
         }
 

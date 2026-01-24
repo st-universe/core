@@ -6,7 +6,8 @@ namespace Stu\Module\Alliance\View\ShowMemberRumpInfo;
 
 use JBBCode\Parser;
 use request;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -20,7 +21,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
     public function __construct(
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private UserRepositoryInterface $userRepository,
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
         private Parser $bbcodeParser,
@@ -47,7 +48,15 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
             return;
         }
 
-        if (!$this->allianceActionManager->mayManageAlliance($memberAlliance, $user)) {
+        if (
+            !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::SUCCESSOR)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::DIPLOMATIC)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::MANAGE_JOBS)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_COLONIES)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_MEMBER_DATA)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_SHIPS)
+            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_ALLIANCE_STORAGE)
+        ) {
             return;
         }
 

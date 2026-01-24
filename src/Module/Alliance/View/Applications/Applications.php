@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Applications;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
@@ -15,7 +16,7 @@ final class Applications implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
     public function __construct(
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private AllianceApplicationRepositoryInterface $allianceApplicationRepository
     ) {}
 
@@ -28,7 +29,7 @@ final class Applications implements ViewControllerInterface
             throw new AccessViolationException("user not in alliance");
         }
 
-        if (!$this->allianceActionManager->mayManageApplications($alliance, $game->getUser())) {
+        if (!$this->allianceJobManager->hasUserPermission($game->getUser(), $alliance, AllianceJobPermissionEnum::MANAGE_APPLICATIONS)) {
             throw new AccessViolationException();
         }
 

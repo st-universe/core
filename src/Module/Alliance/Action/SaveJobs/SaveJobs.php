@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\SaveJobs;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,7 +24,7 @@ final class SaveJobs implements ActionControllerInterface
         private SaveJobsRequestInterface $saveJobsRequest,
         private AllianceJobRepositoryInterface $allianceJobRepository,
         private AllianceJobPermissionRepositoryInterface $allianceJobPermissionRepository,
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private EntityManagerInterface $entityManager
     ) {}
 
@@ -38,7 +38,7 @@ final class SaveJobs implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)) {
             throw new AccessViolationException();
         }
 

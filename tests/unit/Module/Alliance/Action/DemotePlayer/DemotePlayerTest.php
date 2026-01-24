@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Mockery\MockInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,7 +19,6 @@ use Stu\StuTestCase;
 class DemotePlayerTest extends StuTestCase
 {
     private MockInterface&DemotePlayerRequestInterface $demotePlayerRequest;
-    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&UserRepositoryInterface $userRepository;
     private MockInterface&AllianceJobManagerInterface $allianceJobManager;
@@ -38,7 +37,6 @@ class DemotePlayerTest extends StuTestCase
     protected function setUp(): void
     {
         $this->demotePlayerRequest = $this->mock(DemotePlayerRequestInterface::class);
-        $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
@@ -54,7 +52,6 @@ class DemotePlayerTest extends StuTestCase
 
         $this->subject = new DemotePlayer(
             $this->demotePlayerRequest,
-            $this->allianceActionManager,
             $this->privateMessageSender,
             $this->userRepository,
             $this->allianceJobManager
@@ -67,8 +64,8 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($this->alliance, $this->user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturnFalse();
 
@@ -81,8 +78,8 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($this->alliance, $this->user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturnTrue();
 
@@ -102,8 +99,8 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($this->alliance, $this->user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturnTrue();
 
@@ -128,8 +125,8 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($this->alliance, $this->user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturnTrue();
 
@@ -158,8 +155,8 @@ class DemotePlayerTest extends StuTestCase
 
         $this->createBasicExpectation();
 
-        $this->allianceActionManager->shouldReceive('mayManageJobs')
-            ->with($this->alliance, $this->user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
             ->once()
             ->andReturnTrue();
 

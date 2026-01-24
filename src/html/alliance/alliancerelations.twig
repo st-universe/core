@@ -1,5 +1,5 @@
 {% block body %}
-{% if CAN_CREATE_AGREEMENTS %}
+{% if hasAlliancePermission(4) %}
 <div class="divhead">Abkommen erstellen</div>
 <div class="divbody">
     <form action="alliance.php" method="post">
@@ -61,7 +61,7 @@
                 Wurde angeboten
                 {% endif %}
                 {% else %}
-                {% if CAN_CREATE_AGREEMENTS %}
+                {% if hasAlliancePermission(4) %}
                 {% if relation.isWar %}
                 <a class="linkbutton"
                     href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden
@@ -76,7 +76,7 @@
                 {% endif %}
                 {% endif %}
                 {% endif %}
-                {% if CAN_CREATE_AGREEMENTS %}
+                {% if hasAlliancePermission(4) %}
                 {% if not relation.isPending %}
                 {% if not relation.isWar %}
                 <a class="linkbutton"
@@ -106,7 +106,7 @@
                 {% else %}
                 Kein Vertragswerk
                 {% endif %}
-                {% if CAN_EDIT_DIPLOMATIC_DOCUMENTS %}
+                {% if hasAlliancePermission(5) %}
                 <a href="javascript:void(0);" onclick="editRelationText({{ relation.getId }});"
                     class="linkbutton">Bearbeiten</a>
                 {% endif %}

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Boards;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -14,9 +13,7 @@ final class Boards implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BOARDS';
 
-    public function __construct(private AllianceBoardRepositoryInterface $allianceBoardRepository, private AllianceActionManagerInterface $allianceActionManager)
-    {
-    }
+    public function __construct(private AllianceBoardRepositoryInterface $allianceBoardRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -42,10 +39,6 @@ final class Boards implements ViewControllerInterface
         $game->setTemplateVar(
             'BOARDS',
             $this->allianceBoardRepository->getByAlliance($allianceId)
-        );
-        $game->setTemplateVar(
-            'EDITABLE',
-            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
     }
 }

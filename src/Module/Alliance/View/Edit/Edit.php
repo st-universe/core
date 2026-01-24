@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\View\Edit;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -14,7 +15,7 @@ final class Edit implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -24,7 +25,7 @@ final class Edit implements ViewControllerInterface
             throw new AccessViolationException("user not in alliance");
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
+        if (!$this->allianceJobManager->hasUserPermission($game->getUser(), $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)) {
             throw new AccessViolationException();
         }
 

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeclineOffer;
 
 use request;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -15,7 +17,7 @@ final class DeclineOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceJobManagerInterface $allianceJobManager, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +31,7 @@ final class DeclineOffer implements ActionControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
             throw new AccessViolationException();
         }
 

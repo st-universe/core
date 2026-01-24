@@ -6,7 +6,7 @@
         <th>Themen</th>
         <th>Beiträge</th>
         <th>Letzter Beitrag</th>
-        {% if EDITABLE %}
+        {% if hasAlliancePermission(7) %}
         <th style="width: 30px;"></th>
         {% endif %}
     </tr>
@@ -28,7 +28,7 @@
             -
             {% endif %}
         </td>
-        {% if EDITABLE %}
+        {% if hasAlliancePermission(7) %}
         {% set handle = this.getUniqId %}
         <td style="text-align: center;">
             <a href="javascript:void(0);" onclick="openBoardSettings(this,{{ board.getId }})"
@@ -43,7 +43,7 @@
 <br />
 {% endif %}
 <form action="alliance.php" method="post">
-    <table class="use" {% if not EDITABLE %}style="display:none;" {% endif %}>
+    <table class="use" {% if not hasAlliancePermission(7) %}style="display:none;" {% endif %}>
         <tr>
             <th>Forum erstellen</th>
         </tr>

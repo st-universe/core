@@ -9,7 +9,8 @@ use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -22,7 +23,7 @@ final class CreateRelation implements ActionControllerInterface
     public function __construct(
         private readonly CreateRelationRequestInterface $createRelationRequest,
         private readonly AllianceRelationRepositoryInterface $allianceRelationRepository,
-        private readonly AllianceActionManagerInterface $allianceActionManager,
+        private readonly AllianceJobManagerInterface $allianceJobManager,
         private readonly AllianceRepositoryInterface $allianceRepository,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {}
@@ -39,7 +40,7 @@ final class CreateRelation implements ActionControllerInterface
         $allianceId = $alliance->getId();
         $user = $game->getUser();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
             throw new AccessViolationException();
         }
 

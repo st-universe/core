@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceBoardTopic;
@@ -21,8 +20,7 @@ final class Topic implements ViewControllerInterface
     public function __construct(
         private TopicRequestInterface $topicRequest,
         private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        private AllianceActionManagerInterface $allianceActionManager
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {}
 
     #[\Override]
@@ -30,6 +28,7 @@ final class Topic implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
         $alliance = $game->getUser()->getAlliance();
+        $user = $game->getUser();
 
         if ($alliance === null) {
             throw new AccessViolationException("user not in alliance");
@@ -86,10 +85,6 @@ final class Topic implements ViewControllerInterface
                 self::ALLIANCEBOARDLIMITER,
                 $this->topicRequest->getPageMark()
             )
-        );
-        $game->setTemplateVar(
-            'IS_MODERATOR',
-            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
         $game->setTemplateVar('USERID', $game->getUser()->getId());
     }

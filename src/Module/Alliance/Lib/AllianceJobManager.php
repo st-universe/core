@@ -86,49 +86,7 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     }
 
     #[\Override]
-    public function hasUserFounderPermission(User $user, Alliance $alliance): bool
-    {
-        $jobs = $this->getUserJobs($user, $alliance);
-
-        foreach ($jobs as $job) {
-            if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    #[\Override]
-    public function hasUserSuccessorPermission(User $user, Alliance $alliance): bool
-    {
-        $jobs = $this->getUserJobs($user, $alliance);
-
-        foreach ($jobs as $job) {
-            if ($job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    #[\Override]
-    public function hasUserDiplomaticPermission(User $user, Alliance $alliance): bool
-    {
-        $jobs = $this->getUserJobs($user, $alliance);
-
-        foreach ($jobs as $job) {
-            if ($job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    #[\Override]
-    public function hasUserPermission(User $user, Alliance $alliance, int $permissionType): bool
+    public function hasUserPermission(User $user, Alliance $alliance, AllianceJobPermissionEnum $permissionType): bool
     {
         $jobs = $this->getUserJobs($user, $alliance);
 
@@ -137,15 +95,13 @@ final class AllianceJobManager implements AllianceJobManagerInterface
                 return true;
             }
 
-            if ($job->hasPermission($permissionType)) {
+            if ($job->hasPermission($permissionType->value)) {
                 return true;
             }
 
-            $permissionEnum = AllianceJobPermissionEnum::tryFrom($permissionType);
-            if ($permissionEnum !== null && $permissionEnum->getParentPermission() !== null) {
-                if ($job->hasPermission($permissionEnum->getParentPermission()->value)) {
-                    return true;
-                }
+            $parentPermission = $permissionType->getParentPermission();
+            if ($parentPermission !== null && $job->hasPermission($parentPermission->value)) {
+                return true;
             }
         }
 

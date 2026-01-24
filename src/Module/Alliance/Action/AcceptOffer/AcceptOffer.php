@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -16,7 +18,13 @@ final class AcceptOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
-    public function __construct(private AcceptOfferRequestInterface $acceptOfferRequest, private EntryCreatorInterface $entryCreator, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(
+        private AcceptOfferRequestInterface $acceptOfferRequest,
+        private EntryCreatorInterface $entryCreator,
+        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -33,7 +41,11 @@ final class AcceptOffer implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
+        if (
+            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+        ) {
             throw new AccessViolationException();
         }
 

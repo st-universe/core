@@ -7,8 +7,9 @@ namespace Stu\Module\Alliance\Action\ChangeAvatar;
 use Exception;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,7 +19,7 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
+    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -30,7 +31,7 @@ final class ChangeAvatar implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)) {
             throw new AccessViolationException();
         }
 

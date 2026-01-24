@@ -9,17 +9,17 @@
         {% if IS_IN_ALLIANCE %}
         <a href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
         {% endif %}
-        {% if CAN_MANAGE_FOREIGN_RELATIONS %}
+        {% if hasAlliancePermission([4,5]) %}
         <a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
         {% endif %}
-        {% if CAN_EDIT %}
+        {% if hasAlliancePermission(7) %}
         <a href="javascript:void(0);" onclick="switchInnerContent('EDIT_ALLIANCE', 'Allianz editieren');"
           class="linkbutton">Editieren</a>
         {% endif %}
-        {% if CAN_MANAGE_APPLICATIONS %}
+        {% if hasAlliancePermission(8) %}
         <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
         {% endif %}
-        {% if CAN_MANAGE_ALLIANCE %}
+        {% if hasAlliancePermission([9,10,11,12,13]) %}
         <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
         {% endif %}
         {{ translationSwitcher(ALLIANCE.hasTranslation, 'allianceDescription', 'Allianzbeschreibung übersetzen') }}

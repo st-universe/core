@@ -6,8 +6,9 @@ namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,7 +18,7 @@ final class DeleteAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_AVATAR';
 
-    public function __construct(private AllianceActionManagerInterface $allianceActionManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
+    public function __construct(private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config, private AllianceJobManagerInterface $allianceJobManager) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +30,7 @@ final class DeleteAvatar implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)) {
             throw new AccessViolationException();
         }
 

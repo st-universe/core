@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -20,7 +21,7 @@ final class Management implements ViewControllerInterface
 
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private AllianceUiFactoryInterface $allianceUiFactory,
         private StationRepositoryInterface $stationRepository,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
@@ -46,12 +47,21 @@ final class Management implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
         $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         if ($alliance === null) {
             return;
         }
 
-        if (!$this->allianceActionManager->mayManageAlliance($alliance, $game->getUser())) {
+        if (
+            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::SUCCESSOR)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_COLONIES)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_MEMBER_DATA)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_ALLIANCE_STORAGE)
+        ) {
             return;
         }
 
@@ -67,8 +77,6 @@ final class Management implements ViewControllerInterface
         $stations = $this->stationRepository->getByAlliance($alliance->getId());
         $stationWrappers = $this->spacecraftWrapperFactory->wrapSpacecrafts($stations);
 
-
-
         $game->setPageTitle('Allianz verwalten');
 
         $game->setNavigation([
@@ -82,7 +90,7 @@ final class Management implements ViewControllerInterface
             ],
         ]);
 
-        $currentUserMinSort = $this->getCurrentUserMinSort($alliance, $game->getUser());
+        $currentUserMinSort = $this->getCurrentUserMinSort($alliance, $user);
         $availableJobs = [];
 
         foreach ($alliance->getJobs() as $job) {
@@ -102,29 +110,5 @@ final class Management implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_JOBS', $availableJobs);
         $game->setTemplateVar('ALLIANCE_STATIONS', $stationWrappers);
         $game->setTemplateVar('MEMBER_LIST', $list);
-        $game->setTemplateVar(
-            'USER_IS_FOUNDER',
-            in_array($userId, array_map(fn($j) => $j->getUserId(), $alliance->getJobsWithFounderPermission()))
-        );
-        $game->setTemplateVar(
-            'CAN_MANAGE_JOBS',
-            $this->allianceActionManager->mayManageJobs($alliance, $game->getUser())
-        );
-        $game->setTemplateVar(
-            'CAN_VIEW_COLONIES',
-            $this->allianceActionManager->mayViewColonies($alliance, $game->getUser())
-        );
-        $game->setTemplateVar(
-            'CAN_VIEW_MEMBER_DATA',
-            $this->allianceActionManager->mayViewMemberData($alliance, $game->getUser())
-        );
-        $game->setTemplateVar(
-            'CAN_VIEW_SHIPS',
-            $this->allianceActionManager->mayViewShips($alliance, $game->getUser())
-        );
-        $game->setTemplateVar(
-            'CAN_VIEW_ALLIANCE_STORAGE',
-            $this->allianceActionManager->mayViewAllianceStorage($alliance, $game->getUser())
-        );
     }
 }
