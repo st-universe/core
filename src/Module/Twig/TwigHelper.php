@@ -210,7 +210,7 @@ class TwigHelper
 
         $hasAlliancePermissionFunction = new TwigFunction(
             'hasAlliancePermission',
-            fn(int|array $permissionValue): bool => $this->checkAlliancePermission($permissionValue)
+            fn(string|array $permissionValue): bool => $this->checkAlliancePermission($permissionValue)
         );
         $this->environment->addFunction($hasAlliancePermissionFunction);
     }
@@ -257,10 +257,11 @@ class TwigHelper
         return $displayMobile;
     }
 
+
     /**
-     * @param int|array<int> $permissionValue
+     * @param string|array<string|int> $permissionValue
      */
-    private function checkAlliancePermission(int|array $permissionValue): bool
+    private function checkAlliancePermission(string|array $permissionValue): bool
     {
         $user = $this->game->getUser();
         $alliance = $user->getAlliance();
@@ -272,7 +273,8 @@ class TwigHelper
         $permissionValues = is_array($permissionValue) ? $permissionValue : [$permissionValue];
 
         foreach ($permissionValues as $value) {
-            $permissionEnum = AllianceJobPermissionEnum::tryFrom($value);
+            $intValue = is_string($value) ? (int)$value : $value;
+            $permissionEnum = AllianceJobPermissionEnum::tryFrom($intValue);
             if (
                 $permissionEnum !== null
                 && $this->allianceJobManager->hasUserPermission($user, $alliance, $permissionEnum)
