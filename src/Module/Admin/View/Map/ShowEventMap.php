@@ -95,10 +95,7 @@ final class ShowEventMap implements ViewControllerInterface
             $map = $data[0];
             $locationId = $map->getId();
             $historyCount = $data['amount'];
-            $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
-            $red = $rgb[0];
-            $green = $rgb[1];
-            $blue = $rgb[2];
+            [$red, $green, $blue] = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
 
             $cury = ($map->getCy() - 1) * $scale;
             $curx = ($map->getCx() - 1) * $scale;
