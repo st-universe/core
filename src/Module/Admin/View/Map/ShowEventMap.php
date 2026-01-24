@@ -44,11 +44,11 @@ final class ShowEventMap implements ViewControllerInterface
             return;
         }
 
-        $types = [];
-        $width = $layer->getWidth() * 15;
-        $height = $layer->getHeight() * 15;
+        $scale = request::getInt('scale', 15);
+        $width = $layer->getWidth() * $scale;
+        $height = $layer->getHeight() * $scale;
 
-        if ($width < 1 || $height < 1) {
+        if ($width < 1 || $height < 1 || $scale < 1) {
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
@@ -62,6 +62,8 @@ final class ShowEventMap implements ViewControllerInterface
             throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
         }
 
+        $types = [];
+
         // mapfields
         $startY = 1;
         $cury = 0;
@@ -72,7 +74,7 @@ final class ShowEventMap implements ViewControllerInterface
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
-                $cury += 15;
+                $cury += $scale;
             }
 
             $historyCount = $historyAmountsIndexed[$data->getId()] ?? 0;
@@ -93,14 +95,14 @@ final class ShowEventMap implements ViewControllerInterface
 
                 StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $data->getId(), $historyCount, $red, $green, $blue);
 
-                $filling = imagecreatetruecolor(15, 15);
+                $filling = imagecreatetruecolor($scale, $scale);
                 $col = imagecolorallocate($filling, $red, $green, $blue);
                 if (!$col) {
                     throw new InvalidArgumentException(sprintf('color range exception, col: %d', $col));
                 }
                 imagefill($filling, 0, 0, $col);
-                imagecopy($img, $filling, $curx, $cury, 0, 0, 15, 15);
-                $curx += 15;
+                imagecopy($img, $filling, $curx, $cury, 0, 0, $scale, $scale);
+                $curx += $scale;
                 continue;
             }
 
@@ -110,12 +112,9 @@ final class ShowEventMap implements ViewControllerInterface
                 throw new InvalidArgumentException('error creating partial image');
             }
 
-            // Convert the partial image to grayscale
-            imagecopymergegray($partialImage, $partialImage, 0, 0, 0, 0, 30, 30, 0);
-
             $types[$data->getFieldId()] = $partialImage;
-            imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
-            $curx += 15;
+            imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, $scale, $scale, 30, 30);
+            $curx += $scale;
         }
 
         header("Content-type: image/png");
