@@ -15,6 +15,7 @@ use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Repository\AllianceJobPermissionRepositoryInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class SaveJobs implements ActionControllerInterface
 {
@@ -25,6 +26,7 @@ final class SaveJobs implements ActionControllerInterface
         private AllianceJobRepositoryInterface $allianceJobRepository,
         private AllianceJobPermissionRepositoryInterface $allianceJobPermissionRepository,
         private AllianceJobManagerInterface $allianceJobManager,
+        private AllianceRepositoryInterface $allianceRepository,
         private EntityManagerInterface $entityManager
     ) {}
 
@@ -51,6 +53,7 @@ final class SaveJobs implements ActionControllerInterface
             return;
         }
 
+        $allianceId = $alliance->getId();
         $existingJobs = [];
         foreach ($alliance->getJobs() as $job) {
             $existingJobs[$job->getId()] = $job;
@@ -121,7 +124,14 @@ final class SaveJobs implements ActionControllerInterface
         }
 
         $this->entityManager->flush();
+
         $this->entityManager->refresh($alliance);
+        $refreshedAlliance = $this->allianceRepository->find($allianceId);
+        if ($refreshedAlliance !== null) {
+            foreach ($refreshedAlliance->getJobs() as $job) {
+                $this->entityManager->refresh($job);
+            }
+        }
 
         $game->getInfo()->addInformation('Die Allianz-Rollen wurden gespeichert');
     }
