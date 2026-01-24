@@ -5,7 +5,7 @@ namespace Stu\Lib\Pirate\Component;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 
 class MoveOnLayer implements MoveOnLayerInterface
@@ -23,7 +23,7 @@ class MoveOnLayer implements MoveOnLayerInterface
 
     #[\Override]
     public function move(
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         ?Location $target
     ): bool {
         if ($target === null) {

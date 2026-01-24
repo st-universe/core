@@ -8,7 +8,7 @@ use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertedShipsDetectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class TrapDetection implements TrapDetectionInterface
 {
@@ -19,17 +19,17 @@ class TrapDetection implements TrapDetectionInterface
     ) {}
 
     #[\Override]
-    public function isAlertTrap(Location $location, Ship $leadShip): bool
+    public function isAlertTrap(Location $location, Spacecraft $leadSpacecraft): bool
     {
         $alertedWrappers = $this->alertedShipsDetection->getAlertedShipsOnLocation(
             $location,
-            $leadShip->getUser()
+            $leadSpacecraft->getUser()
         );
         if ($alertedWrappers->isEmpty()) {
             return false;
         }
 
-        $piratePrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($leadShip);
+        $piratePrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($leadSpacecraft);
         $alertedPrestige = $this->getPrestigeOfAlertedSpacecrafts($alertedWrappers);
 
         if ($alertedPrestige <= 3 * $piratePrestige) {

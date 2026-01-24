@@ -184,7 +184,7 @@ class TransferToClosestLocationTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($tradePostSector);
 
-        $this->distanceCalculation->shouldReceive('shipToShipDistance')
+        $this->distanceCalculation->shouldReceive('spacecraftToSpacecraftDistance')
             ->with($this->ship, $station)
             ->once()
             ->andReturn($tradePostDistance);

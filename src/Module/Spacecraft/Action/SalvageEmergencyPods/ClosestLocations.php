@@ -36,7 +36,7 @@ class ClosestLocations
 
             $freeQuarters = $this->troopTransferUtility->getFreeQuarters($station);
             if ($freeQuarters >= $count) {
-                $distance = $this->distanceCalculation->shipToShipDistance($ship, $station);
+                $distance = $this->distanceCalculation->spacecraftToSpacecraftDistance($ship, $station);
 
                 if ($result === null) {
                     $result = [];

@@ -9,10 +9,8 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Entity\Fleet;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 
@@ -22,7 +20,7 @@ class PirateReaction implements PirateReactionInterface
 
     /** @param array<int, PirateBehaviourInterface> $behaviours */
     public function __construct(
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private BattlePartyFactoryInterface $battlePartyFactory,
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private PirateWrathManagerInterface $pirateWrathManager,
         private StuRandom $stuRandom,
@@ -48,7 +46,7 @@ class PirateReaction implements PirateReactionInterface
         }
 
         $this->react(
-            $targetFleet,
+            $this->battlePartyFactory->createPirateFleetBattleParty($targetFleet),
             $reactionTrigger,
             $triggerSpacecraft,
             new PirateReactionMetadata()
@@ -59,40 +57,32 @@ class PirateReaction implements PirateReactionInterface
 
     #[\Override]
     public function react(
-        Fleet $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionTriggerEnum $reactionTrigger,
         Spacecraft $triggerSpacecraft,
         PirateReactionMetadata $reactionMetadata
     ): void {
-        $this->pirateWrathManager->increaseWrathViaTrigger($triggerSpacecraft->getUser(), $reactionTrigger);
 
         // check if fleet already defeated
-        if ($fleet->getShips()->isEmpty()) {
-            $this->logger->logf('pirateFleet %s has no ships left, no reaction triggered', $fleet->getName());
+        if ($this->isDefeated($pirateFleetBattleParty, 40)) {
+            $this->logger->logf('pirateFleet %s has no ships left, no reaction triggered', $pirateFleetBattleParty->getFleetName());
             return;
         }
 
-        $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($fleet);
+        $this->pirateWrathManager->increaseWrathViaTrigger($triggerSpacecraft->getUser(), $reactionTrigger);
 
         $behaviourType = $this->getRandomBehaviourType($reactionTrigger);
         if (
             $behaviourType->needsWeapons()
-            && !$this->canAnyoneFire($fleetWrapper)
+            && !$this->canAnyoneFire($pirateFleetBattleParty)
         ) {
-            $this->logger->logf('pirateFleet %s cant fire, no reaction triggered', $fleet->getName());
-            return;
-        }
-
-        try {
-            $fleetId = $fleet->getId();
-        } catch (\Error $e) {
-            $this->logger->log('pirateFleet was deleted, no reaction triggered');
+            $this->logger->logf('pirateFleet %s cant fire, no reaction triggered', $pirateFleetBattleParty->getFleetName());
             return;
         }
 
         $this->logger->log(sprintf(
             'pirateFleetId %d reacts on %s from "%s" (%d) with %s',
-            $fleetId,
+            $pirateFleetBattleParty->getFleetId(),
             $reactionTrigger->name,
             $triggerSpacecraft->getName(),
             $triggerSpacecraft->getId(),
@@ -103,9 +93,9 @@ class PirateReaction implements PirateReactionInterface
             return;
         }
 
-        $alternativeBehaviour = $this->action($behaviourType, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
+        $alternativeBehaviour = $this->action($behaviourType, $pirateFleetBattleParty, $reactionMetadata, $triggerSpacecraft);
 
-        if ($fleet->getShips()->isEmpty()) {
+        if ($this->isDefeated($pirateFleetBattleParty, 41)) {
             $this->logger->log('pirateFleet was destroyed during action, no further reaction');
             return;
         }
@@ -116,27 +106,32 @@ class PirateReaction implements PirateReactionInterface
         ) {
             $this->logger->log(sprintf(
                 'pirateFleetId %d does alternative behaviour %s',
-                $fleetId,
+                $pirateFleetBattleParty->getFleetId(),
                 $alternativeBehaviour->name
             ));
-            $this->action($alternativeBehaviour, $fleetWrapper, $reactionMetadata, $triggerSpacecraft);
+            $this->action($alternativeBehaviour, $pirateFleetBattleParty, $reactionMetadata, $triggerSpacecraft);
 
-            if ($fleet->getShips()->isEmpty()) {
+            if ($this->isDefeated($pirateFleetBattleParty, 42)) {
                 $this->logger->log('pirateFleet was destroyed during alternative action, no further reaction');
                 return;
             }
         }
 
         if ($reactionTrigger === PirateReactionTriggerEnum::ON_ATTACK) {
-            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $fleetWrapper, $reactionMetadata, null);
+            $this->action(PirateBehaviourEnum::GO_ALERT_RED, $pirateFleetBattleParty, $reactionMetadata, null);
         }
 
-        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $fleetWrapper, $reactionMetadata, null);
+        $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $pirateFleetBattleParty, $reactionMetadata, null);
     }
 
-    private function canAnyoneFire(FleetWrapperInterface $fleetWrapper): bool
+    private function isDefeated(PirateFleetBattleParty $pirateFleetBattleParty, ?int $salt = null): bool
     {
-        return $fleetWrapper->getShipWrappers()->exists(fn(int $key, ShipWrapperInterface $wrapper): bool => $wrapper->canFire());
+        return $pirateFleetBattleParty->isDefeated();
+    }
+
+    private function canAnyoneFire(PirateFleetBattleParty $pirateFleetBattleParty): bool
+    {
+        return !$pirateFleetBattleParty->getActiveMembers(true)->isEmpty();
     }
 
     private function getRandomBehaviourType(PirateReactionTriggerEnum $reactionTrigger): PirateBehaviourEnum
@@ -148,7 +143,7 @@ class PirateReaction implements PirateReactionInterface
 
     private function action(
         PirateBehaviourEnum $behaviour,
-        FleetWrapperInterface $fleetWrapper,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
@@ -156,13 +151,13 @@ class PirateReaction implements PirateReactionInterface
         $reactionMetadata->addReaction($behaviour);
 
         $alternativeBehaviour = $this->behaviours[$behaviour->value]->action(
-            $fleetWrapper,
+            $pirateFleetBattleParty,
             $this,
             $reactionMetadata,
             $triggerSpacecraft
         );
 
-        $this->reloadMinimalEps->reload($fleetWrapper);
+        $this->reloadMinimalEps->reload($pirateFleetBattleParty);
 
         return $alternativeBehaviour;
     }

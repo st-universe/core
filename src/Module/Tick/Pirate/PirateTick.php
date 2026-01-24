@@ -11,7 +11,7 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 
 class PirateTick implements PirateTickInterface
 {
@@ -21,7 +21,7 @@ class PirateTick implements PirateTickInterface
     public function __construct(
         private PirateCreationInterface $pirateCreation,
         private PirateReactionInterface $pirateReaction,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private BattlePartyFactoryInterface $battlePartyFactory,
         private ReloadMinimalEpsInterface $reloadMinimalEps,
         private StuRandom $stuRandom,
         LoggerUtilFactoryInterface $loggerUtilFactory,
@@ -48,16 +48,16 @@ class PirateTick implements PirateTickInterface
 
             $this->logger->log(sprintf('pirateFleetId %d does %s', $fleet->getId(), $behaviourType->name));
 
-            $fleetWrapper = $this->spacecraftWrapperFactory->wrapFleet($fleet);
+            $pirateFleetBattleParty = $this->battlePartyFactory->createPirateFleetBattleParty($fleet);
 
             $this->behaviours[$behaviourType->value]->action(
-                $fleetWrapper,
+                $pirateFleetBattleParty,
                 $this->pirateReaction,
                 new PirateReactionMetadata(),
                 null
             );
 
-            $this->reloadMinimalEps->reload($fleetWrapper);
+            $this->reloadMinimalEps->reload($pirateFleetBattleParty);
         }
     }
 

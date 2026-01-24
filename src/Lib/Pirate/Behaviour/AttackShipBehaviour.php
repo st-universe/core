@@ -13,7 +13,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -37,12 +37,13 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
-        $leadWrapper = $fleet->getLeadWrapper();
+
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $piratePrestige = $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($leadShip);
@@ -71,13 +72,13 @@ class AttackShipBehaviour implements PirateBehaviourInterface
         usort(
             $filteredTargets,
             fn(Ship $a, Ship $b): int =>
-            $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
+            $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $b)
         );
 
         $closestShip = current($filteredTargets);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $closestShip->getLocation())) {
-            $this->pirateAttack->attackShip($fleet, $closestShip);
+        if ($this->pirateNavigation->navigateToTarget($pirateFleetBattleParty, $closestShip->getLocation())) {
+            $this->pirateAttack->attackShip($pirateFleetBattleParty, $closestShip);
         }
 
         return null;

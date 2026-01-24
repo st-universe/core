@@ -18,6 +18,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateSetup;
 use Stu\Orm\Entity\PirateRound;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -215,7 +216,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     #[\Override]
-    public function createPirateFleet(?Ship $supportCaller = null): Fleet
+    public function createPirateFleet(?Spacecraft $supportCaller = null): Fleet
     {
         $pirateUser = $this->userRepository->find(UserConstants::USER_NPC_KAZON);
         if ($pirateUser === null) {
@@ -252,7 +253,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     /** @return array<Ship> */
-    private function createShips(PirateSetup $pirateSetup, ?Ship $supportCaller): array
+    private function createShips(PirateSetup $pirateSetup, ?Spacecraft $supportCaller): array
     {
         $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getLocation();
 

@@ -12,7 +12,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Prestige\Lib\PrestigeCalculationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -34,13 +34,13 @@ class RageBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $targets = $this->shipRepository->getPirateTargets($leadWrapper);
@@ -81,15 +81,15 @@ class RageBehaviour implements PirateBehaviourInterface
 
         $this->logger->logf('    attacking weakestTarget with shipId: %d', $weakestTarget->getId());
 
-        $this->pirateAttack->attackShip($fleet, $weakestTarget);
+        $this->pirateAttack->attackShip($pirateFleetBattleParty, $weakestTarget);
 
-        if ($fleet->get()->getShips()->isEmpty()) {
+        if ($pirateFleetBattleParty->isDefeated()) {
             $this->logger->log('    pirate fleet was destroyed during attack, no further reaction');
             return null;
         }
 
         $pirateReaction->react(
-            $fleet->get(),
+            $pirateFleetBattleParty,
             PirateReactionTriggerEnum::ON_RAGE,
             $leadShip,
             $reactionMetadata

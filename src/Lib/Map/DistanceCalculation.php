@@ -11,7 +11,7 @@ use Stu\Orm\Entity\StarSystem;
 class DistanceCalculation implements DistanceCalculationInterface
 {
     #[\Override]
-    public function shipToShipDistance(Spacecraft $one, Spacecraft $other): int
+    public function spacecraftToSpacecraftDistance(Spacecraft $one, Spacecraft $other): int
     {
 
         return $this->calculateAbsoluteDistance(

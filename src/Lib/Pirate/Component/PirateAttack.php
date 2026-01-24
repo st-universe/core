@@ -9,10 +9,10 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 
 class PirateAttack implements PirateAttackInterface
@@ -31,21 +31,21 @@ class PirateAttack implements PirateAttackInterface
     }
 
     #[\Override]
-    public function attackShip(FleetWrapperInterface $fleetWrapper, Ship $target): void
+    public function attackShip(PirateFleetBattleParty $pirateFleetBattleParty, Ship $target): void
     {
-        $leadWrapper = $fleetWrapper->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $targetWrapper = $this->spacecraftWrapperFactory->wrapShip($target);
 
         $this->interceptIfNeccessary($leadWrapper, $targetWrapper);
 
-        if ($fleetWrapper->get()->getShips()->isEmpty()) {
+        if ($this->isDefeated($pirateFleetBattleParty)) {
             $this->logger->log('    cancel attack, no ships left');
             return;
         }
 
         $this->unwarpIfNeccessary($leadWrapper);
 
-        if ($fleetWrapper->get()->getShips()->isEmpty()) {
+        if ($this->isDefeated($pirateFleetBattleParty)) {
             $this->logger->log('    cancel attack, no ships left');
             return;
         }
@@ -64,8 +64,12 @@ class PirateAttack implements PirateAttackInterface
         );
     }
 
+    private function isDefeated(PirateFleetBattleParty $pirateFleetBattleParty): bool
+    {
+        return $pirateFleetBattleParty->isDefeated();
+    }
 
-    private function interceptIfNeccessary(ShipWrapperInterface $wrapper, ShipWrapperInterface $targetWrapper): void
+    private function interceptIfNeccessary(SpacecraftWrapperInterface $wrapper, SpacecraftWrapperInterface $targetWrapper): void
     {
         $target = $targetWrapper->get();
         if (!$target->getWarpDriveState()) {
@@ -76,7 +80,7 @@ class PirateAttack implements PirateAttackInterface
         $this->interceptShipCore->intercept($wrapper, $targetWrapper, new InformationWrapper());
     }
 
-    private function unwarpIfNeccessary(ShipWrapperInterface $wrapper): void
+    private function unwarpIfNeccessary(SpacecraftWrapperInterface $wrapper): void
     {
         if (!$wrapper->get()->getWarpDriveState()) {
             return;

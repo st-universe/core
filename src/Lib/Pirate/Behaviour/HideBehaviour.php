@@ -8,7 +8,7 @@ use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -26,13 +26,13 @@ class HideBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
 
         $hideSystems = $this->starSystemRepository->getPirateHides($leadWrapper);
         if ($hideSystems === []) {
@@ -43,7 +43,7 @@ class HideBehaviour implements PirateBehaviourInterface
         shuffle($hideSystems);
         $closestHideSystem = current($hideSystems);
 
-        $this->pirateNavigation->navigateToTarget($fleet, $closestHideSystem);
+        $this->pirateNavigation->navigateToTarget($pirateFleetBattleParty, $closestHideSystem);
 
         return null;
     }

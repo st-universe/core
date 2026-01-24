@@ -3,12 +3,12 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 interface PirateFlightInterface
 {
     public function movePirate(
-        ShipWrapperInterface $wrapper,
+        SpacecraftWrapperInterface $wrapper,
         FlightRouteInterface $flightRoute
     ): void;
 }

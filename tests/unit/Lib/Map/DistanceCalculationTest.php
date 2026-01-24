@@ -21,7 +21,7 @@ class DistanceCalculationTest extends StuTestCase
         $this->subject = new DistanceCalculation();
     }
 
-    public static function shipToShipDistanceTestData(): array
+    public static function spacecraftToSpacecraftDistanceTestData(): array
     {
         return [
             //?ship1systemX, ?ship1systemY, ship1posX, ship1posY, ?ship2systemX, ?ship2systemY, ship2posX, ship2posY, expectedDistance
@@ -56,8 +56,8 @@ class DistanceCalculationTest extends StuTestCase
         ];
     }
 
-    #[DataProvider('shipToShipDistanceTestData')]
-    public function testShipToShipDistance(
+    #[DataProvider('spacecraftToSpacecraftDistanceTestData')]
+    public function testspacecraftToSpacecraftDistance(
         ?int $ship1systemX,
         ?int $ship1systemY,
         int $ship1posX,
@@ -82,7 +82,7 @@ class DistanceCalculationTest extends StuTestCase
         $ship1 = $this->mockShipCoordinates($system1, $ship1posX, $ship1posY);
         $ship2 = $this->mockShipCoordinates($system2, $ship2posX, $ship2posY);
 
-        $result = $this->subject->shipToShipDistance($ship1, $ship2);
+        $result = $this->subject->spacecraftToSpacecraftDistance($ship1, $ship2);
 
         $this->assertEquals($expectedDistance, $result);
     }

@@ -2,7 +2,7 @@
 
 namespace Stu\Lib\Pirate;
 
-use Stu\Orm\Entity\Fleet;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Spacecraft;
 
 interface PirateReactionInterface
@@ -14,7 +14,7 @@ interface PirateReactionInterface
     ): bool;
 
     public function react(
-        Fleet $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionTriggerEnum $reactionTrigger,
         Spacecraft $triggerSpacecraft,
         PirateReactionMetadata $reactionMetadata

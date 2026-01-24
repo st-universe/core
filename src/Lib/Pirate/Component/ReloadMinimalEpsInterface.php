@@ -2,9 +2,9 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 
 interface ReloadMinimalEpsInterface
 {
-    public function reload(FleetWrapperInterface $fleetWrapper, int $minimalPercentage = 20): void;
+    public function reload(PirateFleetBattleParty $pirateFleetBattleParty, int $minimalPercentage = 20): void;
 }

@@ -39,7 +39,7 @@ final class TransferToClosestLocation
         }
 
 
-        $tradepostDistance = $this->distanceCalculation->shipToShipDistance($ship, $closestTradepost->getStation());
+        $tradepostDistance = $this->distanceCalculation->spacecraftToSpacecraftDistance($ship, $closestTradepost->getStation());
         $minimumDistance = $this->getMinimumDistance($colonyDistance, $stationDistance, $tradepostDistance);
 
         //transfer to closest colony
