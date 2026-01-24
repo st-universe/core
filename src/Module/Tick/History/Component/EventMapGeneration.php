@@ -19,7 +19,7 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EventMapGeneration implements HistoryTickHandlerInterface
 {
-    private const SCALE = 5;
+    private const SCALE = 2;
 
     public function __construct(
         private readonly MapRepositoryInterface $mapRepository,
