@@ -42,7 +42,7 @@ interface HistoryRepositoryInterface extends ObjectRepository
     /**
      * @return array<int, int>
      */
-    public function getAmountIndexedByLocationId(Layer $layer): array;
+    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): array;
 
     public function prototype(): History;
 

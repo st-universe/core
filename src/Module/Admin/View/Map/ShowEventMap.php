@@ -6,10 +6,12 @@ namespace Stu\Module\Admin\View\Map;
 
 use InvalidArgumentException;
 use request;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -27,7 +29,8 @@ final class ShowEventMap implements ViewControllerInterface
         private readonly HistoryRepositoryInterface $historyRepository,
         private readonly StuConfigInterface $config,
         private readonly EncodedMapInterface $encodedMap,
-        private readonly GradientColorInterface $gradientColor
+        private readonly GradientColorInterface $gradientColor,
+        private readonly StuTime $stuTime
     ) {}
 
     #[\Override]
@@ -49,7 +52,10 @@ final class ShowEventMap implements ViewControllerInterface
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
-        $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId($layer);
+        $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
+            $layer,
+            $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
+        );
 
         $img = imagecreatetruecolor($width, $height);
         if ($img === false) {
@@ -72,7 +78,7 @@ final class ShowEventMap implements ViewControllerInterface
             $historyCount = $historyAmountsIndexed[$data->getId()] ?? 0;
             if ($historyCount > 0) {
 
-                $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 100);
+                $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
                 $red = $rgb[0];
                 $green = $rgb[1];
                 $blue = $rgb[2];

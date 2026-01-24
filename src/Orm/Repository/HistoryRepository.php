@@ -119,22 +119,26 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
     #[\Override]
-    public function getAmountIndexedByLocationId(Layer $layer): array
+    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): array
     {
         $result = $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT IDENTITY(h.location) AS location_id, COUNT(h.id) AS amount
+                'SELECT IDENTITY(h.location) AS location_id, COUNT(h.id) AS amount
                     FROM %s h
                     JOIN %s m WITH h.location = m
                     WHERE m.layer = :layer
                     AND h.location IS NOT NULL
+                    AND h.date >= :dateThreshold
                     GROUP BY h.location',
                     History::class,
                     Map::class
                 )
             )
-            ->setParameter('layer', $layer)
+            ->setParameters([
+                'layer' => $layer,
+                'dateThreshold' => $dateThreshold
+            ])
             ->getArrayResult();
 
         $indexedResult = [];
