@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\History\Component;
 
+use GdImage;
 use InvalidArgumentException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\EncodedMapInterface;
@@ -54,6 +55,35 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
         }
 
+        $this->createBaseImage($img, $layer, $mapGraphicBasePath);
+
+        // apply grayscale filter if requested
+        imagefilter($img, IMG_FILTER_GRAYSCALE);
+
+        $this->applyEventOverlay($img, $layer);
+
+        $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
+
+        // create history folder if not exists
+        if (!is_dir($historyFolder)) {
+            mkdir($historyFolder, 0777, true);
+        }
+
+        //clear all resources in history folder
+        $this->clearOldImages($historyFolder, $layer);
+
+        imagepng(
+            $img,
+            sprintf(
+                '%s/history/layer_%d.png',
+                $this->config->getGameSettings()->getTempDir(),
+                $layer->getId()
+            )
+        );
+    }
+
+    private function createBaseImage(GdImage &$img, Layer $layer, string $mapGraphicBasePath): void
+    {
         $types = [];
 
         // mapfields
@@ -78,15 +108,16 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, self::SCALE, self::SCALE, 30, 30);
             $curx += self::SCALE;
         }
+    }
 
-        imagefilter($img, IMG_FILTER_GRAYSCALE);
+    private function applyEventOverlay(GdImage &$img, Layer $layer): void
+    {
         $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
             $layer,
             $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
         );
         foreach ($historyAmountsIndexed as $data) {
             $map = $data[0];
-            $locationId = $map->getId();
             $historyCount = $data['amount'];
             [$red, $green, $blue] = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
 
@@ -109,15 +140,10 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             imagefill($filling, 0, 0, $col);
             imagecopy($img, $filling, $curx, $cury, 0, 0, self::SCALE, self::SCALE);
         }
+    }
 
-        $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
-
-        // create history folder if not exists
-        if (!is_dir($historyFolder)) {
-            mkdir($historyFolder, 0777, true);
-        }
-
-        //clear all resources in history folder
+    private function clearOldImages(string $historyFolder, Layer $layer): void
+    {
         $files = glob($historyFolder . '/layer_' . $layer->getId() . '.png');
         if ($files === false) {
             throw new InvalidArgumentException('error reading history folder files');
@@ -127,15 +153,6 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
                 unlink($file);
             }
         }
-
-        imagepng(
-            $img,
-            sprintf(
-                '%s/history/layer_%d.png',
-                $this->config->getGameSettings()->getTempDir(),
-                $layer->getId()
-            )
-        );
     }
 
     private function getMapGraphicBasePath(): string
