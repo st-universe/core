@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
+use Stu\Orm\Entity\Location;
 
 /**
  * @extends ObjectRepository<History>
@@ -37,6 +38,8 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function getByTypeAndSearchWithoutPirate(HistoryTypeEnum $type, int $limit): array;
 
     public function getAmountByType(int $typeId): int;
+
+    public function getAmountByLocation(Location $location): int;
 
     public function prototype(): History;
 

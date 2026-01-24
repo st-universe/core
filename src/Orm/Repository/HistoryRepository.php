@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\History;
+use Stu\Orm\Entity\Location;
 
 /**
  * @extends EntityRepository<History>
@@ -113,6 +114,14 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     {
         return $this->count([
             'type' => $typeId
+        ]);
+    }
+
+    #[\Override]
+    public function getAmountByLocation(Location $location): int
+    {
+        return $this->count([
+            'location' => $location
         ]);
     }
 
