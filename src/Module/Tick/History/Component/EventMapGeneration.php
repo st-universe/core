@@ -10,7 +10,6 @@ use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\History\HistoryTickHandlerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -102,8 +101,6 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
                 throw new InvalidArgumentException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
             }
 
-            StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $locationId, $historyCount, $red, $green, $blue);
-
             $filling = imagecreatetruecolor(self::SCALE, self::SCALE);
             $col = imagecolorallocate($filling, $red, $green, $blue);
             if (!$col) {
@@ -130,8 +127,6 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
                 unlink($file);
             }
         }
-
-        StuLogger::logf("saving event map for layer %d", $layer->getId());
 
         imagepng(
             $img,
