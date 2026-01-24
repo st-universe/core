@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Admin\View\Map;
+namespace Stu\Module\Tick\History\Component;
 
 use InvalidArgumentException;
-use request;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\StuLogger;
+use Stu\Module\Tick\History\HistoryTickHandlerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
-final class ShowEventMap implements ViewControllerInterface
+final class EventMapGeneration implements HistoryTickHandlerInterface
 {
-    public const string VIEW_IDENTIFIER = 'SHOW_EVENT_MAP';
+    private const SCALE = 5;
 
     public function __construct(
         private readonly MapRepositoryInterface $mapRepository,
@@ -34,22 +32,21 @@ final class ShowEventMap implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function work(): void
     {
-        $layerId = request::getIntFatal('layerid');
+        $mapGraphicBasePath = $this->getMapGraphicBasePath();
 
-        $layer = $this->layerRepository->find($layerId);
-        if ($layer === null) {
-            $game->getInfo()->addInformation(sprintf('layerId %d does not exist', $layerId));
-            return;
+        foreach($this->layerRepository->findAll() as $layer) {
+            $this->generateEventMapForLayer($layer, $mapGraphicBasePath);
         }
+    }
 
-        $scale = request::getInt('scale', 15);
-        $grayScale = request::has('grayscale');
-        $width = $layer->getWidth() * $scale;
-        $height = $layer->getHeight() * $scale;
+    private function generateEventMapForLayer(Layer $layer, string $mapGraphicBasePath): void
+    {
+        $width = $layer->getWidth() * self::SCALE;
+        $height = $layer->getHeight() * self::SCALE;
 
-        if ($width < 1 || $height < 1 || $scale < 1) {
+        if ($width < 1 || $height < 1) {
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
@@ -69,24 +66,21 @@ final class ShowEventMap implements ViewControllerInterface
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
-                $cury += $scale;
+                $cury += self::SCALE;
             }
 
-            $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType());
+            $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType(), $mapGraphicBasePath);
             $partialImage = imagecreatefrompng($imagePath);
             if ($partialImage === false) {
                 throw new InvalidArgumentException('error creating partial image');
             }
 
             $types[$data->getFieldId()] = $partialImage;
-            imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, $scale, $scale, 30, 30);
-            $curx += $scale;
+            imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, self::SCALE, self::SCALE, 30, 30);
+            $curx += self::SCALE;
         }
 
-        if ($grayScale) {
-            imagefilter($img, IMG_FILTER_GRAYSCALE);
-        }
-
+        imagefilter($img, IMG_FILTER_GRAYSCALE);
         $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
             $layer,
             $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
@@ -97,8 +91,8 @@ final class ShowEventMap implements ViewControllerInterface
             $historyCount = $data['amount'];
             [$red, $green, $blue] = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
 
-            $cury = ($map->getCy() - 1) * $scale;
-            $curx = ($map->getCx() - 1) * $scale;
+            $cury = ($map->getCy() - 1) * self::SCALE;
+            $curx = ($map->getCx() - 1) * self::SCALE;
 
             if (
                 $red < 0 || $red > 255
@@ -110,28 +104,50 @@ final class ShowEventMap implements ViewControllerInterface
 
             StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $locationId, $historyCount, $red, $green, $blue);
 
-            $filling = imagecreatetruecolor($scale, $scale);
+            $filling = imagecreatetruecolor(self::SCALE, self::SCALE);
             $col = imagecolorallocate($filling, $red, $green, $blue);
             if (!$col) {
                 throw new InvalidArgumentException(sprintf('color range exception, col: %d', $col));
             }
             imagefill($filling, 0, 0, $col);
-            imagecopy($img, $filling, $curx, $cury, 0, 0, $scale, $scale);
+            imagecopy($img, $filling, $curx, $cury, 0, 0, self::SCALE, self::SCALE);
         }
 
-        header("Content-type: image/png");
-        imagepng($img);
-        exit;
+        //clear all resources in history folder
+        $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
+        $files = glob($historyFolder . '/layer_' . $layer->getId() . '.png');
+        if ($files === false) {
+            throw new InvalidArgumentException('error reading history folder files');
+        }
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        imagepng(
+            $img,
+            sprintf(
+                '%s/history/layer_%d.png',
+                $this->config->getGameSettings()->getTempDir(),
+                $layer->getId()
+            )
+        );
     }
 
-    private function getMapGraphicPath(Layer $layer, int $fieldType): string
+    private function getMapGraphicBasePath(): string
     {
         $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
 
+        return $webrootWithoutPublic . '/../../assets/map/';
+    }
+
+    private function getMapGraphicPath(Layer $layer, int $fieldType, string $mapGraphicBasePath): string
+    {
         if ($layer->isEncoded()) {
-            return $webrootWithoutPublic . '/../../assets/map/' . $this->encodedMap->getEncodedMapPath($fieldType, $layer);
+            return $mapGraphicBasePath . $this->encodedMap->getEncodedMapPath($fieldType, $layer);
         }
 
-        return $webrootWithoutPublic . '/../../assets/map/' . $layer->getId() . "/" . $fieldType . '.png';
+        return $mapGraphicBasePath . $layer->getId() . "/" . $fieldType . '.png';
     }
 }

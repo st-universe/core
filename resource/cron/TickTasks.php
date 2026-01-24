@@ -9,6 +9,7 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
+use Stu\Module\Tick\Pirate\HistoryTickRunner;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
@@ -81,5 +82,14 @@ $schedule
     ->between('12:00', '23:59')
     ->minute(05, 15, 25, 35, 45, 55)
     ->description('PirateTick');
+
+$schedule
+    ->run(function (): void {
+        Init::run(function (ContainerInterface $dic): void {
+            $dic->get(HistoryTickRunner::class)->run(1, 1);
+        });
+    })
+    ->hourly()
+    ->description('HistoryTick');
 
 return $schedule;

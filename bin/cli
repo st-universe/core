@@ -9,6 +9,7 @@ use Stu\Component\Cli\ColonyCorrectionCommand;
 use Stu\Component\Cli\ColonyTickCommand;
 use Stu\Component\Cli\GameResetCommand;
 use Stu\Component\Cli\GenerateEmptySystemsCommand;
+use Stu\Component\Cli\HistoryTickCommand;
 use Stu\Component\Cli\MaintenanceTickCommand;
 use Stu\Component\Cli\ManagerTickCommand;
 use Stu\Component\Cli\PirateTickCommand;
@@ -65,6 +66,7 @@ $app->add($dic->get(MaintenanceTickCommand::class));
 $app->add($dic->get(ProcessTickCommand::class));
 $app->add(new ManagerTickCommand($dic));
 $app->add($dic->get(PirateTickCommand::class));
+$app->add($dic->get(HistoryTickCommand::class));
 
 // system generation
 $app->add($dic->get(GenerateEmptySystemsCommand::class));
