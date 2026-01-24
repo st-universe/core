@@ -45,6 +45,12 @@ final class DatabaseProvider implements ViewComponentProviderInterface
 
             // load event map from file
             $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
+
+            // check if file exists
+            if (!file_exists($historyFolder . '/layer_2.png')) {
+                return;
+            }
+
             $graph = imagecreatefrompng($historyFolder . '/layer_2.png');
             if ($graph === false) {
                 return;
