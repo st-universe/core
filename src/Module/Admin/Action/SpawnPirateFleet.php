@@ -65,7 +65,10 @@ final class SpawnPirateFleet implements ActionControllerInterface
             return;
         }
 
-        $fleet = $this->pirateCreation->createPirateFleet();
+        $pirateSetupId = request::postInt('pirate_setup_id');
+        $pirateSetupId = $pirateSetupId > 0 ? $pirateSetupId : null;
+
+        $fleet = $this->pirateCreation->createPirateFleet(null, $pirateSetupId);
 
         foreach ($fleet->getShips() as $ship) {
             $ship->setLocation($field);

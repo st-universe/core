@@ -10,5 +10,5 @@ interface PirateCreationInterface
     /** @return array<Fleet> */
     public function createPirateFleetsIfNeeded(): array;
 
-    public function createPirateFleet(?Spacecraft $supportCaller = null): Fleet;
+    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null): Fleet;
 }

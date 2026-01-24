@@ -216,14 +216,16 @@ class PirateCreation implements PirateCreationInterface
     }
 
     #[\Override]
-    public function createPirateFleet(?Spacecraft $supportCaller = null): Fleet
+    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null): Fleet
     {
         $pirateUser = $this->userRepository->find(UserConstants::USER_NPC_KAZON);
         if ($pirateUser === null) {
             throw new RuntimeException('this should not happen');
         }
 
-        $pirateSetup = $this->getRandomPirateSetup();
+        $pirateSetup = $pirateSetupId !== null
+            ? $this->getPirateSetupById($pirateSetupId)
+            : $this->getRandomPirateSetup();
 
         //create ships
         $ships = $this->createShips($pirateSetup, $supportCaller);
@@ -298,6 +300,15 @@ class PirateCreation implements PirateCreationInterface
         }
 
         return $result;
+    }
+
+    private function getPirateSetupById(int $pirateSetupId): PirateSetup
+    {
+        $pirateSetup = $this->pirateSetupRepository->find($pirateSetupId);
+        if ($pirateSetup === null) {
+            throw new RuntimeException(sprintf('PirateSetup with ID %d not found', $pirateSetupId));
+        }
+        return $pirateSetup;
     }
 
     private function getRandomPirateSetup(): PirateSetup
