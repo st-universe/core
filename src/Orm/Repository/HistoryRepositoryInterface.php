@@ -5,7 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Entity\History;
-use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Layer;
 
 /**
  * @extends ObjectRepository<History>
@@ -39,7 +39,10 @@ interface HistoryRepositoryInterface extends ObjectRepository
 
     public function getAmountByType(int $typeId): int;
 
-    public function getAmountByLocation(Location $location): int;
+    /**
+     * @return array<int, int>
+     */
+    public function getAmountIndexedByLocationId(Layer $layer): array;
 
     public function prototype(): History;
 

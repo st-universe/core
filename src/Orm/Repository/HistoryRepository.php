@@ -8,7 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\History;
-use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Map;
 
 /**
  * @extends EntityRepository<History>
@@ -71,9 +72,9 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT h FROM %s h
+                'SELECT h FROM %s h
                     WHERE h.type = :typeId
-                    AND COALESCE(h.source_user_id, 0) != :pirateId 
+                    AND COALESCE(h.source_user_id, 0) != :pirateId
                     AND COALESCE(h.target_user_id, 0) != :pirateId
                     ORDER BY h.id desc',
                     History::class
@@ -118,11 +119,30 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
     #[\Override]
-    public function getAmountByLocation(Location $location): int
+    public function getAmountIndexedByLocationId(Layer $layer): array
     {
-        return $this->count([
-            'location' => $location
-        ]);
+        $result = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT IDENTITY(h.location) AS location_id, COUNT(h.id) AS amount
+                    FROM %s h
+                    JOIN %s m WITH h.location = m
+                    WHERE m.layer = :layer
+                    AND h.location IS NOT NULL
+                    GROUP BY h.location',
+                    History::class,
+                    Map::class
+                )
+            )
+            ->setParameter('layer', $layer)
+            ->getArrayResult();
+
+        $indexedResult = [];
+        foreach ($result as $entry) {
+            $indexedResult[$entry['location_id']] = $entry['amount'];
+        }
+
+        return $indexedResult;
     }
 
     #[\Override]

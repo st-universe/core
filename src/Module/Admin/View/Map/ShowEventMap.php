@@ -10,6 +10,7 @@ use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Entity\Layer;
@@ -46,6 +47,8 @@ final class ShowEventMap implements ViewControllerInterface
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
+        $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId($layer);
+
         $img = imagecreatetruecolor($width, $height);
         if ($img === false) {
             throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
@@ -56,6 +59,7 @@ final class ShowEventMap implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
+
         foreach ($this->mapRepository->getAllOrdered($layer) as $data) {
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
@@ -63,11 +67,10 @@ final class ShowEventMap implements ViewControllerInterface
                 $cury += 15;
             }
 
-            $historyCount = $this->historyRepository->getAmountByLocation($data);
-
+            $historyCount = $historyAmountsIndexed[$data->getId()] ?? 0;
             if ($historyCount > 0) {
                 // Calculate RGB values based on historyCount using a logarithmic approach
-                $logCount = log($historyCount);
+                $logCount = 0; //log($historyCount);
                 $red = 0;
                 $green = 0;
                 $blue = 0;
@@ -102,6 +105,8 @@ final class ShowEventMap implements ViewControllerInterface
                 ) {
                     throw new InvalidArgumentException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
                 }
+
+                StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $data->getId(), $historyCount, $red, $green, $blue);
 
                 $filling = imagecreatetruecolor(15, 15);
                 $col = imagecolorallocate($filling, $red, $green, $blue);
