@@ -113,8 +113,14 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             imagecopy($img, $filling, $curx, $cury, 0, 0, self::SCALE, self::SCALE);
         }
 
-        //clear all resources in history folder
         $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
+
+        // create history folder if not exists
+        if (!is_dir($historyFolder)) {
+            mkdir($historyFolder, 0777, true);
+        }
+
+        //clear all resources in history folder
         $files = glob($historyFolder . '/layer_' . $layer->getId() . '.png');
         if ($files === false) {
             throw new InvalidArgumentException('error reading history folder files');
