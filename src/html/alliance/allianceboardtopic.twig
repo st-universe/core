@@ -25,7 +25,7 @@
                 <img src="/assets/buttons/knedit1.png" name="editPost{{ post.getId }}" title="editieren" />
             </a>
             {% endif %}
-            {% if IS_MODERATOR %}
+            {% if hasAlliancePermission(7) %}
             <a href="?B_DEL_POSTING=1&boardid={{ TOPIC.getBoardId }}&topicid={{ post.getTopic.getId }}&pid={{ post.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('delPost{{ post.getId }}','buttons/x2')"
                 onmouseout="cp('delPost{{ post.getId }}','buttons/x1')">

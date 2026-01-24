@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Board;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -18,8 +17,7 @@ final class Board implements ViewControllerInterface
     public function __construct(
         private BoardRequestInterface $boardRequest,
         private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        private AllianceBoardRepositoryInterface $allianceBoardRepository,
-        private AllianceActionManagerInterface $allianceActionManager
+        private AllianceBoardRepositoryInterface $allianceBoardRepository
     ) {}
 
     #[\Override]
@@ -58,10 +56,6 @@ final class Board implements ViewControllerInterface
         $game->setTemplateVar(
             'TOPICS',
             $this->allianceBoardTopicRepository->getByBoardIdOrdered($boardId)
-        );
-        $game->setTemplateVar(
-            'EDITABLE',
-            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
         $game->setTemplateVar('BOARD_ID', $boardId);
     }

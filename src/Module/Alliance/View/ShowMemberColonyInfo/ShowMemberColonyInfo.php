@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\ShowMemberColonyInfo;
 
 use request;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,7 +20,7 @@ final class ShowMemberColonyInfo implements ViewControllerInterface
     public const string VIEW_IDENTIFIER = 'SHOW_MEMBER_COLONY_INFO';
 
     public function __construct(
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ColonyRepositoryInterface $colonyRepository,
         private ColonyGuiHelperInterface $colonyGuiHelper,
@@ -51,7 +52,7 @@ final class ShowMemberColonyInfo implements ViewControllerInterface
             return;
         }
 
-        if (!$this->allianceActionManager->mayViewColonies($user->getAlliance(), $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $user->getAlliance(), AllianceJobPermissionEnum::VIEW_COLONIES)) {
             $game->setMacroInAjaxWindow('');
             $game->getInfo()->addInformation(_('Du hast keine Berechtigung, Kolonien anzusehen'));
             return;

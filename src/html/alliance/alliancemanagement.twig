@@ -21,7 +21,7 @@
                 <img src="assets/rassen/{{ data.getFaction }}s.png" />
                 <span>{{ data.getName|bbcode }}</span>
             </div>
-            {% if CAN_VIEW_MEMBER_DATA %}
+            {% if hasAlliancePermission(11) %}
             <div>
                 <img src="assets/buttons/time.png" title="Zuletzt online" />
                 <span>{{ data.getLastActionDate|stuDateTime }}</span>
@@ -35,7 +35,7 @@
             {% endif %}
         </td>
         <td>
-            {% if CAN_VIEW_COLONIES %}
+            {% if hasAlliancePermission(10) %}
             {% for col in data.getColonies %}
             <a href="javascript:void(0);" onclick="showMemberColonyInfo(this, {{ col.getId }});">
                 <img src="assets/planets/{{ col.getColonyClass.getId }}.png"
@@ -47,7 +47,7 @@
             {% endif %}
         </td>
         <td>
-            {% if CAN_VIEW_SHIPS %}
+            {% if hasAlliancePermission(12) %}
             {% for rump in data.getShipRumpList %}
             <div style="display: inline-block; padding-left: 10px; text-align: center;">
                 {{ rump.amount }} {{ rump.name }}<br />
@@ -61,7 +61,7 @@
             {% endif %}
         </td>
         <td style="width: 200px; text-align: center;">
-            {% if CAN_MANAGE_JOBS %}
+            {% if hasAlliancePermission(9) %}
             {% if not data.isCurrentUser %}
             {% if not data.isFounder %}
             <a href="javascript:void(0);" class="linkbutton"
@@ -93,7 +93,7 @@
     </tr>
     {% endfor %}
 </table>
-{% if CAN_VIEW_ALLIANCE_STORAGE %}
+{% if hasAlliancePermission(13) %}
 {% if ALLIANCE_STATIONS|length > 0 %}
 <br /><br />
 <div class="divhead">Allianz-Depots</div>

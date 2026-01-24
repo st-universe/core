@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Alliance\Lib;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -21,11 +22,5 @@ interface AllianceJobManagerInterface
      */
     public function getUserJobs(User $user, Alliance $alliance): array;
 
-    public function hasUserFounderPermission(User $user, Alliance $alliance): bool;
-
-    public function hasUserSuccessorPermission(User $user, Alliance $alliance): bool;
-
-    public function hasUserDiplomaticPermission(User $user, Alliance $alliance): bool;
-
-    public function hasUserPermission(User $user, Alliance $alliance, int $permissionType): bool;
+    public function hasUserPermission(User $user, Alliance $alliance, AllianceJobPermissionEnum $permissionType): bool;
 }

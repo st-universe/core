@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +22,6 @@ final class DemotePlayer implements ActionControllerInterface
 
     public function __construct(
         private DemotePlayerRequestInterface $demotePlayerRequest,
-        private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         private AllianceJobManagerInterface $allianceJobManager
@@ -43,7 +42,7 @@ final class DemotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)) {
             throw new AccessViolationException();
         }
 

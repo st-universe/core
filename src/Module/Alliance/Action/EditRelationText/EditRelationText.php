@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\EditRelationText;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;
@@ -27,9 +28,9 @@ final class EditRelationText implements ActionControllerInterface
 
     public function __construct(
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
-        private AllianceActionManagerInterface $allianceActionManager,
         private EditRelationTextRequestInterface $editRelationTextRequest,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     #[\Override]
@@ -42,7 +43,7 @@ final class EditRelationText implements ActionControllerInterface
             throw new AccessViolationException("user not in alliance");
         }
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)) {
             throw new AccessViolationException();
         }
 

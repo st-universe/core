@@ -7,11 +7,13 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 use JBBCode\Parser;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -29,7 +31,8 @@ final class EditDetails implements ActionControllerInterface
         private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private AllianceRepositoryInterface $allianceRepository,
-        private AllianceApplicationRepositoryInterface $allianceApplicationRepository
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository,
+        private AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     #[\Override]
@@ -44,7 +47,7 @@ final class EditDetails implements ActionControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)) {
             throw new AccessViolationException();
         }
 

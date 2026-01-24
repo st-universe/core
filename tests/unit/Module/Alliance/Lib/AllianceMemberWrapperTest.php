@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Mockery\MockInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
@@ -52,8 +53,8 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testIsFounderReturnsTrueIfSo(): void
     {
-        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-            ->with($this->user, $this->alliance)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::FOUNDER)
             ->once()
             ->andReturnTrue();
 
@@ -64,8 +65,8 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testIsFounderReturnsTrueIfIdsAreDifferent(): void
     {
-        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-            ->with($this->user, $this->alliance)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($this->user, $this->alliance, AllianceJobPermissionEnum::FOUNDER)
             ->once()
             ->andReturnFalse();
 

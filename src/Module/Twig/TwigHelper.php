@@ -6,6 +6,7 @@ namespace Stu\Module\Twig;
 
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -17,6 +18,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyProductionPreviewWrapper;
@@ -54,7 +56,8 @@ class TwigHelper
         private readonly TemplateHelperInterface $templateHelper,
         private readonly AccessCheckInterface $accessCheck,
         private readonly StuTime $stuTime,
-        private readonly StuRandom $stuRandom
+        private readonly StuRandom $stuRandom,
+        private readonly AllianceJobManagerInterface $allianceJobManager
     ) {}
 
     public function registerGlobalVariables(): void
@@ -204,6 +207,12 @@ class TwigHelper
 
         $isShowOnlineStateFunction = new TwigFunction('isShowOnlineState', fn(User $user): bool => $this->userSettingsProvider->isShowOnlineState($user));
         $this->environment->addFunction($isShowOnlineStateFunction);
+
+        $hasAlliancePermissionFunction = new TwigFunction(
+            'hasAlliancePermission',
+            fn(int|array $permissionValue): bool => $this->checkAlliancePermission($permissionValue)
+        );
+        $this->environment->addFunction($hasAlliancePermissionFunction);
     }
 
     private function maskEmail(string $email): string
@@ -246,5 +255,32 @@ class TwigHelper
         }
 
         return $displayMobile;
+    }
+
+    /**
+     * @param int|array<int> $permissionValue
+     */
+    private function checkAlliancePermission(int|array $permissionValue): bool
+    {
+        $user = $this->game->getUser();
+        $alliance = $user->getAlliance();
+
+        if ($alliance === null) {
+            return false;
+        }
+
+        $permissionValues = is_array($permissionValue) ? $permissionValue : [$permissionValue];
+
+        foreach ($permissionValues as $value) {
+            $permissionEnum = AllianceJobPermissionEnum::tryFrom($value);
+            if (
+                $permissionEnum !== null
+                && $this->allianceJobManager->hasUserPermission($user, $alliance, $permissionEnum)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

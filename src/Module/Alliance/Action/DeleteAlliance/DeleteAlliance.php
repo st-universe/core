@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use RuntimeException;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -34,8 +35,8 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $game->setView(ModuleEnum::ALLIANCE);
 
-        $isFounder = $this->allianceJobManager->hasUserFounderPermission($user, $alliance);
-        $isSuccessor = $this->allianceJobManager->hasUserSuccessorPermission($user, $alliance);
+        $isFounder = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER);
+        $isSuccessor = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::SUCCESSOR);
 
         if (!$isFounder && !$isSuccessor) {
             throw new AccessViolationException();

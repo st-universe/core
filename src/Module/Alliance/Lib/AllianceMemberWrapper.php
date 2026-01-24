@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Alliance\Lib;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 
@@ -25,7 +26,7 @@ final class AllianceMemberWrapper
 
     public function isFounder(): bool
     {
-        return $this->allianceJobManager->hasUserFounderPermission($this->user, $this->alliance);
+        return $this->allianceJobManager->hasUserPermission($this->user, $this->alliance, AllianceJobPermissionEnum::FOUNDER);
     }
 
     public function getUserId(): int

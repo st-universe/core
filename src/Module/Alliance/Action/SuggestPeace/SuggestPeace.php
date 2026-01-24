@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -15,7 +17,7 @@ final class SuggestPeace implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
-    public function __construct(private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -29,7 +31,7 @@ final class SuggestPeace implements ActionControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if ($relation === null || !$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
+        if ($relation === null || !$this->allianceJobManager->hasUserPermission($game->getUser(), $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
             throw new AccessViolationException();
         }
 

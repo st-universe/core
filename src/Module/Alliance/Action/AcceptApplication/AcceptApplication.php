@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -21,7 +22,7 @@ final class AcceptApplication implements ActionControllerInterface
 
     public function __construct(
         private AcceptApplicationRequestInterface $acceptApplicationRequest,
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         private AllianceApplicationRepositoryInterface $allianceApplicationRepository
@@ -40,7 +41,11 @@ final class AcceptApplication implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayManageApplications($alliance, $game->getUser())) {
+        if (!$this->allianceJobManager->hasUserPermission(
+            $game->getUser(),
+            $alliance,
+            AllianceJobPermissionEnum::MANAGE_APPLICATIONS
+        )) {
             throw new AccessViolationException();
         }
 

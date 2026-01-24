@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,7 +21,6 @@ final class KickPlayer implements ActionControllerInterface
 
     public function __construct(
         private KickPlayerRequestInterface $kickPlayerRequest,
-        private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         private AllianceJobManagerInterface $allianceJobManager,
@@ -41,7 +40,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
-        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)) {
             throw new AccessViolationException();
         }
 
@@ -53,7 +52,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $alliance->getMembers()->removeElement($player);
 
-        $isKickedPlayerFounder = $this->allianceJobManager->hasUserFounderPermission($player, $alliance);
+        $isKickedPlayerFounder = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER);
 
         if ($isKickedPlayerFounder) {
             $founderJob = $alliance->getFounder();

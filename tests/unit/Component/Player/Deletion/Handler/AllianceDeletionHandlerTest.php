@@ -7,6 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use ArrayIterator;
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
@@ -48,8 +49,8 @@ class AllianceDeletionHandlerTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-            ->with($user, $alliance)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::FOUNDER)
             ->once()
             ->andReturnFalse();
 
@@ -74,8 +75,8 @@ class AllianceDeletionHandlerTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-            ->with($user, $alliance)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::FOUNDER)
             ->once()
             ->andReturnTrue();
 
@@ -124,8 +125,8 @@ class AllianceDeletionHandlerTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $this->allianceJobManager->shouldReceive('hasUserFounderPermission')
-            ->with($user, $alliance)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::FOUNDER)
             ->once()
             ->andReturnTrue();
 

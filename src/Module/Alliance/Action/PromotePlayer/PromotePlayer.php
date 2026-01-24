@@ -7,7 +7,6 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
@@ -23,7 +22,6 @@ final class PromotePlayer implements ActionControllerInterface
     public function __construct(
         private PromotePlayerRequestInterface $promotePlayerRequest,
         private AllianceJobRepositoryInterface $allianceJobRepository,
-        private AllianceActionManagerInterface $allianceActionManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
         private AllianceJobManagerInterface $allianceJobManager
@@ -40,7 +38,7 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceActionManager->mayManageJobs($alliance, $user)) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)) {
             throw new AccessViolationException();
         }
 
@@ -61,7 +59,7 @@ final class PromotePlayer implements ActionControllerInterface
         $userLosesFounderRights = false;
 
         if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
-            if (!$this->allianceJobManager->hasUserFounderPermission($user, $alliance)) {
+            if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER)) {
                 throw new AccessViolationException();
             }
 

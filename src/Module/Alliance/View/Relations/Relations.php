@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Relations;
 
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,7 +20,7 @@ final class Relations implements ViewControllerInterface
 
     public function __construct(
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
-        private AllianceActionManagerInterface $allianceActionManager,
+        private AllianceJobManagerInterface $allianceJobManager,
         private AllianceRepositoryInterface $allianceRepository
     ) {}
 
@@ -35,7 +36,11 @@ final class Relations implements ViewControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
+        if (
+            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
+            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+        ) {
             throw new AccessViolationException();
         }
 
@@ -67,13 +72,5 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
-        $game->setTemplateVar(
-            'CAN_CREATE_AGREEMENTS',
-            $this->allianceActionManager->mayCreateAgreements($alliance, $user)
-        );
-        $game->setTemplateVar(
-            'CAN_EDIT_DIPLOMATIC_DOCUMENTS',
-            $this->allianceActionManager->mayEditDiplomaticDocuments($alliance, $user)
-        );
     }
 }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AddBoard;
 
 use Mockery\MockInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceBoard;
@@ -21,7 +22,7 @@ class AddBoardTest extends StuTestCase
 
     private MockInterface&AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    private MockInterface&AllianceActionManagerInterface $allianceActionManager;
+    private MockInterface&AllianceJobManagerInterface $allianceJobManager;
 
     private AddBoard $subject;
 
@@ -30,12 +31,12 @@ class AddBoardTest extends StuTestCase
     {
         $this->addBoardRequest = $this->mock(AddBoardRequestInterface::class);
         $this->allianceBoardRepository = $this->mock(AllianceBoardRepositoryInterface::class);
-        $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
+        $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->subject = new AddBoard(
             $this->addBoardRequest,
             $this->allianceBoardRepository,
-            $this->allianceActionManager
+            $this->allianceJobManager
         );
     }
 
@@ -71,8 +72,8 @@ class AddBoardTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($alliance, $user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)
             ->once()
             ->andReturnFalse();
 
@@ -101,8 +102,8 @@ class AddBoardTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($alliance, $user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)
             ->once()
             ->andReturnTrue();
 
@@ -139,8 +140,8 @@ class AddBoardTest extends StuTestCase
             ->once()
             ->andReturn($alliance);
 
-        $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($alliance, $user)
+        $this->allianceJobManager->shouldReceive('hasUserPermission')
+            ->with($user, $alliance, AllianceJobPermissionEnum::EDIT_ALLIANCE)
             ->once()
             ->andReturnTrue();
 

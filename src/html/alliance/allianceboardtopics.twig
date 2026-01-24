@@ -5,7 +5,7 @@
         <th>Thema</th>
         <th>Beiträge</th>
         <th>Letzter Beitrag</th>
-        {% if EDITABLE %}
+        {% if hasAlliancePermission(7) %}
         <th></th>
         {% endif %}
     </tr>
@@ -39,7 +39,7 @@
             -
             {% endif %}
         </td>
-        {% if EDITABLE %}
+        {% if hasAlliancePermission(7) %}
         {% set handle = this.getUniqId %}
         <td style="width: 30px; text-align: center;">
             <a href="javascript:void(0);" onclick="openTopicSettings(this,{{ topic.getId }},{{ topic.getBoardId }})"
