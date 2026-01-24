@@ -8,7 +8,6 @@
         <a href="alliance.php?showlist=1" class="linkbutton">Allianzliste</a>
         {% if IS_IN_ALLIANCE %}
         <a href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
-        {% endif %}
         {% if hasAlliancePermission([4,5]) %}
         <a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
         {% endif %}
@@ -21,6 +20,7 @@
         {% endif %}
         {% if hasAlliancePermission([9,10,11,12,13]) %}
         <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
+        {% endif %}
         {% endif %}
         {{ translationSwitcher(ALLIANCE.hasTranslation, 'allianceDescription', 'Allianzbeschreibung übersetzen') }}
       </div>
