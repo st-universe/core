@@ -41,9 +41,9 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function getAmountByType(int $typeId): int;
 
     /**
-     * @return array<int, array{0: Map, amount: int}>
+     * @return iterable<int, array{0: Map, amount: int}>
      */
-    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): array;
+    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): iterable;
 
     public function prototype(): History;
 

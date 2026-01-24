@@ -119,7 +119,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     }
 
     #[\Override]
-    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): array
+    public function getAmountIndexedByLocationId(Layer $layer, int $dateThreshold): iterable
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -139,7 +139,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                 'layer' => $layer,
                 'dateThreshold' => $dateThreshold
         ])
-            ->getResult();
+            ->toIterable();
     }
 
     #[\Override]
