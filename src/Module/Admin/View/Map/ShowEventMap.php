@@ -53,11 +53,6 @@ final class ShowEventMap implements ViewControllerInterface
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
-        $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
-            $layer,
-            $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
-        );
-
         $img = imagecreatetruecolor($width, $height);
         if ($img === false) {
             throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
@@ -70,41 +65,11 @@ final class ShowEventMap implements ViewControllerInterface
         $cury = 0;
         $curx = 0;
 
-
         foreach ($this->mapRepository->getAllOrdered($layer) as $data) {
             if ($startY !== $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
                 $cury += $scale;
-            }
-
-            $historyCount = $historyAmountsIndexed[$data->getId()] ?? 0;
-            if ($historyCount > 0) {
-
-                $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
-                $red = $rgb[0];
-                $green = $rgb[1];
-                $blue = $rgb[2];
-
-                if (
-                    $red < 0 || $red > 255
-                    || $green < 0 || $green > 255
-                    || $blue < 0 || $blue > 255
-                ) {
-                    throw new InvalidArgumentException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
-                }
-
-                StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $data->getId(), $historyCount, $red, $green, $blue);
-
-                $filling = imagecreatetruecolor($scale, $scale);
-                $col = imagecolorallocate($filling, $red, $green, $blue);
-                if (!$col) {
-                    throw new InvalidArgumentException(sprintf('color range exception, col: %d', $col));
-                }
-                imagefill($filling, 0, 0, $col);
-                imagecopy($img, $filling, $curx, $cury, 0, 0, $scale, $scale);
-                $curx += $scale;
-                continue;
             }
 
             $imagePath = $this->getMapGraphicPath($layer, $data->getFieldType()->getType());
@@ -120,6 +85,41 @@ final class ShowEventMap implements ViewControllerInterface
 
         if ($grayScale) {
             imagefilter($img, IMG_FILTER_GRAYSCALE);
+        }
+
+        $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
+            $layer,
+            $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
+        );
+        foreach ($historyAmountsIndexed as $data) {
+            $map = $data[0];
+            $locationId = $map->getId();
+            $historyCount = $data['amount'];
+            $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 20);
+            $red = $rgb[0];
+            $green = $rgb[1];
+            $blue = $rgb[2];
+
+            $cury = ($map->getCy() - 1) * $scale;
+            $curx = ($map->getCx() - 1) * $scale;
+
+            if (
+                $red < 0 || $red > 255
+                || $green < 0 || $green > 255
+                || $blue < 0 || $blue > 255
+            ) {
+                throw new InvalidArgumentException(sprintf('rgb range exception, red: %d, green: %d, blue: %d', $red, $green, $blue));
+            }
+
+            StuLogger::logf("location %d has %d history entries -> rgb(%d,%d,%d)", $locationId, $historyCount, $red, $green, $blue);
+
+            $filling = imagecreatetruecolor($scale, $scale);
+            $col = imagecolorallocate($filling, $red, $green, $blue);
+            if (!$col) {
+                throw new InvalidArgumentException(sprintf('color range exception, col: %d', $col));
+            }
+            imagefill($filling, 0, 0, $col);
+            imagecopy($img, $filling, $curx, $cury, 0, 0, $scale, $scale);
         }
 
         header("Content-type: image/png");
