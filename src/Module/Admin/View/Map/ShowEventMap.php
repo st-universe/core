@@ -7,6 +7,7 @@ namespace Stu\Module\Admin\View\Map;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -25,7 +26,8 @@ final class ShowEventMap implements ViewControllerInterface
         private readonly LayerRepositoryInterface $layerRepository,
         private readonly HistoryRepositoryInterface $historyRepository,
         private readonly StuConfigInterface $config,
-        private readonly EncodedMapInterface $encodedMap
+        private readonly EncodedMapInterface $encodedMap,
+        private readonly GradientColorInterface $gradientColor
     ) {}
 
     #[\Override]
@@ -69,34 +71,11 @@ final class ShowEventMap implements ViewControllerInterface
 
             $historyCount = $historyAmountsIndexed[$data->getId()] ?? 0;
             if ($historyCount > 0) {
-                // Calculate RGB values based on historyCount using a logarithmic approach
-                $logCount = 0; //log($historyCount);
-                $red = 0;
-                $green = 0;
-                $blue = 0;
 
-                if ($logCount <= log(5)) {
-                    // Green to Yellow
-                    $green = 255;
-                    $red = (int)(255 * ($logCount / log(5)));
-                } elseif ($logCount <= log(10)) {
-                    // Yellow to Orange
-                    $red = 255;
-                    $green = (int)(255 * (1 - (($logCount - log(5)) / (log(10) - log(5)))));
-                } elseif ($logCount <= log(20)) {
-                    // Orange to Red
-                    $red = 255;
-                    $green = 0;
-                    $blue = (int)(255 * (($logCount - log(10)) / (log(20) - log(10))));
-                } elseif ($logCount <= log(40)) {
-                    // Red to Purple
-                    $red = 255;
-                    $blue = (int)(255 * (($logCount - log(20)) / (log(40) - log(20))));
-                } else {
-                    // Beyond 40, set to Purple
-                    $red = 128;
-                    $blue = 128;
-                }
+                $rgb = $this->gradientColor->calculateGradientColorRGB($historyCount, 0, 100);
+                $red = $rgb[0];
+                $green = $rgb[1];
+                $blue = $rgb[2];
 
                 if (
                     $red < 0 || $red > 255

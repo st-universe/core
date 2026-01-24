@@ -8,6 +8,13 @@ final class GradientColor implements GradientColorInterface
     #[\Override]
     public function calculateGradientColor(int $modificator, int $lowestValue, int $highestValue): string
     {
+        // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
+        return $this->rgbToHex($this->calculateGradientColorRGB($modificator, $lowestValue, $highestValue));
+    }
+
+    #[\Override]
+    public function calculateGradientColorRGB(int $modificator, int $lowestValue, int $highestValue): array
+    {
         $color1 = '#00ff00';
         $color2 = '#ffd500';
         $color3 = '#FF0000';
@@ -29,8 +36,7 @@ final class GradientColor implements GradientColorInterface
             $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
         }
 
-        // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
-        return $this->rgbToHex($gradientRgb);
+        return $gradientRgb;
     }
 
     /**
@@ -60,7 +66,7 @@ final class GradientColor implements GradientColorInterface
      * @param array<mixed> $rgb1
      * @param array<mixed> $rgb2
      *
-     * @return array<int>
+     * @return array{0: int, 1: int, 2: int}
      */
     private function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
