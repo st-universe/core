@@ -136,65 +136,6 @@ function deleteAllianceJob(jobId) {
 		jobItem.remove();
 	}
 }
-
-function saveAllianceJobs() {
-	const container = document.getElementById('alliance-jobs-container');
-	const jobItems = container.querySelectorAll('.alliance-job-item');
-
-	const jobs = [];
-	let hasError = false;
-
-	jobItems.forEach((item, index) => {
-		const jobId = item.getAttribute('data-job-id');
-		const title = item.querySelector('.job-title-input').value.trim();
-		const isSuccessor = item.querySelector('.job-successor-check')?.checked || false;
-		const isDiplomatic = item.querySelector('.job-diplomatic-check')?.checked || false;
-
-		if (title.length < 3) {
-			alert('Alle Rollenbezeichnungen müssen mindestens 3 Zeichen lang sein!');
-			hasError = true;
-			return;
-		}
-
-		jobs.push({
-			id: jobId,
-			title: title,
-			sort: index + 1,
-			is_successor: isSuccessor,
-			is_diplomatic: isDiplomatic
-		});
-	});
-
-	if (hasError) {
-		return;
-	}
-
-	const form = document.createElement('form');
-	form.method = 'POST';
-	form.action = 'alliance.php';
-
-	const sstrInput = document.createElement('input');
-	sstrInput.type = 'hidden';
-	sstrInput.name = 'sstr';
-	sstrInput.value = document.querySelector('input[name="sstr"]').value;
-	form.appendChild(sstrInput);
-
-	const actionInput = document.createElement('input');
-	actionInput.type = 'hidden';
-	actionInput.name = 'B_SAVE_ALLIANCE_JOBS';
-	actionInput.value = '1';
-	form.appendChild(actionInput);
-
-	const jobsInput = document.createElement('input');
-	jobsInput.type = 'hidden';
-	jobsInput.name = 'jobs';
-	jobsInput.value = JSON.stringify(jobs);
-	form.appendChild(jobsInput);
-
-	document.body.appendChild(form);
-	form.submit();
-}
-
 function initializeDragAndDrop(item) {
 	if (!item.draggable) return;
 
