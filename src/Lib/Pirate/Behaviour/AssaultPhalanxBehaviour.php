@@ -18,8 +18,7 @@ use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtilInterface;
@@ -27,6 +26,7 @@ use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -55,13 +55,13 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $targets = $this->stationRepository->getPiratePhalanxTargets($leadWrapper);
@@ -83,7 +83,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         usort(
             $filteredTargets,
             fn(Station $a, Station $b): int =>
-            $this->distanceCalculation->shipToShipDistance($leadShip, $a) - $this->distanceCalculation->shipToShipDistance($leadShip, $b)
+            $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $b)
         );
 
         $isFleetFight = false;
@@ -93,7 +93,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         $closestPhalanx = current($filteredTargets);
         $phalanxWrapper = $this->spacecraftWrapperFactory->wrapStation($closestPhalanx);
 
-        if (!$this->pirateNavigation->navigateToTarget($fleet, $closestPhalanx->getLocation())) {
+        if (!$this->pirateNavigation->navigateToTarget($pirateFleetBattleParty, $closestPhalanx->getLocation())) {
             return null;
         }
 
@@ -106,7 +106,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
             return null;
         }
 
-        $boardingWrapper = $this->getBoardingPirateWrapper($fleet);
+        $boardingWrapper = $this->getBoardingPirateWrapper($pirateFleetBattleParty);
         $boardingShip = $boardingWrapper->get();
 
         $this->spacecraftSystemManager->deactivate($boardingWrapper, SpacecraftSystemTypeEnum::SHIELDS, true);
@@ -159,14 +159,14 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         return null;
     }
 
-    private function getBoardingPirateWrapper(FleetWrapperInterface $fleetWrapper): ShipWrapperInterface
+    private function getBoardingPirateWrapper(PirateFleetBattleParty $pirateFleetBattleParty): SpacecraftWrapperInterface
     {
 
-        $pirateWrapperArray = $fleetWrapper->getShipWrappers()->toArray();
+        $pirateWrapperArray = $pirateFleetBattleParty->getActiveMembers()->toArray();
 
         usort(
             $pirateWrapperArray,
-            fn(ShipWrapperInterface $a, ShipWrapperInterface $b): int =>
+            fn(SpacecraftWrapperInterface $a, SpacecraftWrapperInterface $b): int =>
             $b->get()->getCrewCount() - $a->get()->getCrewCount()
         );
 

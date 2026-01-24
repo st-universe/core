@@ -11,9 +11,8 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
@@ -35,12 +34,12 @@ class FlyBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $currentLocation = $leadShip->getLocation();
@@ -90,7 +89,7 @@ class FlyBehaviour implements PirateBehaviourInterface
         );
     }
 
-    private function leaveStarSystem(ShipWrapperInterface $wrapper, StarSystemMap $currentLocation): void
+    private function leaveStarSystem(SpacecraftWrapperInterface $wrapper, StarSystemMap $currentLocation): void
     {
         $mapField = $currentLocation->getSystem()->getMap();
         if ($mapField === null) {

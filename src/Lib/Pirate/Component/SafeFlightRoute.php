@@ -7,6 +7,7 @@ use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 class SafeFlightRoute implements SafeFlightRouteInterface
 {
@@ -18,7 +19,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
 
     #[\Override]
     public function getSafeFlightRoute(
-        Ship $ship,
+        Spacecraft $spacecraft,
         callable $coordinateCallable
     ): ?FlightRouteInterface {
 
@@ -33,7 +34,7 @@ class SafeFlightRoute implements SafeFlightRouteInterface
             $coordinate = $coordinateCallable();
 
             $flightRoute = $this->flightRouteFactory->getRouteForCoordinateDestination(
-                $ship,
+                $spacecraft,
                 $coordinate->getX(),
                 $coordinate->getY()
             );

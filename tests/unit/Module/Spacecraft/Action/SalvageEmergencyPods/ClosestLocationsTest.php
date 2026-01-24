@@ -100,10 +100,10 @@ class ClosestLocationsTest extends StuTestCase
             ->with($stationNotEnoughSpace)
             ->andReturn(41);
 
-        $this->distanceCalculation->shouldReceive('shipToShipDistance')
+        $this->distanceCalculation->shouldReceive('spacecraftToSpacecraftDistance')
             ->with($this->ship, $stationFarAway)
             ->andReturn(1000);
-        $this->distanceCalculation->shouldReceive('shipToShipDistance')
+        $this->distanceCalculation->shouldReceive('spacecraftToSpacecraftDistance')
             ->with($this->ship, $stationClosest)
             ->andReturn(999);
 

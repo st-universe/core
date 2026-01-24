@@ -2,21 +2,21 @@
 
 namespace Stu\Lib\Pirate\Component;
 
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class ReloadMinimalEps implements ReloadMinimalEpsInterface
 {
     #[\Override]
-    public function reload(FleetWrapperInterface $fleetWrapper, int $minimalPercentage = 20): void
+    public function reload(PirateFleetBattleParty $pirateFleetBattleParty, int $minimalPercentage = 20): void
     {
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+        foreach ($pirateFleetBattleParty->getActiveMembers() as $wrapper) {
             $this->reloadEps($wrapper, $minimalPercentage);
             $this->reloadWarpdrive($wrapper, $minimalPercentage);
         }
     }
 
-    private function reloadEps(ShipWrapperInterface $wrapper, int $minimalPercentage): void
+    private function reloadEps(SpacecraftWrapperInterface $wrapper, int $minimalPercentage): void
     {
         $epsSystem = $wrapper->getEpsSystemData();
 
@@ -28,7 +28,7 @@ class ReloadMinimalEps implements ReloadMinimalEpsInterface
         }
     }
 
-    private function reloadWarpdrive(ShipWrapperInterface $wrapper, int $minimalPercentage): void
+    private function reloadWarpdrive(SpacecraftWrapperInterface $wrapper, int $minimalPercentage): void
     {
         $warpdrive = $wrapper->getWarpDriveSystemData();
 

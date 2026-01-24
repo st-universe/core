@@ -7,6 +7,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 
 class BattlePartyFactory implements BattlePartyFactoryInterface
@@ -72,6 +73,16 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
     ): ColonyDefendingBattleParty {
         return new ColonyDefendingBattleParty(
             $this->spacecraftWrapperFactory->wrapShip($leader), $this->stuRandom
+        );
+    }
+
+    #[\Override]
+    public function createPirateFleetBattleParty(
+        Fleet $fleet
+    ): PirateFleetBattleParty {
+        return new PirateFleetBattleParty(
+            $this->spacecraftWrapperFactory->wrapFleet($fleet),
+            $this->stuRandom
         );
     }
 }

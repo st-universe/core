@@ -9,7 +9,7 @@ use Stu\Orm\Entity\Spacecraft;
 
 interface DistanceCalculationInterface
 {
-    public function shipToShipDistance(Spacecraft $one, Spacecraft $other): int;
+    public function spacecraftToSpacecraftDistance(Spacecraft $one, Spacecraft $other): int;
 
     public function spacecraftToColonyDistance(Spacecraft $spacecraft, Colony $colony): int;
 }

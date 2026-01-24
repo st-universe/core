@@ -11,7 +11,7 @@ use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -32,13 +32,13 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $filteredFriends = array_filter(
@@ -67,14 +67,14 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
             $weakestFriend->getSectorString()
         );
 
-        $this->reloadMinimalEps->reload($fleet, 50);
+        $this->reloadMinimalEps->reload($pirateFleetBattleParty, 50);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $weakestFriend->getLocation())) {
+        if ($this->pirateNavigation->navigateToTarget($pirateFleetBattleParty, $weakestFriend->getLocation())) {
 
             $this->logger->log('    reached weakest friend, now raging');
 
             $pirateReaction->react(
-                $fleet->get(),
+                $pirateFleetBattleParty,
                 PirateReactionTriggerEnum::ON_RAGE,
                 $leadShip,
                 $reactionMetadata

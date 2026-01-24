@@ -7,7 +7,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class PirateFlight implements PirateFlightInterface
 {
@@ -17,7 +17,7 @@ class PirateFlight implements PirateFlightInterface
     ) {}
 
     #[\Override]
-    public function movePirate(ShipWrapperInterface $wrapper, FlightRouteInterface $flightRoute): void
+    public function movePirate(SpacecraftWrapperInterface $wrapper, FlightRouteInterface $flightRoute): void
     {
         $messages = $this->shipMover->checkAndMove(
             $wrapper,

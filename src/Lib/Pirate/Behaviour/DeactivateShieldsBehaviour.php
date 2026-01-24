@@ -7,7 +7,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Pirate\PirateBehaviourEnum;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionMetadata;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Spacecraft;
 
 class DeactivateShieldsBehaviour implements PirateBehaviourInterface
@@ -15,13 +15,13 @@ class DeactivateShieldsBehaviour implements PirateBehaviourInterface
     public function __construct(private SpacecraftSystemManagerInterface $spacecraftSystemManager) {}
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleetWrapper,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+        foreach ($pirateFleetBattleParty->getActiveMembers() as $wrapper) {
             $ship = $wrapper->get();
             if ($ship->getCondition()->getShield() === $ship->getMaxShield()) {
                 continue;

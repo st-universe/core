@@ -19,7 +19,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Storage;
@@ -45,13 +45,13 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
     #[\Override]
     public function action(
-        FleetWrapperInterface $fleet,
+        PirateFleetBattleParty $pirateFleetBattleParty,
         PirateReactionInterface $pirateReaction,
         PirateReactionMetadata $reactionMetadata,
         ?Spacecraft $triggerSpacecraft
     ): ?PirateBehaviourEnum {
 
-        $leadWrapper = $fleet->getLeadWrapper();
+        $leadWrapper = $pirateFleetBattleParty->getLeader();
         $leadShip = $leadWrapper->get();
 
         $targets = $this->colonyRepository->getPirateTargets($leadWrapper);
@@ -65,26 +65,26 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $closestColony = current($targets);
 
-        if ($this->pirateNavigation->navigateToTarget($fleet, $closestColony->getStarsystemMap())) {
+        if ($this->pirateNavigation->navigateToTarget($pirateFleetBattleParty, $closestColony->getStarsystemMap())) {
             $this->logger->logf(
                 '    reached colonyId %d at %s',
                 $closestColony->getId(),
                 $closestColony->getSectorString()
             );
-            $this->rubColony($fleet, $closestColony);
+            $this->rubColony($pirateFleetBattleParty, $closestColony);
         }
 
         return null;
     }
 
-    private function rubColony(FleetWrapperInterface $fleetWrapper, Colony $colony): void
+    private function rubColony(PirateFleetBattleParty $pirateFleetBattleParty, Colony $colony): void
     {
         if ($this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $this->logger->log('    colony has shield on');
             return;
         }
 
-        $pirateUser = $fleetWrapper->get()->getUser();
+        $pirateUser = $pirateFleetBattleParty->getUser();
 
         $filteredColonyStorage = array_filter(
             $colony->getStorage()->toArray(),
@@ -93,7 +93,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $allInformations = new InformationWrapper();
 
-        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+        foreach ($pirateFleetBattleParty->getActiveMembers() as $wrapper) {
 
             if ($filteredColonyStorage === []) {
                 $this->logger->log('    no beamable storage on colony');
