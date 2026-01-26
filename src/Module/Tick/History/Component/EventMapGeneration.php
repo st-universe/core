@@ -11,6 +11,8 @@ use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\History\HistoryTickHandlerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -34,6 +36,8 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
     #[\Override]
     public function work(): void
     {
+        StuLogger::log("    starting EventMapGeneration", LogTypeEnum::TICK);
+
         $mapGraphicBasePath = $this->getMapGraphicBasePath();
 
         foreach($this->layerRepository->findAll() as $layer) {
@@ -43,6 +47,8 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
 
     private function generateEventMapForLayer(Layer $layer, string $mapGraphicBasePath): void
     {
+        StuLogger::log("    generating EventMap for Layer " . $layer->getId(), LogTypeEnum::TICK);
+
         $width = $layer->getWidth() * self::SCALE;
         $height = $layer->getHeight() * self::SCALE;
 
@@ -66,6 +72,7 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
 
         // create history folder if not exists
         if (!is_dir($historyFolder)) {
+            StuLogger::log("    creating history folder", LogTypeEnum::TICK);
             mkdir($historyFolder, 0777, true);
         }
 
@@ -80,10 +87,13 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
                 $layer->getId()
             )
         );
+        StuLogger::log("    saved new image for Layer " . $layer->getId(), LogTypeEnum::TICK);
     }
 
     private function createBaseImage(GdImage &$img, Layer $layer, string $mapGraphicBasePath): void
     {
+        StuLogger::log("    creating base image for Layer " . $layer->getId(), LogTypeEnum::TICK);
+
         $types = [];
 
         // mapfields
@@ -112,6 +122,8 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
 
     private function applyEventOverlay(GdImage &$img, Layer $layer): void
     {
+        StuLogger::log("    applying event overlay for Layer " . $layer->getId(), LogTypeEnum::TICK);
+
         $historyAmountsIndexed = $this->historyRepository->getAmountIndexedByLocationId(
             $layer,
             $this->stuTime->time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
@@ -140,6 +152,8 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
             imagefill($filling, 0, 0, $col);
             imagecopy($img, $filling, $curx, $cury, 0, 0, self::SCALE, self::SCALE);
         }
+
+        StuLogger::log("    applied overlay for Layer " . $layer->getId(), LogTypeEnum::TICK);
     }
 
     private function clearOldImages(string $historyFolder, Layer $layer): void
@@ -151,6 +165,7 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
+                StuLogger::log("    deleted " . $file, LogTypeEnum::TICK);
             }
         }
     }
