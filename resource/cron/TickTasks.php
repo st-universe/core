@@ -7,9 +7,9 @@ use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\History\HistoryTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
-use Stu\Module\Tick\Pirate\HistoryTickRunner;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
@@ -86,7 +86,7 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(HistoryTickRunner::class)->run(1, 1);
+        $dic->get(HistoryTickRunner::class)->run(1, 1);
         });
     })
     ->hourly()
