@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\History;
 
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 
@@ -29,6 +31,8 @@ final class HistoryTickRunner implements TickRunnerInterface
         if ($this->transactionTickRunner->isGameStateReset()) {
             return;
         }
+
+        StuLogger::log("Starting History Tick", LogTypeEnum::TICK);
 
         $this->transactionTickRunner->runWithResetCheck(
             function (): void {
