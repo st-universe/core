@@ -240,9 +240,11 @@ var tmpfield = 0;
 var fieldevent = 0;
 var bordercolor = "";
 
-function openSystemFieldSelector(x, y, systemId) {
+function openSystemFieldSelector(obj, x, y, systemId) {
+	var pos = findObject(obj);
 	updatePopup(
-		`/admin/?SHOW_SYSTEM_EDITFIELD=1&systemid=${systemId}&x=${x}&y=${y}`
+		`/admin/?SHOW_SYSTEM_EDITFIELD=1&systemid=${systemId}&x=${x}&y=${y}`,
+		null, pos[0], pos[1] + 50, false
 	);
 }
 function selectNewSystemMapField(fieldid, cx, cy, typeid, type) {

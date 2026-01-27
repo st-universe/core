@@ -1,6 +1,7 @@
 const ID = "popupWindow";
 const CONTENT_ID = "popupContent";
 
+
 function showPopup(width = null, posX = null, posY = null, relative = true) {
 
 	const popup = document.getElementById(ID);
@@ -22,6 +23,19 @@ function showPopup(width = null, posX = null, posY = null, relative = true) {
 
 		posX += scrollLeft;
 		posY += scrollTop;
+	}
+
+	const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+	const popupWidth = popup.offsetWidth;
+	const currentScrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+	if (popupWidth <= viewportWidth) {
+		const minLeft = currentScrollLeft;
+		const maxLeft = currentScrollLeft + viewportWidth - popupWidth;
+
+		posX = Math.max(minLeft, Math.min(posX, maxLeft));
+	} else {
+		posX = Math.max(currentScrollLeft, posX);
 	}
 
 	popup.style.left = posX + 'px';

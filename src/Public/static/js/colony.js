@@ -423,9 +423,10 @@ function cp(elementName, imageName) {
 	});
 }
 
-function showGiveUpWindow(target) {
+function showGiveUpWindow(obj, target) {
+	var pos = findObject(obj);
 	updatePopup('colony.php?id=' + colonyid + '&SHOW_GIVEUP_AJAX=1&target=' + target,
-		300
+		300, pos[0], pos[1] + 50, false
 	);
 }
 

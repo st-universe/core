@@ -123,7 +123,7 @@
         <div style="margin-top: 10px;">
             {% if HAS_PHYSICAL_REWARDS %}
             <input type="button" class="button" value="Belohnung erhalten"
-                onclick="showQuestColonySelection({{ QUEST.getId }})" />
+                onclick="showQuestColonySelection(this, {{ QUEST.getId }})" />
             {% else %}
             <input type="button" class="button" value="Belohnung erhalten"
                 onclick="claimQuestRewardDirect({{ QUEST.getId }})" />

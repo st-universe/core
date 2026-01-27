@@ -59,7 +59,7 @@ function increaseShuttleAmount(cid, maxOf, maxTotal) {
 function openShuttleManagement(obj, ship, entity) {
 	var pos = findObject(obj);
 	updatePopup(`?SHOW_SHUTTLE_MANAGEMENT=1&id=${entity}&shuttletarget=${ship}`,
-		200, pos[0] - 100, pos[1]
+		200, pos[0] - 100, pos[1] + 50, false
 	);
 }
 

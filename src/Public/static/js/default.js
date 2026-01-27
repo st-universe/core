@@ -134,13 +134,13 @@ function openTopicSettings(obj, tid, bid) {
 
 	updatePopup(
 		"alliance.php?SHOW_TOPIC_SETTINGS=1&topicid=" + tid + "&boardid=" + bid,
-		200, pos[0] - 200, pos[1]
+		200, pos[0] - 200, pos[1], false
 	);
 }
 function openBoardSettings(obj, bid) {
 	var pos = findObject(obj);
 	updatePopup("alliance.php?SHOW_BOARD_SETTINGS=1&boardid=" + bid,
-		200, pos[0] - 200, pos[1]
+		200, pos[0] - 200, pos[1], false
 	);
 }
 function openPmWindow(fromId, toId, fromType, toType) {
@@ -153,7 +153,7 @@ function openPmWindow(fromId, toId, fromType, toType) {
 		fromType +
 		"&totype=" +
 		toType,
-		600, 90, 60
+		600, 90, 60, false
 	);
 }
 function sendQuickPM(userId) {

@@ -55,7 +55,7 @@ function showSelfdestructWindow(element, target) {
   var pos = findObject(element);
   updatePopup(
     "?id=" + spacecraftid + "&SHOW_SELFDESTRUCT_AJAX=1&target=" + target,
-    300, pos[0] - 300, pos[1]
+    300, pos[0] - 300, pos[1], false
   );
 }
 function showScanWindow(element, spacecraftid, target) {
@@ -73,7 +73,7 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
       y +
       "&systemid=" +
       sysid,
-      800, pos[0] - 250, pos[1] - 250
+      800, pos[0] - 250, pos[1] - 250, false
     );
     if (loadSystemSensorScan) {
       ajax_update(
@@ -89,14 +89,14 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
     }
   } else {
     updatePopup("?id=" + spacecraftid + "&SHOW_SECTOR_SCAN=1",
-      800, pos[0] - 250, pos[1] - 250
+      800, pos[0] - 250, pos[1] - 250, false
     );
   }
 }
 function openStarMap(obj, id) {
   var pos = findObject(obj);
   updatePopup("starmap.php?SHOW_STARMAP_POSITION=1&id=" + id,
-    700, pos[0], pos[1]
+    700, pos[0] + 300, pos[1] + 50, false
   );
 }
 

@@ -14,18 +14,18 @@ function toggleDockPmAutoRead(sstr) {
 function showStationCosts(obj, planid) {
 	var pos = findObject(obj);
 	updatePopup('station.php?SHOW_STATION_COSTS=1&id=' + spacecraftid + '&planid=' + planid,
-		200, pos[0] + 360, pos[1] - 180
+		200, pos[0] + 360, pos[1] - 180, false
 	);
 }
 function showStationInformation(obj, planid) {
 	var pos = findObject(obj);
 	updatePopup('station.php?SHOW_STATION_INFO=1&planid=' + planid,
-		200, pos[0] + 210, pos[1] - 180
+		200, pos[0] + 210, pos[1] - 180, false
 	);
 } function showScrapWindow(element) {
 	var pos = findObject(element);
 	updatePopup('station.php?id=' + spacecraftid + '&SHOW_SCRAP_AJAX=1',
-		300, pos[0] - 300, pos[1]
+		300, pos[0] - 300, pos[1], false
 	);
 }
 

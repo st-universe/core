@@ -14,7 +14,7 @@
 		<tr>
 			<th>{{ yrow.getRow }}</th>
 			{% for data in yrow.getSystemFields %}
-			<td onclick="openSystemFieldSelector({{ data.getPosX }}, {{ data.getPosY }}, {{ SYSTEM.getId }});"
+			<td onclick="openSystemFieldSelector(this, {{ data.getPosX }}, {{ data.getPosY }}, {{ SYSTEM.getId }});"
 				class="lss" id="{{ data.getPosX }}_{{ data.getPosY }}" style="background-size: cover;">
 				<div class="lssobj imgOverlayText"
 					style=" position: relative !important; top: 0px; height: 30px; width: 30px">
