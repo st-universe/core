@@ -38,6 +38,10 @@ final class InterceptShipCore implements InterceptShipCoreInterface
 
         $wrappersToToggleAlertReaction = new ArrayCollection([$targetWrapper]);
 
+        if ($ship->isWarped()) {
+            $wrappersToToggleAlertReaction->add($wrapper);
+        }
+
         $targetFleetWrapper = $targetWrapper->getFleetWrapper();
         if ($targetFleetWrapper !== null) {
             foreach ($targetFleetWrapper->getShipWrappers() as $fleetWrapper) {
@@ -71,8 +75,12 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         }
         $this->entityManager->flush();
 
+        /** @var SpacecraftWrapperInterface[] */
+        $wrappersToToggleAlertArray = $wrappersToToggleAlertReaction->toArray();
+        shuffle($wrappersToToggleAlertArray);
+
         // alert reaction check
-        foreach ($wrappersToToggleAlertReaction as $wrapper) {
+        foreach ($wrappersToToggleAlertArray as $wrapper) {
             $this->alertReactionFacade->doItAll($wrapper, $informations);
         }
     }
@@ -84,10 +92,10 @@ final class InterceptShipCore implements InterceptShipCoreInterface
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
 
             $tractoredWrapper = $wrapper->getTractoredShipWrapper();
-            if ($tractoredWrapper !== null) {
+            if ($tractoredWrapper !== null && !$wrappersToToggleAlertReaction->contains($tractoredWrapper)) {
                 $wrappersToToggleAlertReaction->add($tractoredWrapper);
             }
-            if ($addSelfAsToggle) {
+            if ($addSelfAsToggle && !$wrappersToToggleAlertReaction->contains($wrapper)) {
                 $wrappersToToggleAlertReaction->add($wrapper);
             }
         } catch (AlreadyOffException) {
