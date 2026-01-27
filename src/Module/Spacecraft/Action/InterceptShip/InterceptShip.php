@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\InterceptShip;
 
 use request;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -22,10 +23,10 @@ final class InterceptShip implements ActionControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader,
-        private InterceptShipCoreInterface $interceptShipCore,
-        private InteractionCheckerInterface $interactionChecker,
-        private PirateReactionInterface $pirateReaction
+        private readonly SpacecraftLoaderInterface $spacecraftLoader,
+        private readonly InterceptShipCoreInterface $interceptShipCore,
+        private readonly PirateReactionInterface $pirateReaction,
+        private readonly InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[\Override]
@@ -53,11 +54,16 @@ final class InterceptShip implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            return;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+            InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_TARGET_NO_VACATION
+            ])
+            ->check($game->getInfo())) {
             return;
         }
 
