@@ -202,12 +202,12 @@ final class Transfer implements ActionControllerInterface
 
     private function createEntry(
         string $text,
-        int $UserId,
+        int $sourceUserId,
         int $factionId
     ): void {
         $entry = $this->npcLogRepository->prototype();
         $entry->setText($text);
-        $entry->setSourceUserId($UserId);
+        $entry->setSourceUserId($sourceUserId);
         $entry->setDate(time());
         $entry->setFactionId($factionId);
 
