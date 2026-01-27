@@ -29,6 +29,9 @@ function initializeWarpTraceAnalyzer() {
                 { name: 'signature', title: 'Warp-Signatur', timeReduction: 30 }
             ];
             this.gameTimer = null;
+            this.countdownInterval = null;
+            this.availabilityCountdownInterval = null;
+            this.backgroundTimer = null;
             this.init();
             this.initializeAnalysisTimer();
         }
@@ -207,6 +210,31 @@ function initializeWarpTraceAnalyzer() {
             this.gameState.isActive = false;
             if (this.gameTimer) {
                 clearInterval(this.gameTimer);
+                this.gameTimer = null;
+            }
+            if (this.backgroundTimer) {
+                clearInterval(this.backgroundTimer);
+                this.backgroundTimer = null;
+            }
+        }
+
+
+        clearAllTimers() {
+            if (this.gameTimer) {
+                clearInterval(this.gameTimer);
+                this.gameTimer = null;
+            }
+            if (this.countdownInterval) {
+                clearInterval(this.countdownInterval);
+                this.countdownInterval = null;
+            }
+            if (this.availabilityCountdownInterval) {
+                clearInterval(this.availabilityCountdownInterval);
+                this.availabilityCountdownInterval = null;
+            }
+            if (this.backgroundTimer) {
+                clearInterval(this.backgroundTimer);
+                this.backgroundTimer = null;
             }
         }
 
@@ -564,38 +592,40 @@ function initializeWarpTraceAnalyzer() {
             if (!grid) return;
 
             grid.innerHTML = `
-            <div class="analysis-panel">
-                <div class="phase-title">Warpspurenanalyse Abgeschlossen</div>
-                <div class="completion-stats">
-                    <div class="stat-row">
-                        <span>Zielschiff:</span>
-                        <span>${this.gameState.targetShipName}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span>Analysephasen:</span>
-                        <span>${this.gameState.completedAnalyses}/4</span>
-                    </div>
-                    <div class="stat-row">
-                        <span>Fortschritt:</span>
-                        <span>${Math.floor(this.gameState.gameProgress)}%</span>
-                    </div>
-                    <div class="stat-row">
-                        <span>Zeit gespart:</span>
-                        <span>${this.gameState.timeSaved} Sekunden</span>
-                    </div>
-                    <div class="stat-row highlight">
-                        <span>Finale Analysezeit:</span>
-                        <span>${this.gameState.timeRemaining} Sekunden</span>
+                    <div class="analysis-panel">
+                        <div class="phase-title">Warpspurenanalyse Abgeschlossen</div>
+                        <div class="completion-stats">
+                            <div class="stat-row">
+                                <span>Zielschiff:</span>
+                                <span>${this.gameState.targetShipName}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Analysephasen:</span>
+                                <span>${this.gameState.completedAnalyses}/4</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Fortschritt:</span>
+                                <span>${Math.floor(this.gameState.gameProgress)}%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Zeit gespart:</span>
+                                <span>${this.gameState.timeSaved} Sekunden</span>
+                            </div>
+                            <div class="stat-row highlight">
+                                <span>Finale Analysezeit:</span>
+                                <span>${this.gameState.timeRemaining} Sekunden</span>
+                            </div>
+                        </div>
+                    <div class="completion-buttons">
+                        <button class="calibrate-btn" id="start-analysis-btn">Analyse starten</button>
+                        <button class="calibrate-btn" id="back-to-list-btn">Zurück</button>
                     </div>
                 </div>
-            <div class="completion-buttons">
-                <button class="calibrate-btn" id="start-analysis-btn">Analyse starten</button>
-                <button class="calibrate-btn" id="back-to-list-btn">Zurück</button>
-            </div>
-        </div>
-    `;
+            `;
 
             document.getElementById('start-analysis-btn').addEventListener('click', () => {
+                this.clearAllTimers();
+
                 const analyzeButton = document.querySelector('input[type="button"][value="Analyse starten"]');
                 if (analyzeButton) {
                     analyzeButton.click();
@@ -690,11 +720,17 @@ function initializeWarpTraceAnalyzer() {
             const countdownElement = document.getElementById('analysis-countdown');
             if (!countdownElement) return;
 
+            if (this.countdownInterval) {
+                clearInterval(this.countdownInterval);
+                this.countdownInterval = null;
+            }
+
             let remainingMs = timeRemaining;
 
             const updateCountdown = () => {
                 if (remainingMs <= 0) {
                     clearInterval(this.countdownInterval);
+                    this.countdownInterval = null;
 
                     const statusText = document.getElementById('status-text');
                     if (statusText) {
@@ -737,11 +773,18 @@ function initializeWarpTraceAnalyzer() {
             const countdownElement = document.getElementById('analysis-countdown');
             if (!countdownElement) return;
 
+            if (this.availabilityCountdownInterval) {
+                clearInterval(this.availabilityCountdownInterval);
+                this.availabilityCountdownInterval = null;
+            }
+
             let remainingMs = timeRemaining;
 
             const updateAvailabilityCountdown = () => {
                 if (remainingMs <= 0) {
                     clearInterval(this.availabilityCountdownInterval);
+                    this.availabilityCountdownInterval = null;
+
                     const statusText = document.getElementById('status-text');
 
                     if (statusText) {
@@ -770,13 +813,15 @@ function initializeWarpTraceAnalyzer() {
             };
 
             updateAvailabilityCountdown();
-            if (this.availabilityCountdownInterval) {
-                clearInterval(this.availabilityCountdownInterval);
-            }
             this.availabilityCountdownInterval = setInterval(updateAvailabilityCountdown, 1000);
         }
 
         startBackgroundTimer(initialReduction) {
+            if (this.backgroundTimer) {
+                clearInterval(this.backgroundTimer);
+                this.backgroundTimer = null;
+            }
+
             this.currentReduction = initialReduction;
             this.backgroundTimer = setInterval(() => {
                 this.currentReduction = Math.floor(Math.max(0, this.currentReduction - 0.4));
