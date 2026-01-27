@@ -22,5 +22,6 @@ abstract class AbstractShipcountDataProvider extends AbstractPanelLayerDataProvi
         $rsm->addFieldResult('d', 'spacecraftcount', 'spacecraftcount');
         $rsm->addFieldResult('d', 'cloakcount', 'cloakcount');
         $rsm->addFieldResult('d', 'effects', 'effects');
+        $rsm->addFieldResult('d', 'system_id', 'system_id');
     }
 }

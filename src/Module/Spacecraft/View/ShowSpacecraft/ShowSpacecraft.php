@@ -176,6 +176,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         );
 
         $game->addExecuteJS(sprintf("setSpacecraftIdAndSstr(%d, '%s');", $spacecraft->getId(), $game->getSessionString()));
+        $game->addExecuteJS(sprintf("setTachyonFresh(%s);", $tachyonFresh ? 'true' : 'false'));
         $this->addWarpcoreSplitJavascript($wrapper, $game);
 
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
@@ -225,8 +226,10 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
                 $warpDriveSystem?->getWarpDrive() ?? 0,
                 $warpDriveSystem?->getMaxWarpdrive() ?? 0
             ), JavascriptExecutionTypeEnum::AFTER_RENDER);
-            $game->addExecuteJS('updateReactorValues();',
-                JavascriptExecutionTypeEnum::AFTER_RENDER);
+            $game->addExecuteJS(
+                'updateReactorValues();',
+                JavascriptExecutionTypeEnum::AFTER_RENDER
+            );
         }
     }
 

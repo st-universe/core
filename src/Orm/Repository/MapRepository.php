@@ -198,7 +198,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT DISTINCT
+                'SELECT DISTINCT
                     l.cx AS x,
                     l.cy AS y,
                     CASE
@@ -275,7 +275,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT DISTINCT
+                'SELECT DISTINCT
                 l.cx AS x,
                 l.cy AS y,
                 CASE
@@ -375,7 +375,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT l.cx as x, l.cy AS y, mft.effects as effects,
+                'SELECT l.cx as x, l.cy AS y, mft.effects as effects, m.systems_id as system_id,
                 (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     JOIN stu_location l2
                     ON b.location_id = l2.id
@@ -451,7 +451,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy as y,
+                'SELECT l.cx as x, l.cy as y, m.systems_id as system_id,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -487,7 +487,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy as y,
+                'SELECT l.cx as x, l.cy as y, m.systems_id as system_id,
              (SELECT count(distinct s.id)
                     FROM stu_spacecraft s
                     JOIN stu_location spl
@@ -525,7 +525,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT l.cx as x, l.cy as y,
+                'SELECT l.cx as x, l.cy as y, m.systems_id as system_id,
             (SELECT count(distinct s.id)
                 FROM stu_spacecraft s
                 JOIN stu_location spl
@@ -726,7 +726,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
+                'SELECT l.cx AS x, l.cy AS y, mft.effects as effects,
                 (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id != :ignoreUserId
@@ -774,7 +774,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y, mft.effects as effects,
+                'SELECT l.cx as x, l.cy as y, mft.effects as effects,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
@@ -813,7 +813,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT l.cx as x, l.cy as y,
+                'SELECT l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 WHERE fs1.location_id = l.id
                 AND fs1.user_id = :userId
@@ -890,32 +890,32 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     AND fs1.ship_id = :shipId
                     AND fs1.time > :timeThreshold
                     '
-            . $conditions[0]
-            . '
+                . $conditions[0]
+                . '
                     AND (fs1.from_direction = 1 OR fs1.to_direction = 1)) as d1c,
                 (SELECT count(distinct fs2.ship_id) from stu_flight_sig fs2
                     WHERE fs2.location_id = l.id
                     AND fs2.ship_id = :shipId
                     AND fs2.time > :timeThreshold
                     '
-            . $conditions[1]
-            . '
+                . $conditions[1]
+                . '
                     AND (fs2.from_direction = 2 OR fs2.to_direction = 2)) as d2c,
                 (SELECT count(distinct fs3.ship_id) from stu_flight_sig fs3
                     WHERE fs3.location_id = l.id
                     AND fs3.ship_id = :shipId
                     AND fs3.time > :timeThreshold
                     '
-            . $conditions[2]
-            . '
+                . $conditions[2]
+                . '
                     AND (fs3.from_direction = 3 OR fs3.to_direction = 3)) as d3c,
                 (SELECT count(distinct fs4.ship_id) from stu_flight_sig fs4
                     WHERE fs4.location_id = l.id
                     AND fs4.ship_id = :shipId
                     AND fs4.time > :timeThreshold
                     '
-            . $conditions[3]
-            . '
+                . $conditions[3]
+                . '
                     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)) as d4c
                 FROM stu_location l
                 WHERE l.cx BETWEEN :xStart AND :xEnd
@@ -953,7 +953,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT l.id, l.cx as x, l.cy as y,
+                'SELECT l.id, l.cx as x, l.cy as y,
             (SELECT count(distinct fs1.ship_id) from stu_flight_sig fs1
                 JOIN stu_user u1 ON fs1.user_id = u1.id
                 WHERE fs1.location_id = l.id

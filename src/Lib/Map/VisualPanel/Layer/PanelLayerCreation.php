@@ -26,6 +26,8 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
+
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {
@@ -45,6 +47,7 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         private readonly SpacecraftCountDataProviderFactoryInterface $shipcountDataProviderFactory,
         private readonly SubspaceDataProviderFactoryInterface $subspaceDataProviderFactory,
         private readonly LssBlockadeGridFactory $lssBlockadeGridFactory,
+        private readonly StarSystemRepositoryInterface $starSystemRepository,
         private readonly array $dataProviders
     ) {}
 
@@ -96,9 +99,8 @@ final class PanelLayerCreation implements PanelLayerCreationInterface
         SpacecraftCountLayerTypeEnum $type,
         int $id
     ): PanelLayerCreationInterface {
-        $this->layers[PanelLayerEnum::SPACECRAFT_COUNT->value] = new SpacecraftCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft);
+        $this->layers[PanelLayerEnum::SPACECRAFT_COUNT->value] = new SpacecraftCountLayerRenderer($showCloakedEverywhere, $currentSpacecraft, $this->starSystemRepository);
         $this->specialDataProviders[PanelLayerEnum::SPACECRAFT_COUNT->value] = $this->shipcountDataProviderFactory->getDataProvider($id, $type);
-
         return $this;
     }
 

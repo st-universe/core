@@ -1,10 +1,14 @@
 var spacecraftid = null;
 var sstr = null;
+var tachyonFresh = false;
 function setSpacecraftIdAndSstr(id, sessionString) {
   spacecraftid = id;
   sstr = sessionString;
 }
 
+function setTachyonFresh(fresh) {
+  tachyonFresh = fresh;
+}
 function moveToPosition(posx, posy) {
   if (!posx || !posy || !sstr || !spacecraftid) {
     return;
@@ -79,7 +83,8 @@ function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
         "&SHOW_SYSTEM_SENSOR_SCAN=1&x=" +
         x +
         "&y=" +
-        y
+        y +
+        (tachyonFresh ? "&tf=1" : "")
       );
     }
   } else {

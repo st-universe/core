@@ -16,7 +16,8 @@ interface StationUiFactoryInterface
         SpacecraftWrapperInterface $currentWrapper,
         User $user,
         LoggerUtilInterface $loggerUtil,
-        StarSystem $system
+        StarSystem $system,
+        bool $tachyonFresh
     ): SystemScanPanel;
 
     public function createDockingPrivilegeItem(

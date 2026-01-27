@@ -114,7 +114,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT sm.id, sm.sx as x, sm.sy AS y,
+                'SELECT sm.id, sm.sx as x, sm.sy AS y, sm.systems_id as system_id,
                 (SELECT count(DISTINCT b.id) FROM stu_spacecraft b
                     WHERE sm.id = b.location_id
                     AND NOT EXISTS (SELECT ss.id

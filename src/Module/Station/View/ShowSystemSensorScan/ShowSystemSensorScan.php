@@ -72,11 +72,14 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
+        $tachyonFresh = request::getInt('tf') === 1;
+
         $game->setTemplateVar('VISUAL_PANEL', $this->stationUiFactory->createSystemScanPanel(
             $wrapper,
             $game->getUser(),
             $this->loggerUtilFactory->getLoggerUtil(),
-            $system
+            $system,
+            $tachyonFresh
         ));
 
         $game->setTemplateVar('SHIP', $station);

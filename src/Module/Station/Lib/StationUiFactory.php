@@ -33,14 +33,16 @@ final class StationUiFactory implements StationUiFactoryInterface
         SpacecraftWrapperInterface $currentWrapper,
         User $user,
         LoggerUtilInterface $loggerUtil,
-        StarSystem $system
+        StarSystem $system,
+        bool $tachyonFresh
     ): SystemScanPanel {
         return new SystemScanPanel(
             $this->panelLayerCreation,
             $currentWrapper,
             $system,
             $user,
-            $loggerUtil
+            $loggerUtil,
+            $tachyonFresh
         );
     }
 

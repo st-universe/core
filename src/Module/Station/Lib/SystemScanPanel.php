@@ -22,7 +22,8 @@ class SystemScanPanel extends AbstractVisualPanel
         private SpacecraftWrapperInterface $currentWrapper,
         private StarSystem $system,
         private User $user,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        private bool $tachyonFresh = false
     ) {
         parent::__construct($panelLayerCreation, $loggerUtil);
     }
@@ -39,7 +40,7 @@ class SystemScanPanel extends AbstractVisualPanel
         $currentSpacecraft = $this->currentWrapper->get();
 
         $panelLayerCreation = $this->panelLayerCreation
-            ->addShipCountLayer($currentSpacecraft->getTachyonState(), null, SpacecraftCountLayerTypeEnum::ALL, 0)
+            ->addShipCountLayer($this->tachyonFresh, $currentSpacecraft, SpacecraftCountLayerTypeEnum::ALL, 0)
             ->addBorderLayer($this->currentWrapper, $this->system === $currentSpacecraft->getSystem())
             ->addAnomalyLayer()
             ->addSystemLayer()

@@ -15,6 +15,8 @@ class SpacecraftCountData extends AbstractData
     private int $spacecraftcount = 0;
     #[Column(type: 'integer')]
     private int $cloakcount = 0;
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $system_id = null;
 
     public function getSpacecraftCount(): int
     {
@@ -36,5 +38,10 @@ class SpacecraftCountData extends AbstractData
     {
         return $this->effects !== null
             && in_array(FieldTypeEffectEnum::DUBIOUS_SPACECRAFT_COUNT->value, $this->effects);
+    }
+
+    public function getSystemId(): ?int
+    {
+        return $this->system_id;
     }
 }

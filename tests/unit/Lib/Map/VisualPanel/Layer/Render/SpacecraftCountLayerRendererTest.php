@@ -6,19 +6,24 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Render;
 
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
 use Stu\Lib\Map\VisualPanel\Layer\Data\SpacecraftCountData;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftCountLayerRendererTest extends StuTestCase
 {
     private MockInterface&AbstractVisualPanel $panel;
+    private MockInterface&StarSystemRepositoryInterface $starSystemRepository;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->panel = mock(AbstractVisualPanel::class);
+        $this->starSystemRepository = mock(StarSystemRepositoryInterface::class);
     }
 
     public function testRenderExpectNothingWhenDubiousEffectButNoSignatures(): void
@@ -38,7 +43,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new SpacecraftCountLayerRenderer(false, null);
+        $subject = new SpacecraftCountLayerRenderer(false, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -64,7 +69,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->once()
             ->andReturn('FONTSIZE;');
 
-        $subject = new SpacecraftCountLayerRenderer(false, null);
+        $subject = new SpacecraftCountLayerRenderer(false, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -82,7 +87,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new SpacecraftCountLayerRenderer(false, null);
+        $subject = new SpacecraftCountLayerRenderer(false, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -108,7 +113,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->once()
             ->andReturn('FONTSIZE;');
 
-        $subject = new SpacecraftCountLayerRenderer(false, null);
+        $subject = new SpacecraftCountLayerRenderer(false, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -148,7 +153,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->once()
             ->andReturn('FONTSIZE;');
 
-        $subject = new SpacecraftCountLayerRenderer(true, null);
+        $subject = new SpacecraftCountLayerRenderer(true, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -172,7 +177,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(true);
 
-        $subject = new SpacecraftCountLayerRenderer(false, null);
+        $subject = new SpacecraftCountLayerRenderer(false, null, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -201,7 +206,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(false);
 
-        $subject = new SpacecraftCountLayerRenderer(false, $ship);
+        $subject = new SpacecraftCountLayerRenderer(false, $ship, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
@@ -264,6 +269,7 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
     ): void {
         $mapData = $this->mock(SpacecraftCountData::class);
         $ship = $this->mock(Ship::class);
+        $rump = $this->mock(SpacecraftRump::class);
 
         $mapData->shouldReceive('isDubious')
             ->withNoArgs()
@@ -283,10 +289,16 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $mapData->shouldReceive('getPosY')
             ->withNoArgs()
             ->andReturn(20);
+        $mapData->shouldReceive('getSystemId')
+            ->withNoArgs()
+            ->andReturn(null);
 
         $ship->shouldReceive('getTachyonState')
             ->withNoArgs()
             ->andReturn(true);
+        $ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->andReturn($rump);
         $ship->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn($isStation);
@@ -296,18 +308,24 @@ class SpacecraftCountLayerRendererTest extends StuTestCase
         $ship->shouldReceive('getPosY')
             ->withNoArgs()
             ->andReturn($shipY);
+        $ship->shouldReceive('getStarsystemMap')
+            ->withNoArgs()
+            ->andReturn(null);
+
+        $rump->shouldReceive('getRoleId')
+            ->withNoArgs()
+            ->andReturn(SpacecraftRumpRoleEnum::SHIPYARD);
 
         $this->panel->shouldReceive('getFontSize')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn('FONTSIZE;');
 
-        $subject = new SpacecraftCountLayerRenderer(false, $ship);
+        $subject = new SpacecraftCountLayerRenderer(false, $ship, $this->starSystemRepository);
 
         $result = $subject->render($mapData, $this->panel);
 
         if ($isShowCloakedExpected) {
-
             $this->assertEquals('<div style="FONTSIZE; z-index: 7;" class="centered">?</div>', $result);
         } else {
             $this->assertEquals('', $result);
