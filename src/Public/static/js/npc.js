@@ -90,7 +90,7 @@ function switchNpcLog(logType) {
 function showNPCMemberRumpInfo(obj, userid, rumpid) {
     var pos = findObject(obj);
     updatePopup('/npc/?SHOW_MEMBER_RUMP_INFO=1&userid=' + userid + '&rumpid=' + rumpid,
-        900, pos[0] - 400, pos[1]
+        900, pos[0] - 100, pos[1] + 50, false
     );
 }
 

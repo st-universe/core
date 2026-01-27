@@ -1,14 +1,14 @@
 function showMemberRumpInfo(obj, userid, rumpid) {
 	var pos = findObject(obj);
 	updatePopup('alliance.php?SHOW_MEMBER_RUMP_INFO=1&userid=' + userid + '&rumpid=' + rumpid,
-		700, pos[0] - 400, pos[1]
+		700, pos[0] - 200, pos[1] + 30, false
 	);
 }
 
 function showMemberColonyInfo(obj, colonyid) {
 	var pos = findObject(obj);
 	updatePopup('alliance.php?SHOW_MEMBER_COLONY_INFO=1&colonyid=' + colonyid,
-		850, pos[0] - 400, pos[1]
+		850, pos[0] - 200, pos[1] + 50, false
 	);
 }
 

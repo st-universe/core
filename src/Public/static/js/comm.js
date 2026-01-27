@@ -149,15 +149,17 @@ function showKnCharacter(element, characterId) {
 	);
 }
 
-function showAdminDelete(postid) {
+function showAdminDelete(obj, postid) {
+	var pos = findObject(obj);
 	updatePopup("comm.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid,
-		450
+		450, pos[0], pos[1] + 50, false
 	);
 }
 
-function showKnArchiveComments(knId) {
+function showKnArchiveComments(obj, knId) {
+	var pos = findObject(obj);
 	updatePopup("comm.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId,
-		450
+		450, pos[0], pos[1] + 50, false
 	);
 }
 
@@ -174,8 +176,9 @@ function searchKnArchive(action) {
 	window.location.href = '/comm.php?' + action + '=1&search=' + encodeURIComponent(searchValue) + '&version=' + encodeURIComponent(version) + '&sstr=' + sessionString;
 }
 
-function showQuestColonySelection(questId) {
-	updatePopup("comm.php?SHOW_QUEST_COLONY_SELECTION=1&questid=" + questId, 500);
+function showQuestColonySelection(obj, questId) {
+	var pos = findObject(obj);
+	updatePopup("comm.php?SHOW_QUEST_COLONY_SELECTION=1&questid=" + questId, 500, pos[0], pos[1] + 50, false);
 }
 
 function selectColony(colonyId) {
