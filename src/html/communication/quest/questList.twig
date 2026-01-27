@@ -42,14 +42,64 @@
       <span>Beendet am {{ quest.getEnd|stuDateTime }}</span>
       {% endif %}
     </div>
+    {% if quest.getPlot %}
+    <div>
+      <span>Plot:</span> <a href="/comm.php?SHOW_PLOT=1&plotid={{ quest.getPlot.getId }}" target="_blank">{{
+        quest.getPlot.getTitle }}</a>
+    </div>
+    {% endif %}
   </div>
   <div>
-    {% if quest.getPrestige %}
-    <img src="/assets/buttons/prestige.png" title="Prestige" style="vertical-align: middle;" /> {{ quest.getPrestige
-    }}<br>
+    {% set hasRewards = quest.getPrestige or quest.getCommodityReward or quest.getSpacecrafts or quest.getAwardId %}
+    {% if hasRewards %}
+    {% set rewardCount = 0 %}
+    {% if quest.getPrestige %}{% set rewardCount = rewardCount + 1 %}{% endif %}
+    {% if quest.getCommodityReward %}{% set rewardCount = rewardCount + quest.getCommodityReward|length %}{% endif %}
+    {% if quest.getSpacecrafts %}{% set rewardCount = rewardCount + quest.getSpacecrafts|length %}{% endif %}
+    {% if quest.getAwardId %}{% set rewardCount = rewardCount + 1 %}{% endif %}
+
+    <div style="max-height: 100px; overflow: hidden;">
+      {% if quest.getPrestige %}
+      <div style="margin-bottom: 3px;">
+        <img src="/assets/buttons/prestige.png" title="Prestige" style="vertical-align: middle;" /> {{ quest.getPrestige
+        }}
+      </div>
+      {% endif %}
+
+      {% if quest.getCommodityReward %}
+      {% for commodityId, amount in quest.getCommodityReward %}
+      {% set commodity = COMMODITIES[commodityId] is defined ? COMMODITIES[commodityId] : null %}
+      <div style="margin-bottom: 3px;">
+        <img src="/assets/commodities/{{ commodityId }}.png" title="{{ commodity ? commodity.getName : 'Ware' }}"
+          style="vertical-align: middle;" /> {{ amount }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      {% if quest.getSpacecrafts %}
+      {% for buildplanId, amount in quest.getSpacecrafts %}
+      {% set buildplan = BUILDPLANS[buildplanId] is defined ? BUILDPLANS[buildplanId] : null %}
+      <div style="margin-bottom: 3px;">
+        {{ amount }}x
+        {% if buildplan %}
+        <img src="/assets/ships/{{ buildplan.getRump.getId }}.png" title="{{ buildplan.getName }}"
+          style="vertical-align: middle;" />
+        {% else %}
+        <img src="/assets/buttons/bauplan.png" title="Unbekannter Bauplan" style="vertical-align: middle;" />
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      {% if quest.getAwardId %}
+      <div style="margin-bottom: 3px;">
+        Award ID: {{ quest.getAwardId }}
+      </div>
+      {% endif %}
+    </div>
+    {% if rewardCount > 4 %}
+    <div style="font-size: 90%;">...</div>
     {% endif %}
-    {% if quest.getPlot %}
-    <span style="font-size: 90%;">Plot: {{ quest.getPlot.getTitle }}</span>
     {% endif %}
   </div>
 </div>
