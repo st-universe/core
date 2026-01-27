@@ -51,4 +51,10 @@ class WarpCoreTransferShipSystem extends AbstractSpacecraftSystemType implements
     {
         return SpacecraftSystemModeEnum::MODE_ALWAYS_ON;
     }
+
+    #[\Override]
+    public function getEnergyConsumption(): int
+    {
+        return 0;
+    }
 }
