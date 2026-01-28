@@ -10,6 +10,7 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\StarSystemMap;
 
 /**
  * @extends EntityRepository<History>
@@ -124,15 +125,20 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT m, COUNT(h.id) AS amount
-                    FROM %s h
-                    JOIN %s m WITH h.location = m
+                'SELECT m, COUNT(distinct h.id) + COUNT(distinct sm_h.id) AS amount
+                    FROM %s m
+                    JOIN %s h WITH h.location = m
+                    LEFT JOIN m.starSystem mss
+                    LEFT JOIN %s ssm WITH ssm.starSystem = mss
+                    LEFT JOIN %s sm_h WITH sm_h.location = ssm
                     WHERE m.layer = :layer
-                    AND h.location IS NOT NULL
                     AND h.date >= :dateThreshold
+                    AND (sm_h.date IS NULL OR sm_h.date >= :dateThreshold)
                     GROUP BY m',
-                    History::class,
-                    Map::class
+                Map::class,
+                History::class,
+                StarSystemMap::class,
+                History::class
                 )
             )
             ->setParameters([
