@@ -53,6 +53,9 @@ class PlanetField
     #[Column(type: 'boolean')]
     private bool $activate_after_build = true;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $reactivate_after_upgrade = null;
+
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id')]
     private ?Building $building = null;
@@ -336,5 +339,16 @@ class PlanetField
     public function isColonizeAble(): bool
     {
         return in_array($this->getFieldType(), $this->getHost()->getColonyClass()->getColonizeableFields());
+    }
+
+    public function getReactivateAfterUpgrade(): ?int
+    {
+        return $this->reactivate_after_upgrade;
+    }
+
+    public function setReactivateAfterUpgrade(?int $reactivateAfterUpgrade): PlanetField
+    {
+        $this->reactivate_after_upgrade = $reactivateAfterUpgrade;
+        return $this;
     }
 }
