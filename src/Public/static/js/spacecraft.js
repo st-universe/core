@@ -293,6 +293,10 @@ function setReactorSplitConstants(output, usage, cost, meps, wd, mwd) {
 }
 
 function updateReactorValues() {
+  if (reactorOutput === null || epsUsage === null || flightCost === null ||
+    missingEps === null || currentWarpdrive === null || maxWarpdrive === null) {
+    return;
+  }
 
   // calculate absolute values
   const warpdriveSplit = Number.parseInt(document.getElementById("warpdriveSplit")?.value ?? 0);
@@ -358,8 +362,8 @@ function updateReactorValues() {
   }
   const reactorUsageEl = document.getElementById("reactorUsage");
   if (reactorUsageEl) {
-    reactorUsageEl.textContent =
-      epsUsage + effEpsProduction + effWarpdriveProduction * flightCost;
+    const usage = epsUsage + effEpsProduction + effWarpdriveProduction * flightCost;
+    reactorUsageEl.textContent = isNaN(usage) ? "0" : usage;
   }
 }
 
