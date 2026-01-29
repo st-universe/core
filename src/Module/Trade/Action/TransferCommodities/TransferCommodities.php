@@ -81,9 +81,10 @@ final class TransferCommodities implements ActionControllerInterface
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
         $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $game->getUser());
 
-        $freeStorage = $storageManager->getFreeStorage();
+        $freeStorage = $storageManagerTarget->getFreeStorage();
 
         if ($freeStorage <= 0) {
+            $game->getInfo()->addInformation(_('Am Zielposten ist kein freier Lagerplatz mehr vorhanden'));
             return;
         }
         $amount = min(min($freeStorage, $amount), $freeTransferCapacity);
