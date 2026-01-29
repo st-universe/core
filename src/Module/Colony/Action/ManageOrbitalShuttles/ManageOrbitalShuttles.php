@@ -170,15 +170,47 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $diff = abs($wanted - $current);
 
         if ($current < $wanted) {
+            $availableSpace = $ship->getMaxStorage() - $ship->getStorageSum();
+            if ($diff > $availableSpace) {
+                if ($availableSpace === 0) {
+                    $informations->addInformation(sprintf(
+                        _('Transfer von %d %s zur %s nicht möglich - kein freier Lagerplatz vorhanden'),
+                        $diff,
+                        $commodity->getName(),
+                        $ship->getName()
+                    ));
+                    return;
+                }
+                $diff = $availableSpace;
+            }
+
             $this->storageManager->upperStorage($ship, $commodity, $diff);
             $this->storageManager->lowerStorage($colony, $commodity, $diff);
 
-            $msg = _('Es wurden %d %s zur %s transferiert');
+            $msg = $diff < abs($wanted - $current)
+                ? _('Es wurden nur %d %s zur %s transferiert (Lagerplatz begrenzt)')
+                : _('Es wurden %d %s zur %s transferiert');
         } else {
+            $availableSpace = $colony->getMaxStorage() - $colony->getStorageSum();
+            if ($diff > $availableSpace) {
+                if ($availableSpace === 0) {
+                    $informations->addInformation(sprintf(
+                        _('Transfer von %d %s von der %s nicht möglich - kein freier Lagerplatz auf Kolonie vorhanden'),
+                        $diff,
+                        $commodity->getName(),
+                        $ship->getName()
+                    ));
+                    return;
+                }
+                $diff = $availableSpace;
+            }
+
             $this->storageManager->lowerStorage($ship, $commodity, $diff);
             $this->storageManager->upperStorage($colony, $commodity, $diff);
 
-            $msg = _('Es wurden %d %s von der %s transferiert');
+            $msg = $diff < abs($wanted - $current)
+                ? _('Es wurden nur %d %s von der %s transferiert (Lagerplatz begrenzt)')
+                : _('Es wurden %d %s von der %s transferiert');
         }
 
         $informations->addInformation(sprintf(
