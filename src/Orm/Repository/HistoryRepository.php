@@ -73,7 +73,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT h FROM %s h
+                    'SELECT h FROM %s h
                     WHERE h.type = :typeId
                     AND COALESCE(h.source_user_id, 0) != :pirateId
                     AND COALESCE(h.target_user_id, 0) != :pirateId
@@ -125,26 +125,24 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT m, COUNT(distinct h.id) + COUNT(distinct sm_h.id) AS amount
+                    'SELECT m, COUNT(distinct h_m.id) + COUNT(distinct h_ssm.id) AS amount
                     FROM %s m
-                    JOIN %s h WITH h.location = m
-                    LEFT JOIN m.starSystem mss
-                    LEFT JOIN %s ssm WITH ssm.starSystem = mss
-                    LEFT JOIN %s sm_h WITH sm_h.location = ssm
+                    LEFT JOIN m.starSystem ss
+                    LEFT JOIN %s ssm WITH ssm.starSystem = ss
+                    LEFT JOIN %3$s h_m WITH h_m.location = m AND h_m.date >= :dateThreshold
+                    LEFT JOIN %3$s h_ssm WITH h_ssm.location = ssm AND h_ssm.date >= :dateThreshold
                     WHERE m.layer = :layer
-                    AND h.date >= :dateThreshold
-                    AND (sm_h.date IS NULL OR sm_h.date >= :dateThreshold)
+                    AND (h_m IS NOT NULL OR h_ssm IS NOT NULL)
                     GROUP BY m',
-                Map::class,
-                History::class,
-                StarSystemMap::class,
-                History::class
+                    Map::class,
+                    StarSystemMap::class,
+                    History::class
                 )
             )
             ->setParameters([
                 'layer' => $layer,
                 'dateThreshold' => $dateThreshold
-        ])
+            ])
             ->toIterable();
     }
 
