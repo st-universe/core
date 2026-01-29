@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260123171558 extends AbstractMigration
+final class Version20260129200432 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -114,7 +114,7 @@ final class Version20260123171558 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B6DF5289A76ED395 ON stu_buoy (user_id)');
         $this->addSql('CREATE TABLE stu_colonies_classes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type INTEGER NOT NULL, database_id INTEGER DEFAULT NULL, colonizeable_fields CLOB NOT NULL, bev_growth_rate SMALLINT NOT NULL, special SMALLINT NOT NULL, allow_start BOOLEAN NOT NULL, min_rot INTEGER NOT NULL, max_rot INTEGER NOT NULL, CONSTRAINT FK_D116D262F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D116D262F0AA09DB ON stu_colonies_classes (database_id)');
-        $this->addSql('CREATE TABLE stu_colonies_fielddata (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colonies_id INTEGER DEFAULT NULL, colony_sandbox_id INTEGER DEFAULT NULL, field_id SMALLINT NOT NULL, type_id INTEGER NOT NULL, buildings_id INTEGER DEFAULT NULL, terraforming_id INTEGER DEFAULT NULL, integrity SMALLINT NOT NULL, aktiv INTEGER NOT NULL, activate_after_build BOOLEAN NOT NULL, CONSTRAINT FK_7E4F10971485E613 FOREIGN KEY (buildings_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097BD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F109774EB5CC8 FOREIGN KEY (colonies_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097A0222FA4 FOREIGN KEY (colony_sandbox_id) REFERENCES stu_colony_sandbox (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_colonies_fielddata (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colonies_id INTEGER DEFAULT NULL, colony_sandbox_id INTEGER DEFAULT NULL, field_id SMALLINT NOT NULL, type_id INTEGER NOT NULL, buildings_id INTEGER DEFAULT NULL, terraforming_id INTEGER DEFAULT NULL, integrity SMALLINT NOT NULL, aktiv INTEGER NOT NULL, activate_after_build BOOLEAN NOT NULL, reactivate_after_upgrade INTEGER DEFAULT NULL, CONSTRAINT FK_7E4F10971485E613 FOREIGN KEY (buildings_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097BD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F109774EB5CC8 FOREIGN KEY (colonies_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097A0222FA4 FOREIGN KEY (colony_sandbox_id) REFERENCES stu_colony_sandbox (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7E4F10971485E613 ON stu_colonies_fielddata (buildings_id)');
         $this->addSql('CREATE INDEX IDX_7E4F1097BD31079C ON stu_colonies_fielddata (terraforming_id)');
         $this->addSql('CREATE INDEX IDX_7E4F109774EB5CC8 ON stu_colonies_fielddata (colonies_id)');

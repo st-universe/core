@@ -537,6 +537,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
+        $field->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $building->shouldReceive('isRemovable')
             ->withNoArgs()
@@ -554,6 +558,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$function]));
+        $building->shouldReceive('getCommodities')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
 
         $function->shouldReceive('getFunction')
             ->withNoArgs()
@@ -616,7 +624,6 @@ class BuildingManagerTest extends StuTestCase
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
-            ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
@@ -634,10 +641,10 @@ class BuildingManagerTest extends StuTestCase
             ->andReturnTrue();
         $field->shouldReceive('isActive')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturnTrue();
         $field->shouldReceive('setActive')
-            ->with(false)
+            ->with(0)
             ->once();
 
         $building->shouldReceive('isRemovable')
@@ -664,6 +671,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$function]));
+        $building->shouldReceive('getCommodities')
+            ->withNoArgs()
+            ->times(3)
+            ->andReturn(new ArrayCollection());
 
         $function->shouldReceive('getFunction')
             ->withNoArgs()
@@ -700,14 +711,16 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn(0);
         $changeable->shouldReceive('setWorkless')
             ->with($buildingWorkers)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($buildingWorkers);
         $changeable->shouldReceive('setWorkers')
             ->with(0)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
@@ -751,7 +764,6 @@ class BuildingManagerTest extends StuTestCase
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
-            ->twice()
             ->andReturn($building);
         $field->shouldReceive('getHost')
             ->withNoArgs()
@@ -769,10 +781,10 @@ class BuildingManagerTest extends StuTestCase
             ->andReturnTrue();
         $field->shouldReceive('isActive')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturnTrue();
         $field->shouldReceive('setActive')
-            ->with(false)
+            ->with(0)
             ->once();
 
         $building->shouldReceive('getStorage')
@@ -795,6 +807,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$function]));
+        $building->shouldReceive('getCommodities')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(new ArrayCollection());
 
         $function->shouldReceive('getFunction')
             ->withNoArgs()
@@ -831,14 +847,16 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn(0);
         $changeable->shouldReceive('setWorkless')
             ->with($buildingWorkers)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $changeable->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($buildingWorkers);
         $changeable->shouldReceive('setWorkers')
             ->with(0)
-            ->once();
+            ->once()
+            ->andReturnSelf();
         $changeable->shouldReceive('getMaxBev')
             ->withNoArgs()
             ->once()
@@ -884,10 +902,15 @@ class BuildingManagerTest extends StuTestCase
         $currentEps = 444;
         $eps = 33;
         $integrity = 777;
+        $fieldId = 42;
 
         $host->shouldReceive('getChangeable')
             ->withNoArgs()
             ->andReturn($changeable);
+        $host->shouldReceive('getPlanetFields')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -903,6 +926,18 @@ class BuildingManagerTest extends StuTestCase
         $field->shouldReceive('setIntegrity')
             ->with($integrity)
             ->once();
+        $field->shouldReceive('getReactivateAfterUpgrade')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fieldId);
+        $field->shouldReceive('getId')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($fieldId);
+        $field->shouldReceive('setReactivateAfterUpgrade')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
         $field->shouldReceive('isActivateable')
             ->withNoArgs()
             ->once()
@@ -924,6 +959,10 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($integrity);
+        $building->shouldReceive('getCommodities')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
 
         $changeable->shouldReceive('getMaxStorage')
             ->withNoArgs()
@@ -943,7 +982,7 @@ class BuildingManagerTest extends StuTestCase
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
-            ->once();
+            ->twice();
         $this->colonyRepository->shouldReceive('save')
             ->with($host)
             ->once();

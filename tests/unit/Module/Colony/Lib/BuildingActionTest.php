@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
 class BuildingActionTest extends StuTestCase
@@ -28,6 +29,10 @@ class BuildingActionTest extends StuTestCase
      * @var MockInterface&ColonyLibFactoryInterface
      */
     private $colonyLibFactory;
+    /**
+     * @var MockInterface&PlanetFieldRepositoryInterface
+     */
+    private $planetFieldRepository;
 
     /**
      * @var MockInterface&PlanetField
@@ -43,13 +48,15 @@ class BuildingActionTest extends StuTestCase
         $this->storageManager = Mockery::mock(StorageManagerInterface::class);
         $this->buildingManager = Mockery::mock(BuildingManagerInterface::class);
         $this->colonyLibFactory = Mockery::mock(ColonyLibFactoryInterface::class);
+        $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);
 
         $this->field = $this->mock(PlanetField::class);
 
         $this->subject = new BuildingAction(
             $this->storageManager,
             $this->buildingManager,
-            $this->colonyLibFactory
+            $this->colonyLibFactory,
+            $this->planetFieldRepository
         );
     }
 

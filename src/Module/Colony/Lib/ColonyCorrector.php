@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Closure;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -47,17 +49,49 @@ class ColonyCorrector implements ColonyCorrectorInterface
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
+
+            $hasUndergroundLogistics = $this->hasUndergroundLogisticsProduction($database, $colonyId);
+
             $storage = (int) $database->fetchOne(
-                'SELECT SUM(a.lager) FROM stu_buildings a LEFT
-                    JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv <= 1 AND scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId]
+                'SELECT SUM(a.lager) FROM stu_buildings a 
+                    LEFT JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
+                    WHERE scf.aktiv <= 1 
+                    AND scf.colonies_id = :colonyId
+                    AND (
+                        a.id NOT IN (
+                            SELECT DISTINCT bc.buildings_id 
+                            FROM stu_buildings_commodity bc 
+                            WHERE bc.commodity_id = :logisticsCommodityId 
+                            AND bc.count < 0
+                        )
+                        OR :hasLogistics = 1
+                    )',
+                [
+                    'colonyId' => $colonyId,
+                    'logisticsCommodityId' => CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS,
+                    'hasLogistics' => $hasUndergroundLogistics ? 1 : 0
+                ]
             );
+
             $eps = (int) $database->fetchOne(
-                'SELECT SUM(a.eps) FROM stu_buildings a LEFT
-                    JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv <= 1 AND scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId]
+                'SELECT SUM(a.eps) FROM stu_buildings a 
+                    LEFT JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
+                    WHERE scf.aktiv <= 1 
+                    AND scf.colonies_id = :colonyId
+                    AND (
+                        a.id NOT IN (
+                            SELECT DISTINCT bc.buildings_id 
+                            FROM stu_buildings_commodity bc 
+                            WHERE bc.commodity_id = :logisticsCommodityId 
+                            AND bc.count < 0
+                        )
+                        OR :hasLogistics = 1
+                    )',
+                [
+                    'colonyId' => $colonyId,
+                    'logisticsCommodityId' => CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS,
+                    'hasLogistics' => $hasUndergroundLogistics ? 1 : 0
+                ]
             );
 
             if (
@@ -99,5 +133,23 @@ class ColonyCorrector implements ColonyCorrectorInterface
         }
 
         return false;
+    }
+
+    private function hasUndergroundLogisticsProduction(Connection $database, int $colonyId): bool
+    {
+        $count = (int) $database->fetchOne(
+            'SELECT COUNT(*) FROM stu_colonies_fielddata scf
+                JOIN stu_buildings_commodity bc ON bc.buildings_id = scf.buildings_id
+                WHERE scf.colonies_id = :colonyId
+                AND scf.aktiv = 1
+                AND bc.commodity_id = :logisticsCommodityId
+                AND bc.count > 0',
+            [
+                'colonyId' => $colonyId,
+                'logisticsCommodityId' => CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS
+            ]
+        );
+
+        return $count > 0;
     }
 }
