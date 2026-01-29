@@ -50,6 +50,10 @@ final class CommodityTypeConstants
 
     //effects
     public const int COMMODITY_EFFECT_LIFE_STANDARD = 1300;
+    public const int COMMODITY_EFFECT_UNDERGROUND_LOGISTICS = 1552;
+    public const int COMMODITY_EFFECT_ORBITAL_MAINTENANCE = 1801;
+    public const int COMMODITY_EFFECT_SHIPYARD_LOGISTICS = 1802;
+
 
     //base value for e.g. shuttles
     public const int BASE_ID_WORKBEE = 20060;

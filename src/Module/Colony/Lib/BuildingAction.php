@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
@@ -13,7 +14,11 @@ use Stu\Orm\Entity\PlanetField;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    public function __construct(private StorageManagerInterface $storageManager, private BuildingManagerInterface $buildingManager) {}
+    public function __construct(
+        private StorageManagerInterface $storageManager,
+        private BuildingManagerInterface $buildingManager,
+        private ColonyLibFactoryInterface $colonyLibFactory
+    ) {}
 
     #[\Override]
     public function activate(PlanetField $field, GameControllerInterface $game): void
@@ -47,6 +52,34 @@ final class BuildingAction implements BuildingActionInterface
                 $building->getWorkers()
             );
             return;
+        }
+
+        if ($host instanceof Colony) {
+            $logisticsCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_SHIPYARD_LOGISTICS;
+            $logisticsConsumption = 0;
+
+            foreach ($building->getCommodities() as $buildingCommodity) {
+                if ($buildingCommodity->getCommodityId() === $logisticsCommodityId) {
+                    $logisticsConsumption = $buildingCommodity->getAmount();
+                    break;
+                }
+            }
+
+            if ($logisticsConsumption < 0) {
+                $production = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
+                $currentProduction = array_key_exists($logisticsCommodityId, $production)
+                    ? $production[$logisticsCommodityId]->getProduction()
+                    : 0;
+                $projectedProduction = $currentProduction + $logisticsConsumption;
+
+                if ($projectedProduction < 0) {
+                    $game->getInfo()->addInformationf(
+                        _('Das Gebäude (%s) kann nicht aktiviert werden, da nicht genug Werftlogistik zur Verfügung steht'),
+                        $building->getName()
+                    );
+                    return;
+                }
+            }
         }
 
         $this->buildingManager->activate($field);
