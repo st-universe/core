@@ -24,6 +24,10 @@ class BuildingActionTest extends StuTestCase
      * @var MockInterface&BuildingManagerInterface
      */
     private $buildingManager;
+    /**
+     * @var MockInterface&ColonyLibFactoryInterface
+     */
+    private $colonyLibFactory;
 
     /**
      * @var MockInterface&PlanetField
@@ -38,12 +42,14 @@ class BuildingActionTest extends StuTestCase
     {
         $this->storageManager = Mockery::mock(StorageManagerInterface::class);
         $this->buildingManager = Mockery::mock(BuildingManagerInterface::class);
+        $this->colonyLibFactory = Mockery::mock(ColonyLibFactoryInterface::class);
 
         $this->field = $this->mock(PlanetField::class);
 
         $this->subject = new BuildingAction(
             $this->storageManager,
-            $this->buildingManager
+            $this->buildingManager,
+            $this->colonyLibFactory
         );
     }
 
