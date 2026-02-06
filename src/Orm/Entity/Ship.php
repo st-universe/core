@@ -55,12 +55,6 @@ class Ship extends Spacecraft
         return $this->fleet_id;
     }
 
-    public function setFleetId(?int $fleetId): Ship
-    {
-        $this->fleet_id = $fleetId;
-        return $this;
-    }
-
     public function getIsFleetLeader(): bool
     {
         return $this->getFleet() !== null && $this->isFleetLeader;
@@ -84,10 +78,15 @@ class Ship extends Spacecraft
             return $this;
         }
 
+        $old = $this->fleet;
         $this->fleet = $fleet;
 
+        if ($old !== null) {
+            $old->getShips()->removeElement($this);
+        }
+
         if ($fleet !== null && !$fleet->getShips()->contains($this)) {
-            $fleet->getShips()->set($this->getId(), $this);
+            $fleet->getShips()->add($this);
         }
 
         return $this;

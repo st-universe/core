@@ -27,8 +27,7 @@ class LeaveFleetTest extends StuTestCase
         $this->ship = $this->mock(Ship::class);
 
         $this->subject = new LeaveFleet(
-            $this->changeFleetLeader,
-            $this->initLoggerUtil()
+            $this->changeFleetLeader
         );
     }
 
@@ -97,9 +96,6 @@ class LeaveFleetTest extends StuTestCase
             ->once();
         $this->ship->shouldReceive('setIsFleetLeader')
             ->with(false)
-            ->once();
-        $this->ship->shouldReceive('setFleetId')
-            ->with(null)
             ->once();
 
         $result = $this->subject->leaveFleet($this->ship);
