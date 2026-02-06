@@ -83,7 +83,6 @@ class ChangeFleetLeaderTest extends StuTestCase
     {
         $fleet = $this->mock(Fleet::class);
         $otherShip = $this->mock(Ship::class);
-        $otherShipCondition = $this->mock(SpacecraftCondition::class);
         $fleetShips = [$this->ship, $otherShip];
 
         $this->ship->shouldReceive('getId')
@@ -106,15 +105,6 @@ class ChangeFleetLeaderTest extends StuTestCase
         $otherShip->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(44);
-        $otherShip->shouldReceive('getCondition')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($otherShipCondition);
-
-        $otherShipCondition->shouldReceive('isDestroyed')
-            ->withNoArgs()
-            ->once()
-            ->andReturnFalse();
 
         $fleet->shouldReceive('getId')
             ->withNoArgs()

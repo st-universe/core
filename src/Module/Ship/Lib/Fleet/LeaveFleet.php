@@ -27,7 +27,6 @@ final class LeaveFleet implements LeaveFleetInterface
         } else {
             $ship->setFleet(null);
             $ship->setIsFleetLeader(false);
-            $ship->setFleetId(null);
         }
 
         return true;

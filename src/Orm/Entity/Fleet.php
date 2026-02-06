@@ -51,7 +51,7 @@ class Fleet
      */
     #[OneToMany(targetEntity: Ship::class, mappedBy: 'fleet', indexBy: 'id')]
     #[OrderBy(['isFleetLeader' => 'DESC', 'name' => 'ASC'])]
-    private Collection $shiplist;
+    private Collection $ships;
 
     #[OneToOne(targetEntity: Ship::class)]
     #[JoinColumn(name: 'ships_id', nullable: false, referencedColumnName: 'id')]
@@ -67,7 +67,7 @@ class Fleet
 
     public function __construct()
     {
-        $this->shiplist = new ArrayCollection();
+        $this->ships = new ArrayCollection();
     }
 
     public function getId(): int
@@ -96,7 +96,7 @@ class Fleet
      */
     public function getShips(): Collection
     {
-        return $this->shiplist;
+        return $this->ships;
     }
 
     public function getShipCount(): int
@@ -173,7 +173,7 @@ class Fleet
 
     public function getCrewSum(): int
     {
-        return    $this->shiplist
+        return $this->ships
             ->reduce(
                 fn(int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()?->getCrew() ?? 0),
                 0
