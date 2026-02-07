@@ -22,13 +22,14 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT c FROM %s c
+                'SELECT c FROM %s c
                     WHERE c.id IN (
                         SELECT bg.commodity_id
                         FROM %s bg
                         WHERE bg.buildings_id IN (
-                            SELECT pf.buildings_id
+                            SELECT b.id
                             FROM %s pf
+                            LEFT JOIN pf.building b
                             WHERE pf.%s = :hostId
                         )
                     ) ORDER BY c.name ASC',

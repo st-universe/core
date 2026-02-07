@@ -20,7 +20,7 @@ enum PlanetFieldHostTypeEnum: int
     public function getPlanetFieldHostColumnIdentifier(): string
     {
         return match ($this) {
-            self::COLONY => 'colonies_id',
+            self::COLONY => 'colony_id',
             self::SANDBOX => 'colony_sandbox_id'
         };
     }

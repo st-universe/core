@@ -16,7 +16,7 @@ final class VersionTestColoniesFielddata extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_colonies_fielddata (id, colonies_id, field_id, type_id, buildings_id, terraforming_id, integrity, aktiv, activate_after_build, colony_sandbox_id)
+        $this->addSql('INSERT INTO stu_colonies_fielddata (id, colony_id, field_id, type_id, buildings_id, terraforming_id, integrity, aktiv, activate_after_build, colony_sandbox_id)
                 VALUES (2, 42, 0, 900, NULL, NULL, 0, 0, 1, NULL),
                        (3, 42, 1, 900, NULL, NULL, 0, 0, 1, NULL),
                        (4, 42, 2, 900, NULL, NULL, 0, 0, 1, NULL),

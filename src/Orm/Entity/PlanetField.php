@@ -27,7 +27,7 @@ class PlanetField
     private int $id;
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $colonies_id = null;
+    private ?int $colony_id = null;
 
     #[Column(type: 'integer', nullable: true)]
     private ?int $colony_sandbox_id = null;
@@ -37,12 +37,6 @@ class PlanetField
 
     #[Column(type: 'integer')]
     private int $type_id = 0;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $buildings_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $terraforming_id = null;
 
     #[Column(type: 'smallint')]
     private int $integrity = 0;
@@ -57,15 +51,15 @@ class PlanetField
     private ?int $reactivate_after_upgrade = null;
 
     #[ManyToOne(targetEntity: Building::class)]
-    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'buildings_id', nullable: true, referencedColumnName: 'id')]
     private ?Building $building = null;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
-    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id')]
+    #[JoinColumn(name: 'terraforming_id', nullable: true, referencedColumnName: 'id')]
     private ?Terraforming $terraforming = null;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', nullable: true, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Colony $colony = null;
 
     #[ManyToOne(targetEntity: ColonySandbox::class)]
@@ -103,12 +97,7 @@ class PlanetField
 
     public function getBuildingId(): ?int
     {
-        return $this->buildings_id;
-    }
-
-    public function getTerraformingId(): ?int
-    {
-        return $this->terraforming_id;
+        return $this->building?->getId();
     }
 
     public function getIntegrity(): int
@@ -295,17 +284,6 @@ class PlanetField
         $this->terraforming = $terraforming;
 
         return $this;
-    }
-
-    public function getDayNightPrefix(int $timestamp): string
-    {
-        $twilightZone = $this->getHost()->getTwilightZone($timestamp);
-
-        if ($twilightZone >= 0) {
-            return $this->getFieldId() % $this->getHost()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';
-        }
-
-        return $this->getFieldId() % $this->getHost()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
     }
 
     public function getBuildProgress(): int
