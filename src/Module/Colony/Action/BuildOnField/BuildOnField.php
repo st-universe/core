@@ -56,7 +56,7 @@ final class BuildOnField implements ActionControllerInterface
         $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
         $host = $field->getHost();
 
-        if ($field->getTerraformingId() > 0) {
+        if ($field->getTerraforming() !== null) {
             return;
         }
         $building = $this->buildingRepository->find(request::indInt('buildingid'));

@@ -56,7 +56,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $fields,
                 function (PlanetField $field) use ($building, $researchedArray): void {
                     if (
-                        $field->getTerraformingId() === null &&
+                        $field->getTerraforming() === null &&
                         $building->getBuildableFields()->containsKey($field->getFieldType())
                     ) {
                         //PlanetFieldTypeBuilding

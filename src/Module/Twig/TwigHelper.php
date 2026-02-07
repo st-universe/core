@@ -16,6 +16,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
+use Stu\Lib\Colony\DayNight\DayNightBorder;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -178,7 +179,7 @@ class TwigHelper
         $stuDateFunction = new TwigFunction('stuDate', fn(string $format): string => $this->stuTime->date($format));
         $this->environment->addFunction($stuDateFunction);
 
-        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetField $field): string => $field->getDayNightPrefix($this->stuTime->time()));
+        $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn(PlanetField $field): string => DayNightBorder::getDayNightPrefix($field, $this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);
 
         $maskEmailFunction = new TwigFunction('maskEmail', fn(string $email): string => $this->maskEmail($email));

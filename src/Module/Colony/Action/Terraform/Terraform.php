@@ -49,7 +49,7 @@ final class Terraform implements ActionControllerInterface
         if ($field->getBuildingId() > 0) {
             return;
         }
-        if ($field->getTerraformingId() > 0) {
+        if ($field->getTerraforming() !== null) {
             return;
         }
 

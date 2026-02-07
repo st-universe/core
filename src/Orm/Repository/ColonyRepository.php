@@ -187,14 +187,14 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
+            'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
                 FROM stu_user u
                 JOIN stu_colony c
                 ON u.id = c.user_id 
                 JOIN stu_colonies_fielddata cf
-                ON cf.colonies_id = c.id
+                ON cf.colony_id = c.id
                 JOIN stu_buildings_cost bc 
-                ON cf.buildings_id = bc.buildings_id 
+                ON cf.buildings_id = bc.buildings_id
                 WHERE u.id >= :firstUserId
                 AND cf.buildings_id IS NOT NULL
                 AND cf.aktiv = 1
@@ -215,10 +215,10 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
+            'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
                 FROM stu_colony c
                 JOIN stu_colonies_fielddata cf
-                ON cf.colonies_id = c.id 
+                ON cf.colony_id = c.id
                 JOIN stu_buildings_commodity bc
                 ON cf.buildings_id = bc.buildings_id
                 JOIN stu_commodity co
@@ -243,7 +243,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT user_id, SUM(satisfied) AS satisfied
+            'SELECT user_id, SUM(satisfied) AS satisfied
                 FROM ( SELECT c.user_id,
                             LEAST( COALESCE(cc.bev_work, 0),
                             ( SELECT COALESCE(SUM(bc.count), 0)
@@ -252,7 +252,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                                 ON cf.buildings_id = b.id
                                 JOIN stu_buildings_commodity bc
                                 ON b.id = bc.buildings_id
-                                WHERE cf.colonies_id = c.id
+                                WHERE cf.colony_id = c.id
                                 AND bc.commodity_id = :lifeStandard
                                 AND cf.aktiv = 1
                             )) AS satisfied

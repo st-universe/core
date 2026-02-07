@@ -40,28 +40,28 @@ class ColonyCorrector implements ColonyCorrectorInterface
             $worker = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_use) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv = 1 AND scf.colony_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
             $activeHousing = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv = 1 AND scf.colony_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
 
             $hasUndergroundLogistics = $this->hasUndergroundLogisticsProduction($database, $colonyId);
 
             $storage = (int) $database->fetchOne(
-                'SELECT SUM(a.lager) FROM stu_buildings a 
+                'SELECT SUM(a.lager) FROM stu_buildings a
                     LEFT JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv <= 1 
-                    AND scf.colonies_id = :colonyId
+                    WHERE scf.aktiv <= 1
+                    AND scf.colony_id = :colonyId
                     AND (
                         a.id NOT IN (
-                            SELECT DISTINCT bc.buildings_id 
-                            FROM stu_buildings_commodity bc 
-                            WHERE bc.commodity_id = :logisticsCommodityId 
+                            SELECT DISTINCT bc.buildings_id
+                            FROM stu_buildings_commodity bc
+                            WHERE bc.commodity_id = :logisticsCommodityId
                             AND bc.count < 0
                         )
                         OR :hasLogistics = 1
@@ -74,15 +74,15 @@ class ColonyCorrector implements ColonyCorrectorInterface
             );
 
             $eps = (int) $database->fetchOne(
-                'SELECT SUM(a.eps) FROM stu_buildings a 
+                'SELECT SUM(a.eps) FROM stu_buildings a
                     LEFT JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv <= 1 
-                    AND scf.colonies_id = :colonyId
+                    WHERE scf.aktiv <= 1
+                    AND scf.colony_id = :colonyId
                     AND (
                         a.id NOT IN (
-                            SELECT DISTINCT bc.buildings_id 
-                            FROM stu_buildings_commodity bc 
-                            WHERE bc.commodity_id = :logisticsCommodityId 
+                            SELECT DISTINCT bc.buildings_id
+                            FROM stu_buildings_commodity bc
+                            WHERE bc.commodity_id = :logisticsCommodityId
                             AND bc.count < 0
                         )
                         OR :hasLogistics = 1
@@ -140,7 +140,7 @@ class ColonyCorrector implements ColonyCorrectorInterface
         $count = (int) $database->fetchOne(
             'SELECT COUNT(*) FROM stu_colonies_fielddata scf
                 JOIN stu_buildings_commodity bc ON bc.buildings_id = scf.buildings_id
-                WHERE scf.colonies_id = :colonyId
+                WHERE scf.colony_id = :colonyId
                 AND scf.aktiv = 1
                 AND bc.commodity_id = :logisticsCommodityId
                 AND bc.count > 0',

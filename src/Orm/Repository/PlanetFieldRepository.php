@@ -47,7 +47,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetField
     {
         return $this->findOneBy([
-            'colonies_id' => $colonyId,
+            'colony_id' => $colonyId,
             'id' => $fieldId
         ]);
     }
@@ -56,7 +56,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getByColonyAndFieldIndex(int $colonyId, int $fieldIndex): ?PlanetField
     {
         return $this->findOneBy([
-            'colonies_id' => $colonyId,
+            'colony_id' => $colonyId,
             'field_id' => $fieldIndex
         ]);
     }
@@ -65,7 +65,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): array
     {
         return $this->findBy([
-            'colonies_id' => $colonyId,
+            'colony_id' => $colonyId,
             'type_id' => $planetFieldTypeId,
         ]);
     }
@@ -80,10 +80,11 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
+                JOIN f.building b
                 WHERE f.%s = :hostId
                 AND f.aktiv IN (:state)
                 AND f.field_id NOT IN (:excluded)
-                AND f.buildings_id IN (
+                AND b.id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
                 )',
                 PlanetField::class,
@@ -105,7 +106,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                WHERE f.%s = :hostId AND f.buildings_id IN (
+                JOIN f.building b
+                WHERE f.%s = :hostId AND b.id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc > 0
                 )',
                 PlanetField::class,
@@ -123,7 +125,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                WHERE f.%s = :hostId AND f.buildings_id IN (
+                JOIN f.building b
+                WHERE f.%s = :hostId AND b.id IN (
                     SELECT b.id FROM %s b WHERE b.bev_pro > 0
                 )',
                 PlanetField::class,
@@ -141,7 +144,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                WHERE f.%s = :hostId AND f.buildings_id IN (
+                JOIN f.building b
+                WHERE f.%s = :hostId AND b.id IN (
                     SELECT b.id FROM %s b WHERE b.bev_use > 0
                 )',
                 PlanetField::class,
@@ -163,10 +167,12 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                WHERE f.colonies_id = :colonyId
+                JOIN f.colony c
+                JOIN f.building b
+                WHERE c.id = :colonyId
                 AND f.aktiv IN (:state)
                 AND f.field_id NOT IN (:excluded)
-                AND f.buildings_id IN (
+                AND b.id IN (
                     SELECT b.id FROM %s b WHERE b.bev_use > 0
                 )',
                 PlanetField::class,
@@ -192,9 +198,10 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
+                JOIN f.building b
                 WHERE f.%s = :hostId
                 AND f.field_id NOT IN (:excluded)
-                AND f.buildings_id IN (
+                AND b.id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count < 0
                 ) AND f.aktiv IN (:state)',
                 PlanetField::class,
@@ -217,7 +224,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                WHERE f.%s = :hostId AND f.buildings_id IN (
+                JOIN f.building b
+                WHERE f.%s = :hostId AND b.id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count > 0
                 )',
                 PlanetField::class,
@@ -233,10 +241,18 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     #[\Override]
     public function getCountByHostAndBuilding(PlanetFieldHostInterface $host, int $buildingId): int
     {
-        return $this->count([
-            $host->getHostType()->getPlanetFieldHostColumnIdentifier() => $host->getId(),
-            'buildings_id' => $buildingId,
-        ]);
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(f) FROM %s f
+                JOIN f.building b
+                WHERE f.%s = :hostId AND b.id = :buildingId',
+                PlanetField::class,
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
+            )
+        )->setParameters([
+            'hostId' => $host->getId(),
+            'buildingId' => $buildingId,
+        ])->getSingleScalarResult();
     }
 
     #[\Override]
@@ -244,8 +260,11 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(f) FROM %s f WHERE f.buildings_id = :buildingId AND f.colonies_id IN (
-                    SELECT c.id FROM %s c WHERE c.user_id = :userId
+                'SELECT COUNT(f)
+                FROM %s f
+                JOIN f.building b
+                WHERE b.id = :buildingId AND f.colony IN (
+                    SELECT c FROM %s c WHERE c.user_id = :userId
                 )',
                 PlanetField::class,
                 Colony::class
@@ -266,9 +285,10 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(pf) FROM %s pf
+                JOIN pf.building b
                 WHERE pf.%s = :host
                 AND pf.field_id NOT IN(:ignoredIds)
-                AND pf.aktiv IN(:state) AND pf.buildings_id IN (
+                AND pf.aktiv IN(:state) AND b.id IN (
                     SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionIds)
                 )',
                 PlanetField::class,
@@ -291,11 +311,14 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                'SELECT f FROM %s f
+                    JOIN f.colony c
+                    JOIN f.building b
+                    WHERE c.id = :colonyId AND b.id IN (
                         SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
-                    )',
-                    PlanetField::class,
-                    BuildingFunction::class
+                )',
+                PlanetField::class,
+                BuildingFunction::class
                 )
             )
             ->setParameters([
@@ -316,7 +339,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 'SELECT COUNT(distinct f1.id) * :generatorCapacity + COUNT(distinct f2.id) * :batteryCapacity as capacity
             FROM stu_colonies_fielddata f1
             LEFT JOIN stu_colonies_fielddata f2
-            ON f1.colonies_id = f2.colonies_id
+            ON f1.colony_id = f2.colony_id
             AND f2.aktiv = 1 AND f2.buildings_id IN (
                 SELECT bf2.buildings_id FROM stu_buildings_functions bf2 WHERE bf2.function = :shieldBattery
             )
@@ -340,8 +363,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.aktiv > 1 AND f.colonies_id IN (
-                    SELECT c.id FROM %s c WHERE c.user_id = :userId
+                'SELECT f FROM %s f WHERE f.aktiv > 1 AND f.colony IN (
+                    SELECT c FROM %s c WHERE c.user_id = :userId
                 ) ORDER BY f.aktiv',
                 PlanetField::class,
                 Colony::class
@@ -370,13 +393,11 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f
-                JOIN %s b
-                WITH f.buildings_id = b.id
+                JOIN f.building b
                 WHERE f.%s = :hostId
-                AND f.buildings_id > 0
+                AND f.building IS NOT NULL
                 ORDER BY b.name ASC',
                 PlanetField::class,
-                Building::class,
                 $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
             )
         )->setParameters([
@@ -393,12 +414,11 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             sprintf(
                 'SELECT SUM(b.eps_proc)
                 FROM %s cfd
-                LEFT JOIN %s b WITH b.id = cfd.buildings_id
+                LEFT JOIN cfd.building b
                 WHERE cfd.aktiv = :state
                 AND cfd.field_id NOT IN (:excluded)
                 AND cfd.%s = :host',
                 PlanetField::class,
-                Building::class,
                 $host->getHostType()->getPlanetFieldHostIdentifier()
             )
         )->setParameters([
@@ -413,11 +433,12 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s pf WHERE pf.colonies_id = :colonyId',
+                'DELETE FROM %s pf
+                WHERE pf.colony = :colony',
                 PlanetField::class
             )
         )
-            ->setParameters(['colonyId' => $colony])
+            ->setParameters(['colony' => $colony])
             ->execute();
     }
 }

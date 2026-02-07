@@ -66,11 +66,13 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
     {
         return $this->getEntityManager()
             ->createQuery(sprintf(
-                'SELECT c.field_id, c.type_id, c.buildings_id
-                FROM %s c
-                WHERE c.colonies_id = :colonyid 
-                AND c.type_id NOT IN (SELECT cf.field_id FROM %s cf WHERE cf.category = 3)
-                ORDER BY c.field_id ASC',
+            'SELECT pf.field_id, pf.type_id, b.id
+                FROM %s pf
+                JOIN pf.colony c
+                LEFT JOIN pf.building b
+                WHERE c.id = :colonyid
+                AND pf.type_id NOT IN (SELECT cf.field_id FROM %s cf WHERE cf.category = 3)
+                ORDER BY pf.field_id ASC',
                 PlanetField::class,
                 PlanetFieldType::class
             ))
