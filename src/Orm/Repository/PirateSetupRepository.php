@@ -14,9 +14,11 @@ use Stu\Orm\Entity\PirateSetup;
  */
 final class PirateSetupRepository extends EntityRepository implements PirateSetupRepositoryInterface
 {
+    #[\Override]
     public function getAllOrderedByName(): array
     {
-        return $this->createQueryBuilder('ps')
+        return $this
+            ->createQueryBuilder('ps')
             ->orderBy('ps.name', 'ASC')
             ->getQuery()
             ->getResult();
