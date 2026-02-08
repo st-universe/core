@@ -6,9 +6,9 @@ namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
@@ -16,8 +16,8 @@ use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\PlanetField;
@@ -241,7 +241,7 @@ final class BuildOnField implements ActionControllerInterface
                 $currentBuildingCost = $currentBuilding->getCosts()->toArray();
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn (BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if (
                     !$storages->containsKey($commodityId) &&
@@ -269,7 +269,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $result = array_filter(
                     $currentBuildingCost,
-                    fn(BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
+                    fn (BuildingCost $buildingCost): bool => $commodityId === $buildingCost->getCommodityId()
                 );
                 if ($result !== []) {
                     $amount += current($result)->getHalfAmount();

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;

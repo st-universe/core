@@ -11,10 +11,9 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Layer;
-use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
 
 /**
@@ -51,7 +50,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
+                    'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
                     FROM %s fs
                     JOIN %s ssm
                     WITH fs.location = ssm
@@ -87,7 +86,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT fs FROM %s fs
+                    'SELECT fs FROM %s fs
                     JOIN fs.location l
                     WHERE fs.time > :maxAge
                     AND l.id = :locationId
@@ -259,7 +258,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $flightSignatures = $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT fs
+                    'SELECT fs
                         FROM %s fs
                         JOIN %s m WITH fs.location = m
                         JOIN %s ly WITH m.layer = ly
@@ -270,9 +269,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                         AND fs.user_id != :userId
                         AND fs.is_cloaked = false
                         ORDER BY fs.ship_id ASC, fs.rump_id ASC, fs.time DESC',
-                FlightSignature::class,
-                Map::class,
-                Layer::class
+                    FlightSignature::class,
+                    Map::class,
+                    Layer::class
                 )
             )
             ->setParameters([

@@ -14,9 +14,7 @@ final class ShowAcademy implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ACADEMY';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowAcademyRequestInterface $showAcademyRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowAcademyRequestInterface $showAcademyRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

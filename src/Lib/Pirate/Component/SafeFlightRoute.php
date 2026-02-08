@@ -6,7 +6,6 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 
 class SafeFlightRoute implements SafeFlightRouteInterface

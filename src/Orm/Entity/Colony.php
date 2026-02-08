@@ -265,7 +265,7 @@ class Colony implements
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            fn(int $sum, Storage $storage): int => $sum + $storage->getAmount(),
+            fn (int $sum, Storage $storage): int => $sum + $storage->getAmount(),
             0
         );
     }

@@ -66,7 +66,7 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
                     ->getLocation()
                     ->getSpacecraftsWithoutVacation()
                     ->filter(
-                        fn(Spacecraft $target): bool => (
+                        fn (Spacecraft $target): bool => (
                             !$target->isCloaked()
                             && !$target->isWarped()
                             && $target !== $ship

@@ -14,9 +14,7 @@ final class RpgRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_RPG';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private KnPostRepositoryInterface $knPostRepository)
-    {
-    }
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private KnPostRepositoryInterface $knPostRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

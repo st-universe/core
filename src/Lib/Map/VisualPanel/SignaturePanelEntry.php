@@ -10,9 +10,7 @@ class SignaturePanelEntry implements VisualPanelElementInterface
 {
     private string $cssClass = 'lss';
 
-    public function __construct(protected int $x, protected int $y, protected PanelLayers $layers)
-    {
-    }
+    public function __construct(protected int $x, protected int $y, protected PanelLayers $layers) {}
 
     /** @return array<string> */
     public function getRenderedCellLayers(): array

@@ -402,14 +402,14 @@ abstract class Spacecraft implements
         if ($this->tractoredShip === $ship) {
             return $this;
         }
-    
+
         $old = $this->tractoredShip;
         $this->tractoredShip = $ship;
-    
+
         if ($old !== null) {
             $old->setTractoringSpacecraft(null);
         }
-    
+
         if ($ship !== null && $ship->getTractoringSpacecraft() !== $this) {
             $ship->setTractoringSpacecraft($this);
         }

@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
 use Stu\Component\Ship\Mining\CancelMiningInterface;
-use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
@@ -15,8 +15,8 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 

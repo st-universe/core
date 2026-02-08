@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 use Stu\Orm\Entity\TholianWeb;
 
 /**

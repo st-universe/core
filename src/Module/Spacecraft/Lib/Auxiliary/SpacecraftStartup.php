@@ -23,12 +23,12 @@ class SpacecraftStartup implements SpacecraftStartupInterface
             ->get()
             ->getSystems()
             ->filter(
-                fn(SpacecraftSystem $system): bool => !$system->getMode()->isActivated()
+                fn (SpacecraftSystem $system): bool => !$system->getMode()->isActivated()
                 && $system->isHealthy()
             )
-            ->map(fn(SpacecraftSystem $system): SpacecraftSystemTypeInterface => $this->spacecraftSystemManager->lookupSystem($system->getSystemType()))
+            ->map(fn (SpacecraftSystem $system): SpacecraftSystemTypeInterface => $this->spacecraftSystemManager->lookupSystem($system->getSystemType()))
             ->filter(
-                fn(SpacecraftSystemTypeInterface $systemType): bool => $systemType
+                fn (SpacecraftSystemTypeInterface $systemType): bool => $systemType
                     ->getDefaultMode()
                     ->isActivated() || in_array($systemType->getSystemType(), $additionalSystemTypes)
             )

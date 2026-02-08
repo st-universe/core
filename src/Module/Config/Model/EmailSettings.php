@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class EmailSettings extends AbstractSettings implements EmailSettingsInterface
 {
     private const string SETTING_TRANSPORT_DSN = 'transportDsn';

@@ -13,10 +13,10 @@ use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Entity\UserSetting;
-use Stu\Orm\Entity\TradeLicense;
 
 /**
  * @extends EntityRepository<User>

@@ -15,8 +15,8 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\PirateSetup;
 use Stu\Orm\Entity\PirateRound;
+use Stu\Orm\Entity\PirateSetup;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -150,7 +150,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     /**
-     * 
+     *
      * @return array{maxFleets: int, maxPerTick: int, maxPer10Min: int}
      */
     private function calculateDynamicLimits(PirateRound $currentRound): array
@@ -315,7 +315,7 @@ class PirateCreation implements PirateCreationInterface
     {
         $pirateSetups = $this->pirateSetupRepository->findAll();
 
-        $pirateProbabilities = array_map(fn(PirateSetup $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
+        $pirateProbabilities = array_map(fn (PirateSetup $setup): int => $setup->getProbabilityWeight(), $pirateSetups);
 
         return $pirateSetups[$this->stuRandom->randomKeyOfProbabilities($pirateProbabilities)];
     }

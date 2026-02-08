@@ -72,7 +72,6 @@ use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\StuTime;
 
 use function DI\autowire;
-use function DI\create;
 
 return [
     NbsUtilityInterface::class => autowire(NbsUtility::class),

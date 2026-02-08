@@ -63,7 +63,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, null,  false)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::USER, null, false)]));
 
         $this->subject->loadComponentUpdates($this->game);
     }
@@ -90,7 +90,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, null,  true)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(GameComponentEnum::PM, null, true)]));
 
         $this->game->shouldReceive('addExecuteJS')
             ->with(
@@ -109,7 +109,7 @@ class ComponentLoaderTest extends StuTestCase
         $this->componentRegistration->shouldReceive('getComponentUpdates')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(ColonyComponentEnum::SHIELDING, $entity,  true)]));
+            ->andReturn(new ArrayCollection(['ID' => new ComponentUpdate(ColonyComponentEnum::SHIELDING, $entity, true)]));
 
         $entity->shouldReceive('getComponentParameters')
             ->withNoArgs()

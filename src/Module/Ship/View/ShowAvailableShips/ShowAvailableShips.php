@@ -15,9 +15,7 @@ final class ShowAvailableShips implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_AVAILABLE_SHIPS';
 
-    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository)
-    {
-    }
+    public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

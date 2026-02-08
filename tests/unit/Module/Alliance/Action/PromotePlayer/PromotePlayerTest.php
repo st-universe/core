@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;

@@ -7,8 +7,8 @@ namespace Stu\Lib\Map\VisualPanel\Layer;
 use RuntimeException;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Map\VisualPanel\AbstractVisualPanel;
-use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Border\BorderDataProviderFactoryInterface;
+use Stu\Lib\Map\VisualPanel\Layer\DataProvider\PanelLayerDataProviderInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountDataProviderFactoryInterface;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Spacecraftcount\SpacecraftCountLayerTypeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\Subspace\SubspaceDataProviderFactoryInterface;
@@ -27,7 +27,6 @@ use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-
 
 final class PanelLayerCreation implements PanelLayerCreationInterface
 {

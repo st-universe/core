@@ -11,7 +11,7 @@ interface ColonyFunctionManagerInterface
 {
     /**
      * Returns `true` if the colony hat at least one active building with the requested function id
-     * 
+     *
      * @param array<int> $ignoredFieldIds
      */
     public function hasActiveFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function, bool $useCache = true, array $ignoredFieldIds = []): bool;

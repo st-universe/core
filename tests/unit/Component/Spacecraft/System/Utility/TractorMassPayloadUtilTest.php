@@ -9,11 +9,11 @@ use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
@@ -54,13 +54,12 @@ class TractorMassPayloadUtilTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->subject = new class(
+        $this->subject = new class (
             $this->systemDamage,
             $this->spacecraftSystemManager,
             $this->stuRandom,
             $this->messageFactory
         ) extends TractorMassPayloadUtil {
-
             #[\Override]
             protected function getTractorPayload(Spacecraft $spacecraft): int
             {

@@ -8,7 +8,7 @@ use Stu\Orm\Entity\SpacecraftRump;
 
 /**
  * @extends ObjectRepository<ShipRumpModuleLevel>
- * 
+ *
  * @method ShipRumpModuleLevel[] findAll()
  */
 interface ShipRumpModuleLevelRepositoryInterface extends ObjectRepository

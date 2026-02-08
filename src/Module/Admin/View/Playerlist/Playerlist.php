@@ -14,9 +14,7 @@ final class Playerlist implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_PLAYER_LIST';
 
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

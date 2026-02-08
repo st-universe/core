@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\DeactivateSystem;
 
 use request;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -101,7 +101,7 @@ final class DeactivateSystem implements ActionControllerInterface
 
         } else {
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
-                
+
                 $tractoredWrapper = $wrapper->getTractoredShipWrapper();
                 if ($tractoredWrapper !== null) {
                     $result[] = [$wrapper->get(), $tractoredWrapper];

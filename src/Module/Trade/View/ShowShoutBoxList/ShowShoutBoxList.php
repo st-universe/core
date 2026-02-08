@@ -14,9 +14,7 @@ final class ShowShoutBoxList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHOUTBOX_LIST';
 
-    public function __construct(private ShowShoutBoxListRequestInterface $showShoutBoxListRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
-    {
-    }
+    public function __construct(private ShowShoutBoxListRequestInterface $showShoutBoxListRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

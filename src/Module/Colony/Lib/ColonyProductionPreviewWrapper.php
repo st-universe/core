@@ -12,9 +12,7 @@ class ColonyProductionPreviewWrapper
     /**
      * @param array<ColonyProduction> $production
      */
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private Building $building, private array $production)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory, private Building $building, private array $production) {}
 
     /** @return array<ColonyProduction> */
     public function getPreview(): array

@@ -29,12 +29,12 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 use Stu\Module\Tick\Pirate\PirateTick;
 use Stu\Module\Tick\Pirate\PirateTickInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
+use Stu\Module\Tick\Process\EndPirateRound;
 use Stu\Module\Tick\Process\FinishBuildJobs;
 use Stu\Module\Tick\Process\FinishShipBuildJobs;
 use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
-use Stu\Module\Tick\Process\EndPirateRound;
 use Stu\Module\Tick\Process\NewDealsInformation;
 use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
@@ -130,7 +130,7 @@ return [
     TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class)
         ->constructorParameter('handlerList', get(MaintenanceHandlerInterface::class)),
-    MaintenanceTickRunner::class => fn(ContainerInterface $dic): TickRunnerInterface => $dic
+    MaintenanceTickRunner::class => fn (ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
         ->createMaintenanceTickRunner(),
     ProcessTickRunner::class => create(ProcessTickRunner::class)

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\View\ShowTools;
 
 use Stu\Component\Faction\FactionEnum;
+use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\LayerRepositoryInterface;
-use Stu\Component\History\HistoryTypeEnum;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowTools implements ViewControllerInterface
 {

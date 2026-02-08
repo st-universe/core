@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\Deals;
-use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 
 /**

@@ -15,9 +15,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADD_SHOUTBOX_ENTRY';
 
-    public function __construct(private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository)
-    {
-    }
+    public function __construct(private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

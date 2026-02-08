@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Applications;
 
-use Stu\Exception\AccessViolationException;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

@@ -2,11 +2,11 @@
 
 namespace Stu\Module\History\Lib;
 
-use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Component\History\HistoryTypeEnum;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Spacecraft;
 
 interface EntryCreatorInterface
 {

@@ -10,10 +10,10 @@ use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Orm\Repository\StationRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\StationRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Management implements ViewControllerInterface
 {
@@ -103,7 +103,7 @@ final class Management implements ViewControllerInterface
             }
         }
 
-        usort($availableJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($availableJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
 
         $game->setViewTemplate('html/alliance/alliancemanagement.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);

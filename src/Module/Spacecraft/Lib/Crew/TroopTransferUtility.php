@@ -46,8 +46,8 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
     public function ownCrewOnTarget(User $user, EntityWithCrewAssignmentsInterface $target): int
     {
         return $target->getCrewAssignments()
-            ->map(fn(CrewAssignment $crewAssignment): Crew => $crewAssignment->getCrew())
-            ->filter(fn(Crew $crew): bool => $crew->getUser()->getId() === $user->getId())
+            ->map(fn (CrewAssignment $crewAssignment): Crew => $crewAssignment->getCrew())
+            ->filter(fn (Crew $crew): bool => $crew->getUser()->getId() === $user->getId())
             ->count();
     }
 

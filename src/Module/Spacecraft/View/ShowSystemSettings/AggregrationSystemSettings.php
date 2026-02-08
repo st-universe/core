@@ -48,17 +48,17 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
         }
 
         $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
-        $mode1Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 1);
-        $mode2Commodities = array_filter($commodities, fn($entry): bool => $entry[4] === 2);
+        $mode1Commodities = array_filter($commodities, fn ($entry): bool => $entry[4] === 1);
+        $mode2Commodities = array_filter($commodities, fn ($entry): bool => $entry[4] === 2);
 
-        $mode1Commodities = array_map(fn($entry): array => [
+        $mode1Commodities = array_map(fn ($entry): array => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
             $entry[2],
             $entry[3]
         ], $mode1Commodities);
 
-        $mode2Commodities = array_map(fn($entry): array => [
+        $mode2Commodities = array_map(fn ($entry): array => [
             $this->commodityRepository->find($entry[0]),
             $this->commodityRepository->find($entry[1]),
             $entry[2],

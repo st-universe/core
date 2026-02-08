@@ -7,8 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\Control\ViewContext;
 use Stu\Orm\Entity\TutorialStep;
-use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserTutorial;
 
 /**
  * @extends EntityRepository<UserTutorial>

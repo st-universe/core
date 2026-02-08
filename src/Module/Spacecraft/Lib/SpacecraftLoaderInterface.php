@@ -2,8 +2,6 @@
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 
 /**

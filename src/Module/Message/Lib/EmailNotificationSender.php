@@ -7,9 +7,9 @@ namespace Stu\Module\Message\Lib;
 use JBBCode\Parser;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Orm\Entity\User;
 
 final class EmailNotificationSender implements EmailNotificationSenderInterface

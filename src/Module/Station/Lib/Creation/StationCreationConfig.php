@@ -24,6 +24,6 @@ class StationCreationConfig implements SpacecraftCreationConfigInterface
     {
         return $this->progress
             ->getSpecialModules()
-            ->map(fn(ConstructionProgressModule $progressModule): Module => $progressModule->getModule());
+            ->map(fn (ConstructionProgressModule $progressModule): Module => $progressModule->getModule());
     }
 }

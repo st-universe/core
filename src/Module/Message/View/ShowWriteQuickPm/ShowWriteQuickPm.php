@@ -70,7 +70,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
             self::TYPE_SHIP => $this->setFromShip($conversationInfo, $user, $fromId),
             self::TYPE_FLEET => $this->setFromFleet($conversationInfo, $user, $fromId),
             self::TYPE_STATION => $this->setFromStation($conversationInfo, $user, $fromId),
-            self::TYPE_COLONY => $this->setFromColony($conversationInfo, $user,  $fromId),
+            self::TYPE_COLONY => $this->setFromColony($conversationInfo, $user, $fromId),
             default => throw new InvalidArgumentException('fromtype has invalid value')
         };
     }

@@ -14,9 +14,7 @@ final class ShowLicenseList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_LICENSE_LIST';
 
-    public function __construct(private ShowLicenseListRequestInterface $showLicenseListRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(private ShowLicenseListRequestInterface $showLicenseListRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

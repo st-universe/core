@@ -4,8 +4,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Control\ViewContext;
-use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserTutorial;
 
 /**
  * @extends ObjectRepository<UserTutorial>

@@ -15,14 +15,14 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
     case SURFACE = 'SURFACE';
     case STORAGE = 'STORAGE';
 
-        // submenues
+    // submenues
     case MANAGEMENT = 'MANAGEMENT';
     case EFFECTS = 'EFFECTS';
     case BUILD_MENUES = 'BUILD_MENUES';
     case SOCIAL = 'SOCIAL';
     case BUILDING_MANAGEMENT = 'BUILDING_MANAGEMENT';
 
-        // menues
+    // menues
     case ACADEMY = 'ACADEMY';
     case AIRFIELD = 'AIRFIELD';
     case MODULE_FAB = 'MODULE_FAB';

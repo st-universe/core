@@ -3,8 +3,6 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
 
 /**

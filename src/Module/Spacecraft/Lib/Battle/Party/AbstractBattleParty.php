@@ -27,8 +27,8 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         $this->user = $leader->get()->getUser();
     }
 
-    /** 
-     * @return Collection<int, covariant SpacecraftWrapperInterface> 
+    /**
+     * @return Collection<int, covariant SpacecraftWrapperInterface>
      */
     abstract protected function initMembers(): Collection;
 
@@ -52,7 +52,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
         }
 
         return $this->members->filter(
-            fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed()
+            fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed()
                 && (!$filterDisabled || !$wrapper->get()->getCondition()->isDisabled())
                 && (!$canFire || $wrapper->canFire())
         );
@@ -93,7 +93,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     public function isActive(): bool
     {
         return $this->getActiveMembers()
-            ->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => $wrapper->get()->hasEnoughCrew());
+            ->exists(fn (int $key, SpacecraftWrapperInterface $wrapper): bool => $wrapper->get()->hasEnoughCrew());
     }
 
     /**

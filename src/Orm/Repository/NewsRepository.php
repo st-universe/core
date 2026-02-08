@@ -12,7 +12,6 @@ use Stu\Orm\Entity\News;
  */
 final class NewsRepository extends EntityRepository implements NewsRepositoryInterface
 {
-
     #[\Override]
     public function save(News $news): void
     {

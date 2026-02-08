@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use RuntimeException;
-use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

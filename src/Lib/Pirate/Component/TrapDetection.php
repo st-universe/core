@@ -43,9 +43,9 @@ class TrapDetection implements TrapDetectionInterface
     private function getPrestigeOfAlertedSpacecrafts(Collection $alertedWrappers): int
     {
         return $alertedWrappers
-            ->map(fn(SpacecraftWrapperInterface $wrapper): int => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
+            ->map(fn (SpacecraftWrapperInterface $wrapper): int => $this->prestigeCalculation->getPrestigeOfSpacecraftOrFleet($wrapper))
             ->reduce(
-                fn(int $sum, int $prestige): int => $sum + $prestige,
+                fn (int $sum, int $prestige): int => $sum + $prestige,
                 0
             );
     }

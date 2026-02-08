@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Orm\Entity\Crew;
-use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 

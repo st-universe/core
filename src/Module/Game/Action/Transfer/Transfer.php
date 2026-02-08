@@ -6,17 +6,17 @@ namespace Stu\Module\Game\Action\Transfer;
 
 use request;
 use RuntimeException;
-use Stu\Config\Init;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Config\Init;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Transfer\Strategy\TransferStrategyInterface;
 use Stu\Lib\Transfer\TransferEntityNotFoundException;
+use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferInformationFactoryInterface;
-use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,9 +24,8 @@ use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-
+use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class Transfer implements ActionControllerInterface
 {

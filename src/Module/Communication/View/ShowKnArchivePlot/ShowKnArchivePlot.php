@@ -12,7 +12,6 @@ use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberArchivRepositoryInterface;
 
-
 final class ShowKnArchivePlot implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ARCHIVE_PLOT';
@@ -83,7 +82,7 @@ final class ShowKnArchivePlot implements ViewControllerInterface
         $archivePosts = $this->knPostArchivRepository->getByPlotFormerId($plot->getFormerId(), $mark, GameEnum::KN_PER_SITE);
 
         $posts = array_map(
-            fn($post) => $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot),
+            fn ($post) => $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot),
             $archivePosts
         );
 

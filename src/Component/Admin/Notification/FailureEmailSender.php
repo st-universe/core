@@ -7,9 +7,9 @@ namespace Stu\Component\Admin\Notification;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
 
 final class FailureEmailSender implements FailureEmailSenderInterface
 {

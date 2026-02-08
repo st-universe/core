@@ -35,7 +35,7 @@ final class CrewRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'CREWS_LIST',
             array_map(
-                fn(array $data): DatabaseTopListCrew => $this->databaseUiFactory->createDatabaseTopListCrew($data),
+                fn (array $data): DatabaseTopListCrew => $this->databaseUiFactory->createDatabaseTopListCrew($data),
                 $this->shipCrewRepository->getCrewsTop10()
             )
         );

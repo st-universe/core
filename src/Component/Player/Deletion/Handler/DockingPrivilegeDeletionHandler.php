@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
-use Stu\Component\Station\Dock\DockTypeEnum;
 
 final class DockingPrivilegeDeletionHandler implements PlayerDeletionHandlerInterface
 {

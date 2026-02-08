@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Logging\StuLogger;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\User;
@@ -81,7 +80,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
 
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT a.id as commodity_id, a.name as commodity_name, SUM(c.count) + COALESCE(MAX(d.count),0) as amount
+                'SELECT a.id as commodity_id, a.name as commodity_name, SUM(c.count) + COALESCE(MAX(d.count),0) as amount
                 FROM stu_commodity a
                     LEFT JOIN stu_colony col ON col.user_id = :userId
                     LEFT JOIN stu_colonies_fielddata b ON b.colony_id = col.id AND b.aktiv = :state

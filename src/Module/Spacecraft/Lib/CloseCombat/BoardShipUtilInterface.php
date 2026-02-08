@@ -8,7 +8,6 @@ use Stu\Orm\Entity\CrewAssignment;
 
 interface BoardShipUtilInterface
 {
-
     /**
      * @param array<CrewAssignment> $attackers
      * @param array<CrewAssignment> $defenders

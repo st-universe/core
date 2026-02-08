@@ -7,7 +7,6 @@ use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Transaction\EntityManagerFactoryInterface;
 
 class ReopeningEntityManager extends EntityManagerDecorator
 {

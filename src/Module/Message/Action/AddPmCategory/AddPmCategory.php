@@ -13,9 +13,7 @@ final class AddPmCategory implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADD_PMCATEGORY';
 
-    public function __construct(private AddPmCategoryRequestInterface $addPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
-    {
-    }
+    public function __construct(private AddPmCategoryRequestInterface $addPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

@@ -7,9 +7,9 @@ namespace Stu\Module\Colony\Lib;
 use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
@@ -42,7 +42,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     public function getDescription(int $fieldTypeId): string
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_NAME)) {
-            $this->fillCache(self::CACHE_KEY_NAME, fn(PlanetFieldType $type): string => $type->getDescription());
+            $this->fillCache(self::CACHE_KEY_NAME, fn (PlanetFieldType $type): string => $type->getDescription());
         }
 
         return $this->cache->getItem(self::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
@@ -52,7 +52,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
     public function getCategory(int $fieldTypeId): int
     {
         if (!$this->cache->hasItem(self::CACHE_KEY_CATEGORY)) {
-            $this->fillCache(self::CACHE_KEY_CATEGORY, fn(PlanetFieldType $type): int => $type->getCategory());
+            $this->fillCache(self::CACHE_KEY_CATEGORY, fn (PlanetFieldType $type): int => $type->getCategory());
         }
 
         if ($fieldTypeId === 1000) {

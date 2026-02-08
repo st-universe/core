@@ -14,9 +14,7 @@ final class ShowMainscreen implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MAINSCREEN';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyGuiHelperInterface $colonyGuiHelper)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private ColonyGuiHelperInterface $colonyGuiHelper) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

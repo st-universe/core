@@ -34,7 +34,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
         // filter the postUser from the member list
         $plot->getMembers()
             ->filter(
-                fn(RpgPlotMember $member): bool => $member->getUserId() !== $postUserId
+                fn (RpgPlotMember $member): bool => $member->getUserId() !== $postUserId
             )
             ->map(function (RpgPlotMember $member) use ($text, $url): void {
                 $this->privateMessageSender->send(

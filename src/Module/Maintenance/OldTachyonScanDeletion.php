@@ -9,9 +9,7 @@ final class OldTachyonScanDeletion implements MaintenanceHandlerInterface
 {
     public const int SCAN_MAX_AGE = TimeConstants::TWO_DAYS_IN_SECONDS;
 
-    public function __construct(private TachyonScanRepositoryInterface $tachyonScanRepository)
-    {
-    }
+    public function __construct(private TachyonScanRepositoryInterface $tachyonScanRepository) {}
 
     #[\Override]
     public function handle(): void

@@ -57,13 +57,13 @@ abstract class ActionTestCase extends IntegrationTestCase
     private function getTransformationClosure(string $entityClass): Closure
     {
         return match ($entityClass) {
-            Spacecraft::class => fn(Spacecraft $s) => [
+            Spacecraft::class => fn (Spacecraft $s) => [
                 'crewCount' => $s->getCrewCount()
             ],
-            SpacecraftSystem::class => fn(SpacecraftSystem $ss) => [
+            SpacecraftSystem::class => fn (SpacecraftSystem $ss) => [
                 'data' => $ss->getData()
             ],
-            GameTurn::class => fn(GameTurn $gt) => [
+            GameTurn::class => fn (GameTurn $gt) => [
                 'turn' => $gt->getTurn(),
                 'startdate' => $gt->getStart(),
                 'enddate' => $gt->getEnd(),

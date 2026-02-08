@@ -7,8 +7,8 @@ namespace Stu\Module\Station\View\ShowDockingControl;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\DockingPrivilegeItem;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -38,7 +38,7 @@ final class ShowDockingControl implements ViewControllerInterface
         $game->setTemplateVar(
             'DOCKING_PRIVILEGES',
             $station->getDockPrivileges()->map(
-                fn(DockingPrivilege $dockingPrivilege): DockingPrivilegeItem =>
+                fn (DockingPrivilege $dockingPrivilege): DockingPrivilegeItem =>
                 $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
             )
         );

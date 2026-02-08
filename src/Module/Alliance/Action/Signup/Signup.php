@@ -10,7 +10,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\AllianceApplication;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 

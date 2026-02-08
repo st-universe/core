@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\StuTestCase;
 
 class CrewDeletionHandlerTest extends StuTestCase

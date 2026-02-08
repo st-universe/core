@@ -12,7 +12,6 @@ use Stu\Orm\Entity\DatabaseCategoryAward;
  */
 final class DatabaseCategoryAwardRepository extends EntityRepository implements DatabaseCategoryAwardRepositoryInterface
 {
-
     #[\Override]
     public function findByCategoryIdAndLayerId(int $categoryId, ?int $layerId): ?DatabaseCategoryAward
     {

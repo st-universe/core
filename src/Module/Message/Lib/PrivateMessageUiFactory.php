@@ -12,9 +12,7 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
  */
 final class PrivateMessageUiFactory implements PrivateMessageUiFactoryInterface
 {
-    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository)
-    {
-    }
+    public function __construct(private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
     #[\Override]
     public function createPrivateMessageFolderItem(

@@ -73,7 +73,7 @@ class LatinumRankingTest extends StuTestCase
             ->with('html/database/highscores/topLatinum.twig')
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('NAGUS_LIST', Mockery::on(fn(Traversable $list): bool => iterator_to_array($list) === [[
+            ->with('NAGUS_LIST', Mockery::on(fn (Traversable $list): bool => iterator_to_array($list) === [[
                 'user' => $user,
                 'amount' => $amount
             ]]))

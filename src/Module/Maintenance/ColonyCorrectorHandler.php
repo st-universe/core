@@ -8,9 +8,7 @@ use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 
 final class ColonyCorrectorHandler implements MaintenanceHandlerInterface
 {
-    public function __construct(private ColonyCorrectorInterface $colonyCorrector)
-    {
-    }
+    public function __construct(private ColonyCorrectorInterface $colonyCorrector) {}
 
     #[\Override]
     public function handle(): void

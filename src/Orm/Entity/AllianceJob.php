@@ -125,7 +125,7 @@ class AllianceJob
     public function getUsers(): array
     {
         return array_map(
-            fn(AllianceMemberJob $assignment) => $assignment->getUser(),
+            fn (AllianceMemberJob $assignment) => $assignment->getUser(),
             $this->memberAssignments->toArray()
         );
     }

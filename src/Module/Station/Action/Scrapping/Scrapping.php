@@ -9,19 +9,18 @@ use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
-
 
 final class Scrapping implements ActionControllerInterface
 {

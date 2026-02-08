@@ -6,20 +6,20 @@ namespace Stu\Module\Ship\Lib;
 
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftBuildplan;
-use Stu\Orm\Entity\Module;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 final class ShipRetrofit implements ShipRetrofitInterface
 {
@@ -119,7 +119,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
 
     private function getSystemByModule(Module $module, Ship $ship): SpacecraftSystem
     {
-        foreach ($ship->getSystems()  as $system) {
+        foreach ($ship->getSystems() as $system) {
             if ($system->getModule() === $module) {
                 return $system;
             }

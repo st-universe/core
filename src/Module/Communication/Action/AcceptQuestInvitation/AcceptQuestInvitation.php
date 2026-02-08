@@ -6,16 +6,16 @@ namespace Stu\Module\Communication\Action\AcceptQuestInvitation;
 
 use Override;
 use Stu\Component\Quest\QuestUserModeEnum;
+use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
+use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\View\ShowQuest\ShowQuest;
-use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
-use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 
 final class AcceptQuestInvitation implements ActionControllerInterface
 {
@@ -66,7 +66,7 @@ final class AcceptQuestInvitation implements ActionControllerInterface
 
         if ($quest->getApplicantMax() !== null) {
             $activeMembersCount = count($quest->getQuestUsers()->filter(
-                fn($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
+                fn ($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {
@@ -103,7 +103,6 @@ final class AcceptQuestInvitation implements ActionControllerInterface
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
             sprintf('/npc/?SHOW_NPC_QUESTS=1')
-
         );
 
         $game->getInfo()->addInformation('Du nimmst ab sofort an der Quest teil');

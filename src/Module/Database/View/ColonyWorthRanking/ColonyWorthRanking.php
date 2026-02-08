@@ -14,9 +14,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COLONY_WORTH';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private ColonyRepositoryInterface $colonyRepository)
-    {
-    }
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

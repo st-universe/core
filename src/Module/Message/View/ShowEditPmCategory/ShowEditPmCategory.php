@@ -13,9 +13,7 @@ final class ShowEditPmCategory implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_CAT';
 
-    public function __construct(private ShowEditCategoryRequestInterface $showEditCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
-    {
-    }
+    public function __construct(private ShowEditCategoryRequestInterface $showEditCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

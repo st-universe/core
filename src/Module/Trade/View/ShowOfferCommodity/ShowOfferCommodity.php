@@ -15,9 +15,7 @@ final class ShowOfferCommodity implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_OFFER_COMMODITY';
 
-    public function __construct(private ShowOfferCommodityRequestInterface $showOfferCommodityRequest, private TradePostRepositoryInterface $tradePostRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private ShowOfferCommodityRequestInterface $showOfferCommodityRequest, private TradePostRepositoryInterface $tradePostRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

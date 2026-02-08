@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 
 interface SpacecraftFactoryInterface
 {

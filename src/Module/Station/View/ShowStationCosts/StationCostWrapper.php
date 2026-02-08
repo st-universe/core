@@ -7,9 +7,7 @@ use Stu\Orm\Entity\Storage;
 
 class StationCostWrapper
 {
-    public function __construct(private BuildplanModule $buildplanModule, private ?Storage $shipStorage)
-    {
-    }
+    public function __construct(private BuildplanModule $buildplanModule, private ?Storage $shipStorage) {}
 
     public function getCommodityId(): int
     {

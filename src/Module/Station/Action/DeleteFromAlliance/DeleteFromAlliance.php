@@ -8,8 +8,8 @@ use request;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 
 final class DeleteFromAlliance implements ActionControllerInterface

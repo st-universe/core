@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassRestriction;
-use Stu\Orm\Entity\Terraforming;
-use Stu\Orm\Entity\Building;
 
 /**
  * @extends EntityRepository<ColonyClassRestriction>

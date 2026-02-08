@@ -128,9 +128,9 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                     FROM %s du
                     WHERE du.database_id = de.id
                     AND du.user_id = :userId)',
-                DatabaseEntry::class,
-                $layerCondition,
-                DatabaseUser::class
+                    DatabaseEntry::class,
+                    $layerCondition,
+                    DatabaseUser::class
                 )
             );
 

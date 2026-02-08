@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class MapSettings extends AbstractSettings implements MapSettingsInterface
 {
     private const string SETTING_ENCRYPTION_KEY = 'encryptionKey';

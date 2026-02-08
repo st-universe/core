@@ -10,6 +10,4 @@ use Stu\Orm\Entity\DatabaseType;
 /**
  * @extends EntityRepository<DatabaseType>
  */
-final class DatabaseTypeRepository extends EntityRepository implements DatabaseTypeRepositoryInterface
-{
-}
+final class DatabaseTypeRepository extends EntityRepository implements DatabaseTypeRepositoryInterface {}

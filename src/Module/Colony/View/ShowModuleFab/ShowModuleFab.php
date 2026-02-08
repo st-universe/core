@@ -6,10 +6,10 @@ namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use InvalidArgumentException;
 use request;
-use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -17,11 +17,11 @@ use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
-use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface

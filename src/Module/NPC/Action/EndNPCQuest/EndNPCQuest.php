@@ -8,9 +8,9 @@ use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
@@ -70,7 +70,7 @@ final class EndNPCQuest implements ActionControllerInterface
     private function notifyQuestMembers(NPCQuest $quest): void
     {
         $activeMembers = $quest->getQuestUsers()->filter(
-            fn($questUser) => $questUser->getMode()->value === 1
+            fn ($questUser) => $questUser->getMode()->value === 1
         );
 
         $questLeaderId = $quest->getUserId();

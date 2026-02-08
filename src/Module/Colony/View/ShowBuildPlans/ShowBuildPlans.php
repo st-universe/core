@@ -14,9 +14,7 @@ final class ShowBuildPlans implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BUILDPLANS';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowBuildPlansRequestInterface $showBuildPlansRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowBuildPlansRequestInterface $showBuildPlansRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

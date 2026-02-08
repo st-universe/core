@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Mockery;
 use JBBCode\Parser;
+use Mockery;
 use Mockery\MockInterface;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;

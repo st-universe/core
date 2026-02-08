@@ -140,15 +140,15 @@ final class CommodityTransfer implements CommodityTransferInterface
         }
     }
 
-    /** 
+    /**
      * @param ArrayCollection<int, Storage> $storage
-     * 
+     *
      * @return ArrayCollection<int, Storage> sorted by commodity->sort
      */
     public static function excludeNonBeamable(Collection $storage): Collection
     {
         $beamableStorage = $storage
-            ->filter(fn(Storage $storage): bool => $storage->getCommodity()->isBeamable() === true)
+            ->filter(fn (Storage $storage): bool => $storage->getCommodity()->isBeamable() === true)
             ->toArray();
 
         usort($beamableStorage, function ($a, $b): int {

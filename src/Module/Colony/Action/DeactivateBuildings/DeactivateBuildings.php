@@ -18,9 +18,7 @@ final class DeactivateBuildings implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_MULTIPLE_DEACTIVATION';
 
-    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction, private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration)
-    {
-    }
+    public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction, private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

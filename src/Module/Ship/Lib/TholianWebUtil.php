@@ -18,7 +18,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftSystem;
@@ -210,12 +209,12 @@ final class TholianWebUtil implements TholianWebUtilInterface
         //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
             $web->getCapturedSpacecrafts()->toArray(),
-            fn(int $sum, Spacecraft $spacecraft): int => $sum + $spacecraft->getRump()->getTractorMass(),
+            fn (int $sum, Spacecraft $spacecraft): int => $sum + $spacecraft->getRump()->getTractorMass(),
             0
         );
         $webSpinnerWeightSum = array_reduce(
             $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
-            fn(int $sum, SpacecraftSystem $shipSystem): int => $sum + $shipSystem->getSpacecraft()->getRump()->getTractorMass(),
+            fn (int $sum, SpacecraftSystem $shipSystem): int => $sum + $shipSystem->getSpacecraft()->getRump()->getTractorMass(),
             0
         );
 

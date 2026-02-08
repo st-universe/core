@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Iterator;
-use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
 /**
  * @implements Iterator<SpacecraftNfsItem>

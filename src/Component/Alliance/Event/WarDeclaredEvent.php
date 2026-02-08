@@ -12,9 +12,7 @@ use Stu\Orm\Entity\User;
  */
 class WarDeclaredEvent
 {
-    public function __construct(private Alliance $alliance, private Alliance $counterpart, private User $responsibleUser)
-    {
-    }
+    public function __construct(private Alliance $alliance, private Alliance $counterpart, private User $responsibleUser) {}
 
     /**
      * Returns the alliance which declared war

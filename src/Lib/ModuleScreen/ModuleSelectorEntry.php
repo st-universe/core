@@ -6,17 +6,16 @@ namespace Stu\Lib\ModuleScreen;
 
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
-use Stu\Orm\Entity\SpacecraftBuildplan;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 {
-
     public function __construct(
         private ModuleSelectorInterface $moduleSelector,
         private Module $module,

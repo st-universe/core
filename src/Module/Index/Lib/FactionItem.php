@@ -11,9 +11,7 @@ use Stu\Orm\Entity\Faction;
  */
 class FactionItem
 {
-    public function __construct(private Faction $faction, private int $currentPlayerCount)
-    {
-    }
+    public function __construct(private Faction $faction, private int $currentPlayerCount) {}
 
     /**
      * Returns the count of players of this faction

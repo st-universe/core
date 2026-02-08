@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\SearchOffers;
 
 use request;
-
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Trade\TradeEnum;
@@ -65,7 +64,7 @@ final class SearchBoth implements ActionControllerInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn(TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                fn (TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_BOTH)
             )
         );

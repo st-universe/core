@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class SqlLoggingSettings extends AbstractSettings implements SqlLoggingSettingsInterface
 {
     private const string SETTING_IS_ACTIVE = 'isActive';

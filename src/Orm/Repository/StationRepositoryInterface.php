@@ -7,10 +7,10 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
 
 /**

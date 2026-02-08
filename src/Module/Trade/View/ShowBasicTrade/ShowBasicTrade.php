@@ -16,9 +16,7 @@ final class ShowBasicTrade implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BASIC_TRADE';
 
-    public function __construct(private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository, private TradeLibFactoryInterface $tradeLibFactory)
-    {
-    }
+    public function __construct(private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository, private TradeLibFactoryInterface $tradeLibFactory) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

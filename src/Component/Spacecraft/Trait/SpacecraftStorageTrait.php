@@ -15,7 +15,7 @@ trait SpacecraftStorageTrait
     {
         return array_reduce(
             $this->getThis()->getStorage()->getValues(),
-            fn(int $sum, Storage $storage): int => $sum + $storage->getAmount(),
+            fn (int $sum, Storage $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -34,13 +34,13 @@ trait SpacecraftStorageTrait
     public function getStoredShuttles(): Collection
     {
         return $this->getThis()->getStorage()
-            ->map(fn(Storage $storage): Commodity => $storage->getCommodity())
-            ->filter(fn(Commodity $commodity): bool => $commodity->isShuttle());
+            ->map(fn (Storage $storage): Commodity => $storage->getCommodity())
+            ->filter(fn (Commodity $commodity): bool => $commodity->isShuttle());
     }
 
     public function hasStoredBuoy(): bool
     {
         return $this->getThis()->getStorage()
-            ->exists(fn(int $key, Storage $storage): bool => $storage->getCommodity()->isBouy());
+            ->exists(fn (int $key, Storage $storage): bool => $storage->getCommodity()->isBouy());
     }
 }

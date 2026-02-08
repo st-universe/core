@@ -12,7 +12,6 @@ use Stu\Component\Spacecraft\System\Type\TractorBeamShipSystem;
 use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\FightLib;
-use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 
 class SpacecraftNfsItem
 {

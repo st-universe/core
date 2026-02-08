@@ -175,7 +175,7 @@ class Fleet
     {
         return $this->ships
             ->reduce(
-                fn(int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()?->getCrew() ?? 0),
+                fn (int $sum, Ship $ship): int => $sum + ($ship->getCondition()->isDestroyed() ? 0 : $ship->getBuildplan()?->getCrew() ?? 0),
                 0
             );
     }

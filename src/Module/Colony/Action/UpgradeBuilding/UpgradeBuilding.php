@@ -6,15 +6,14 @@ namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
 use request;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;

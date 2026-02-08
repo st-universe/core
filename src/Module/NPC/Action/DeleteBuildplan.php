@@ -7,11 +7,11 @@ namespace Stu\Module\NPC\Action;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
-use Stu\Orm\Repository\NPCLogRepositoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\NPCLogRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class DeleteBuildplan implements ActionControllerInterface
 {
@@ -49,7 +49,6 @@ final class DeleteBuildplan implements ActionControllerInterface
                     $buildplan->getName()
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
-
             );
         }
 

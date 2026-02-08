@@ -84,7 +84,7 @@ final class BasicTradeAccountWrapper implements BasicTradeAccountWrapperInterfac
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, Storage $storage): int => $value + $storage->getAmount(),
+            fn (int $value, Storage $storage): int => $value + $storage->getAmount(),
             0
         );
     }

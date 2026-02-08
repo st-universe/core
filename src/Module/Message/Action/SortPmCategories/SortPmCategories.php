@@ -14,9 +14,7 @@ final class SortPmCategories implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_PMCATEGORY_SORT';
 
-    public function __construct(private SortPmCategoriesRequestInterface $sortPmCategoriesRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
-    {
-    }
+    public function __construct(private SortPmCategoriesRequestInterface $sortPmCategoriesRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

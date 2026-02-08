@@ -10,14 +10,13 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateRound;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserPirateRound;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\UserPirateRoundRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserPirateRound;
-
 
 final class EndPirateRound implements ProcessTickHandlerInterface
 {
@@ -200,7 +199,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
      */
     private function getTopThreeUsers(array $userPirateRounds): array
     {
-        usort($userPirateRounds, fn($a, $b) => $b->getPrestige() <=> $a->getPrestige());
+        usort($userPirateRounds, fn ($a, $b) => $b->getPrestige() <=> $a->getPrestige());
 
         return array_slice($userPirateRounds, 0, 3);
     }

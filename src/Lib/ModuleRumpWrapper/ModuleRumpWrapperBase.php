@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use BadMethodCallException;
-use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftBuildplan;
-use Stu\Orm\Entity\SpacecraftRumpBaseValues;
 use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftRumpBaseValues;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {

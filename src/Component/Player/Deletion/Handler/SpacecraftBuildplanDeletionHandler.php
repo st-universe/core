@@ -27,7 +27,7 @@ final class SpacecraftBuildplanDeletionHandler implements PlayerDeletionHandlerI
         foreach ($this->spacecraftBuildplanRepository->getByUser($user->getId()) as $spacecraftBuildplan) {
 
             $existsForeignShip = !$spacecraftBuildplan->getSpacecraftList()
-                ->filter(fn(Spacecraft $spacecraft): bool => $spacecraft->getUser()->getId() !== $spacecraftBuildplan->getUser()->getId())
+                ->filter(fn (Spacecraft $spacecraft): bool => $spacecraft->getUser()->getId() !== $spacecraftBuildplan->getUser()->getId())
                 ->isEmpty();
 
             if ($existsForeignShip) {

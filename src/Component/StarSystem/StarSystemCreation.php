@@ -10,8 +10,8 @@ use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\MassCenterType;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
@@ -146,7 +146,7 @@ final class StarSystemCreation implements StarSystemCreationInterface
          */
         $systemMapsWithoutColony = array_filter(
             $starSystem->getFields()->toArray(),
-            fn(StarSystemMap $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
+            fn (StarSystemMap $systemMap): bool => $systemMap->getFieldType()->getColonyClass() !== null
         );
 
         foreach ($systemMapsWithoutColony as $systemMap) {

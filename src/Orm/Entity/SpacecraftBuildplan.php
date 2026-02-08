@@ -180,8 +180,8 @@ class SpacecraftBuildplan
     {
         return $this
             ->getModules()
-            ->filter(fn(BuildplanModule $buildplanModule): bool => $buildplanModule->getModuleType() === $type)
-            ->map(fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule());
+            ->filter(fn (BuildplanModule $buildplanModule): bool => $buildplanModule->getModuleType() === $type)
+            ->map(fn (BuildplanModule $buildplanModule): Module => $buildplanModule->getModule());
     }
 
     /**

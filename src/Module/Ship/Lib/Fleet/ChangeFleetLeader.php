@@ -36,7 +36,7 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
         $newLeader = current(
             array_filter(
                 $fleet->getShips()->toArray(),
-                fn(Ship $ship): bool => $ship !== $oldLeader
+                fn (Ship $ship): bool => $ship !== $oldLeader
             )
         );
 

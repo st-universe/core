@@ -8,8 +8,8 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
-use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class WebEmitterShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface

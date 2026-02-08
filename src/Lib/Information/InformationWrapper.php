@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Information;
 
-
 class InformationWrapper implements InformationInterface
 {
     /**
      * @param array<string> $informations
      */
-    public function __construct(private array $informations = [])
-    {
-    }
+    public function __construct(private array $informations = []) {}
 
     #[\Override]
     public function addInformation(?string $information): InformationInterface

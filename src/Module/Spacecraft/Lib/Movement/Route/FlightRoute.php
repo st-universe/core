@@ -200,7 +200,7 @@ final class FlightRoute implements FlightRouteInterface
 
         array_walk(
             $consequences,
-            fn(FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
+            fn (FlightConsequenceInterface $consequence) => $consequence->trigger($wrapper, $this, $messages)
         );
 
         $this->walkConsequences($consequences, $wrapper->getTractoredShipWrapper(), $messages);
@@ -301,6 +301,6 @@ final class FlightRoute implements FlightRouteInterface
         $destination = $this->waypoints->last();
 
         return $destination instanceof Map
-            && $destination->getSpacecrafts()->exists(fn(int $key, Spacecraft $spacecraft): bool => $spacecraft instanceof Station && $spacecraft->getTradePost() !== null);
+            && $destination->getSpacecrafts()->exists(fn (int $key, Spacecraft $spacecraft): bool => $spacecraft instanceof Station && $spacecraft->getTradePost() !== null);
     }
 }

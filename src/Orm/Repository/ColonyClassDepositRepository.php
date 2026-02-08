@@ -10,6 +10,4 @@ use Stu\Orm\Entity\ColonyClassDeposit;
 /**
  * @extends EntityRepository<ColonyClassDeposit>
  */
-final class ColonyClassDepositRepository extends EntityRepository implements ColonyClassDepositRepositoryInterface
-{
-}
+final class ColonyClassDepositRepository extends EntityRepository implements ColonyClassDepositRepositoryInterface {}

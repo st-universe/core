@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
+use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

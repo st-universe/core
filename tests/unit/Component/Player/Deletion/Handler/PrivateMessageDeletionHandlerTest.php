@@ -38,7 +38,7 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
 
         $this->entityManager->shouldReceive('getConnection->executeStatement')
             ->with(
-                Mockery::on(fn(string $query): bool => str_contains($query, 'UPDATE stu_pms SET send_user = :nobodyId')
+                Mockery::on(fn (string $query): bool => str_contains($query, 'UPDATE stu_pms SET send_user = :nobodyId')
                     && str_contains($query, 'WHERE send_user = :userId')),
                 ['nobodyId' => 1, 'userId' => 123]
             )
@@ -47,7 +47,7 @@ class PrivateMessageDeletionHandlerTest extends StuTestCase
         $this->entityManager->shouldReceive('getConnection->executeStatement')
             ->with(
                 Mockery::on(
-                    fn(string $query): bool => str_contains($query, 'UPDATE stu_pms outbox SET inbox_pm_id = NULL')
+                    fn (string $query): bool => str_contains($query, 'UPDATE stu_pms outbox SET inbox_pm_id = NULL')
                         && str_contains($query, 'WHERE EXISTS (SELECT * FROM stu_pms inbox')
                         && str_contains($query, 'WHERE inbox.id = outbox.inbox_pm_id')
                         && str_contains($query, 'AND inbox.recip_user = :userId)')

@@ -3,7 +3,6 @@
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use request;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -35,7 +34,7 @@ final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInte
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             array_map(
-                fn(SpacecraftBuildplan $plan): array => [
+                fn (SpacecraftBuildplan $plan): array => [
                     'plan' => $plan,
                     'deletable' => $this->buildPlanDeleter->isDeletable($plan)
                 ],

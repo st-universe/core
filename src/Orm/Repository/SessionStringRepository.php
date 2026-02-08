@@ -42,7 +42,7 @@ final class SessionStringRepository extends EntityRepository implements SessionS
         );
         $q->setParameters([
             'user' => $user,
-            'date' => (new DateTime())->sub(new DateInterval('PT1H'))->format('Y-m-d H:i:s'),
+            'date' => new DateTime()->sub(new DateInterval('PT1H'))->format('Y-m-d H:i:s'),
         ]);
         $q->execute();
     }

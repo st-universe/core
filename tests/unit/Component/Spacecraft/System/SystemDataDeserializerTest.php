@@ -34,7 +34,7 @@ class SystemDataDeserializerTest extends StuTestCase
     {
         //injected
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
-        $this->jsonMapper = (new JsonMapperFactory())->bestFit();
+        $this->jsonMapper = new JsonMapperFactory()->bestFit();
 
         $this->ship = $this->mock(Ship::class);
         $this->shipSystem = $this->mock(SpacecraftSystem::class);

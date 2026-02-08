@@ -6,9 +6,10 @@ namespace Stu\Module\Communication\Action\ApplyForQuest;
 
 use Override;
 use Stu\Component\Quest\QuestUserModeEnum;
+use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
+use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -16,7 +17,6 @@ use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\NPCQuestUser;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
-use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 
 final class ApplyForQuest implements ActionControllerInterface
 {
@@ -85,7 +85,7 @@ final class ApplyForQuest implements ActionControllerInterface
 
         if ($quest->getApplicantMax() !== null) {
             $activeMembersCount = count($quest->getQuestUsers()->filter(
-                fn($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
+                fn ($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {

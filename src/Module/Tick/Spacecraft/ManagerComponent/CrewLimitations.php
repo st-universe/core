@@ -15,8 +15,8 @@ use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

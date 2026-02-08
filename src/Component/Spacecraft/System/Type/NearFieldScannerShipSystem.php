@@ -10,8 +10,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class NearFieldScannerShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface

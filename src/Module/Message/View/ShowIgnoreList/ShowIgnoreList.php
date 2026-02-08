@@ -12,9 +12,7 @@ final class ShowIgnoreList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_IGNORELIST';
 
-    public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository)
-    {
-    }
+    public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

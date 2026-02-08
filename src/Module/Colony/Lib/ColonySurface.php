@@ -39,7 +39,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if (!$this->showUnderground) {
             $fields = array_filter(
                 $fields,
-                fn(PlanetField $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
+                fn (PlanetField $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
             );
         }
 

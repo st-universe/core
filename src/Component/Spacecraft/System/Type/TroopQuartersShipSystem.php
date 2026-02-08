@@ -7,8 +7,8 @@ namespace Stu\Component\Spacecraft\System\Type;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {

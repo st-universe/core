@@ -155,7 +155,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT sm.sx as x, sm.sy AS y,
+                'SELECT sm.sx as x, sm.sy AS y,
             (SELECT COUNT(*) > 0
                 FROM stu_colony col
                 JOIN stu_colonies_fielddata cfd
@@ -547,7 +547,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             $result = array_merge($result, $otherFields);
         }
 
-        return array_map(fn(array $data) => $data['id'], $result);
+        return array_map(fn (array $data) => $data['id'], $result);
     }
 
     #[\Override]

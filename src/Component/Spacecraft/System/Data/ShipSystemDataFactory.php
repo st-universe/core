@@ -6,16 +6,16 @@ namespace Stu\Component\Spacecraft\System\Data;
 
 use Stu\Component\Spacecraft\System\Exception\InvalidSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Module\Control\GameController;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
-use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
-use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
-use Stu\Module\Control\GameController;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
@@ -52,7 +52,7 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
             SpacecraftSystemTypeEnum::PHASER =>  new EnergyWeaponSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::TORPEDO =>  new ProjectileLauncherSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::BUSSARD_COLLECTOR =>  new BussardCollectorSystemData($this->shipSystemRepository, $this->statusBarFactory),
-                        SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM =>  new AggregationSystemSystemData($this->shipSystemRepository, $this->statusBarFactory),
+            SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM =>  new AggregationSystemSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::LSS =>  new LssSystemData($this->shipSystemRepository, $this->statusBarFactory),
             SpacecraftSystemTypeEnum::SUBSPACE_SCANNER => new SubspaceSystemData($this->shipSystemRepository, $this->statusBarFactory, $this->flightSignatureRepository),
             SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER => new WarpcoreChargeTransferSystemData($this->shipSystemRepository, $this->statusBarFactory),

@@ -14,7 +14,7 @@ enum StatusBarColorEnum: string
     case BLUE = '0070cf';
     case DARKBLUE = '004682';
 
-        // shield bar
+    // shield bar
     case SHIELD_ON = '00fbff';
     case SHIELD_OFF = '004aff';
 }

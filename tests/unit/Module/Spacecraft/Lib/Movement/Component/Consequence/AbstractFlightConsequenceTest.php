@@ -6,9 +6,9 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence;
 
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
@@ -50,14 +50,13 @@ class AbstractFlightConsequenceTest extends StuTestCase
             $triggered = true;
         };
 
-        $this->subject = $this->subject = new class(
+        $this->subject = $this->subject = new class (
             $skipWhenTractored,
             $func,
             $wrapper,
             $flightRoute,
             $messages
         ) extends AbstractFlightConsequence {
-
             public function __construct(
                 private $skipWhenTractored,
                 private Closure $func,
@@ -73,7 +72,7 @@ class AbstractFlightConsequenceTest extends StuTestCase
             }
 
             #[\Override]
-            protected  function triggerSpecific(
+            protected function triggerSpecific(
                 SpacecraftWrapperInterface $wrapper,
                 FlightRouteInterface $flightRoute,
                 MessageCollectionInterface $messages
@@ -139,14 +138,13 @@ class AbstractFlightConsequenceTest extends StuTestCase
             $triggered = true;
         };
 
-        $this->subject = $this->subject = new class(
+        $this->subject = $this->subject = new class (
             $skipWhenTractored,
             $func,
             $wrapper,
             $flightRoute,
             $messages
         ) extends AbstractFlightConsequence {
-
             public function __construct(
                 private $skipWhenTractored,
                 private Closure $func,
@@ -162,7 +160,7 @@ class AbstractFlightConsequenceTest extends StuTestCase
             }
 
             #[\Override]
-            protected  function triggerSpecific(
+            protected function triggerSpecific(
                 SpacecraftWrapperInterface $wrapper,
                 FlightRouteInterface $flightRoute,
                 MessageCollectionInterface $messages

@@ -90,14 +90,14 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT tp FROM %s tp
+                    'SELECT tp FROM %s tp
                     JOIN %s u WITH tp.user = u
                     WHERE u.id < :firstUserId AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     )',
-                TradePost::class,
-                User::class,
-                TradeLicense::class
+                    TradePost::class,
+                    User::class,
+                    TradeLicense::class
                 )
             )
             ->setParameters([
@@ -114,14 +114,14 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT tp FROM %s tp
+                    'SELECT tp FROM %s tp
                     JOIN %s u WITH tp.user = u
                     WHERE u.id = 14 AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id = :tradepostId
                     )',
-                TradePost::class,
-                User::class,
-                TradeLicense::class
+                    TradePost::class,
+                    User::class,
+                    TradeLicense::class
                 )
             )
             ->setParameters([

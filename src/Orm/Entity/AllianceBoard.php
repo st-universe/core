@@ -85,7 +85,7 @@ class AllianceBoard
     {
         return array_reduce(
             $this->getTopics()->toArray(),
-            fn(int $sum, AllianceBoardTopic $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
+            fn (int $sum, AllianceBoardTopic $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
     }

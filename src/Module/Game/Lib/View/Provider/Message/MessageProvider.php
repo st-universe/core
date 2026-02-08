@@ -39,7 +39,7 @@ final class MessageProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn(PrivateMessageFolder $folder): PrivateMessageFolderItem =>
+                fn (PrivateMessageFolder $folder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
                 $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )

@@ -6,12 +6,11 @@ namespace Stu\Component\Ship\Mining;
 
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Repository\MiningQueueRepositoryInterface;
 
 final class CancelMining implements CancelMiningInterface
 {
-
     public function __construct(
         private MiningQueueRepositoryInterface $miningQueueRepository
     ) {}

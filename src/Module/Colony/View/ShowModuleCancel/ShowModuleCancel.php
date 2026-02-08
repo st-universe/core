@@ -15,9 +15,7 @@ final class ShowModuleCancel implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MODULE_CANCEL';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleCancelRequestInterface $showModuleCancelRequest, private ModuleQueueRepositoryInterface $moduleQueueRepository)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleCancelRequestInterface $showModuleCancelRequest, private ModuleQueueRepositoryInterface $moduleQueueRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

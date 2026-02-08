@@ -7,8 +7,6 @@ namespace Stu\Component\Spacecraft\System\Control;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
-use Stu\Component\Spacecraft\System\Control\SystemActivation;
-use Stu\Component\Spacecraft\System\Control\SystemDeactivation;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;

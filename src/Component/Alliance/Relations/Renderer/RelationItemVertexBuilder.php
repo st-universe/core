@@ -13,9 +13,7 @@ use Stu\Orm\Entity\Alliance;
  */
 final class RelationItemVertexBuilder implements RelationItemVertexBuilderInterface
 {
-    public function __construct(private AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter)
-    {
-    }
+    public function __construct(private AllianceDataToGraphAttributeConverterInterface $allianceDataToGraphAttributeConverter) {}
 
     #[\Override]
     public function build(

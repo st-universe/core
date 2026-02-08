@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Data;
 
-use Stu\Module\Control\StuTime;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Template\StatusBarColorEnum;
-use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
-use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Module\Control\GameController;
-use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
+use Stu\Module\Control\StuTime;
+use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class WarpDriveSystemData extends AbstractSystemData
 {

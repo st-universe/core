@@ -11,8 +11,7 @@ class SettingsCore implements SettingsCoreInterface
         private ?SettingsInterface $parentSetting,
         private string $configPath,
         private ConfigInterface $config
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function getPath(): string

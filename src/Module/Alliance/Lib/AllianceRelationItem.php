@@ -10,9 +10,7 @@ use Stu\Orm\Entity\User;
 
 final class AllianceRelationItem implements AllianceRelationItemInterface
 {
-    public function __construct(private AllianceRelation $allianceRelation, private User $currentUser)
-    {
-    }
+    public function __construct(private AllianceRelation $allianceRelation, private User $currentUser) {}
 
     #[\Override]
     public function getRelation(): AllianceRelation

@@ -19,7 +19,7 @@ trait SpacecraftShuttleSpaceTrait
     protected function getStoredShuttleCount(Spacecraft $spacecraft): int
     {
         return $spacecraft->getStorage()
-            ->filter(fn(Storage $storage): bool => $storage->getCommodity()->isShuttle())
-            ->reduce(fn(int $value, Storage $storage): int => $value + $storage->getAmount(), 0);
+            ->filter(fn (Storage $storage): bool => $storage->getCommodity()->isShuttle())
+            ->reduce(fn (int $value, Storage $storage): int => $value + $storage->getAmount(), 0);
     }
 }

@@ -10,7 +10,7 @@ enum AnomalyTypeEnum: int
     case SUBSPACE_ELLIPSE = 1;
     case ION_STORM = 2;
 
-        // special anomalies
+    // special anomalies
     case SPECIAL_ADVENT_DOOR = 1001;
     case SPECIAL_EASTER_EGG = 1002;
 

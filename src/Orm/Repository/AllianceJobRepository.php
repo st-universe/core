@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceJob;
-use Stu\Orm\Entity\AllianceJobPermission;
 
 /**
  * @extends EntityRepository<AllianceJob>

@@ -17,8 +17,7 @@ final class ShowSystemEditField implements ViewControllerInterface
     public function __construct(
         private MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         private StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

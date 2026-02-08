@@ -7,11 +7,11 @@ namespace Stu\Module\Communication\Action\AdminDeleteKnPost;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\KnPost;
-use Stu\Orm\Repository\KnPostRepositoryInterface;
-use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class AdminDeleteKnPost implements ActionControllerInterface
 {

@@ -14,9 +14,7 @@ final class EditPmCategory implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_PMCATEGORY_NAME';
 
-    public function __construct(private EditPmCategoryRequestInterface $editPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository)
-    {
-    }
+    public function __construct(private EditPmCategoryRequestInterface $editPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

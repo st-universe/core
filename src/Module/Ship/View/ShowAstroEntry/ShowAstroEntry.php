@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowAstroEntry;
 
 use request;
-
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -60,7 +59,7 @@ final class ShowAstroEntry implements ViewControllerInterface
         $game->setTemplateVar(
             'FIELDS',
             array_map(
-                fn(int $id) => $repository->find($id),
+                fn (int $id) => $repository->find($id),
                 $fieldIdArray
             )
         );

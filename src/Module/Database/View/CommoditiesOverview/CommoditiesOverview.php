@@ -17,9 +17,7 @@ final class CommoditiesOverview implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_COMMODITIES_OVERVIEW';
 
-    public function __construct(private StorageRepositoryInterface $storageRepository, private DatabaseUiFactoryInterface $databaseUiFactory)
-    {
-    }
+    public function __construct(private StorageRepositoryInterface $storageRepository, private DatabaseUiFactoryInterface $databaseUiFactory) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

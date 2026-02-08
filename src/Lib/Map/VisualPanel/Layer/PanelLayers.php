@@ -36,8 +36,8 @@ class PanelLayers
     public function getRenderedCellLayers(int $x, int $y): array
     {
         return $this->layers
-            ->filter(fn(PanelLayer $layer, int $type): bool => $this->isLayerVisible($type, $x, $y))
-            ->map(fn(PanelLayer $layer): string => $layer->renderCell($x, $y, $this->panel))
+            ->filter(fn (PanelLayer $layer, int $type): bool => $this->isLayerVisible($type, $x, $y))
+            ->map(fn (PanelLayer $layer): string => $layer->renderCell($x, $y, $this->panel))
             ->toArray();
     }
 

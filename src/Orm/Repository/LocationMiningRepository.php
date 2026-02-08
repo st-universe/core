@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\LocationMining;
 use Stu\Orm\Entity\MiningQueue;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\LocationMining;
 
 /**
  * @extends EntityRepository<LocationMining>

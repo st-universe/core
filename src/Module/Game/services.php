@@ -6,10 +6,10 @@ namespace Stu\Module\Game;
 
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\GameController;
-use Stu\Module\Game\Action\Logout\Logout;
-use Stu\Module\Game\Action\SwitchView\SwitchView;
-use Stu\Module\Game\Action\SetTutorial\SetTutorial;
 use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
+use Stu\Module\Game\Action\Logout\Logout;
+use Stu\Module\Game\Action\SetTutorial\SetTutorial;
+use Stu\Module\Game\Action\SwitchView\SwitchView;
 use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\Component\ColoniesComponent;
 use Stu\Module\Game\Component\GameComponentEnum;
@@ -38,13 +38,13 @@ use Stu\Module\Game\Lib\View\Provider\TradeProvider;
 use Stu\Module\Game\Lib\View\Provider\UserProfileProvider;
 use Stu\Module\Game\Lib\View\ViewComponentLoader;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
+use Stu\Module\Game\View\Noop\Noop;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
 use Stu\Module\Game\View\ShowInnerContent\ShowInnerContent;
 use Stu\Module\Game\View\ShowPadd\ShowPadd;
-use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
-use Stu\Module\Game\View\Noop\Noop;
 use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
+use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
 
 use function DI\autowire;
 

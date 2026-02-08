@@ -7,12 +7,12 @@ namespace Stu\Module\Spacecraft\Lib\Damage;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Lib\Damage\DamageWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
@@ -111,10 +111,10 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn($tractoredShip);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $this->wrapper, $message)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $this->wrapper, $message)
             ->once();
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $tractoredShipWrapper, $tmessage)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 42), $tractoredShipWrapper, $tmessage)
             ->once();
 
         $messages->shouldReceive('add')
@@ -185,7 +185,7 @@ class ApplyFieldDamageTest extends StuTestCase
             ->andReturn(null);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::on(fn(DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 100), $this->wrapper, $message)
+            ->with(Mockery::on(fn (DamageWrapper $damageWrapper): bool => $damageWrapper->getNetDamage() == 100), $this->wrapper, $message)
             ->once();
 
         $messages->shouldReceive('add')

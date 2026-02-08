@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\RoundBasedBattleParty;
@@ -15,7 +16,6 @@ use Stu\Module\Spacecraft\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\StuTestCase;
 
 class SpacecraftAttackCycleTest extends StuTestCase

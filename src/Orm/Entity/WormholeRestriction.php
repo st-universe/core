@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
 use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
+use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
 use Stu\Orm\Repository\WormholeRestrictionRepository;
 
 #[Table(name: 'stu_wormhole_restrictions')]

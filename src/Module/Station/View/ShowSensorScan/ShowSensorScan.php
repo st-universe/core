@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowSensorScan;
 
 use request;
+use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -15,7 +16,6 @@ use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-use Stu\Component\Map\EncodedMapInterface;
 
 final class ShowSensorScan implements ViewControllerInterface
 {
@@ -36,8 +36,7 @@ final class ShowSensorScan implements ViewControllerInterface
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
         private NbsUtilityInterface $nbsUtility,
         private EncodedMapInterface $encodedMap
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

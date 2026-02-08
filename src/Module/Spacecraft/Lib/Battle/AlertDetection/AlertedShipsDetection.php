@@ -23,13 +23,13 @@ class AlertedShipsDetection implements AlertedShipsDetectionInterface
     ): Collection {
         return $location->getSpacecraftsWithoutVacation()
             ->filter(
-                fn(Spacecraft $spacecraft): bool =>
+                fn (Spacecraft $spacecraft): bool =>
                 $spacecraft->getUser()->getId() !== $user->getId()
                     && ($spacecraft->getFleet() === null || !$spacecraft instanceof Ship || $spacecraft->isFleetLeader())
                     && !$spacecraft->isWarped()
                     && !$spacecraft->isCloaked()
             )
-            ->map(fn(Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft))
-            ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->isUnalerted());
+            ->map(fn (Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft))
+            ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->isUnalerted());
     }
 }

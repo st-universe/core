@@ -6,9 +6,9 @@ namespace Stu\Module\Spacecraft\Action\SetLSSMode;
 
 use request;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class SetLSSMode implements ActionControllerInterface

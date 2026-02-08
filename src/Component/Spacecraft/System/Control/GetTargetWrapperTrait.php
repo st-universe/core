@@ -5,7 +5,6 @@ namespace Stu\Component\Spacecraft\System\Control;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\User;
 
 trait GetTargetWrapperTrait
 {

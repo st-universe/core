@@ -7,9 +7,7 @@ use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class OldFlightSignatureDeletion implements MaintenanceHandlerInterface
 {
-    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository)
-    {
-    }
+    public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository) {}
 
     #[\Override]
     public function handle(): void

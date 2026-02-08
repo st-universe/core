@@ -8,11 +8,11 @@ use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\NPC\View\ShowTools\ShowTools;
-use Stu\Orm\Repository\NPCLogRepositoryInterface;
-use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Repository\LayerRepositoryInterface;
+use Stu\Orm\Repository\LocationRepositoryInterface;
+use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class CreateHistoryEntry implements ActionControllerInterface
 {
@@ -22,7 +22,8 @@ final class CreateHistoryEntry implements ActionControllerInterface
         private readonly NPCLogRepositoryInterface $npcLogRepository,
         private readonly EntryCreatorInterface $entryCreator,
         private readonly LocationRepositoryInterface $locationRepository,
-        private readonly LayerRepositoryInterface $layerRepository) {}
+        private readonly LayerRepositoryInterface $layerRepository
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

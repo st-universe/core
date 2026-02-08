@@ -18,7 +18,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
@@ -199,7 +198,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                         $game->setTemplateVar('MODS', $mods);
 
                         $energymodule = $mods->filter(
-                            fn($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::EPS
+                            fn ($mod): bool => $mod->getModule()->getType() === SpacecraftModuleTypeEnum::EPS
                         )->first();
 
                         if ($energymodule !== false) {
@@ -213,7 +212,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                         }
 
                         $sensormodule = $mods->filter(
-                            fn($mod): bool => (
+                            fn ($mod): bool => (
                                 $mod->getModule()->getType() === SpacecraftModuleTypeEnum::SENSOR
                             )
                         )->first();
@@ -248,7 +247,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                 $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
 
                 $renderer = new SystemLayerRenderer();
-                $panel = new class() implements PanelAttributesInterface {
+                $panel = new class () implements PanelAttributesInterface {
                     #[\Override]
                     public function getHeightAndWidth(): string
                     {
@@ -340,7 +339,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
         if ($alliance !== null) {
             $unfilteredScans = array_merge(...$alliance->getMembers()->map(
-                fn(User $user) => $user->getColonyScans()->toArray()
+                fn (User $user) => $user->getColonyScans()->toArray()
             ));
         } else {
             $unfilteredScans = $user->getColonyScans()->toArray();
@@ -348,7 +347,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn(ColonyScan $scan): bool => $scan->getColony()->getSystem()->getId() === $systemId
+            fn (ColonyScan $scan): bool => $scan->getColony()->getSystem()->getId() === $systemId
         );
 
         $scansByColony = [];
@@ -362,7 +361,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
         $latestScans = [];
         foreach ($scansByColony as $scans) {
-            usort($scans, fn($a, $b): int => $b->getDate() <=> $a->getDate());
+            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

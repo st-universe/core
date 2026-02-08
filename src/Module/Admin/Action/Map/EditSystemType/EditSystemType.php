@@ -14,9 +14,7 @@ final class EditSystemType implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_SYSTEMTYPE_FIELD';
 
-    public function __construct(private EditSystemTypeRequestInterface $editSystemTypeRequest, private StarSystemTypeRepositoryInterface $starSystemTypeRepository, private MapRepositoryInterface $mapRepository)
-    {
-    }
+    public function __construct(private EditSystemTypeRequestInterface $editSystemTypeRequest, private StarSystemTypeRepositoryInterface $starSystemTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

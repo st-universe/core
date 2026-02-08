@@ -19,10 +19,10 @@ use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
-use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\BoardShipUtilInterface;
 use Stu\Module\Spacecraft\Lib\CloseCombat\CloseCombatUtilInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -70,7 +70,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn(Station $target): bool =>
+            fn (Station $target): bool =>
             !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
         );
 
@@ -82,7 +82,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn(Station $a, Station $b): int =>
+            fn (Station $a, Station $b): int =>
             $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $b)
         );
 
@@ -166,7 +166,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         usort(
             $pirateWrapperArray,
-            fn(SpacecraftWrapperInterface $a, SpacecraftWrapperInterface $b): int =>
+            fn (SpacecraftWrapperInterface $a, SpacecraftWrapperInterface $b): int =>
             $b->get()->getCrewCount() - $a->get()->getCrewCount()
         );
 

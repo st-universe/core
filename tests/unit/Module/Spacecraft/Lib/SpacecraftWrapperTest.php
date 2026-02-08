@@ -16,10 +16,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
@@ -56,7 +53,7 @@ class SpacecraftWrapperTest extends StuTestCase
         $this->stateIconAndTitle = $this->mock(StateIconAndTitle::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
 
-        $this->subject = new class(
+        $this->subject = new class (
             $this->spacecraft,
             $this->spacecraftSystemManager,
             $this->systemDataDeserializer,

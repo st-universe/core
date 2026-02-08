@@ -12,9 +12,7 @@ class ColonyEpsProductionPreviewWrapper
 {
     private ?int $preview = null;
 
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetFieldHostInterface $host, private Building $building)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository, private PlanetFieldHostInterface $host, private Building $building) {}
 
     public function getDisplay(): string
     {

@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\View\ShowKnArchivePlotList;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\RpgPlotArchivRepositoryInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberArchivRepositoryInterface;
 
 final class ShowKnArchivePlotList implements ViewControllerInterface

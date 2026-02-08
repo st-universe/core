@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-
 /**
  * Instead of using a library, use a short implementation of RFC 4122 for uuidv4
  */

@@ -47,7 +47,7 @@ final class ShowBuilding implements ViewControllerInterface
         //filter by view
         $useableFieldTypes = array_filter(
             $useableFieldTypes->toArray(),
-            fn(PlanetFieldTypeBuilding $pftb): bool => $pftb->getView()
+            fn (PlanetFieldTypeBuilding $pftb): bool => $pftb->getView()
         );
 
         $game->setPageTitle($building->getName());

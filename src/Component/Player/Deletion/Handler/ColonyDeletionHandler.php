@@ -9,9 +9,7 @@ use Stu\Orm\Entity\User;
 
 final class ColonyDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private ColonyResetterInterface $colonyResetter)
-    {
-    }
+    public function __construct(private ColonyResetterInterface $colonyResetter) {}
 
     #[\Override]
     public function delete(User $user): void

@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
@@ -286,7 +285,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         )->setParameters([
             'host' => $host,
             'ignoredIds' => $ignoredFieldIds === [] ? [-1] : $ignoredFieldIds,
-            'buildingFunctionIds' => array_map(fn(BuildingFunctionEnum $function): int => $function->value, $buildingFunctions),
+            'buildingFunctionIds' => array_map(fn (BuildingFunctionEnum $function): int => $function->value, $buildingFunctions),
             'state' => $state,
         ])->getSingleScalarResult();
     }
@@ -299,14 +298,14 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT f FROM %s f
+                    'SELECT f FROM %s f
                     JOIN f.colony c
                     JOIN f.building b
                     WHERE c.id = :colonyId AND b.id IN (
                         SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
                 )',
-                PlanetField::class,
-                BuildingFunction::class
+                    PlanetField::class,
+                    BuildingFunction::class
                 )
             )
             ->setParameters([

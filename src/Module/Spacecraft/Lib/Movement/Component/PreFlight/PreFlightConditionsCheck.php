@@ -38,7 +38,7 @@ class PreFlightConditionsCheck implements PreFlightConditionsCheckInterface
             function (PreFlightConditionInterface $condition) use ($wrappers, $flightRoute, $conditionCheckResult): void {
                 array_walk(
                     $wrappers,
-                    fn(SpacecraftWrapperInterface $wrapper) => $condition->check(
+                    fn (SpacecraftWrapperInterface $wrapper) => $condition->check(
                         $wrapper,
                         $flightRoute,
                         $conditionCheckResult

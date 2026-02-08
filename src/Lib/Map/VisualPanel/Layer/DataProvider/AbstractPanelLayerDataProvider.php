@@ -17,8 +17,7 @@ abstract class AbstractPanelLayerDataProvider implements PanelLayerDataProviderI
         protected LocationRepositoryInterface $locationRepository,
         protected MapRepositoryInterface $mapRepository,
         protected StarSystemMapRepositoryInterface $starSystemMapRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @return string The class name of the entity.

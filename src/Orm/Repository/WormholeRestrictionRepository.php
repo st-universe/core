@@ -6,8 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
-use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Entity\WormholeEntry;
+use Stu\Orm\Entity\WormholeRestriction;
 
 /**
  * @extends EntityRepository<WormholeRestriction>

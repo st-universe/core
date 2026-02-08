@@ -14,9 +14,7 @@ final class FlightRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_FLIGHTS';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private FlightSignatureRepositoryInterface $flightSignatureRepository)
-    {
-    }
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private FlightSignatureRepositoryInterface $flightSignatureRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

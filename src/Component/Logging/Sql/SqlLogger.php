@@ -11,9 +11,7 @@ use Stringable;
 
 final class SqlLogger extends AbstractLogger
 {
-    public function __construct(private LoggerInterface $logger)
-    {
-    }
+    public function __construct(private LoggerInterface $logger) {}
 
     /**
      * @param mixed[] $context

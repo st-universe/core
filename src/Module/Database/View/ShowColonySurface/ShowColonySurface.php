@@ -12,9 +12,7 @@ final class ShowColonySurface implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SURFACE';
 
-    public function __construct(private ColonyScanRepositoryInterface $colonyScanRepository, private ShowColonySurfaceRequestInterface $showColonySurfaceRequest)
-    {
-    }
+    public function __construct(private ColonyScanRepositoryInterface $colonyScanRepository, private ShowColonySurfaceRequestInterface $showColonySurfaceRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

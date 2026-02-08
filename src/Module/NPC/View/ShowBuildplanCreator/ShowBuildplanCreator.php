@@ -11,10 +11,10 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowBuildplanCreator implements ViewControllerInterface
 {
@@ -42,7 +42,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
             $game->setTemplateVar('USER_ID', $userId);
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
             $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-            $filteredRumps = array_filter($allRumps, fn($rump): bool => $rump->getNpcBuildable() === true);
+            $filteredRumps = array_filter($allRumps, fn ($rump): bool => $rump->getNpcBuildable() === true);
 
             $game->setTemplateVar('SHIP_RUMPS', $filteredRumps);
 

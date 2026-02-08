@@ -18,9 +18,7 @@ final class LatinumRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_LATINUM';
 
-    public function __construct(private StorageRepositoryInterface $storageRepository, private UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private StorageRepositoryInterface $storageRepository, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

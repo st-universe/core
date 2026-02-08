@@ -7,12 +7,12 @@ namespace Stu\Module\NPC\Action\AcceptQuestApplication;
 use Override;
 use request;
 use Stu\Component\Quest\QuestUserModeEnum;
+use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
-use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
@@ -88,7 +88,6 @@ final class AcceptQuestApplication implements ActionControllerInterface
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
                 sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
-
             );
         }
 

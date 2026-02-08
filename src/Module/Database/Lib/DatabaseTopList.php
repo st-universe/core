@@ -9,9 +9,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class DatabaseTopList
 {
-    public function __construct(private UserRepositoryInterface $userRepository, private int $user_id)
-    {
-    }
+    public function __construct(private UserRepositoryInterface $userRepository, private int $user_id) {}
 
     public function getUserId(): int
     {

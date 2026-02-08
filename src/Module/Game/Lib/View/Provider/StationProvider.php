@@ -28,7 +28,7 @@ final class StationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'STATIONS',
             array_map(
-                fn(Station $station): StationWrapperInterface => $this->spacecraftWrapperFactory->wrapStation($station),
+                fn (Station $station): StationWrapperInterface => $this->spacecraftWrapperFactory->wrapStation($station),
                 array_merge($stations, $uplinkStations)
             )
         );

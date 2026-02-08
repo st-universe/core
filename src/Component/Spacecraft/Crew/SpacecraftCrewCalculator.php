@@ -10,8 +10,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 
@@ -86,7 +86,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
     {
         return array_reduce(
             $modules,
-            fn(int $value, Module $module): int => $value + $module->getCrewByFactionAndRumpLvl(
+            fn (int $value, Module $module): int => $value + $module->getCrewByFactionAndRumpLvl(
                 $user->getFaction(),
                 $rump
             ),

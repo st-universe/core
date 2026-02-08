@@ -8,6 +8,4 @@ use Stu\Orm\Entity\MapBorderType;
 /**
  * @extends ObjectRepository<MapBorderType>
  */
-interface MapBorderTypeRepositoryInterface extends ObjectRepository
-{
-}
+interface MapBorderTypeRepositoryInterface extends ObjectRepository {}

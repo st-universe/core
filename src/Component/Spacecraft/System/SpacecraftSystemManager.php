@@ -21,8 +21,8 @@ use Stu\Component\Spacecraft\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Spacecraft\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
 {
@@ -229,7 +229,7 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
         if ($sort) {
             usort(
                 $activeSystems,
-                fn(SpacecraftSystem $a, SpacecraftSystem $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
+                fn (SpacecraftSystem $a, SpacecraftSystem $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
             );
         }
 

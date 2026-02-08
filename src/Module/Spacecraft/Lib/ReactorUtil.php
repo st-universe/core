@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Spacecraft;

@@ -311,7 +311,7 @@ class Deals
     public function getModules(): array
     {
         return $this->getBuildplan()?->getModules()
-            ->map(fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule())
+            ->map(fn (BuildplanModule $buildplanModule): Module => $buildplanModule->getModule())
             ->toArray() ?? [];
     }
 

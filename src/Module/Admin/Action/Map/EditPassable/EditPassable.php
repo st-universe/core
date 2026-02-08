@@ -14,9 +14,7 @@ final class EditPassable implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_PASSABLE';
 
-    public function __construct(private EditPassableRequestInterface $editPassableRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository)
-    {
-    }
+    public function __construct(private EditPassableRequestInterface $editPassableRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

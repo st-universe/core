@@ -665,7 +665,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $amount = (int) ceil((count($mapIdResultSet) * $maxPercentage) / 100);
         $subset = array_slice($mapIdResultSet, 0, $amount);
 
-        return array_map(fn(array $data) => $data['id'], $subset);
+        return array_map(fn (array $data) => $data['id'], $subset);
     }
 
     #[\Override]

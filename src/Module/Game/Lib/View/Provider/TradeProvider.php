@@ -66,7 +66,7 @@ final class TradeProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(
-                fn(TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
+                fn (TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),
                 $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, $dir)
             )
         );

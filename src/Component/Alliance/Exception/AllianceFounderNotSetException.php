@@ -6,6 +6,4 @@ namespace Stu\Component\Alliance\Exception;
 
 use Exception;
 
-final class AllianceFounderNotSetException extends Exception
-{
-}
+final class AllianceFounderNotSetException extends Exception {}

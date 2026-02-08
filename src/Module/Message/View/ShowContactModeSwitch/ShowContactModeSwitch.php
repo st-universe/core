@@ -13,9 +13,7 @@ final class ShowContactModeSwitch implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_CONTACT_MODESWITCH';
 
-    public function __construct(private ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest, private ContactRepositoryInterface $contactRepository)
-    {
-    }
+    public function __construct(private ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest, private ContactRepositoryInterface $contactRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

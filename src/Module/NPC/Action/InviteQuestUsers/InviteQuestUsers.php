@@ -9,9 +9,9 @@ use request;
 use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
@@ -56,7 +56,7 @@ final class InviteQuestUsers implements ActionControllerInterface
         }
 
         $userIds = array_map('intval', explode(',', $userIdsString));
-        $userIds = array_filter($userIds, fn($id) => $id > 0);
+        $userIds = array_filter($userIds, fn ($id) => $id > 0);
 
         if (empty($userIds)) {
             $game->getInfo()->addInformation('Keine gültigen User-IDs gefunden');
@@ -89,7 +89,7 @@ final class InviteQuestUsers implements ActionControllerInterface
                 $this->npcQuestUserRepository->save($questUser);
                 $invitedCount++;
                 $invitedUsers[] = $user;
-            } else if ($existingQuestUser->getMode() === QuestUserModeEnum::REJECTED_EXCLUDED) {
+            } elseif ($existingQuestUser->getMode() === QuestUserModeEnum::REJECTED_EXCLUDED) {
                 $existingQuestUser->setMode(QuestUserModeEnum::INVITED);
                 $this->npcQuestUserRepository->save($existingQuestUser);
                 $invitedCount++;
@@ -123,7 +123,6 @@ final class InviteQuestUsers implements ActionControllerInterface
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
                     sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
-
                 );
             }
             $game->getInfo()->addInformation(sprintf('%d User wurden zur Quest eingeladen', $invitedCount));

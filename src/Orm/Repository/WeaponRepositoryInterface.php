@@ -8,6 +8,4 @@ use Stu\Orm\Entity\Weapon;
 /**
  * @extends ObjectRepository<Weapon>
  */
-interface WeaponRepositoryInterface extends ObjectRepository
-{
-}
+interface WeaponRepositoryInterface extends ObjectRepository {}

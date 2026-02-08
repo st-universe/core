@@ -6,11 +6,11 @@ namespace Stu\Lib\ModuleRumpWrapper;
 
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
-use Stu\Orm\Entity\Module;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
@@ -22,7 +22,7 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
             return 0;
         }
 
-        return (new ModuleValueCalculator())->calculateModuleValue(
+        return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
             $this->rumpBaseValues->getBaseReactor()

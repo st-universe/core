@@ -14,9 +14,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_FIGHTER_SHIPYARD';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowFighterShipyardRequestInterface $showFighterShipyardRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowFighterShipyardRequestInterface $showFighterShipyardRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

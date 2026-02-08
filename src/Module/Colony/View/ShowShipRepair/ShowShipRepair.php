@@ -14,9 +14,7 @@ final class ShowShipRepair implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_REPAIR';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowShipRepairRequestInterface $showShipRepairRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowShipRepairRequestInterface $showShipRepairRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

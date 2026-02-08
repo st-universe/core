@@ -12,9 +12,7 @@ final class ShowLicenseMenu implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_LICENSE_MENU';
 
-    public function __construct(private ShowLicenseMenuRequestInterface $showLicenseMenuRequest, private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private ShowLicenseMenuRequestInterface $showLicenseMenuRequest, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

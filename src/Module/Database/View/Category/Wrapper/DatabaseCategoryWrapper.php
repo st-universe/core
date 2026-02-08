@@ -91,7 +91,7 @@ final class DatabaseCategoryWrapper implements DatabaseCategoryWrapperInterface
         }
 
         return array_map(
-            fn(DatabaseEntry $entry): DatabaseCategoryEntryWrapperInterface =>
+            fn (DatabaseEntry $entry): DatabaseCategoryEntryWrapperInterface =>
             $this->databaseCategoryWrapperFactory->createDatabaseCategoryEntryWrapper($entry, $this->user),
             $entries
         );

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-
 /**
  * @template T of SpacecraftWrapperInterface
- * 
+ *
  * @implements SourceAndTargetWrappersInterface<T>
  */
 class SourceAndTargetWrappers implements SourceAndTargetWrappersInterface

@@ -6,11 +6,11 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
+use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
-use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Alliance\AllianceSettingsEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
@@ -135,9 +135,9 @@ final class AllianceProvider implements ViewComponentProviderInterface
             }
         }
 
-        usort($successorJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
-        usort($diplomaticJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
-        usort($otherJobs, fn($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($successorJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($diplomaticJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($otherJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
 
         $leadershipJobs = array_merge($founderJobs, $successorJobs, $diplomaticJobs, $otherJobs);
 
@@ -188,14 +188,14 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(true)
             )
         );
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(false)
             )
         );

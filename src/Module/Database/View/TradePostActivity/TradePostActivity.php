@@ -14,9 +14,7 @@ final class TradePostActivity implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_ACTIV_TRADEPOST';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private TradeTransactionRepositoryInterface $tradeTransactionRepository)
-    {
-    }
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private TradeTransactionRepositoryInterface $tradeTransactionRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

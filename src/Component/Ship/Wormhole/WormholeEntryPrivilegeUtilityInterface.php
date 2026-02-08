@@ -3,8 +3,8 @@
 namespace Stu\Component\Ship\Wormhole;
 
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\WormholeEntry;
 
 interface WormholeEntryPrivilegeUtilityInterface
 {

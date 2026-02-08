@@ -35,7 +35,7 @@ final class DoManualMaintenance implements ActionControllerInterface
         $maintenance = $this->maintenanceTickRunnerFactory->createMaintenanceTickRunner(
             array_filter(
                 $this->handlerList,
-                fn(MaintenanceHandlerInterface $handler): bool => !($handler instanceof DatabaseBackup)
+                fn (MaintenanceHandlerInterface $handler): bool => !($handler instanceof DatabaseBackup)
             )
         );
 

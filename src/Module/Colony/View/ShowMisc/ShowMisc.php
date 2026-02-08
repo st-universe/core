@@ -15,9 +15,7 @@ final class ShowMisc implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_MISC';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

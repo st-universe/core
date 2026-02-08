@@ -15,9 +15,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TRADEPOST_INFO';
 
-    public function __construct(private ShowTradePostInfoRequestInterface $showTradePostInfoRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $talFactory, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(private ShowTradePostInfoRequestInterface $showTradePostInfoRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $talFactory, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

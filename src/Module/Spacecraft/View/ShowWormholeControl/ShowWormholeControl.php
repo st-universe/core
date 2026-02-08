@@ -9,10 +9,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftUiFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Component\Map\WormholeEntryTypeEnum;
 
 final class ShowWormholeControl implements ViewControllerInterface
 {

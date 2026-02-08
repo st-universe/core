@@ -13,8 +13,8 @@ use Stu\Module\Control\StuRandom;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Module;
-use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\StuTestCase;
 

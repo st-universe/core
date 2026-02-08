@@ -56,7 +56,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
     ): int {
         return min(
             $isUnload ? $source->getMaxTransferrableCrew(false, $user) : $target->getMaxTransferrableCrew(true, $user),
-            $isUnload ?  $target->getFreeCrewSpace($user) : $source->getFreeCrewSpace($user)
+            $isUnload ? $target->getFreeCrewSpace($user) : $source->getFreeCrewSpace($user)
         );
     }
 
@@ -90,7 +90,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
 
         $destination = $isUnload ? $target : $source;
         $crewAssignments = $isUnload ? $source->get()->getCrewAssignments() : $target->get()->getCrewAssignments();
-        $filteredByUser = $crewAssignments->filter(fn(CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser()->getId() === $source->getUser()->getId())->toArray();
+        $filteredByUser = $crewAssignments->filter(fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser()->getId() === $source->getUser()->getId())->toArray();
         $slice = array_slice($filteredByUser, 0, $amount);
 
         foreach ($slice as $crewAssignment) {

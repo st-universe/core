@@ -11,13 +11,13 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\Colony\Lib\Gui\ColonyScanPanel;
-use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 
 interface ColonyLibFactoryInterface

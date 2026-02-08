@@ -10,11 +10,11 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\SpacecraftBuildplan;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -185,7 +185,7 @@ class ModuleSelector implements ModuleSelectorInterface
     {
         return array_filter(
             $this->getAvailableModules(),
-            fn(ModuleSelectorEntryInterface $entry): bool => $entry->isChosen()
+            fn (ModuleSelectorEntryInterface $entry): bool => $entry->isChosen()
         );
     }
 

@@ -11,7 +11,7 @@ enum UserSettingEnum: string
     case AVATAR = 'avatar';
     case RGB_CODE = 'rgb_code';
 
-        // NON DISTINCT
+    // NON DISTINCT
     case EMAIL_NOTIFICATION = 'email_notification';
     case SAVE_LOGIN = 'save_login';
     case STORAGE_NOTIFICATION = 'storage_notification';
@@ -107,12 +107,12 @@ enum UserSettingEnum: string
     /** @return array<self> */
     public static function getDistinct(): array
     {
-        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => $type->isDistinctSetting());
+        return array_filter(self::cases(), fn (UserSettingEnum $type): bool => $type->isDistinctSetting());
     }
 
     /** @return array<self> */
     public static function getNonDistinct(): array
     {
-        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => !$type->isDistinctSetting());
+        return array_filter(self::cases(), fn (UserSettingEnum $type): bool => !$type->isDistinctSetting());
     }
 }

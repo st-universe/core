@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\RemoveWaste;
 
-use request;;
+use request;
+
+;
 
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
 final class RemoveWaste implements ActionControllerInterface
@@ -96,7 +98,6 @@ final class RemoveWaste implements ActionControllerInterface
                     $spacecraft->getId(),
                     implode(', ', $wasted),
                     $reason
-
                 ),
                 $userId
             );

@@ -10,9 +10,9 @@ use Mockery\MockInterface;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -70,7 +70,7 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getIdleRegistrations')
             ->with(
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_REGISTRATION)
+                Mockery::on(fn ($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_REGISTRATION)
             )
             ->once()
             ->andReturn([111 => $idlePlayer]);
@@ -81,8 +81,8 @@ class PlayerDeletionTest extends StuTestCase
 
         $this->userRepository->shouldReceive('getDeleteable')
             ->with(
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME),
-                Mockery::on(fn($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME_VACATION),
+                Mockery::on(fn ($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME),
+                Mockery::on(fn ($value): bool => $value === 4242424242 - PlayerDeletion::USER_IDLE_TIME_VACATION),
                 [101]
             )
             ->once()

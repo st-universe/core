@@ -20,9 +20,7 @@ final class DiplomaticRelations implements ViewControllerInterface
 
     public const string VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceRelationRendererInterface $allianceRelationRenderer)
-    {
-    }
+    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceRelationRendererInterface $allianceRelationRenderer) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

@@ -43,7 +43,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $this->shipRepository->getPirateFriends($leadWrapper),
-            fn(Ship $friend): bool =>
+            fn (Ship $friend): bool =>
             !$friend->getCondition()->isDestroyed() && $friend->isFleetLeader()
         );
 
@@ -55,7 +55,7 @@ class SearchFriendBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn(Ship $a, Ship $b): int =>
+            fn (Ship $a, Ship $b): int =>
             $this->fightLib->calculateHealthPercentage($a) -  $this->fightLib->calculateHealthPercentage($b)
         );
 

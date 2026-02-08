@@ -8,8 +8,8 @@ use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\View\Noop\Noop;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ToggleDockPmAutoRead implements ActionControllerInterface

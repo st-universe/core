@@ -6,6 +6,4 @@ namespace Stu\Exception;
 
 use Exception;
 
-abstract class StuException extends Exception
-{
-}
+abstract class StuException extends Exception {}

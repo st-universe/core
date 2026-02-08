@@ -10,9 +10,7 @@ use Stu\Module\Config\StuConfigInterface;
 
 final class CacheProvider implements CacheProviderInterface
 {
-    public function __construct(private StuConfigInterface $config)
-    {
-    }
+    public function __construct(private StuConfigInterface $config) {}
 
     #[\Override]
     public function getRedisCachePool(): CacheItemPoolInterface

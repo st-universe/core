@@ -4,9 +4,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TholianWeb;
 
 interface TholianWebUtilInterface

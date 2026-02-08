@@ -8,9 +8,9 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -52,7 +52,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
 
             $actualCrewUsage = $this->shipCrewCalculator->getCrewUsage(
                 array_map(
-                    fn(BuildplanModule $buildplanModule): Module => $buildplanModule->getModule(),
+                    fn (BuildplanModule $buildplanModule): Module => $buildplanModule->getModule(),
                     $buildplan->getModules()->toArray()
                 ),
                 $buildplan->getRump(),

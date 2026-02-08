@@ -17,8 +17,8 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
-use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 
 final class EditSection implements ViewControllerInterface
 {

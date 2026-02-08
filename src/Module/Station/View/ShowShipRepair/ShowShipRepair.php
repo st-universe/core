@@ -9,9 +9,9 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\Ship;
 
 final class ShowShipRepair implements ViewControllerInterface
@@ -41,9 +41,9 @@ final class ShowShipRepair implements ViewControllerInterface
         }
 
         $repairableShipWrappers = $station->getDockedShips()
-            ->filter(fn(Ship $ship): bool => !$ship->getCondition()->isUnderRepair())
-            ->map(fn(Ship $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship))
-            ->filter(fn(ShipWrapperInterface $wrapper): bool => $wrapper->canBeRepaired());
+            ->filter(fn (Ship $ship): bool => !$ship->getCondition()->isUnderRepair())
+            ->map(fn (Ship $ship): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($ship))
+            ->filter(fn (ShipWrapperInterface $wrapper): bool => $wrapper->canBeRepaired());
 
         $game->appendNavigationPart(
             'station.php',

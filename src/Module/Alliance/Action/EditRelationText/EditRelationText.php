@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditRelationText;
 
-use Stu\Exception\AccessViolationException;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
-use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;

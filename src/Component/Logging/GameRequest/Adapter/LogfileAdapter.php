@@ -14,9 +14,7 @@ use Throwable;
  */
 final class LogfileAdapter extends AbstractAdapter
 {
-    public function __construct(private LoggerInterface $logger)
-    {
-    }
+    public function __construct(private LoggerInterface $logger) {}
 
     #[\Override]
     protected function log(

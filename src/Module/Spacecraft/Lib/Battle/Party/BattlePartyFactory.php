@@ -72,7 +72,8 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
         Ship $leader
     ): ColonyDefendingBattleParty {
         return new ColonyDefendingBattleParty(
-            $this->spacecraftWrapperFactory->wrapShip($leader), $this->stuRandom
+            $this->spacecraftWrapperFactory->wrapShip($leader),
+            $this->stuRandom
         );
     }
 

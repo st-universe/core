@@ -66,7 +66,7 @@ class SignaturePanel extends AbstractVisualPanel
     #[\Override]
     protected function getEntryCallable(): callable
     {
-        return fn(int $x, int $y): SignaturePanelEntry => new SignaturePanelEntry(
+        return fn (int $x, int $y): SignaturePanelEntry => new SignaturePanelEntry(
             $x,
             $y,
             $this->layers

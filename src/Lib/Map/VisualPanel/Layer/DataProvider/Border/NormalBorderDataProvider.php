@@ -11,7 +11,6 @@ use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
-
 final class NormalBorderDataProvider extends AbstractBorderDataProvider
 {
     public function __construct(

@@ -60,7 +60,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
             return PirateBehaviourEnum::FLY;
         }
 
-        usort($targets, fn(Colony $a, Colony $b): int =>
+        usort($targets, fn (Colony $a, Colony $b): int =>
         $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToColonyDistance($leadShip, $b));
 
         $closestColony = current($targets);
@@ -88,7 +88,7 @@ class RubColonyBehaviour implements PirateBehaviourInterface
 
         $filteredColonyStorage = array_filter(
             $colony->getStorage()->toArray(),
-            fn(Storage $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
+            fn (Storage $storage): bool => $storage->getCommodity()->isBeamable($colony->getUser(), $pirateUser)
         );
 
         $allInformations = new InformationWrapper();

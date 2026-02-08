@@ -42,14 +42,14 @@ class EntityReset
     private function entityClassesToTruncate(): Generator
     {
         /** @var array<EntityReflectionEntry> */
-        $toTruncate = (new ArrayCollection($this->entityManager->getMetadataFactory()->getAllMetadata()))
-            ->map(fn(ClassMetadata $metadata): EntityReflectionEntry => $this->createReflectionEntry($metadata->getName()))
-            ->filter(fn(EntityReflectionEntry $entry): bool => $entry->hasTruncationAttribute())
+        $toTruncate = new ArrayCollection($this->entityManager->getMetadataFactory()->getAllMetadata())
+            ->map(fn (ClassMetadata $metadata): EntityReflectionEntry => $this->createReflectionEntry($metadata->getName()))
+            ->filter(fn (EntityReflectionEntry $entry): bool => $entry->hasTruncationAttribute())
             ->toArray();
 
         usort(
             $toTruncate,
-            fn(EntityReflectionEntry $a, EntityReflectionEntry $b): int => $b->getPriority() <=> $a->getPriority()
+            fn (EntityReflectionEntry $a, EntityReflectionEntry $b): int => $b->getPriority() <=> $a->getPriority()
         );
 
         foreach ($toTruncate as $entry) {

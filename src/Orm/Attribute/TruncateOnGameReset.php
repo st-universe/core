@@ -9,7 +9,6 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 class TruncateOnGameReset
 {
-
     /**
      * @param int $priority higher priority gets truncated first
      */

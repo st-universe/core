@@ -6,10 +6,10 @@ namespace Stu\Module\Spacecraft\Action\ActivateSystem;
 
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ActivateSystem implements ActionControllerInterface

@@ -8,8 +8,8 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassRepositoryInterface;
-use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 

@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Spacecraft\System\Type\TachyonScannerShipSystem;
-use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TachyonScan;
 

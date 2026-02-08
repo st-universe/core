@@ -4,9 +4,7 @@ namespace Stu\Module\Control;
 
 final class TargetLink
 {
-    public function __construct(private string $url, private string $title)
-    {
-    }
+    public function __construct(private string $url, private string $title) {}
 
     public function getUrl(): string
     {

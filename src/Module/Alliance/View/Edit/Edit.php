@@ -43,7 +43,7 @@ final class Edit implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE', $alliance);
 
         $jobs = $alliance->getJobs()->toArray();
-        usort($jobs, fn($a, $b) => ($a->getSort() ?? 999) <=> ($b->getSort() ?? 999));
+        usort($jobs, fn ($a, $b) => ($a->getSort() ?? 999) <=> ($b->getSort() ?? 999));
         $game->setTemplateVar('ALLIANCE_JOBS', $jobs);
 
         $game->setTemplateVar(

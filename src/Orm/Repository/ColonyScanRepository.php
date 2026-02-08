@@ -66,7 +66,7 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
     {
         return $this->getEntityManager()
             ->createQuery(sprintf(
-            'SELECT pf.field_id, pf.type_id, b.id
+                'SELECT pf.field_id, pf.type_id, b.id
                 FROM %s pf
                 JOIN pf.colony c
                 LEFT JOIN pf.building b

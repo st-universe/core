@@ -10,6 +10,4 @@ use Stu\Orm\Entity\ShipRumpCategory;
 /**
  * @extends EntityRepository<ShipRumpCategory>
  */
-final class ShipRumpCategoryRepository extends EntityRepository implements ShipRumpCategoryRepositoryInterface
-{
-}
+final class ShipRumpCategoryRepository extends EntityRepository implements ShipRumpCategoryRepositoryInterface {}

@@ -11,9 +11,7 @@ use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 final class ColonyCommodityProduction implements ColonyCommodityProductionInterface
 {
-    public function __construct(private BuildingCommodityRepositoryInterface $buildingCommodityRepository, private PlanetFieldHostInterface $host, private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache)
-    {
-    }
+    public function __construct(private BuildingCommodityRepositoryInterface $buildingCommodityRepository, private PlanetFieldHostInterface $host, private ColonyLibFactoryInterface $colonyLibFactory, private CommodityCacheInterface $commodityCache) {}
 
     #[\Override]
     public function getProduction(): array

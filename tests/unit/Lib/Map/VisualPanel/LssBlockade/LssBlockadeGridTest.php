@@ -120,7 +120,7 @@ class LssBlockadeGridTest extends StuTestCase
         }
 
         $endTime = microtime(true);
-        //@hux Runtime sollte höchstens 0.01s sein mittels 
+        //@hux Runtime sollte höchstens 0.01s sein mittels
         //echo sprintf("\tresearch, seconds: %F", $endTime - $startTime);
     }
 }

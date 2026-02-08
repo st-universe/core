@@ -56,7 +56,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         $filteredTargets = array_filter(
             $targets,
-            fn(Ship $target): bool =>
+            fn (Ship $target): bool =>
             $this->fightLib->canAttackTarget($leadShip, $target, true, false, false)
                 && !$this->trapDetection->isAlertTrap($target->getLocation(), $leadShip)
                 && ($target === $triggerSpacecraft
@@ -71,7 +71,7 @@ class AttackShipBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredTargets,
-            fn(Ship $a, Ship $b): int =>
+            fn (Ship $a, Ship $b): int =>
             $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $a) - $this->distanceCalculation->spacecraftToSpacecraftDistance($leadShip, $b)
         );
 
