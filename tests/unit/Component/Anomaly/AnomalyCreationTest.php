@@ -59,9 +59,6 @@ class AnomalyCreationTest extends StuTestCase
         $map = $this->mock(Map::class);
         $dataObject = new IonStormData(42, 17);
 
-        $map->shouldReceive('addAnomaly')
-            ->with($anomaly)
-            ->once();
         $map->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
@@ -118,21 +115,10 @@ class AnomalyCreationTest extends StuTestCase
             ->once()
             ->andReturn(123);
 
-        $map->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(123456);
-        $map->shouldReceive('addAnomaly')
-            ->with($anomaly)
-            ->once();
         $map->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
-
-        $parent->shouldReceive('getChildren->set')
-            ->with(123456, $anomaly)
-            ->once();
 
         $anomaly->shouldReceive('setAnomalyType')
             ->with($anomalyType)
@@ -147,7 +133,7 @@ class AnomalyCreationTest extends StuTestCase
             ->once()
             ->andReturnSelf();
         $anomaly->shouldReceive('setParent')
-            ->with($parent)
+            ->with($parent, $map)
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')

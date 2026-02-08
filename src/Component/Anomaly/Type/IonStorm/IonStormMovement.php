@@ -59,9 +59,12 @@ class IonStormMovement
             return;
         }
 
-        $currentLocation->getAnomalies()->removeElement($child);
+        // Initialize the locations anomaly collection to ensure Doctrine properly tracks the removal
+        // This is necessary due to Doctrine's lazy-loading behavior with inverse-side OneToMany relationships
+        $currentLocation->getAnomalies()->getValues();
+        $newLocation->getAnomalies()->getValues();
+
         $child->setLocation($newLocation);
-        $newLocation->addAnomaly($child);
 
         StuLogger::log(sprintf(
             'moved ionstorm from %s to %s',

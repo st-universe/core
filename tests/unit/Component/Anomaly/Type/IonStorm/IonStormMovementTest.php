@@ -120,6 +120,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('SECTOR');
+        $childLocation->shouldReceive('getAnomalies->getValues')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
         $childOnBorderLocation->shouldReceive('getX')
             ->withNoArgs()
             ->once()
@@ -166,22 +170,20 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $newLocation->shouldReceive('addAnomaly')
-            ->with($child)
-            ->once();
         $newLocation->shouldReceive('getSectorString')
             ->withNoArgs()
             ->once()
             ->andReturn('NEW_SECTOR');
+        $newLocation->shouldReceive('getAnomalies->getValues')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
 
         $locationWithIonStorm->shouldReceive('hasAnomaly')
             ->with(AnomalyTypeEnum::ION_STORM)
             ->once()
             ->andReturn(true);
 
-        $childLocation->shouldReceive('getAnomalies->removeElement')
-            ->with($child)
-            ->once();
         $child->shouldReceive('setLocation')
             ->with($newLocation)
             ->once();

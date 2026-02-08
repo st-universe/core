@@ -53,11 +53,11 @@ class Anomaly implements SpacecraftDestroyerInterface
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'anomalies')]
     #[JoinColumn(name: 'location_id', nullable: true, referencedColumnName: 'id')]
-    private ?Location $location;
+    private ?Location $location = null;
 
     #[ManyToOne(targetEntity: Anomaly::class, inversedBy: 'children')]
     #[JoinColumn(name: 'parent_id', referencedColumnName: 'id')]
-    private ?Anomaly $parent;
+    private ?Anomaly $parent = null;
 
     /**
      * @var ArrayCollection<int, Anomaly>
@@ -118,7 +118,17 @@ class Anomaly implements SpacecraftDestroyerInterface
 
     public function setLocation(?Location $location): Anomaly
     {
+        $old = $this->location;
         $this->location = $location;
+        $key = $this->anomalyType->getId();
+
+        if ($old !== null) {
+            $old->getAnomalies()->remove($key);
+        }
+
+        if ($location !== null && !$location->getAnomalies()->containsKey($key)) {
+            $location->getAnomalies()->set($key, $this);
+        }
 
         return $this;
     }
@@ -128,9 +138,14 @@ class Anomaly implements SpacecraftDestroyerInterface
         return $this->parent;
     }
 
-    public function setParent(?Anomaly $anomaly): Anomaly
+    public function setParent(Anomaly $parent, Location $location): Anomaly
     {
-        $this->parent = $anomaly;
+        if ($this->parent === $parent) {
+            return $this;
+        }
+
+        $this->parent = $parent;
+        $parent->getChildren()->set($location->getId(), $this);
 
         return $this;
     }
