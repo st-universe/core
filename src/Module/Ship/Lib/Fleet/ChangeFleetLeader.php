@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
-use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -20,7 +19,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
     public function __construct(
         private FleetRepositoryInterface $fleetRepository,
         private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
-        private EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->logger = $loggerUtilFactory->getLoggerUtil();
@@ -61,8 +59,6 @@ final class ChangeFleetLeader implements ChangeFleetLeaderInterface
             $fleet->setLeadShip($newLeader);
 
             $this->logger->logf('changed fleet leader of fleet %d', $fleet->getId());
-
-            $this->entityManager->flush();
         }
     }
 }
