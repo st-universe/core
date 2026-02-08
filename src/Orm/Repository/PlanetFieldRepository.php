@@ -121,12 +121,10 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             sprintf(
                 'SELECT f FROM %s f
                 JOIN f.building b
-                WHERE f.%s = :hostId AND b.id IN (
-                    SELECT b.id FROM %s b WHERE b.bev_pro > 0
-                )',
+                WHERE f.%s = :hostId
+                AND b.bev_pro > 0',
                 PlanetField::class,
-                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
-                Building::class
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
             )
         )->setParameters([
             'hostId' => $host->getId()
@@ -140,12 +138,10 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             sprintf(
                 'SELECT f FROM %s f
                 JOIN f.building b
-                WHERE f.%s = :hostId AND b.id IN (
-                    SELECT b.id FROM %s b WHERE b.bev_use > 0
-                )',
+                WHERE f.%s = :hostId
+                AND b.bev_use > 0',
                 PlanetField::class,
-                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
-                Building::class
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
             )
         )->setParameters([
             'hostId' => $host->getId(),
@@ -167,11 +163,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 WHERE c.id = :colonyId
                 AND f.aktiv IN (:state)
                 AND f.field_id NOT IN (:excluded)
-                AND b.id IN (
-                    SELECT b.id FROM %s b WHERE b.bev_use > 0
-                )',
-                PlanetField::class,
-                Building::class
+                AND b.bev_use > 0',
+                PlanetField::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
