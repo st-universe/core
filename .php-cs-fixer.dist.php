@@ -5,22 +5,21 @@
  */
 $finder = PhpCsFixer\Finder::create()
     ->in([
-        'src/admin', 
-        'src/Component', 
-        'src/Config', 
-        'src/Exception', 
-        'src/Lib', 
-        'src/Module', 
-        'src/Orm', 
+    'src/admin',
+    'src/Component',
+    'src/Config',
+    'src/Exception',
+    'src/Lib',
+    'src/Module',
+    'src/Orm',
         'tests'
         ])
     ->exclude(['Public/assets']);
 $config = new PhpCsFixer\Config();
 $config->setRules(
     [
-        '@DoctrineAnnotation' => true,
         '@PSR12' => true,
-        '@PHP84Migration' => true,
+        '@PHP85Migration' => true,
         'array_syntax' => ['syntax' => 'short'],
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',
@@ -31,7 +30,8 @@ $config->setRules(
             'sort_algorithm' => 'alpha',
             'imports_order' => ['const', 'class', 'function'],
         ],
-        'trailing_comma_in_multiline' => ['elements' => []]
+        'trailing_comma_in_multiline' => ['elements' => []],
+        'single_line_empty_body' => true
     ]
 )->setFinder($finder);
 
