@@ -40,8 +40,7 @@ final class AnomalyCreation implements AnomalyCreationInterface
             ->setLocation($location);
 
         if ($parent !== null && $location !== null) {
-            $parent->getChildren()->set($location->getId(), $anomaly);
-            $anomaly->setParent($parent);
+            $anomaly->setParent($parent, $location);
         }
 
         if ($dataObject !== null) {
@@ -50,10 +49,7 @@ final class AnomalyCreation implements AnomalyCreationInterface
         }
 
         if ($location !== null) {
-
             StuLogger::log(sprintf('created %s at %s', $type->name, $location->getSectorString()), LogTypeEnum::ANOMALY);
-
-            $location->addAnomaly($anomaly);
         }
 
         $this->anomalyRepository->save($anomaly);

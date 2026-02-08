@@ -173,11 +173,6 @@ abstract class Location
         return $this->anomalies;
     }
 
-    public function addAnomaly(Anomaly $anomaly): void
-    {
-        $this->anomalies->set($anomaly->getAnomalyType()->getId(), $anomaly);
-    }
-
     public function hasAnomaly(AnomalyTypeEnum $type): bool
     {
         return $this->anomalies->containsKey($type->value);
