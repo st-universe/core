@@ -90,7 +90,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'PM_LIST',
             array_map(
-                fn(PrivateMessage $message): PrivateMessageListItem => new PrivateMessageListItem(
+                fn (PrivateMessage $message): PrivateMessageListItem => new PrivateMessageListItem(
                     $this->privateMessageRepository,
                     $this->contactRepository,
                     $this->userSettingsProvider,

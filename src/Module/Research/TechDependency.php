@@ -8,9 +8,7 @@ use Stu\Orm\Entity\Commodity;
 
 final class TechDependency
 {
-    public function __construct(private string $name, private Commodity $commodity)
-    {
-    }
+    public function __construct(private string $name, private Commodity $commodity) {}
 
     public function getName(): string
     {

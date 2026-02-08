@@ -14,7 +14,6 @@ use Stu\Orm\Entity\StarSystemMap;
 
 class WarpdriveConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
-
     #[\Override]
     protected function skipWhenTractored(): bool
     {

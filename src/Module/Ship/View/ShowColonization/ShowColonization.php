@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowColonization;
 
 use request;
-
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -58,7 +57,7 @@ final class ShowColonization implements ViewControllerInterface
 
                 $coloniesInLayer = array_filter(
                     $userColonies->toArray(),
-                    fn($col) => $col->getSystem()->getLayer() === $layer
+                    fn ($col) => $col->getSystem()->getLayer() === $layer
                 );
                 $colocount = count($coloniesInLayer);
 

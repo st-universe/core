@@ -3,8 +3,8 @@
 namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\Researched;
 
 interface SelectedTechInterface
 {

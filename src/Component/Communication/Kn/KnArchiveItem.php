@@ -129,7 +129,7 @@ final class KnArchiveItem implements KnArchiveItemInterface
         return (int) array_sum(
             array_filter(
                 $this->post->getRatings(),
-                static fn(int $value): bool => $value > 0
+                static fn (int $value): bool => $value > 0
             )
         );
     }

@@ -10,6 +10,4 @@ use Stu\Orm\Entity\PlanetFieldType;
  *
  * @method PlanetFieldType[] findAll()
  */
-interface PlanetFieldTypeRepositoryInterface extends ObjectRepository
-{
-}
+interface PlanetFieldTypeRepositoryInterface extends ObjectRepository {}

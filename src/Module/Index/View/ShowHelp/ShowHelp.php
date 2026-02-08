@@ -12,9 +12,7 @@ final class ShowHelp implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_HELP';
 
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ConfigInterface $config) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

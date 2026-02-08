@@ -4,12 +4,12 @@ namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use InvalidArgumentException;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
-use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
-use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;

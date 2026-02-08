@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;

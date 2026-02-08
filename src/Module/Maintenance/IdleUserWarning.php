@@ -6,11 +6,11 @@ use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LogLevelEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class IdleUserWarning implements MaintenanceHandlerInterface

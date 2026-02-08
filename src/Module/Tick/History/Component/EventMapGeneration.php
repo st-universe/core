@@ -14,10 +14,10 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\History\HistoryTickHandlerInterface;
-use Stu\Orm\Repository\LayerRepositoryInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class EventMapGeneration implements HistoryTickHandlerInterface
 {
@@ -40,7 +40,7 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
 
         $mapGraphicBasePath = $this->getMapGraphicBasePath();
 
-        foreach($this->layerRepository->findAll() as $layer) {
+        foreach ($this->layerRepository->findAll() as $layer) {
             $this->generateEventMapForLayer($layer, $mapGraphicBasePath);
         }
     }
@@ -73,7 +73,7 @@ final class EventMapGeneration implements HistoryTickHandlerInterface
         // create history folder if not exists
         if (!is_dir($historyFolder)) {
             StuLogger::log("    creating history folder", LogTypeEnum::TICK);
-            mkdir($historyFolder, 0777, true);
+            mkdir($historyFolder, 0o777, true);
         }
 
         //clear all resources in history folder

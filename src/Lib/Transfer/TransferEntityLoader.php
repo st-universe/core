@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer;
 
-use RuntimeException;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperFactoryInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;

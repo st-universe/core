@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class DebugSettings extends AbstractSettings implements DebugSettingsInterface
 {
     private const string SETTING_DEBUG_MODE = 'debug_mode';

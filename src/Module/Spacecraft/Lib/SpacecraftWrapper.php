@@ -16,17 +16,13 @@ use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
-use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
-use Stu\Module\Spacecraft\Lib\ShipRepairCost;
-use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
-use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\ShipTakeover;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 //TODO increase coverage
@@ -353,8 +349,8 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function __toString(): string
     {
         $systems = implode(",\n", $this->spacecraft->getSystems()
-            ->filter(fn($system): bool => $system->getData() !== null)
-            ->map(fn($system): string => $system->__toString())
+            ->filter(fn ($system): bool => $system->getData() !== null)
+            ->map(fn ($system): string => $system->__toString())
             ->toArray());
 
         return sprintf(

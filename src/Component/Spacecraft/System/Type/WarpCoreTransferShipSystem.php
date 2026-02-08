@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-
 
 class WarpCoreTransferShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {

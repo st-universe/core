@@ -13,9 +13,7 @@ final class ShowLottery implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_LOTTERY';
 
-    public function __construct(private LotteryFacadeInterface $lotteryFacade, private LotteryTicketRepositoryInterface $lotteryTicketRepository)
-    {
-    }
+    public function __construct(private LotteryFacadeInterface $lotteryFacade, private LotteryTicketRepositoryInterface $lotteryTicketRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

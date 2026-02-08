@@ -9,9 +9,7 @@ use Stu\Orm\Entity\News;
 
 final class NewsFactory implements NewsFactoryInterface
 {
-    public function __construct(private ParserWithImageInterface $parserWithImage)
-    {
-    }
+    public function __construct(private ParserWithImageInterface $parserWithImage) {}
 
     #[\Override]
     public function createNewsItem(

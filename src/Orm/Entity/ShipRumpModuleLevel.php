@@ -104,8 +104,8 @@ class ShipRumpModuleLevel
     public function getMandatoryModulesCount(): ?int
     {
         return array_reduce(
-            array_filter(SpacecraftModuleTypeEnum::cases(), fn(SpacecraftModuleTypeEnum $type): bool => !$type->isSpecialSystemType()),
-            fn(int $value, SpacecraftModuleTypeEnum $type): int => $value + $this->isMandatory($type) !== 0 ? 1 : 0,
+            array_filter(SpacecraftModuleTypeEnum::cases(), fn (SpacecraftModuleTypeEnum $type): bool => !$type->isSpecialSystemType()),
+            fn (int $value, SpacecraftModuleTypeEnum $type): int => $value + $this->isMandatory($type) !== 0 ? 1 : 0,
             0
         );
     }

@@ -3,10 +3,10 @@
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackedBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\AttackingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
-use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;

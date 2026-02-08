@@ -10,6 +10,4 @@ use Stu\Orm\Entity\ShipRumpRole;
 /**
  * @extends EntityRepository<ShipRumpRole>
  */
-final class ShipRumpRoleRepository extends EntityRepository implements ShipRumpRoleRepositoryInterface
-{
-}
+final class ShipRumpRoleRepository extends EntityRepository implements ShipRumpRoleRepositoryInterface {}

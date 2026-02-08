@@ -13,8 +13,8 @@ use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\ColonyClassRestriction;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
-use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\Researched;
 
 /**
  * @extends EntityRepository<Building>

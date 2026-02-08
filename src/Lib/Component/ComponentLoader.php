@@ -9,7 +9,6 @@ use RuntimeException;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
-use Stu\Lib\Component\ComponentInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
 

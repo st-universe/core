@@ -47,7 +47,7 @@ class MoveOnLayer implements MoveOnLayerInterface
 
             $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
                 $ship,
-                fn(): Coordinate => new Coordinate(
+                fn (): Coordinate => new Coordinate(
                     $this->getTargetX($isInXDirection, $lastPosition->getX(), $xDistance),
                     $this->getTargetY($isInXDirection, $lastPosition->getY(), $yDistance)
                 )

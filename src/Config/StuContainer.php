@@ -64,7 +64,7 @@ class StuContainer extends Container
     /**
      * @template T
      * @param class-string<T> $interfaceName
-     * 
+     *
      * @return Collection<int|string, T>
      */
     public function getDefinedImplementationsOf(string $interfaceName, bool $addDefinitionKey = false): Collection
@@ -94,7 +94,7 @@ class StuContainer extends Container
     /**
      * @template T
      * @param class-string<T> $interfaceName
-     * 
+     *
      * @return Collection<int, T>
      */
     private function getServices(string $interfaceName, bool $addDefinitionKey): Collection
@@ -108,8 +108,7 @@ class StuContainer extends Container
             if ($definition instanceof ArrayDefinition) {
 
                 foreach (
-                    get($definitionKey)->resolve($this->delegateContainer)
-                    as $arrayKey => $service
+                    get($definitionKey)->resolve($this->delegateContainer) as $arrayKey => $service
                 ) {
                     $this->addDefinition(
                         $service,

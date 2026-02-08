@@ -11,8 +11,8 @@ use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class AdminSettings extends AbstractSettings implements AdminSettingsInterface
 {
     private const string SETTING_ID = 'id';

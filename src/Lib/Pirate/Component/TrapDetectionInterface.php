@@ -7,6 +7,5 @@ use Stu\Orm\Entity\Spacecraft;
 
 interface TrapDetectionInterface
 {
-
     public function isAlertTrap(Location $location, Spacecraft $leadSpacecraft): bool;
 }

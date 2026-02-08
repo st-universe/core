@@ -7,9 +7,9 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\RoundBasedBattleParty;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\StuTestCase;
 
 class AttackMatchupTest extends StuTestCase

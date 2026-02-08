@@ -135,15 +135,15 @@ class Station extends Spacecraft
         }
 
         $parentModules = parent::getModules();
-        $parentModuleIds = array_map(fn(Module $module): int => $module->getId(), $parentModules);
+        $parentModuleIds = array_map(fn (Module $module): int => $module->getId(), $parentModules);
 
         $specialModules = $constructionProgress
             ->getSpecialModules()
-            ->filter(fn(ConstructionProgressModule $progressModule): bool => !in_array(
+            ->filter(fn (ConstructionProgressModule $progressModule): bool => !in_array(
                 $progressModule->getModule()->getId(),
                 $parentModuleIds
             ))
-            ->map(fn(ConstructionProgressModule $progressModule): Module => $progressModule->getModule())
+            ->map(fn (ConstructionProgressModule $progressModule): Module => $progressModule->getModule())
             ->toArray();
 
         return $parentModules + $specialModules;
@@ -193,7 +193,7 @@ class Station extends Spacecraft
     public function getDockedWorkbeeCount(): int
     {
         return $this->getDockedShips()
-            ->filter(fn(Ship $docked): bool => $docked->hasEnoughCrew()
+            ->filter(fn (Ship $docked): bool => $docked->hasEnoughCrew()
                 && !$docked->getUser()->isVacationRequestOldEnough()
                 && $docked->getRump()->isWorkbee())
             ->count();

@@ -7,13 +7,13 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 

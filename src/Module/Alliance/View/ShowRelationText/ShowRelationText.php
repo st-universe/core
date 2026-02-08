@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\ShowRelationText;
 
-use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;

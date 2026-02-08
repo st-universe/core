@@ -9,7 +9,6 @@ use Stu\Orm\Entity\Spacecraft;
 
 class PrestigeCalculation implements PrestigeCalculationInterface
 {
-
     #[\Override]
     public function getPrestigeOfSpacecraftOrFleet(SpacecraftWrapperInterface|Spacecraft $spacecraft): int
     {
@@ -19,7 +18,7 @@ class PrestigeCalculation implements PrestigeCalculationInterface
         if ($fleet !== null) {
             return array_reduce(
                 $fleet->getShips()->toArray(),
-                fn(int $value, Ship $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
+                fn (int $value, Ship $fleetShip): int => $value + $fleetShip->getRump()->getPrestige(),
                 0
             );
         }
@@ -46,9 +45,9 @@ class PrestigeCalculation implements PrestigeCalculationInterface
     public function getPrestigeOfBattleParty(BattlePartyInterface $battleParty): int
     {
         return $battleParty->getActiveMembers()
-            ->map(fn(SpacecraftWrapperInterface $wrapper): int => $wrapper->get()->getRump()->getPrestige())
+            ->map(fn (SpacecraftWrapperInterface $wrapper): int => $wrapper->get()->getRump()->getPrestige())
             ->reduce(
-                fn(int $sum, int $prestige): int => $sum + $prestige,
+                fn (int $sum, int $prestige): int => $sum + $prestige,
                 0
             );
     }

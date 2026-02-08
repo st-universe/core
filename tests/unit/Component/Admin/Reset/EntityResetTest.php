@@ -39,13 +39,12 @@ class EntityResetTest extends StuTestCase
         $this->reflectionClassWithLowPriority = $this->mock(ReflectionClass::class);
         $this->reflectionClassWithHighPriority = $this->mock(ReflectionClass::class);
 
-        $this->subject = Mockery::spy(new class(
+        $this->subject = Mockery::spy(new class (
             $this->reflectionClassWithoutTruncateAttribute,
             $this->reflectionClassWithLowPriority,
             $this->reflectionClassWithHighPriority,
             $this->entityManager
         ) extends EntityReset {
-
             public function __construct(
                 private ReflectionClass $reflectionClassWithoutTruncateAttribute,
                 private ReflectionClass $reflectionClassWithLowPriority,

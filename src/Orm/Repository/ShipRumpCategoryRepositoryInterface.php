@@ -8,6 +8,4 @@ use Stu\Orm\Entity\ShipRumpCategory;
 /**
  * @extends ObjectRepository<ShipRumpCategory>
  */
-interface ShipRumpCategoryRepositoryInterface extends ObjectRepository
-{
-}
+interface ShipRumpCategoryRepositoryInterface extends ObjectRepository {}

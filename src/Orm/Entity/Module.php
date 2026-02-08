@@ -351,7 +351,7 @@ class Module
 
         usort(
             $array,
-            fn(ModuleCost $a, ModuleCost $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
+            fn (ModuleCost $a, ModuleCost $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort()
         );
 
         return $array;

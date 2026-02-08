@@ -17,9 +17,7 @@ class ProcessTickRunner implements TickRunnerInterface
     /**
      * @param array<ProcessTickHandlerInterface> $handlerList
      */
-    public function __construct(private TransactionTickRunnerInterface $transactionTickRunner, private array $handlerList)
-    {
-    }
+    public function __construct(private TransactionTickRunnerInterface $transactionTickRunner, private array $handlerList) {}
 
     #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void

@@ -10,6 +10,4 @@ use Stu\Orm\Entity\MapRegion;
 /**
  * @extends EntityRepository<MapRegion>
  */
-final class MapRegionRepository extends EntityRepository implements MapRegionRepositoryInterface
-{
-}
+final class MapRegionRepository extends EntityRepository implements MapRegionRepositoryInterface {}

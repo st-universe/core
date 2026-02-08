@@ -10,7 +10,7 @@ use Stu\Orm\Entity\SpacecraftRump;
 
 /**
  * @extends EntityRepository<ShipRumpModuleLevel>
- * 
+ *
  */
 final class ShipRumpModuleLevelRepository extends EntityRepository implements ShipRumpModuleLevelRepositoryInterface
 {

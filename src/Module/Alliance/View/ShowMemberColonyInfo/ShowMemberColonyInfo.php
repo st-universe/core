@@ -8,11 +8,11 @@ use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowMemberColonyInfo implements ViewControllerInterface

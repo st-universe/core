@@ -9,9 +9,7 @@ class VisualPanelRow
     /** @var array<VisualPanelElementInterface>  */
     private array $entries;
 
-    public function __construct(private int $y)
-    {
-    }
+    public function __construct(private int $y) {}
 
     public function getY(): int
     {

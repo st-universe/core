@@ -7,8 +7,8 @@ namespace Stu\Module\Admin\Lib;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class UserlistEntry

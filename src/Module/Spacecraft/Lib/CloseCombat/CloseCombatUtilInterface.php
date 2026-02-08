@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
-use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Spacecraft;
 
 interface CloseCombatUtilInterface

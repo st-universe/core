@@ -6,18 +6,18 @@ namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use RuntimeException;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 
 class ManageCrew implements ManagerInterface
 {
@@ -168,7 +168,8 @@ class ManageCrew implements ManagerInterface
             if (
                 $actualcrew - $removedCrew >= $mincrew && $actualcrew - $removedCrew < $maxcrew &&
                 $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
-                && ($removedCrew > 0 && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_ON
+                && (
+                    $removedCrew > 0 && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() === SpacecraftSystemModeEnum::MODE_ON
                 )
             ) {
                 $informations = new InformationWrapper();

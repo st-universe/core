@@ -13,7 +13,7 @@ enum FieldTypeEffectEnum: string
     case REACTOR_LEAK = 'REACTOR_LEAK';
     case EPS_LEAK = 'EPS_LEAK';
 
-        // malfunction
+    // malfunction
     case CLOAK_UNUSEABLE = 'CLOAK_UNUSEABLE';
     case NFS_MALFUNCTION_COOLDOWN = 'NFS_MALFUNCTION_COOLDOWN';
     case LSS_MALFUNCTION = 'LSS_MALFUNCTION';
@@ -22,22 +22,22 @@ enum FieldTypeEffectEnum: string
     case DUBIOUS_SPACECRAFT_COUNT = 'DUBIOUS_SPACECRAFT_COUNT'; // always show '!" sign, if at least one signature
     case NO_SUBSPACE_LINES = 'NO_SUBSPACE_LINES';
 
-        // buffs
+    // buffs
     case ENERGY_WEAPON_BUFF = 'ENERGY_WEAPON_BUFF';
     case REGENERATION_CHANCE = 'REGENERATION_CHANCE'; // small chance to regenerate warpdrive, eps, shields or reactor
 
-        // nerfs
+    // nerfs
     case ENERGY_WEAPON_NERF = 'ENERGY_WEAPON_NERF';
     case HIT_CHANCE_INTERFERENCE = 'HIT_CHANCE_INTERFERENCE';
     case EVADE_CHANCE_INTERFERENCE = 'EVADE_CHANCE_INTERFERENCE';
 
-        // other
+    // other
     case NO_PIRATES = 'NO_PIRATES';
     case NO_ANOMALIES = 'NO_ANOMALIES';
     case NO_MEASUREPOINT = 'NO_MEASUREPOINT';
     case NO_STATION_CONSTRUCTION = 'NO_STATION_CONSTRUCTION';
 
-        //TODO: following not yet implemented
+    //TODO: following not yet implemented
     case LSS_BLOCKADE = 'LSS_BLOCKADE';
 
     public function hasHandler(): bool

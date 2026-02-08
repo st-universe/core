@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Retrofit;
 
-use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -13,9 +13,6 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-
-
-
 
 final class CancelRetrofit implements CancelRetrofitInterface
 {

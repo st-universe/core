@@ -36,7 +36,7 @@ class FlightCompany
     public function getActiveMembers(): Collection
     {
         return $this->members
-            ->filter(fn(SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed());
+            ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed());
     }
 
     public function isEmpty(): bool
@@ -48,7 +48,7 @@ class FlightCompany
     {
         return
             !$this->members->isEmpty()
-            && !$this->members->exists(fn(int $key, SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed());
+            && !$this->members->exists(fn (int $key, SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed());
     }
 
     public function isFleetMode(): bool

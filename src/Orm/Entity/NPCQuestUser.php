@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Orm\Repository\NPCQuestUserRepository;
 use Stu\Component\Quest\QuestUserModeEnum;
+use Stu\Orm\Repository\NPCQuestUserRepository;
 
 #[Table(name: 'stu_npc_quest_user')]
 #[Index(name: 'npc_quest_user_quest_idx', columns: ['quest_id'])]

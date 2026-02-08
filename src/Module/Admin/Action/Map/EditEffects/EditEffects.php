@@ -32,7 +32,7 @@ final class EditEffects implements ActionControllerInterface
         $mapFieldType = $selectedField->getFieldType();
 
         $effectArray = array_map(
-            fn(string $value): FieldTypeEffectEnum => FieldTypeEffectEnum::from($value),
+            fn (string $value): FieldTypeEffectEnum => FieldTypeEffectEnum::from($value),
             request::getArrayFatal('effects')
         );
 

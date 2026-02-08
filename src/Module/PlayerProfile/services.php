@@ -18,8 +18,6 @@ use Stu\Module\PlayerProfile\Action\CreateCharacter\CreateCharacterRequestInterf
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacter;
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequest;
 use Stu\Module\PlayerProfile\Action\DeleteCharacter\DeleteCharacterRequestInterface;
-
-
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistration;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 

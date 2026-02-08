@@ -6,6 +6,4 @@ namespace Stu\Component\Crew;
 
 use Stu\Exception\StuException;
 
-final class CrewOriginException extends StuException
-{
-}
+final class CrewOriginException extends StuException {}

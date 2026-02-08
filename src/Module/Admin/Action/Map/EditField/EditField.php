@@ -14,9 +14,7 @@ final class EditField implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_FIELD';
 
-    public function __construct(private EditFieldRequestInterface $editFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository)
-    {
-    }
+    public function __construct(private EditFieldRequestInterface $editFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

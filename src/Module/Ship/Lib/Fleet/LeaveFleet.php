@@ -10,8 +10,7 @@ final class LeaveFleet implements LeaveFleetInterface
 {
     public function __construct(
         private ChangeFleetLeaderInterface $changeFleetLeader
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function leaveFleet(Ship $ship): bool

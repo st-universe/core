@@ -14,9 +14,7 @@ final class CommodityCache implements CommodityCacheInterface
      */
     private ?array $commodityArray = null;
 
-    public function __construct(private CommodityRepositoryInterface $commodityRepository)
-    {
-    }
+    public function __construct(private CommodityRepositoryInterface $commodityRepository) {}
 
     #[\Override]
     public function get(int $commodityId): Commodity

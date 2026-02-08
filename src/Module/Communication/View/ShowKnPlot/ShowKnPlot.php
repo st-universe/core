@@ -74,7 +74,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                fn(KnPost $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn (KnPost $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),
@@ -89,7 +89,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setTemplateVar(
             'POSTS',
             array_map(
-                fn(KnPost $knPost): KnItemInterface => $this->knFactory->createKnItem(
+                fn (KnPost $knPost): KnItemInterface => $this->knFactory->createKnItem(
                     $knPost,
                     $user
                 ),

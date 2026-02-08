@@ -10,12 +10,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedoInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class SpacecraftRemover implements SpacecraftRemoverInterface

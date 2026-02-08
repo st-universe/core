@@ -22,8 +22,7 @@ final class HistoryTickRunner implements TickRunnerInterface
     public function __construct(
         private array $handlerList,
         private TransactionTickRunnerInterface $transactionTickRunner,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void

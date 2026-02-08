@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use JBBCode\Parser;
 use request;
 use Stu\Component\History\HistoryTypeEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
-use JBBCode\Parser;
-use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 
 final class HistoryProvider implements ViewComponentProviderInterface
 {

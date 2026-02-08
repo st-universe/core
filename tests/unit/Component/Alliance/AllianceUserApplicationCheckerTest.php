@@ -29,7 +29,8 @@ class AllianceUserApplicationCheckerTest extends StuTestCase
         $this->user = $this->mock(User::class);
         $this->alliance = $this->mock(Alliance::class);
 
-        $this->subject = new AllianceUserApplicationChecker($this->allianceApplicationRepository
+        $this->subject = new AllianceUserApplicationChecker(
+            $this->allianceApplicationRepository
         );
     }
 

@@ -9,7 +9,7 @@ use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<TutorialStep>
- * 
+ *
  * @method null|TutorialStep find(integer $id)
  */
 interface TutorialStepRepositoryInterface extends ObjectRepository

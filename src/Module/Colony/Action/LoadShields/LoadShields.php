@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\LoadShields;
 
 use request;
-
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;

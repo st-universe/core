@@ -192,7 +192,7 @@ class MapFieldType
     public function getEffects(): array
     {
         return array_map(
-            fn(mixed $effect): FieldTypeEffectEnum => $effect instanceof FieldTypeEffectEnum ? $effect : FieldTypeEffectEnum::from($effect),
+            fn (mixed $effect): FieldTypeEffectEnum => $effect instanceof FieldTypeEffectEnum ? $effect : FieldTypeEffectEnum::from($effect),
             $this->effects ?? []
         );
     }
@@ -216,6 +216,6 @@ class MapFieldType
             return null;
         }
 
-        return implode("\n", array_map(fn(FieldTypeEffectEnum $effect): string => $effect->value, $this->getEffects()));
+        return implode("\n", array_map(fn (FieldTypeEffectEnum $effect): string => $effect->value, $this->getEffects()));
     }
 }

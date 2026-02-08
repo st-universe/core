@@ -5,7 +5,6 @@ namespace Stu\Module\Spacecraft\Lib\Creation;
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Module\Spacecraft\Lib\Creation\SpacecraftCreationConfigInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 

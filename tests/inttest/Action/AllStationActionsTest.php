@@ -21,8 +21,8 @@ class AllStationActionsTest extends ActionTestCase
             ->getDefinedImplementationsOf(ActionControllerInterface::class, true);
 
         return $definedImplementations
-            ->map(fn(ActionControllerInterface $actionController): array => [$definedImplementations->indexOf($actionController)])
-            ->filter(fn(array $array): bool => str_starts_with($array[0], 'STATION_ACTIONS'))
+            ->map(fn (ActionControllerInterface $actionController): array => [$definedImplementations->indexOf($actionController)])
+            ->filter(fn (array $array): bool => str_starts_with($array[0], 'STATION_ACTIONS'))
             ->toArray();
     }
 

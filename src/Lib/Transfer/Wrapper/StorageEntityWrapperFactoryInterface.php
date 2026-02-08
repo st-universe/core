@@ -8,6 +8,5 @@ use Stu\Lib\Transfer\EntityWithStorageInterface;
 
 interface StorageEntityWrapperFactoryInterface
 {
-
     public function wrapStorageEntity(EntityWithStorageInterface $entityWithStorage): StorageEntityWrapperInterface;
 }

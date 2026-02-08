@@ -53,7 +53,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     {
         return array_any(
             $this->buildingfunctions,
-            fn(BuildingFunction $function): bool => $function->getFunction()->isShipyard()
+            fn (BuildingFunction $function): bool => $function->getFunction()->isShipyard()
         );
     }
 
@@ -62,7 +62,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     {
         return array_find(
             $this->buildingfunctions,
-            fn(BuildingFunction $function): bool => $function->getFunction()->isShipyard()
+            fn (BuildingFunction $function): bool => $function->getFunction()->isShipyard()
         )?->getId();
     }
 
@@ -71,7 +71,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     {
         return array_any(
             $this->buildingfunctions,
-            fn(BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
+            fn (BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
         );
     }
 
@@ -92,7 +92,7 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     {
         return array_find(
             $this->buildingfunctions,
-            fn(BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
+            fn (BuildingFunction $function): bool => $function->getFunction()->isModuleFab()
         )?->getId();
     }
 

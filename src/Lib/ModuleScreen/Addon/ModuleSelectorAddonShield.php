@@ -11,9 +11,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
     /** @var array<int>|null */
     private ?array $interval = null;
 
-    public function __construct(private WeaponShieldRepositoryInterface $weaponShieldRepository, private GradientColorInterface $gradientColor)
-    {
-    }
+    public function __construct(private WeaponShieldRepositoryInterface $weaponShieldRepository, private GradientColorInterface $gradientColor) {}
 
     /**
      * return array<int, array{factionId: int, gradientColor: string, modificator: int}>

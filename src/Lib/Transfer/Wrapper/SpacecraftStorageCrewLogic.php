@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Wrapper;
 
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;

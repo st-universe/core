@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DemotePlayer;
 
-use Stu\Exception\AccessViolationException;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;

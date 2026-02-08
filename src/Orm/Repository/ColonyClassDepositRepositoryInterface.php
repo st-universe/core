@@ -8,6 +8,4 @@ use Stu\Orm\Entity\ColonyClassDeposit;
 /**
  * @extends ObjectRepository<ColonyClassDeposit>
  */
-interface ColonyClassDepositRepositoryInterface extends ObjectRepository
-{
-}
+interface ColonyClassDepositRepositoryInterface extends ObjectRepository {}

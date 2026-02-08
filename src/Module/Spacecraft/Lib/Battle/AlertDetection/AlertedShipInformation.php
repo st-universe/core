@@ -62,7 +62,7 @@ class AlertedShipInformation implements AlertedShipInformationInterface
 
         $count = count(array_filter(
             $alertedBattleParties,
-            fn(AlertStateBattleParty $battlyParty): bool => $battlyParty->isSingleton() === $isSingleton
+            fn (AlertStateBattleParty $battlyParty): bool => $battlyParty->isSingleton() === $isSingleton
                 && $battlyParty->getAlertState() === $alertState
         ));
 

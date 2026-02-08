@@ -15,9 +15,7 @@ final class ShowPrestigeLog implements ViewControllerInterface
 
     private const int DEFAULT_LIMIT = 50;
 
-    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository)
-    {
-    }
+    public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

@@ -14,9 +14,7 @@ final class ShowShipDisassembly implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SHIP_DISASSEMBLY';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

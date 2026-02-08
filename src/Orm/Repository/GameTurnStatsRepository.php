@@ -7,10 +7,10 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
 

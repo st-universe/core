@@ -3,8 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyDepositMining;
 
 /**
  * @extends ObjectRepository<ColonyDepositMining>

@@ -11,18 +11,18 @@ use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\PrivateMessageFolder;
-use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLayer;
-use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
-use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 
 class PlayerDefaultsCreatorTest extends MockeryTestCase
 {
@@ -74,7 +74,7 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
         $defaultCategoryCount = count(array_filter(
             PrivateMessageFolderTypeEnum::cases(),
-            fn(PrivateMessageFolderTypeEnum $case): bool => $case->isDefault()
+            fn (PrivateMessageFolderTypeEnum $case): bool => $case->isDefault()
         ));
 
         $this->privateMessageFolderRepository->shouldReceive('prototype')

@@ -10,6 +10,4 @@ use Stu\Orm\Entity\Weapon;
 /**
  * @extends EntityRepository<Weapon>
  */
-final class WeaponRepository extends EntityRepository implements WeaponRepositoryInterface
-{
-}
+final class WeaponRepository extends EntityRepository implements WeaponRepositoryInterface {}

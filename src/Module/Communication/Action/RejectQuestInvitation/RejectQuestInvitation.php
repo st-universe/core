@@ -6,15 +6,15 @@ namespace Stu\Module\Communication\Action\RejectQuestInvitation;
 
 use Override;
 use Stu\Component\Quest\QuestUserModeEnum;
+use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
-use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 
 final class RejectQuestInvitation implements ActionControllerInterface
 {
@@ -64,7 +64,7 @@ final class RejectQuestInvitation implements ActionControllerInterface
 
         if ($quest->getApplicantMax() !== null) {
             $activeMembersCount = count($quest->getQuestUsers()->filter(
-                fn($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
+                fn ($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {
@@ -100,7 +100,6 @@ final class RejectQuestInvitation implements ActionControllerInterface
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
             sprintf('/npc/?SHOW_NPC_QUESTS=1')
-
         );
 
         $game->getInfo()->addInformation('Du hast die Einladung an der Quest abgelehnt');

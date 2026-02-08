@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowStation;
 
 use request;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\ViewContext;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -109,7 +109,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
             $game->setTemplateVar('CAN_REPAIR', true);
 
             $shipRepairProgress = array_map(
-                fn(StationShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
+                fn (StationShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
                 $this->stationShipRepairRepository->getByStation(
                     $station->getId()
                 )

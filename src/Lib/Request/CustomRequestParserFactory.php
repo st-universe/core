@@ -25,7 +25,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createQueryParser(): RequestParser
     {
         return new RequestParser(
-            fn($parameterName) => $this->request[$parameterName] ?? null,
+            fn ($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }
@@ -34,7 +34,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
     public function createBodyParser(): RequestParser
     {
         return new RequestParser(
-            fn($parameterName) => $this->request[$parameterName] ?? null,
+            fn ($parameterName) => $this->request[$parameterName] ?? null,
             $this->config
         );
     }

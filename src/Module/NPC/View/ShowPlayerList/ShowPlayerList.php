@@ -10,8 +10,8 @@ use Stu\Module\Admin\Lib\UserlistEntry;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowPlayerList implements ViewControllerInterface
 {
@@ -39,7 +39,7 @@ final class ShowPlayerList implements ViewControllerInterface
         $game->setTemplateVar(
             'LIST',
             array_map(
-                fn(User $user): UserlistEntry => new UserlistEntry(
+                fn (User $user): UserlistEntry => new UserlistEntry(
                     $user,
                     $this->crewCountRetriever,
                     $this->crewLimitCalculator,

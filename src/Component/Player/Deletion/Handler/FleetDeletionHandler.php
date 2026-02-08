@@ -9,9 +9,7 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetDeletionHandler implements PlayerDeletionHandlerInterface
 {
-    public function __construct(private FleetRepositoryInterface $fleetRepository)
-    {
-    }
+    public function __construct(private FleetRepositoryInterface $fleetRepository) {}
 
     #[\Override]
     public function delete(User $user): void

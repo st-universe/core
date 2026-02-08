@@ -9,9 +9,7 @@ use Stu\Module\Research\TechlistRetrieverInterface;
 
 final class ResearchProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private TechlistRetrieverInterface $techlistRetriever)
-    {
-    }
+    public function __construct(private TechlistRetrieverInterface $techlistRetriever) {}
 
     #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void

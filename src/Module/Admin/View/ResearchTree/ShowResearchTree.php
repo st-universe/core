@@ -11,8 +11,8 @@ use request;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 

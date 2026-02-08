@@ -45,7 +45,7 @@ class RoundBasedBattleParty
     {
         return $this->get()
             ->getActiveMembers(true)
-            ->filter(fn(SpacecraftWrapperInterface $wrapper) => $this->unUsedIds->contains($wrapper->get()->getId()));
+            ->filter(fn (SpacecraftWrapperInterface $wrapper) => $this->unUsedIds->contains($wrapper->get()->getId()));
     }
 
     public function getRandomUnused(): SpacecraftWrapperInterface

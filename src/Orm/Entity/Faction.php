@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Repository\FactionRepository;
 
 #[Table(name: 'stu_factions')]

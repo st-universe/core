@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
-use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 

@@ -12,8 +12,8 @@ use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * Creates players with registration and optional sms validation

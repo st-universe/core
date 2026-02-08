@@ -14,9 +14,7 @@ final class ShowTorpedoFab implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TORPEDO_FAB';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowTorpedoFabRequestInterface $showTorpedoFabRequest)
-    {
-    }
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowTorpedoFabRequestInterface $showTorpedoFabRequest) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

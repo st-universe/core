@@ -13,9 +13,7 @@ final class ShowKnRating implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_KN_RATING';
 
-    public function __construct(private KnFactoryInterface $knFactory)
-    {
-    }
+    public function __construct(private KnFactoryInterface $knFactory) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

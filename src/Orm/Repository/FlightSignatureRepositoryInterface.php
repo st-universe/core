@@ -5,8 +5,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\FlightSignature;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends ObjectRepository<FlightSignature>

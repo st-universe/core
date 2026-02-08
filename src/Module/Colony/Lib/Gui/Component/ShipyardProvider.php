@@ -3,7 +3,6 @@
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use request;
-use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -39,7 +38,7 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
             array_map(
-                fn(SpacecraftRump $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
+                fn (SpacecraftRump $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
                     $shipRump,
                     $user
                 ),

@@ -33,9 +33,9 @@ class AllOtherActionsTest extends ActionTestCase
             ->getDefinedImplementationsOf(ActionControllerInterface::class, true);
 
         return $definedImplementations
-            ->map(fn(ActionControllerInterface $actionController): array => [$definedImplementations->indexOf($actionController)])
-            ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
-            ->filter(fn(array $array): bool => array_filter(self::CURRENTLY_SUPPORTED_MODULES, fn(string $supportedModule): bool => str_starts_with($array[0], $supportedModule)) !== [])
+            ->map(fn (ActionControllerInterface $actionController): array => [$definedImplementations->indexOf($actionController)])
+            ->filter(fn (array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
+            ->filter(fn (array $array): bool => array_filter(self::CURRENTLY_SUPPORTED_MODULES, fn (string $supportedModule): bool => str_starts_with($array[0], $supportedModule)) !== [])
             ->toArray();
     }
 

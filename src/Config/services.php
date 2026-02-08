@@ -42,7 +42,7 @@ return [
     ConfigInterface::class => function (): ConfigInterface {
         $path = __DIR__ . '/../../config/';
         return new Config(
-            array_map(fn(string $file): string => sprintf($file, $path), ConfigFileSetup::getConfigFileSetup())
+            array_map(fn (string $file): string => sprintf($file, $path), ConfigFileSetup::getConfigFileSetup())
         );
     },
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
@@ -78,7 +78,7 @@ return [
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
         return new ParserWithImage($parser);
     },
-    JsonMapperInterface::class => fn(): JsonMapperInterface => (new JsonMapperFactory())->bestFit(),
+    JsonMapperInterface::class => fn (): JsonMapperInterface => new JsonMapperFactory()->bestFit(),
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();

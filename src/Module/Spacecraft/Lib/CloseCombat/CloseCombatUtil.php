@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
-use Stu\Component\Crew\CrewTypeEnum;
-use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\CrewAssignment;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Spacecraft;
 
 final class CloseCombatUtil implements CloseCombatUtilInterface
@@ -20,7 +19,7 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
 
         usort(
             $crewArray,
-            fn(CrewAssignment $a, CrewAssignment $b): int
+            fn (CrewAssignment $a, CrewAssignment $b): int
             => $b->getCrew()->getType()->getFightCapability()
                 <=> $a->getCrew()->getType()->getFightCapability()
         );
@@ -35,7 +34,7 @@ final class CloseCombatUtil implements CloseCombatUtilInterface
 
         return array_reduce(
             $combatGroup,
-            fn(int $value, CrewAssignment $shipCrew): int
+            fn (int $value, CrewAssignment $shipCrew): int
             => $value + $shipCrew->getCrew()->getType()->getFightCapability() * $factionCombatScore,
             0
         );

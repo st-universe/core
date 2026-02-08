@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CreateBuildplan;
 
 use Doctrine\ORM\EntityManagerInterface;
-
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
@@ -18,12 +18,11 @@ use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
-use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class CreateBuildplan implements ActionControllerInterface

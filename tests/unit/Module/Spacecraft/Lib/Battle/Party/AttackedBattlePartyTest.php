@@ -55,7 +55,8 @@ class AttackedBattlePartyTest extends StuTestCase
             ->andReturn(false);
 
         $this->subject = new AttackedBattleParty(
-            $this->wrapper, $this->stuRandom
+            $this->wrapper,
+            $this->stuRandom
         );
     }
 

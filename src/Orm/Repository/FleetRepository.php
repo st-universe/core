@@ -113,7 +113,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT f FROM %s f JOIN f.user u WHERE u.id > :firstUserId',
+                    'SELECT f FROM %s f JOIN f.user u WHERE u.id > :firstUserId',
                     Fleet::class
                 )
             )

@@ -6,7 +6,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Lib\Map\VisualPanel\Layer\Data\CellDataInterface;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
-use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 
@@ -64,7 +63,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
 
     /**
      * @param array<int> $locations
-     * @return array<CellDataInterface> 
+     * @return array<CellDataInterface>
      */
     public function getCartographingData(PanelBoundaries $boundaries, ResultSetMapping $rsm, array $locations): array;
 

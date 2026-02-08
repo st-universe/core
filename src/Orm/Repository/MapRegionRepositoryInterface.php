@@ -11,6 +11,4 @@ use Stu\Orm\Entity\MapRegion;
  * @method null|MapRegion find(integer$id)
  * @method MapRegion[] findAll()
  */
-interface MapRegionRepositoryInterface extends ObjectRepository
-{
-}
+interface MapRegionRepositoryInterface extends ObjectRepository {}

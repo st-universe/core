@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 
 /**

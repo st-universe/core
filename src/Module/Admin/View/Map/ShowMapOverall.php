@@ -10,10 +10,9 @@ use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Entity\Layer;
-
 
 final class ShowMapOverall implements ViewControllerInterface
 {

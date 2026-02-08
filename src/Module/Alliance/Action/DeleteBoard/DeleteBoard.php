@@ -8,7 +8,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class DeleteBoard implements ActionControllerInterface

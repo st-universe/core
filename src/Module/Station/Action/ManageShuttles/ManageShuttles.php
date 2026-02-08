@@ -6,8 +6,8 @@ namespace Stu\Module\Station\Action\ManageShuttles;
 
 use request;
 use RuntimeException;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

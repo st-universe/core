@@ -7,17 +7,17 @@ namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -26,16 +26,16 @@ use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInte
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
-use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
-use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\UserLayerRepositoryInterface;
 
 final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialInterface
 {

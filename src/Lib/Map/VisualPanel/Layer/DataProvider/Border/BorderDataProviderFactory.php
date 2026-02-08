@@ -7,10 +7,10 @@ namespace Stu\Lib\Map\VisualPanel\Layer\DataProvider\Border;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Lib\Map\VisualPanel\Layer\DataProvider\AbstractPanelLayerDataProvider;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\LocationRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class BorderDataProviderFactory implements BorderDataProviderFactoryInterface
 {

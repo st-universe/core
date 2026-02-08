@@ -17,9 +17,7 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
     public const int CONFIGURATION_COMMODITY_CONSUMER = 6;
     public const int CONFIGURATION_COMMODITY_PRODUCER = 7;
 
-    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository)
-    {
-    }
+    public function __construct(private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
     #[\Override]
     public function getConfigurations(): array

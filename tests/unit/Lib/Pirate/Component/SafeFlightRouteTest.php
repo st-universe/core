@@ -35,7 +35,7 @@ class SafeFlightRouteTest extends StuTestCase
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $coordinate = $this->mock(Coordinate::class);
 
-        $callable = fn() => $coordinate;
+        $callable = fn () => $coordinate;
 
         $flightRoute->shouldReceive('hasSpecialDamageOnField')
             ->withNoArgs()
@@ -71,7 +71,7 @@ class SafeFlightRouteTest extends StuTestCase
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $coordinate = $this->mock(Coordinate::class);
 
-        $callable = fn() => $coordinate;
+        $callable = fn () => $coordinate;
 
         $flightRoute->shouldReceive('hasSpecialDamageOnField')
             ->withNoArgs()

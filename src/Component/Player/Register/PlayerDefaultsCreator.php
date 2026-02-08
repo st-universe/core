@@ -11,14 +11,13 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
-
 
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository,  private TutorialStepRepositoryInterface $tutorialStepRepository,  private UserTutorialRepositoryInterface $userTutorialRepository) {}
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository, private TutorialStepRepositoryInterface $tutorialStepRepository, private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
     #[\Override]
     public function createDefault(User $user): void

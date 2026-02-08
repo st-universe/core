@@ -26,7 +26,7 @@ final class ShowPmCategoryList implements ViewControllerInterface
         $game->setTemplateVar(
             'PM_CATEGORIES',
             array_map(
-                fn(PrivateMessageFolder $privateMessageFolder): PrivateMessageFolderItem =>
+                fn (PrivateMessageFolder $privateMessageFolder): PrivateMessageFolderItem =>
                 $this->privateMessageUiFactory->createPrivateMessageFolderItem($privateMessageFolder),
                 $this->privateMessageFolderRepository->getOrderedByUser($game->getUser())
             )

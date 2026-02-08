@@ -70,8 +70,8 @@ class YRow
 
             if ($this->system instanceof StarSystem) {
                 $this->fields = $this->system->getFields()
-                    ->filter(fn(StarSystemMap $systemMap): bool => $systemMap->getSy() === $this->row)
-                    ->map(fn(StarSystemMap $systemMap): MapData => $this->mapSystemMapToMapData($systemMap))
+                    ->filter(fn (StarSystemMap $systemMap): bool => $systemMap->getSy() === $this->row)
+                    ->map(fn (StarSystemMap $systemMap): MapData => $this->mapSystemMapToMapData($systemMap))
                     ->toArray();
             } else {
 

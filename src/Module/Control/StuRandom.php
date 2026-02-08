@@ -40,7 +40,7 @@ class StuRandom
         if ($array === []) {
             throw new RuntimeException('Cannot pick a random key from an empty array');
         }
-        
+
         /** @var TKey of int|string */
         $result = array_rand($array);
 

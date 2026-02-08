@@ -81,17 +81,17 @@ enum SpacecraftModuleTypeEnum: int
     public function getModuleRumpWrapperCallable(): callable
     {
         return match ($this) {
-            self::HULL => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
-            self::SHIELDS => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
-            self::EPS => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
-            self::IMPULSEDRIVE => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
-            self::REACTOR => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
-            self::COMPUTER => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
-            self::PHASER => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
-            self::TORPEDO => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
-            self::SENSOR => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
-            self::WARPDRIVE => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
-            self::SPECIAL => fn(SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
+            self::HULL => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperHull($rump, $buildplan),
+            self::SHIELDS => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperShield($rump, $buildplan),
+            self::EPS => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEps($rump, $buildplan),
+            self::IMPULSEDRIVE => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperImpulseDrive($rump, $buildplan),
+            self::REACTOR => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperReactor($rump, $buildplan),
+            self::COMPUTER => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperComputer($rump, $buildplan),
+            self::PHASER => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperEnergyWeapon($rump, $buildplan),
+            self::TORPEDO => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperProjectileWeapon($rump, $buildplan),
+            self::SENSOR => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSensor($rump, $buildplan),
+            self::WARPDRIVE => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperWarpDrive($rump, $buildplan),
+            self::SPECIAL => fn (SpacecraftRump $rump, ?SpacecraftBuildplan $buildplan): ModuleRumpWrapperInterface => new ModuleRumpWrapperSpecial($rump, $buildplan)
         };
     }
 
@@ -119,7 +119,7 @@ enum SpacecraftModuleTypeEnum: int
 
         usort(
             $cases,
-            fn(SpacecraftModuleTypeEnum $a, SpacecraftModuleTypeEnum $b): int => $a->getOrder() <=> $b->getOrder()
+            fn (SpacecraftModuleTypeEnum $a, SpacecraftModuleTypeEnum $b): int => $a->getOrder() <=> $b->getOrder()
         );
 
         return $cases;

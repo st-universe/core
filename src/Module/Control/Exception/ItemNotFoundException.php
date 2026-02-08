@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Exception;
 
-use Exception;
 use Stu\Module\Control\Router\FallbackRouteException;
 
 /**

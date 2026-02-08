@@ -7,9 +7,7 @@ use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface
 {
-    public function __construct(private PlayerDeletionInterface $playerDeletion, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private PlayerDeletionInterface $playerDeletion, private EntityManagerInterface $entityManager) {}
 
     #[\Override]
     public function handle(): void

@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
-use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;

@@ -13,9 +13,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyLoader implements ColonyLoaderInterface
 {
-    public function __construct(private ColonyRepositoryInterface $colonyRepository, private LockManagerInterface $lockManager)
-    {
-    }
+    public function __construct(private ColonyRepositoryInterface $colonyRepository, private LockManagerInterface $lockManager) {}
 
     #[\Override]
     public function loadWithOwnerValidation(int $colonyId, int $userId, bool $checkForEntityLock = true): Colony

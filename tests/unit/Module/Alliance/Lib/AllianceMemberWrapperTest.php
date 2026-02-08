@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\Lib;
 
 use Mockery\MockInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
-use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;

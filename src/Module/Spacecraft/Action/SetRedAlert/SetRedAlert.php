@@ -6,9 +6,9 @@ namespace Stu\Module\Spacecraft\Action\SetRedAlert;
 
 use request;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Spacecraft\System\Control\AlertStateManagerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class SetRedAlert implements ActionControllerInterface

@@ -9,9 +9,7 @@ use Stu\Orm\Entity\User;
 
 final class CrewLimitCalculator implements CrewLimitCalculatorInterface
 {
-    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory)
-    {
-    }
+    public function __construct(private ColonyLibFactoryInterface $colonyLibFactory) {}
 
     #[\Override]
     public function getGlobalCrewLimit(User $user): int

@@ -4,7 +4,6 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -45,9 +44,9 @@ class SpacecraftGroup implements SpacecraftGroupInterface
         return $this->user;
     }
 
-    /** 
-     * @param Collection<int, covariant Spacecraft> $spacecrafts 
-     * 
+    /**
+     * @param Collection<int, covariant Spacecraft> $spacecrafts
+     *
      * @return Collection<int, Spacecraft>
      */
     public static function sortSpacecraftCollection(Collection $spacecrafts): Collection

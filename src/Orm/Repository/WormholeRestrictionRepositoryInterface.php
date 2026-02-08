@@ -4,8 +4,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
-use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Entity\WormholeEntry;
+use Stu\Orm\Entity\WormholeRestriction;
 
 /**
  * @extends ObjectRepository<WormholeRestriction>

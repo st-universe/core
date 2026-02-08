@@ -16,11 +16,11 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Orm\Entity\Anomaly;
-use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
@@ -343,7 +343,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $filteredSpacecrafts = array_filter($spacecrafts, function (Spacecraft $ship): bool {
             return !$ship->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) &&
                 !$ship->getSystemState(SpacecraftSystemTypeEnum::SHIELDS) && (
-                    $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE) || $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR));
+                    $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE) || $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR)
+                );
         });
 
         return new ArrayCollection($filteredSpacecrafts);

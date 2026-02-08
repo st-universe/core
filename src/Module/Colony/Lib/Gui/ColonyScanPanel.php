@@ -64,7 +64,7 @@ class ColonyScanPanel extends AbstractVisualPanel
     #[\Override]
     protected function getEntryCallable(): callable
     {
-        return fn(int $x, int $y): VisualPanelElementInterface => new ColonyScanPanelEntry(
+        return fn (int $x, int $y): VisualPanelElementInterface => new ColonyScanPanelEntry(
             $x,
             $y,
             $this->layers

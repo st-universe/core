@@ -20,7 +20,7 @@ final class ModuleRumpWrapperSensor extends ModuleRumpWrapperBase implements Mod
             return 0;
         }
 
-        return (new ModuleValueCalculator())->calculateModuleValue(
+        return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
             $this->rumpBaseValues->getBaseSensorRange()

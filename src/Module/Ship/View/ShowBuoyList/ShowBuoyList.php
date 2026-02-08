@@ -12,9 +12,7 @@ final class ShowBuoyList implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_BUOY_LIST';
 
-    public function __construct(private BuoyRepositoryInterface $buoyRepository)
-    {
-    }
+    public function __construct(private BuoyRepositoryInterface $buoyRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

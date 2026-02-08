@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use Stu\Orm\Entity\Spacecraft;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
@@ -15,11 +14,10 @@ use Stu\Component\Spacecraft\System\SystemDataDeserializerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -262,13 +260,13 @@ class SpacecraftWrapperFactoryTest extends StuTestCase
         $this->assertEquals([
             0 => $shipSolo1,
             1 => $stationSolo2
-        ], $group1->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
+        ], $group1->getWrappers()->map(fn (SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetLowSort2,
             1 => $shipFleetLowSort1
-        ], $group2->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
+        ], $group2->getWrappers()->map(fn (SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
         $this->assertEquals([
             0 => $shipFleetHighSort
-        ], $group3->getWrappers()->map(fn(SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
+        ], $group3->getWrappers()->map(fn (SpacecraftWrapperInterface $wrapper): Spacecraft => $wrapper->get())->toArray());
     }
 }

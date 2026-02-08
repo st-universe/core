@@ -86,7 +86,7 @@ enum ModuleSpecialAbilityEnum: int
     public static function getValueArray(): array
     {
         return array_map(
-            fn(ModuleSpecialAbilityEnum $enum): int => $enum->value,
+            fn (ModuleSpecialAbilityEnum $enum): int => $enum->value,
             ModuleSpecialAbilityEnum::cases()
         );
     }

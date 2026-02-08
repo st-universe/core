@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
-use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -16,8 +16,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
@@ -203,7 +203,7 @@ final class DockShip implements ActionControllerInterface
             } catch (SpacecraftSystemException) {
                 // nothing to do here
             }
-            
+
             try {
                 $this->spacecraftSystemManager->deactivate($fleetShipWrapper, SpacecraftSystemTypeEnum::WARPDRIVE);
             } catch (SpacecraftSystemException) {

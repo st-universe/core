@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-
 /**
  * Abstract action class for actions requiring authentication
  */

@@ -14,9 +14,7 @@ final class EditBorder implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_BORDER';
 
-    public function __construct(private EditBorderRequestInterface $editBorderRequest, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapRepositoryInterface $mapRepository)
-    {
-    }
+    public function __construct(private EditBorderRequestInterface $editBorderRequest, private MapBorderTypeRepositoryInterface $mapBorderTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

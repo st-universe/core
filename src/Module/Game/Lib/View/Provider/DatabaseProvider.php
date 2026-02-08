@@ -17,9 +17,7 @@ final class DatabaseProvider implements ViewComponentProviderInterface
         private readonly DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
         private readonly ImageCreationInterface $imageCreation,
         private readonly StuConfigInterface $config
-    )
-    {
-    }
+    ) {}
 
     #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void

@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Ship;

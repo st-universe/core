@@ -7,7 +7,6 @@ namespace Stu\Module\Alliance\Lib;
 use Mockery\MockInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceRelation;

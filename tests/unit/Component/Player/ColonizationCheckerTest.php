@@ -6,9 +6,9 @@ namespace Stu\Component\Player;
 
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyTypeEnum;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
-use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;

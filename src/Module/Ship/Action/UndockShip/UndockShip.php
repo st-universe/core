@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UndockShip;
 
 use request;
-use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;

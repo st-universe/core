@@ -7,8 +7,8 @@ namespace Stu\Component\Building;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -373,7 +373,7 @@ final class BuildingManager implements BuildingManagerInterface
     {
         $fieldsToReactivate = array_filter(
             $host->getPlanetFields()->toArray(),
-            fn(PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
+            fn (PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
         );
 
         $reactivatedCount = 0;

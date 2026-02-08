@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class CacheSettings extends AbstractSettings implements CacheSettingsInterface
 {
     private const string SETTING_USE_REDIS = 'useRedis';

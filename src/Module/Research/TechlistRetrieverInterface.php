@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Research;
 
-use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
 
 interface TechlistRetrieverInterface

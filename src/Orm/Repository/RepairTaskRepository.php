@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\RepairTask;
-use Stu\Orm\Entity\Ship;
 
 /**
  * @extends EntityRepository<RepairTask>

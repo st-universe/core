@@ -9,10 +9,10 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 

@@ -8,12 +8,12 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
+use Stu\Orm\Entity\Deals;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
-use Stu\Orm\Entity\Deals;
 
 final class CreateDeal implements ActionControllerInterface
 {

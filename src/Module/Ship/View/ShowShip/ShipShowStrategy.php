@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Stu\Component\Ship\AstronomicalMappingStateEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -28,7 +28,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
     #[\Override]
     public function appendNavigationPart(GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
     {
-        $game->appendNavigationPart('ship.php',  _('Schiffe'));
+        $game->appendNavigationPart('ship.php', _('Schiffe'));
 
         return $this;
     }

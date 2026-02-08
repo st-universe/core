@@ -10,6 +10,4 @@ use Stu\Orm\Entity\PlanetFieldType;
 /**
  * @extends EntityRepository<PlanetFieldType>
  */
-final class PlanetFieldTypeRepository extends EntityRepository implements PlanetFieldTypeRepositoryInterface
-{
-}
+final class PlanetFieldTypeRepository extends EntityRepository implements PlanetFieldTypeRepositoryInterface {}

@@ -14,9 +14,7 @@ final class EditRegion implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_REGION';
 
-    public function __construct(private EditRegionRequestInterface $editRegionRequest, private MapRegionRepositoryInterface $mapRegionRepository, private MapRepositoryInterface $mapRepository)
-    {
-    }
+    public function __construct(private EditRegionRequestInterface $editRegionRequest, private MapRegionRepositoryInterface $mapRegionRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

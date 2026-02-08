@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
 use InvalidArgumentException;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;

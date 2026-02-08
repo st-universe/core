@@ -7,9 +7,8 @@ namespace Stu\Component\Spacecraft\System\Data;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\FlightSignature;
-use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class SubspaceSystemData extends AbstractSystemData
 {

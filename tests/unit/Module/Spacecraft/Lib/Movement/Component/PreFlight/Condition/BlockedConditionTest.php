@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\Condition;
 
 use Mockery\MockInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TholianWeb;
 use Stu\StuTestCase;

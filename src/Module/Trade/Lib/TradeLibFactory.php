@@ -21,8 +21,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         private TradeOfferRepositoryInterface $tradeOfferRepository,
         private StorageRepositoryInterface $storageRepository,
         private CommodityRepositoryInterface $commodityRepository
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function createTradeAccountWrapper(

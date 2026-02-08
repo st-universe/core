@@ -11,8 +11,8 @@ use Stu\Module\Admin\Lib\UserlistEntry;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\NPC\Action\LogPlayerDetails;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowPlayerDetails implements ViewControllerInterface
 {

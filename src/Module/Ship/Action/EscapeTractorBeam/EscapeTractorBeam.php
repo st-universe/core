@@ -14,15 +14,15 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
-use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
-use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
-use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
+use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
 
 final class EscapeTractorBeam implements ActionControllerInterface

@@ -14,8 +14,7 @@ final class TemplateHelper implements TemplateHelperInterface
     public function __construct(
         private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function formatProductionValue(int $value): string

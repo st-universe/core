@@ -8,7 +8,6 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Control\GameControllerInterface;

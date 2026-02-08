@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappersInterface;
 use Stu\Orm\Entity\Ship;
 

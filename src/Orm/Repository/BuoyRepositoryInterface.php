@@ -7,7 +7,7 @@ use Stu\Orm\Entity\Buoy;
 
 /**
  * @extends ObjectRepository<Buoy>
- * 
+ *
  * @method null|Buoy find(integer $id)
  */
 interface BuoyRepositoryInterface extends ObjectRepository

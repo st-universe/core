@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
@@ -75,7 +74,7 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
     {
         return array_reduce(
             $this->getStorage(),
-            fn(int $value, Storage $storage): int => $value + $storage->getAmount(),
+            fn (int $value, Storage $storage): int => $value + $storage->getAmount(),
             0
         );
     }

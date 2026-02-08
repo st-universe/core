@@ -73,7 +73,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         $filteredFriends = array_filter(
             $friends,
-            fn(Spacecraft $friend): bool =>
+            fn (Spacecraft $friend): bool =>
             !$friend->getCondition()->isDestroyed()
                 && $friend->isFleetLeader()
                 && $friend->getLocation() !== $leadSpacecraft->getLocation()
@@ -81,7 +81,7 @@ class CallForSupportBehaviour implements PirateBehaviourInterface
 
         usort(
             $filteredFriends,
-            fn(Spacecraft $a, Spacecraft $b): int =>
+            fn (Spacecraft $a, Spacecraft $b): int =>
             $this->distanceCalculation->spacecraftToSpacecraftDistance($leadSpacecraft, $a) - $this->distanceCalculation->spacecraftToSpacecraftDistance($leadSpacecraft, $b)
         );
 

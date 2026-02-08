@@ -6,8 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftGroupInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
@@ -37,7 +35,7 @@ interface SpacecraftWrapperFactoryInterface
 
     /**
      * @param Collection<int, covariant Spacecraft> $spacecrafts
-     * 
+     *
      * @return Collection<string, SpacecraftGroupInterface>
      */
     public function wrapSpacecraftsAsGroups(Collection $spacecrafts): Collection;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station\Dock;
 
-use Stu\Component\Station\Dock\DockModeEnum;
-use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
@@ -18,7 +16,7 @@ final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
     {
         try {
             return $station->getDockPrivileges()->reduce(
-                fn(bool $isAllowed, DockingPrivilege $privilege): bool => $isAllowed || $this->isAllowed($privilege, $source),
+                fn (bool $isAllowed, DockingPrivilege $privilege): bool => $isAllowed || $this->isAllowed($privilege, $source),
                 false
             );
         } catch (DockingUnallowedException) {

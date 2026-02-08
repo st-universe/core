@@ -6,8 +6,8 @@ namespace Stu\Module\Spacecraft\Lib\Destruction;
 
 use Mockery\MockInterface;
 use Stu\Lib\Information\InformationInterface;
-use Stu\Module\Spacecraft\Lib\Destruction\Handler\SpacecraftDestructionHandlerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\SpacecraftDestructionHandlerInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;

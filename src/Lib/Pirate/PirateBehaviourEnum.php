@@ -10,14 +10,14 @@ enum PirateBehaviourEnum: int
     case HIDE = 2;
     case SEARCH_FRIEND = 3;
 
-        // aggressive
+    // aggressive
     case RUB_COLONY = 4;
     case ATTACK_SHIP = 5;
     case RAGE = 6;
     case CALL_FOR_SUPPORT = 7;
     case ASSAULT_PHALANX = 8;
 
-        // auxiliary
+    // auxiliary
     case GO_ALERT_RED = 9;
     case DEACTIVATE_SHIELDS = 10;
 
@@ -50,6 +50,6 @@ enum PirateBehaviourEnum: int
     /** @return array<int, int> */
     public static function getBehaviourProbabilities(): array
     {
-        return array_map(fn(PirateBehaviourEnum $behaviour): int => $behaviour->getProbability(), self::cases());
+        return array_map(fn (PirateBehaviourEnum $behaviour): int => $behaviour->getProbability(), self::cases());
     }
 }

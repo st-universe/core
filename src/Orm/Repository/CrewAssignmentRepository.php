@@ -8,12 +8,12 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<CrewAssignment>

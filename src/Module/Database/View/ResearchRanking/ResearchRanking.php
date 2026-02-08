@@ -14,9 +14,7 @@ final class ResearchRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_RESEARCH';
 
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private DatabaseUiFactoryInterface $databaseUiFactory)
-    {
-    }
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private DatabaseUiFactoryInterface $databaseUiFactory) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

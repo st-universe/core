@@ -77,7 +77,7 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
 
     /**
      * Uses a very simple cache to avoid querying the same information over and over again
-     * 
+     *
      * @param array<int> $ignoredFieldIds
      */
     private function hasActiveBuildingWithFunction(PlanetFieldHostInterface $host, BuildingFunctionEnum $function, array $ignoredFieldIds): bool

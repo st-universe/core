@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Stu\Component\Research\ResearchModeEnum;
-use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
@@ -24,15 +24,15 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         $researchedList = $this->getResearchedList($user);
 
         $researchedIdsWithUnfinished = array_map(
-            fn(Researched $researched): int => $researched->getResearch()->getId(),
+            fn (Researched $researched): int => $researched->getResearch()->getId(),
             $researchedList
         );
 
         $researchedIdsOnlyFinished = array_map(
-            fn(Researched $researched): int => $researched->getResearch()->getId(),
+            fn (Researched $researched): int => $researched->getResearch()->getId(),
             array_filter(
                 $researchedList,
-                fn(Researched $researched): bool => $researched->getFinished() > 0
+                fn (Researched $researched): bool => $researched->getFinished() > 0
             )
         );
 

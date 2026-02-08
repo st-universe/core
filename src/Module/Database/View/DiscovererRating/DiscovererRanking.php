@@ -14,9 +14,7 @@ final class DiscovererRanking implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
-    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private DatabaseUserRepositoryInterface $databaseUserRepository)
-    {
-    }
+    public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private DatabaseUserRepositoryInterface $databaseUserRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

@@ -23,13 +23,13 @@ class AnomalyTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(42);
 
-            
+
         $oldLocation->shouldReceive('getAnomalies')
             ->andReturn(new \Doctrine\Common\Collections\ArrayCollection());
-            
+
         $location->shouldReceive('getAnomalies')
             ->andReturn(new \Doctrine\Common\Collections\ArrayCollection());
-            
+
         $anomaly->setLocation($oldLocation);
         $anomaly->setLocation($location);
 

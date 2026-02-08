@@ -46,12 +46,12 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
         $spacecraftCount = $data->getSpacecraftCount();
 
         if ($spacecraftCount > 0) {
-            return $data->isDubious() ? '!'  : (string) $spacecraftCount;
+            return $data->isDubious() ? '!' : (string) $spacecraftCount;
         }
 
         if ($data->hasCloakedShips()) {
             if ($this->showCloakedEverywhere) {
-                return $data->isDubious() ? '!'  : "?";
+                return $data->isDubious() ? '!' : "?";
             }
 
             $currentSpacecraft = $this->currentSpacecraft;
@@ -73,13 +73,13 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
                     $range = $this->getTachyonRange($currentSpacecraft);
 
                     if ($distanceX <= $range && $distanceY <= $range) {
-                        return $data->isDubious() ? '!'  : "?";
+                        return $data->isDubious() ? '!' : "?";
                     }
                 } elseif (
                     abs($data->getPosX() - $currentSpacecraft->getPosX()) <= $this->getTachyonRange($currentSpacecraft)
                     && abs($data->getPosY() - $currentSpacecraft->getPosY()) <= $this->getTachyonRange($currentSpacecraft)
                 ) {
-                    return $data->isDubious() ? '!'  : "?";
+                    return $data->isDubious() ? '!' : "?";
                 }
             }
         }

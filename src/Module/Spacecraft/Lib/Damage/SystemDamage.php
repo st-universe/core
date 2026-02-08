@@ -78,9 +78,9 @@ final class SystemDamage implements SystemDamageInterface
     private function getHealthySystems(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): array
     {
         return $wrapper->get()->getSystems()
-            ->filter(fn(SpacecraftSystem $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
-            ->filter(fn(SpacecraftSystem $system): bool => $system->getStatus() > 0)
-            ->filter(fn(SpacecraftSystem $system): bool => $system->getSystemType()->canBeDamaged())
+            ->filter(fn (SpacecraftSystem $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
+            ->filter(fn (SpacecraftSystem $system): bool => $system->getStatus() > 0)
+            ->filter(fn (SpacecraftSystem $system): bool => $system->getSystemType()->canBeDamaged())
             ->toArray();
     }
 

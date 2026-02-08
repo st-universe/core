@@ -30,14 +30,14 @@ enum BuildingFunctionEnum: int
     case WAREHOUSE = 23;
     case SUBSPACE_TELESCOPE = 31;
 
-        // planetary defense
+    // planetary defense
     case SHIELD_GENERATOR = 24;
     case SHIELD_BATTERY = 25;
     case ENERGY_PHALANX = 26;
     case PARTICLE_PHALANX = 27;
     case ANTI_PARTICLE = 28;
 
-        // spare parts
+    // spare parts
     case FABRICATION_HALL = 29;
     case TECH_CENTER = 30;
 
@@ -74,7 +74,7 @@ enum BuildingFunctionEnum: int
     {
         return array_filter(
             self::cases(),
-            fn(BuildingFunctionEnum $function): bool => $function->isModuleFab()
+            fn (BuildingFunctionEnum $function): bool => $function->isModuleFab()
         );
     }
 
@@ -83,7 +83,7 @@ enum BuildingFunctionEnum: int
     {
         return array_filter(
             self::cases(),
-            fn(BuildingFunctionEnum $function): bool => $function->isShipyard()
+            fn (BuildingFunctionEnum $function): bool => $function->isShipyard()
         );
     }
 }

@@ -43,8 +43,8 @@ final class ShowEpsUsage implements ViewControllerInterface
             $this->sortByEnergyConsumption(
                 $this->spacecraftSystemManager
                     ->getActiveSystems($wrapper->get())
-                    ->filter(fn(SpacecraftSystem $system): bool => $this->spacecraftSystemManager->getEnergyConsumption($system->getSystemType()) > 0)
-                    ->map(fn(SpacecraftSystem $system): SystemEpsUsageWrapper => new SystemEpsUsageWrapper(
+                    ->filter(fn (SpacecraftSystem $system): bool => $this->spacecraftSystemManager->getEnergyConsumption($system->getSystemType()) > 0)
+                    ->map(fn (SpacecraftSystem $system): SystemEpsUsageWrapper => new SystemEpsUsageWrapper(
                         $system,
                         $this->spacecraftSystemManager->getEnergyConsumption($system->getSystemType())
                     ))
@@ -53,16 +53,16 @@ final class ShowEpsUsage implements ViewControllerInterface
         );
     }
 
-    /** 
-     * @param array<SystemEpsUsageWrapper> $wrappers 
-     * 
+    /**
+     * @param array<SystemEpsUsageWrapper> $wrappers
+     *
      * @return array<SystemEpsUsageWrapper>
      */
     private function sortByEnergyConsumption(array $wrappers): array
     {
         usort(
             $wrappers,
-            fn(SystemEpsUsageWrapper $a, SystemEpsUsageWrapper $b): int => $b->getUsage() <=> $a->getUsage()
+            fn (SystemEpsUsageWrapper $a, SystemEpsUsageWrapper $b): int => $b->getUsage() <=> $a->getUsage()
         );
 
         return $wrappers;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSurface;
 
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
+use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 

@@ -79,7 +79,7 @@ class ComponentRegistrationTest extends StuTestCase
 
     public function testResetComponents(): void
     {
-        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, null,  false);
+        $this->subject->addComponentUpdate(GameComponentEnum::COLONIES, null, false);
         $this->subject->registerComponent(GameComponentEnum::PM);
         $this->subject->resetComponents();
 

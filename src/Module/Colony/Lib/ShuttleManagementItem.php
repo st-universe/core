@@ -12,9 +12,7 @@ final class ShuttleManagementItem
 
     private int $colonyLoad = 0;
 
-    public function __construct(private Commodity $commodity)
-    {
-    }
+    public function __construct(private Commodity $commodity) {}
 
     public function setCurrentLoad(int $load): void
     {

@@ -11,8 +11,8 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class LocalPlayerCreatorTest extends StuTestCase
@@ -94,7 +94,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
         $registration->shouldReceive('setPassword')
-            ->with(Mockery::on(fn(string $passwordHash): bool => password_verify($password, $passwordHash)))
+            ->with(Mockery::on(fn (string $passwordHash): bool => password_verify($password, $passwordHash)))
             ->once();
         $user->shouldReceive('getId')
             ->withNoArgs()

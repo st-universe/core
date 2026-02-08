@@ -6,8 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Alliance\AllianceSettingsEnum;
-use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceSettings;
 
 /**
  * @extends ObjectRepository<AllianceSettings>

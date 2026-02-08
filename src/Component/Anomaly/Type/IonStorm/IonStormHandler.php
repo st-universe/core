@@ -95,7 +95,7 @@ final class IonStormHandler implements AnomalyHandlerInterface
     {
         return array_reduce(
             $this->layerRepository->findAllIndexed(),
-            fn(int $value, Layer $layer): int => $value + (int)ceil($layer->getWidth() * $layer->getHeight() / self::LOCATIONS_PER_STORM),
+            fn (int $value, Layer $layer): int => $value + (int)ceil($layer->getWidth() * $layer->getHeight() / self::LOCATIONS_PER_STORM),
             0
         );
     }

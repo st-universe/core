@@ -56,7 +56,7 @@ final class ShowPirateRound implements ViewControllerInterface
         $topTenUsers = array_slice($userPirateRounds, 0, 10);
 
         $topList = array_map(
-            fn($userPirateRound) => [
+            fn ($userPirateRound) => [
                 'user' => $userPirateRound->getUser(),
                 'prestige' => $userPirateRound->getPrestige(),
                 'destroyed_ships' => $userPirateRound->getDestroyedShips()
@@ -71,7 +71,7 @@ final class ShowPirateRound implements ViewControllerInterface
         );
 
         $factionData = $this->getFactionPrestigeData($userPirateRounds);
-        $totalDestroyedShips = array_sum(array_map(fn($userRound) => $userRound->getDestroyedShips(), $userPirateRounds));
+        $totalDestroyedShips = array_sum(array_map(fn ($userRound) => $userRound->getDestroyedShips(), $userPirateRounds));
 
         $winnerFactionShips = 0;
         if ($lastRound->getFactionWinner()) {

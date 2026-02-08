@@ -20,9 +20,7 @@ final class CheckInput implements ActionControllerInterface
     public const string REGISTER_STATE_UPD = "UPD"; //unknown phone digits
     public const string REGISTER_STATE_BLK = "BLK";
 
-    public function __construct(private CheckInputRequestInterface $checkInputRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash)
-    {
-    }
+    public function __construct(private CheckInputRequestInterface $checkInputRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

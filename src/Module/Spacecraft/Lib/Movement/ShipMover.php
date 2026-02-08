@@ -4,9 +4,9 @@ namespace Stu\Module\Spacecraft\Lib\Movement;
 
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Ship\Lib\Fleet\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;

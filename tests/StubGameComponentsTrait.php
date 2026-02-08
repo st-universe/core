@@ -3,7 +3,6 @@
 namespace Stu;
 
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\StuMocks;
 
 trait StubGameComponentsTrait
 {

@@ -18,8 +18,8 @@ use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftDeletionHandlerTest extends StuTestCase

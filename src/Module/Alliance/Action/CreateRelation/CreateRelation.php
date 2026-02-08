@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Exception\AccessViolationException;
-use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

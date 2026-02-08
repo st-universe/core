@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;

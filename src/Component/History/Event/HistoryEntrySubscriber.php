@@ -12,9 +12,7 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
  */
 final class HistoryEntrySubscriber
 {
-    public function __construct(private EntryCreatorInterface $entryCreator)
-    {
-    }
+    public function __construct(private EntryCreatorInterface $entryCreator) {}
 
     /**
      * Creates history entries for war declarations

@@ -11,8 +11,8 @@ use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\NPCQuestLog;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
-use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class ShowNPCQuests implements ViewControllerInterface

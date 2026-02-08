@@ -143,14 +143,14 @@ abstract class Location
     public function getSpacecraftsWithoutCloak(): Collection
     {
         return $this->spacecrafts
-            ->filter(fn(Spacecraft $spacecraft): bool => !$spacecraft->isCloaked());
+            ->filter(fn (Spacecraft $spacecraft): bool => !$spacecraft->isCloaked());
     }
 
     /** @return Collection<int, Spacecraft> */
     public function getSpacecraftsWithoutVacation(): Collection
     {
         return $this->spacecrafts
-            ->filter(fn(Spacecraft $spacecraft): bool => !$spacecraft->getUser()->isVacationRequestOldEnough());
+            ->filter(fn (Spacecraft $spacecraft): bool => !$spacecraft->getUser()->isVacationRequestOldEnough());
     }
 
     /** @return Collection<int, Trumfield> */
@@ -212,7 +212,7 @@ abstract class Location
         }
 
         $usableEntries = $wormholeEntries
-            ->filter(fn(WormholeEntry $entry): bool => $entry->isUsable($this))
+            ->filter(fn (WormholeEntry $entry): bool => $entry->isUsable($this))
             ->toArray();
 
         return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];

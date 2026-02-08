@@ -6,10 +6,10 @@ namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 
 use request;
 use RuntimeException;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -17,8 +17,8 @@ final class ShowSystemSettings implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_SYSTEM_SETTINGS_AJAX';
 
-    /** 
-     * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader 
+    /**
+     * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader
      */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader

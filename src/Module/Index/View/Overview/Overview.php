@@ -26,7 +26,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar(
             'SYSTEM_NEWS',
             array_map(
-                fn(News $news): NewsItemInterface => $this->newsFactory->createNewsItem(
+                fn (News $news): NewsItemInterface => $this->newsFactory->createNewsItem(
                     $news
                 ),
                 $this->newsRepository->getRecent(5)

@@ -6,6 +6,4 @@ namespace Stu\Component\Ship\Wormhole;
 
 use Exception;
 
-class WormholeEntryUnallowedException extends Exception
-{
-}
+class WormholeEntryUnallowedException extends Exception {}

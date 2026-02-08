@@ -15,8 +15,8 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\MiningQueueRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
 {

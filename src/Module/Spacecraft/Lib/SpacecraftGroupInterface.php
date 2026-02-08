@@ -3,7 +3,6 @@
 namespace Stu\Module\Spacecraft\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\User;
 
 interface SpacecraftGroupInterface

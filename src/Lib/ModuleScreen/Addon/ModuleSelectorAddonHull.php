@@ -11,9 +11,7 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
     /** @var array<int>|null */
     private ?array $interval = null;
 
-    public function __construct(private TorpedoHullRepositoryInterface $torpedoHullRepository, private GradientColorInterface $gradientColor)
-    {
-    }
+    public function __construct(private TorpedoHullRepositoryInterface $torpedoHullRepository, private GradientColorInterface $gradientColor) {}
 
     //public function calculateGradientColor(int $modificator): string
     #[\Override]

@@ -12,9 +12,7 @@ use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
  */
 final class ProfileVisitorRegistration implements ProfileVisitorRegistrationInterface
 {
-    public function __construct(private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository)
-    {
-    }
+    public function __construct(private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository) {}
 
     #[\Override]
     public function register(

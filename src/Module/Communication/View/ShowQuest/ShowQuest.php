@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowQuest;
 
+use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\NPCQuestRepositoryInterface;
-use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
-use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
+use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestRepositoryInterface;
+use Stu\Orm\Repository\NPCQuestUserRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
-use Stu\Component\Quest\QuestUserModeEnum;
-use Stu\Orm\Entity\NPCQuest;
 
 final class ShowQuest implements ViewControllerInterface
 {
@@ -106,7 +106,7 @@ final class ShowQuest implements ViewControllerInterface
                         $canApply = true;
                     } else {
                         $activeMembersCount = count($quest->getQuestUsers()->filter(
-                            fn($questUser) => $questUser->getMode()->value === 1
+                            fn ($questUser) => $questUser->getMode()->value === 1
                         ));
                         if ($activeMembersCount < $quest->getApplicantMax()) {
                             $canApply = true;

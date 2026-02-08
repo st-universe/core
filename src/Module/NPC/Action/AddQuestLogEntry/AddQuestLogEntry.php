@@ -72,7 +72,7 @@ final class AddQuestLogEntry implements ActionControllerInterface
     private function notifyQuestMembers(NPCQuest $quest, NPCQuestLog $logEntry): void
     {
         $activeMembers = $quest->getQuestUsers()->filter(
-            fn($questUser) => $questUser->getMode()->value === 1
+            fn ($questUser) => $questUser->getMode()->value === 1
         );
 
         $questLeaderId = $quest->getUserId();

@@ -72,7 +72,7 @@ final class EditKnPost implements ActionControllerInterface
 
 
         $currentCharacterEntities = $this->knCharactersRepository->findBy(['knPost' => $post]);
-        $currentCharacterIds = array_map(fn(KnCharacter $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
+        $currentCharacterIds = array_map(fn (KnCharacter $character): int => $character->getUserCharacter()->getId(), $currentCharacterEntities);
 
 
         $newCharacterIdsInput = $this->editKnPostRequest->getCharacterIds();

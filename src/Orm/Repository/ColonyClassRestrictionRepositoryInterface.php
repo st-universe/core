@@ -4,9 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyClassRestriction;
-use Stu\Orm\Entity\ColonyClass;
-use Stu\Orm\Entity\Terraforming;
-use Stu\Orm\Entity\Building;
 
 /**
  * @extends ObjectRepository<ColonyClassRestriction>

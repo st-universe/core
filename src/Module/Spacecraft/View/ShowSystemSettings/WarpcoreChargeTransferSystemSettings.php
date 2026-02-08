@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 
-
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class WarpcoreChargeTransferSystemSettings implements SystemSettingsProviderInterface

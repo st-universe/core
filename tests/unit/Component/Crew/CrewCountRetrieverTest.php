@@ -8,9 +8,9 @@ use Mockery\MockInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
 class CrewCountRetrieverTest extends StuTestCase

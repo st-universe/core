@@ -10,9 +10,7 @@ use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    public function __construct(private NoteRepositoryInterface $noteRepository)
-    {
-    }
+    public function __construct(private NoteRepositoryInterface $noteRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

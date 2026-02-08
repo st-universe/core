@@ -15,8 +15,6 @@ use Stu\Orm\Repository\PirateRoundRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-
-
 final class BeginPirateRound implements MaintenanceHandlerInterface
 {
     public const array FORBIDDEN_ADMIN_AREAS = [

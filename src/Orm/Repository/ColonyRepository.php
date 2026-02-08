@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Commodity\CommodityTypeConstants;
@@ -21,9 +21,9 @@ use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PirateWrath;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
 
@@ -187,7 +187,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
+                'SELECT u.id as user_id, bc.commodity_id AS commodity_id, SUM(bc.count) AS sum
                 FROM stu_user u
                 JOIN stu_colony c
                 ON u.id = c.user_id 
@@ -215,7 +215,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
+                'SELECT c.user_id, bc.commodity_id, SUM(bc.count) AS sum
                 FROM stu_colony c
                 JOIN stu_colonies_fielddata cf
                 ON cf.colony_id = c.id
@@ -243,7 +243,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         return $this->getEntityManager()
             ->createNativeQuery(
-            'SELECT user_id, SUM(satisfied) AS satisfied
+                'SELECT user_id, SUM(satisfied) AS satisfied
                 FROM ( SELECT c.user_id,
                             LEAST( COALESCE(cc.bev_work, 0),
                             ( SELECT COALESCE(SUM(bc.count), 0)

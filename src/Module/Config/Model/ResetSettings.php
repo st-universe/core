@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class ResetSettings extends AbstractSettings implements ResetSettingsInterface
 {
     private const string SETTING_DELAY_IN_SECONDS = 'delay_in_seconds';

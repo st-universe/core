@@ -18,9 +18,7 @@ final class ShowRegistration implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_REGISTRATION';
 
-    public function __construct(private ShowRegistrationRequestInterface $showRegistrationRequest, private FactionRepositoryInterface $factionRepository, private UiItemFactoryInterface $uiItemFactory, private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ShowRegistrationRequestInterface $showRegistrationRequest, private FactionRepositoryInterface $factionRepository, private UiItemFactoryInterface $uiItemFactory, private ConfigInterface $config) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

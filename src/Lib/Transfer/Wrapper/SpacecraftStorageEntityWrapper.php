@@ -6,8 +6,8 @@ namespace Stu\Lib\Transfer\Wrapper;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
-use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TorpedoType;

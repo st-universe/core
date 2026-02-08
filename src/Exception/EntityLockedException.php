@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-final class EntityLockedException extends StuException
-{
-}
+final class EntityLockedException extends StuException {}

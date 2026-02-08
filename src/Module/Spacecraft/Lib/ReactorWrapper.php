@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Spacecraft\System\Data\AbstractReactorSystemData;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class ReactorWrapper implements ReactorWrapperInterface
 {

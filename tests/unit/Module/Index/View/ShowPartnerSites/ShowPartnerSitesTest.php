@@ -51,7 +51,7 @@ class ShowPartnerSitesTest extends StuTestCase
             ->with(
                 'PARTNERSITES',
                 Mockery::on(
-                    fn(array $items): bool =>
+                    fn (array $items): bool =>
                     $items === [[
                         'name' => $siteName,
                         'description' => $siteDescription,

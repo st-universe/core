@@ -15,7 +15,6 @@ use Stu\Orm\Entity\Spacecraft;
 
 class EpsConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface
 {
-
     #[\Override]
     protected function skipWhenTractored(): bool
     {

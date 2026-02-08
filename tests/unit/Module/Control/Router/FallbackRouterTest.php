@@ -28,7 +28,7 @@ class FallbackRouterTest extends StuTestCase
         static::expectException(FallbackRouteException::class);
         static::expectExceptionMessageMatches('/no fallback handler for exception class .*/');
 
-        $exception = new class extends FallbackRouteException {};
+        $exception = new class () extends FallbackRouteException {};
 
         $this->subject->showFallbackSite($exception, $this->mock(GameControllerInterface::class));
     }

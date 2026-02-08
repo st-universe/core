@@ -4,7 +4,6 @@ namespace Stu\Module\Database\Lib;
 
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\ColonyRepositoryInterface;

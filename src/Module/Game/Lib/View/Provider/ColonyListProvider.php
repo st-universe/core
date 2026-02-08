@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  Stu\Module\Game\Lib\View\Provider;
+namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
@@ -15,9 +15,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListProvider implements ViewComponentProviderInterface
 {
-    public function __construct(private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ModuleQueueRepositoryInterface $moduleQueueRepository, private BuildingCommodityRepositoryInterface $buildingCommodityRepository)
-    {
-    }
+    public function __construct(private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ModuleQueueRepositoryInterface $moduleQueueRepository, private BuildingCommodityRepositoryInterface $buildingCommodityRepository) {}
 
     #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void

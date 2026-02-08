@@ -4,8 +4,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\LocationMining;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\MiningQueue;
+use Stu\Orm\Entity\Ship;
 
 /**
  * @extends ObjectRepository<LocationMining>

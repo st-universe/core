@@ -15,9 +15,7 @@ final class ShowAccounts implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ACCOUNTS';
 
-    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository)
-    {
-    }
+    public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

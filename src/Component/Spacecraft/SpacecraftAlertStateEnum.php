@@ -38,8 +38,8 @@ enum SpacecraftAlertStateEnum: int
     public static function getRandomAlertLevel(): SpacecraftAlertStateEnum
     {
         /** @var array<int> */
-        $values = array_map(fn(SpacecraftAlertStateEnum $alertState) => $alertState->value, self::cases());
-        if($values === []) {
+        $values = array_map(fn (SpacecraftAlertStateEnum $alertState) => $alertState->value, self::cases());
+        if ($values === []) {
             throw new RuntimeException('No alert states defined');
         }
 

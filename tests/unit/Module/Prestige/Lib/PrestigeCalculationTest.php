@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Prestige\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;

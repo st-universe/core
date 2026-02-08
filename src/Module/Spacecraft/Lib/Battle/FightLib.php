@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -13,8 +13,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\TrumfieldNfsItem;
@@ -26,7 +26,7 @@ final class FightLib implements FightLibInterface
 {
     public function __construct(
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private  CancelRepairInterface $cancelRepair,
+        private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit,
         private AlertLevelBasedReactionInterface $alertLevelBasedReaction,
         private InformationFactoryInterface $informationFactory

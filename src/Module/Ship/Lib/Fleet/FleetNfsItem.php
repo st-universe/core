@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Lib\Fleet;
 
 use RuntimeException;
 use Stu\Lib\Session\SessionStorageInterface;
+use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
-use Stu\Module\Ship\Lib\TFleetShipItemInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 

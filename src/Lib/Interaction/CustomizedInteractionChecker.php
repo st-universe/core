@@ -48,7 +48,7 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
 
         $refused = $this->source->canAccess(
             $this->target,
-            fn(InteractionCheckType $checkType): bool => $this->shouldCheck($checkType)
+            fn (InteractionCheckType $checkType): bool => $this->shouldCheck($checkType)
         );
         if ($refused !== null) {
             $information->addInformation($refused->getReason());
@@ -57,7 +57,7 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
 
         $refused = $this->target->canBeAccessedFrom(
             $this->source,
-            fn(InteractionCheckType $checkType): bool => $this->shouldCheck($checkType)
+            fn (InteractionCheckType $checkType): bool => $this->shouldCheck($checkType)
         );
         if ($refused !== null) {
             $information->addInformation($refused->getReason());

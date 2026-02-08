@@ -20,7 +20,7 @@ final class EasterEggHandler implements AnomalyHandlerInterface
     private const int EASTER_EGG_AMOUNT = 5;
 
     public function __construct(
-        private  MapRepositoryInterface $mapRepository,
+        private MapRepositoryInterface $mapRepository,
         private LayerRepositoryInterface $layerRepository,
         private AnomalyCreationInterface $anomalyCreation,
         private StorageRepositoryInterface $storageRepository

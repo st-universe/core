@@ -12,7 +12,6 @@ use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Control\SemaphoreUtilInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;

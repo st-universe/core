@@ -17,9 +17,7 @@ use Stu\Orm\Entity\GameRequest;
  */
 final class DatabaseAdapter extends AbstractAdapter
 {
-    public function __construct(private Connection $database)
-    {
-    }
+    public function __construct(private Connection $database) {}
 
     #[\Override]
     protected function log(

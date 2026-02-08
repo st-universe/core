@@ -4,10 +4,10 @@ namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestructionCauseEnum;
 use Stu\Module\Spacecraft\Lib\Interaction\TrackerDeviceManagerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class ResetTrackerDevices implements SpacecraftDestructionHandlerInterface

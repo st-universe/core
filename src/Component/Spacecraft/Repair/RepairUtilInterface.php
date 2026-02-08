@@ -7,8 +7,8 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\RepairTask;
-use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftSystem;
 
 interface RepairUtilInterface
 {

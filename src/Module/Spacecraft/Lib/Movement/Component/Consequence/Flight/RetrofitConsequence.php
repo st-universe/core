@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class RetrofitConsequence extends AbstractFlightConsequence implements FlightStartConsequenceInterface

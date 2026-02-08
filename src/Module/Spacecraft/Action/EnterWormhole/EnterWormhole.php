@@ -6,15 +6,15 @@ namespace Stu\Module\Spacecraft\Action\EnterWormhole;
 
 use RuntimeException;
 use Stu\Component\Ship\Wormhole\WormholeEntryPrivilegeUtilityInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
+use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Route\RandomSystemEntryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
-use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class EnterWormhole extends AbstractDirectedMovement

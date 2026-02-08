@@ -6,8 +6,8 @@ namespace Stu\Module\PlayerSetting\Action\CreateTutorials;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
 final class CreateTutorials implements ActionControllerInterface
 {

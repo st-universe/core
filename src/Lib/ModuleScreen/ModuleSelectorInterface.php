@@ -5,9 +5,9 @@ namespace Stu\Lib\ModuleScreen;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
-use Stu\Orm\Entity\Spacecraft;
 
 interface ModuleSelectorInterface
 {

@@ -8,9 +8,9 @@ use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\UserTutorialRepositoryInterface;
-use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Module\Game\View\Noop\Noop;
+use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
 final class FinishTutorial implements ActionControllerInterface
 {

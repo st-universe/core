@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\StandBy;
 
 use request;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;

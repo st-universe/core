@@ -14,9 +14,7 @@ class ColonyTickRunner implements TickRunnerInterface
 {
     private const string TICK_DESCRIPTION = "colonytick";
 
-    public function __construct(private ColonyTickManagerInterface $colonyTickManager, private TransactionTickRunnerInterface $transactionTickRunner)
-    {
-    }
+    public function __construct(private ColonyTickManagerInterface $colonyTickManager, private TransactionTickRunnerInterface $transactionTickRunner) {}
 
     #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void

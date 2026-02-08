@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
 use RuntimeException;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\SpacecraftBuildplan;

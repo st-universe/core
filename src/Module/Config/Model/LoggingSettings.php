@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class LoggingSettings extends AbstractSettings implements LoggingSettingsInterface
 {
     private const string SETTING_LOG_DIRECTORY = 'log_dir';

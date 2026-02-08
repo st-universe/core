@@ -6,8 +6,8 @@ namespace Stu\Component\Spacecraft\Crew;
 
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 
 interface SpacecraftCrewCalculatorInterface

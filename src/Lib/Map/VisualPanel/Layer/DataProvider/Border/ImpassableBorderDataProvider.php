@@ -13,7 +13,6 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ImpassableBorderDataProvider extends AbstractBorderDataProvider
 {
-
     public function __construct(
         private Spacecraft $currentSpacecraft,
         protected MapRepositoryInterface $mapRepository,

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowLSSFilter;
 
 use request;
+use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 

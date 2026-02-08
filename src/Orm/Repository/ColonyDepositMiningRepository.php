@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyDepositMining;
 
 /**
  * @extends EntityRepository<ColonyDepositMining>

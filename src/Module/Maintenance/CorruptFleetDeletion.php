@@ -7,9 +7,7 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class CorruptFleetDeletion implements MaintenanceHandlerInterface
 {
-    public function __construct(private FleetRepositoryInterface $fleetRepository)
-    {
-    }
+    public function __construct(private FleetRepositoryInterface $fleetRepository) {}
 
     #[\Override]
     public function handle(): void

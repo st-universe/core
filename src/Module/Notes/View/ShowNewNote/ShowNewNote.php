@@ -12,9 +12,7 @@ final class ShowNewNote implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_NEW_NOTE';
 
-    public function __construct(private NoteRepositoryInterface $noteRepository)
-    {
-    }
+    public function __construct(private NoteRepositoryInterface $noteRepository) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

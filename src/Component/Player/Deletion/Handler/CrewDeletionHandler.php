@@ -6,8 +6,8 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class CrewDeletionHandler implements PlayerDeletionHandlerInterface
 {

@@ -8,9 +8,7 @@ class ColonyProduction
 {
     private int $preview = 0;
 
-    public function __construct(private Commodity $commodity, private int $production, private ?int $pc)
-    {
-    }
+    public function __construct(private Commodity $commodity, private int $production, private ?int $pc) {}
 
     public function getCommodityId(): int
     {

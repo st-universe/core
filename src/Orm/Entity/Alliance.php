@@ -234,7 +234,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)
+            fn (AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)
         ));
     }
 
@@ -245,7 +245,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)
+            fn (AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::SUCCESSOR->value)
         ));
     }
 
@@ -256,7 +256,7 @@ class Alliance
     {
         return array_values(array_filter(
             $this->jobs->toArray(),
-            fn(AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)
+            fn (AllianceJob $job) => $job->hasPermission(AllianceJobPermissionEnum::DIPLOMATIC->value)
         ));
     }
 

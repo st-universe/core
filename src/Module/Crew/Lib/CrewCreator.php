@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Crew\Lib;
 
 use InvalidArgumentException;
-use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\CrewOriginException;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
@@ -14,9 +14,9 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

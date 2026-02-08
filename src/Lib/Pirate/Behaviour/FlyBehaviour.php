@@ -11,8 +11,8 @@ use Stu\Lib\Pirate\PirateReactionMetadata;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
-use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\PirateFleetBattleParty;
+use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
@@ -59,7 +59,7 @@ class FlyBehaviour implements PirateBehaviourInterface
 
         $flightRoute = $this->safeFlightRoute->getSafeFlightRoute(
             $leadShip,
-            fn(): Coordinate => $this->getCoordinate($leadWrapper, $currentLocation)
+            fn (): Coordinate => $this->getCoordinate($leadWrapper, $currentLocation)
         );
         if ($flightRoute === null) {
             $this->logger->log('    no safe flight route found');

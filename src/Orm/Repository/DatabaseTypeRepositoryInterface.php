@@ -10,6 +10,4 @@ use Stu\Orm\Entity\DatabaseType;
  *
  * @method null|DatabaseType find(integer $id)
  */
-interface DatabaseTypeRepositoryInterface extends ObjectRepository
-{
-}
+interface DatabaseTypeRepositoryInterface extends ObjectRepository {}

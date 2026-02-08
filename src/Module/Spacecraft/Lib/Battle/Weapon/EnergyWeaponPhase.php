@@ -45,7 +45,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $attacker->reduceEps($this->getEnergyWeaponEnergyCosts());
 
-            $targetWrapper = $targetWrapper ?? $targetPool->getRandomActiveMember();
+            $targetWrapper ??= $targetPool->getRandomActiveMember();
             if ($attacker->getFiringMode() === self::FIRINGMODE_RANDOM) {
                 $targetWrapper = $targetPool->getRandomActiveMember();
             }

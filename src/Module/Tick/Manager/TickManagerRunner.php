@@ -12,9 +12,7 @@ use Stu\Module\Tick\TickRunnerInterface;
  */
 final class TickManagerRunner implements TickRunnerInterface
 {
-    public function __construct(private TickManagerInterface $tickManager)
-    {
-    }
+    public function __construct(private TickManagerInterface $tickManager) {}
 
     #[\Override]
     public function run(int $batchGroup, int $batchGroupCount): void

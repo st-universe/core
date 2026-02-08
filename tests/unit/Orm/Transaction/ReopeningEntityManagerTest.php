@@ -8,7 +8,6 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Mockery\MockInterface;
-use Stu\Orm\Transaction\EntityManagerFactoryInterface;
 use Stu\StuTestCase;
 
 class ReopeningEntityManagerTest extends StuTestCase

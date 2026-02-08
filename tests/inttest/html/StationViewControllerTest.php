@@ -28,7 +28,7 @@ class StationViewControllerTest extends TwigTestCase
     #[\Override]
     protected function getSnapshotId(): string
     {
-        return (new ReflectionClass($this))->getShortName() . '--' .
+        return new ReflectionClass($this)->getShortName() . '--' .
             $this->snapshotKey;
     }
 
@@ -38,9 +38,9 @@ class StationViewControllerTest extends TwigTestCase
             ->getDefinedImplementationsOf(ViewControllerInterface::class, true);
 
         return $definedImplementations
-            ->map(fn(ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
-            ->filter(fn(array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW') && str_starts_with($array[0], 'STATION_VIEWS'))
-            ->filter(fn(array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
+            ->map(fn (ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
+            ->filter(fn (array $array): bool => !str_ends_with($array[0], '-DEFAULT_VIEW') && str_starts_with($array[0], 'STATION_VIEWS'))
+            ->filter(fn (array $array): bool => !in_array($array[0], self::CURRENTLY_UNSUPPORTED_KEYS))
             ->toArray();
     }
 

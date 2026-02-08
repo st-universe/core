@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Terraform;
 
 use request;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;

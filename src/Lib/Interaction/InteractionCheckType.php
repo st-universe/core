@@ -6,7 +6,7 @@ use Stu\Exception\SanityCheckException;
 
 enum InteractionCheckType
 {
-        // SOURCE
+    // SOURCE
     case EXPECT_SOURCE_SUFFICIENT_CREW;
     case EXPECT_SOURCE_UNSHIELDED;
     case EXPECT_SOURCE_UNCLOAKED;
@@ -16,7 +16,7 @@ enum InteractionCheckType
     case EXPECT_SOURCE_UNTRACTORED;
     case EXPECT_SOURCE_UNBLOCKED;
 
-        // TARGET
+    // TARGET
     case EXPECT_TARGET_NO_VACATION;
     case EXPECT_TARGET_NOT_NPC;
     case EXPECT_TARGET_UNSHIELDED;

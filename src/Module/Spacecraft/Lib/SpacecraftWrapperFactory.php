@@ -15,13 +15,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\FleetWrapper;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapper;
-use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftGroup;
-use Stu\Module\Spacecraft\Lib\SpacecraftGroupInterface;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapper;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Fleet;
@@ -131,8 +127,8 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     #[\Override]
     public function wrapSpacecrafts(array $spacecrafts): Collection
     {
-        return (new ArrayCollection($spacecrafts))
-            ->map(fn(Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->wrapSpacecraft($spacecraft));
+        return new ArrayCollection($spacecrafts)
+            ->map(fn (Spacecraft $spacecraft): SpacecraftWrapperInterface => $this->wrapSpacecraft($spacecraft));
     }
 
     #[\Override]
@@ -173,7 +169,7 @@ final class SpacecraftWrapperFactory implements SpacecraftWrapperFactoryInterfac
     public function wrapFleets(array $fleets): array
     {
         return array_map(
-            fn(Fleet $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
+            fn (Fleet $fleet): FleetWrapperInterface => $this->wrapFleet($fleet),
             $fleets
         );
     }

@@ -15,9 +15,7 @@ final class ShowResearch implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RESEARCH';
 
-    public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private SelectedTechFactoryInterface $talFactory)
-    {
-    }
+    public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private SelectedTechFactoryInterface $talFactory) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

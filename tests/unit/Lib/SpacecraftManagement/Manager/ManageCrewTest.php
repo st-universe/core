@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
-use Stu\Lib\Information\InformationWrapper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
+use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
-use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Orm\Entity\Crew;
-use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class ManageCrewTest extends StuTestCase

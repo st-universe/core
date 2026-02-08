@@ -15,9 +15,7 @@ final class ShowPartnerSites implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_PARTNER_SITES';
 
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ConfigInterface $config) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

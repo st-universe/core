@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Database\AchievementManagerInterface;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -25,8 +25,8 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
 {

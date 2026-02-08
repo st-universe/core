@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\Action;
 
 use request;
-use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Exception\SpacecraftDoesNotExistException;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class CommodityCheat implements ActionControllerInterface
 {

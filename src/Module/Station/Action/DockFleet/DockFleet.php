@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\DockFleet;
 
 use request;
-use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
-use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Spacecraft;
@@ -33,8 +33,7 @@ final class DockFleet implements ActionControllerInterface
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void

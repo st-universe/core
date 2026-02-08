@@ -7,7 +7,7 @@ use Stu\Orm\Entity\AllianceBoardTopic;
 
 /**
  * @extends ObjectRepository<AllianceBoardTopic>
- * 
+ *
  * @method ?AllianceBoardTopic find(integer $id)
  */
 interface AllianceBoardTopicRepositoryInterface extends ObjectRepository

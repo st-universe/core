@@ -52,7 +52,7 @@ class LssBlockadeGridFactory
 
         return array_filter(
             $locations,
-            fn(array $entry): bool => $entry['effects'] !== null && str_contains($entry['effects'], FieldTypeEffectEnum::LSS_BLOCKADE->value)
+            fn (array $entry): bool => $entry['effects'] !== null && str_contains($entry['effects'], FieldTypeEffectEnum::LSS_BLOCKADE->value)
         );
     }
 }

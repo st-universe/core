@@ -10,8 +10,8 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\Gui\Component\EpsBarProvider;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 

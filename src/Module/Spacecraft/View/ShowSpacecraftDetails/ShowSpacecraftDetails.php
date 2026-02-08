@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
 use request;
-use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
+use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
