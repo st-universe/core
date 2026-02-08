@@ -84,12 +84,9 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 WHERE f.%s = :hostId
                 AND f.aktiv IN (:state)
                 AND f.field_id NOT IN (:excluded)
-                AND b.id IN (
-                    SELECT b.id FROM %s b WHERE b.eps_proc < 0
-                )',
+                AND  b.eps_proc < 0',
                 PlanetField::class,
-                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
-                Building::class
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
             )
         )->setParameters([
             'hostId' => $host->getId(),
@@ -107,12 +104,10 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             sprintf(
                 'SELECT f FROM %s f
                 JOIN f.building b
-                WHERE f.%s = :hostId AND b.id IN (
-                    SELECT b.id FROM %s b WHERE b.eps_proc > 0
-                )',
+                WHERE f.%s = :hostId
+                AND b.eps_proc > 0',
                 PlanetField::class,
-                $host->getHostType()->getPlanetFieldHostColumnIdentifier(),
-                Building::class
+                $host->getHostType()->getPlanetFieldHostColumnIdentifier()
             )
         )->setParameters([
             'hostId' => $host->getId()
