@@ -50,6 +50,10 @@ final class LeaveFleet implements ActionControllerInterface
         $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
         $game->addExecuteJS('refreshShiplistSingles();');
 
+        // Initialize the fleet's ships collection to ensure Doctrine properly tracks the removal
+        // This is necessary due to Doctrine's lazy-loading behavior with inverse-side OneToMany relationships
+        $fleet->getShips()->getValues();
+
         $ship->setFleet(null);
 
         $game->getInfo()->addInformation(

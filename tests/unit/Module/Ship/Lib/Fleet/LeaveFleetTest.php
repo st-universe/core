@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Fleet;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
@@ -79,6 +80,9 @@ class LeaveFleetTest extends StuTestCase
         $fleet->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(43);
+        $fleet->shouldReceive('getShips')
+            ->withNoArgs()
+            ->andReturn(new ArrayCollection());
 
         $this->ship->shouldReceive('getId')
             ->withNoArgs()

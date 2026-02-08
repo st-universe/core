@@ -25,6 +25,10 @@ final class LeaveFleet implements LeaveFleetInterface
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader->change($ship);
         } else {
+            // Initialize the fleet's ships collection to ensure Doctrine properly tracks the removal
+            // This is necessary due to Doctrine's lazy-loading behavior with inverse-side OneToMany relationships
+            $fleet->getShips()->getValues();
+
             $ship->setFleet(null);
             $ship->setIsFleetLeader(false);
         }
