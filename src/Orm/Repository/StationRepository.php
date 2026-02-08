@@ -16,13 +16,13 @@ use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\TStationItem;
 use Stu\Orm\Entity\Crew;
-use Stu\Orm\Entity\Location;
-use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateWrath;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\Station;
@@ -69,7 +69,8 @@ final class StationRepository extends EntityRepository implements StationReposit
         $systemMap = $spacecraft->getStarsystemMap();
         $map = $spacecraft->getMap();
 
-        return $this->getEntityManager()
+        return $this
+            ->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT st FROM %s st
@@ -103,9 +104,9 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
-                'layerId' => ($systemMap !== null || $layer === null) ? 0 : $layer->getId(),
-                'cx' => ($systemMap !== null || $map === null) ? 0 : $map->getCx(),
-                'cy' => ($systemMap !== null || $map === null) ? 0 : $map->getCy()
+                'layerId' => $systemMap !== null || $layer === null ? 0 : $layer->getId(),
+                'cx' => $systemMap !== null || $map === null ? 0 : $map->getCx(),
+                'cy' => $systemMap !== null || $map === null ? 0 : $map->getCy()
             ])
             ->getResult();
     }
@@ -113,24 +114,29 @@ final class StationRepository extends EntityRepository implements StationReposit
     #[\Override]
     public function getTradePostsWithoutDatabaseEntry(): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
                 JOIN %s tp
                 WITH s.tradePost = tp
                 WHERE s.database_id is null',
-                Station::class,
-                TradePost::class
+                    Station::class,
+                    TradePost::class
+                )
             )
-        )->getResult();
+            ->getResult();
     }
 
     #[\Override]
     public function getByUplink(int $userId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
                 JOIN %s sp
                 WITH s.id = sp.id
                 JOIN %s ca
@@ -146,40 +152,44 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)',
-                Station::class,
-                Spacecraft::class,
-                CrewAssignment::class,
-                Crew::class,
-                SpacecraftSystem::class,
-                User::class
+                    Station::class,
+                    Spacecraft::class,
+                    CrewAssignment::class,
+                    Crew::class,
+                    SpacecraftSystem::class,
+                    User::class
+                )
             )
-        )->setParameters([
-            'userId' => $userId,
-            'systemType' => SpacecraftSystemTypeEnum::UPLINK->value,
-            'mode' => SpacecraftSystemModeEnum::MODE_ON->value,
-            'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
-            'false' => false
-        ])
+            ->setParameters([
+                'userId' => $userId,
+                'systemType' => SpacecraftSystemTypeEnum::UPLINK->value,
+                'mode' => SpacecraftSystemModeEnum::MODE_ON->value,
+                'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
+                'false' => false
+            ])
             ->getResult();
     }
 
     #[\Override]
     public function getStationConstructions(): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
                 JOIN %s r
                 WITH s.rump_id = r.id
                 WHERE s.user_id > :firstUserId
                 AND r.category_id = :catId',
-                Spacecraft::class,
-                SpacecraftRump::class
+                    Spacecraft::class,
+                    SpacecraftRump::class
+                )
             )
-        )->setParameters([
-            'catId' => SpacecraftRumpCategoryEnum::CONSTRUCTION->value,
-            'firstUserId' => UserConstants::USER_FIRST_ID
-        ])
+            ->setParameters([
+                'catId' => SpacecraftRumpCategoryEnum::CONSTRUCTION->value,
+                'firstUserId' => UserConstants::USER_FIRST_ID
+            ])
             ->getResult();
     }
 
@@ -189,16 +199,17 @@ final class StationRepository extends EntityRepository implements StationReposit
         bool $showCloaked = false,
         Map|StarSystemMap|null $field = null
     ): array {
-
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(TStationItem::class, 's');
         TStationItem::addTSpacecraftItemFields($rsm);
 
         $location = $field ?? $spacecraft->getLocation();
 
-        $query = $this->getEntityManager()->createNativeQuery(
-            sprintf(
-                'SELECT s.id as shipid, s.rump_id as rumpid , ss.mode as warpstate,
+        $query = $this
+            ->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'SELECT s.id as shipid, s.rump_id as rumpid , ss.mode as warpstate,
                     COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
                     s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_hull as maxhull,
                     sc.shield as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
@@ -232,18 +243,25 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND s.id != :ignoreId
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
-            ),
-            $rsm
-        )->setParameters([
-            'locationId' => $location->getId(),
-            'ignoreId' => $spacecraft->getId(),
-            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
-            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
-            'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
-            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
-            'false' => false
-        ]);
+                    $showCloaked
+                        ? ''
+                        : sprintf(
+                            ' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ',
+                            $spacecraft->getUser()->getId(),
+                            SpacecraftSystemModeEnum::MODE_ON->value
+                        )
+                ),
+                $rsm
+            )
+            ->setParameters([
+                'locationId' => $location->getId(),
+                'ignoreId' => $spacecraft->getId(),
+                'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+                'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+                'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
+                'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
+                'false' => false
+            ]);
 
         return $query->getResult();
     }
@@ -257,7 +275,8 @@ final class StationRepository extends EntityRepository implements StationReposit
     #[\Override]
     public function getStationsByUser(int $userId): array
     {
-        return $this->getEntityManager()
+        return $this
+            ->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT s
@@ -288,9 +307,11 @@ final class StationRepository extends EntityRepository implements StationReposit
         $location = $wrapper->get()->getLocation();
         $range = $wrapper->getLssSystemData()?->getSensorRange() ?? 0;
 
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
                 JOIN %s r WITH s.rump = r
                 JOIN %s l WITH s.location = l
                 JOIN %s u WITH s.user = u
@@ -305,14 +326,14 @@ final class StationRepository extends EntityRepository implements StationReposit
                 AND ur.creation < :eightWeeksEarlier
                 AND (u.vac_active = :false OR u.vac_request_date > :vacationThreshold)
                 AND COALESCE(w.protection_timeout, 0) < :currentTime',
-                Station::class,
-                SpacecraftRump::class,
-                Location::class,
-                User::class,
-                UserRegistration::class,
-                PirateWrath::class
+                    Station::class,
+                    SpacecraftRump::class,
+                    Location::class,
+                    User::class,
+                    UserRegistration::class,
+                    PirateWrath::class
+                )
             )
-        )
             ->setParameters([
                 'phalanxRoleId' => SpacecraftRumpRoleEnum::SENSOR->value,
                 'minX' => $location->getCx() - $range,
@@ -341,6 +362,7 @@ final class StationRepository extends EntityRepository implements StationReposit
         ]);
     }
 
+    #[\Override]
     public function getByAlliance(int $allianceId): array
     {
         return $this->findBy(
