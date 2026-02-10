@@ -98,6 +98,7 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         $gif->setFormat('gif');
         $frame = new Imagick();
         $frame->readImageBlob($this->getImageBlob($img));
+        $frame->setImageDelay(25); // 1/4 second delay
         $gif->addImage($frame);
         $gif->writeImages($gifPath, true);
     }
@@ -110,6 +111,7 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         }
         $frame = new Imagick();
         $frame->readImageBlob($this->getImageBlob($img));
+        $frame->setImageDelay(25); // 1/4 second delay
         $gif->addImage($frame);
         $gif->writeImages($gifPath, true);
     }
