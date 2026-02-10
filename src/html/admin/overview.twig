@@ -2,5 +2,16 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
-mehh
+{% if ION_STORM_MAP %}
+	<div id="weather" style="width: 250px; margin-left: 5px; float: left;">
+		<div class="divhead">Wetterbericht</div>
+		<div class="divbody">
+			{% autoescape false %}
+				{{ ION_STORM_MAP }}
+			{% endautoescape %}
+		</div>
+	</div>
+{% endif %}
+
+
 {% endblock %}
