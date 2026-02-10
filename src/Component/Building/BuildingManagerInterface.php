@@ -19,7 +19,7 @@ interface BuildingManagerInterface
     /**
      * Deconstructs the building on the given field
      */
-    public function remove(PlanetField $fieldbool, bool $isDueToUpgrade = false): void;
+    public function remove(PlanetField $field, bool $isDueToUpgrade = false): void;
 
     /**
      * Finishes the buildprocess for the building on the given field
