@@ -40,15 +40,33 @@ class BuildingManagerTest extends StuTestCase
         $this->buildingFunctionActionMapper = $this->mock(BuildingFunctionActionMapperInterface::class);
         $colonyBuildingEffects = new ColonyBuildingEffects($this->planetFieldRepository);
         $buildingReactivationHandler = new BuildingReactivationHandler($this->planetFieldRepository);
-
-        $this->buildingManager = new BuildingManager(
+        $buildingActivationHandler = new BuildingActivationHandler(
+            $this->planetFieldRepository,
+            $this->colonyRepository,
+            $this->colonySandboxRepository,
+            $this->buildingPostAction
+        );
+        $buildingRemovalHandler = new BuildingRemovalHandler(
             $this->planetFieldRepository,
             $this->colonyRepository,
             $this->colonySandboxRepository,
             $this->buildingFunctionActionMapper,
-            $this->buildingPostAction,
             $colonyBuildingEffects,
-            $buildingReactivationHandler
+            $buildingActivationHandler
+        );
+        $buildingFinishHandler = new BuildingFinishHandler(
+            $this->planetFieldRepository,
+            $this->colonyRepository,
+            $this->colonySandboxRepository,
+            $colonyBuildingEffects,
+            $buildingReactivationHandler,
+            $buildingActivationHandler
+        );
+
+        $this->buildingManager = new BuildingManager(
+            $buildingActivationHandler,
+            $buildingRemovalHandler,
+            $buildingFinishHandler
         );
     }
 
