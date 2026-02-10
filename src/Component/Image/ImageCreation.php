@@ -19,10 +19,14 @@ final class ImageCreation implements ImageCreationInterface
     }
 
     #[\Override]
-    public function gdImageInSrc(GdImage $gdImage): string
+    public function gdImageInSrc(GdImage $gdImage, string $format = 'png'): string
     {
         ob_start();
-        imagepng($gdImage);
+        if ($format === 'png') {
+            imagepng($gdImage);
+        } else {
+            imagegif($gdImage);
+        }
         $img_data = ob_get_contents();
 
         if ($img_data === false) {
@@ -30,6 +34,6 @@ final class ImageCreation implements ImageCreationInterface
         }
         ob_end_clean();
 
-        return '<img src="data:image/png;base64,' . base64_encode($img_data) . '"/>';
+        return '<img src="data:image/' . $format . ';base64,' . base64_encode($img_data) . '"/>';
     }
 }
