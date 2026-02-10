@@ -30,4 +30,11 @@ interface AnomalyRepositoryInterface extends ObjectRepository
     public function getActiveCountByTypeWithoutParent(AnomalyTypeEnum $type): int;
 
     public function getClosestAnomalyDistance(SpacecraftWrapperInterface $wrapper): ?int;
+
+    /**
+     * Retrieves all locations with ionstorm anomalies.
+     *
+     * @return array<Location>
+     */
+    public function getLocationsWithIonstormAnomalies(): array;
 }
