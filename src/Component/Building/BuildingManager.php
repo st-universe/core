@@ -133,44 +133,16 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        if (!$isDueToUpgrade && !$building->isRemovable()) {
+        if (!$this->canRemoveBuilding($building, $isDueToUpgrade)) {
             return;
         }
 
         $host = $field->getHost();
-        $changeable = $this->getChangeable($field);
-        $wasActive = $field->isActive();
-
         if (!$field->isUnderConstruction()) {
-            if ($wasActive && $host instanceof Colony) {
-                $this->handleUndergroundLogisticsRemoval($field, $host);
-                if (!$isDueToUpgrade) {
-                    $this->handleOrbitalMaintenanceRemoval($field, $host);
-                }
-            }
-
-            $this->deactivate($field);
-
-            $shouldUpdateStorageAndEps = true;
-            if ($this->buildingRequiresUndergroundLogistics($building)) {
-                $shouldUpdateStorageAndEps = $this->hasUndergroundLogisticsProduction($host);
-            }
-
-            if ($shouldUpdateStorageAndEps) {
-                $changeable
-                    ->setMaxStorage($changeable->getMaxStorage() - $building->getStorage())
-                    ->setMaxEps($changeable->getMaxEps() - $building->getEpsStorage());
-            }
+            $this->handleRemovalWhenNotUnderConstruction($field, $building, $host, $isDueToUpgrade);
         }
 
-        foreach ($building->getFunctions() as $function) {
-            $buildingFunction = $function->getFunction();
-
-            $handler = $this->buildingFunctionActionMapper->map($buildingFunction);
-            if ($handler !== null && $host instanceof Colony) {
-                $handler->destruct($buildingFunction, $host);
-            }
-        }
+        $this->destructBuildingFunctions($building, $host);
 
         $field->clearBuilding();
 
@@ -186,57 +158,204 @@ final class BuildingManager implements BuildingManagerInterface
             return null;
         }
 
-        $changeable = $this->getChangeable($field);
+        $host = $field->getHost();
+        $shouldReactivateOthers = $this->initializeFinishedField($field, $building);
+        $shouldApplyUndergroundLogisticsActivation = $this->shouldApplyUndergroundLogisticsActivationAfterFinish(
+            $host,
+            $building
+        );
 
-        $field
-            ->setActive(0)
-            ->setIntegrity($building->getIntegrity());
+        [$activationDetails, $wasActivated] = $this->createFinishActivationResult($field, $building, $activate);
 
-        $shouldReactivateOthers = $field->getReactivateAfterUpgrade() === $field->getId();
-
-        $activationDetails = null;
-        if ($building->isActivateAble()) {
-            if ($activate) {
-                $activationDetails = $this->activate($field)
-                    ? '[color=green]Und konnte wunschgemäß aktiviert werden[/color]'
-                    : '[color=red]Konnte allerdings nicht wie gewünscht aktiviert werden[/color]';
-            } else {
-                $activationDetails = 'Und wurde wunschgemäß nicht aktiviert';
-            }
-        }
-
-        $shouldUpdateStorageAndEps = true;
-        if ($this->buildingRequiresUndergroundLogistics($building)) {
-            $host = $field->getHost();
-            if (!$this->hasEnoughUndergroundLogistics($host, $building)) {
-                $shouldUpdateStorageAndEps = false;
-            }
-        }
-
-        if ($shouldUpdateStorageAndEps) {
-            $changeable
-                ->setMaxStorage($changeable->getMaxStorage() + $building->getStorage())
-                ->setMaxEps($changeable->getMaxEps() + $building->getEpsStorage());
+        $this->updateStorageAndEpsAfterFinish($field, $building);
+        if ($shouldApplyUndergroundLogisticsActivation && $wasActivated && $host instanceof Colony) {
+            $this->handleUndergroundLogisticsActivation($building, $host);
         }
 
         $this->saveHost($field->getHost());
         $this->planetFieldRepository->save($field);
 
-        $reactivatedCount = 0;
-        if ($shouldReactivateOthers) {
-            $host = $field->getHost();
-            if ($host instanceof Colony) {
-                $field->setReactivateAfterUpgrade(null);
-                $this->planetFieldRepository->save($field);
-                $reactivatedCount = $this->reactivateOrbitalBuildingsAfterUpgrade($host, $field->getId());
+        $reactivatedCount = $shouldReactivateOthers
+            ? $this->reactivateFieldsAfterUpgrade($field, $wasActivated)
+            : 0;
+        return $this->appendReactivationDetails($activationDetails, $reactivatedCount);
+    }
+
+    private function canRemoveBuilding(Building $building, bool $isDueToUpgrade): bool
+    {
+        return $isDueToUpgrade || $building->isRemovable();
+    }
+
+    private function handleRemovalWhenNotUnderConstruction(
+        PlanetField $field,
+        Building $building,
+        Colony|ColonySandbox $host,
+        bool $isDueToUpgrade
+    ): void {
+        if ($field->isActive() && $host instanceof Colony) {
+            $this->handleUndergroundLogisticsRemoval($building, $host);
+            if (!$isDueToUpgrade) {
+                $this->handleOrbitalMaintenanceRemoval($building, $host);
             }
         }
 
-        if ($reactivatedCount > 0) {
-            $activationDetails .= sprintf(' - Es wurden %d Orbitalgebäude reaktiviert', $reactivatedCount);
+        $this->deactivate($field);
+        $this->updateStorageAndEpsAfterRemoval($field, $building, $host);
+    }
+
+    private function updateStorageAndEpsAfterRemoval(
+        PlanetField $field,
+        Building $building,
+        Colony|ColonySandbox $host
+    ): void {
+        if (!$this->shouldUpdateStorageAndEpsAfterRemoval($host, $building)) {
+            return;
         }
 
-        return $activationDetails;
+        $this->adjustStorageAndEps(
+            $this->getChangeable($field),
+            -$building->getStorage(),
+            -$building->getEpsStorage()
+        );
+    }
+
+    private function shouldUpdateStorageAndEpsAfterRemoval(Colony|ColonySandbox $host, Building $building): bool
+    {
+        if (!$this->buildingRequiresUndergroundLogistics($building)) {
+            return true;
+        }
+
+        return $this->hasUndergroundLogisticsProduction($host);
+    }
+
+    private function destructBuildingFunctions(Building $building, Colony|ColonySandbox $host): void
+    {
+        foreach ($building->getFunctions() as $function) {
+            $buildingFunction = $function->getFunction();
+            $handler = $this->buildingFunctionActionMapper->map($buildingFunction);
+
+            if ($handler !== null && $host instanceof Colony) {
+                $handler->destruct($buildingFunction, $host);
+            }
+        }
+    }
+
+    private function initializeFinishedField(PlanetField $field, Building $building): bool
+    {
+        $field
+            ->setActive(0)
+            ->setIntegrity($building->getIntegrity());
+
+        return $field->getReactivateAfterUpgrade() === $field->getId();
+    }
+
+    /**
+     * @return array{0: ?string, 1: bool}
+     */
+    private function createFinishActivationResult(
+        PlanetField $field,
+        Building $building,
+        bool $activate
+    ): array
+    {
+        if (!$building->isActivateAble()) {
+            return [null, false];
+        }
+
+        if (!$activate) {
+            return ['Und wurde wunschgemäß nicht aktiviert', false];
+        }
+
+        $wasActivated = $this->activate($field);
+
+        return [
+            $wasActivated
+                ? '[color=green]Und konnte wunschgemäß aktiviert werden[/color]'
+                : '[color=red]Konnte allerdings nicht wie gewünscht aktiviert werden[/color]',
+            $wasActivated
+        ];
+    }
+
+    private function shouldApplyUndergroundLogisticsActivationAfterFinish(
+        Colony|ColonySandbox $host,
+        Building $building
+    ): bool
+    {
+        if (!$host instanceof Colony) {
+            return false;
+        }
+
+        if (!$this->buildingProducesUndergroundLogistics($building)) {
+            return false;
+        }
+
+        return !$this->hasUndergroundLogisticsProduction($host);
+    }
+
+    private function updateStorageAndEpsAfterFinish(PlanetField $field, Building $building): void
+    {
+        $host = $field->getHost();
+        if (!$this->shouldUpdateStorageAndEpsAfterFinish($host, $building)) {
+            return;
+        }
+
+        $this->adjustStorageAndEps(
+            $this->getChangeable($field),
+            $building->getStorage(),
+            $building->getEpsStorage()
+        );
+    }
+
+    private function shouldUpdateStorageAndEpsAfterFinish(Colony|ColonySandbox $host, Building $building): bool
+    {
+        if (!$this->buildingRequiresUndergroundLogistics($building)) {
+            return true;
+        }
+
+        return $this->hasEnoughUndergroundLogistics($host, $building);
+    }
+
+    private function reactivateFieldsAfterUpgrade(PlanetField $field, bool $wasActivated): int
+    {
+        $host = $field->getHost();
+        $upgradedFieldId = $field->getId();
+
+        $field->setReactivateAfterUpgrade(null);
+        $this->planetFieldRepository->save($field);
+
+        if (!$host instanceof Colony) {
+            return 0;
+        }
+
+        if (!$wasActivated) {
+            $this->clearReactivationMarkersForFieldId($host, $upgradedFieldId);
+            return 0;
+        }
+
+        return $this->reactivateOrbitalBuildingsAfterUpgrade($host, $upgradedFieldId);
+    }
+
+    private function appendReactivationDetails(?string $activationDetails, int $reactivatedCount): ?string
+    {
+        if ($reactivatedCount <= 0) {
+            return $activationDetails;
+        }
+
+        return (string) $activationDetails . sprintf(
+            ' - Es wurden %d Orbitalgebäude reaktiviert',
+            $reactivatedCount
+        );
+    }
+
+    private function adjustStorageAndEps(ColonyChangeable|ColonySandbox $changeable, int $storageDelta, int $epsDelta): void
+    {
+        if ($storageDelta === 0 && $epsDelta === 0) {
+            return;
+        }
+
+        $changeable
+            ->setMaxStorage($changeable->getMaxStorage() + $storageDelta)
+            ->setMaxEps($changeable->getMaxEps() + $epsDelta);
     }
 
     private function getChangeable(PlanetField $field): ColonyChangeable|ColonySandbox
@@ -263,10 +382,16 @@ final class BuildingManager implements BuildingManagerInterface
 
     private function buildingProducesUndergroundLogistics(Building $building): bool
     {
-        $logisticsCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS;
+        return $this->buildingProducesCommodity(
+            $building,
+            CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS
+        );
+    }
 
+    private function buildingProducesCommodity(Building $building, int $commodityId): bool
+    {
         foreach ($building->getCommodities() as $buildingCommodity) {
-            if ($buildingCommodity->getCommodityId() === $logisticsCommodityId && $buildingCommodity->getAmount() > 0) {
+            if ($buildingCommodity->getCommodityId() === $commodityId && $buildingCommodity->getAmount() > 0) {
                 return true;
             }
         }
@@ -293,49 +418,104 @@ final class BuildingManager implements BuildingManagerInterface
     {
         $logisticsCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS;
 
-        $production = 0;
-        $consumption = 0;
+        $production = $this->sumCommodityAmountFromFields(
+            $this->planetFieldRepository->getCommodityProducingByHostAndCommodity($host, $logisticsCommodityId),
+            $logisticsCommodityId,
+            true
+        );
+        $consumption = $this->sumCommodityAmountFromFields(
+            $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity($host, $logisticsCommodityId, [1]),
+            $logisticsCommodityId
+        );
+        $buildingConsumption = $this->getFirstCommodityAmount($building, $logisticsCommodityId);
 
-        $producingFields = $this->planetFieldRepository->getCommodityProducingByHostAndCommodity($host, $logisticsCommodityId);
-        foreach ($producingFields as $field) {
-            if ($field->isActive() && $field->getBuilding() !== null) {
-                foreach ($field->getBuilding()->getCommodities() as $commodity) {
-                    if ($commodity->getCommodityId() === $logisticsCommodityId) {
-                        $production += $commodity->getAmount();
-                    }
-                }
-            }
-        }
-
-        $consumingFields = $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity($host, $logisticsCommodityId, [1]);
-        foreach ($consumingFields as $field) {
-            if ($field->getBuilding() !== null) {
-                foreach ($field->getBuilding()->getCommodities() as $commodity) {
-                    if ($commodity->getCommodityId() === $logisticsCommodityId) {
-                        $consumption += $commodity->getAmount();
-                    }
-                }
-            }
-        }
-
-        $buildingConsumption = 0;
-        foreach ($building->getCommodities() as $commodity) {
-            if ($commodity->getCommodityId() === $logisticsCommodityId) {
-                $buildingConsumption = $commodity->getAmount();
-                break;
-            }
-        }
-
-        return ($production + $consumption + $buildingConsumption) >= 0;
+        return $production + $consumption + $buildingConsumption >= 0;
     }
 
-    private function handleUndergroundLogisticsRemoval(PlanetField $field, Colony $host): void
+    /**
+     * @param array<PlanetField> $fields
+     */
+    private function sumCommodityAmountFromFields(array $fields, int $commodityId, bool $onlyActive = false): int
     {
-        $building = $field->getBuilding();
-        if ($building === null) {
-            return;
+        $amount = 0;
+
+        foreach ($fields as $field) {
+            if ($onlyActive && !$field->isActive()) {
+                continue;
+            }
+
+            $building = $field->getBuilding();
+            if ($building === null) {
+                continue;
+            }
+
+            $amount += $this->sumCommodityAmount($building, $commodityId);
         }
 
+        return $amount;
+    }
+
+    private function sumCommodityAmount(Building $building, int $commodityId): int
+    {
+        $amount = 0;
+
+        foreach ($building->getCommodities() as $commodity) {
+            if ($commodity->getCommodityId() === $commodityId) {
+                $amount += $commodity->getAmount();
+            }
+        }
+
+        return $amount;
+    }
+
+    private function getFirstCommodityAmount(Building $building, int $commodityId): int
+    {
+        foreach ($building->getCommodities() as $commodity) {
+            if ($commodity->getCommodityId() === $commodityId) {
+                return $commodity->getAmount();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param array<PlanetField> $fields
+     *
+     * @return array{0: int, 1: int}
+     */
+    private function sumStorageAndEps(array $fields): array
+    {
+        $totalStorage = 0;
+        $totalEps = 0;
+
+        foreach ($fields as $field) {
+            $building = $field->getBuilding();
+            if ($building === null) {
+                continue;
+            }
+
+            $totalStorage += $building->getStorage();
+            $totalEps += $building->getEpsStorage();
+        }
+
+        return [$totalStorage, $totalEps];
+    }
+
+    /**
+     * @param array<PlanetField> $fields
+     */
+    private function deactivateActiveFields(array $fields): void
+    {
+        foreach ($fields as $field) {
+            if ($field->isActive()) {
+                $this->deactivate($field);
+            }
+        }
+    }
+
+    private function handleUndergroundLogisticsRemoval(Building $building, Colony $host): void
+    {
         if (!$this->buildingProducesUndergroundLogistics($building)) {
             return;
         }
@@ -348,34 +528,50 @@ final class BuildingManager implements BuildingManagerInterface
             [0, 1]
         );
 
-        $totalStorage = 0;
-        $totalEps = 0;
+        [$totalStorage, $totalEps] = $this->sumStorageAndEps($consumingFields);
+        $this->adjustStorageAndEps($host->getChangeable(), -$totalStorage, -$totalEps);
+    }
 
-        foreach ($consumingFields as $consumingField) {
-            $consumingBuilding = $consumingField->getBuilding();
-            if ($consumingBuilding === null) {
-                continue;
-            }
-
-            $totalStorage += $consumingBuilding->getStorage();
-            $totalEps += $consumingBuilding->getEpsStorage();
+    private function handleUndergroundLogisticsActivation(Building $building, Colony $host): void
+    {
+        if (!$this->buildingProducesUndergroundLogistics($building)) {
+            return;
         }
 
-        if ($totalStorage > 0 || $totalEps > 0) {
-            $changeable = $host->getChangeable();
-            $changeable
-                ->setMaxStorage($changeable->getMaxStorage() - $totalStorage)
-                ->setMaxEps($changeable->getMaxEps() - $totalEps);
+        $logisticsCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS;
+
+        $consumingFields = $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity(
+            $host,
+            $logisticsCommodityId,
+            [0, 1]
+        );
+
+        [$totalStorage, $totalEps] = $this->sumStorageAndEps($consumingFields);
+        $this->adjustStorageAndEps($host->getChangeable(), $totalStorage, $totalEps);
+    }
+
+    /**
+     * @return array<PlanetField>
+     */
+    private function getFieldsMarkedForReactivation(Colony $host, int $upgradedFieldId): array
+    {
+        return array_filter(
+            $host->getPlanetFields()->toArray(),
+            fn(PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
+        );
+    }
+
+    private function clearReactivationMarkersForFieldId(Colony $host, int $upgradedFieldId): void
+    {
+        foreach ($this->getFieldsMarkedForReactivation($host, $upgradedFieldId) as $fieldToClear) {
+            $fieldToClear->setReactivateAfterUpgrade(null);
+            $this->planetFieldRepository->save($fieldToClear);
         }
     }
 
     private function reactivateOrbitalBuildingsAfterUpgrade(Colony $host, int $upgradedFieldId): int
     {
-        $fieldsToReactivate = array_filter(
-            $host->getPlanetFields()->toArray(),
-            fn (PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
-        );
-
+        $fieldsToReactivate = $this->getFieldsMarkedForReactivation($host, $upgradedFieldId);
         $reactivatedCount = 0;
 
         foreach ($fieldsToReactivate as $fieldToReactivate) {
@@ -389,24 +585,10 @@ final class BuildingManager implements BuildingManagerInterface
         return $reactivatedCount;
     }
 
-    private function handleOrbitalMaintenanceRemoval(PlanetField $field, Colony $host): void
+    private function handleOrbitalMaintenanceRemoval(Building $building, Colony $host): void
     {
-        $building = $field->getBuilding();
-        if ($building === null) {
-            return;
-        }
-
         $maintenanceCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE;
-        $producesMaintenance = false;
-
-        foreach ($building->getCommodities() as $buildingCommodity) {
-            if ($buildingCommodity->getCommodityId() === $maintenanceCommodityId && $buildingCommodity->getAmount() > 0) {
-                $producesMaintenance = true;
-                break;
-            }
-        }
-
-        if (!$producesMaintenance) {
+        if (!$this->buildingProducesCommodity($building, $maintenanceCommodityId)) {
             return;
         }
 
@@ -416,10 +598,7 @@ final class BuildingManager implements BuildingManagerInterface
             [1]
         );
 
-        foreach ($consumingFields as $consumingField) {
-            if ($consumingField->isActive()) {
-                $this->deactivate($consumingField);
-            }
-        }
+        $this->deactivateActiveFields($consumingFields);
     }
 }
+
