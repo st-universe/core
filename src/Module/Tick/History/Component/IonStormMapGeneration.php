@@ -115,8 +115,10 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         $frame->setImageDelay(25); // 1/4 second delay
 
         $gif->addImage($frame);
-        $gif->setImageIterations(0); // loop indefinitely
+        $gif = $gif->coalesceImages();
         $gif->optimizeImageLayers();
+        $gif->setFirstIterator();
+        $gif->setImageIterations(0); // loop indefinitely
         $gif->writeImages($gifPath, true);
     }
 
