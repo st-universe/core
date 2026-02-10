@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -63,7 +64,8 @@ class BuildingActionTest extends StuTestCase
             $this->storageManager,
             $this->buildingManager,
             $this->colonyLibFactory,
-            $this->planetFieldRepository
+            $this->planetFieldRepository,
+            new ColonyBuildingEffects($this->planetFieldRepository)
         );
     }
 
