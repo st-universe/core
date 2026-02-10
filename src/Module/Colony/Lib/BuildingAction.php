@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ColonySandbox;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -23,7 +23,8 @@ final class BuildingAction implements BuildingActionInterface
         private StorageManagerInterface $storageManager,
         private BuildingManagerInterface $buildingManager,
         private ColonyLibFactoryInterface $colonyLibFactory,
-        private PlanetFieldRepositoryInterface $planetFieldRepository
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ColonyBuildingEffects $colonyBuildingEffects
     ) {}
 
     #[\Override]
@@ -194,7 +195,7 @@ final class BuildingAction implements BuildingActionInterface
         GameControllerInterface $game
     ): void {
         if (!$isDueToUpgrade) {
-            $this->clearReactivationMarkers($field, $host);
+            $this->colonyBuildingEffects->clearReactivationMarkers($field, $host);
             return;
         }
 
@@ -340,26 +341,12 @@ final class BuildingAction implements BuildingActionInterface
 
     private function handleUndergroundLogisticsActivation(Building $building, Colony $host): void
     {
-        $this->adjustUndergroundLogisticsCapacity($building, $host, 1);
+        $this->colonyBuildingEffects->adjustUndergroundLogisticsCapacity($building, $host, 1);
     }
 
     private function handleUndergroundLogisticsDeactivation(Building $building, Colony $host): void
     {
-        $this->adjustUndergroundLogisticsCapacity($building, $host, -1);
-    }
-
-    private function adjustUndergroundLogisticsCapacity(Building $building, Colony $host, int $direction): void
-    {
-        $logisticsCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_UNDERGROUND_LOGISTICS;
-        if (!$this->buildingProducesCommodity($building, $logisticsCommodityId)) {
-            return;
-        }
-
-        [$totalStorage, $totalEps] = $this->sumStorageAndEps(
-            $this->getCommodityConsumingFields($host, $logisticsCommodityId, [0, 1])
-        );
-
-        $this->adjustStorageAndEps($host, $totalStorage * $direction, $totalEps * $direction);
+        $this->colonyBuildingEffects->adjustUndergroundLogisticsCapacity($building, $host, -1);
     }
 
     private function handleOrbitalMaintenanceDeactivation(
@@ -367,13 +354,15 @@ final class BuildingAction implements BuildingActionInterface
         Colony $host,
         GameControllerInterface $game
     ): void {
-        $maintenanceCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE;
-        if (!$this->buildingProducesCommodity($building, $maintenanceCommodityId)) {
-            return;
-        }
-
-        $deactivatedCount = $this->deactivateActiveFields(
-            $this->getCommodityConsumingFields($host, $maintenanceCommodityId, [1])
+        $deactivatedCount = $this->colonyBuildingEffects->deactivateOrbitalMaintenanceConsumers(
+            $building,
+            $host,
+            function (PlanetField $field): void {
+                $this->buildingManager->deactivate($field);
+            },
+            function (PlanetField $field): void {
+                $this->registerCommodityDeltaOnSuccessfulDeactivation($field);
+            }
         );
 
         if ($deactivatedCount > 0) {
@@ -390,17 +379,19 @@ final class BuildingAction implements BuildingActionInterface
         Colony $host,
         GameControllerInterface $game
     ): void {
-        $maintenanceCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE;
-        if (!$this->buildingProducesCommodity($building, $maintenanceCommodityId)) {
-            return;
-        }
-
         $reactivationId = $field->getId();
         $field->setReactivateAfterUpgrade($reactivationId);
         $this->planetFieldRepository->save($field);
 
-        $deactivatedCount = $this->deactivateActiveFields(
-            $this->getCommodityConsumingFields($host, $maintenanceCommodityId, [1]),
+        $deactivatedCount = $this->colonyBuildingEffects->deactivateOrbitalMaintenanceConsumers(
+            $building,
+            $host,
+            function (PlanetField $consumerField): void {
+                $this->buildingManager->deactivate($consumerField);
+            },
+            function (PlanetField $consumerField): void {
+                $this->registerCommodityDeltaOnSuccessfulDeactivation($consumerField);
+            },
             $reactivationId
         );
 
@@ -412,125 +403,14 @@ final class BuildingAction implements BuildingActionInterface
         }
     }
 
-    /**
-     * @param array<PlanetField> $fields
-     */
-    private function deactivateActiveFields(array $fields, ?int $reactivationId = null): int
+    private function registerCommodityDeltaOnSuccessfulDeactivation(PlanetField $field): void
     {
-        $deactivatedCount = 0;
-
-        foreach ($fields as $field) {
-            if (!$field->isActive()) {
-                continue;
-            }
-
-            $this->buildingManager->deactivate($field);
-
-            $host = $field->getHost();
-            $building = $field->getBuilding();
-            if ($host instanceof Colony && $building !== null && !$field->isActive()) {
-                $this->registerCommodityDeltaForBuilding($host, $building, -1);
-            }
-
-            if ($reactivationId !== null) {
-                $field->setReactivateAfterUpgrade($reactivationId);
-                $this->planetFieldRepository->save($field);
-            }
-
-            $deactivatedCount++;
-        }
-
-        return $deactivatedCount;
-    }
-
-    private function buildingProducesCommodity(Building $building, int $commodityId): bool
-    {
-        foreach ($building->getCommodities() as $buildingCommodity) {
-            if ($buildingCommodity->getCommodityId() === $commodityId && $buildingCommodity->getAmount() > 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param array<int> $state
-     *
-     * @return array<PlanetField>
-     */
-    private function getCommodityConsumingFields(Colony $host, int $commodityId, array $state): array
-    {
-        return $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity(
-            $host,
-            $commodityId,
-            $state
-        );
-    }
-
-    /**
-     * @param array<PlanetField> $fields
-     *
-     * @return array{0: int, 1: int}
-     */
-    private function sumStorageAndEps(array $fields): array
-    {
-        $totalStorage = 0;
-        $totalEps = 0;
-
-        foreach ($fields as $field) {
-            $building = $field->getBuilding();
-            if ($building === null) {
-                continue;
-            }
-
-            $totalStorage += $building->getStorage();
-            $totalEps += $building->getEpsStorage();
-        }
-
-        return [$totalStorage, $totalEps];
-    }
-
-    private function adjustStorageAndEps(Colony $host, int $storageDelta, int $epsDelta): void
-    {
-        if ($storageDelta === 0 && $epsDelta === 0) {
+        $host = $field->getHost();
+        $building = $field->getBuilding();
+        if (!$host instanceof Colony || $building === null || $field->isActive()) {
             return;
         }
 
-        $changeable = $host->getChangeable();
-        $changeable
-            ->setMaxStorage($changeable->getMaxStorage() + $storageDelta)
-            ->setMaxEps($changeable->getMaxEps() + $epsDelta);
-    }
-
-    private function clearReactivationMarkers(PlanetField $field, Colony $host): void
-    {
-        $reactivationId = $field->getReactivateAfterUpgrade();
-        if ($reactivationId === null) {
-            return;
-        }
-
-        if ($reactivationId !== $field->getId()) {
-            $this->clearSingleReactivationMarker($field);
-            return;
-        }
-
-        $this->clearReactivationMarkersById($host, $reactivationId);
-    }
-
-    private function clearSingleReactivationMarker(PlanetField $field): void
-    {
-        $field->setReactivateAfterUpgrade(null);
-        $this->planetFieldRepository->save($field);
-    }
-
-    private function clearReactivationMarkersById(Colony $host, int $reactivationId): void
-    {
-        foreach ($host->getPlanetFields() as $planetField) {
-            if ($planetField->getReactivateAfterUpgrade() === $reactivationId) {
-                $planetField->setReactivateAfterUpgrade(null);
-                $this->planetFieldRepository->save($planetField);
-            }
-        }
+        $this->registerCommodityDeltaForBuilding($host, $building, -1);
     }
 }

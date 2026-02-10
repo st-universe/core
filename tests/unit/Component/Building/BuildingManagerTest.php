@@ -38,13 +38,15 @@ class BuildingManagerTest extends StuTestCase
         $this->colonySandboxRepository = $this->mock(ColonySandboxRepositoryInterface::class);
         $this->buildingPostAction = $this->mock(BuildingPostActionInterface::class);
         $this->buildingFunctionActionMapper = $this->mock(BuildingFunctionActionMapperInterface::class);
+        $colonyBuildingEffects = new ColonyBuildingEffects($this->planetFieldRepository);
 
         $this->buildingManager = new BuildingManager(
             $this->planetFieldRepository,
             $this->colonyRepository,
             $this->colonySandboxRepository,
             $this->buildingFunctionActionMapper,
-            $this->buildingPostAction
+            $this->buildingPostAction,
+            $colonyBuildingEffects
         );
     }
 
