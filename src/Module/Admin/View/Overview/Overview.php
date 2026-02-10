@@ -43,7 +43,7 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'ION_STORM_MAP',
-            $this->imageCreation->gdImageInSrc($graph)
+            $this->imageCreation->gdImageInSrc($graph, 'gif')
         );
     }
 }
