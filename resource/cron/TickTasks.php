@@ -89,7 +89,7 @@ $schedule
         $dic->get(HistoryTickRunner::class)->run(1, 1);
         });
     })
-    ->hourly()
+    ->hourlyAt(30)
     ->description('HistoryTick');
 
 return $schedule;
