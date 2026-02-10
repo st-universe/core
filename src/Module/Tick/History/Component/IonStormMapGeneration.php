@@ -96,12 +96,7 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
     {
         $gif = new Imagick();
         $gif->setFormat('gif');
-        $frame = new Imagick();
-        $frame->readImageBlob($this->getImageBlob($img));
-        $frame->setImageDelay(25); // 1/4 second delay
-        $gif->addImage($frame);
-        $gif->setImageIterations(0); // loop indefinitely
-        $gif->writeImages($gifPath, true);
+        $this->addFrameAndWriteGifToFile($gifPath, $img, $gif);
     }
 
     private function editExistingGif(string $gifPath, GdImage $img): void
@@ -110,11 +105,18 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         if ($gif->getNumberImages() >= self::MAX_FRAMES) {
             $gif->removeImage();
         }
+        $this->addFrameAndWriteGifToFile($gifPath, $img, $gif);
+    }
+
+    private function addFrameAndWriteGifToFile(string $gifPath, GdImage $img, Imagick $gif): void
+    {
         $frame = new Imagick();
         $frame->readImageBlob($this->getImageBlob($img));
         $frame->setImageDelay(25); // 1/4 second delay
+
         $gif->addImage($frame);
         $gif->setImageIterations(0); // loop indefinitely
+        $gif->optimizeImageLayers();
         $gif->writeImages($gifPath, true);
     }
 
