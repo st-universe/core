@@ -43,7 +43,7 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'ION_STORM_MAP',
-            $this->imageCreation->gdImageInSrc($graph, 'gif')
+            '<img src="data:image/gif;base64,' . base64_encode(file_get_contents($historyFolder . '/ionstorm_map_layer_2.gif')) . '"/>'
         );
     }
 }
