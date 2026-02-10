@@ -28,6 +28,7 @@
     "ext-gd": "*",
     "ext-gettext": "*",
     "ext-iconv": "*",
+    "ext-imagick": "*",
     "ext-intl": "*",
     "ext-json": "*",
     "ext-pcntl": "*",
