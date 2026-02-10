@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ImplodeTholianWeb implements ActionControllerInterface
@@ -25,10 +26,11 @@ final class ImplodeTholianWeb implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        private ShipLoaderInterface $shipLoader,
-        private TholianWebUtilInterface $tholianWebUtil,
-        private PrivateMessageSenderInterface $privateMessageSender,
-        private TholianWebWeaponPhaseInterface $tholianWebWeaponPhase,
+        private readonly ShipLoaderInterface $shipLoader,
+        private readonly TholianWebUtilInterface $tholianWebUtil,
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly TholianWebWeaponPhaseInterface $tholianWebWeaponPhase,
+        private readonly SpacecraftRemoverInterface $spacecraftRemover,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -103,6 +105,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             $game->getInfo()->addInformationWrapper($informations);
         }
 
+        $this->spacecraftRemover->remove($web);
 
         $this->loggerUtil->log('10');
 
