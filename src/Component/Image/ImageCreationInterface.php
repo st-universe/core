@@ -11,5 +11,8 @@ interface ImageCreationInterface
 {
     public function graphInSrc(Graph $graph): string;
 
-    public function gdImageInSrc(GdImage $gdImage): string;
+    /**
+     * @param 'png'|'gif' $format
+     */
+    public function gdImageInSrc(GdImage $gdImage, string $format = 'png'): string;
 }
