@@ -16,15 +16,12 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    /** @var array<int, array<int, int>> */
-    private array $commodityProductionDeltas = [];
-
     public function __construct(
         private StorageManagerInterface $storageManager,
         private BuildingManagerInterface $buildingManager,
-        private ColonyLibFactoryInterface $colonyLibFactory,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
-        private ColonyBuildingEffects $colonyBuildingEffects
+        private ColonyBuildingEffects $colonyBuildingEffects,
+        private BuildingCommodityDeltaTracker $buildingCommodityDeltaTracker
     ) {}
 
     #[\Override]
@@ -53,7 +50,7 @@ final class BuildingAction implements BuildingActionInterface
         }
 
         if ($host instanceof Colony) {
-            $this->registerCommodityDeltaForBuilding($host, $building, 1);
+            $this->buildingCommodityDeltaTracker->registerForBuilding($host, $building, 1);
         }
 
         $this->addActivationInformation($field, $building, $game);
@@ -80,7 +77,7 @@ final class BuildingAction implements BuildingActionInterface
         $this->buildingManager->deactivate($field);
 
         if ($host instanceof Colony && !$field->isActive()) {
-            $this->registerCommodityDeltaForBuilding($host, $building, -1);
+            $this->buildingCommodityDeltaTracker->registerForBuilding($host, $building, -1);
         }
 
         $this->addDeactivationInformation($field, $building, $game);
@@ -110,7 +107,7 @@ final class BuildingAction implements BuildingActionInterface
         $this->buildingManager->remove($field, $isDueToUpgrade);
 
         if ($host instanceof Colony && $wasActive && !$field->isActive()) {
-            $this->registerCommodityDeltaForBuilding($host, $building, -1);
+            $this->buildingCommodityDeltaTracker->registerForBuilding($host, $building, -1);
         }
 
         $this->addRemovalInformation($field, $building, $game);
@@ -269,12 +266,12 @@ final class BuildingAction implements BuildingActionInterface
         string $commodityName,
         GameControllerInterface $game
     ): bool {
-        $consumption = $this->getBuildingCommodityAmount($building, $commodityId);
+        $consumption = $this->buildingCommodityDeltaTracker->getBuildingCommodityAmount($building, $commodityId);
         if ($consumption >= 0) {
             return true;
         }
 
-        $currentProduction = $this->getCommodityProductionWithDelta($host, $commodityId);
+        $currentProduction = $this->buildingCommodityDeltaTracker->getProductionWithDelta($host, $commodityId);
 
         if ($currentProduction + $consumption >= 0) {
             return true;
@@ -287,56 +284,6 @@ final class BuildingAction implements BuildingActionInterface
         );
 
         return false;
-    }
-
-    private function getCommodityProductionWithDelta(Colony $host, int $commodityId): int
-    {
-        $production = $this->colonyLibFactory->createColonyCommodityProduction($host)->getProduction();
-        $baseProduction = array_key_exists($commodityId, $production)
-            ? $production[$commodityId]->getProduction()
-            : 0;
-
-        return $baseProduction + $this->getCommodityProductionDelta($host->getId(), $commodityId);
-    }
-
-    private function getCommodityProductionDelta(int $hostId, int $commodityId): int
-    {
-        return $this->commodityProductionDeltas[$hostId][$commodityId] ?? 0;
-    }
-
-    private function registerCommodityDeltaForBuilding(Colony $host, Building $building, int $factor): void
-    {
-        $hostId = $host->getId();
-
-        foreach ($building->getCommodities() as $buildingCommodity) {
-            $commodityId = $buildingCommodity->getCommodityId();
-            $amount = $buildingCommodity->getAmount();
-
-            if ($amount === 0) {
-                continue;
-            }
-
-            if (!array_key_exists($hostId, $this->commodityProductionDeltas)) {
-                $this->commodityProductionDeltas[$hostId] = [];
-            }
-
-            if (!array_key_exists($commodityId, $this->commodityProductionDeltas[$hostId])) {
-                $this->commodityProductionDeltas[$hostId][$commodityId] = 0;
-            }
-
-            $this->commodityProductionDeltas[$hostId][$commodityId] += $amount * $factor;
-        }
-    }
-
-    private function getBuildingCommodityAmount(Building $building, int $commodityId): int
-    {
-        foreach ($building->getCommodities() as $buildingCommodity) {
-            if ($buildingCommodity->getCommodityId() === $commodityId) {
-                return $buildingCommodity->getAmount();
-            }
-        }
-
-        return 0;
     }
 
     private function handleUndergroundLogisticsActivation(Building $building, Colony $host): void
@@ -361,7 +308,7 @@ final class BuildingAction implements BuildingActionInterface
                 $this->buildingManager->deactivate($field);
             },
             function (PlanetField $field): void {
-                $this->registerCommodityDeltaOnSuccessfulDeactivation($field);
+                $this->buildingCommodityDeltaTracker->registerOnSuccessfulDeactivation($field);
             }
         );
 
@@ -390,7 +337,7 @@ final class BuildingAction implements BuildingActionInterface
                 $this->buildingManager->deactivate($consumerField);
             },
             function (PlanetField $consumerField): void {
-                $this->registerCommodityDeltaOnSuccessfulDeactivation($consumerField);
+                $this->buildingCommodityDeltaTracker->registerOnSuccessfulDeactivation($consumerField);
             },
             $reactivationId
         );
@@ -403,14 +350,4 @@ final class BuildingAction implements BuildingActionInterface
         }
     }
 
-    private function registerCommodityDeltaOnSuccessfulDeactivation(PlanetField $field): void
-    {
-        $host = $field->getHost();
-        $building = $field->getBuilding();
-        if (!$host instanceof Colony || $building === null || $field->isActive()) {
-            return;
-        }
-
-        $this->registerCommodityDeltaForBuilding($host, $building, -1);
-    }
 }

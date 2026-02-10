@@ -58,6 +58,7 @@ use Stu\Module\Colony\Action\UpgradeBuilding\UpgradeBuilding;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingAction;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
+use Stu\Module\Colony\Lib\BuildingCommodityDeltaTracker;
 use Stu\Module\Colony\Lib\BuildingMassActionConfiguration;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Colony\Lib\BuildPlanDeleter;
@@ -189,6 +190,7 @@ use function DI\get;
 return [
     ApplyBuildingDamageInterface::class => autowire(ApplyBuildingDamage::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
+    BuildingCommodityDeltaTracker::class => autowire(BuildingCommodityDeltaTracker::class),
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),

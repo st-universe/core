@@ -25,7 +25,8 @@ final class BuildingManager implements BuildingManagerInterface
         private readonly ColonySandboxRepositoryInterface $colonySandboxRepository,
         private readonly BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
         private readonly BuildingPostActionInterface $buildingPostAction,
-        private readonly ColonyBuildingEffects $colonyBuildingEffects
+        private readonly ColonyBuildingEffects $colonyBuildingEffects,
+        private readonly BuildingReactivationHandler $buildingReactivationHandler
     ) {}
 
     #[\Override]
@@ -176,9 +177,13 @@ final class BuildingManager implements BuildingManagerInterface
         $this->planetFieldRepository->save($field);
 
         $reactivatedCount = $shouldReactivateOthers
-            ? $this->reactivateFieldsAfterUpgrade($field, $wasActivated)
+            ? $this->buildingReactivationHandler->handleAfterUpgradeFinish(
+                $field,
+                $wasActivated,
+                fn(PlanetField $reactivationField): bool => $this->activate($reactivationField)
+            )
             : 0;
-        return $this->appendReactivationDetails($activationDetails, $reactivatedCount);
+        return $this->buildingReactivationHandler->appendReactivationDetails($activationDetails, $reactivatedCount);
     }
 
     private function canRemoveBuilding(Building $building, bool $isDueToUpgrade): bool
@@ -256,8 +261,7 @@ final class BuildingManager implements BuildingManagerInterface
         PlanetField $field,
         Building $building,
         bool $activate
-    ): array
-    {
+    ): array {
         if (!$building->isActivateAble()) {
             return [null, false];
         }
@@ -279,8 +283,7 @@ final class BuildingManager implements BuildingManagerInterface
     private function shouldApplyUndergroundLogisticsActivationAfterFinish(
         Colony|ColonySandbox $host,
         Building $building
-    ): bool
-    {
+    ): bool {
         if (!$host instanceof Colony) {
             return false;
         }
@@ -315,38 +318,6 @@ final class BuildingManager implements BuildingManagerInterface
         return $this->colonyBuildingEffects->hasEnoughUndergroundLogistics($host, $building);
     }
 
-    private function reactivateFieldsAfterUpgrade(PlanetField $field, bool $wasActivated): int
-    {
-        $host = $field->getHost();
-        $upgradedFieldId = $field->getId();
-
-        $field->setReactivateAfterUpgrade(null);
-        $this->planetFieldRepository->save($field);
-
-        if (!$host instanceof Colony) {
-            return 0;
-        }
-
-        if (!$wasActivated) {
-            $this->clearReactivationMarkersForFieldId($host, $upgradedFieldId);
-            return 0;
-        }
-
-        return $this->reactivateOrbitalBuildingsAfterUpgrade($host, $upgradedFieldId);
-    }
-
-    private function appendReactivationDetails(?string $activationDetails, int $reactivatedCount): ?string
-    {
-        if ($reactivatedCount <= 0) {
-            return $activationDetails;
-        }
-
-        return (string) $activationDetails . sprintf(
-            ' - Es wurden %d Orbitalgebäude reaktiviert',
-            $reactivatedCount
-        );
-    }
-
     private function adjustStorageAndEps(ColonyChangeable|ColonySandbox $changeable, int $storageDelta, int $epsDelta): void
     {
         if ($storageDelta === 0 && $epsDelta === 0) {
@@ -365,41 +336,6 @@ final class BuildingManager implements BuildingManagerInterface
         return $host instanceof ColonySandbox
             ? $host
             : $host->getChangeable();
-    }
-
-    /**
-     * @return array<PlanetField>
-     */
-    private function getFieldsMarkedForReactivation(Colony $host, int $upgradedFieldId): array
-    {
-        return array_filter(
-            $host->getPlanetFields()->toArray(),
-            fn(PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
-        );
-    }
-
-    private function clearReactivationMarkersForFieldId(Colony $host, int $upgradedFieldId): void
-    {
-        foreach ($this->getFieldsMarkedForReactivation($host, $upgradedFieldId) as $fieldToClear) {
-            $fieldToClear->setReactivateAfterUpgrade(null);
-            $this->planetFieldRepository->save($fieldToClear);
-        }
-    }
-
-    private function reactivateOrbitalBuildingsAfterUpgrade(Colony $host, int $upgradedFieldId): int
-    {
-        $fieldsToReactivate = $this->getFieldsMarkedForReactivation($host, $upgradedFieldId);
-        $reactivatedCount = 0;
-
-        foreach ($fieldsToReactivate as $fieldToReactivate) {
-            if ($this->activate($fieldToReactivate)) {
-                $reactivatedCount++;
-            }
-            $fieldToReactivate->setReactivateAfterUpgrade(null);
-            $this->planetFieldRepository->save($fieldToReactivate);
-        }
-
-        return $reactivatedCount;
     }
 
     private function handleUndergroundLogisticsRemoval(Building $building, Colony $host): void
@@ -423,4 +359,3 @@ final class BuildingManager implements BuildingManagerInterface
         );
     }
 }
-
