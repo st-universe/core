@@ -63,9 +63,9 @@ class BuildingActionTest extends StuTestCase
         $this->subject = new BuildingAction(
             $this->storageManager,
             $this->buildingManager,
-            $this->colonyLibFactory,
             $this->planetFieldRepository,
-            new ColonyBuildingEffects($this->planetFieldRepository)
+            new ColonyBuildingEffects($this->planetFieldRepository),
+            new BuildingCommodityDeltaTracker($this->colonyLibFactory)
         );
     }
 
