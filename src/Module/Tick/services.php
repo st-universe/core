@@ -20,6 +20,7 @@ use Stu\Module\Tick\Colony\Component\AdvanceResearch;
 use Stu\Module\Tick\Colony\Component\ProceedMigration;
 use Stu\Module\Tick\Colony\Component\ProceedStorage;
 use Stu\Module\Tick\History\Component\EventMapGeneration;
+use Stu\Module\Tick\History\Component\IonStormMapGeneration;
 use Stu\Module\Tick\History\HistoryTickRunner;
 use Stu\Module\Tick\Lock\LockManager;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -148,6 +149,9 @@ return [
     PirateTickRunner::class => autowire(),
     HistoryTickRunner::class => autowire()->lazy()->constructorParameter(
         'handlerList',
-        [autowire(EventMapGeneration::class)]
+        [
+            autowire(EventMapGeneration::class),
+            autowire(IonStormMapGeneration::class)
+        ]
     ),
 ];

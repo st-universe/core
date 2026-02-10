@@ -139,4 +139,22 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
             return null;
         }
     }
+
+    #[\Override]
+    public function getLocationsWithIonstormAnomalies(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT l FROM %s a
+                    JOIN %s l
+                    WITH a.location = l
+                    WHERE a.anomaly_type_id = :type',
+                    Anomaly::class,
+                    Location::class
+                )
+            )
+            ->setParameter('type', AnomalyTypeEnum::ION_STORM->value)
+            ->getResult();
+    }
 }
