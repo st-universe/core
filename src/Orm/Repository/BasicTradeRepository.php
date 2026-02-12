@@ -81,6 +81,12 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
     #[\Override]
     public function getLatestRates(BasicTrade $basicTrade): array
     {
+        return $this->getLatestRatesByAmount($basicTrade, TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT);
+    }
+
+    #[\Override]
+    public function getLatestRatesByAmount(BasicTrade $basicTrade, int $amount): array
+    {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -95,7 +101,26 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 'factionId' => $basicTrade->getFaction()->getId(),
                 'commodityId' => $basicTrade->getCommodity()->getId()
             ])
-            ->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)
+            ->setMaxResults(max(1, $amount))
             ->getResult();
+    }
+
+    #[\Override]
+    public function getTradeCount(BasicTrade $basicTrade): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(bt.id) FROM %s bt
+                    WHERE bt.faction_id = :factionId
+                    AND bt.commodity_id = :commodityId',
+                    BasicTrade::class
+                )
+            )
+            ->setParameters([
+                'factionId' => $basicTrade->getFaction()->getId(),
+                'commodityId' => $basicTrade->getCommodity()->getId()
+            ])
+            ->getSingleScalarResult();
     }
 }

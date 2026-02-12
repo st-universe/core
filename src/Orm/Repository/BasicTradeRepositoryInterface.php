@@ -29,4 +29,11 @@ interface BasicTradeRepositoryInterface extends ObjectRepository
      * @return array<BasicTrade>
      */
     public function getLatestRates(BasicTrade $basicTrade): array;
+
+    /**
+     * @return array<BasicTrade>
+     */
+    public function getLatestRatesByAmount(BasicTrade $basicTrade, int $amount): array;
+
+    public function getTradeCount(BasicTrade $basicTrade): int;
 }
