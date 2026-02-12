@@ -1,11 +1,6 @@
 {% block body %}
 <script src="{{ JAVASCRIPTPATH }}/js/trade.js"></script>
-<div class="box" {% if not ACCOUNTS %}style="display: none;" <div class="box_title">Meldung</div>
-<div class="box_body">
-    <span>Keine Warenkonten vorhanden</span>
-</div>
-</div>
-{% endif %}>
+
 {% for data in ACCOUNTS %}
 <table class="tcal">
     <tr>
@@ -27,6 +22,7 @@
     <tr>
         <form method="post" action="trade.php">
             <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            <input type="hidden" name="chart_trade_count" value="{{ CHART_TRADE_COUNT }}" />
             <input type="hidden" name="uid" value="{{ item.getUniqId }}" />
             <input type="hidden" name="postid" value="{{ data.getId }}" />
             <td><img src="assets/commodities/{{ item.getCommodity.getId }}.png"
@@ -60,4 +56,79 @@
     </tr>
 </table>
 {% endfor %}
+
+{% if not ACCOUNTS %}
+<div class="box">
+    <div class="box_title">Meldung</div>
+    <div class="box_body">
+        <span>Keine Warenkonten vorhanden</span>
+    </div>
+</div>
+{% endif %}
+
+<div class="box">
+    <div class="box_title">Kursverlauf Basishandel</div>
+    <div class="box_body">
+        <form method="post" action="trade.php" class="basic-trade-chart-controls">
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            <span>Trades pro Chart</span>
+            <input type="text" maxlength="9" size="5" inputmode="numeric" pattern="[0-9]*" name="chart_trade_count"
+                value="{{ CHART_TRADE_COUNT }}" />
+            <button type="submit" name="B_SET_BASIC_TRADE_CHART_LIMIT" value="1" class="button">Aktualisieren</button>
+        </form>
+    </div>
+</div>
+
+{% if BASIC_TRADE_CHARTS and ACCOUNTS %}
+<div class="basic-trade-chart-grid">
+    {% for chart in BASIC_TRADE_CHARTS %}
+    <table class="tcal basic-trade-chart-table">
+        <tr>
+            <th>
+                <img src="assets/commodities/{{ chart.commodityId }}.png" title="{{ chart.commodityName }}" />
+                {{ chart.commodityName }} ({{ chart.totalTradeCount }} Trades gesamt)
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <div class="basic-trade-chart-body">
+                    <div class="basic-trade-chart-yaxis">
+                        <span class="basic-trade-chart-yaxis-label basic-trade-chart-yaxis-label-top">{{
+                            chart.axisTopValue }}</span>
+                        <span class="basic-trade-chart-yaxis-label basic-trade-chart-yaxis-label-middle">{{
+                            chart.axisMiddleValue }}</span>
+                        <span class="basic-trade-chart-yaxis-label basic-trade-chart-yaxis-label-bottom">{{
+                            chart.axisBottomValue }}</span>
+                    </div>
+                    <div class="basic-trade-chart-plot">
+                        <svg viewBox="0 0 560 130" preserveAspectRatio="none" class="basic-trade-chart-svg">
+                            <line x1="0" y1="0" x2="560" y2="0" class="basic-trade-chart-gridline"></line>
+                            <line x1="0" y1="65" x2="560" y2="65" class="basic-trade-chart-gridline"></line>
+                            <line x1="0" y1="129" x2="560" y2="129" class="basic-trade-chart-gridline"></line>
+                            <polyline points="{{ chart.polylinePoints }}" class="basic-trade-chart-line"></polyline>
+                        </svg>
+                        <div class="basic-trade-chart-xaxis-title">Letzte Trades</div>
+                        <div class="basic-trade-chart-xaxis">
+                            {% for tick in chart.xTicks %}
+                            <span class="basic-trade-chart-xaxis-label basic-trade-chart-xaxis-label-{{ tick.align }}"
+                                style="left: {{ tick.positionPercent }}%;">
+                                {{ tick.label }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    {% endfor %}
+</div>
+{% else %}
+<div class="box">
+    <div class="box_title">Meldung</div>
+    <div class="box_body">
+        <span>Keine Basishandelskurse vorhanden</span>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

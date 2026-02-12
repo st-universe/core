@@ -40,6 +40,7 @@ use Stu\Module\Trade\Action\RenewTradeLicense\RenewTradeLicense;
 use Stu\Module\Trade\Action\SearchOffers\SearchBoth;
 use Stu\Module\Trade\Action\SearchOffers\SearchDemand;
 use Stu\Module\Trade\Action\SearchOffers\SearchOffer;
+use Stu\Module\Trade\Action\SetBasicTradeChartLimit\SetBasicTradeChartLimit;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
@@ -123,6 +124,7 @@ return [
         BasicTradeSell::ACTION_IDENTIFIER => autowire(BasicTradeSell::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         ChangeTradePostName::ACTION_IDENTIFIER => autowire(ChangeTradePostName::class),
+        SetBasicTradeChartLimit::ACTION_IDENTIFIER => autowire(SetBasicTradeChartLimit::class),
         CreateLicense::ACTION_IDENTIFIER => autowire(CreateLicense::class),
         CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
         DealsTakeOffer::ACTION_IDENTIFIER => autowire(DealsTakeOffer::class),
