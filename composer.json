@@ -78,7 +78,7 @@
     "phpstan/phpstan-doctrine": "^2.0",
     "phpstan/phpstan-mockery": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
-    "phpunit/phpunit": "^12",
+    "phpunit/phpunit": "^13",
     "rector/rector": "^2.0",
     "spatie/phpunit-snapshot-assertions": "^5.1"
   },
