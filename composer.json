@@ -59,7 +59,7 @@
     "monolog/monolog": "^3",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^7",
-    "sebastian/diff": "^7.0",
+    "sebastian/diff": "^8.0",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/mailer": "^8.0.0",
