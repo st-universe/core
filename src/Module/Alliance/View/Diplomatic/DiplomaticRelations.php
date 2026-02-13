@@ -44,7 +44,7 @@ final class DiplomaticRelations implements ViewControllerInterface
         $game->setTemplateVar(
             'RELATIONS_IMAGE',
             $this->allianceRelationRenderer->render(
-                $this->allianceRelationRepository->findAll(),
+                $this->allianceRelationRepository->getActive(),
                 self::GRAPH_WIDTH,
                 self::GRAPH_HEIGHT
             )

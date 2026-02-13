@@ -73,6 +73,19 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
     }
 
     #[\Override]
+    public function getActive(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ar FROM %s ar WHERE ar.date > 0 ORDER BY ar.id ASC',
+                    AllianceRelation::class
+                )
+            )
+            ->getResult();
+    }
+
+    #[\Override]
     public function getByAlliancePair(int $allianceId, int $opponentId): array
     {
         return $this->getEntityManager()
