@@ -86,7 +86,11 @@ final class EditKnPost implements ActionControllerInterface
 
         foreach ($charactersToAdd as $characterId) {
             $character = $this->userCharactersRepository->find($characterId);
-            if ($character !== null && $character->getUser()->getId() !== $userId) {
+            if (
+                $character !== null
+                && $character->getUser()->getId() !== $userId
+                && $character->getUser()->getId() !== UserConstants::USER_NOONE
+            ) {
                 $ownerId = $character->getUser()->getId();
                 $charactersAddedMapping[$ownerId][] = sprintf('%s (%d)', $character->getName(), $characterId);
             }
@@ -94,7 +98,11 @@ final class EditKnPost implements ActionControllerInterface
 
         foreach ($charactersToRemove as $characterId) {
             $character = $this->userCharactersRepository->find($characterId);
-            if ($character !== null && $character->getUser()->getId() !== $userId) {
+            if (
+                $character !== null
+                && $character->getUser()->getId() !== $userId
+                && $character->getUser()->getId() !== UserConstants::USER_NOONE
+            ) {
                 $ownerId = $character->getUser()->getId();
                 $charactersRemovedMapping[$ownerId][] = sprintf('%s (%d)', $character->getName(), $characterId);
             }
@@ -152,7 +160,10 @@ final class EditKnPost implements ActionControllerInterface
         foreach ($newCharacterIds as $newCharacterId) {
             if (!in_array($newCharacterId, $currentCharacterIds)) {
                 $userCharacter = $this->userCharactersRepository->find($newCharacterId);
-                if ($userCharacter) {
+                if (
+                    $userCharacter !== null
+                    && $userCharacter->getUser()->getId() !== UserConstants::USER_NOONE
+                ) {
                     $newEntity = $this->knCharactersRepository->prototype();
                     $newEntity->setUserCharacter($userCharacter);
                     $newEntity->setKnPost($post);

@@ -85,6 +85,7 @@ final class AddKnPost implements ActionControllerInterface
         $characterIdsInput = $this->addKnPostRequest->getCharacterIds();
         $idsRaw = explode(',', $characterIdsInput);
         $validIds = [];
+        $addedCharacterIds = [];
 
         foreach ($idsRaw as $idRaw) {
             $idTrimmed = trim($idRaw);
@@ -99,14 +100,18 @@ final class AddKnPost implements ActionControllerInterface
                 $game->getInfo()->addInformation(_("Kein Character mit der ID $id gefunden."));
                 continue;
             }
+            if ($userCharacter->getUser()->getId() === UserConstants::USER_NOONE) {
+                continue;
+            }
 
             $character = $this->knCharactersRepository->prototype();
             $character->setUserCharacter($userCharacter);
             $character->setKnPost($post);
             $this->knCharactersRepository->save($character);
             $post->getKnCharacters()->add($character);
+            $addedCharacterIds[] = $id;
         }
-        $this->notifyCharacterOwners($post, $validIds);
+        $this->notifyCharacterOwners($post, $addedCharacterIds);
 
         if ($plot !== null) {
             $this->newKnPostNotificator->notify($post, $plot);
@@ -134,6 +139,9 @@ final class AddKnPost implements ActionControllerInterface
             $character = $this->userCharactersRepository->find($characterId);
             if ($character !== null) {
                 $ownerId = $character->getUser()->getId();
+                if ($ownerId === UserConstants::USER_NOONE) {
+                    continue;
+                }
 
                 $characterNameWithId = sprintf('%s (%d)', $character->getName(), $characterId);
                 if (!array_key_exists($ownerId, $userCharactersMap)) {

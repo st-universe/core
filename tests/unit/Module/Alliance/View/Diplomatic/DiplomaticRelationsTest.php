@@ -70,7 +70,7 @@ class DiplomaticRelationsTest extends StuTestCase
             )
             ->once();
 
-        $this->allianceRelationRepository->shouldReceive('findAll')
+        $this->allianceRelationRepository->shouldReceive('getActive')
             ->withNoArgs()
             ->once()
             ->andReturn([$relation]);
