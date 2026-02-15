@@ -65,8 +65,8 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT a FROM %s a
-                    WHERE a.parent_id IS NULL',
+                'SELECT a FROM %s a
+                    WHERE a.parent IS NULL',
                     Anomaly::class
                 )
             )
@@ -79,10 +79,10 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(a.id) FROM %s a
+                'SELECT count(a.id) FROM %s a
                     WHERE a.anomaly_type_id = :type
                     AND a.remaining_ticks > 0
-                    AND a.parent_id IS NULL',
+                    AND a.parent IS NULL',
                     Anomaly::class
                 )
             )
