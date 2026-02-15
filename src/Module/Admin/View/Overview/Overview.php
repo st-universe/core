@@ -7,10 +7,12 @@ namespace Stu\Module\Admin\View\Overview;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
     public function __construct(
+        private readonly LayerRepositoryInterface $layerRepository,
         private readonly StuConfigInterface $config
     ) {}
 
@@ -29,20 +31,27 @@ final class Overview implements ViewControllerInterface
         // load event map from file
         $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
 
-        $fileName = $historyFolder . '/ionstorm_map_layer_2.gif';
-        // check if file exists
-        if (!file_exists($fileName)) {
-            return;
-        }
+        /** @var array<string, string> $maps */
+        $maps = [];
 
-        $fileContent = file_get_contents($fileName);
-        if ($fileContent === false) {
-            return;
+        foreach ($this->layerRepository->findAllIndexed() as $layer) {
+            $fileName = $historyFolder . '/ionstorm_map_layer_' . $layer->getId() . '.gif';
+            // check if file exists
+            if (!file_exists($fileName)) {
+                continue;
+            }
+
+            $fileContent = file_get_contents($fileName);
+            if ($fileContent === false) {
+                continue;
+            }
+
+            $maps[$layer->getName()] = '<img src="data:image/gif;base64,' . base64_encode($fileContent) . '"/>';
         }
 
         $game->setTemplateVar(
-            'ION_STORM_MAP',
-            '<img src="data:image/gif;base64,' . base64_encode($fileContent) . '"/>'
+            'ION_STORM_MAPS',
+            $maps
         );
     }
 }
