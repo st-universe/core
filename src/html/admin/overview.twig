@@ -2,16 +2,21 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
-{% if ION_STORM_MAP %}
-	<div id="weather" style="width: 250px; margin-left: 5px; float: left;">
-		<div class="divhead">Wetterbericht</div>
-		<div class="divbody">
-			{% autoescape false %}
-				{{ ION_STORM_MAP }}
-			{% endautoescape %}
-		</div>
+{% if ION_STORM_MAPS %}
+<div id="weather" style="margin-left: 5px; float: left;">
+
+	<div class="divhead">Wetterbericht</div>
+		{% for layerName, map in ION_STORM_MAPS %}
+			<div id="weather_{{ layerName }}" style="width: 250px; margin-left: 5px; float: left;">
+				<div class="divhead">{{ layerName }}</div>
+				<div class="divbody">
+					{% autoescape false %}
+						{{ map }}
+					{% endautoescape %}
+				</div>
+			</div>
+		{% endfor %}
 	</div>
 {% endif %}
-
 
 {% endblock %}
