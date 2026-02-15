@@ -222,9 +222,10 @@ final class IonStormHandler implements AnomalyHandlerInterface
     private function damageSpacecraft(SpacecraftWrapperInterface $wrapper, Anomaly $anomaly, InformationInterface $informations, int $damagePercentage): void
     {
         $spacecraft = $wrapper->get();
+        $ionStormData = $this->getIonStormData($anomaly->getRoot());
 
         $damageWrapper = new DamageWrapper(
-            (int)ceil($this->stuRandom->rand(1, $damagePercentage, true) * $wrapper->get()->getMaxHull() / 100)
+            (int)ceil($this->stuRandom->rand(1, $damagePercentage, true) * $wrapper->get()->getMaxHull() * $ionStormData->getIntensity() / 10000)
         );
 
         $shield = $spacecraft->getSystems()[SpacecraftSystemTypeEnum::SHIELDS->value] ?? null;

@@ -82,7 +82,7 @@ class AnomalyCreationTest extends StuTestCase
             ->once()
             ->andReturnSelf();
         $anomaly->shouldReceive('setData')
-            ->with('{"directionInDegrees":42,"velocity":17,"movementType":1}')
+            ->with('{"directionInDegrees":42,"velocity":17,"movementType":1,"isPositivePolarity":true,"intensity":100}')
             ->once();
 
         $this->anomalyTypeRepository->shouldReceive('find')
