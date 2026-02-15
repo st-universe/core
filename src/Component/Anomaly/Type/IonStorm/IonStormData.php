@@ -11,7 +11,9 @@ class IonStormData
     public function __construct(
         public int $directionInDegrees = 0,
         public int $velocity = 0,
-        public IonStormMovementType $movementType = IonStormMovementType::STATIC
+        public IonStormMovementType $movementType = IonStormMovementType::STATIC,
+        public bool $isPositivePolarity = true,
+        public int $intensity = 100
     ) {}
 
     public function getHorizontalMovement(): int
@@ -22,6 +24,11 @@ class IonStormData
     public function getVerticalMovement(): int
     {
         return (int)round(cos(deg2rad($this->directionInDegrees)) * $this->velocity);
+    }
+
+    public function getIntensity(): int
+    {
+        return $this->intensity;
     }
 
     public function changeMovement(StuRandom $stuRandom): IonStormData
@@ -36,6 +43,8 @@ class IonStormData
     {
         $instance = new IonStormData();
         $instance->movementType = $stuRandom->rand(1, 10) === 10 ? IonStormMovementType::VARIABLE : IonStormMovementType::STATIC;
+        $instance->isPositivePolarity = $stuRandom->rand(0, 1) === 1;
+        $instance->intensity = $stuRandom->rand(50, 200);
 
         return $instance->changeMovement($stuRandom);
     }

@@ -52,7 +52,7 @@ class IonStormMovementTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection());
         $root->shouldReceive('setData')
-            ->with('{"directionInDegrees":180,"velocity":3,"movementType":2}')
+            ->with('{"directionInDegrees":180,"velocity":3,"movementType":2,"isPositivePolarity":true,"intensity":100}')
             ->once();
 
         $this->stuRandom->shouldReceive('rand')
