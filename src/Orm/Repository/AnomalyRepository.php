@@ -9,6 +9,7 @@ use Doctrine\ORM\NoResultException;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 
@@ -141,20 +142,24 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     }
 
     #[\Override]
-    public function getLocationsWithIonstormAnomalies(): array
+    public function getLocationsWithIonstormAnomalies(Layer $layer): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT l FROM %s a
+                'SELECT l FROM %s a
                     JOIN %s l
                     WITH a.location = l
-                    WHERE a.anomaly_type_id = :type',
+                    WHERE a.anomaly_type_id = :type
+                    AND l.layer = :layer',
                     Anomaly::class,
                     Location::class
                 )
             )
-            ->setParameter('type', AnomalyTypeEnum::ION_STORM->value)
+            ->setParameters([
+                'type' => AnomalyTypeEnum::ION_STORM->value,
+                'layer' => $layer->getId()
+            ])
             ->getResult();
     }
 }

@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 
 /**
@@ -36,5 +37,5 @@ interface AnomalyRepositoryInterface extends ObjectRepository
      *
      * @return array<Location>
      */
-    public function getLocationsWithIonstormAnomalies(): array;
+    public function getLocationsWithIonstormAnomalies(Layer $layer): array;
 }

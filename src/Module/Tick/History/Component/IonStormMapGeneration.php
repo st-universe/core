@@ -70,7 +70,7 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         }
         imagefill($img, 0, 0, $fillColor);
 
-        foreach ($this->anomalyRepository->getLocationsWithIonstormAnomalies() as $location) {
+        foreach ($this->anomalyRepository->getLocationsWithIonstormAnomalies($layer) as $location) {
             $curx = ($location->getCx() - 1) * 2;
             $cury = ($location->getCy() - 1) * 2;
 
