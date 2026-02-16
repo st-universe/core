@@ -60,7 +60,7 @@
     "monolog/monolog": "^3",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^7",
-    "sebastian/diff": "^7.0",
+    "sebastian/diff": "^8.0",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/mailer": "^8.0.0",
@@ -79,7 +79,7 @@
     "phpstan/phpstan-doctrine": "^2.0",
     "phpstan/phpstan-mockery": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
-    "phpunit/phpunit": "^12",
+    "phpunit/phpunit": "^13",
     "rector/rector": "^2.0",
     "spatie/phpunit-snapshot-assertions": "^5.1"
   },
