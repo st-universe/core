@@ -97,7 +97,6 @@ class IonStormPropagationTest extends StuTestCase
 
         $root->shouldReceive('getChildren')
             ->withNoArgs()
-            ->twice()
             ->andReturn(new ArrayCollection([
                 $child1,
                 $child2WithIonStormOnNeighbour,

@@ -36,11 +36,13 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
     {
         $location = $anomaly->getLocation();
         if ($location !== null) {
+            $location->getAnomalies()->toArray(); // make sure the collection is initialized
             $location->getAnomalies()->removeElement($anomaly);
         }
 
         $parent = $anomaly->getParent();
         if ($parent !== null) {
+            $parent->getChildren()->toArray(); // make sure the collection is initialized
             $parent->getChildren()->removeElement($anomaly);
         }
 

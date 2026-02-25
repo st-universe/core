@@ -117,10 +117,12 @@ class Anomaly implements SpacecraftDestroyerInterface
         $key = $this->anomalyType->getId();
 
         if ($old !== null) {
+            $old->getAnomalies()->toArray(); // make sure the collection is initialized
             $old->getAnomalies()->remove($key);
         }
 
         if ($location !== null && !$location->getAnomalies()->containsKey($key)) {
+            $location->getAnomalies()->toArray(); // make sure the collection is initialized
             $location->getAnomalies()->set($key, $this);
         }
 
@@ -132,13 +134,14 @@ class Anomaly implements SpacecraftDestroyerInterface
         return $this->parent;
     }
 
-    public function setParent(Anomaly $parent, Location $location): Anomaly
+    public function setParent(Anomaly $parent, Location $location): Anomaly //check
     {
         if ($this->parent === $parent) {
             return $this;
         }
 
         $this->parent = $parent;
+        $parent->getChildren()->toArray(); // make sure the collection is initialized
         $parent->getChildren()->set($location->getId(), $this);
 
         return $this;
@@ -170,7 +173,7 @@ class Anomaly implements SpacecraftDestroyerInterface
 
     public function hasChildren(): bool
     {
-        return !$this->getChildren()->isEmpty();
+        return $this->getChildren()->toArray() !== [];
     }
 
     #[\Override]

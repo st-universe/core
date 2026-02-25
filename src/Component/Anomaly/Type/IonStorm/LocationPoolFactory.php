@@ -26,7 +26,8 @@ class LocationPoolFactory
     private function getLocations(Anomaly $anomaly, int $stretch): array
     {
         $panelBoundaries = null;
-        foreach ($anomaly->getChildren() as $child) {
+        $children = $anomaly->getChildren()->toArray();
+        foreach ($children as $child) {
 
             $location = $child->getLocation();
             if ($location === null) {
