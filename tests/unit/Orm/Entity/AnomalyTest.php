@@ -38,18 +38,16 @@ class AnomalyTest extends StuTestCase
 
     public function testSetParent(): void
     {
-        $parent = $this->createMock(Anomaly::class);
-        $location = $this->createMock(Location::class);
+        $parent = $this->mock(Anomaly::class);
+        $location = $this->mock(Location::class);
 
         $anomaly = new Anomaly();
 
-        $parent->expects($this->once())
-            ->method('getChildren')
-            ->willReturn(new \Doctrine\Common\Collections\ArrayCollection());
+        $parent->shouldReceive('getChildren')
+            ->andReturn(new \Doctrine\Common\Collections\ArrayCollection());
 
-        $location->expects($this->once())
-            ->method('getId')
-            ->willReturn(42);
+        $location->shouldReceive('getId')
+            ->andReturn(42);
 
         $anomaly->setParent($parent, $location);
 

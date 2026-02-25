@@ -21,12 +21,13 @@ class IonStormPropagation
 
     public function propagateStorm(Anomaly $root, LocationPool $locationPool): void
     {
-        if ($root->getChildren()->isEmpty()) {
+        $children = $root->getChildren()->toArray();
+        if ($children === []) {
             $root->setRemainingTicks(0);
             return;
         }
 
-        foreach ($root->getChildren()->toArray() as $child) {
+        foreach ($children as $child) {
             $this->transferRemainingTicks(
                 $root,
                 $child,
