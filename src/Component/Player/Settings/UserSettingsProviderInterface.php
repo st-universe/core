@@ -30,4 +30,5 @@ interface UserSettingsProviderInterface
     public function getWarpsplitAutoCarryoverDefault(User $user): bool;
     public function isShowPirateHistoryEntrys(User $user): bool;
     public function isInboxMessengerStyle(User $user): bool;
+    public function isShow3DModel(User $user): bool;
 }

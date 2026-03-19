@@ -11,7 +11,7 @@ enum UserSettingEnum: string
     case AVATAR = 'avatar';
     case RGB_CODE = 'rgb_code';
 
-    // NON DISTINCT
+        // NON DISTINCT
     case EMAIL_NOTIFICATION = 'email_notification';
     case SAVE_LOGIN = 'save_login';
     case STORAGE_NOTIFICATION = 'storage_notification';
@@ -21,6 +21,7 @@ enum UserSettingEnum: string
     case WARPSPLIT_AUTO_CARRYOVER_DEFAULT = 'warpsplit_auto_carryover_default';
     case SHOW_PIRATE_HISTORY_ENTRYS = 'show_pirate_history_entrys';
     case INBOX_MESSENGER_STYLE = 'inbox_messenger_style';
+    case SHOW_3D_MODEL = 'show_3d_model';
 
     case DEFAULT_VIEW = 'default_view';
     case RPG_BEHAVIOR = 'rpg_behavior';
@@ -68,7 +69,8 @@ enum UserSettingEnum: string
             self::RPG_BEHAVIOR => 'Information für andere Spieler ob man selbst gern Rollenspiel betreibt.',
             self::CSS_COLOR_SHEET => 'Auswahl der Interface-Farben.',
             self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt einträge in der History an die durch Interaktion mit dem Piraten NPC entstanden sind.',
-            self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.'
+            self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.',
+            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester).'
         };
     }
 
@@ -100,19 +102,20 @@ enum UserSettingEnum: string
             self::RPG_BEHAVIOR => $settingsProvider->getRpgBehavior($user),
             self::CSS_COLOR_SHEET => $settingsProvider->getCss($user),
             self::SHOW_PIRATE_HISTORY_ENTRYS => $settingsProvider->isShowPirateHistoryEntrys($user),
-            self::INBOX_MESSENGER_STYLE => $settingsProvider->isInboxMessengerStyle($user)
+            self::INBOX_MESSENGER_STYLE => $settingsProvider->isInboxMessengerStyle($user),
+            self::SHOW_3D_MODEL => $settingsProvider->isShow3DModel($user)
         };
     }
 
     /** @return array<self> */
     public static function getDistinct(): array
     {
-        return array_filter(self::cases(), fn (UserSettingEnum $type): bool => $type->isDistinctSetting());
+        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => $type->isDistinctSetting());
     }
 
     /** @return array<self> */
     public static function getNonDistinct(): array
     {
-        return array_filter(self::cases(), fn (UserSettingEnum $type): bool => !$type->isDistinctSetting());
+        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => !$type->isDistinctSetting());
     }
 }

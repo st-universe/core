@@ -2411,3 +2411,38 @@ label.linkbutton:hover {
 .basic-trade-chart-xaxis-label-right {
   transform: translateX(-100%);
 }
+
+.ship3d-container {
+  position: relative;
+  background: transparent;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.ship3d-canvas {
+  display: block;
+  cursor: grab;
+}
+
+.ship3d-canvas:active {
+  cursor: grabbing;
+}
+
+.ship3d-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-23);
+  font-size: 12px;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.ship3d-error {
+  color: #ff0000;
+  font-size: 11px;
+  text-align: center;
+  padding: 10px;
+}

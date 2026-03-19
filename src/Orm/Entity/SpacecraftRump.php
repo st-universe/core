@@ -35,6 +35,9 @@ class SpacecraftRump
     #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
     private ?SpacecraftRumpBaseValues $baseValues;
 
+    #[OneToOne(targetEntity: SpacecraftRump3DModel::class, mappedBy: 'rump', cascade: ['all'])]
+    private ?SpacecraftRump3DModel $model3d = null;
+
     #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
 
@@ -162,6 +165,11 @@ class SpacecraftRump
     public function getBaseValues(): SpacecraftRumpBaseValues
     {
         return $this->baseValues ?? throw new LogicException('Rump has no base balues');
+    }
+
+    public function get3DModel(): SpacecraftRump3DModel|false
+    {
+        return $this->model3d ?? false;
     }
 
     public function getCategoryId(): SpacecraftRumpCategoryEnum

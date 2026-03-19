@@ -59,7 +59,7 @@
         {% set isFleetHeader = true %}
         {{ shiplist_header(isFleetHeader) }}
         {% for wrapper in FLEETWRAPPER.getShipWrappers %}
-        {{ shiplist_body(wrapper) }}
+        {{ shiplist_body(wrapper, IS_ADMIN) }}
         {% endfor %}
     </table>
 </form>

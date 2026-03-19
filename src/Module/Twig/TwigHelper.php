@@ -214,6 +214,9 @@ class TwigHelper
             fn (string|array $permissionValue): bool => $this->checkAlliancePermission($permissionValue)
         );
         $this->environment->addFunction($hasAlliancePermissionFunction);
+
+        $isShow3DModelFunction = new TwigFunction('isShow3DModel', fn(User $user): bool => $this->userSettingsProvider->isShow3DModel($user));
+        $this->environment->addFunction($isShow3DModelFunction);
     }
 
     private function maskEmail(string $email): string

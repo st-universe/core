@@ -8,6 +8,6 @@
     {% set isFleetHeader = false %}
     {{ shiplist_header(isFleetHeader) }}
     {% for wrapper in SINGLESHIPWRAPPERS %}
-    {{ shiplist_body(wrapper) }}
+    {{ shiplist_body(wrapper, IS_ADMIN) }}
     {% endfor %}
 </table>

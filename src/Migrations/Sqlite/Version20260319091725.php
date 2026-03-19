@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260207090318 extends AbstractMigration
+final class Version20260319091725 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -52,7 +52,7 @@ final class Version20260207090318 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9EBADCD910A0EA3F ON stu_alliances_relations (alliance_id)');
         $this->addSql('CREATE INDEX IDX_9EBADCD96804FB49 ON stu_alliances_relations (recipient)');
         $this->addSql('CREATE INDEX alliance_relation_idx ON stu_alliances_relations (alliance_id, recipient)');
-        $this->addSql('CREATE TABLE stu_anomaly (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, remaining_ticks INTEGER NOT NULL, anomaly_type_id INTEGER NOT NULL, location_id INTEGER DEFAULT NULL, parent_id INTEGER DEFAULT NULL, data CLOB DEFAULT NULL, CONSTRAINT FK_A1426D1126894FC7 FOREIGN KEY (anomaly_type_id) REFERENCES stu_anomaly_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D1164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D11727ACA70 FOREIGN KEY (parent_id) REFERENCES stu_anomaly (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_anomaly (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, remaining_ticks INTEGER NOT NULL, anomaly_type_id INTEGER NOT NULL, data CLOB DEFAULT NULL, location_id INTEGER DEFAULT NULL, parent_id INTEGER DEFAULT NULL, CONSTRAINT FK_A1426D1126894FC7 FOREIGN KEY (anomaly_type_id) REFERENCES stu_anomaly_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D1164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D11727ACA70 FOREIGN KEY (parent_id) REFERENCES stu_anomaly (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A1426D1164D218E ON stu_anomaly (location_id)');
         $this->addSql('CREATE INDEX IDX_A1426D11727ACA70 ON stu_anomaly (parent_id)');
         $this->addSql('CREATE INDEX anomaly_to_type_idx ON stu_anomaly (anomaly_type_id)');
@@ -114,7 +114,7 @@ final class Version20260207090318 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B6DF5289A76ED395 ON stu_buoy (user_id)');
         $this->addSql('CREATE TABLE stu_colonies_classes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type INTEGER NOT NULL, database_id INTEGER DEFAULT NULL, colonizeable_fields CLOB NOT NULL, bev_growth_rate SMALLINT NOT NULL, special SMALLINT NOT NULL, allow_start BOOLEAN NOT NULL, min_rot INTEGER NOT NULL, max_rot INTEGER NOT NULL, CONSTRAINT FK_D116D262F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D116D262F0AA09DB ON stu_colonies_classes (database_id)');
-        $this->addSql('CREATE TABLE stu_colonies_fielddata (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_sandbox_id INTEGER DEFAULT NULL, field_id SMALLINT NOT NULL, type_id INTEGER NOT NULL, terraforming_id INTEGER DEFAULT NULL, integrity SMALLINT NOT NULL, aktiv INTEGER NOT NULL, activate_after_build BOOLEAN NOT NULL, reactivate_after_upgrade INTEGER DEFAULT NULL, buildings_id INTEGER DEFAULT NULL, colony_id INTEGER DEFAULT NULL, CONSTRAINT FK_7E4F10971485E613 FOREIGN KEY (buildings_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097BD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F109796ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097A0222FA4 FOREIGN KEY (colony_sandbox_id) REFERENCES stu_colony_sandbox (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_colonies_fielddata (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER DEFAULT NULL, colony_sandbox_id INTEGER DEFAULT NULL, field_id SMALLINT NOT NULL, type_id INTEGER NOT NULL, integrity SMALLINT NOT NULL, aktiv INTEGER NOT NULL, activate_after_build BOOLEAN NOT NULL, reactivate_after_upgrade INTEGER DEFAULT NULL, buildings_id INTEGER DEFAULT NULL, terraforming_id INTEGER DEFAULT NULL, CONSTRAINT FK_7E4F10971485E613 FOREIGN KEY (buildings_id) REFERENCES stu_buildings (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097BD31079C FOREIGN KEY (terraforming_id) REFERENCES stu_terraforming (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F109796ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4F1097A0222FA4 FOREIGN KEY (colony_sandbox_id) REFERENCES stu_colony_sandbox (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7E4F10971485E613 ON stu_colonies_fielddata (buildings_id)');
         $this->addSql('CREATE INDEX IDX_7E4F1097BD31079C ON stu_colonies_fielddata (terraforming_id)');
         $this->addSql('CREATE INDEX IDX_7E4F109796ADBADE ON stu_colonies_fielddata (colony_id)');
@@ -394,6 +394,7 @@ final class Version20260207090318 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_11BE8AA4B4ACC212 ON stu_rump_costs (commodity_id)');
         $this->addSql('CREATE INDEX rump_cost_ship_rump_idx ON stu_rump_costs (rump_id)');
         $this->addSql('CREATE TABLE stu_rump_module_level (type_values CLOB DEFAULT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY (rump_id), CONSTRAINT FK_30CC05172EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_rumps_3d_model (width INTEGER NOT NULL, height INTEGER NOT NULL, rotation INTEGER NOT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY (rump_id), CONSTRAINT FK_E02312A32EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_rumps_buildingfunction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, building_function INTEGER NOT NULL)');
         $this->addSql('CREATE INDEX building_function_ship_rump_idx ON stu_rumps_buildingfunction (rump_id)');
         $this->addSql('CREATE INDEX building_function_idx ON stu_rumps_buildingfunction (building_function)');
@@ -710,6 +711,7 @@ final class Version20260207090318 extends AbstractMigration
         $this->addSql('DROP TABLE stu_rump_base_values');
         $this->addSql('DROP TABLE stu_rump_costs');
         $this->addSql('DROP TABLE stu_rump_module_level');
+        $this->addSql('DROP TABLE stu_rumps_3d_model');
         $this->addSql('DROP TABLE stu_rumps_buildingfunction');
         $this->addSql('DROP TABLE stu_rumps_cat_role_crew');
         $this->addSql('DROP TABLE stu_rumps_categories');
