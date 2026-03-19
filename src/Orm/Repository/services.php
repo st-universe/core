@@ -134,6 +134,7 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftEmergency;
 use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftRump3DModel;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
@@ -296,6 +297,7 @@ return [
     ShipRumpCostRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCost::class),
     ShipRumpModuleLevelRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpModuleLevel::class),
     SpacecraftRumpRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftRump::class),
+    SpacecraftRump3DModelRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftRump3DModel::class),
     ShipRumpRoleRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpRole::class),
     ShipRumpSpecialRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpSpecial::class),
     ShipRumpUserRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class),

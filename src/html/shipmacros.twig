@@ -1,7 +1,11 @@
-{% macro shipimage(ship) %}
+{% macro shipimage(ship, IS_ADMIN) %}
 {% set rumpid = ship.getRumpId %}
 {% set rumpname = ship.getRumpName %}
+{% set user = ship.getUser %}
 
+{% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
+{{ _self.spacecraft3DModel(ship) }}
+{% else %}
 {% if ship.isCloaked %}
 {% set imagesrc = 'assets/ships/' ~ rumpid ~ '_cloaked.png' %}
 {% set imagestyle = 'opacity:0.55; z-index: 5;' %}
@@ -22,18 +26,34 @@
 <img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 {% endif %}
 {% if ship.isHeldByTholianWeb %}
-<img src="/assets/buttons/{{ ship.getHoldingWebImageStyle
-}}" class="indexedGraphics" style="z-index: 4;" />
+<img src="/assets/buttons/{{ ship.getHoldingWebImageStyle }}" class="indexedGraphics" style="z-index: 4;" />
+{% endif %}
 {% endif %}
 
 {% endmacro %}
 
-{% macro spacecraftImageWithoutWarp(ship) %}
+{% macro spacecraftImageWithoutWarp(ship, IS_ADMIN) %}
+{% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
+{{ _self.spacecraft3DModel(ship) }}
+{% else %}
 {% if ship.isCloaked %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getRumpName }}" />
 {% else %}
 <img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getRumpName }}" />
 {% endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro spacecraft3DModel(ship) %}
+{% set rumpid = ship.getRumpId %}
+{% set modelPath = '/assets/ships/3dmodel/' ~ rumpid ~ '.glb' %}
+{% set containerId = 'ship3d-' ~ ship.getId ~ '-' ~ random() %}
+{% set isWarped = ship.isWarped %}
+{% set isImpulse = ship.getImpulseState %}
+
+<div class="ship3d-container" id="{{ containerId }}" data-model="{{ modelPath }}" data-warp="{{ isWarped ? '1' : '0' }}"
+    data-impulse="{{ isImpulse ? '1' : '0' }}" data-title="{{ ship.getRumpName }}">
+</div>
 {% endmacro %}
 
 {% macro shipimagenameastitle(ship) %}

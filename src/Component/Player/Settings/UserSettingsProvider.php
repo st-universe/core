@@ -168,6 +168,17 @@ class UserSettingsProvider implements UserSettingsProviderInterface
         return false;
     }
 
+    #[\Override]
+    public function isShow3DModel(User $user): bool
+    {
+        $setting = $this->getSettings($user)->get(UserSettingEnum::SHOW_3D_MODEL->value);
+        if ($setting !== null) {
+            return (bool)$setting->getValue();
+        }
+
+        return false;
+    }
+
     /**
      * @return Collection<string, UserSetting>
      */
