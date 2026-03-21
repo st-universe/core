@@ -8,14 +8,20 @@ use RuntimeException;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\Lib\TradePostStorageManagerInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\AuctionBid;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\TradePost;
@@ -30,7 +36,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEALS_TAKE_AUCTION';
 
-    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
+    public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime, private StorageManagerInterface $storageManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -93,36 +99,31 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         //give overpay back
         if ($auction->getAuctionAmount() < $currentMaxAmount) {
+            $refundAmount = $currentMaxAmount - $currentBidAmount;
+
             //give prestige back
 
             $wantedCommodity = $auction->getWantedCommodity();
             if ($wantedCommodity === null) {
                 $description = sprintf(
                     '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil dein Maximalgebot über dem Höchstgebot lag',
-                    $currentMaxAmount - $currentBidAmount
+                    $refundAmount
                 );
-                $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
+                $this->createPrestigeLog->createLog($refundAmount, $description, $user, time());
                 $game->getInfo()->addInformation(sprintf(
                     _('Dir wurden %d Prestige gutgeschrieben'),
-                    $currentMaxAmount - $currentBidAmount,
+                    $refundAmount,
                 ));
-            } elseif ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
-                $game->getInfo()->addInformation(sprintf(
-                    _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
-                    $currentMaxAmount - $currentBidAmount,
-                    $wantedCommodity->getName()
-                ));
-                return;
             } else {
-                $storageManagerUser->upperStorage(
-                    $wantedCommodity->getId(),
-                    $currentMaxAmount - $currentBidAmount
+                $this->refundCommodityOverbid(
+                    $game,
+                    $tradePost,
+                    $user,
+                    $wantedCommodity,
+                    $refundAmount,
+                    $freeStorage,
+                    $storageManagerUser
                 );
-                $game->getInfo()->addInformation(sprintf(
-                    _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
-                    $currentMaxAmount - $currentBidAmount,
-                    $wantedCommodity->getName()
-                ));
             }
         }
 
@@ -167,6 +168,66 @@ final class DealsTakeAuction implements ActionControllerInterface
         }
 
         return $result;
+    }
+
+    private function refundCommodityOverbid(
+        GameControllerInterface $game,
+        TradePost $tradePost,
+        User $user,
+        Commodity $wantedCommodity,
+        int $refundAmount,
+        int $freeStorage,
+        TradePostStorageManagerInterface $storageManagerUser
+    ): void {
+        $amountForUserStorage = min($refundAmount, $freeStorage);
+        $amountForTradePostStorage = $refundAmount - $amountForUserStorage;
+
+        if ($amountForUserStorage > 0) {
+            $storageManagerUser->upperStorage(
+                $wantedCommodity->getId(),
+                $amountForUserStorage
+            );
+
+            $game->getInfo()->addInformation(sprintf(
+                _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
+                $amountForUserStorage,
+                $wantedCommodity->getName()
+            ));
+        }
+
+        if ($amountForTradePostStorage <= 0) {
+            return;
+        }
+
+        $this->storageManager->upperStorage(
+            $tradePost->getStation(),
+            $wantedCommodity,
+            $amountForTradePostStorage
+        );
+
+        $game->getInfo()->addInformation(sprintf(
+            _('Da sich nicht genügend Platz für die vollständige Rückerstattung auf deinem Warenkonto befand, wurden %d %s in das Lager des Handelspostens übertragen'),
+            $amountForTradePostStorage,
+            $wantedCommodity->getName()
+        ));
+
+        $tradePostOwner = $tradePost->getUser();
+        if ($tradePostOwner->isNpc() || $tradePostOwner->getId() === $user->getId()) {
+            return;
+        }
+
+        $this->privateMessageSender->send(
+            UserConstants::USER_NPC_FERG,
+            $tradePostOwner->getId(),
+            sprintf(
+                'Der Spieler %s konnte nach einer Auktion nicht alle rückerstatteten Waren in sein Warenkonto auf %s überführen. %d %s wurden stattdessen in das Lager des Handelspostens übertragen',
+                $user->getName(),
+                $tradePost->getName(),
+                $amountForTradePostStorage,
+                $wantedCommodity->getName()
+            ),
+            PrivateMessageFolderTypeEnum::SPECIAL_TRADE
+        );
     }
 
 
