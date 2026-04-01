@@ -18,7 +18,7 @@ enum GameStateEnum: int
     public function getDescription(): string
     {
         return match ($this) {
-            self::ONLINE => 'Umzug (siehe News)',
+            self::ONLINE => 'Online',
             self::TICK => 'Tick',
             self::MAINTENANCE => 'Wartung',
             self::RESET => 'Reset',
