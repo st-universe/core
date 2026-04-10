@@ -51,6 +51,14 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     }
 
     #[\Override]
+    public function getCountByBuildplan(int $buildplanId): int
+    {
+        return $this->count([
+            'buildplan_id' => $buildplanId
+        ]);
+    }
+
+    #[\Override]
     public function getAmountByShipyard(int $stationId): int
     {
         return $this->count([

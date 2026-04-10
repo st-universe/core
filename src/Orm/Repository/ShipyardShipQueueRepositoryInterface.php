@@ -26,6 +26,8 @@ interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
+    public function getCountByBuildplan(int $buildplanId): int;
+
     public function getAmountByShipyard(int $stationId): int;
 
     public function stopQueueByShipyard(int $stationId): void;
