@@ -170,32 +170,33 @@ final class ShowModuleFab implements ViewControllerInterface
             $rumpId = $rump->getId();
             $rumpRoleId = $rump->getRoleId();
 
+            if ($rumpRoleId === null) {
+                throw new InvalidArgumentException('invalid rump without rump role');
+            }
+
             $shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($rump);
             if ($shipRumpModuleLevel === null) {
                 throw new InvalidArgumentException('this should not happen');
             }
 
-            foreach ($allModules as $listItem) {
-                $module = $listItem->getModule();
-                $type = $module->getType();
-
+            foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $type) {
                 if ($type->isSpecialSystemType()) {
                     continue;
                 }
 
-                $moduleLevel = $module->getLevel();
-                $moduleShipRumpRoleId = $module->getShipRumpRoleId();
+                $minLevel = $shipRumpModuleLevel->getMinimumLevel($type);
+                $maxLevel = $shipRumpModuleLevel->getMaximumLevel($type);
 
-                if ($moduleShipRumpRoleId !== null) {
-                    if ($moduleShipRumpRoleId === $rumpRoleId) {
-                        $listItem->addRump($rump);
-                    }
-                } else {
-                    $min_level = $shipRumpModuleLevel->getMinimumLevel($type);
-                    $max_level = $shipRumpModuleLevel->getMaximumLevel($type);
-
-                    if ($moduleLevel >= $min_level && $moduleLevel <= $max_level) {
-                        $listItem->addRump($rump);
+                foreach (
+                    $this->moduleRepository->getByTypeColonyAndLevel(
+                        $colony->getId(),
+                        $type,
+                        $rumpRoleId,
+                        range($minLevel, $maxLevel)
+                    ) as $module
+                ) {
+                    if (array_key_exists($module->getId(), $allModules)) {
+                        $allModules[$module->getId()]->addRump($rump);
                     }
                 }
             }
