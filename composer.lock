@@ -830,16 +830,16 @@
         },
         {
             "name": "crunzphp/crunz",
-            "version": "v3.9.0",
+            "version": "v3.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crunzphp/crunz.git",
-                "reference": "cc4a871d8fa1eeaad311bd90f78aab96ebe67401"
+                "reference": "98dc47f7997a1428853370bf8723c6750bc42306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crunzphp/crunz/zipball/cc4a871d8fa1eeaad311bd90f78aab96ebe67401",
-                "reference": "cc4a871d8fa1eeaad311bd90f78aab96ebe67401",
+                "url": "https://api.github.com/repos/crunzphp/crunz/zipball/98dc47f7997a1428853370bf8723c6750bc42306",
+                "reference": "98dc47f7997a1428853370bf8723c6750bc42306",
                 "shasum": ""
             },
             "require": {
@@ -858,6 +858,9 @@
                 "symfony/string": "^6.4.25 || ^7.4.0 || ^8.0.0",
                 "symfony/yaml": "^6.4.25 || ^7.4.0 || ^8.0.0"
             },
+            "conflict": {
+                "laravel/serializable-closure": ">=2.0.9,<2.0.11"
+            },
             "require-dev": {
                 "ergebnis/composer-normalize": "2.28.3",
                 "ext-json": "*",
@@ -866,7 +869,7 @@
                 "phpstan/phpstan": "2.0.2",
                 "phpstan/phpstan-phpunit": "2.0.1",
                 "phpstan/phpstan-strict-rules": "2.0.0",
-                "phpunit/phpunit": "10.5.60",
+                "phpunit/phpunit": "10.5.63",
                 "symfony/error-handler": "^6.4.25 || ^7.4.0 || ^8.0.0",
                 "symfony/phpunit-bridge": "^6.4.25 || ^7.4.0 || ^8.0.0"
             },
@@ -908,7 +911,7 @@
             ],
             "support": {
                 "issues": "https://github.com/crunzphp/crunz/issues",
-                "source": "https://github.com/crunzphp/crunz/tree/v3.9.0"
+                "source": "https://github.com/crunzphp/crunz/tree/v3.9.4"
             },
             "funding": [
                 {
@@ -916,7 +919,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-08T16:21:56+00:00"
+            "time": "2026-04-12T06:01:57+00:00"
         },
         {
             "name": "cweagans/composer-configurable-plugin",
@@ -2671,16 +2674,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v2.0.9",
+            "version": "v2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "8f631589ab07b7b52fead814965f5a800459cb3e"
+                "reference": "d1af40ac4a6ccc12bd062a7184f63c9995a63bdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/8f631589ab07b7b52fead814965f5a800459cb3e",
-                "reference": "8f631589ab07b7b52fead814965f5a800459cb3e",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/d1af40ac4a6ccc12bd062a7184f63c9995a63bdd",
+                "reference": "d1af40ac4a6ccc12bd062a7184f63c9995a63bdd",
                 "shasum": ""
             },
             "require": {
@@ -2728,7 +2731,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2026-02-03T06:55:34+00:00"
+            "time": "2026-04-07T13:32:18+00:00"
         },
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -10763,5 +10766,5 @@
         "ext-xsl": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
