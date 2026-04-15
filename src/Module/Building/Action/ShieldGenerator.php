@@ -8,7 +8,6 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
-use Stu\Orm\Entity\PlanetField;
 
 final class ShieldGenerator implements BuildingActionHandlerInterface
 {
@@ -21,7 +20,7 @@ final class ShieldGenerator implements BuildingActionHandlerInterface
     }
 
     #[\Override]
-    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host, ?PlanetField $field = null): void
+    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         if ($host instanceof Colony) {
             $host->getChangeable()->setShields(0);
@@ -29,7 +28,7 @@ final class ShieldGenerator implements BuildingActionHandlerInterface
     }
 
     #[\Override]
-    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host, ?PlanetField $field = null): void
+    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
     {
         if ($host instanceof Colony) {
             $this->colonyLibFactory->createColonyShieldingManager($host)->updateActualShields();

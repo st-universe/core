@@ -22,11 +22,6 @@ interface StationShipRepairRepositoryInterface extends ObjectRepository
     /**
      * @return array<StationShipRepair>
      */
-    public function getAllOrdered(): array;
-
-    /**
-     * @return array<StationShipRepair>
-     */
     public function getMostRecentJobs(): array;
 
     public function save(StationShipRepair $stationShipRepair): void;

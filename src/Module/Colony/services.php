@@ -41,7 +41,6 @@ use Stu\Module\Colony\Action\ManageOrbitalShuttles\ManageOrbitalShuttles;
 use Stu\Module\Colony\Action\ManageOrbitalSpacecrafts\ManageOrbitalSpacecrafts;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
 use Stu\Module\Colony\Action\RemoveWaste\RemoveWaste;
-use Stu\Module\Colony\Action\ReactivateShipRepair\ReactivateShipRepair;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplan;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequest;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
@@ -267,7 +266,6 @@ return [
         ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
         RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
         RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class),
-        ReactivateShipRepair::ACTION_IDENTIFIER => autowire(ReactivateShipRepair::class),
         RetrofitShip::ACTION_IDENTIFIER => autowire(RetrofitShip::class),
         Transfer::ACTION_IDENTIFIER => get(Transfer::class),
         CreateSandbox::ACTION_IDENTIFIER => get(CreateSandbox::class)

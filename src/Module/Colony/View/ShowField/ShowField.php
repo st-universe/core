@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowField;
 
-use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Spacecraft\Lib\PassiveRepairProgressBuilder;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -34,8 +34,7 @@ final class ShowField implements ViewControllerInterface
         private TerraformingRepositoryInterface $terraformingRepository,
         private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private PassiveRepairProgressBuilder $passiveRepairProgressBuilder,
+        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private StatusBarFactoryInterface $statusBarFactory
     ) {}
 
@@ -70,15 +69,12 @@ final class ShowField implements ViewControllerInterface
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 1));
             $game->setTemplateVar('SHIP_RETROFIT_PROGRESS', $this->colonyShipQueueRepository->getByColonyAndMode($host->getId(), 2));
 
-            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction(
-                $host,
-                BuildingFunctionEnum::REPAIR_SHIPYARD
-            );
-
-            $shipRepairProgress = $this->passiveRepairProgressBuilder->build(
-                $this->colonyShipRepairRepository->getByColonyField($host->getId(), $field->getFieldId()),
-                $isRepairStationBonus ? 2 : 1,
-                $isRepairStationBonus
+            $shipRepairProgress = array_map(
+                fn (ColonyShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
+                $this->colonyShipRepairRepository->getByColonyField(
+                    $host->getId(),
+                    $field->getFieldId()
+                )
             );
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
 

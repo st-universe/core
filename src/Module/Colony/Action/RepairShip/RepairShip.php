@@ -9,7 +9,6 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
-use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -31,16 +30,15 @@ final class RepairShip implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
     public function __construct(
-        private readonly ColonyLoaderInterface $colonyLoader,
-        private readonly ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        private readonly ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
-        private readonly ShipRepositoryInterface $shipRepository,
-        private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
-        private readonly InteractionCheckerInterface $interactionChecker,
-        private readonly PrivateMessageSenderInterface $privateMessageSender,
-        private readonly ColonyFunctionManagerInterface $colonyFunctionManager,
-        private readonly RepairUtilInterface $repairUtil
+        private ColonyLoaderInterface $colonyLoader,
+        private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private ShipRepositoryInterface $shipRepository,
+        private OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
+        private InteractionCheckerInterface $interactionChecker,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private ColonyFunctionManagerInterface $colonyFunctionManager
     ) {}
 
     #[\Override]
@@ -50,7 +48,11 @@ final class RepairShip implements ActionControllerInterface
         $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_SHIP_REPAIR);
 
         $userId = $game->getUser()->getId();
-        $colony = $this->colonyLoader->loadWithOwnerValidation(request::indInt('id'), $userId);
+
+        $colony = $this->colonyLoader->loadWithOwnerValidation(
+            request::indInt('id'),
+            $userId
+        );
 
         $target = $this->shipRepository->find(request::indInt('ship_id'));
         if ($target === null) {
@@ -72,19 +74,20 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
+
         $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
 
-        /** @var array<int, ShipWrapperInterface> $repairableShipWrappers */
+        /**@var array<int, ShipWrapperInterface> */
         $repairableShipWrappers = [];
         foreach ($this->orbitShipWrappersRetriever->retrieve($colony) as $group) {
+
             foreach ($group->getWrappers() as $wrapper) {
                 $ship = $wrapper->get();
                 if (!$wrapper->canBeRepaired() || $ship->getCondition()->isUnderRepair()) {
                     continue;
                 }
-
-                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rumpRelation) {
-                    if (array_key_exists($rumpRelation->getBuildingFunction()->value, $fieldFunctions)) {
+                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
+                    if (array_key_exists($rump_rel->getBuildingFunction()->value, $fieldFunctions)) {
                         $repairableShipWrappers[$ship->getId()] = $wrapper;
                         break;
                     }
@@ -102,59 +105,50 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
+        if ($target->getState() == SpacecraftStateEnum::ASTRO_FINALIZING) {
             $game->getInfo()->addInformation('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.');
             return;
         }
 
-        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::REPAIR_SHIPYARD);
-        $jobs = $this->colonyShipRepairRepository->getByColonyField($colony->getId(), $field->getFieldId());
-        $activeSlotCount = $isRepairStationBonus ? 2 : 1;
-        $isQueued = count($jobs) >= $activeSlotCount;
-
-        $repair = $this->colonyShipRepairRepository->prototype();
-        $repair->setColony($colony);
-        $repair->setShip($target);
-        $repair->setFieldId($field->getFieldId());
-        $repair->setFinishTime(0);
-        $repair->setStopDate(0);
-        $repair->setIsStopped(false);
-
-        if (!$isQueued && $field->isActive()) {
-            $repair->setFinishTime(time() + $this->repairUtil->getPassiveRepairStepDuration($target));
-        }
-
-        $this->colonyShipRepairRepository->save($repair);
+        $obj = $this->colonyShipRepairRepository->prototype();
+        $obj->setColony($colony);
+        $obj->setShip($target);
+        $obj->setFieldId($field->getFieldId());
+        $this->colonyShipRepairRepository->save($obj);
 
         $target->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
-        if ($isQueued) {
+        $jobs = $this->colonyShipRepairRepository->getByColonyField(
+            $colony->getId(),
+            $field->getFieldId()
+        );
+
+        if (count($jobs) > 1) {
             $game->getInfo()->addInformation('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt');
             return;
         }
 
         $wrapper = $repairableShipWrappers[$target->getId()];
-        $estimatedDuration = $this->repairUtil->getPassiveRepairEstimatedDuration($wrapper, $isRepairStationBonus);
-        $activationSuffix = $field->isActive() ? '' : ', sobald die Werft wieder aktiv ist';
-        $estimatedFinishDate = date('d.m.Y H:i', time() + $estimatedDuration);
+        $ticks = $wrapper->getRepairDuration();
+        $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::REPAIR_SHIPYARD);
+        if ($isRepairStationBonus) {
+            $ticks = ceil($ticks * 0.5);
+        }
 
-        $game->getInfo()->addInformationf(
-            'Das Schiff wird repariert. Voraussichtliche Fertigstellung: %s%s',
-            $estimatedFinishDate,
-            $activationSuffix
-        );
+        $activemsg = $field->isActive() ? '' : ', nach aktivierung der Werft';
+        $game->getInfo()->addInformationf('Das Schiff wird repariert. Fertigstellung in %d Runden%s', $ticks, $activemsg);
 
         $this->privateMessageSender->send(
             $userId,
             $target->getUser()->getId(),
             sprintf(
-                'Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Voraussichtliche Fertigstellung: %s%s',
+                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden%s",
                 $target->getName(),
                 $target->getSectorString(),
                 $colony->getName(),
                 $colony->getUser()->getName(),
-                $estimatedFinishDate,
-                $activationSuffix
+                $ticks,
+                $activemsg
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP
         );

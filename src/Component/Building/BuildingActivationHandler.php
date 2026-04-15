@@ -62,7 +62,7 @@ final class BuildingActivationHandler
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleActivation($building, $field->getHost(), $field);
+        $this->buildingPostAction->handleActivation($building, $field->getHost());
 
         $this->saveHost($field->getHost());
 
@@ -92,7 +92,7 @@ final class BuildingActivationHandler
 
         $this->planetFieldRepository->save($field);
 
-        $this->buildingPostAction->handleDeactivation($building, $field->getHost(), $field);
+        $this->buildingPostAction->handleDeactivation($building, $field->getHost());
 
         $this->saveHost($field->getHost());
     }

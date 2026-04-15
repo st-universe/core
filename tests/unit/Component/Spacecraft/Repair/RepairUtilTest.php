@@ -13,7 +13,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
@@ -286,58 +285,5 @@ class RepairUtilTest extends StuTestCase
         $duration = $this->subject->getRepairDurationPreview($this->wrapper);
 
         $this->assertEquals(3, $duration);
-    }
-
-    public function testGetPassiveRepairStepDurationUsesHalfBuildtimeWithMinuteFloor(): void
-    {
-        $rump = $this->mock(SpacecraftRump::class);
-
-        $rump->shouldReceive('getBuildtime')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(30);
-        $this->ship->shouldReceive('getRump')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($rump);
-
-        $duration = $this->subject->getPassiveRepairStepDuration($this->ship);
-
-        $this->assertSame(60, $duration);
-    }
-
-    public function testGetPassiveRepairEstimatedDurationConsidersRepairStationBonus(): void
-    {
-        $damagedSystems = [
-            $this->mock(SpacecraftSystem::class),
-            $this->mock(SpacecraftSystem::class),
-            $this->mock(SpacecraftSystem::class),
-            $this->mock(SpacecraftSystem::class)
-        ];
-        $rump = $this->mock(SpacecraftRump::class);
-
-        $this->wrapper->shouldReceive('getDamagedSystems')
-            ->withNoArgs()
-            ->times(2)
-            ->andReturn($damagedSystems);
-        $this->ship->shouldReceive('getMaxHull')
-            ->withNoArgs()
-            ->times(2)
-            ->andReturn(1000);
-        $this->ship->shouldReceive('getCondition->getHull')
-            ->withNoArgs()
-            ->times(2)
-            ->andReturn(800);
-        $this->ship->shouldReceive('getRump')
-            ->withNoArgs()
-            ->times(2)
-            ->andReturn($rump);
-        $rump->shouldReceive('getBuildtime')
-            ->withNoArgs()
-            ->times(2)
-            ->andReturn(600);
-
-        $this->assertSame(600, $this->subject->getPassiveRepairEstimatedDuration($this->wrapper, false));
-        $this->assertSame(300, $this->subject->getPassiveRepairEstimatedDuration($this->wrapper, true));
     }
 }

@@ -37,16 +37,6 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
     }
 
     #[\Override]
-    public function getAllOrdered(): array
-    {
-        return $this->findBy([], [
-            'colony_id' => 'asc',
-            'field_id' => 'asc',
-            'id' => 'asc'
-        ]);
-    }
-
-    #[\Override]
     public function getMostRecentJobs(int $tickId): array
     {
         $rsm = new ResultSetMapping();
