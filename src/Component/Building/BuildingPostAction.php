@@ -9,6 +9,7 @@ use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\PlanetField;
 
 /**
  * Handles certain post de-/activation actions depending on building functions
@@ -20,12 +21,13 @@ final class BuildingPostAction implements BuildingPostActionInterface
     #[\Override]
     public function handleDeactivation(
         Building $building,
-        Colony|ColonySandbox $host
+        Colony|ColonySandbox $host,
+        PlanetField $field
     ): void {
         $this->handle(
             $building,
-            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host): void {
-                $handler->deactivate($buildingFunction, $host);
+            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host, $field): void {
+                $handler->deactivate($buildingFunction, $host, $field);
             }
         );
     }
@@ -33,12 +35,13 @@ final class BuildingPostAction implements BuildingPostActionInterface
     #[\Override]
     public function handleActivation(
         Building $building,
-        Colony|ColonySandbox $host
+        Colony|ColonySandbox $host,
+        PlanetField $field
     ): void {
         $this->handle(
             $building,
-            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host): void {
-                $handler->activate($buildingFunction, $host);
+            static function (BuildingActionHandlerInterface $handler, BuildingFunctionEnum $buildingFunction) use ($host, $field): void {
+                $handler->activate($buildingFunction, $host, $field);
             }
         );
     }

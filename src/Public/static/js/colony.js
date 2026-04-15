@@ -1,4 +1,4 @@
-var colonyid = null;
+﻿var colonyid = null;
 var hostid = null;
 var hosttype = null;
 var sstr = null;
@@ -535,6 +535,36 @@ function filterByRump(selectedRump) {
 	applyFilter(isSelected, `.rump_${selectedRump}`, false);
 
 	updateBuildplanDropdown(selectedRump);
+}
+
+function performActionAndRefreshPopup(action, params, popupUrl) {
+
+	setAjaxMandatory(true);
+	switchInnerContent(action, null, params, '/colony.php');
+
+	if (popupUrl) {
+		const popupWindow = document.getElementById('popupWindow');
+		const posX = popupWindow ? popupWindow.offsetLeft : null;
+		const posY = popupWindow ? popupWindow.offsetTop : null;
+
+		updatePopup(popupUrl, null, posX, posY, false, false);
+	}
+
+	setAjaxMandatory(false);
+}
+
+function reactivateRepairInPopup(colonyId, fieldId, repairFieldId, sessionString) {
+	const params = `id=${colonyId}&fid=${fieldId}&repair_fid=${repairFieldId}&sstr=${sessionString}`;
+	const popupUrl = `/colony.php?fid=${fieldId}&SHOW_FIELD=1`;
+
+	performActionAndRefreshPopup('B_REACTIVATE_REPAIR', params, popupUrl);
+}
+
+function cancelRepairInPopup(colonyId, fieldId, shipId, sessionString) {
+	const params = `id=${colonyId}&fid=${fieldId}&shipid=${shipId}&sstr=${sessionString}`;
+	const popupUrl = `/colony.php?fid=${fieldId}&SHOW_FIELD=1`;
+
+	performActionAndRefreshPopup('B_CANCEL_REPAIR', params, popupUrl);
 }
 
 function filterByBuildplan(selectedBuildplan) {

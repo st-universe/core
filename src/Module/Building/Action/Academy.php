@@ -7,6 +7,7 @@ namespace Stu\Module\Building\Action;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class Academy implements BuildingActionHandlerInterface
@@ -20,13 +21,13 @@ final class Academy implements BuildingActionHandlerInterface
     }
 
     #[\Override]
-    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
+    public function deactivate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host, ?PlanetField $field = null): void
     {
         // nothing to do here
     }
 
     #[\Override]
-    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host): void
+    public function activate(BuildingFunctionEnum $buildingFunction, Colony|ColonySandbox $host, ?PlanetField $field = null): void
     {
         // nothing to do here
     }

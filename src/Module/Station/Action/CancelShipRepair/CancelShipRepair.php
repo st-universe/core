@@ -18,7 +18,11 @@ final class CancelShipRepair implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CANCEL_REPAIR';
 
-    public function __construct(private StationShipRepairRepositoryInterface $stationShipRepairRepository, private CancelRepairInterface $cancelRepair, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        private CancelRepairInterface $cancelRepair,
+        private PrivateMessageSenderInterface $privateMessageSender
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
