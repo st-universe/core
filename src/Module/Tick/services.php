@@ -32,6 +32,7 @@ use Stu\Module\Tick\Pirate\PirateTickInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\EndPirateRound;
 use Stu\Module\Tick\Process\FinishBuildJobs;
+use Stu\Module\Tick\Process\FinishPassiveShipRepairJobs;
 use Stu\Module\Tick\Process\FinishShipBuildJobs;
 use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
@@ -58,7 +59,6 @@ use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\EscapePodHandling;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\LowerHull;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\NpcShipHandling;
-use Stu\Module\Tick\Spacecraft\ManagerComponent\RepairActions;
 use Stu\Module\Tick\Spacecraft\SpacecraftTick;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManager;
@@ -108,7 +108,6 @@ return [
                 autowire(AnomalyProcessing::class),
                 autowire(CrewLimitations::class),
                 autowire(EscapePodHandling::class),
-                autowire(RepairActions::class),
                 get(SpacecraftTickInterface::class),
                 autowire(NpcShipHandling::class),
                 autowire(LowerHull::class),
@@ -120,6 +119,7 @@ return [
     ProcessTickHandlerInterface::class => [
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
+        autowire(FinishPassiveShipRepairJobs::class),
         autowire(FinishShipRetrofitJobs::class),
         autowire(FinishTerraformingJobs::class),
         autowire(ShieldRegeneration::class),

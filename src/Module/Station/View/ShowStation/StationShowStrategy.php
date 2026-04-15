@@ -12,14 +12,13 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProgressBuilder;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
@@ -31,6 +30,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         private StationUtilityInterface $stationUtility,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private PassiveRepairProgressBuilder $passiveRepairProgressBuilder,
         private ColonyLibFactoryInterface $colonyLibFactory,
     ) {}
 
@@ -108,11 +108,10 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         if ($this->stationUtility->canRepairShips($station)) {
             $game->setTemplateVar('CAN_REPAIR', true);
 
-            $shipRepairProgress = array_map(
-                fn (StationShipRepair $repair): ShipWrapperInterface => $this->spacecraftWrapperFactory->wrapShip($repair->getShip()),
-                $this->stationShipRepairRepository->getByStation(
-                    $station->getId()
-                )
+            $shipRepairProgress = $this->passiveRepairProgressBuilder->build(
+                $this->stationShipRepairRepository->getByStation($station->getId()),
+                1,
+                false
             );
 
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);

@@ -31,7 +31,8 @@ final class BuildingFunctionActionMapper implements BuildingFunctionActionMapper
             BuildingFunctionEnum::ESCORT_SHIPYARD,
             BuildingFunctionEnum::FRIGATE_SHIPYARD,
             BuildingFunctionEnum::CRUISER_SHIPYARD,
-            BuildingFunctionEnum::DESTROYER_SHIPYARD => Shipyard::class,
+            BuildingFunctionEnum::DESTROYER_SHIPYARD,
+            BuildingFunctionEnum::REPAIR_SHIPYARD => Shipyard::class,
             //SHIELDS
             BuildingFunctionEnum::SHIELD_BATTERY => ShieldBattery::class,
             BuildingFunctionEnum::SHIELD_GENERATOR => ShieldGenerator::class,

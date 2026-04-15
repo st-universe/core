@@ -32,6 +32,15 @@ class ColonyShipRepair
     #[Column(type: 'integer')]
     private int $field_id;
 
+    #[Column(type: 'integer')]
+    private int $finish_time = 0;
+
+    #[Column(type: 'integer')]
+    private int $stop_date = 0;
+
+    #[Column(type: 'boolean')]
+    private bool $is_stopped = false;
+
     #[ManyToOne(targetEntity: Colony::class)]
     #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Colony $colony;
@@ -65,6 +74,42 @@ class ColonyShipRepair
     public function getFieldId(): int
     {
         return $this->field_id;
+    }
+
+    public function getFinishTime(): int
+    {
+        return $this->finish_time;
+    }
+
+    public function setFinishTime(int $finishTime): ColonyShipRepair
+    {
+        $this->finish_time = $finishTime;
+
+        return $this;
+    }
+
+    public function getStopDate(): int
+    {
+        return $this->stop_date;
+    }
+
+    public function setStopDate(int $stopDate): ColonyShipRepair
+    {
+        $this->stop_date = $stopDate;
+
+        return $this;
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->is_stopped;
+    }
+
+    public function setIsStopped(bool $isStopped): ColonyShipRepair
+    {
+        $this->is_stopped = $isStopped;
+
+        return $this;
     }
 
     public function getColony(): Colony
