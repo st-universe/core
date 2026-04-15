@@ -254,7 +254,7 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleActivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
@@ -392,7 +392,7 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
@@ -480,7 +480,7 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($housing);
 
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
@@ -760,7 +760,7 @@ class BuildingManagerTest extends StuTestCase
             ->with($host)
             ->twice();
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->buildingManager->remove($field);
@@ -896,7 +896,7 @@ class BuildingManagerTest extends StuTestCase
             ->with($host)
             ->twice();
         $this->buildingPostAction->shouldReceive('handleDeactivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->buildingManager->remove($field, true);
@@ -1456,7 +1456,7 @@ class BuildingManagerTest extends StuTestCase
             ->with($host)
             ->twice();
         $this->buildingPostAction->shouldReceive('handleActivation')
-            ->with($building, $host)
+            ->with($building, $host, $field)
             ->once();
 
         $this->buildingManager->finish($field);

@@ -2446,3 +2446,21 @@ label.linkbutton:hover {
   text-align: center;
   padding: 10px;
 }
+
+.repair-active-row td {
+  border-top: 1px solid #2f8f5b;
+  border-bottom: 1px solid #2f8f5b;
+}
+
+.repair-active-row td:first-child {
+  border-left: 1px solid #2f8f5b;
+}
+
+.repair-active-row td:last-child {
+  border-right: 1px solid #2f8f5b;
+}
+
+.repair-pending-text {
+  color: #a6a6a6;
+  font-style: italic;
+}

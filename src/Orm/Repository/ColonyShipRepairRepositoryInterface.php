@@ -22,6 +22,11 @@ interface ColonyShipRepairRepositoryInterface extends ObjectRepository
     /**
      * @return array<ColonyShipRepair>
      */
+    public function getAllOrdered(): array;
+
+    /**
+     * @return array<ColonyShipRepair>
+     */
     public function getMostRecentJobs(int $tickId): array;
 
     public function save(ColonyShipRepair $colonyShipRepair): void;

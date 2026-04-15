@@ -17,6 +17,15 @@ interface RepairUtilInterface
      */
     public function determineSpareParts(SpacecraftWrapperInterface $wrapper, bool $tickBased): array;
 
+    /**
+     * @return array<int, int>
+     */
+    public function determinePassiveRepairSpareParts(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus,
+        bool $tickBased
+    ): array;
+
     /** @param array<int, int> $neededParts */
     public function enoughSparePartsOnEntity(
         array $neededParts,
@@ -59,4 +68,11 @@ interface RepairUtilInterface
     public function getRepairDuration(SpacecraftWrapperInterface $wrapper): int;
 
     public function getRepairDurationPreview(SpacecraftWrapperInterface $wrapper): int;
+
+    public function getPassiveRepairStepDuration(Spacecraft $spacecraft): int;
+
+    public function getPassiveRepairEstimatedDuration(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus
+    ): int;
 }

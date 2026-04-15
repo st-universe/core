@@ -41,8 +41,19 @@ final class RepairUtil implements RepairUtilInterface
     #[\Override]
     public function determineSpareParts(SpacecraftWrapperInterface $wrapper, bool $tickBased): array
     {
-        $isRepairStationBonus = $this->isRepairStationBonus($wrapper);
+        return $this->determinePassiveRepairSpareParts(
+            $wrapper,
+            $this->isRepairStationBonus($wrapper),
+            $tickBased
+        );
+    }
 
+    #[\Override]
+    public function determinePassiveRepairSpareParts(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus,
+        bool $tickBased
+    ): array {
         $neededSpareParts = $this->calculateNeededSpareParts($wrapper, $isRepairStationBonus, $tickBased);
         $neededSystemComponents = $this->calculateNeededSystemComponents($wrapper, $isRepairStationBonus, $tickBased);
 
@@ -394,11 +405,42 @@ final class RepairUtil implements RepairUtilInterface
         return $ticks;
     }
 
+    #[\Override]
+    public function getPassiveRepairStepDuration(Spacecraft $spacecraft): int
+    {
+        return max(60, (int)ceil($spacecraft->getRump()->getBuildtime() / 2));
+    }
+
+    #[\Override]
+    public function getPassiveRepairEstimatedDuration(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus
+    ): int {
+        return $this->getPassiveRepairSteps($wrapper, $isRepairStationBonus)
+            * $this->getPassiveRepairStepDuration($wrapper->get());
+    }
+
     private function getRepairTicks(SpacecraftWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();
         $ticks = (int) ceil(($ship->getMaxHull() - $ship->getCondition()->getHull()) / self::REPAIR_RATE_PER_TICK);
 
         return max($ticks, (int) ceil(count($wrapper->getDamagedSystems()) / 2));
+    }
+
+    private function getPassiveRepairSteps(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus
+    ): int {
+        $ship = $wrapper->get();
+        $hullRepairRate = $isRepairStationBonus
+            ? self::REPAIR_RATE_PER_TICK * 2
+            : self::REPAIR_RATE_PER_TICK;
+        $systemRepairRate = $isRepairStationBonus ? 4 : 2;
+
+        $hullSteps = (int) ceil(max(0, $ship->getMaxHull() - $ship->getCondition()->getHull()) / $hullRepairRate);
+        $systemSteps = (int) ceil(count($wrapper->getDamagedSystems()) / $systemRepairRate);
+
+        return max($hullSteps, $systemSteps);
     }
 }
