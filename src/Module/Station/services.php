@@ -18,7 +18,6 @@ use Stu\Module\Station\Action\DockFleet\DockFleet;
 use Stu\Module\Station\Action\DockTractoredShip\DockTractoredShip;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\Action\ManageShuttles\ManageShuttles;
-use Stu\Module\Station\Action\ReactivateShipRepair\ReactivateShipRepair;
 use Stu\Module\Station\Action\RepairShip\RepairShip;
 use Stu\Module\Station\Action\Scrapping\Scrapping;
 use Stu\Module\Station\Action\StationRepair\StationRepair;
@@ -72,7 +71,6 @@ return [
         DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
         ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
         ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
-        ReactivateShipRepair::ACTION_IDENTIFIER => autowire(ReactivateShipRepair::class),
         RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
         Scrapping::ACTION_IDENTIFIER => autowire(Scrapping::class),
         StationRepair::ACTION_IDENTIFIER => autowire(StationRepair::class),

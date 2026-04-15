@@ -29,7 +29,7 @@ class BuildingFunctionActionMapperTest extends StuTestCase
     {
         $this->container->shouldReceive('get')
             ->with(Shipyard::class)
-            ->times(6)
+            ->times(5)
             ->andReturn($this->handler);
 
         foreach ([
@@ -37,8 +37,7 @@ class BuildingFunctionActionMapperTest extends StuTestCase
             BuildingFunctionEnum::ESCORT_SHIPYARD,
             BuildingFunctionEnum::FRIGATE_SHIPYARD,
             BuildingFunctionEnum::CRUISER_SHIPYARD,
-            BuildingFunctionEnum::DESTROYER_SHIPYARD,
-            BuildingFunctionEnum::REPAIR_SHIPYARD
+            BuildingFunctionEnum::DESTROYER_SHIPYARD
         ] as $buildingFunction) {
             $this->assertSame($this->handler, $this->subject->map($buildingFunction));
         }

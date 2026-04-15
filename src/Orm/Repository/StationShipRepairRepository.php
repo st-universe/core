@@ -36,15 +36,6 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
     }
 
     #[\Override]
-    public function getAllOrdered(): array
-    {
-        return $this->findBy([], [
-            'station_id' => 'asc',
-            'id' => 'asc'
-        ]);
-    }
-
-    #[\Override]
     public function getMostRecentJobs(): array
     {
         $rsm = new ResultSetMapping();

@@ -11,7 +11,6 @@ use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\PlanetField;
 use Stu\StuTestCase;
 
 class BuildingPostActionTest extends StuTestCase
@@ -34,7 +33,6 @@ class BuildingPostActionTest extends StuTestCase
     {
         $building = $this->mock(Building::class);
         $colony = $this->mock(Colony::class);
-        $field = $this->mock(PlanetField::class);
         $function = $this->mock(BuildingFunction::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
@@ -56,17 +54,16 @@ class BuildingPostActionTest extends StuTestCase
             ->andReturn($buildingActionHandler);
 
         $buildingActionHandler->shouldReceive('deactivate')
-            ->with($buildingFunction, $colony, $field)
+            ->with($buildingFunction, $colony)
             ->once();
 
-        $this->subject->handleDeactivation($building, $colony, $field);
+        $this->subject->handleDeactivation($building, $colony);
     }
 
     public function testHandleActivationPerformsActions(): void
     {
         $building = $this->mock(Building::class);
         $colony = $this->mock(Colony::class);
-        $field = $this->mock(PlanetField::class);
         $function = $this->mock(BuildingFunction::class);
         $buildingActionHandler = $this->mock(BuildingActionHandlerInterface::class);
 
@@ -88,9 +85,9 @@ class BuildingPostActionTest extends StuTestCase
             ->andReturn($buildingActionHandler);
 
         $buildingActionHandler->shouldReceive('activate')
-            ->with($buildingFunction, $colony, $field)
+            ->with($buildingFunction, $colony)
             ->once();
 
-        $this->subject->handleActivation($building, $colony, $field);
+        $this->subject->handleActivation($building, $colony);
     }
 }

@@ -7,7 +7,6 @@ namespace Stu\Module\Building\Action;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
-use Stu\Orm\Entity\PlanetField;
 
 interface BuildingActionHandlerInterface
 {
@@ -15,13 +14,11 @@ interface BuildingActionHandlerInterface
 
     public function deactivate(
         BuildingFunctionEnum $buildingFunction,
-        Colony|ColonySandbox $host,
-        ?PlanetField $field = null
+        Colony|ColonySandbox $host
     ): void;
 
     public function activate(
         BuildingFunctionEnum $buildingFunction,
-        Colony|ColonySandbox $host,
-        ?PlanetField $field = null
+        Colony|ColonySandbox $host
     ): void;
 }
