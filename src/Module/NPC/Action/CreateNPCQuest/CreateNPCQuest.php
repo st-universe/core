@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
@@ -22,7 +23,8 @@ final class CreateNPCQuest implements ActionControllerInterface
         private NPCQuestRepositoryInterface $npcQuestRepository,
         private FactionRepositoryInterface $factionRepository,
         private CommodityRepositoryInterface $commodityRepository,
-        private RpgPlotRepositoryInterface $rpgPlotRepository
+        private RpgPlotRepositoryInterface $rpgPlotRepository,
+        private AwardRepositoryInterface $awardRepository
     ) {}
 
     #[Override]
@@ -122,6 +124,22 @@ final class CreateNPCQuest implements ActionControllerInterface
             }
         }
 
+        $selectedAward = null;
+        if ($awardId > 0) {
+            $selectedAward = $this->awardRepository->find($awardId);
+            if ($selectedAward === null) {
+                $game->getInfo()->addInformation('Der angegebene Award existiert nicht');
+                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                return;
+            }
+
+            if ($selectedAward->getIsNpc() !== true) {
+                $game->getInfo()->addInformation('Es können nur NPC-Awards als Quest-Belohnung verwendet werden');
+                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                return;
+            }
+        }
+
         $validatedFactions = $this->validateFactions($factionIds);
         $validatedSecretFactions = $this->validateFactions($secretFactionIds);
         $validatedCommodities = $this->validateCommodities($commodities);
@@ -129,7 +147,6 @@ final class CreateNPCQuest implements ActionControllerInterface
 
         $quest = $this->npcQuestRepository->prototype();
         $quest->setUserId($user->getId());
-        $quest->setUser($user);
         $quest->setUser($user);
         $quest->setTitle($title);
         $quest->setText($text);
@@ -141,8 +158,9 @@ final class CreateNPCQuest implements ActionControllerInterface
             $quest->setPrestige($prestige);
         }
 
-        if ($awardId > 0) {
-            $quest->setAwardId($awardId);
+        if ($selectedAward !== null) {
+            $quest->setAwardId($selectedAward->getId());
+            $quest->setAward($selectedAward);
         }
 
         if ($applicantMax > 0) {

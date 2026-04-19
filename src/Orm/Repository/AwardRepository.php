@@ -12,6 +12,39 @@ use Stu\Orm\Entity\Award;
  */
 final class AwardRepository extends EntityRepository implements AwardRepositoryInterface
 {
+    private const int NPC_AWARD_START_ID = 1000;
+
+    #[\Override]
+    public function getNextNpcAwardId(): int
+    {
+        $maxId = (int) $this
+            ->createQueryBuilder('a')
+            ->select('COALESCE(MAX(a.id), 0)')
+            ->where('a.id >= :startId')
+            ->setParameter('startId', self::NPC_AWARD_START_ID)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return max(self::NPC_AWARD_START_ID, $maxId + 1);
+    }
+
+    /**
+     * @return array<int, Award>
+     */
+    #[\Override]
+    public function getNpcAwards(): array
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->leftJoin('a.user', 'u')
+            ->addSelect('u')
+            ->where('a.is_npc = :isNpc')
+            ->setParameter('isNpc', true)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     #[\Override]
     public function save(Award $award): void
     {

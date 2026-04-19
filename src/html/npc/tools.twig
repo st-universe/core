@@ -118,6 +118,89 @@
     </div>
 </form>
 <br />
+<form action="/npc/index.php" method="post" name="toolsform6" id="toolsform6" enctype="multipart/form-data">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">NPC Award Tools</div>
+    <div class="divbody">
+        <div>
+            Beschreibung: <input type="text" size="100" name="award_description" id="award_description" />
+            <br />
+            <br />
+            Prestige Wert: <input type="number" min="1" step="1" size="5" name="award_prestige" id="award_prestige" />
+            (muss positiv sein)
+            <br />
+            <br />
+            Bild: <input type="file" class="button" name="award_image" id="award_image" accept="image/png" />
+            (nur PNG, maximal 1MB, exakt 100x100 Pixel)
+            <br />
+            <br />
+            Grund: <input type="text" size="20" name="reason" id="award_reason" />
+            <br />
+            <br />
+            <input type="submit" class="button" name="B_CREATE_NPC_AWARD" value="NPC Award hochladen"
+                id="createnpcawardbutton" />
+        </div>
+    </div>
+</form>
+<br />
+<div class="divhead">Vorhandene NPC Awards</div>
+<div class="divbody">
+    {% if NPC_AWARDS %}
+    <table class="tcal" style="width: 100%;">
+        <tr>
+            <th>Grafik</th>
+            <th>ID</th>
+            <th>Prestige</th>
+            <th>Beschreibung</th>
+            <th>Erstellt von</th>
+        </tr>
+        {% for award in NPC_AWARDS %}
+        <tr class="row">
+            <td style="text-align: center;">
+                <img src="/npcawards/{{ award.getId }}.png" title="{{ award.getDescription|e('html_attr') }}"
+                    style="width: 40px; height: 40px;" />
+            </td>
+            <td style="text-align: center;">{{ award.getId }}</td>
+            <td style="text-align: center;">{{ award.getPrestige }}</td>
+            <td style="max-width: 450px; overflow-wrap: break-word;">{{ award.getDescription|bbcode|raw }}</td>
+            <td>
+                {% if award.getUser %}
+                {{ award.getUser.getName|bbcode|raw }} ({{ award.getUser.getId }})
+                {% elseif award.getUserId %}
+                User-ID {{ award.getUserId }}
+                {% else %}
+                -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    Keine NPC Awards vorhanden
+    {% endif %}
+</div>
+<br />
+<form action="/npc/index.php" method="post" name="toolsform7" id="toolsform7">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">NPC Award an User vergeben</div>
+    <div class="divbody">
+        <div>
+            Award ID: <input type="number" min="1" name="assign_award_id" id="assign_award_id" />
+            <br />
+            <br />
+            User IDs: <input type="text" size="40" name="assign_user_ids" id="assign_user_ids" />
+            (Kommata getrennt für mehrere User)
+            <br />
+            <br />
+            Grund: <input type="text" size="20" name="reason" id="assign_award_reason" />
+            <br />
+            <br />
+            <input type="submit" class="button" name="B_GIVE_NPC_AWARD" value="Award vergeben"
+                id="givenpcawardbutton" />
+        </div>
+    </div>
+</form>
+<br />
 {% if IS_FERENGI_NPC or IS_ADMIN %}
 <form action="/npc/index.php" method="post" name="toolsform5" id="toolsform5">
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />

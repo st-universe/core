@@ -16,8 +16,8 @@ final class VersionTestColonyShipRepair extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('INSERT INTO stu_colonies_shiprepair (colony_id,ship_id,field_id)
-            VALUES (42,78,2);
+        $this->addSql('INSERT INTO stu_colonies_shiprepair (colony_id,ship_id,field_id,finish_time,stop_date,is_stopped)
+            VALUES (42,78,2,0,0,FALSE);
         ');
     }
 }

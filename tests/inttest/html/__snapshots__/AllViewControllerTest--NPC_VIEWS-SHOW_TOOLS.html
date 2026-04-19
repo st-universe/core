@@ -221,6 +221,55 @@
     </div>
 </form>
 <br>
+<form action="/npc/index.php" method="post" name="toolsform6" id="toolsform6" enctype="multipart/form-data">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div class="divhead">NPC Award Tools</div>
+    <div class="divbody">
+        <div>
+            Beschreibung: <input type="text" size="100" name="award_description" id="award_description">
+            <br>
+            <br>
+            Prestige Wert: <input type="number" min="1" step="1" size="5" name="award_prestige" id="award_prestige">
+            (muss positiv sein)
+            <br>
+            <br>
+            Bild: <input type="file" class="button" name="award_image" id="award_image" accept="image/png">
+            (nur PNG, maximal 1MB, exakt 100x100 Pixel)
+            <br>
+            <br>
+            Grund: <input type="text" size="20" name="reason" id="award_reason">
+            <br>
+            <br>
+            <input type="submit" class="button" name="B_CREATE_NPC_AWARD" value="NPC Award hochladen" id="createnpcawardbutton">
+        </div>
+    </div>
+</form>
+<br>
+<div class="divhead">Vorhandene NPC Awards</div>
+<div class="divbody">
+        Keine NPC Awards vorhanden
+    </div>
+<br>
+<form action="/npc/index.php" method="post" name="toolsform7" id="toolsform7">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <div class="divhead">NPC Award an User vergeben</div>
+    <div class="divbody">
+        <div>
+            Award ID: <input type="number" min="1" name="assign_award_id" id="assign_award_id">
+            <br>
+            <br>
+            User IDs: <input type="text" size="40" name="assign_user_ids" id="assign_user_ids">
+            (Kommata getrennt f&uuml;r mehrere User)
+            <br>
+            <br>
+            Grund: <input type="text" size="20" name="reason" id="assign_award_reason">
+            <br>
+            <br>
+            <input type="submit" class="button" name="B_GIVE_NPC_AWARD" value="Award vergeben" id="givenpcawardbutton">
+        </div>
+    </div>
+</form>
+<br>
             </div>
         </div>
     </div>

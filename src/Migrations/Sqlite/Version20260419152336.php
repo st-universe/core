@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260415121958 extends AbstractMigration
+final class Version20260419152336 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -66,7 +66,9 @@ final class Version20260415121958 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F198A82957B8F0DE ON stu_auction_bid (auction_id)');
         $this->addSql('CREATE INDEX IDX_F198A829A76ED395 ON stu_auction_bid (user_id)');
         $this->addSql('CREATE INDEX auction_bid_sort_idx ON stu_auction_bid (max_amount)');
-        $this->addSql('CREATE TABLE stu_award (id INTEGER NOT NULL, prestige INTEGER NOT NULL, description CLOB NOT NULL, PRIMARY KEY (id))');
+        $this->addSql('CREATE TABLE stu_award (id INTEGER NOT NULL, prestige INTEGER NOT NULL, description CLOB NOT NULL, is_npc BOOLEAN DEFAULT NULL, user_id INTEGER DEFAULT NULL, PRIMARY KEY (id), CONSTRAINT FK_8CCE880A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX award_user_idx ON stu_award (user_id)');
+        $this->addSql('CREATE INDEX award_is_npc_idx ON stu_award (is_npc)');
         $this->addSql('CREATE TABLE stu_basic_trade (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER DEFAULT NULL, commodity_id INTEGER NOT NULL, buy_sell SMALLINT NOT NULL, value INTEGER NOT NULL, date_ms BIGINT DEFAULT NULL, uniqid VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_15ACD9904448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_15ACD990B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_15ACD9904448F8DA ON stu_basic_trade (faction_id)');
         $this->addSql('CREATE INDEX IDX_15ACD990B4ACC212 ON stu_basic_trade (commodity_id)');
@@ -538,7 +540,7 @@ final class Version20260415121958 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, faction_id INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701F4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_12A1701F4448F8DA ON stu_user (faction_id)');
         $this->addSql('CREATE INDEX user_alliance_idx ON stu_user (allys_id)');
-        $this->addSql('CREATE TABLE stu_user_award (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, award_id INTEGER NOT NULL, CONSTRAINT FK_E1449B84A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E1449B843D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_user_award (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, award_id INTEGER NOT NULL, count INTEGER DEFAULT NULL, CONSTRAINT FK_E1449B84A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E1449B843D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E1449B84A76ED395 ON stu_user_award (user_id)');
         $this->addSql('CREATE INDEX IDX_E1449B843D5282CF ON stu_user_award (award_id)');
         $this->addSql('CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');

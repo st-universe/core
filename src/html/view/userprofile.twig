@@ -135,7 +135,9 @@
 					</div>
 					{% endif %}
 					{% for data in PROFILE.getAwards %}
-					<img src="assets/awards/{{ data.getAward.getId }}.png" title="{{ data.getAward.getDescription }}"
+					{% set award = data.getAward %}
+					{% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : 'assets/awards/' ~ award.getId ~ '.png' %}
+					<img src="{{ awardImagePath }}" title="{{ award.getDescription }}"
 						style="width: 65px; height: 65px; padding: 5px;" />
 					{% endfor %}
 				</td>

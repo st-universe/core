@@ -28,6 +28,9 @@ class UserAward
     #[Column(type: 'integer')]
     private int $award_id;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $count = null;
+
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;
@@ -70,6 +73,17 @@ class UserAward
     public function setAward(Award $award): UserAward
     {
         $this->award = $award;
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): UserAward
+    {
+        $this->count = $count;
         return $this;
     }
 }

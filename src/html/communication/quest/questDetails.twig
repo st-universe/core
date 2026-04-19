@@ -76,8 +76,12 @@
                 {% endfor %}
                 {% endif %}
 
-                {% if QUEST.getAwardId %}
-                Award ID: {{ QUEST.getAwardId }}<br>
+                {% if QUEST.getAward %}
+                {% set award = QUEST.getAward %}
+                {% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : '/assets/awards/' ~ award.getId ~ '.png' %}
+                <img src="{{ awardImagePath }}"
+                    title="{{ award.getPrestige }} Prestige - {{ award.getDescription|e('html_attr') }}"
+                    style="width: 40px; height: 40px; vertical-align: middle;" />
                 {% endif %}
                 <br>
                 {% endif %}

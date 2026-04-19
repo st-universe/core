@@ -250,7 +250,13 @@
                         {% endfor %}
                         {% endif %}
 
-                        {% if quest.getAwardId %}
+                        {% if quest.getAward %}
+                        {% set award = quest.getAward %}
+                        {% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : '/assets/awards/' ~ award.getId ~ '.png' %}
+                        <img src="{{ awardImagePath }}" title="{{ award.getDescription|e('html_attr') }}"
+                            style="width: 40px; height: 40px; vertical-align: middle;" />
+                        Award #{{ award.getId }} ({{ award.getPrestige }} Prestige): {{ award.getDescription|bbcode|raw }}<br>
+                        {% elseif quest.getAwardId %}
                         Award ID: {{ quest.getAwardId }}<br>
                         {% endif %}
                         <br>
@@ -557,7 +563,13 @@
                         {% endfor %}
                         {% endif %}
 
-                        {% if quest.getAwardId %}
+                        {% if quest.getAward %}
+                        {% set award = quest.getAward %}
+                        {% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : '/assets/awards/' ~ award.getId ~ '.png' %}
+                        <img src="{{ awardImagePath }}" title="{{ award.getDescription|e('html_attr') }}"
+                            style="width: 40px; height: 40px; vertical-align: middle;" />
+                        Award #{{ award.getId }} ({{ award.getPrestige }} Prestige): {{ award.getDescription|bbcode|raw }}<br>
+                        {% elseif quest.getAwardId %}
                         Award ID: {{ quest.getAwardId }}<br>
                         {% endif %}
                         <br>
