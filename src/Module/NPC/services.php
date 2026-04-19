@@ -11,12 +11,14 @@ use Stu\Module\NPC\Action\CommodityCheat;
 use Stu\Module\NPC\Action\CreateBuildplan;
 use Stu\Module\NPC\Action\CreateDeal\CreateDeal;
 use Stu\Module\NPC\Action\CreateHistoryEntry;
+use Stu\Module\NPC\Action\CreateNpcAward;
 use Stu\Module\NPC\Action\CreateNPCQuest\CreateNPCQuest;
 use Stu\Module\NPC\Action\CreateShip;
 use Stu\Module\NPC\Action\DeleteBuildplan;
 use Stu\Module\NPC\Action\DeleteSpacecraft;
 use Stu\Module\NPC\Action\EndNPCQuest\EndNPCQuest;
 use Stu\Module\NPC\Action\ExcludeQuestUsers\ExcludeQuestUsers;
+use Stu\Module\NPC\Action\GiveNpcAward;
 use Stu\Module\NPC\Action\InviteQuestUsers\InviteQuestUsers;
 use Stu\Module\NPC\Action\LogPlayerDetails;
 use Stu\Module\NPC\Action\PrestigeCheat;
@@ -55,7 +57,9 @@ return [
         ExcludeQuestUsers::ACTION_IDENTIFIER => autowire(ExcludeQuestUsers::class),
         AddQuestLogEntry::ACTION_IDENTIFIER => autowire(AddQuestLogEntry::class),
         EndNPCQuest::ACTION_IDENTIFIER => autowire(EndNPCQuest::class),
-        CreateDeal::ACTION_IDENTIFIER => autowire(CreateDeal::class)
+        CreateDeal::ACTION_IDENTIFIER => autowire(CreateDeal::class),
+        CreateNpcAward::ACTION_IDENTIFIER => autowire(CreateNpcAward::class),
+        GiveNpcAward::ACTION_IDENTIFIER => autowire(GiveNpcAward::class)
     ],
     'NPC_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

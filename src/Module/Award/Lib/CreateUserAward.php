@@ -18,12 +18,18 @@ final class CreateUserAward implements CreateUserAwardInterface
     {
         //check if user already has award in case of category updates
         if ($user->hasAward($award->getId())) {
+            $existingAward = $user->getAwards()->get($award->getId());
+            if ($existingAward !== null && $existingAward->getCount() === null) {
+                $existingAward->setCount(1);
+                $this->userAwardRepository->save($existingAward);
+            }
             return;
         }
 
         $userAward = $this->userAwardRepository->prototype();
         $userAward->setUser($user);
         $userAward->setAward($award);
+        $userAward->setCount(1);
 
         $this->userAwardRepository->save($userAward);
 
@@ -35,3 +41,4 @@ final class CreateUserAward implements CreateUserAwardInterface
         }
     }
 }
+

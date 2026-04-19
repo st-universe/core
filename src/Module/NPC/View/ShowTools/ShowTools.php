@@ -8,6 +8,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -19,7 +20,8 @@ final class ShowTools implements ViewControllerInterface
     public function __construct(
         private CommodityRepositoryInterface $commodityRepository,
         private LayerRepositoryInterface $layerRepository,
-        private FactionRepositoryInterface $factionRepository
+        private FactionRepositoryInterface $factionRepository,
+        private AwardRepositoryInterface $awardRepository
     ) {}
 
     #[\Override]
@@ -49,5 +51,6 @@ final class ShowTools implements ViewControllerInterface
         $game->setTemplateVar('HISTORY_TYPES', $historyTypes);
         $game->setTemplateVar('PLAYABLE_FACTIONS', $this->factionRepository->getByChooseable(true));
         $game->setTemplateVar('IS_FERENGI_NPC', $game->getUser()->getFaction()->getId() == FactionEnum::FACTION_FERENGI->value);
+        $game->setTemplateVar('NPC_AWARDS', $this->awardRepository->getNpcAwards());
     }
 }

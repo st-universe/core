@@ -20,6 +20,7 @@ use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
@@ -41,6 +42,7 @@ abstract class IntegrationTestCase extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        $this->clearTickLocks();
         $this->initializeSchemaAndTestdataIfNeeded();
         $this->setupTestSession();
         $this->setupServiceMocks();
@@ -147,6 +149,27 @@ abstract class IntegrationTestCase extends StuTestCase
             $this->initializeSchemaAndTestData();
 
             self::$isSchemaInitializationNeeded = false;
+        }
+    }
+
+    private function clearTickLocks(): void
+    {
+        $tempDir = rtrim($this->getContainer()->get(StuConfigInterface::class)->getGameSettings()->getTempDir(), '/\\');
+        if ($tempDir === '') {
+            return;
+        }
+
+        foreach (['shipGroup_*.lock', 'colonyGroup_*.lock'] as $pattern) {
+            $files = glob(sprintf('%s/%s', $tempDir, $pattern));
+            if ($files === false) {
+                continue;
+            }
+
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    @unlink($file);
+                }
+            }
         }
     }
 

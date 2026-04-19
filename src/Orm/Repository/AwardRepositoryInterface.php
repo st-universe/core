@@ -12,6 +12,13 @@ use Stu\Orm\Entity\Award;
  */
 interface AwardRepositoryInterface extends ObjectRepository
 {
+    public function getNextNpcAwardId(): int;
+
+    /**
+     * @return array<int, Award>
+     */
+    public function getNpcAwards(): array;
+
     public function save(Award $award): void;
 
     public function delete(Award $award): void;
