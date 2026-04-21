@@ -65,7 +65,7 @@ final class RepairUtil implements RepairUtilInterface
 
     private function calculateNeededSpareParts(SpacecraftWrapperInterface $wrapper, bool $isRepairStationBonus, bool $tickBased): int
     {
-        $neededSpareParts = 0;
+        $neededSpareParts = 0.0;
         $ship = $wrapper->get();
         $hull = $ship->getCondition()->getHull();
         $maxHull = $ship->getMaxHull();
@@ -74,37 +74,39 @@ final class RepairUtil implements RepairUtilInterface
             if ($tickBased) {
                 $neededSpareParts += 1;
             } else {
-                $hullRepairParts = ($maxHull - $hull) / RepairTaskConstants::HULL_HITPOINTS_PER_SPARE_PART;
-                if ($isRepairStationBonus) {
-                    $neededSpareParts += (int)ceil($hullRepairParts / 2);
-                } else {
-                    $neededSpareParts += (int)ceil($hullRepairParts);
-                }
+                $neededSpareParts += ($maxHull - $hull) / RepairTaskConstants::HULL_HITPOINTS_PER_SPARE_PART;
             }
         }
 
-        $damagedSystems = $wrapper->getDamagedSystems();
-        $maxSystems = $tickBased ? ($isRepairStationBonus ? 4 : 2) : count($damagedSystems);
-        $systemCount = min(count($damagedSystems), $maxSystems);
+        $neededSpareParts += $this->calculateNeededSystemParts(
+            $wrapper,
+            $isRepairStationBonus,
+            $tickBased,
+            RepairTaskConstants::SPARE_PARTS_ONLY
+        );
 
-        for ($i = 0; $i < $systemCount; $i++) {
-            $system = $damagedSystems[$i];
-            $systemLvl = $system->determineSystemLevel();
-            $healingPercentage = (100 - $system->getStatus()) / 100;
-            $systemRepairParts = $healingPercentage * RepairTaskConstants::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskConstants::SPARE_PARTS_ONLY];
-            if ($isRepairStationBonus) {
-                $neededSpareParts += (int)ceil($systemRepairParts / 2);
-            } else {
-                $neededSpareParts += (int)ceil($systemRepairParts);
-            }
-        }
-
-        return $neededSpareParts;
+        return $this->applyRepairStationBonus($neededSpareParts, $isRepairStationBonus);
     }
 
     private function calculateNeededSystemComponents(SpacecraftWrapperInterface $wrapper, bool $isRepairStationBonus, bool $tickBased): int
     {
-        $neededSystemComponents = 0;
+        $neededSystemComponents = $this->calculateNeededSystemParts(
+            $wrapper,
+            $isRepairStationBonus,
+            $tickBased,
+            RepairTaskConstants::SYSTEM_COMPONENTS_ONLY
+        );
+
+        return $this->applyRepairStationBonus($neededSystemComponents, $isRepairStationBonus);
+    }
+
+    private function calculateNeededSystemParts(
+        SpacecraftWrapperInterface $wrapper,
+        bool $isRepairStationBonus,
+        bool $tickBased,
+        int $commodityType
+    ): float {
+        $neededParts = 0.0;
         $damagedSystems = $wrapper->getDamagedSystems();
         $maxSystems = $tickBased ? ($isRepairStationBonus ? 4 : 2) : count($damagedSystems);
         $systemCount = min(count($damagedSystems), $maxSystems);
@@ -113,15 +115,15 @@ final class RepairUtil implements RepairUtilInterface
             $system = $damagedSystems[$i];
             $systemLvl = $system->determineSystemLevel();
             $healingPercentage = (100 - $system->getStatus()) / 100;
-            $systemComponents = $healingPercentage * RepairTaskConstants::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskConstants::SYSTEM_COMPONENTS_ONLY];
-            if ($isRepairStationBonus) {
-                $neededSystemComponents += (int)ceil($systemComponents / 2);
-            } else {
-                $neededSystemComponents += (int)ceil($systemComponents);
-            }
+            $neededParts += $healingPercentage * RepairTaskConstants::SHIPYARD_PARTS_USAGE[$systemLvl][$commodityType];
         }
 
-        return $neededSystemComponents;
+        return $neededParts;
+    }
+
+    private function applyRepairStationBonus(float $neededParts, bool $isRepairStationBonus): int
+    {
+        return (int) ceil($isRepairStationBonus ? $neededParts / 2 : $neededParts);
     }
 
     #[\Override]

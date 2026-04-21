@@ -44,7 +44,7 @@
 			<input type="text" style="width: 100%" name="rgb" value="">
 		</div>
 		<div class="divbody">Dieser RGB-Farbcode kennzeichnet Kartenfelder, die der Allianz zugeordnet
-			werden k&ouml;nnen. Beispiel: #9ab5ef
+			werden können. Beispiel: #9ab5ef
 		</div>
 	</div>
 	<div style="margin-left: 1%; width: 32%; float: left;">
@@ -73,19 +73,19 @@
 					<td style="vertical-align: top;">
 						<input type="file" class="button" name="avatar">
 						<input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button">
-						<input type="submit" name="B_DELETE_AVATAR" value="L&ouml;schen" class="button">
+						<input type="submit" name="B_DELETE_AVATAR" value="Löschen" class="button">
 					</td>
 				</tr>
 							</table>
 		</div>
 		<br>
-		<div class="divhead" style="color: #FF0000;">L&ouml;schung</div>
+		<div class="divhead" style="color: #FF0000;">Löschung</div>
 		<div class="divbody">
 			<a href="javascript:void(0);" class="linkbutton" onclick="$('real_del').show();">Allianz
-				l&ouml;schen?</a>
+				löschen?</a>
 			<div id="real_del" style="display: none">
 				<br>
-				<a href="alliance.php?B_DELETE_ALLIANCE=1&amp;sstr=MOCKED_SESSIONSTRING" class="linkbutton" style="color: #FF0000">L&ouml;schen!</a>
+				<a href="alliance.php?B_DELETE_ALLIANCE=1&amp;sstr=MOCKED_SESSIONSTRING" class="linkbutton" style="color: #FF0000">Löschen!</a>
 			</div>
 		</div>
 		<br>
@@ -100,17 +100,17 @@
 			<div id="alliance-jobs-container">
 												<div class="alliance-job-item" data-job-id="1" data-sort="1">
 					<div class="job-header">
-												<input type="text" class="job-title-input" value="Pr&auml;sident" placeholder="Rollenbezeichnung" style="width: 60%;">
+												<input type="text" class="job-title-input" value="Präsident" placeholder="Rollenbezeichnung" style="width: 60%;">
 											</div>
 									</div>
 												<div class="alliance-job-item" data-job-id="2" data-sort="2" draggable="true">
 					<div class="job-header">
-												<span class="drag-handle">&#9776;</span>
-												<input type="text" class="job-title-input" value="Vize-Pr&auml;sident" placeholder="Rollenbezeichnung" style="width: 60%;">
+												<span class="drag-handle">☰</span>
+												<input type="text" class="job-title-input" value="Vize-Präsident" placeholder="Rollenbezeichnung" style="width: 60%;">
 												<button type="button" class="button job-toggle-permissions" onclick="toggleJobPermissions(2)">
-							&#9660;
+							▼
 						</button>
-						<button type="button" class="button job-delete-btn" onclick="deleteAllianceJob(2)">L&ouml;schen</button>
+						<button type="button" class="button job-delete-btn" onclick="deleteAllianceJob(2)">Löschen</button>
 											</div>
 										<div class="job-permissions-container" id="permissions-2" style="display: none;">
 						<div class="job-permissions-section">
@@ -139,7 +139,7 @@
 								</label>
 																<label style="margin-left: 20px;">
 									<input type="checkbox" class="job-permission-check child-permission management-child" data-permission="6" data-parent-permission="2">
-									Geh&ouml;rt zur Allianzleitung
+									Gehört zur Allianzleitung
 								</label>
 																<label style="margin-left: 20px;">
 									<input type="checkbox" class="job-permission-check child-permission management-child" data-permission="7" data-parent-permission="2">
@@ -179,12 +179,12 @@
 									</div>
 												<div class="alliance-job-item" data-job-id="3" data-sort="3" draggable="true">
 					<div class="job-header">
-												<span class="drag-handle">&#9776;</span>
-												<input type="text" class="job-title-input" value="Au&szlig;enminister" placeholder="Rollenbezeichnung" style="width: 60%;">
+												<span class="drag-handle">☰</span>
+												<input type="text" class="job-title-input" value="Außenminister" placeholder="Rollenbezeichnung" style="width: 60%;">
 												<button type="button" class="button job-toggle-permissions" onclick="toggleJobPermissions(3)">
-							&#9660;
+							▼
 						</button>
-						<button type="button" class="button job-delete-btn" onclick="deleteAllianceJob(3)">L&ouml;schen</button>
+						<button type="button" class="button job-delete-btn" onclick="deleteAllianceJob(3)">Löschen</button>
 											</div>
 										<div class="job-permissions-container" id="permissions-3" style="display: none;">
 						<div class="job-permissions-section">
@@ -213,7 +213,7 @@
 								</label>
 																<label style="margin-left: 20px;">
 									<input type="checkbox" class="job-permission-check child-permission management-child" data-permission="6" data-parent-permission="2">
-									Geh&ouml;rt zur Allianzleitung
+									Gehört zur Allianzleitung
 								</label>
 																<label style="margin-left: 20px;">
 									<input type="checkbox" class="job-permission-check child-permission management-child" data-permission="7" data-parent-permission="2">
@@ -253,7 +253,7 @@
 									</div>
 							</div>
 			<div class="seperator"></div>
-			<button type="button" class="button" onclick="addNewAllianceJob()">Neue Rolle hinzuf&uuml;gen</button>
+			<button type="button" class="button" onclick="addNewAllianceJob()">Neue Rolle hinzufügen</button>
 			<button type="button" class="button" onclick="saveAllianceJobs()" style="margin-left: 10px;">Rollen
 				speichern</button>
 		</div>
