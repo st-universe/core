@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Colony;
@@ -339,5 +340,41 @@ class RepairUtilTest extends StuTestCase
 
         $this->assertSame(600, $this->subject->getPassiveRepairEstimatedDuration($this->wrapper, false));
         $this->assertSame(300, $this->subject->getPassiveRepairEstimatedDuration($this->wrapper, true));
+    }
+
+    public function testDeterminePassiveRepairSparePartsWithRepairStationHalvesSummedSystemComponentCosts(): void
+    {
+        $damagedSystem1 = $this->mock(SpacecraftSystem::class);
+        $damagedSystem2 = $this->mock(SpacecraftSystem::class);
+
+        $this->ship->shouldReceive('getMaxHull')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+        $this->ship->shouldReceive('getCondition->getHull')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->wrapper->shouldReceive('getDamagedSystems')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn([$damagedSystem1, $damagedSystem2]);
+
+        foreach ([$damagedSystem1, $damagedSystem2] as $damagedSystem) {
+            $damagedSystem->shouldReceive('determineSystemLevel')
+                ->withNoArgs()
+                ->twice()
+                ->andReturn(3);
+            $damagedSystem->shouldReceive('getStatus')
+                ->withNoArgs()
+                ->twice()
+                ->andReturn(0);
+        }
+
+        $neededParts = $this->subject->determinePassiveRepairSpareParts($this->wrapper, true, true);
+
+        $this->assertSame(4, $neededParts[CommodityTypeConstants::COMMODITY_SPARE_PART]);
+        $this->assertSame(1, $neededParts[CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT]);
     }
 }
