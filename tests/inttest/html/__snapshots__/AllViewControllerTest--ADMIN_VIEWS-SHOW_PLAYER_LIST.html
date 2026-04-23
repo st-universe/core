@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="theme-color" content="#121220">
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#121220" />
     <script src="/static/js/prototype.js"></script>
     <script src="/static/js/lib/Sortable.min.js"></script>
     <script src="/static/js/admin.js"></script>
@@ -14,9 +14,9 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
-    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css" />
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
 </head>
 
 <body onload="startUp();">
@@ -29,31 +29,44 @@
     <div class="container">
         <div class="header">
             <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
-                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&Atilde;&frac14;ck zu Spielmodus">
-                <br>
-                <span style="color: orange; font-size: 150%;">Klick f&Atilde;&frac14;hrt zur&Atilde;&frac14;ck aufs Maindesk</span>
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png"
+                    title="Zurück zu Spielmodus" />
+                <br />
+                <span style="color: orange; font-size: 150%;">Klick führt zurück aufs Maindesk</span>
             </div>
-            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')"
+                onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
+                onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout"
+                        src="/assets/navigation/menu_logout0.png" title="Logout" />
                     <div style="margin-top: 5px">Logout</div>
                 </div>
             </div>
-                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')"
+                onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
+                onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu"
+                        src="/assets/navigation/menu_doku0.png" title="Wiki" />
                     <div style="margin-top: 5px">Wiki</div>
                 </div>
             </div>
-                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')"
+                onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')"
+                onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <img style="width: 40px; height: 40px;" id="header_menu_board"
+                        src="/assets/navigation/menu_scripts0.png" title="Forum" />
                     <div style="margin-top: 5px">Forum</div>
                 </div>
             </div>
-                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')"
+                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings"
+                        src="/assets/navigation/menu_option0.png" title="Einstellungen" />
                     <div style="margin-top: 5px">Einstellungen</div>
                 </div>
             </div>
@@ -61,37 +74,52 @@
         </div>
         <div style="margin-top: 80px;">
             <div class="sidebar">
-                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_PLAYER_LIST=1'; }" onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')" onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_PLAYER_LIST=1'; }"
+    onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')"
+    onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
     <a class="navitem_link" href="/admin/?SHOW_PLAYER_LIST=1">
-        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally" title="Spielerliste">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally"
+            title="Spielerliste" />
         <div class="navitem_title">Spielerliste</div>
     </a>
 </div>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MASS_MAIL=1'; }" onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')" onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MASS_MAIL=1'; }"
+    onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')"
+    onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
     <a class="navitem_link" href="/admin/?SHOW_MASS_MAIL=1">
-        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg" title="Nachrichten">
+        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg"
+            title="Nachrichten" />
         <div class="navitem_title">Nachrichten</div>
     </a>
 </div>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MAP_EDITOR=1'; }" onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')" onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MAP_EDITOR=1'; }"
+    onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')"
+    onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
     <a class="navitem_link" href="/admin/?SHOW_MAP_EDITOR=1">
-        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map" title="Karteneditor">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map"
+            title="Karteneditor" />
         <div class="navitem_title">Karteneditor</div>
     </a>
 </div>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_TICKS=1'; }" onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')" onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_TICKS=1'; }"
+    onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')"
+    onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
     <a class="navitem_link" href="/admin/?SHOW_TICKS=1">
-        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks" title="Ticks">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks"
+            title="Ticks" />
         <div class="navitem_title">Ticks</div>
     </a>
 </div>
 
-<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_SCRIPTS=1'; }" onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')" onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_SCRIPTS=1'; }"
+    onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')"
+    onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
     <a class="navitem_link" href="/admin/?SHOW_SCRIPTS=1">
-        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts" title="Skripte">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts"
+            title="Skripte" />
         <div class="navitem_title">Skripte</div>
     </a>
 </div>
@@ -107,7 +135,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 <div class="userList">
@@ -115,7 +143,7 @@
     <div>
       <div class="userAvatar">
     <a href="/userprofile.php?uid=101">
-                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101" />
             </a>
 </div>
 
@@ -123,27 +151,33 @@
     <div>
       <div class="userListItemName">
         Siedler 101 (101)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
       </div>
       <div class="userListItemAllianceName">
                         <a href="/alliance.php?id=2">testally</a>
               </div>
       <div class="userListItemButtons">
-        <img src="/assets/rassen/1s.png">
-        <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+        <img src="/assets/rassen/1s.png" />
+        <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
         
       </div>
       <div class="userBoxDetailAddendum">
         <div>
-          <img title="Zuletzt online" src="/assets/buttons/time.png">
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
         <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
-                    <a href="javascript:void(0);" onclick="showUserLock(this, 101);" onmouseover="cp('lock101','buttons/block1', 'png');" onmouseout="cp('lock101','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock101" title="Spielersperre setzen"></a>
-                    <a href="/admin/?B_BLOCK_USER=1&amp;uid=101&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/selfdes2.png" name="block101" title="Spieler blockieren"></a>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 101);"
+            onmouseover="cp('lock101','buttons/block1', 'png');"
+            onmouseout="cp('lock101','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock101" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=101&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block101" title="Spieler blockieren" /></a>
         </div>
       </div>
     </div>
@@ -152,7 +186,7 @@
     <div>
       <div class="userAvatar">
     <a href="/userprofile.php?uid=102">
-                <img src="/assets/rassen//1kn.png" title="Siedler 102">
+                <img src="/assets/rassen//1kn.png" title="Siedler 102" />
             </a>
 </div>
 
@@ -160,28 +194,37 @@
     <div>
       <div class="userListItemName">
         Siedler 102 (102)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
       </div>
       <div class="userListItemAllianceName">
                         <span>-</span>
               </div>
       <div class="userListItemButtons">
-        <img src="/assets/rassen/1s.png">
-        <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+        <img src="/assets/rassen/1s.png" />
+        <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
       </div>
       <div class="userBoxDetailAddendum">
         <div>
-          <img title="Zuletzt online" src="/assets/buttons/time.png">
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
         <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
-                    <a href="javascript:void(0);" onclick="showUserLock(this, 102);" onmouseover="cp('lock102','buttons/block1', 'png');" onmouseout="cp('lock102','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock102" title="Spielersperre setzen"></a>
-                    <a href="/admin/?B_BLOCK_USER=1&amp;uid=102&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/selfdes2.png" name="block102" title="Spieler blockieren"></a>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 102);"
+            onmouseover="cp('lock102','buttons/block1', 'png');"
+            onmouseout="cp('lock102','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock102" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=102&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block102" title="Spieler blockieren" /></a>
         </div>
       </div>
     </div>
@@ -190,7 +233,7 @@
     <div>
       <div class="userAvatar">
     <a href="/userprofile.php?uid=103">
-                <img src="/assets/rassen//1kn.png" title="User with Coloship">
+                <img src="/assets/rassen//1kn.png" title="User with Coloship" />
             </a>
 </div>
 
@@ -198,28 +241,37 @@
     <div>
       <div class="userListItemName">
         User with Coloship (103)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
       </div>
       <div class="userListItemAllianceName">
                         <span>-</span>
               </div>
       <div class="userListItemButtons">
-        <img src="/assets/rassen/1s.png">
-        <a href="/userprofile.php?uid=103" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+        <img src="/assets/rassen/1s.png" />
+        <a href="/userprofile.php?uid=103" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 103, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 103, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
       </div>
       <div class="userBoxDetailAddendum">
         <div>
-          <img title="Zuletzt online" src="/assets/buttons/time.png">
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
         <div>STATUS:
           <span style="color: #dddddd;">KOLONISATIONS SCHIFF</span>
-                    <a href="javascript:void(0);" onclick="showUserLock(this, 103);" onmouseover="cp('lock103','buttons/block1', 'png');" onmouseout="cp('lock103','buttons/block2', 'png');"><img src="/assets/buttons/block2.png" name="lock103" title="Spielersperre setzen"></a>
-                    <a href="/admin/?B_BLOCK_USER=1&amp;uid=103&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/selfdes2.png" name="block103" title="Spieler blockieren"></a>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 103);"
+            onmouseover="cp('lock103','buttons/block1', 'png');"
+            onmouseout="cp('lock103','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock103" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=103&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block103" title="Spieler blockieren" /></a>
         </div>
       </div>
     </div>

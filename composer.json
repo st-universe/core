@@ -111,7 +111,10 @@
     }
   ],
   "scripts": {
-    "dev:tests": "@php -d xdebug.mode=off vendor/bin/phpunit -c phpunit.xml --colors=always tests -d --update-snapshots",
+    "dev:tests": [
+      "@putenv UPDATE_SNAPSHOTS=true",
+      "@php -d xdebug.mode=off vendor/bin/phpunit -c phpunit.xml --colors=always tests"
+    ],
     "dev:serve": "@php -S localhost:1337 -d xdebug.mode=off -t src/Public/ router.php",
     "dev:serve-debug": "@php -S localhost:1337 -t src/Public/ router.php",
     "mago:analyze": "@php -d xdebug.mode=off vendor/bin/mago analyze --fix --fmt",

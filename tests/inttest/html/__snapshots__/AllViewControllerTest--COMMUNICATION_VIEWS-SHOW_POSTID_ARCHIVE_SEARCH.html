@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="comm.php">
@@ -17,7 +17,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result">
     <table class="use">
@@ -29,7 +29,7 @@
                 
                 <div class="information-container">
                                         <div class="information-item">
-                        Ung&Atilde;&frac14;ltige Archiv-Version!
+                        Ungültige Archiv-Version!
                     </div>
                     
                                     </div>
@@ -39,26 +39,26 @@
     </table>
 </div>
 
-<br>
+<br />
 <div style="width: 75%; float: left; margin-right: 1%">
         <div class="divhead">Meldung</div>
-    <div class="divbody">Keine Beitr&Atilde;&curren;ge in dieser Archiv-Version vorhanden</div>
+    <div class="divbody">Keine Beiträge in dieser Archiv-Version vorhanden</div>
     </div>
 
 <div style="width: 24%; float: left">
     <div class="box">
         <div class="box_title">KN-Archiv</div>
         <div class="box_body">
-            <strong>Version </strong><br>
-            <span style="font-size: 90%;"> Beitr&Atilde;&curren;ge archiviert</span>
-            <br><br>
-            <a href="/comm.php" class="linkbutton">&Acirc;&laquo; Zur&Atilde;&frac14;ck zum aktuellen KN</a>
-            <br><br>
-            <strong>&Atilde;bersicht</strong><br>
+            <strong>Version </strong><br />
+            <span style="font-size: 90%;"> Beiträge archiviert</span>
+            <br /><br />
+            <a href="/comm.php" class="linkbutton">« Zurück zum aktuellen KN</a>
+            <br /><br />
+            <strong>Übersicht</strong><br />
             <ul>
                 <li>
-                    <span style="color: #cecece">&gt;</span>
-                    <a href="?=1&amp;version=">Alle Beitr&Atilde;&curren;ge</a>
+                    <span style="color: #cecece">></span>
+                    <a href="?=1&version=">Alle Beiträge</a>
                 </li>
             </ul>
             <div class="seperator"> </div>
@@ -67,36 +67,40 @@
                     <strong>Archiv-Plots</strong>
                 </li>
                 <li>
-                    <span style="color: #cecece">&gt;</span>
-                    <a href="?SHOW_ARCHIVE_PLOTLIST=1&amp;version=">Liste aller Archiv-Plots</a>
+                    <span style="color: #cecece">></span>
+                    <a href="?SHOW_ARCHIVE_PLOTLIST=1&version=">Liste aller Archiv-Plots</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <br>
+    <br />
     <div class="box">
         <div class="box_title">Archiv-Suche</div>
         <div class="box_body">
             <form method="post" action="comm.php" name="knarchivesearchform">
-                <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
-                <input type="hidden" name="version" value="">
+                <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+                <input type="hidden" name="version" value="" />
                 <ul>
                     <li>
-                        <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;">
+                        <input type="text" name="search" style="width: 150px;"
+                            onkeypress="return event.keyCode != 13;" />
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_USER_ARCHIVE_SEARCH');" class="linkbutton">
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_USER_ARCHIVE_SEARCH');"
+                            class="linkbutton">
                             nach Spieler-ID suchen
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_POSTID_ARCHIVE_SEARCH');" class="linkbutton">
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_POSTID_ARCHIVE_SEARCH');"
+                            class="linkbutton">
                             nach Original-ID suchen
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="searchKnArchive('SHOW_POST_ARCHIVE_SEARCH');" class="linkbutton">
+                        <a href="javascript:void(0);" onClick="searchKnArchive('SHOW_POST_ARCHIVE_SEARCH');"
+                            class="linkbutton">
                             nach Text suchen
                         </a>
                     </li>
@@ -104,11 +108,9 @@
             </form>
         </div>
     </div>
-</div>
-<div class="footer">
+</div><div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 
 
-</body>
 </html>

@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,8 +11,9 @@
       <tr>
         <th id="popup-drag">Neue Sandbox erstellen</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
@@ -20,10 +22,10 @@
     <form action="colony.php" method="post" onkeydown="return event.key != 'Enter';">
         <table class="tcal">
             <tr>
-                <th>Sandbox f&Atilde;&frac14;r folgende Kolonie</th>
+                <th>Sandbox für folgende Kolonie</th>
                 <td>
                     <select id="colony-id">
-                                                <option value="42">Stempor'Arr 4 7|11 (Stempor'Arr-System)
+                                                <option value="42">Stempor&#039;Arr 4 7|11 (Stempor&#039;Arr-System)
                         </option>
                                             </select>
                 </td>
@@ -31,13 +33,14 @@
             <tr>
                 <th>Name der Sandbox</th>
                 <td>
-                    <input type="text" style="width: 250px" id="sandbox-name" value="SANDBOX 21 Nov 2024">
+                    <input type="text" style="width: 250px" id="sandbox-name" value="SANDBOX 21 Nov 2024" />
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
                     <div style="text-align: center; margin-top: 10px;" class="fabutton">
-                        <a href="javascript:void(0);" onclick="createNewSandbox('MOCKED_SESSIONSTRING');" class="fabutton">
+                        <a href="javascript:void(0);" onclick="createNewSandbox('MOCKED_SESSIONSTRING');"
+                            class="fabutton">
                             Sandbox erstellen</a>
                     </div>
                 </td>

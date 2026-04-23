@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,17 +11,18 @@
       <tr>
         <th id="popup-drag">Shuttle Management</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
     </table>
         
 <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="sid" value="77">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="sid" value="77" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
         <table class="tcal">
         <tr>
             <th>Shuttle-Typ</th>
@@ -28,36 +30,40 @@
         </tr>
                         <tr>
             <td>
-                <img src="assets/commodities/20061.png" title="Workbee">
+                <img src="assets/commodities/20061.png" title="Workbee" />
             </td>
             <td>
                                 <a href="javascript:void(0);" onclick="decreaseShuttleAmount(20061);">
-                    <img src="assets/buttons/b_down1.png" title="Anzahl senken"></a>
+                    <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
                             </td>
             <td>
-                <input type="hidden" name="shuttles[]" value="20061">
-                <input readonly type="text" id="shuttleAmount_20061" value="1" name="shuttlecount[20061]" size="2">
+                <input type="hidden" name="shuttles[]" value="20061" />
+                <input readonly="readonly" type="text" id="shuttleAmount_20061"
+                    value="1" name="shuttlecount[20061]" size="2" />
             </td>
             <td>
-                <a href="javascript:void(0);" onclick="increaseShuttleAmount(20061, 1, 5);">
-                    <img src="assets/buttons/b_up1.png" title="Anzahl erh&Atilde;&para;hen"></a>
+                <a href="javascript:void(0);"
+                    onclick="increaseShuttleAmount(20061, 1, 5);">
+                    <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
             </td>
         </tr>
                         <tr>
             <td>
-                <img src="assets/commodities/20062.png" title="Workbee">
+                <img src="assets/commodities/20062.png" title="Workbee" />
             </td>
             <td>
                                 <a href="javascript:void(0);" onclick="decreaseShuttleAmount(20062);">
-                    <img src="assets/buttons/b_down1.png" title="Anzahl senken"></a>
+                    <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
                             </td>
             <td>
-                <input type="hidden" name="shuttles[]" value="20062">
-                <input readonly type="text" id="shuttleAmount_20062" value="0" name="shuttlecount[20062]" size="2">
+                <input type="hidden" name="shuttles[]" value="20062" />
+                <input readonly="readonly" type="text" id="shuttleAmount_20062"
+                    value="0" name="shuttlecount[20062]" size="2" />
             </td>
             <td>
-                <a href="javascript:void(0);" onclick="increaseShuttleAmount(20062, 1, 5);">
-                    <img src="assets/buttons/b_up1.png" title="Anzahl erh&Atilde;&para;hen"></a>
+                <a href="javascript:void(0);"
+                    onclick="increaseShuttleAmount(20062, 1, 5);">
+                    <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
             </td>
         </tr>
                 <tr>
@@ -70,7 +76,7 @@
             </td>
         </tr>
     </table>
-    <input type="submit" style="cursor: pointer;" name="B_MANAGE_SHUTTLES" value="Transfer starten">
+    <input type="submit" style="cursor: pointer;" name="B_MANAGE_SHUTTLES" value="Transfer starten" />
     </form>
       </div>
   
