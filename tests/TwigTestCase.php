@@ -58,6 +58,11 @@ abstract class TwigTestCase extends IntegrationTestCase
         $this->assertMatchesHtmlSnapshot($renderResult);
     }
 
+    public function assertMatchesHtmlSnapshot(string $actual, ?string $id = null): void
+    {
+        $this->assertMatchesSnapshot($actual, new LegacyWindowsHtmlDriver(), $id);
+    }
+
     private function setupTemplateEngine(): void
     {
         if (!self::$isTemplateEngineSetup) {

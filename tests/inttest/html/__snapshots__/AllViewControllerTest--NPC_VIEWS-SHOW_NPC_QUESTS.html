@@ -28,9 +28,9 @@
     <div class="container">
         <div class="header">
             <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
-                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zurück zu Spielmodus">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png" title="Zur&Atilde;&frac14;ck zu Spielmodus">
                 <br>
-                <span style="color: orange; font-size: 150%;">Klick führt zurück aufs Maindesk</span>
+                <span style="color: orange; font-size: 150%;">Klick f&Atilde;&frac14;hrt zur&Atilde;&frac14;ck aufs Maindesk</span>
             </div>
             <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
@@ -111,7 +111,7 @@
 <div id="result" style="display: none;">..</div>
 
 <div class="divhead" onclick="toggleQuestCreator()" style="cursor: pointer;" id="questCreatorHeader">
-    ▶ Neue Quest erstellen</div>
+    &acirc;&para; Neue Quest erstellen</div>
 <div class="divbody" id="questCreator" style="display: none;">
     <form action="/npc/index.php" method="post" name="createquest" id="createquest">
         <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
@@ -128,9 +128,9 @@
                     <td><textarea name="text" style="width: 600px; height: 150px;" required></textarea></td>
                 </tr>
                 <tr>
-                    <td class="m">Fraktionen die sich bewerben können:</td>
+                    <td class="m">Fraktionen die sich bewerben k&Atilde;&para;nnen:</td>
                     <td>
-                                                <label><input type="checkbox" name="factions[]" value="1"> Vereinte Föderation der Planeten</label><br>
+                                                <label><input type="checkbox" name="factions[]" value="1"> Vereinte F&Atilde;&para;deration der Planeten</label><br>
                                                 <label><input type="checkbox" name="factions[]" value="2"> Romulanisches Imperium</label><br>
                                                 <label><input type="checkbox" name="factions[]" value="3"> Klingonisches Imperium</label><br>
                                                 <label><input type="checkbox" name="factions[]" value="4"> Cardassianische Union</label><br>
@@ -138,9 +138,9 @@
                                             </td>
                 </tr>
                 <tr>
-                    <td class="m">Fraktionen die diese Quest sehen können:</td>
+                    <td class="m">Fraktionen die diese Quest sehen k&Atilde;&para;nnen:</td>
                     <td>
-                                                <label><input type="checkbox" name="secret_factions[]" value="1"> Vereinte Föderation der Planeten</label><br>
+                                                <label><input type="checkbox" name="secret_factions[]" value="1"> Vereinte F&Atilde;&para;deration der Planeten</label><br>
                                                 <label><input type="checkbox" name="secret_factions[]" value="2"> Romulanisches Imperium</label><br>
                                                 <label><input type="checkbox" name="secret_factions[]" value="3"> Klingonisches Imperium</label><br>
                                                 <label><input type="checkbox" name="secret_factions[]" value="4"> Cardassianische Union</label><br>
@@ -162,7 +162,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="m">Bestätigung nach Bewerbung:</td>
+                    <td class="m">Best&Atilde;&curren;tigung nach Bewerbung:</td>
                     <td><input type="checkbox" name="approval_required" value="1"></td>
                 </tr>
                 <tr>
@@ -206,7 +206,7 @@
                 </div>
                             </div>
             <input type="button" class="button" value="Weitere Ware" onclick="addCommodityRewardRow()">
-            <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte löschen" onclick="removeLastCommodityRewardRow()" style="display:none;">
+            <input type="button" class="button" id="removeLastCommodityRewardBtn" value="Letzte l&Atilde;&para;schen" onclick="removeLastCommodityRewardRow()" style="display:none;">
 
             <br><br>
             <strong>Raumschiff-Belohnung:</strong><br><br>
@@ -218,7 +218,7 @@
                 </div>
                             </div>
             <input type="button" class="button" value="Weiteres Raumschiff" onclick="addSpacecraftRewardRow()">
-            <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte löschen" onclick="removeLastSpacecraftRewardRow()" style="display:none;">
+            <input type="button" class="button" id="removeLastSpacecraftRewardBtn" value="Letzte l&Atilde;&para;schen" onclick="removeLastSpacecraftRewardRow()" style="display:none;">
         </div>
 
         <br>
@@ -227,7 +227,7 @@
 </div>
 
 <br>
-<div class="divhead" onclick="toggleMyQuests()" style="cursor: pointer;" id="myQuestsHeader">▶ Meine Quests</div>
+<div class="divhead" onclick="toggleMyQuests()" style="cursor: pointer;" id="myQuestsHeader">&acirc;&para; Meine Quests</div>
 <div class="divbody" id="myQuests" style="display: none;">
 
     <div class="divhead">Aktive eigene Quests</div>
