@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="database.php">
@@ -17,7 +17,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 
@@ -26,19 +26,31 @@
         <div class="divhead">Sortierung</div>
         <div class="divbody">
             <div class="userListSortItem">
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=fac&amp;way=up');"><img src="assets/buttons/pup.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=fac&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
                 <span>Fraktion</span>
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=fac&amp;way=down');"><img src="assets/buttons/pdown.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=fac&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
             </div>
             <div class="userListSortItem">
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=id&amp;way=up');"><img src="assets/buttons/pup.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=id&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
                 <span>Id</span>
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=id&amp;way=down');"><img src="assets/buttons/pdown.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=id&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
             </div>
             <div class="userListSortItem">
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=alliance&amp;way=up');"><img src="assets/buttons/pup.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=alliance&way=up');"><img
+                        src="assets/buttons/pup.png" /></a>
                 <span>Allianz</span>
-                <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&amp;order=alliance&amp;way=down');"><img src="assets/buttons/pdown.png"></a>
+                <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_NPCLIST', '', 'mark=0&order=alliance&way=down');"><img
+                        src="assets/buttons/pdown.png" /></a>
             </div>
         </div>
     </div>
@@ -46,12 +58,11 @@
         <div class="divhead">Suche</div>
         <div class="divbody">
             <form method="post" action="database.php">
-                <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+                <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
                 <table>
                     <tr>
-                        <td><input type="text" name="search" style="width: 150px;" value=""></td>
-                        <td>
-<input type="submit" class="button" value="nach Name/ID suchen" name="SHOW_NPCLIST">
+                        <td><input type="text" name="search" style="width: 150px;" value="" /></td>
+                        <td><input type="submit" class="button" value="nach Name/ID suchen" name="SHOW_NPCLIST" />
                         </td>
                     </tr>
                 </table>
@@ -59,21 +70,21 @@
         </div>
     </div>
 </div>
-<br>
+<br />
 <table class="use">
     <tr>
                 <td>
-            <a href="?SHOW_NPCLIST=1&amp;mark=0&amp;order=id&amp;way=down" class="pages selected">1</a>
+            <a href="?SHOW_NPCLIST=1&mark=0&order=id&way=down"
+                class="pages selected">1</a>
         </td>
             </tr>
-</table>
-<br>
+</table><br />
 <div class="userList">
         <div class="userListItem">
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=10">
-                <img src="/assets/rassen//1kn.png" title="Vereinte F&Atilde;&para;deration der Planeten">
+                <img src="/assets/rassen//1kn.png" title="Vereinte Föderation der Planeten" />
             </a>
 </div>
 
@@ -81,8 +92,8 @@
         <div>
             <div class="userListItemName">
                 <a href="userprofile.php?uid=10">
-                    <strong><span style="color: #6699CC">Vereinte F&Atilde;&para;deration der Planeten</span></strong> (10)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+                    <strong><span style="color: #6699CC">Vereinte Föderation der Planeten</span></strong> (10)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -90,10 +101,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/1s.png">
-                <a href="/userprofile.php?uid=10" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/1s.png" />
+                <a href="/userprofile.php?uid=10" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 10, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 10, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -102,7 +118,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=11">
-                <img src="/assets/rassen//2kn.png" title="Romulanisches Sternenimperium ">
+                <img src="/assets/rassen//2kn.png" title="Romulanisches Sternenimperium " />
             </a>
 </div>
 
@@ -111,7 +127,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=11">
                     <strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -119,10 +135,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/2s.png">
-                <a href="/userprofile.php?uid=11" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/2s.png" />
+                <a href="/userprofile.php?uid=11" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 11, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 11, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -131,7 +152,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=12">
-                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich">
+                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich" />
             </a>
 </div>
 
@@ -140,7 +161,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=12">
                     <strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -148,10 +169,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/3s.png">
-                <a href="/userprofile.php?uid=12" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/3s.png" />
+                <a href="/userprofile.php?uid=12" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -160,7 +186,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=13">
-                <img src="/assets/rassen//4kn.png" title="Cardassianische Union">
+                <img src="/assets/rassen//4kn.png" title="Cardassianische Union" />
             </a>
 </div>
 
@@ -169,7 +195,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=13">
                     <strong><span style="color: #999900">Cardassianische Union</span></strong> (13)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -177,10 +203,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/4s.png">
-                <a href="/userprofile.php?uid=13" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/4s.png" />
+                <a href="/userprofile.php?uid=13" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 13, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 13, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -189,7 +220,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=14">
-                <img src="/assets/rassen//5kn.png" title="Ferengi Allianz">
+                <img src="/assets/rassen//5kn.png" title="Ferengi Allianz" />
             </a>
 </div>
 
@@ -198,7 +229,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=14">
                     <span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -206,10 +237,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/5s.png">
-                <a href="/userprofile.php?uid=14" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/5s.png" />
+                <a href="/userprofile.php?uid=14" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 14, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 14, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -218,7 +254,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=15">
-                <img src="/assets/rassen//6kn.png" title="Pakled (NPC)">
+                <img src="/assets/rassen//6kn.png" title="Pakled (NPC)" />
             </a>
 </div>
 
@@ -227,7 +263,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=15">
                     <strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -235,10 +271,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/6s.png">
-                <a href="/userprofile.php?uid=15" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/6s.png" />
+                <a href="/userprofile.php?uid=15" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 15, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 15, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -247,7 +288,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=17">
-                <img src="/assets/rassen//7kn.png" title="Kazon (KI-NPC)">
+                <img src="/assets/rassen//7kn.png" title="Kazon (KI-NPC)" />
             </a>
 </div>
 
@@ -256,7 +297,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=17">
                     <strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -264,10 +305,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/7s.png">
-                <a href="/userprofile.php?uid=17" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/7s.png" />
+                <a href="/userprofile.php?uid=17" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 17, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 17, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -276,7 +322,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=19">
-                <img src="/assets/rassen//8kn.png" title="Borg Kollektiv">
+                <img src="/assets/rassen//8kn.png" title="Borg Kollektiv" />
             </a>
 </div>
 
@@ -285,7 +331,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=19">
                     <strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -293,10 +339,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/8s.png">
-                <a href="/userprofile.php?uid=19" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/8s.png" />
+                <a href="/userprofile.php?uid=19" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 19, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 19, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -305,7 +356,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=20">
-                <img src="/assets/rassen//10kn.png" title="Hirogen (KI-NPC)">
+                <img src="/assets/rassen//10kn.png" title="Hirogen (KI-NPC)" />
             </a>
 </div>
 
@@ -314,7 +365,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=20">
                     <strong><span style="color: #4b4b4b">Hirogen</span></strong> (KI-NPC) (20)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -322,10 +373,15 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/10s.png">
-                <a href="/userprofile.php?uid=20" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/10s.png" />
+                <a href="/userprofile.php?uid=20" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 20, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 20, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
@@ -334,7 +390,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=101">
-                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101" />
             </a>
 </div>
 
@@ -343,7 +399,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=101">
                     Siedler 101 (101)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -353,8 +409,10 @@
                 </a>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/1s.png">
-                <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/1s.png" />
+                <a href="/userprofile.php?uid=101" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
                 
             </div>
@@ -364,7 +422,7 @@
         <div class="userListItemAvatar">
             <div class="userAvatar">
     <a href="/userprofile.php?uid=102">
-                <img src="/assets/rassen//1kn.png" title="Siedler 102">
+                <img src="/assets/rassen//1kn.png" title="Siedler 102" />
             </a>
 </div>
 
@@ -373,7 +431,7 @@
             <div class="userListItemName">
                 <a href="userprofile.php?uid=102">
                     Siedler 102 (102)
-<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt">
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
 
                 </a>
             </div>
@@ -381,27 +439,31 @@
                                 <span>-</span>
                             </div>
             <div class="userListItemButtons">
-                <img src="assets/rassen/1s.png">
-                <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID" title="Siedlerprofil ansehen"></a>
+                <img src="assets/rassen/1s.png" />
+                <a href="/userprofile.php?uid=102" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
 
-                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
             </div>
         </div>
     </div>
     </div>
-<br>
+<br />
 <table class="use">
     <tr>
                 <td>
-            <a href="?SHOW_NPCLIST=1&amp;mark=0&amp;order=id&amp;way=down" class="pages selected">1</a>
+            <a href="?SHOW_NPCLIST=1&mark=0&order=id&way=down"
+                class="pages selected">1</a>
         </td>
             </tr>
-</table>
-<div class="footer">
+</table><div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 
 
-</body>
 </html>

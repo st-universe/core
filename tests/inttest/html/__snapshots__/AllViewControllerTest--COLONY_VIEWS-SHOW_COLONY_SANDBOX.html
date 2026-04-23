@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="?SHOW_COLONY_SANDBOX=1">
@@ -13,11 +13,11 @@
         </a>
                 <span> / </span>
                         <a href="?SHOW_COLONY_SANDBOX=1&amp;id=42&amp;hosttype=2">
-            Stempor'Arr 4
+            Stempor&#039;Arr 4
         </a>
                     </div>
 </div>
-<br>
+<br />
 <script>
             initializeJsVars(42, 2, 'MOCKED_SESSIONSTRING')
         </script>
@@ -26,50 +26,54 @@
 <a href="javascript:void(0);" onclick="showNewSandboxWindow(this);">
 	Neue Sandbox erstellen
 </a>
-<br>
+<br />
 <div>
-	<select onchange="window.location.href='?SHOW_COLONY_SANDBOX=1&amp;hosttype=2&amp;id=' + this.value">
+	<select onchange="window.location.href='?SHOW_COLONY_SANDBOX=1&hosttype=2&id=' + this.value">
 		<option value="">------------------</option>
 			</select>
 </div>
-<br>
+<br />
 <div id="colonymenu">
-	<div id="colmenubutton_2" class="colonymenu colmenubutton selected" onclick="clearAjaxCallbacks(); switchColonySubmenu(2);">
-    <img src="/assets/buttons/lupe2.png"> <span>Informationen</span>
+	<div id="colmenubutton_2" class="colonymenu colmenubutton selected"
+    onclick="clearAjaxCallbacks(); switchColonySubmenu(2);">
+    <img src="/assets/buttons/lupe2.png" /> <span>Informationen</span>
 </div>
 <div id="colmenubutton_1" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(1);">
-    <img src="/assets/buttons/menu_planets1.png"> <span>Baumen&Atilde;&frac14;</span>
+    <img src="/assets/buttons/menu_planets1.png" /> <span>Baumenü</span>
 </div>
 <div id="colmenubutton_4" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(4)">
-    <img src="/assets/buttons/bar2.png"> <span>Soziales</span>
+    <img src="/assets/buttons/bar2.png" /> <span>Soziales</span>
 </div>
 <div id="colmenubutton_5" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(5)">
-    <img src="/assets/buttons/gebact2.png"> <span>Geb&Atilde;&curren;udeschaltung</span>
+    <img src="/assets/buttons/gebact2.png" /> <span>Gebäudeschaltung</span>
 </div>
 <div id="colmenubutton_3" class="colonymenu colmenubutton" onclick="clearAjaxCallbacks(); switchColonySubmenu(3)">
-    <img src="/assets/buttons/menu_option1.png"> <span>Einstellungen</span>
+    <img src="/assets/buttons/menu_option1.png" /> <span>Einstellungen</span>
 </div>
-<br>
+<br />
 <div style="display: inline-block">
     <div id="COLONY_EPS_BAR">
         <div class="box">
     <div class="box_title">Energie: 96/96 (+16/Runde = 96)</div>
     <div class="box_body">
-        <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 12px; height: 12px;">
-                <img src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width: 360px;" title="Energieproduktion">
+        <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 12px; height: 12px;" />
+                <img src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width: 360px;" title="Energieproduktion" />
                 +16
     </div>
 </div>
     </div>
-    <br>
+    <br />
         <div id="COLONY_SURFACE">
         <div style="display: grid; grid-template-columns: 43px 43px 43px 43px 43px 43px 43px 43px 43px 43px;">
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,2,0);" id="field2">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,2,0);"
+            id="field2">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -77,10 +81,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,3,0);" id="field3">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,3,0);"
+            id="field3">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -88,10 +95,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,4,0);" id="field4">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,4,0);"
+            id="field4">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -99,10 +109,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,5,0);" id="field5">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,5,0);"
+            id="field5">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -110,10 +123,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,6,0);" id="field6">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,6,0);"
+            id="field6">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -121,10 +137,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,7,0);" id="field7">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,7,0);"
+            id="field7">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -132,10 +151,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,8,0);" id="field8">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,8,0);"
+            id="field8">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -143,10 +165,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,9,0);" id="field9">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,9,0);"
+            id="field9">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -154,10 +179,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,10,0);" id="field10">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,10,0);"
+            id="field10">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -165,10 +193,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,11,0);" id="field11">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,11,0);"
+            id="field11">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -176,10 +207,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,12,0);" id="field12">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,12,0);"
+            id="field12">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -187,10 +221,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,13,0);" id="field13">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,13,0);"
+            id="field13">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -198,10 +235,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,14,0);" id="field14">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,14,0);"
+            id="field14">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -209,10 +249,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,15,0);" id="field15">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,15,0);"
+            id="field15">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -220,10 +263,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,16,0);" id="field16">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,16,0);"
+            id="field16">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -231,10 +277,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,17,0);" id="field17">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,17,0);"
+            id="field17">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -242,10 +291,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,18,0);" id="field18">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,18,0);"
+            id="field18">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -253,10 +305,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,19,0);" id="field19">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,19,0);"
+            id="field19">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -264,10 +319,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,20,0);" id="field20">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,20,0);"
+            id="field20">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -275,10 +333,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,21,0);" id="field21">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,21,0);"
+            id="field21">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,900)" onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;" title="Weltraum" src="/assets/generated/fields/t900.png">
+                <div><img onmouseover="fieldMouseOver(this,0,900)"
+                        onmouseout="fieldMouseOut(this,900)" style="width: 40px; height: 40px;"
+                        title="Weltraum"
+                        src="/assets/generated/fields/t900.png" />
                 </div>
             </div>
         </div>
@@ -286,10 +347,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,22,0);" id="field22">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,22,0);"
+            id="field22">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -297,10 +361,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,23,0);" id="field23">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,23,0);"
+            id="field23">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -308,10 +375,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,24,0);" id="field24">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,24,0);"
+            id="field24">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,501)" onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;" title="Eis" src="/assets/generated/fields/t501.png">
+                <div><img onmouseover="fieldMouseOver(this,0,501)"
+                        onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;"
+                        title="Eis"
+                        src="/assets/generated/fields/t501.png" />
                 </div>
             </div>
         </div>
@@ -320,10 +390,13 @@
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
                                 
-                <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;" onclick="fieldMouseClick(this,25,12345, 'Lager');" id="field25">
-            <div onmouseover="fieldMouseOver(this,12345,101)" onmouseout="fieldMouseOut(this,101)">
-                <div>
-<img style="width: 40px; height: 40px;" title="Lager auf Wiese" src="/assets/generated/buildings/12345/0at.png">
+                <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;"
+            onclick="fieldMouseClick(this,25,12345, 'Lager');"
+            id="field25">
+            <div onmouseover="fieldMouseOver(this,12345,101)"
+                onmouseout="fieldMouseOut(this,101)">
+                <div><img style="width: 40px; height: 40px;" title="Lager auf Wiese"
+                        src="/assets/generated/buildings/12345/0at.png" />
                 </div>
             </div>
         </div>
@@ -332,10 +405,13 @@
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfa">
                                 
-                <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;" onclick="fieldMouseClick(this,26,82010100, 'Koloniezentrale');" id="field26">
-            <div onmouseover="fieldMouseOver(this,82010100,101)" onmouseout="fieldMouseOut(this,101)">
-                <div>
-<img style="width: 40px; height: 40px;" title="Koloniezentrale (aktiviert) auf Wiese" src="/assets/generated/buildings/82010100/0at.png">
+                <div style="background-image: url(/assets/generated/fields/t101.png); width: 40px; height: 40px;"
+            onclick="fieldMouseClick(this,26,82010100, 'Koloniezentrale');"
+            id="field26">
+            <div onmouseover="fieldMouseOver(this,82010100,101)"
+                onmouseout="fieldMouseOut(this,101)">
+                <div><img style="width: 40px; height: 40px;" title="Koloniezentrale (aktiviert) auf Wiese"
+                        src="/assets/generated/buildings/82010100/0at.png" />
                 </div>
             </div>
         </div>
@@ -343,10 +419,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,27,0);" id="field27">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,27,0);"
+            id="field27">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,112)" onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;" title="Nadelwald" src="/assets/generated/fields/t112.png">
+                <div><img onmouseover="fieldMouseOver(this,0,112)"
+                        onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;"
+                        title="Nadelwald"
+                        src="/assets/generated/fields/t112.png" />
                 </div>
             </div>
         </div>
@@ -354,10 +433,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,28,0);" id="field28">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,28,0);"
+            id="field28">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,501)" onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;" title="Eis" src="/assets/generated/fields/t501.png">
+                <div><img onmouseover="fieldMouseOver(this,0,501)"
+                        onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;"
+                        title="Eis"
+                        src="/assets/generated/fields/t501.png" />
                 </div>
             </div>
         </div>
@@ -365,10 +447,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,29,0);" id="field29">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,29,0);"
+            id="field29">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,112)" onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;" title="Nadelwald" src="/assets/generated/fields/t112.png">
+                <div><img onmouseover="fieldMouseOver(this,0,112)"
+                        onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;"
+                        title="Nadelwald"
+                        src="/assets/generated/fields/t112.png" />
                 </div>
             </div>
         </div>
@@ -376,10 +461,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,30,0);" id="field30">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,30,0);"
+            id="field30">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,112)" onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;" title="Nadelwald" src="/assets/generated/fields/t112.png">
+                <div><img onmouseover="fieldMouseOver(this,0,112)"
+                        onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;"
+                        title="Nadelwald"
+                        src="/assets/generated/fields/t112.png" />
                 </div>
             </div>
         </div>
@@ -387,10 +475,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,31,0);" id="field31">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,31,0);"
+            id="field31">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,112)" onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;" title="Nadelwald" src="/assets/generated/fields/t112.png">
+                <div><img onmouseover="fieldMouseOver(this,0,112)"
+                        onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;"
+                        title="Nadelwald"
+                        src="/assets/generated/fields/t112.png" />
                 </div>
             </div>
         </div>
@@ -398,10 +489,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,32,0);" id="field32">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,32,0);"
+            id="field32">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -409,10 +503,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,33,0);" id="field33">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,33,0);"
+            id="field33">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -420,10 +517,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,34,0);" id="field34">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,34,0);"
+            id="field34">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -431,10 +531,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,35,0);" id="field35">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,35,0);"
+            id="field35">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -442,10 +545,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,36,0);" id="field36">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,36,0);"
+            id="field36">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -453,10 +559,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,37,0);" id="field37">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,37,0);"
+            id="field37">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -464,10 +573,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,38,0);" id="field38">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,38,0);"
+            id="field38">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -475,10 +587,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,39,0);" id="field39">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,39,0);"
+            id="field39">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -486,10 +601,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,40,0);" id="field40">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,40,0);"
+            id="field40">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -497,10 +615,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,41,0);" id="field41">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,41,0);"
+            id="field41">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -508,10 +629,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,42,0);" id="field42">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,42,0);"
+            id="field42">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -519,10 +643,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,43,0);" id="field43">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,43,0);"
+            id="field43">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -530,10 +657,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,44,0);" id="field44">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,44,0);"
+            id="field44">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -541,10 +671,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,45,0);" id="field45">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,45,0);"
+            id="field45">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,401)" onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;" title="W&Atilde;&frac14;ste" src="/assets/generated/fields/t401.png">
+                <div><img onmouseover="fieldMouseOver(this,0,401)"
+                        onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;"
+                        title="Wüste"
+                        src="/assets/generated/fields/t401.png" />
                 </div>
             </div>
         </div>
@@ -552,10 +685,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,46,0);" id="field46">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,46,0);"
+            id="field46">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -563,10 +699,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,47,0);" id="field47">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,47,0);"
+            id="field47">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -574,10 +713,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,48,0);" id="field48">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,48,0);"
+            id="field48">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -585,10 +727,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,49,0);" id="field49">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,49,0);"
+            id="field49">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -596,10 +741,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,50,0);" id="field50">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,50,0);"
+            id="field50">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -607,10 +755,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,51,0);" id="field51">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,51,0);"
+            id="field51">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -618,10 +769,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,52,0);" id="field52">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,52,0);"
+            id="field52">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -629,10 +783,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,53,0);" id="field53">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,53,0);"
+            id="field53">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,401)" onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;" title="W&Atilde;&frac14;ste" src="/assets/generated/fields/t401.png">
+                <div><img onmouseover="fieldMouseOver(this,0,401)"
+                        onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;"
+                        title="Wüste"
+                        src="/assets/generated/fields/t401.png" />
                 </div>
             </div>
         </div>
@@ -640,10 +797,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,54,0);" id="field54">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,54,0);"
+            id="field54">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,401)" onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;" title="W&Atilde;&frac14;ste" src="/assets/generated/fields/t401.png">
+                <div><img onmouseover="fieldMouseOver(this,0,401)"
+                        onmouseout="fieldMouseOut(this,401)" style="width: 40px; height: 40px;"
+                        title="Wüste"
+                        src="/assets/generated/fields/t401.png" />
                 </div>
             </div>
         </div>
@@ -651,10 +811,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,55,0);" id="field55">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,55,0);"
+            id="field55">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -662,10 +825,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,56,0);" id="field56">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,56,0);"
+            id="field56">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -673,10 +839,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,57,0);" id="field57">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,57,0);"
+            id="field57">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -684,10 +853,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,58,0);" id="field58">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,58,0);"
+            id="field58">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,111)" onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;" title="Wald" src="/assets/generated/fields/t111.png">
+                <div><img onmouseover="fieldMouseOver(this,0,111)"
+                        onmouseout="fieldMouseOut(this,111)" style="width: 40px; height: 40px;"
+                        title="Wald"
+                        src="/assets/generated/fields/t111.png" />
                 </div>
             </div>
         </div>
@@ -695,10 +867,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,59,0);" id="field59">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,59,0);"
+            id="field59">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -706,10 +881,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,60,0);" id="field60">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,60,0);"
+            id="field60">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -717,10 +895,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,61,0);" id="field61">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,61,0);"
+            id="field61">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -728,10 +909,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,62,0);" id="field62">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,62,0);"
+            id="field62">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -739,10 +923,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,63,0);" id="field63">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,63,0);"
+            id="field63">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -750,10 +937,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,64,0);" id="field64">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,64,0);"
+            id="field64">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -761,10 +951,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,65,0);" id="field65">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,65,0);"
+            id="field65">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,701)" onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;" title="Berge" src="/assets/generated/fields/t701.png">
+                <div><img onmouseover="fieldMouseOver(this,0,701)"
+                        onmouseout="fieldMouseOut(this,701)" style="width: 40px; height: 40px;"
+                        title="Berge"
+                        src="/assets/generated/fields/t701.png" />
                 </div>
             </div>
         </div>
@@ -772,10 +965,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,66,0);" id="field66">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,66,0);"
+            id="field66">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -783,10 +979,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,67,0);" id="field67">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,67,0);"
+            id="field67">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -794,10 +993,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,68,0);" id="field68">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,68,0);"
+            id="field68">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -805,10 +1007,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,69,0);" id="field69">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,69,0);"
+            id="field69">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -816,10 +1021,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,70,0);" id="field70">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,70,0);"
+            id="field70">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -827,10 +1035,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,71,0);" id="field71">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,71,0);"
+            id="field71">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -838,10 +1049,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,72,0);" id="field72">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,72,0);"
+            id="field72">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,501)" onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;" title="Eis" src="/assets/generated/fields/t501.png">
+                <div><img onmouseover="fieldMouseOver(this,0,501)"
+                        onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;"
+                        title="Eis"
+                        src="/assets/generated/fields/t501.png" />
                 </div>
             </div>
         </div>
@@ -849,10 +1063,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,73,0);" id="field73">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,73,0);"
+            id="field73">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,101)" onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;" title="Wiese" src="/assets/generated/fields/t101.png">
+                <div><img onmouseover="fieldMouseOver(this,0,101)"
+                        onmouseout="fieldMouseOut(this,101)" style="width: 40px; height: 40px;"
+                        title="Wiese"
+                        src="/assets/generated/fields/t101.png" />
                 </div>
             </div>
         </div>
@@ -860,10 +1077,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,74,0);" id="field74">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,74,0);"
+            id="field74">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,112)" onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;" title="Nadelwald" src="/assets/generated/fields/t112.png">
+                <div><img onmouseover="fieldMouseOver(this,0,112)"
+                        onmouseout="fieldMouseOut(this,112)" style="width: 40px; height: 40px;"
+                        title="Nadelwald"
+                        src="/assets/generated/fields/t112.png" />
                 </div>
             </div>
         </div>
@@ -871,10 +1091,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,75,0);" id="field75">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,75,0);"
+            id="field75">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,501)" onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;" title="Eis" src="/assets/generated/fields/t501.png">
+                <div><img onmouseover="fieldMouseOver(this,0,501)"
+                        onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;"
+                        title="Eis"
+                        src="/assets/generated/fields/t501.png" />
                 </div>
             </div>
         </div>
@@ -882,10 +1105,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,76,0);" id="field76">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,76,0);"
+            id="field76">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,501)" onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;" title="Eis" src="/assets/generated/fields/t501.png">
+                <div><img onmouseover="fieldMouseOver(this,0,501)"
+                        onmouseout="fieldMouseOut(this,501)" style="width: 40px; height: 40px;"
+                        title="Eis"
+                        src="/assets/generated/fields/t501.png" />
                 </div>
             </div>
         </div>
@@ -893,10 +1119,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,77,0);" id="field77">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,77,0);"
+            id="field77">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -904,10 +1133,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,78,0);" id="field78">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,78,0);"
+            id="field78">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -915,10 +1147,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,79,0);" id="field79">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,79,0);"
+            id="field79">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -926,10 +1161,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,80,0);" id="field80">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,80,0);"
+            id="field80">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -937,10 +1175,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,81,0);" id="field81">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,81,0);"
+            id="field81">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,201)" onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;" title="Wasser" src="/assets/generated/fields/t201.png">
+                <div><img onmouseover="fieldMouseOver(this,0,201)"
+                        onmouseout="fieldMouseOut(this,201)" style="width: 40px; height: 40px;"
+                        title="Wasser"
+                        src="/assets/generated/fields/t201.png" />
                 </div>
             </div>
         </div>
@@ -948,10 +1189,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,82,0);" id="field82">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,82,0);"
+            id="field82">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -959,10 +1203,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,83,0);" id="field83">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,83,0);"
+            id="field83">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -970,10 +1217,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,84,0);" id="field84">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,84,0);"
+            id="field84">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -981,10 +1231,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,85,0);" id="field85">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,85,0);"
+            id="field85">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -992,10 +1245,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,86,0);" id="field86">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,86,0);"
+            id="field86">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,851)" onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;" title="Tiefsee" src="/assets/generated/fields/t851.png">
+                <div><img onmouseover="fieldMouseOver(this,0,851)"
+                        onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;"
+                        title="Tiefsee"
+                        src="/assets/generated/fields/t851.png" />
                 </div>
             </div>
         </div>
@@ -1003,10 +1259,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,87,0);" id="field87">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,87,0);"
+            id="field87">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,851)" onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;" title="Tiefsee" src="/assets/generated/fields/t851.png">
+                <div><img onmouseover="fieldMouseOver(this,0,851)"
+                        onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;"
+                        title="Tiefsee"
+                        src="/assets/generated/fields/t851.png" />
                 </div>
             </div>
         </div>
@@ -1014,10 +1273,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,88,0);" id="field88">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,88,0);"
+            id="field88">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,851)" onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;" title="Tiefsee" src="/assets/generated/fields/t851.png">
+                <div><img onmouseover="fieldMouseOver(this,0,851)"
+                        onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;"
+                        title="Tiefsee"
+                        src="/assets/generated/fields/t851.png" />
                 </div>
             </div>
         </div>
@@ -1025,10 +1287,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,89,0);" id="field89">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,89,0);"
+            id="field89">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -1036,10 +1301,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,90,0);" id="field90">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,90,0);"
+            id="field90">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -1047,10 +1315,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,91,0);" id="field91">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,91,0);"
+            id="field91">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1058,10 +1329,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,92,0);" id="field92">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,92,0);"
+            id="field92">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -1069,10 +1343,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,93,0);" id="field93">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,93,0);"
+            id="field93">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1080,10 +1357,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,94,0);" id="field94">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,94,0);"
+            id="field94">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1091,10 +1371,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,95,0);" id="field95">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,95,0);"
+            id="field95">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -1102,10 +1385,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,96,0);" id="field96">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,96,0);"
+            id="field96">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1113,10 +1399,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,97,0);" id="field97">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,97,0);"
+            id="field97">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,851)" onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;" title="Tiefsee" src="/assets/generated/fields/t851.png">
+                <div><img onmouseover="fieldMouseOver(this,0,851)"
+                        onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;"
+                        title="Tiefsee"
+                        src="/assets/generated/fields/t851.png" />
                 </div>
             </div>
         </div>
@@ -1124,10 +1413,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,98,0);" id="field98">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,98,0);"
+            id="field98">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,851)" onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;" title="Tiefsee" src="/assets/generated/fields/t851.png">
+                <div><img onmouseover="fieldMouseOver(this,0,851)"
+                        onmouseout="fieldMouseOut(this,851)" style="width: 40px; height: 40px;"
+                        title="Tiefsee"
+                        src="/assets/generated/fields/t851.png" />
                 </div>
             </div>
         </div>
@@ -1135,10 +1427,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,99,0);" id="field99">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,99,0);"
+            id="field99">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,802)" onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;" title="Untergrund-Fels" src="/assets/generated/fields/t802.png">
+                <div><img onmouseover="fieldMouseOver(this,0,802)"
+                        onmouseout="fieldMouseOut(this,802)" style="width: 40px; height: 40px;"
+                        title="Untergrund-Fels"
+                        src="/assets/generated/fields/t802.png" />
                 </div>
             </div>
         </div>
@@ -1146,10 +1441,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,100,0);" id="field100">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,100,0);"
+            id="field100">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1157,10 +1455,13 @@
 
                     
     <div style="margin: 1px; width: 42px; height: 42px;" class="cfu">
-                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,101,0);" id="field101">
+                        <div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,101,0);"
+            id="field101">
             <div>
-                <div>
-<img onmouseover="fieldMouseOver(this,0,801)" onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;" title="Untergrund" src="/assets/generated/fields/t801.png">
+                <div><img onmouseover="fieldMouseOver(this,0,801)"
+                        onmouseout="fieldMouseOut(this,801)" style="width: 40px; height: 40px;"
+                        title="Untergrund"
+                        src="/assets/generated/fields/t801.png" />
                 </div>
             </div>
         </div>
@@ -1168,7 +1469,7 @@
 
     </div>
     </div>
-    <br>
+    <br />
     <div id="COLONY_STORAGE">
         <table class="use" style="width: 433px;">
     <tr>
@@ -1184,7 +1485,8 @@
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
                 <a href="javascript:void(0);" onclick="getCommodityLocations(this, 2);">
-                    <img src="/assets/commodities/2.png" title="Baumaterial">
+                    <img src="/assets/commodities/2.png"
+                        title="Baumaterial" />
                 </a>
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
@@ -1200,7 +1502,8 @@
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
                 <a href="javascript:void(0);" onclick="getCommodityLocations(this, 4);">
-                    <img src="/assets/commodities/4.png" title="Transparentes Aluminium">
+                    <img src="/assets/commodities/4.png"
+                        title="Transparentes Aluminium" />
                 </a>
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
@@ -1216,7 +1519,8 @@
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
                 <a href="javascript:void(0);" onclick="getCommodityLocations(this, 5);">
-                    <img src="/assets/commodities/5.png" title="Deuterium">
+                    <img src="/assets/commodities/5.png"
+                        title="Deuterium" />
                 </a>
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
@@ -1232,7 +1536,8 @@
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
                 <a href="javascript:void(0);" onclick="getCommodityLocations(this, 21);">
-                    <img src="/assets/commodities/21.png" title="Duranium">
+                    <img src="/assets/commodities/21.png"
+                        title="Duranium" />
                 </a>
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
@@ -1248,7 +1553,8 @@
         <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
                 <a href="javascript:void(0);" onclick="getCommodityLocations(this, 20062);">
-                    <img src="/assets/commodities/20062.png" title="Workbee">
+                    <img src="/assets/commodities/20062.png"
+                        title="Workbee" />
                 </a>
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
@@ -1265,25 +1571,28 @@
 </div>
 <div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter';">
     <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="hosttype" value="1">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="hosttype" value="1" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
     <div style="width: 40vw;">
         <div class="">
                 <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
-                        <input type="hidden" id="selshipid" value="77">
+                        <input type="hidden" id="selshipid" value="77" />
                         <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
                 <ul id="shipselector" style="max-width: 100%;">
                                                             
 <li>
-  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, 77);">
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);"
+    onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, 77);">
     <tr>
       <td class="darkbg" colspan="5">
-                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&id=77"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
 'id=77',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('77');"></a>
+updateSelectedSpacecraftId('77');"
+ />
                 Aerie Zwo | Siedler 101
       </td>
     </tr>
@@ -1291,17 +1600,22 @@ updateSelectedSpacecraftId('77');"></a>
       <td style="width: auto; min-width: 20px; vertical-align: middle; padding: 5px;">
               </td>
       <td style="width: 100px; vertical-align: middle;">
-        <img src="/assets/ships/6501.png" title="Aerie">
+        <img src="/assets/ships/6501.png" title="Aerie" />
 
       </td>
       <td style="width: auto; min-width: 60px;  padding: 2px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+              <img src="/assets/buttons/modul_1.png" title="Hülle" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                            <img
+                alt="Hülle"
+                src="/assets/bars/balken.png"
+                style="background-color: #00aa00;height: 12px; width:50px;"
+                title="Hülle: 819/819"
+             />
                           </td>
           </tr>
         </table>
@@ -1312,10 +1626,20 @@ updateSelectedSpacecraftId('77');"></a>
                         <table class="tcal" style="width: 100%;">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="/assets/buttons/modul_8.png" title="EPS">
+              <img src="/assets/buttons/modul_8.png" title="EPS" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="Energie" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Energie: 107/108"><img alt="Energie" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:0px;" title="Energie: 107/108">
+                            <img
+                alt="Energie"
+                src="/assets/bars/balken.png"
+                style="background-color: #aaaa00;height: 12px; width:50px;"
+                title="Energie: 107/108"
+             /><img
+                alt="Energie"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:0px;"
+                title="Energie: 107/108"
+             />
                           </td>
           </tr>
         </table>
@@ -1324,10 +1648,20 @@ updateSelectedSpacecraftId('77');"></a>
                         <table class="tcal" style="width: 100%;">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="/assets/buttons/modul_11.png" title="Warpdrive">
+              <img src="/assets/buttons/modul_11.png" title="Warpdrive" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #0070cf;height: 12px; width:49px;" title="Warpantrieb: 57/58"><img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:1px;" title="Warpantrieb: 57/58">
+                            <img
+                alt="Warpantrieb"
+                src="/assets/bars/balken.png"
+                style="background-color: #0070cf;height: 12px; width:49px;"
+                title="Warpantrieb: 57/58"
+             /><img
+                alt="Warpantrieb"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:1px;"
+                title="Warpantrieb: 57/58"
+             />
                           </td>
           </tr>
         </table>
@@ -1336,22 +1670,31 @@ updateSelectedSpacecraftId('77');"></a>
   </table>
 </li>                                    </ul>
                                                 <div style="width: 100%;">
-                    <br>
-                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, false);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, true);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, 42);" style="margin-left: 5px;">
-                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen">
+                    <br />
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, false);"
+                        onmouseover="cp('beamfrom','buttons/b_down2')"
+                        onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
+                            name="beamfrom" title="Von Schiff beamen" /></a>
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, true);"
+                        onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img
+                            src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen" /></a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, 42);"
+                        style="margin-left: 5px;">
+                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen" />
                     </a>
                 </div>
                             </div>
         </div>
     </div>
-    <br>
+    <br />
     <div id="colonyinfocontainer" class="colonyInfoContainer">
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
-                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
+                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;"
+                    onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
                     <div class="box">
                         <div class="box_body">
                             Orbitalmanagement
@@ -1360,16 +1703,18 @@ updateSelectedSpacecraftId('77');"></a>
                 </a>
                 <div class="box_body" style="float:left;">
                     <div>
-                        <img src="/assets/planets/201.png" style="width: 30px; height: 30px;">
+                        <img src="/assets/planets/201.png"
+                            style="width: 30px; height: 30px;" />
                         <span style="display: block; white-space:pre-line;">
-                            Stempor'Arr 4 (7|11)</span>
+                            Stempor&#039;Arr 4 (7|11)</span>
                     </div>
                     <div>
-                        <img src="/assets/buttons/t_2.png" title="Tag">
+                        <img src="/assets/buttons/t_2.png"
+                            title="Tag" />
                         <span>11:53 Uhr</span>
                     </div>
                     <div>
-                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer">
+                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
                         27h 50m 24s
                     </div>
                 </div>
@@ -1383,7 +1728,7 @@ updateSelectedSpacecraftId('77');"></a>
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class="th">
-                &Acirc;&nbsp;
+                &nbsp;
             </td>
                         <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw;" class=" th">
                 6
@@ -1401,21 +1746,24 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1006.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1006.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1007.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1007.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1008.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1008.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -1425,21 +1773,25 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1106.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1106.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             <div style="font-size: 0.9vw; z-index: 7;" class="centered">3</div>
-<img src="/assets/map/starmap/1107.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/201.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+<img src="/assets/map/starmap/1107.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" /><img src="/assets/map/201.png" class="visualPanelLayer"
+                style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1108.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1108.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -1449,21 +1801,25 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1206.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1206.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1207.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+<img src="/assets/map/starmap/1207.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" /><img src="/assets/map/405.png" class="visualPanelLayer"
+                style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1208.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1208.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -1475,9 +1831,10 @@ updateSelectedSpacecraftId('77');"></a>
                 <div class="box">
             <div class="box_title">Sternensystem</div>
             <div class="box_body">
-                                <img src="/assets/map/systemtypes/1060.png" title="Roter Zwerg">
+                                <img src="/assets/map/systemtypes/1060.png"
+                    title="Roter Zwerg" />
                 <div>
-                    <span style="display: block; white-space:pre-line;">Stempor'Arr
+                    <span style="display: block; white-space:pre-line;">Stempor&#039;Arr
                         (7|8)</span>
                 </div>
                                 <div>
@@ -1490,43 +1847,44 @@ updateSelectedSpacecraftId('77');"></a>
             </div>
             <table id="colonypopulation" class="tcal population">
         <tr>
-            <th colspan="5">Bev&Atilde;&para;lkerung</th>
+            <th colspan="5">Bevölkerung</th>
         </tr>
         <tr>
             <td class="populationValue">
                 <div>Gesamt</div>
-                <img src="/assets/bev/bev_free_5_1.png" title="Bev&Atilde;&para;lkerung">
+                <img src="/assets/bev/bev_free_5_1.png" title="Bevölkerung" />
                 84
             </td>
             <td class="populationValue">
                 <div>Arbeiter</div>
-                <img src="/assets/bev/bev_used_5_1.png" title="Arbeiter">
+                <img src="/assets/bev/bev_used_5_1.png" title="Arbeiter" />
                 0
             </td>
             <td class="populationValue">
-                <div>Verf&Atilde;&frac14;gbar</div>
-                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bev&Atilde;&para;lkerung">
+                <div>Verfügbar</div>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bevölkerung" />
                 84
             </td>
             <td class="populationValue">
                 <div>Wohnraum</div>
-                <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum">
+                <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum" />
                 0 (84)
             </td>
             <td class="populationValue">
                                 <div>Entwicklung</div>
-                <img src="/assets/bev/bev_unused_5_1.png" title="Wachstum">
+                <img src="/assets/bev/bev_unused_5_1.png" title="Wachstum" />
                             </td>
         </tr>
     </table>
-        <br>
+        <br />
     <div id="colonyeffects" style="white-space: normal">
         <div class="box">
             <div class="box_title">Effekte</div>
             <div class="box_body">
                 <div class="colonyEffectGrid">
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1505.png" title="Deuterium-Vorkommen">
+                        <img src="/assets/commodities/1505.png"
+                            title="Deuterium-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Deuterium-Vorkommen
                         </span>
@@ -1535,7 +1893,8 @@ updateSelectedSpacecraftId('77');"></a>
                         +12
                     </div>
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1508.png" title="Dilithium-Vorkommen">
+                        <img src="/assets/commodities/1508.png"
+                            title="Dilithium-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Dilithium-Vorkommen
                         </span>
@@ -1544,7 +1903,8 @@ updateSelectedSpacecraftId('77');"></a>
                         +2
                     </div>
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1511.png" title="Iridium-Erz-Vorkommen">
+                        <img src="/assets/commodities/1511.png"
+                            title="Iridium-Erz-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Iridium-Erz-Vorkommen
                         </span>
@@ -1565,5 +1925,4 @@ updateSelectedSpacecraftId('77');"></a>
 </div>
 
 
-</body>
 </html>

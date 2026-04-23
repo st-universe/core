@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,18 +11,19 @@
       <tr>
         <th id="popup-drag">Neue private Nachricht</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
     </table>
-          <input type="hidden" name="pm_sstr" id="pm_sstr" value="MOCKED_SESSIONSTRING">
+          <input type="hidden" name="pm_sstr" id="pm_sstr" value="MOCKED_SESSIONSTRING" />
       <form id="quickpm">
       <table class="tcal" id="quickpm_compose">
         <tr>
           <td>
-            <span>Empf&Atilde;&curren;nger:</span>
+            <span>Empfänger:</span>
             Siedler 101
           </td>
         </tr>
@@ -30,12 +32,12 @@
         </tr>
         <tr>
           <td>
-            <textarea name="text" style="width: 100%; height: 300px;">Die "Aerie" sendet der Kolonie "Stempor'Arr 4" in Sektor 7|8 folgende Nachricht:</textarea>
+            <textarea name="text" style="width: 100%; height: 300px;">Die &quot;Aerie&quot; sendet der Kolonie &quot;Stempor&#039;Arr 4&quot; in Sektor 7|8 folgende Nachricht:</textarea>
           </td>
         </tr>
         <tr>
           <td>
-            <input type="button" class="button" onclick="sendQuickPM(101)" value="Absenden">
+            <input type="button" class="button" onclick="sendQuickPM(101)" value="Absenden" />
           </td>
         </tr>
       </table>

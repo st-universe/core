@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:stu="stu">
-<body>
 <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="hosttype" value="1">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="hosttype" value="1" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
     <div id="colonyoptions">
   <table class="tcal">
     <tr>
@@ -12,12 +11,13 @@
     </tr>
     <tr>
       <td>
-        <input type="test" value="Stempor'Arr 4" name="colname" style="width: 250px;" onkeydown="event.key == 'Enter' &amp;&amp; $('changecolonynamebutton').click()">
-        <input type="submit" id="changecolonynamebutton" name="B_CHANGE_NAME" value="&Atilde;ndern">
+        <input type="test" value="Stempor&#039;Arr 4" name="colname" style="width: 250px;"
+          onkeydown="event.key == 'Enter' && $('changecolonynamebutton').click()" />
+        <input type="submit" id="changecolonynamebutton" name="B_CHANGE_NAME" value="Ändern" />
       </td>
     </tr>
   </table>
-  <br>
+  <br />
   <div class="divhead">Einwanderung</div>
   <div class="divbody">
     <table cellpadding="0" cellspacing="0" style="width: 100%;">
@@ -26,18 +26,19 @@
                     Status: <span style="color: #007300;">Erlaubt</span>
                   </td>
         <td style="width: 50%; text-align: right;">
-                    <input type="submit" value="Verbieten" name="B_PERMIT_IMMIGRATION">
+                    <input type="submit" value="Verbieten" name="B_PERMIT_IMMIGRATION" />
                   </td>
       </tr>
     </table>
   </div>
-  <br>
-  <div class="divhead">Bev&Atilde;&para;lkerungslimit</div>
+  <br />
+  <div class="divhead">Bevölkerungslimit</div>
   <div class="divbody">
-    <input type="text" size="4" name="poplimit" value="0" onkeydown="event.key == 'Enter' &amp;&amp; $('setpopulationlimitbutton').click()">
-    <input type="submit" id="setpopulationlimitbutton" name="B_SET_POPULATIONLIMIT" value="&Atilde;ndern">
+    <input type="text" size="4" name="poplimit" value="0"
+      onkeydown="event.key == 'Enter' && $('setpopulationlimitbutton').click()" />
+    <input type="submit" id="setpopulationlimitbutton" name="B_SET_POPULATIONLIMIT" value="Ändern" />
   </div>
-  <br>
+  <br />
   <div class="divhead">Kolonie aufgeben</div>
   <div class="divbody">
     <div class="fabutton_red">
@@ -49,5 +50,4 @@
 </div>
 </form>
 
-</body>
 </html>

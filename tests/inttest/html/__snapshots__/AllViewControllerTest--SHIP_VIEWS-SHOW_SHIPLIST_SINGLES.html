@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:stu="stu">
 
-<body>
 <table id="shiplist_singles_table" class="tcal">
     <tr>
         <td colspan="11">Einzelschiffe</td>
@@ -11,20 +10,19 @@
     <th>Name</th>
         <th style="width: 30px;"></th>
     <th style="width: 30px;"></th>
-        <th style="width: 95px;" title="im System (au&Atilde;erhalb)">x|y <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-    <th style="width: 100px;" title="aktuell/maximal">H&Atilde;&frac14;lle <img src="/assets/buttons/info2.png" style="height:16px;">
+        <th style="width: 95px;" title="im System (außerhalb)">x|y <img src="/assets/buttons/info2.png"
+            style="height:16px;" /></th>
+    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png" style="height:16px;" />
     </th>
-    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-    <th style="width: 210px;" title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)
-WarpDrive: aktuell/maximal, Zuwachs">
-        Energie <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-    <th style="width: 90px; text-align: center;" title="gr&Atilde;&frac14;n: mehr als ausreichend, rot: zu wenig">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
+            src="/assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 210px;"
+        title="EPS: aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)&#10;WarpDrive: aktuell/maximal, Zuwachs">
+        Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="/assets/buttons/info2.png"
+            style="height:16px;" /></th>
+    <th style="width: 90px; text-align: center;" title="grün: mehr als ausreichend, rot: zu wenig">Crew <img
+            src="/assets/buttons/info2.png" style="height:16px;" /></th>
     <th style="width: 125px; text-align: center;">Systeme</th>
     <th style="width: 35px;"></th>
 </tr>
@@ -32,31 +30,38 @@ WarpDrive: aktuell/maximal, Zuwachs">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=78" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=78"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
 'id=78',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('78');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 78);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('78');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 78);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=78" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=78"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Three',
 'id=78',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('78');">
+updateSelectedSpacecraftId('78');"
+>
                                                 <span>Aerie Three</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
-                <img src="/assets/buttons/alert2_1.png" title="Alarmstufe">
+                <img src="/assets/buttons/alert2_1.png" title="Alarmstufe" />
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -91,11 +96,11 @@ updateSelectedSpacecraftId('78');">
     </td>
     <td id="shipreactor">
                         <div style="float: left; width: 50%">
-            <img src="/assets/buttons/warpk.png" title="Reaktorladung">
+            <img src="/assets/buttons/warpk.png" title="Reaktorladung" />
             <span style="">810</span>
         </div>
                         <div style="float: left; width: 50%">
-                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie">
+                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie" />
              36
         </div>
             </td>
@@ -103,13 +108,14 @@ updateSelectedSpacecraftId('78');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert">
-                                <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert" />
+                                <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=78" onmouseover="cp('fleet_78','buttons/fl_flag2')" onmouseout="cp('fleet_78','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_78" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=78" onmouseover="cp('fleet_78','buttons/fl_flag2')"
+            onmouseout="cp('fleet_78','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_78" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -117,31 +123,38 @@ updateSelectedSpacecraftId('78');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=81" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie mit Bussard',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=81"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie mit Bussard',
 'id=81',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('81');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 81);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('81');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 81);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/6501.png" class="indexedGraphicsShips" style="z-index: 5;" title="Aerie"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=81" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie mit Bussard',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=81"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie mit Bussard',
 'id=81',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('81');">
+updateSelectedSpacecraftId('81');"
+>
                                                 <span>Aerie mit Bussard</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
-                <img src="/assets/buttons/alert2_1.png" title="Alarmstufe">
+                <img src="/assets/buttons/alert2_1.png" title="Alarmstufe" />
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -173,11 +186,11 @@ updateSelectedSpacecraftId('81');">
     </td>
     <td id="shipreactor">
                         <div style="float: left; width: 50%">
-            <img src="/assets/buttons/warpk.png" title="Reaktorladung">
+            <img src="/assets/buttons/warpk.png" title="Reaktorladung" />
             <span style="">810</span>
         </div>
                         <div style="float: left; width: 50%">
-                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie">
+                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie" />
              36
         </div>
             </td>
@@ -185,13 +198,14 @@ updateSelectedSpacecraftId('81');">
     <td id="shipcrew" style="text-align: center; ">11</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert">
-                        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert">
-                                <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert">
+                <img src="/assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
+                        <img src="/assets/buttons/lss1.png" title="Langstreckensensoren aktiviert" />
+                                <img src="/assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=81" onmouseover="cp('fleet_81','buttons/fl_flag2')" onmouseout="cp('fleet_81','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_81" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=81" onmouseover="cp('fleet_81','buttons/fl_flag2')"
+            onmouseout="cp('fleet_81','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_81" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -199,30 +213,37 @@ updateSelectedSpacecraftId('81');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1023" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff ohne Netz',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1023"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff ohne Netz',
 'id=1023',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1023');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 1023);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('1023');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 1023);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1023" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff ohne Netz',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1023"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff ohne Netz',
 'id=1023',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1023');">
+updateSelectedSpacecraftId('1023');"
+>
                                                 <span>Netzschiff ohne Netz</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -254,12 +275,13 @@ updateSelectedSpacecraftId('1023');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=1023" onmouseover="cp('fleet_1023','buttons/fl_flag2')" onmouseout="cp('fleet_1023','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_1023" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=1023" onmouseover="cp('fleet_1023','buttons/fl_flag2')"
+            onmouseout="cp('fleet_1023','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_1023" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -267,30 +289,37 @@ updateSelectedSpacecraftId('1023');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1024" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit Netz in Bau',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1024"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit Netz in Bau',
 'id=1024',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1024');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 1024);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('1024');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 1024);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1024" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit Netz in Bau',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1024"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit Netz in Bau',
 'id=1024',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1024');">
+updateSelectedSpacecraftId('1024');"
+>
                                                 <span>Netzschiff mit Netz in Bau</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -322,12 +351,13 @@ updateSelectedSpacecraftId('1024');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=1024" onmouseover="cp('fleet_1024','buttons/fl_flag2')" onmouseout="cp('fleet_1024','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_1024" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=1024" onmouseover="cp('fleet_1024','buttons/fl_flag2')"
+            onmouseout="cp('fleet_1024','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_1024" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -335,30 +365,37 @@ updateSelectedSpacecraftId('1024');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1025" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff am supporten',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1025"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff am supporten',
 'id=1025',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1025');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 1025);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('1025');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 1025);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1025" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff am supporten',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1025"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff am supporten',
 'id=1025',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1025');">
+updateSelectedSpacecraftId('1025');"
+>
                                                 <span>Netzschiff am supporten</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -390,12 +427,13 @@ updateSelectedSpacecraftId('1025');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=1025" onmouseover="cp('fleet_1025','buttons/fl_flag2')" onmouseout="cp('fleet_1025','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_1025" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=1025" onmouseover="cp('fleet_1025','buttons/fl_flag2')"
+            onmouseout="cp('fleet_1025','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_1025" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -403,30 +441,37 @@ updateSelectedSpacecraftId('1025');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1026" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit fertigem Netz',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1026"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit fertigem Netz',
 'id=1026',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1026');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 1026);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('1026');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 1026);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/3107.png" class="indexedGraphicsShips" style="z-index: 5;" title="Tholianisches Netzschiff"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=1026" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit fertigem Netz',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=1026"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Netzschiff mit fertigem Netz',
 'id=1026',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('1026');">
+updateSelectedSpacecraftId('1026');"
+>
                                                 <span>Netzschiff mit fertigem Netz</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -458,12 +503,13 @@ updateSelectedSpacecraftId('1026');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=1026" onmouseover="cp('fleet_1026','buttons/fl_flag2')" onmouseout="cp('fleet_1026','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_1026" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=1026" onmouseover="cp('fleet_1026','buttons/fl_flag2')"
+            onmouseout="cp('fleet_1026','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_1026" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
@@ -471,31 +517,38 @@ updateSelectedSpacecraftId('1026');">
         <tr>
 
     <td id="shipimage" style="height:1px; width:1px;" class="shiplistshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=100001" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=100001"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
 'id=100001',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('100001');" class="shipImgOverlayText" onmouseover="openStorageInit(this, 100001);" onmouseout="closeStorage();">
+updateSelectedSpacecraftId('100001');"
+ class="shipImgOverlayText" onmouseover="openStorageInit(this, 100001);"
+            onmouseout="closeStorage();">
                         
 
-<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;">
-<img src="assets/ships/161.png" class="indexedGraphicsShips" style="z-index: 5;" title="Workbee" onload="adjustCellHeight(this); adjustCellWidth(this);">
+<img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+<img src="assets/ships/161.png" class="indexedGraphicsShips" style="z-index: 5;" title="Workbee"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 
         </a>
     </td>
     <td id="shipname">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=100001" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=100001"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
 'id=100001',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('100001');">
+updateSelectedSpacecraftId('100001');"
+>
                                                 <span>Workbee</span>
         </a>
     </td>
     <td id="shipalarmstate" style="text-align: center;">
-                <img src="/assets/buttons/alert1_1.png" title="Alarmstufe">
+                <img src="/assets/buttons/alert1_1.png" title="Alarmstufe" />
             </td>
     <td>
-        <img src="/assets/buttons/layer_2.png" title="Tullamore Trench" style="flex-shrink: 0;">
+        <img src="/assets/buttons/layer_2.png"
+            title="Tullamore Trench" style="flex-shrink: 0;" />
             </td>
             <td id="shipposition" style="position: relative;">
         <div style="display: flex; align-items: flex-start; gap: 4px;">
@@ -522,7 +575,7 @@ updateSelectedSpacecraftId('100001');">
     </td>
     <td id="shipreactor">
                                 <div style="float: left; width: 50%">
-                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie">
+                        <img src="/assets/buttons/batt.png" title="Ersatzbatterie" />
              1
         </div>
             </td>
@@ -530,16 +583,16 @@ updateSelectedSpacecraftId('100001');">
     <td id="shipcrew" style="text-align: center; color: red;">0</td>
     <td id="shipsystems">
 
-                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert">
-                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert">
+                <img src="/assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+                        <img src="/assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
                                     </td>
     <td style="text-align: center;">
-                        <a href="?B_NEW_FLEET=1&amp;id=100001" onmouseover="cp('fleet_100001','buttons/fl_flag2')" onmouseout="cp('fleet_100001','buttons/fl_flag1')">
-            <img src="/assets/buttons/fl_flag1.png" name="fleet_100001" title="Flotte erstellen">
+                        <a href="?B_NEW_FLEET=1&id=100001" onmouseover="cp('fleet_100001','buttons/fl_flag2')"
+            onmouseout="cp('fleet_100001','buttons/fl_flag1')">
+            <img src="/assets/buttons/fl_flag1.png" name="fleet_100001" title="Flotte erstellen" />
         </a>
                     </td>
 </tr>
 
     </table>
-</body>
 </html>

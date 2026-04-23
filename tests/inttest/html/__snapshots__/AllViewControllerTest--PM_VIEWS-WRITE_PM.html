@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="pm.php?WRITE_PM=1">
@@ -13,21 +13,21 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 
 <form action="pm.php" method="post" name="newpm">
-	<input type="hidden" name="WRITE_PM" value="1">
-	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+	<input type="hidden" name="WRITE_PM" value="1" />
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
 	<div style="float: left; width: 75%;">
 		<table class="tcal">
 			<tr>
-				<th>Empf&Atilde;&curren;nger</th>
+				<th>Empfänger</th>
 			</tr>
 			<tr>
 								<td>
-					Siedler-ID <input type="text" name="recipient" style="width: 50px;" value="">
+					Siedler-ID <input type="text" name="recipient" style="width: 50px;" value="" />
 					<select name="recid" onchange="updateRecipient();">
 						<option value="0">------------------</option>
 											</select>
@@ -41,7 +41,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="submit" name="B_WRITE_PM" value="Absenden">
+					<input type="submit" name="B_WRITE_PM" value="Absenden" />
 				</td>
 			</tr>
 		</table>
@@ -53,18 +53,20 @@
     </tr>
     <tr>
         <td>
-            <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="switchInnerContent('WRITE_PM', 'Neue private Nachricht');">
+            <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                onclick="switchInnerContent('WRITE_PM', 'Neue private Nachricht');">
                 Nachricht verfassen</a>
                     </td>
     </tr>
 </table>
-<br>
+<br />
 <div class="box">
     <div class="box_title">Kontakte</div>
     <div class="box_body">
         <ul>
             <li>
-                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="switchInnerContent('SHOW_CONTACTLIST', 'Kontaktliste');">
+                <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                    onclick="switchInnerContent('SHOW_CONTACTLIST', 'Kontaktliste');">
                     Alle Kontakte</a>
             </li>
             <li>
@@ -73,20 +75,21 @@
         </ul>
     </div>
 </div>
-<br>
+<br />
 <div class="box">
     <div class="box_title">Notizen</div>
     <div class="box_body">
         <ul>
             <li>
-                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel &Atilde;&para;ffnen" onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
-                    <img src="/assets/buttons/notiz1.png" name="headerNotiz">
-                    Notizzettel &Atilde;&para;ffnen</a>
+                <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel öffnen"
+                    onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
+                    <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
+                    Notizzettel öffnen</a>
             </li>
         </ul>
     </div>
 </div>
-<br>
+<br />
 <table class="tcal">
     <tr>
         <th>Ordner</th>
@@ -97,12 +100,14 @@
                 <li data-id="4778" style="width: 100%; display: block;">
     <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
-                <a href="?pmcat=4778">Pers&Atilde;&para;nlich</a>
+                <a href="?pmcat=4778">Persönlich</a>
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4778);" onmouseover="cp('catedit4778','buttons/knedit2', 'png')" onmouseout="cp('catedit4778','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4778">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4778);"
+            onmouseover="cp('catedit4778','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4778','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4778" />
         </a>
     </div>
 </li>
@@ -113,8 +118,10 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4779);" onmouseover="cp('catedit4779','buttons/knedit2', 'png')" onmouseout="cp('catedit4779','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4779">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4779);"
+            onmouseover="cp('catedit4779','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4779','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4779" />
         </a>
     </div>
 </li>
@@ -125,8 +132,10 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4780);" onmouseover="cp('catedit4780','buttons/knedit2', 'png')" onmouseout="cp('catedit4780','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4780">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4780);"
+            onmouseover="cp('catedit4780','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4780','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4780" />
         </a>
     </div>
 </li>
@@ -137,8 +146,10 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4781);" onmouseover="cp('catedit4781','buttons/knedit2', 'png')" onmouseout="cp('catedit4781','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4781">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4781);"
+            onmouseover="cp('catedit4781','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4781','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4781" />
         </a>
     </div>
 </li>
@@ -149,8 +160,10 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4782);" onmouseover="cp('catedit4782','buttons/knedit2', 'png')" onmouseout="cp('catedit4782','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4782">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4782);"
+            onmouseover="cp('catedit4782','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4782','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4782" />
         </a>
     </div>
 </li>
@@ -161,8 +174,10 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4783);" onmouseover="cp('catedit4783','buttons/knedit2', 'png')" onmouseout="cp('catedit4783','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4783">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4783);"
+            onmouseover="cp('catedit4783','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4783','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4783" />
         </a>
     </div>
 </li>
@@ -173,19 +188,21 @@
                 (0/0)
     </div>
     <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4784);" onmouseover="cp('catedit4784','buttons/knedit2', 'png')" onmouseout="cp('catedit4784','buttons/knedit1', 'png')">
-            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4784">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(this, 4784);"
+            onmouseover="cp('catedit4784','buttons/knedit2', 'png')"
+            onmouseout="cp('catedit4784','buttons/knedit1', 'png')">
+            <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit4784" />
         </a>
     </div>
 </li>
             </ul>
-            <script defer>
+            <script defer="defer">
     var pmCategoryList = Sortable.create($('catlist'), {
       tag: 'li',
       onUpdate: updateCategoryOrder,
     });
 </script>
-            <br style="clear: both;"><br>
+            <br style="clear: both;" /><br />
             <span style="color: #cecece;">&gt;</span> <a href="javascript:void(0);" onclick="openNewCatWindow(this);">
                 Neuer Ordner</a>
         </td>
@@ -202,5 +219,4 @@
         </script>
 
 
-</body>
 </html>

@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="database.php">
@@ -17,7 +17,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 
@@ -32,7 +32,7 @@
                     <div class="userprofile">
                         <div class="userAvatar">
     <a href="/userprofile.php?uid=12">
-                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich">
+                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich" />
             </a>
 </div>
 
@@ -43,7 +43,10 @@
                         Schiffe: 17
                     </div>
                     <div>
-                        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');" onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');" onclick="hidePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png" name="MOCKED_UNIQUEID" title="Nachricht senden"></a>
+                        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
                     </div>
                 </div>
@@ -56,7 +59,7 @@
                     <div class="userprofile">
                         <div class="userAvatar">
     <a href="/userprofile.php?uid=101">
-                <img src="/assets/rassen//1kn.png" title="Siedler 101">
+                <img src="/assets/rassen//1kn.png" title="Siedler 101" />
             </a>
 </div>
 
@@ -88,14 +91,18 @@
             <div class="box_title">Deine Statistiken</div>
             <div class="box_body">
                 <p><strong>Prestige:</strong> 100</p>
-                <p><strong>Zerst&Atilde;&para;rte Schiffe:</strong> 5</p>
+                <p><strong>Zerstörte Schiffe:</strong> 5</p>
             </div>
         </div>
         
         <div class="box" style="margin-bottom: 20px;">
             <div class="box_title">Fraktions-Verteilung</div>
             <div class="box_body" style="padding: 20px;">
-                <div id="factionChart" data-factions="[{&quot;id&quot;:3,&quot;name&quot;:&quot;Klingonisches Imperium&quot;,&quot;color&quot;:&quot;#990000&quot;,&quot;prestige&quot;:370,&quot;ships&quot;:17,&quot;percentage&quot;:78.72340425531915,&quot;rank&quot;:1},{&quot;id&quot;:1,&quot;name&quot;:&quot;Vereinte F\u00f6deration der Planeten&quot;,&quot;color&quot;:&quot;#000099&quot;,&quot;prestige&quot;:100,&quot;ships&quot;:5,&quot;percentage&quot;:21.27659574468085,&quot;rank&quot;:2}]" data-max-prestige="10000" data-actual-prestige="470" data-remaining-prestige="9530" style="width: 400px; height: 400px; margin: 0 auto; position: relative;">
+                <div id="factionChart" data-factions="&#x5B;&#x7B;&quot;id&quot;&#x3A;3,&quot;name&quot;&#x3A;&quot;Klingonisches&#x20;Imperium&quot;,&quot;color&quot;&#x3A;&quot;&#x23;990000&quot;,&quot;prestige&quot;&#x3A;370,&quot;ships&quot;&#x3A;17,&quot;percentage&quot;&#x3A;78.72340425531915,&quot;rank&quot;&#x3A;1&#x7D;,&#x7B;&quot;id&quot;&#x3A;1,&quot;name&quot;&#x3A;&quot;Vereinte&#x20;F&#x5C;u00f6deration&#x20;der&#x20;Planeten&quot;,&quot;color&quot;&#x3A;&quot;&#x23;000099&quot;,&quot;prestige&quot;&#x3A;100,&quot;ships&quot;&#x3A;5,&quot;percentage&quot;&#x3A;21.27659574468085,&quot;rank&quot;&#x3A;2&#x7D;&#x5D;"
+                    data-max-prestige="10000"
+                    data-actual-prestige="470"
+                    data-remaining-prestige="9530"
+                    style="width: 400px; height: 400px; margin: 0 auto; position: relative;">
                     <div id="chartFrame" style="
                         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                         border: 2px solid #00ffff; border-radius: 50%;
@@ -141,7 +148,8 @@
                     </div>
                 </div>
 
-                <div id="chartTooltip" style="position: absolute; background: rgba(0, 0, 0, 0.9); border: 1px solid #00ffff; padding: 10px; border-radius: 5px; display: none; z-index: 1000; color: #fff; font-size: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);">
+                <div id="chartTooltip"
+                    style="position: absolute; background: rgba(0, 0, 0, 0.9); border: 1px solid #00ffff; padding: 10px; border-radius: 5px; display: none; z-index: 1000; color: #fff; font-size: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);">
                 </div>
             </div>
         </div>
@@ -150,7 +158,7 @@
                         <div class="box_title">Runden-Fortschritt</div>
             <div class="box_body">
                 <div style="margin-bottom: 10px;">
-                    <span>22 Schiffe zerst&Atilde;&para;rt</span>
+                    <span>22 Schiffe zerstört</span>
                 </div>
                 <div id="progressContainer" style="
                 width: 100%; height: 35px; 
@@ -178,11 +186,9 @@
                     </div>
 
     </div>
-</div>
-<div class="footer">
+</div><div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 
 
-</body>
 </html>

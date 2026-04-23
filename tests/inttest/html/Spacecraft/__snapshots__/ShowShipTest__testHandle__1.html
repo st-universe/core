@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="theme-color" content="#121220">
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#121220" />
     <script src="/static/js/prototype.js"></script>
     <script src="/static/js/lib/Sortable.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.js"></script>
 
-    <!-- Three.js f&Atilde;&frac14;r 3D-Schiffsmodelle -->
+    <!-- Three.js für 3D-Schiffsmodelle -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script src="/static/js/ally.js"></script>
@@ -29,9 +29,9 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
-    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css" />
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
 </head>
 
 <body onload="startUp();">
@@ -53,28 +53,42 @@
     </div>
             <div id="GAME_NAGUS_POPUP">
     </div>
-            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')"
+                onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
+                onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout"
+                        src="/assets/navigation/menu_logout0.png" title="Logout" />
                     <div style="margin-top: 5px">Logout</div>
                 </div>
             </div>
-                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')"
+                onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
+                onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu"
+                        src="/assets/navigation/menu_doku0.png" title="Wiki" />
                     <div style="margin-top: 5px">Wiki</div>
                 </div>
             </div>
-                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')"
+                onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')"
+                onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <img style="width: 40px; height: 40px;" id="header_menu_board"
+                        src="/assets/navigation/menu_scripts0.png" title="Forum" />
                     <div style="margin-top: 5px">Forum</div>
                 </div>
             </div>
-                        <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
-                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+                        <div class="header_box header_box_settings border_box action"
+                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <a href="options.php"
+                    onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }"
+                    style="display: block; text-decoration: none; color: inherit;">
                     <div>
-                        <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                        <img style="width: 40px; height: 40px;" id="header_menu_settings"
+                            src="/assets/navigation/menu_option0.png" title="Einstellungen" />
                         <div style="margin-top: 5px">Einstellungen</div>
                     </div>
                 </a>
@@ -90,11 +104,11 @@
             </div>
             <div id="innerContent" class="innerContent">
                 
+<html>
 
-
-
-    <meta charset="utf-8">
-
+<head>
+    <meta charset="utf-8" />
+</head>
 
 
 <div class="box">
@@ -108,7 +122,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 <script>
             setSpacecraftIdAndSstr(42, 'MOCKED_SESSIONSTRING');
                 setTachyonFresh(false);
@@ -116,45 +130,49 @@
 
 <div id="result" style="display: none;">..</div>
 
-<form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
-	<input type="hidden" name="id" value="42">
-	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+<form action="ship.php" method="post" name="shipform" id="shipform"
+	onkeydown="return event.key != 'Enter';">
+	<input type="hidden" name="id" value="42" />
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
 	<table class="tcal">
 		<tr>
 			<th style="text-align: center;">Typ</th>
 			<th></th>
-			<th style="text-align: center;" title="im System">Koordinaten <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-			<th style="text-align: center;" title="aktuell/maximal">H&Atilde;&frac14;lle <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
+			<th style="text-align: center;" title="im System">Koordinaten <img src="/assets/buttons/info2.png"
+					style="height:16px;" /></th>
+			<th style="text-align: center;" title="aktuell/maximal">Hülle <img src="/assets/buttons/info2.png"
+					style="height:16px;" /></th>
 			<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
-				<img src="/assets/buttons/info2.png" style="height:16px;">
+				<img src="/assets/buttons/info2.png" style="height:16px;" />
 			</th>
 						<th style="text-align: center;" title="aktuell/maximal, Zuwachs">
-				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
-												<th style="text-align: center; cursor: pointer;" title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" onclick="showEpsUsage(this, 42);">
-				Energie <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
+				Warpdrive <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
+												<th style="text-align: center; cursor: pointer;"
+				title="aktuell/maximal, Zuwachs, (Systemverbrauch/Reaktornutzung)" 				onclick="showEpsUsage(this, 42);" >
+				Energie <img src="/assets/buttons/info2.png" style="height:16px;" /></th>
 			<th style="text-align: center;">Batterie</th>
-			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png" style="height:16px;">
-</th>
+			<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img src="/assets/buttons/info2.png"
+					style="height:16px;" /></th>
 			<th style="text-align: center;">Name</th>
 			<td rowspan="3" style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showSelfdestructWindow(this, 42);" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
-					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerst&Atilde;&para;rung">
+								<a href="javascript:void(0);" onclick="showSelfdestructWindow(this, 42);"
+					onmouseover="cp('selfdestruct','buttons/selfdes2');"
+					onmouseout="cp('selfdestruct','buttons/selfdes1');">
+					<img src="/assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
 				</a>
 											</td>
 		</tr>
 		<tr>
 						<td style="" rowspan="2" class="shipimage">
 				<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
-					<img src="/assets/ships/6501.png" title="Aerie">
+					<img src="/assets/ships/6501.png" title="Aerie" />
 
 				</a>
 			</td>
 			<td style="text-align: center;">
-								<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img src="/assets/buttons/alert2.png" title="Alarmstufe" name="setalvl"></a>
+								<a href="javascript:void(0);" onclick="showALvlWindow(this);"><img
+						src="/assets/buttons/alert2.png" title="Alarmstufe"
+						name="setalvl" /></a>
 							</td>
 			<td style="text-align: center;">
 				7|8
@@ -168,8 +186,7 @@
 								<td style="text-align: center;">
 								57/58
 				<span id="effectiveWarpdrive"></span>
-							</td>
-<td style="text-align: center;">
+							<td style="text-align: center;">
 								107/108
 								<span id="effectiveEps"></span>
 												(<span class="neg">5</span>/<span class="neg" id="reactorUsage">0</span>)
@@ -182,41 +199,85 @@
 				(11,18)
 			</td>
 			<td style="text-align: center;">
-				<input type="text" name="shipname" size="25" value="Aerie" onkeydown="event.key == 'Enter' &amp;&amp; $('changeshipnamebutton').click()">
-				<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME" value="&Atilde;&curren;ndern">
+				<input type="text" name="shipname" size="25" value="Aerie"
+					onkeydown="event.key == 'Enter' && $('changeshipnamebutton').click()" />
+				<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME" value="ändern" />
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+				<a href="/ship.php?SHOW_SPACECRAFT=1&id=42"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
 'id=42',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" onmouseout="cp('uship','buttons/update0');">
-					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship">
+updateSelectedSpacecraftId('42');"
+ onmouseover="cp('uship','buttons/update1');"
+					onmouseout="cp('uship','buttons/update0');">
+					<img src="/assets/buttons/update0.png" title="Aktualisieren" name="uship" />
 				</a>
-				<a href="javascript:void(0);" onclick="showSpacecraftDetails(this, 42);" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
-					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo">
+				<a href="javascript:void(0);" onclick="showSpacecraftDetails(this, 42);"
+					onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
+					<img src="/assets/buttons/info1.png" title="Schiffsinformationen anzeigen" name="shinfo" />
 				</a>
-				<a href="javascript:void(0);" onclick="showCommunication(this, 42);" onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
-					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom">
+				<a href="javascript:void(0);" onclick="showCommunication(this, 42);"
+					onmouseover="cp('shipcom','buttons/msg2');" onmouseout="cp('shipcom','buttons/msg1');">
+					<img src="/assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
 				</a>
-								<a href="javascript:void(0);" onclick="showLSSFilter(this);" onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
-					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermen&Atilde;&frac14; &Atilde;&para;ffnen" name="actlss">
+								<a href="javascript:void(0);" onclick="showLSSFilter(this);"
+					onmouseover="cp('actlss','buttons/lss_button2');" onmouseout="cp('actlss','buttons/lss_button1');">
+					<img src="/assets/buttons/lss_button1.png" title="LSS Filtermenü öffnen" name="actlss" />
 				</a>
-												<a href="javascript:void(0);" onclick="openStarMap(this,42);" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
-					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap">
+												<a href="javascript:void(0);" onclick="openStarMap(this,42);"
+					onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
+					<img src="/assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
 				</a>
-								<a href="?B_STANDBY=1&amp;id=42&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
-					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown">
+								<a href="?B_STANDBY=1&id=42&sstr=MOCKED_SESSIONSTRING"
+					onmouseover="cp('shutdown','buttons/shutdown2');" onmouseout="cp('shutdown','buttons/shutdown1');">
+					<img src="/assets/buttons/shutdown1.png" title="Energieverbrauch minimieren" name="shutdown" />
 				</a>
 							</td>
 			<td colspan="2">
-								<img style="margin-right: 5px;" src="/assets/commodities/10102.png" title="Monotanium-H&Atilde;&frac14;llenpanzerung (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10202.png" title="Elektromagnetische-Schilde (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/11902.png" title="Computer (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10403.png" title="Impulsantrieb (Klasse 3)"><img style="margin-right: 5px;" src="/assets/commodities/10602.png" title="Sensorenphalanx (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10912.png" title="F&Atilde;&para;derations Warpantrieb (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10502.png" title="Warpkern (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10302.png" title="EPS-Gitter (Klasse 2)"><img style="margin-right: 5px;" src="/assets/commodities/10702.png" title="F&Atilde;&para;derations Phaser (Klasse 2)">							</td>
+								<img style="margin-right: 5px;"
+					src="/assets/commodities/10102.png" title="Monotanium-Hüllenpanzerung (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10202.png" title="Elektromagnetische-Schilde (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/11902.png" title="Computer (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10403.png" title="Impulsantrieb (Klasse 3)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10602.png" title="Sensorenphalanx (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10912.png" title="Föderations Warpantrieb (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10502.png" title="Warpkern (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10302.png" title="EPS-Gitter (Klasse 2)" /><img style="margin-right: 5px;"
+					src="/assets/commodities/10702.png" title="Föderations Phaser (Klasse 2)" />							</td>
 			<td colspan="5">
-				<img title="Energiesystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/1.png"><img title="Impulsantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/2.png"><img title="Warpkern: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/3.png"><img title="Computer: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/4.png"><img title="Strahlenwaffe: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/5.png"><img title="Langstreckensensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/8.png"><img title="Nahbereichssensoren: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/9.png"><img title="Warpantrieb: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/10.png"><img title="Schilde: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/11.png"><img title="Lebenserhaltungssystem: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/13.png"><img title="Traktorstrahl: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/14.png"><img title="Deflektor: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/16.png"><img title="Transwarpspule: 100%" style="margin-right: 5px;" class="sysStatus76to100" src="/assets/system/26.png">			</td>
+				<img
+					title="Energiesystem: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/1.png" /><img
+					title="Impulsantrieb: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/2.png" /><img
+					title="Warpkern: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/3.png" /><img
+					title="Computer: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/4.png" /><img
+					title="Strahlenwaffe: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/5.png" /><img
+					title="Langstreckensensoren: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/8.png" /><img
+					title="Nahbereichssensoren: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/9.png" /><img
+					title="Warpantrieb: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/10.png" /><img
+					title="Schilde: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/11.png" /><img
+					title="Lebenserhaltungssystem: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/13.png" /><img
+					title="Traktorstrahl: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/14.png" /><img
+					title="Deflektor: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/16.png" /><img
+					title="Transwarpspule: 100%" style="margin-right: 5px;"
+					class="sysStatus76to100" src="/assets/system/26.png" />			</td>
 		</tr>
 	</table>
-	<br>
+	<br />
 	<table style="width: 100%;">
 				<tr>
 			<td style="width: 33%; vertical-align: top;">
@@ -226,7 +287,11 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     <table class="lssarea" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: center; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-                <a href="?B_DEACTIVATE_SYSTEM=1&amp;id=42&amp;type=LSS&amp;sstr=MOCKED_SESSIONSTRING" style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img src="/assets/buttons/lss1.png" name="lss_panel" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" title="Langstreckensensoren deaktivieren"></a>
+                <a href="?B_DEACTIVATE_SYSTEM=1&id=42&type=LSS&sstr=MOCKED_SESSIONSTRING"
+                    style="height: 1.7vw; width: 1.7vw; position: absolute !important; top: 0px; left: 0px;"><img
+                        src="/assets/buttons/lss1.png" name="lss_panel"
+                        style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;"
+                        title="Langstreckensensoren deaktivieren" /></a>
             </td>
                         <td style="font-size: 0.9vw; height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="th">
                 5
@@ -243,19 +308,20 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">6</td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-            <img src="/assets/map/2/encoded/61306c48/636d786e/6232354e/57545277/61773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+            <img src="/assets/map/2/encoded/61306c48/636d786e/6232354e/57545277/61773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/2/encoded/61306c55/59325272/51323555/53306434/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/2/encoded/61306c55/59325272/51323555/53306434/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
-                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,6);">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText"
+            onclick="moveToPosition(7,6);">
             
-<img src="/assets/map/2/encoded/61306b75/526d3178/4d7a5a77/646c4657/52513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/2/encoded/61306b75/526d3178/4d7a5a77/646c4657/52513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
     </tr>
@@ -263,37 +329,40 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">7</td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-            <img src="/assets/map/2/encoded/61306c6f/4d6c427a/5756646b/5a544975/57513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+            <img src="/assets/map/2/encoded/61306c6f/4d6c427a/5756646b/5a544975/57513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
-            <img src="/assets/map/2/encoded/61306c4f/516c6871/56456472/546b6834/54513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+            <img src="/assets/map/2/encoded/61306c4f/516c6871/56456472/546b6834/54513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
-                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(7,7);">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText"
+            onclick="moveToPosition(7,7);">
             
-<img src="/assets/map/2/encoded/61306c70/53464e4d/64316c36/5a303547/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/2/encoded/61306c70/53464e4d/64316c36/5a303547/56513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
     </tr>
 <tr>
     <td style="height: 1.7vw; width: 1.7vw; font-size: 0.9vw;" class="th">8</td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
-                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(5,8);">
-            <img src="/assets/map/2/encoded/61306c46/56555a77/4c7a6c4c/5a45314c/62773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText"
+            onclick="moveToPosition(5,8);">
+            <img src="/assets/map/2/encoded/61306c46/56555a77/4c7a6c4c/5a45314c/62773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss" style="border:1px solid #2d2d2d; height: 1.7vw; width: 1.7vw; background-size: cover;">
-                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText" onclick="moveToPosition(6,8);">
-            <img src="/assets/map/2/encoded/61306c76/61584e4b/4f455259/5347646b/53513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+                <div style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;" class="lssobj imgOverlayText"
+            onclick="moveToPosition(6,8);">
+            <img src="/assets/map/2/encoded/61306c76/61584e4b/4f455259/5347646b/53513d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
         <td class="lss_current" style="border:1px solid #9b9b9b; height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             <div style="font-size: 0.9vw; z-index: 7;" class="centered">17</div>
-<img src="/assets/map/2/encoded/61306c4f/53575979/576a4a70/55565575/59773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/2/encoded/61306c4f/53575979/576a4a70/55565575/59773d3d.png" style="z-index: 3; height: 1.7vw; width: 1.7vw; opacity:1;" />
         </div>
             </td>
     </tr>
@@ -303,27 +372,29 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     <table class="tcal">
         <tr>
             <td colspan="3" style="text-align: center;">
-                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_UP');">
-                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen">
+                                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_UP');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_up1.png" title="Nach oben fliegen" />
                 </a>
                             </td>
         </tr>
         <tr>
             <td>
-                                <a href="javascript:void(0);" onclick="moveInDirection('B_MOVE_LEFT');">
-                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png" title="Nach links fliegen">
+                                <a href="javascript:void(0);" onClick="moveInDirection('B_MOVE_LEFT');">
+                    <img style="height: 22px; width: 22px;" src="/assets/buttons/b_from1.png"
+                        title="Nach links fliegen" />
                 </a>
                             </td>
             <td style="text-align: center; font-weight: bold;">
-                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp" style="text-align: center;" size="1" value="1">
+                <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" id="navapp"
+                    style="text-align: center;" size="1" value="1" />
             </td>
             <td>
-                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_to1.png">
+                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_to1.png" />
                             </td>
         </tr>
         <tr>
             <td colspan="3" style="text-align: center;">
-                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_down1.png">
+                                <img style="height: 22px; width: 22px; opacity: 0;" src="/assets/buttons/b_down1.png" />
                             </td>
         </tr>
     </table>
@@ -335,21 +406,24 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
 
 <table id="schiffskontrolle" class="tcal">
     <tr>
-                <th colspan="3">
-<img src="/assets/buttons/gefecht.png"> Schiffskontrolle</th>
+                <th colspan="3"><img src="/assets/buttons/gefecht.png" /> Schiffskontrolle</th>
     </tr>
     
 <tr>
     <td colspan="3">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
-    <img src="/assets/buttons/shldac2.png" name="shldac"> Schilde aktivieren</a>
+                        <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&type=SHIELDS&sstr=MOCKED_SESSIONSTRING');"
+    onmouseover="cp('shldac','buttons/shldac1');" onmouseout="cp('shldac','buttons/shldac2');">
+    <img src="/assets/buttons/shldac2.png" name="shldac" /> Schilde aktivieren</a>
     </td>
 </tr>
     
 <tr>
     <td colspan="3">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('act_phaser','buttons/act_phaser2');" onmouseout="cp('act_phaser','buttons/act_phaser1');">
-    <img src="/assets/buttons/act_phaser1.png" name="act_phaser"> Strahlenwaffe deaktivieren</a>
+                        <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&type=PHASER&sstr=MOCKED_SESSIONSTRING');"
+    onmouseover="cp('act_phaser','buttons/act_phaser2');" onmouseout="cp('act_phaser','buttons/act_phaser1');">
+    <img src="/assets/buttons/act_phaser1.png" name="act_phaser" /> Strahlenwaffe deaktivieren</a>
     </td>
 </tr>
         
@@ -364,11 +438,11 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
                         
     
 </table>
-<br>
+<br />
 <table class="tcal">
     <tr>
         <th colspan="4">
-            <img src="/assets/buttons/fleet.png" title="Flottenkontrolle">
+            <img src="/assets/buttons/fleet.png" title="Flottenkontrolle" />
             <span>Flottenkontrolle</span>
         </th>
     </tr>
@@ -379,110 +453,132 @@ updateSelectedSpacecraftId('42');" onmouseover="cp('uship','buttons/update1');" 
     </tr>
     <tr>
         <td>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/kss1.png" name="fl_kss1" title="Nahbereichssensoren aktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=NBS&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/kss1.png" name="fl_kss1" title="Nahbereichssensoren aktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/shldac1.png" name="fl_shldac1" title="Schilde aktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=SHIELDS&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/shldac1.png" name="fl_shldac1" title="Schilde aktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/act_phaser1.png" name="fl_act_phaser1" title="Strahlenwaffen aktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=PHASER&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_phaser1.png" name="fl_act_phaser1" title="Strahlenwaffen aktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=TORPEDO&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/act_torp1.png" name="fl_act_torp1" title="Torpedob&Atilde;&curren;nke aktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=TORPEDO&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_torp1.png" name="fl_act_torp1" title="Torpedobänke aktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=CLOAK&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/tarn1.png" name="fl_tarn1" title="Tarnung aktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=CLOAK&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/tarn1.png" name="fl_tarn1" title="Tarnung aktivieren" />
 </a>
 
 
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/warp1.png" name="fl_warp1" title="Warpantrieb aktivieren">
+                        <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&isfleet=1&type=WARPDRIVE&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/warp1.png" name="fl_warp1" title="Warpantrieb aktivieren" />
 </a>
 
 
                     </td>
         <td>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/kss2.png" name="fl_kss2" title="Nahbereichssensoren deaktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=NBS&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/kss2.png" name="fl_kss2" title="Nahbereichssensoren deaktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=SHIELDS&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/shldac2.png" name="fl_shldac2" title="Schilde deaktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=SHIELDS&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/shldac2.png" name="fl_shldac2" title="Schilde deaktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=PHASER&amp;sstr=MOCKED_SESSIONSTRING');">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=PHASER&sstr=MOCKED_SESSIONSTRING');">
     <img src="/assets/buttons/act_phaser2.png" name="fl_act_phaser2" title="Strahlenwaffen
-            deaktivieren">
+            deaktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=TORPEDO&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/act_torp2.png" name="fl_act_torp2" title="Torpedob&Atilde;&curren;nke deaktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=TORPEDO&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/act_torp2.png" name="fl_act_torp2" title="Torpedobänke deaktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=CLOAK&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/tarn2.png" name="fl_tarn2" title="Tarnung deaktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=CLOAK&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/tarn2.png" name="fl_tarn2" title="Tarnung deaktivieren" />
 </a>
 
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&amp;isfleet=1&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/warp2.png" name="fl_warp2" title="Warpantrieb deaktivieren">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_DEACTIVATE_SYSTEM', 'id=42&isfleet=1&type=WARPDRIVE&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/warp2.png" name="fl_warp2" title="Warpantrieb deaktivieren" />
 </a>
 
 
         </td>
         <td>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_GREEN', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/alert1_1.png" name="fl_alert1_1" title="Flotte: Alarmstufe Gr&Atilde;&frac14;n">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_FLEET_ALERT_GREEN', 'id=42&isfleet=1&type=&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert1_1.png" name="fl_alert1_1" title="Flotte: Alarmstufe Grün" />
 </a>
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_YELLOW', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/alert2_1.png" name="fl_alert2_1" title="Flotte: Alarmstufe Gelb">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_FLEET_ALERT_YELLOW', 'id=42&isfleet=1&type=&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert2_1.png" name="fl_alert2_1" title="Flotte: Alarmstufe Gelb" />
 </a>
 
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_FLEET_ALERT_RED', 'id=42&amp;isfleet=1&amp;type=&amp;sstr=MOCKED_SESSIONSTRING');">
-    <img src="/assets/buttons/alert3_1.png" name="fl_alert3_1" title="Flotte: Alarmstufe Rot">
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_FLEET_ALERT_RED', 'id=42&isfleet=1&type=&sstr=MOCKED_SESSIONSTRING');">
+    <img src="/assets/buttons/alert3_1.png" name="fl_alert3_1" title="Flotte: Alarmstufe Rot" />
 </a>
 
         </td>
     </tr>
 </table>
-<br>
+<br />
 <table class="tcal">
     <tr>
         <th>Angedockt</th>
     </tr>
     <tr>
         <td>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_UNDOCK', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
-                <img src="/assets/buttons/dock2.png" title="Abdocken" name="dock">
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_UNDOCK', 'id=42&sstr=MOCKED_SESSIONSTRING');"
+                onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
+                <img src="/assets/buttons/dock2.png" title="Abdocken" name="dock" />
             </a>
-                        <a href="/station.php?SHOW_SPACECRAFT=1&amp;id=43" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
+                        <a href="/station.php?SHOW_SPACECRAFT=1&id=43"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
 'id=43',
 'station.php'); event.preventDefault();}
-updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')" onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
-                <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" style="height: 20px;">
+updateSelectedSpacecraftId('43');"
+ onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
+                onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
+                <img src="/assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
+                    style="height: 20px;" />
             </a>
-                                    <a href="javascript:void(0);" onclick="openTradeMenu(this, 2);" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
-                <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade">
-                Handelstransferfenster &Atilde;&para;ffnen
+                                    <a href="javascript:void(0);" onclick="openTradeMenu(this, 2);"
+                onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
+                <img src="/assets/buttons/menu_trade0.png" title="Handel" name="trade" />
+                Handelstransferfenster öffnen
             </a>
                     </td>
     </tr>
 </table>
-<br>
+<br />
 <table class="tcal">
         <tr>
         <th style="width: 50%;">Informationen</th>
@@ -490,38 +586,47 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
                     </tr>
     <tr>
         <td>
-            <a href="javascript:void(0);" onclick="showSectorScanWindow(this);" onmouseover="cp('sectorScanButton','buttons/lupe2')" onmouseout="cp('sectorScanButton','buttons/lupe1')">
-                <img src="/assets/buttons/lupe1.png" name="sectorScanButton">
+            <a href="javascript:void(0);" onclick="showSectorScanWindow(this);"
+                onmouseover="cp('sectorScanButton','buttons/lupe2')"
+                onmouseout="cp('sectorScanButton','buttons/lupe1')">
+                <img src="/assets/buttons/lupe1.png" name="sectorScanButton" />
                 <span>Sektor 7|8 scannen</span>
             </a>
-                        <img src="/assets/buttons/map1.png">
+                        <img src="/assets/buttons/map1.png" />
 <span>System nicht kartographiert</span>
 
             
-                                                                                                
-            <a href="javascript:void(0);" onclick="showRegionInfo(this, 134);" onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
-                <img src="/assets/buttons/info1.png" name="mapRegionButton">
+                                                                                                </br>
+            <a href="javascript:void(0);" onclick="showRegionInfo(this, 134);"
+                onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
+                <img src="/assets/buttons/info1.png" name="mapRegionButton" />
                 Thalassanebel
             </a>
-                                                                        <br>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_ADVENT_DOOR', 'id=42&amp;target=1&amp;sstr=MOCKED_SESSIONSTRING');" title="Adventst&Atilde;&frac14;rchen &Atilde;&para;ffnen">
-        <img src="/assets/anomalies/advent/-104.png" name="Adventst&Atilde;&frac14;r">
-        &acirc;&uml;<strong><span style="color: red">Ad</span><span style="color: green">ve</span><span style="color: white">nt</span><span style="color: red">st</span><span style="color: green">&Atilde;&frac14;r</span><span style="color: white">ch</span><span style="color: red">en</span></strong>
-    &eth;&eth;
+                                                                        <br />
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ADVENT_DOOR', 'id=42&target=1&sstr=MOCKED_SESSIONSTRING');"
+    title="Adventstürchen öffnen">
+        <img src="/assets/anomalies/advent/-104.png" name="Adventstür" />
+        ✨<strong><span style="color: red">Ad</span><span style="color: green">ve</span><span style="color: white">nt</span><span style="color: red">st</span><span style="color: green">ür</span><span style="color: white">ch</span><span style="color: red">en</span></strong>
+    🎁🎄
     </a>
-                        <br>
-            <a href="javascript:void(0);" onclick="actionToInnerContent('B_EASTER_EGG', 'id=42&amp;target=2&amp;sstr=MOCKED_SESSIONSTRING');" title="Osterei erhalten">
-        <img src="/assets/anomalies/easter/easter.png" name="Oster Ei">
-        &eth;&deg;<strong><span style="color: orange">O</span><span style="color: green">s</span><span style="color: #e359c7">t</span><span style="color: yellow">e</span><span style="color: #6ac0ce">r</span><span style="color: white">
+                        <br />
+            <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_EASTER_EGG', 'id=42&target=2&sstr=MOCKED_SESSIONSTRING');"
+    title="Osterei erhalten">
+        <img src="/assets/anomalies/easter/easter.png" name="Oster Ei" />
+        🐰<strong><span style="color: orange">O</span><span style="color: green">s</span><span style="color: #e359c7">t</span><span style="color: yellow">e</span><span style="color: #6ac0ce">r</span><span style="color: white">
     E</span><span style="color: red">i</span></strong>
-    &eth;&yen;&eth;
+    🥚🎁
     </a>                                            </td>
                                                 <td>
-                        <img src="/assets/map/systemtypes/1060.png" style="width: 15px; height: 15px;" title="Roter Zwerg">
-            Stempor'Arr
-                        <br>
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ENTER_STARSYSTEM', 'id=42&amp;sstr=MOCKED_SESSIONSTRING');">
-                <img src="/assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen">
+                        <img src="/assets/map/systemtypes/1060.png" style="width: 15px; height: 15px;"
+                title="Roter Zwerg" />
+            Stempor&#039;Arr
+                        <br />
+                        <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_ENTER_STARSYSTEM', 'id=42&sstr=MOCKED_SESSIONSTRING');">
+                <img src="/assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen" />
                 einfliegen
             </a>
                     </td>
@@ -535,40 +640,45 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
 <table class="tcal">
     <tr>
         <th colspan="3">
-            <img src="/assets/buttons/warpk.png">
+            <img src="/assets/buttons/warpk.png" />
             <span>Reaktor + Antrieb</span>
         </th>
     </tr>
     <tr>
         <td colspan="2">
-            <img src="/assets/buttons/warpk.png" title="Warpkern">
+            <img src="/assets/buttons/warpk.png"
+                title="Warpkern" />
             <span style="">810/810</span>
-            <input type="text" size="3" name="reactorload" id="reactorload" value="1" onkeydown="event.key == 'Enter' &amp;&amp; $('loadreactorbutton').click();">
-            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton">
-            <input type="button" class="button" value="max" onclick="$('reactorload').value = 9999; $('loadreactorbutton').click()">
+            <input type="text" size="3" name="reactorload" id="reactorload" value="1"
+                onkeydown="event.key == 'Enter' && $('loadreactorbutton').click();" />
+            <input type="submit" class="button" name="B_LOAD_REACTOR" value="aufladen" id="loadreactorbutton" />
+            <input type="button" class="button" value="max"
+                onClick="$('reactorload').value = 9999; $('loadreactorbutton').click()" />
         </td>
         <td style="width: 15%;">
-                        <span><input type="checkbox" name="fleet_reactor">
+                        <span><input type="checkbox" name="fleet_reactor" />
                 Flotte</span>
                     </td>
     </tr>
                                 
     <tr>
-        <td style="width: 60%;">
-<img src="/assets/buttons/wkp2.png" style="width: 20px;" title="Zuwachs zum Warpdrive">
+        <td style="width: 60%;"><img src="/assets/buttons/wkp2.png" style="width: 20px;"
+                title="Zuwachs zum Warpdrive" />
             <span id="calculatedWarpDrive"></span>
-            <input type="range" min="0" max="100" value="100" id="warpdriveSplit" onchange="saveWarpCoreSplit(42);" oninput="updateReactorValues();">
-            <img src="/assets/buttons/battp2.png" style="width: 20px;" title="Zuwachs zum EPS">
+            <input type="range" min="0" max="100" value="100" id="warpdriveSplit"
+                onchange="saveWarpCoreSplit(42);" oninput="updateReactorValues();">
+            <img src="/assets/buttons/battp2.png" style="width: 20px;" title="Zuwachs zum EPS" />
             <span id="calculatedEPS"></span>
         </td>
         <td>
-            <div style="display: inline-block;" title="&Atilde;bersch&Atilde;&frac14;ssige Energie wird in anderen Speicher &Atilde;&frac14;bertragen">
-                                <img src="/assets/buttons/transfer.png" style="height:20px;">
-                <input type="checkbox" id="autoCarryOver" onchange="saveWarpCoreSplit(42); updateReactorValues();">
+            <div style="display: inline-block;" title="Überschüssige Energie wird in anderen Speicher übertragen">
+                                <img src="/assets/buttons/transfer.png" style="height:20px;" />
+                <input type="checkbox" id="autoCarryOver" 
+                    onchange="saveWarpCoreSplit(42); updateReactorValues();" />
             </div>
         </td>
         <td style="width: 15%;">
-                        <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit(42);">
+                        <span><input type="checkbox" id="fleetSplit" onchange="saveWarpCoreSplit(42);" />
                 Flotte</span>
                     </td>
     </tr>
@@ -577,8 +687,10 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
         
 <tr>
     <td colspan="3">
-                        <a href="javascript:void(0);" onclick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&amp;type=WARPDRIVE&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('warp','buttons/warp1');" onmouseout="cp('warp','buttons/warp2');">
-    <img src="/assets/buttons/warp2.png" name="warp"> Warpantrieb aktivieren</a>
+                        <a href="javascript:void(0);"
+    onClick="actionToInnerContent('B_ACTIVATE_SYSTEM', 'id=42&type=WARPDRIVE&sstr=MOCKED_SESSIONSTRING');"
+    onmouseover="cp('warp','buttons/warp1');" onmouseout="cp('warp','buttons/warp2');">
+    <img src="/assets/buttons/warp2.png" name="warp" /> Warpantrieb aktivieren</a>
     </td>
 </tr>
 
@@ -587,8 +699,8 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
             <select name="rumpid" id="rumpid">
                                 <option value="6501">Aerie</option>
                             </select>
-            <input type="hidden" name="id" value="42">
-            <input type="submit" class="button" name="B_FAKE_WARP_SIGNATURE" value="Warp-Signatur f&Atilde;&curren;lschen">
+            <input type="hidden" name="id" value="42" />
+            <input type="submit" class="button" name="B_FAKE_WARP_SIGNATURE" value="Warp-Signatur fälschen" />
         </td>
     </tr>
 
@@ -596,47 +708,51 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
             
 <tr>
         <td colspan="2">
-        <img src="/assets/buttons/transw.png" title="Transwarpantrieb">
+        <img src="/assets/buttons/transw.png" title="Transwarpantrieb" />
         Transwarpantrieb
                 Areal:
         <select name="transwarplayer">
-                                    <option value="2" selected>
+                                    <option value="2" selected="">
                 Tullamore Trench</option>
                     </select>
         X:
-        <input type="text" size="2" name="transwarpcx" id="transwarpcx" onkeydown="event.key == 'Enter' &amp;&amp; $('transwarpButton').click()">
+        <input type="text" size="2" name="transwarpcx" id="transwarpcx"
+            onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
         Y:
-        <input type="text" size="2" name="transwarpcy" id="transwarpcy" onkeydown="event.key == 'Enter' &amp;&amp; $('transwarpButton').click()">
+        <input type="text" size="2" name="transwarpcy" id="transwarpcy"
+            onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
             </td>
     <td style="width: 15%;">
-                <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton">
+                <input type="submit" class="button" name="B_TRANSWARP" value="Start" id="transwarpButton" />
             </td>
 </tr>
 </table>
 <table class="tcal">
     <tr>
         <th colspan="3">
-            <img src="/assets/buttons/batt.png" title="Ersatzbatterie"> Ersatzbatterie
+            <img src="/assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
             36 / 36
         </th>
     </tr>
     <tr>
                 <td style="width: 60%;">
             Einheiten
-            <input type="text" size="5" name="ebattload" id="ebattload" onkeydown="event.key == 'Enter' &amp;&amp; $('unloadBatteryButton').click()">
-            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton">
-            <input type="button" class="button" onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max">
+            <input type="text" size="5" name="ebattload" id="ebattload"
+                onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
+            <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
+            <input type="button" class="button"
+                onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
         </td>
                 <td>
                     </td>
         <td style="width: 15%;">
-                        <span><input type="checkbox" name="fleet_batt">
+                        <span><input type="checkbox" name="fleet_batt" />
                 Flotte</span>
                     </td>
     </tr>
 </table>
 
-<br>
+<br />
 
 
 
@@ -644,12 +760,13 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
 			</td>
 		</tr>
 			</table>
-	<br>
+	<br />
 </form>
 <table class="tcal">
 	<tr>
 		<th>
-						<a href="?B_DEACTIVATE_SYSTEM=1&amp;id=42&amp;type=NBS&amp;sstr=MOCKED_SESSIONSTRING"><img src="/assets/buttons/kss1.png"> Nahbereichssensoren deaktivieren</a>
+						<a href="?B_DEACTIVATE_SYSTEM=1&id=42&type=NBS&sstr=MOCKED_SESSIONSTRING"><img
+					src="/assets/buttons/kss1.png" /> Nahbereichssensoren deaktivieren</a>
 					</th>
 	</tr>
 </table>
@@ -669,53 +786,75 @@ updateSelectedSpacecraftId('43');" onmouseover="cp('dockedstation','buttons/pmna
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
-        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=43&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_43','buttons/phaser2')" onmouseout="cp('att_43','buttons/phaser1')">
-        <img src="/assets/buttons/phaser1.png" name="att_43" title="Mighty AP angreifen">
+        <div style="cursor: pointer;"
+        onClick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&target=43&sstr=MOCKED_SESSIONSTRING');"
+        onmouseover="cp('att_43','buttons/phaser2')"
+        onmouseout="cp('att_43','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_43" title="Mighty AP angreifen" />
     </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,43);" onmouseover="cp('scn_43','buttons/lupe2')" onmouseout="cp('scn_43','buttons/lupe1')">
-            <img src="/assets/buttons/lupe1.png" name="scn_43" title="Mighty AP scannen">
+        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,43);"
+            onmouseover="cp('scn_43','buttons/lupe2')"
+            onmouseout="cp('scn_43','buttons/lupe1')">
+            <img src="/assets/buttons/lupe1.png" name="scn_43" title="Mighty AP scannen" />
         </a>
     </div>
                         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow(this, 43);" onmouseover="cp('etr_43','buttons/e_trans2')" onmouseout="cp('etr_43','buttons/e_trans1')">
-            <img src="/assets/buttons/e_trans1.png" name="etr_43" title="Energie zur Mighty AP transferieren">
+        <a href="javascript:void(0);" onclick="showETransferWindow(this, 43);"
+            onmouseover="cp('etr_43','buttons/e_trans2')"
+            onmouseout="cp('etr_43','buttons/e_trans1')">
+            <img src="/assets/buttons/e_trans1.png" name="etr_43"
+                title="Energie zur Mighty AP transferieren" />
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-                        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 43, 'station', 1, true);" onmouseover="cp('bto_43','buttons/b_down2')" onmouseout="cp('bto_43','buttons/b_down1')">
-            <img src="/assets/buttons/b_down1.png" name="bto_43" title="Zur Mighty AP runterbeamen">
+                        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 43, 'station', 1, true);"
+            onmouseover="cp('bto_43','buttons/b_down2')"
+            onmouseout="cp('bto_43','buttons/b_down1')">
+            <img src="/assets/buttons/b_down1.png" name="bto_43"
+                title="Zur Mighty AP runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 43, 'station', 1, false);" onmouseover="cp('bfr_43','buttons/b_up2')" onmouseout="cp('bfr_43','buttons/b_up1')">
-            <img src="/assets/buttons/b_up1.png" name="bfr_43" title="Von der Mighty AP hochbeamen">
+        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 43, 'station', 1, false);"
+            onmouseover="cp('bfr_43','buttons/b_up2')"
+            onmouseout="cp('bfr_43','buttons/b_up1')">
+            <img src="/assets/buttons/b_up1.png" name="bfr_43"
+                title="Von der Mighty AP hochbeamen" />
         </a>
     </div>
                                             </td>
 <td style="" class="nbsshipimage">
-        <a href="/station.php?SHOW_SPACECRAFT=1&amp;id=43" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
+        <a href="/station.php?SHOW_SPACECRAFT=1&id=43"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
 'id=43',
 'station.php'); event.preventDefault();}
-updateSelectedSpacecraftId('43');">
-        <img src="/assets/ships/10053.png" title="Au&Atilde;enposten">
+updateSelectedSpacecraftId('43');"
+>
+        <img src="/assets/ships/10053.png" title="Außenposten" />
 
     </a>
     </td>
 <td>
     </td>
 <td>
-        <a href="/station.php?SHOW_SPACECRAFT=1&amp;id=43" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
+        <a href="/station.php?SHOW_SPACECRAFT=1&id=43"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Mighty AP',
 'id=43',
 'station.php'); event.preventDefault();}
-updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
+updateSelectedSpacecraftId('43');"
+><span>Mighty AP</span></a>
     </td>
 <td style="width: 160px;">
     20000/21000
     </td>
 <td>
-                <a href="javascript:void(0);" onclick="openPmWindow(42,43,2,4);" title="Nachricht an Siedler 101 verfassen" onmouseover="cp('nbsPm43','buttons/msg2')" onmouseout="cp('nbsPm43','buttons/msg1')">
-        <img src="/assets/buttons/msg1.png" name="nbsPm43"></a>
+                <a href="javascript:void(0);" onclick="openPmWindow(42,43,2,4);"
+        title="Nachricht an Siedler 101 verfassen"
+        onmouseover="cp('nbsPm43','buttons/msg2')" onmouseout="cp('nbsPm43','buttons/msg1')">
+        <img src="/assets/buttons/msg1.png" name="nbsPm43" /></a>
         Siedler 101 (101)
 </td>
 
@@ -726,37 +865,56 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
-        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=10203&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_10203','buttons/phaser2')" onmouseout="cp('att_10203','buttons/phaser1')">
-        <img src="/assets/buttons/phaser1.png" name="att_10203" title="Aerie 102 at Mighty AP angreifen">
+        <div style="cursor: pointer;"
+        onClick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&target=10203&sstr=MOCKED_SESSIONSTRING');"
+        onmouseover="cp('att_10203','buttons/phaser2')"
+        onmouseout="cp('att_10203','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_10203" title="Aerie 102 at Mighty AP angreifen" />
     </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,10203);" onmouseover="cp('scn_10203','buttons/lupe2')" onmouseout="cp('scn_10203','buttons/lupe1')">
-            <img src="/assets/buttons/lupe1.png" name="scn_10203" title="Aerie 102 at Mighty AP scannen">
+        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,10203);"
+            onmouseover="cp('scn_10203','buttons/lupe2')"
+            onmouseout="cp('scn_10203','buttons/lupe1')">
+            <img src="/assets/buttons/lupe1.png" name="scn_10203" title="Aerie 102 at Mighty AP scannen" />
         </a>
     </div>
                         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow(this, 10203);" onmouseover="cp('etr_10203','buttons/e_trans2')" onmouseout="cp('etr_10203','buttons/e_trans1')">
-            <img src="/assets/buttons/e_trans1.png" name="etr_10203" title="Energie zur Aerie 102 at Mighty AP transferieren">
+        <a href="javascript:void(0);" onclick="showETransferWindow(this, 10203);"
+            onmouseover="cp('etr_10203','buttons/e_trans2')"
+            onmouseout="cp('etr_10203','buttons/e_trans1')">
+            <img src="/assets/buttons/e_trans1.png" name="etr_10203"
+                title="Energie zur Aerie 102 at Mighty AP transferieren" />
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-                        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 10203, 'ship', 1, true);" onmouseover="cp('bto_10203','buttons/b_down2')" onmouseout="cp('bto_10203','buttons/b_down1')">
-            <img src="/assets/buttons/b_down1.png" name="bto_10203" title="Zur Aerie 102 at Mighty AP runterbeamen">
+                        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 10203, 'ship', 1, true);"
+            onmouseover="cp('bto_10203','buttons/b_down2')"
+            onmouseout="cp('bto_10203','buttons/b_down1')">
+            <img src="/assets/buttons/b_down1.png" name="bto_10203"
+                title="Zur Aerie 102 at Mighty AP runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 10203, 'ship', 1, false);" onmouseover="cp('bfr_10203','buttons/b_up2')" onmouseout="cp('bfr_10203','buttons/b_up1')">
-            <img src="/assets/buttons/b_up1.png" name="bfr_10203" title="Von der Aerie 102 at Mighty AP hochbeamen">
+        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 10203, 'ship', 1, false);"
+            onmouseover="cp('bfr_10203','buttons/b_up2')"
+            onmouseout="cp('bfr_10203','buttons/b_up1')">
+            <img src="/assets/buttons/b_up1.png" name="bfr_10203"
+                title="Von der Aerie 102 at Mighty AP hochbeamen" />
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-        <a href="?B_ACTIVATE_TRACTOR=1&amp;id=42&amp;target=10203&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('tra_10203','buttons/trak2')" onmouseout="cp('tra_10203','buttons/trak1')">
-            <img src="/assets/buttons/trak1.png" name="tra_10203" title="Traktorstrahl auf die Aerie 102 at Mighty AP richten">
+        <a href="?B_ACTIVATE_TRACTOR=1&id=42&target=10203&sstr=MOCKED_SESSIONSTRING"
+            onmouseover="cp('tra_10203','buttons/trak2')"
+            onmouseout="cp('tra_10203','buttons/trak1')">
+            <img src="/assets/buttons/trak1.png" name="tra_10203"
+                title="Traktorstrahl auf die Aerie 102 at Mighty AP richten" />
         </a>
     </div>
                                                     </td>
 <td style="" class="nbsshipimage">
-        <img src="/assets/ships/6501.png" title="Aerie">
+        <img src="/assets/ships/6501.png" title="Aerie" />
 
     </td>
 <td>
@@ -768,66 +926,93 @@ updateSelectedSpacecraftId('43');"><span>Mighty AP</span></a>
     800/819
     </td>
 <td>
-                <a href="javascript:void(0);" onclick="openPmWindow(42,10203,2,2);" title="Nachricht an Romulanisches Sternenimperium  verfassen" onmouseover="cp('nbsPm10203','buttons/msg2')" onmouseout="cp('nbsPm10203','buttons/msg1')">
-        <img src="/assets/buttons/msg1.png" name="nbsPm10203"></a>
+                <a href="javascript:void(0);" onclick="openPmWindow(42,10203,2,2);"
+        title="Nachricht an Romulanisches Sternenimperium  verfassen"
+        onmouseover="cp('nbsPm10203','buttons/msg2')" onmouseout="cp('nbsPm10203','buttons/msg1')">
+        <img src="/assets/buttons/msg1.png" name="nbsPm10203" /></a>
         <strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)
 </td>
 
     </tr>
         <tr class="row">
         <td style="width: 30px; text-align: center;">
-        <div style="cursor: pointer;" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&amp;target=100001&amp;sstr=MOCKED_SESSIONSTRING');" onmouseover="cp('att_100001','buttons/phaser2')" onmouseout="cp('att_100001','buttons/phaser1')">
-        <img src="/assets/buttons/phaser1.png" name="att_100001" title="Workbee angreifen">
+        <div style="cursor: pointer;"
+        onClick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id=42&target=100001&sstr=MOCKED_SESSIONSTRING');"
+        onmouseover="cp('att_100001','buttons/phaser2')"
+        onmouseout="cp('att_100001','buttons/phaser1')">
+        <img src="/assets/buttons/phaser1.png" name="att_100001" title="Workbee angreifen" />
     </div>
     </td>
 <td style="width: 120px;">
         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,100001);" onmouseover="cp('scn_100001','buttons/lupe2')" onmouseout="cp('scn_100001','buttons/lupe1')">
-            <img src="/assets/buttons/lupe1.png" name="scn_100001" title="Workbee scannen">
+        <a href="javascript:void(0);" onclick="showScanWindow(this, 42,100001);"
+            onmouseover="cp('scn_100001','buttons/lupe2')"
+            onmouseout="cp('scn_100001','buttons/lupe1')">
+            <img src="/assets/buttons/lupe1.png" name="scn_100001" title="Workbee scannen" />
         </a>
     </div>
                         <div style="float:left; margin-right:4px;">
-        <a href="javascript:void(0);" onclick="showETransferWindow(this, 100001);" onmouseover="cp('etr_100001','buttons/e_trans2')" onmouseout="cp('etr_100001','buttons/e_trans1')">
-            <img src="/assets/buttons/e_trans1.png" name="etr_100001" title="Energie zur Workbee transferieren">
+        <a href="javascript:void(0);" onclick="showETransferWindow(this, 100001);"
+            onmouseover="cp('etr_100001','buttons/e_trans2')"
+            onmouseout="cp('etr_100001','buttons/e_trans1')">
+            <img src="/assets/buttons/e_trans1.png" name="etr_100001"
+                title="Energie zur Workbee transferieren" />
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-                        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 100001, 'ship', 1, true);" onmouseover="cp('bto_100001','buttons/b_down2')" onmouseout="cp('bto_100001','buttons/b_down1')">
-            <img src="/assets/buttons/b_down1.png" name="bto_100001" title="Zur Workbee runterbeamen">
+                        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 100001, 'ship', 1, true);"
+            onmouseover="cp('bto_100001','buttons/b_down2')"
+            onmouseout="cp('bto_100001','buttons/b_down1')">
+            <img src="/assets/buttons/b_down1.png" name="bto_100001"
+                title="Zur Workbee runterbeamen" />
         </a>
-        <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 100001, 'ship', 1, false);" onmouseover="cp('bfr_100001','buttons/b_up2')" onmouseout="cp('bfr_100001','buttons/b_up1')">
-            <img src="/assets/buttons/b_up1.png" name="bfr_100001" title="Von der Workbee hochbeamen">
+        <a href="javascript:void(0);"
+            onclick="showTransfer(this, 42, 'ship', 100001, 'ship', 1, false);"
+            onmouseover="cp('bfr_100001','buttons/b_up2')"
+            onmouseout="cp('bfr_100001','buttons/b_up1')">
+            <img src="/assets/buttons/b_up1.png" name="bfr_100001"
+                title="Von der Workbee hochbeamen" />
         </a>
     </div>
             <div style="float:left; margin-right:4px;">
-        <a href="?B_ACTIVATE_TRACTOR=1&amp;id=42&amp;target=100001&amp;sstr=MOCKED_SESSIONSTRING" onmouseover="cp('tra_100001','buttons/trak2')" onmouseout="cp('tra_100001','buttons/trak1')">
-            <img src="/assets/buttons/trak1.png" name="tra_100001" title="Traktorstrahl auf die Workbee richten">
+        <a href="?B_ACTIVATE_TRACTOR=1&id=42&target=100001&sstr=MOCKED_SESSIONSTRING"
+            onmouseover="cp('tra_100001','buttons/trak2')"
+            onmouseout="cp('tra_100001','buttons/trak1')">
+            <img src="/assets/buttons/trak1.png" name="tra_100001"
+                title="Traktorstrahl auf die Workbee richten" />
         </a>
     </div>
                                                     </td>
 <td style="" class="nbsshipimage">
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=100001" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=100001"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
 'id=100001',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('100001');">
-        <img src="/assets/ships/161.png" title="Workbee">
+updateSelectedSpacecraftId('100001');"
+>
+        <img src="/assets/ships/161.png" title="Workbee" />
 
     </a>
     </td>
 <td>
     </td>
 <td>
-        <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=100001" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
+        <a href="/ship.php?SHOW_SPACECRAFT=1&id=100001"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Workbee',
 'id=100001',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('100001');"><span>Workbee</span></a>
+updateSelectedSpacecraftId('100001');"
+><span>Workbee</span></a>
     </td>
 <td style="width: 160px;">
     81/81
     </td>
 <td>
-                <a href="javascript:void(0);" onclick="openPmWindow(42,100001,2,2);" title="Nachricht an Siedler 101 verfassen" onmouseover="cp('nbsPm100001','buttons/msg2')" onmouseout="cp('nbsPm100001','buttons/msg1')">
-        <img src="/assets/buttons/msg1.png" name="nbsPm100001"></a>
+                <a href="javascript:void(0);" onclick="openPmWindow(42,100001,2,2);"
+        title="Nachricht an Siedler 101 verfassen"
+        onmouseover="cp('nbsPm100001','buttons/msg2')" onmouseout="cp('nbsPm100001','buttons/msg1')">
+        <img src="/assets/buttons/msg1.png" name="nbsPm100001" /></a>
         Siedler 101 (101)
 </td>
 
@@ -835,50 +1020,57 @@ updateSelectedSpacecraftId('100001');"><span>Workbee</span></a>
         
         <tr>
         <td colspan="2"></td>
-        <td colspan="5">Tr&Atilde;&frac14;mmerfelder</td>
+        <td colspan="5">Trümmerfelder</td>
     </tr>
         <tr class="row">
         
 <td style="width: 30px; text-align: center;"></td>
 <td style="width: 120px;">
     <div style="float:left; margin-right:4px;">
-    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'ship', 1, 'trumfield', 1, false);" onmouseover="cp('bfr_1','buttons/b_up2')" onmouseout="cp('bfr_1','buttons/b_up1')">
-      <img src="/assets/buttons/b_up1.png" name="bfr_1" title="Vom Tr&Atilde;&frac14;mmerfeld hochbeamen">
+    <a href="javascript:void(0);"
+      onclick="showTransfer(this, 42, 'ship', 1, 'trumfield', 1, false);"
+      onmouseover="cp('bfr_1','buttons/b_up2')"
+      onmouseout="cp('bfr_1','buttons/b_up1')">
+      <img src="/assets/buttons/b_up1.png" name="bfr_1" title="Vom Trümmerfeld hochbeamen" />
     </a>
   </div>
   </td>
 <td style="width: 200px; background-color: #000000 !important;">
-  <img src="/assets/ships/wrack/6501.png" title="Tr&Atilde;&frac14;mmerfeld" onload="adjustCellHeight(this); adjustCellWidth(this);">
+  <img src="/assets/ships/wrack/6501.png" title="Trümmerfeld"
+    onload="adjustCellHeight(this); adjustCellWidth(this);" />
 
 </td>
 <td></td>
-<td>Tr&Atilde;&frac14;mmerfeld</td>
+<td>Trümmerfeld</td>
 <td style="width: 160px;">42</td>
 <td></td>
     </tr>
         
 </table>
 
-<br>
+<br />
 <table class="use" style="width: 250px;">
   <tr>
     <th>
-      <img onclick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum"> Lagerraum
+      <img onClick="window.scrollTo(0,0);" src="/assets/buttons/lager.png" title="Lagerraum" /> Lagerraum
       142/155
     </th>
   </tr>
   <tr>
     <td>
                         <div style="float: left; width: 50%;">
-        <img src="/assets/commodities/8.png" title="Dilithium">
+        <img src="/assets/commodities/8.png"
+          title="Dilithium" />
         42
       </div>
                                     <div style="float: right; width: 50%;">
-        <img src="/assets/commodities/21.png" title="Duranium">
+        <img src="/assets/commodities/21.png"
+          title="Duranium" />
         99
       </div>
                                           <div style="float: left; width: 50%;">
-        <img src="/assets/commodities/20061.png" title="Workbee">
+        <img src="/assets/commodities/20061.png"
+          title="Workbee" />
         1
       </div>
                       </td>
@@ -895,7 +1087,7 @@ updateSelectedSpacecraftId('100001');"><span>Workbee</span></a>
         </script>
 
 
-
+</html>
                 <script>
                     window.addEventListener("popstate", function (e) {
                         window.location.reload();

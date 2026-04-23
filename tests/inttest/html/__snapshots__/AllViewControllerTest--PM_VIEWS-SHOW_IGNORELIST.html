@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="pm.php?SHOW_IGNORELIST=1">
@@ -13,13 +13,13 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 <form action="pm.php" method="post" name="ignorelist" id="ignorelist">
-    <input type="hidden" name="SHOW_IGNORELIST" value="1">
-    <input type="hidden" name="formaction" id="formaction" value="1">
-    <input type="hidden" name="deletion_mark" id="deletion_mark" value="">
+    <input type="hidden" name="SHOW_IGNORELIST" value="1" />
+    <input type="hidden" name="formaction" id="formaction" value="1" />
+    <input type="hidden" name="deletion_mark" id="deletion_mark" value="" />
     <div style="float: left; width: 75%;">
         <table class="tcal">
             <tr>
@@ -30,29 +30,33 @@
     <div style="float: left; padding-left: 1%; width: 24%;">
         <table class="tcal">
             <tr>
-                <th>Hinzuf&Atilde;&frac14;gen</th>
+                <th>Hinzufügen</th>
             </tr>
             <tr>
                 <td>
-                    Siedler ID <input type="text" style="width: 50px;" name="recid">
-                    <input type="submit" value="Hinzuf&Atilde;&frac14;gen" name="B_IGNORE_USER">
+                    Siedler ID <input type="text" style="width: 50px;" name="recid" />
+                    <input type="submit" value="Hinzufügen" name="B_IGNORE_USER" />
                 </td>
             </tr>
         </table>
-        <br>
+        <br />
         <table class="tcal">
             <tr>
                 <th>Aktionen</th>
             </tr>
             <tr>
                 <td>
-                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllIgnores();">Alle selektieren</a>
-                    <br>
-                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllIgnores();">Alle deselektieren</a>
-                    <br><br>
-                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteMarkedIgnores();">Alle selektierten l&Atilde;&para;schen</a>
-                    <br><br>
-                    <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1&amp;B_DELETE_ALL_IGNORES=1&amp;sstr=MOCKED_SESSIONSTRING">Alle l&Atilde;&para;schen</a>
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="markAllIgnores();">Alle selektieren</a>
+                    <br />
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="unMarkAllIgnores();">Alle deselektieren</a>
+                    <br /><br />
+                    <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
+                        onclick="deleteMarkedIgnores();">Alle selektierten löschen</a>
+                    <br /><br />
+                    <span style="color: #cecece">&gt;</span> <a
+                        href="?SHOW_IGNORELIST=1&B_DELETE_ALL_IGNORES=1&sstr=MOCKED_SESSIONSTRING">Alle löschen</a>
                 </td>
             </tr>
         </table>
@@ -63,5 +67,4 @@
 </div>
 
 
-</body>
 </html>

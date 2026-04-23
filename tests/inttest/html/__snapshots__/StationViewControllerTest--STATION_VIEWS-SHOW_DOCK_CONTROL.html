@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,24 +11,27 @@
       <tr>
         <th id="popup-drag">Dockkontrolle</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
     </table>
-        <br>
+        <br />
 <div>
-    <input type="button" class="button" value="Alle Schiffe abdocken" onclick="actionToInnerContent('B_UNDOCK_ALL_SHIPS', 'id=43&amp;sstr=MOCKED_SESSIONSTRING');">
+    <input type="button" class="button" value="Alle Schiffe abdocken"
+        onClick="actionToInnerContent('B_UNDOCK_ALL_SHIPS', 'id=43&sstr=MOCKED_SESSIONSTRING');" />
 </div>
-<br>
+<br />
 <div>
-    <input type="checkbox" checked onchange="toggleDockPmAutoRead('MOCKED_SESSIONSTRING');">
-    Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert" src="/assets/buttons/info2.png" style="height:16px;">
+    <input type="checkbox" checked=&quot;true&quot; onchange="toggleDockPmAutoRead('MOCKED_SESSIONSTRING');" />
+    Andocken ignorieren <img title="Andockbenachrichtigungen werden automatisch als gelesen markiert"
+        src="/assets/buttons/info2.png" style="height:16px;" />
 </div>
-<br>
+<br />
 <div id="dockprivilegelist">
-    <input type="hidden" id="dock_sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" id="dock_sstr" value="MOCKED_SESSIONSTRING" />
 <table class="tcal" style="width: 400px;">
     <tr>
         <th>Ziel</th>
@@ -36,14 +40,15 @@
     </tr>
     </table>
 </div>
-<br>
+<br />
 <table class="tcal">
     <tr>
         <th colspan="2">Neuer Eintrag</th>
     </tr>
     <tr>
         <td>
-            <select id="docktype" onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
+            <select id="docktype"
+                onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
                 <option value="1">Siedler</option>
                 <option value="2">Allianz</option>
                 <option value="3">Rasse</option>
@@ -51,7 +56,7 @@
         </td>
         <td>
             <span id="dock_opt1">
-                Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1">
+                Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
             </span>
             <span id="dock_opt2" style="display: none;">
                 Allianz: <select name="docktarget" id="docktarget_2">
@@ -62,7 +67,7 @@
             </span>
             <span id="dock_opt3" style="display: none;">
                 Rasse: <select name="docktarget" id="docktarget_3">
-                    <option value="1">F&Atilde;&para;deration</option>
+                    <option value="1">Föderation</option>
                     <option value="2">Romulaner</option>
                     <option value="3">Klingonen</option>
                     <option value="4">Cardassianer</option>
@@ -77,7 +82,7 @@
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;">
-            <input class="button" type="button" value="Erstellen" onclick="addDockPrivilege();">
+            <input class="button" type="button" value="Erstellen" onclick="addDockPrivilege();" />
         </td>
     </tr>
 </table>

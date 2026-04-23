@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,28 +11,31 @@
       <tr>
         <th id="popup-drag">Waren von Station transferieren</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
     </table>
         <form action="ship.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="source_type" value="ship">
-    <input type="hidden" name="target" value="43">
-    <input type="hidden" name="target_type" value="station">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
-    <input type="hidden" name="transfer_type" value="1">
-    <input type="hidden" name="is_unload" value="0">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="source_type" value="ship" />
+    <input type="hidden" name="target" value="43" />
+    <input type="hidden" name="target_type" value="station" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+    <input type="hidden" name="transfer_type" value="1" />
+    <input type="hidden" name="is_unload" value="0" />
 
     <table class="tcal" style="width: 425px;">
         
         <tr>
     
                         <td colspan="3">
-                        <a href="javascript:void(0);" onclick="showTransfer(null, 42, 'ship', 43, 'station', 2, 0, true);" onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
-            <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen">
+                        <a href="javascript:void(0);"
+            onclick="showTransfer(null, 42, 'ship', 43, 'station', 2, 0, true);"
+            onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
+            <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
         </a>
                         <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
     </td>
@@ -43,7 +47,7 @@
                     </tr>
         <tr>
             <td colspan="3">
-                Kapazit&Atilde;&curren;t pro 1 Energie: 20
+                Kapazität pro 1 Energie: 20
             </td>
         </tr>
         <tr>
@@ -57,27 +61,50 @@ Keine Waren vorhanden
                 <table style="width: 100%; height: 100%;">
     <tr>
         <td style="text-align: center;">
-                            <a href="?SHOW_SPACECRAFT=1&amp;id=42">
-    <img src="assets/ships/6501.png">
+                            <a href="?SHOW_SPACECRAFT=1&id=42">
+    <img src="assets/ships/6501.png" />
 </a>
-                <br>
-                                <img alt="Lager" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:46px;" title="Lager: 142/155"><img alt="Lager" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:4px;" title="Lager: 142/155">
+                <br />
+                                <img
+                alt="Lager"
+                src="/assets/bars/balken.png"
+                style="background-color: #00aa00;height: 12px; width:46px;"
+                title="Lager: 142/155"
+             /><img
+                alt="Lager"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:4px;"
+                title="Lager: 142/155"
+             />
                                         </td>
     </tr>
     <tr>
                                                                 <td style="text-align: center; height: 10%;">
-            <a href="javascript:void(0);" onclick="showTransfer(null, 42, 'ship', 43, 'station', 1, 1, true);" title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
-                <img src="assets/buttons/b_up1.png" name="beamtrigger">
+            <a href="javascript:void(0);"
+                onclick="showTransfer(null, 42, 'ship', 43, 'station', 1, 1, true);"
+                title="Richtung wechseln" onmouseover="cp('beamtrigger','buttons/b_up2');"
+                onmouseout="cp('beamtrigger','buttons/b_up1');">
+                <img src="assets/buttons/b_up1.png" name="beamtrigger" />
             </a>
         </td>
     </tr>
     <tr>
         <td style="text-align: center;">
-                            <a href="?SHOW_SPACECRAFT=1&amp;id=43">
-    <img src="assets/ships/10053.png">
+                            <a href="?SHOW_SPACECRAFT=1&id=43">
+    <img src="assets/ships/10053.png" />
 </a>
-                <br>
-                                <img alt="Lager" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:0px;" title="Lager: 0/10000"><img alt="Lager" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:50px;" title="Lager: 0/10000">
+                <br />
+                                <img
+                alt="Lager"
+                src="/assets/bars/balken.png"
+                style="background-color: #00aa00;height: 12px; width:0px;"
+                title="Lager: 0/10000"
+             /><img
+                alt="Lager"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:50px;"
+                title="Lager: 0/10000"
+             />
                                         </td>
     </tr>
 </table>
@@ -85,8 +112,8 @@ Keine Waren vorhanden
         </tr>
         <tr style="text-align: right;">
             <td style="width: 60%;">
-    <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();">
-    <input type="submit" class="button" value="Beamen" name="B_TRANSFER">
+    <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
+    <input type="submit" class="button" value="Beamen" name="B_TRANSFER" />
 </td>
 <td>
     </td>

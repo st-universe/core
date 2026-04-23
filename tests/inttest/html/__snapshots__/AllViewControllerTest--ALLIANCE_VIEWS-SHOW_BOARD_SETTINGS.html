@@ -1,3 +1,4 @@
+
 <html lang="de">
 
 <head>
@@ -10,25 +11,26 @@
       <tr>
         <th id="popup-drag">Forum bearbeiten</th>
         <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');" onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schlie&Atilde;en">
+          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
+            onmouseout="cp('ajaxclose','buttons/x1');">
+            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
           </a>
         </th>
       </tr>
     </table>
         <form action="alliance.php" method="post">
-    <input type="hidden" name="boardid" value="1">
+    <input type="hidden" name="boardid" value="1" />
     <table class="use" style="width: 200px">
         <tr>
             <td>
-                <a href="?B_DELETE_BOARD=1&amp;boardid=1&amp;sstr=MOCKED_SESSIONSTRING" class="linkbutton">Forum
-                    l&Atilde;&para;schen</a>
-                <br>
-                <br>
-                <br>
-                <input type="text" style="width: 100%" name="tname" value="Allianzboard Nr. 1"><br>
-                <br>
-                <input type="submit" value="Umbenennen" name="B_RENAME_BOARD">
+                <a href="?B_DELETE_BOARD=1&boardid=1&sstr=MOCKED_SESSIONSTRING" class="linkbutton">Forum
+                    löschen</a>
+                <br />
+                <br />
+                <br />
+                <input type="text" style="width: 100%" name="tname" value="Allianzboard Nr. 1" /><br />
+                <br />
+                <input type="submit" value="Umbenennen" name="B_RENAME_BOARD" />
             </td>
         </tr>
     </table>

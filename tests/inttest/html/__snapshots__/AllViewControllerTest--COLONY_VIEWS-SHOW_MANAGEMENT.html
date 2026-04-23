@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:stu="stu">
-<body>
 <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="hosttype" value="1">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="hosttype" value="1" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
     <div style="width: 40vw;">
         <div class="">
                 <div id="shipinorbit" class="box" style="max-width: 100%; overflow-x: auto;">
-                        <input type="hidden" id="selshipid" value="77">
+                        <input type="hidden" id="selshipid" value="77" />
                         <div class="box_title">Schiffe im Orbit</div>
             <div class="box_body">
                 <ul id="shipselector" style="max-width: 100%;">
                                                             
 <li>
-  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);" onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, 77);">
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this);"
+    onmouseout="shipSelectorHoverEnd(this);" onclick="shipSelectorChoose(this, 77);">
     <tr>
       <td class="darkbg" colspan="5">
-                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&amp;id=77" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
+                <a type="hidden" href="/ship.php?SHOW_SPACECRAFT=1&id=77"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie Zwo',
 'id=77',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('77');"></a>
+updateSelectedSpacecraftId('77');"
+ />
                 Aerie Zwo | Siedler 101
       </td>
     </tr>
@@ -28,17 +30,22 @@ updateSelectedSpacecraftId('77');"></a>
       <td style="width: auto; min-width: 20px; vertical-align: middle; padding: 5px;">
               </td>
       <td style="width: 100px; vertical-align: middle;">
-        <img src="/assets/ships/6501.png" title="Aerie">
+        <img src="/assets/ships/6501.png" title="Aerie" />
 
       </td>
       <td style="width: auto; min-width: 60px;  padding: 2px;">
         <table class="tcal">
           <tr>
             <th style="width: 20px; text-align: center;">
-              <img src="/assets/buttons/modul_1.png" title="H&Atilde;&frac14;lle">
+              <img src="/assets/buttons/modul_1.png" title="Hülle" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="H&Atilde;&frac14;lle" src="/assets/bars/balken.png" style="background-color: #00aa00;height: 12px; width:50px;" title="H&Atilde;&frac14;lle: 819/819">
+                            <img
+                alt="Hülle"
+                src="/assets/bars/balken.png"
+                style="background-color: #00aa00;height: 12px; width:50px;"
+                title="Hülle: 819/819"
+             />
                           </td>
           </tr>
         </table>
@@ -49,10 +56,20 @@ updateSelectedSpacecraftId('77');"></a>
                         <table class="tcal" style="width: 100%;">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="/assets/buttons/modul_8.png" title="EPS">
+              <img src="/assets/buttons/modul_8.png" title="EPS" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="Energie" src="/assets/bars/balken.png" style="background-color: #aaaa00;height: 12px; width:50px;" title="Energie: 107/108"><img alt="Energie" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:0px;" title="Energie: 107/108">
+                            <img
+                alt="Energie"
+                src="/assets/bars/balken.png"
+                style="background-color: #aaaa00;height: 12px; width:50px;"
+                title="Energie: 107/108"
+             /><img
+                alt="Energie"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:0px;"
+                title="Energie: 107/108"
+             />
                           </td>
           </tr>
         </table>
@@ -61,10 +78,20 @@ updateSelectedSpacecraftId('77');"></a>
                         <table class="tcal" style="width: 100%;">
           <tr>
             <th style="text-align: center; width: 20px;">
-              <img src="/assets/buttons/modul_11.png" title="Warpdrive">
+              <img src="/assets/buttons/modul_11.png" title="Warpdrive" />
             </th>
             <td style="vertical-align: middle; text-align: center;">
-                            <img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #0070cf;height: 12px; width:49px;" title="Warpantrieb: 57/58"><img alt="Warpantrieb" src="/assets/bars/balken.png" style="background-color: #777777;height: 12px; width:1px;" title="Warpantrieb: 57/58">
+                            <img
+                alt="Warpantrieb"
+                src="/assets/bars/balken.png"
+                style="background-color: #0070cf;height: 12px; width:49px;"
+                title="Warpantrieb: 57/58"
+             /><img
+                alt="Warpantrieb"
+                src="/assets/bars/balken.png"
+                style="background-color: #777777;height: 12px; width:1px;"
+                title="Warpantrieb: 57/58"
+             />
                           </td>
           </tr>
         </table>
@@ -73,22 +100,31 @@ updateSelectedSpacecraftId('77');"></a>
   </table>
 </li>                                    </ul>
                                                 <div style="width: 100%;">
-                    <br>
-                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, false);" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png" name="beamfrom" title="Von Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, true);" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen"></a>
-                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, 42);" style="margin-left: 5px;">
-                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen">
+                    <br />
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, false);"
+                        onmouseover="cp('beamfrom','buttons/b_down2')"
+                        onmouseout="cp('beamfrom','buttons/b_down1')"><img src="/assets/buttons/b_down1.png"
+                            name="beamfrom" title="Von Schiff beamen" /></a>
+                    <a href="javascript:void(0);"
+                        onclick="showTransfer(this, 42, 'colony', document.getElementById('selshipid').value, 'ship', 1, true);"
+                        onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img
+                            src="/assets/buttons/b_up1.png" name="beamto" title="Zu Schiff beamen" /></a>
+                    <a href="javascript:void(0);" onclick="getOrbitShipList(this, 42);"
+                        style="margin-left: 5px;">
+                        <img src="/assets/buttons/fleet.png" title="Schiffsliste aufklappen" />
                     </a>
                 </div>
                             </div>
         </div>
     </div>
-    <br>
+    <br />
     <div id="colonyinfocontainer" class="colonyInfoContainer">
         <div class="box">
             <div class="box_title">Planet</div>
             <div class="box_body">
-                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;" onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
+                <a href="javascript:void(0);" style="text-align: center; cursor: pointer;"
+                    onclick="switchInnerContent('SHOW_SPACECRAFT_MANAGEMENT', 'Orbitalmanagement', 'id=42');">
                     <div class="box">
                         <div class="box_body">
                             Orbitalmanagement
@@ -97,16 +133,18 @@ updateSelectedSpacecraftId('77');"></a>
                 </a>
                 <div class="box_body" style="float:left;">
                     <div>
-                        <img src="/assets/planets/201.png" style="width: 30px; height: 30px;">
+                        <img src="/assets/planets/201.png"
+                            style="width: 30px; height: 30px;" />
                         <span style="display: block; white-space:pre-line;">
-                            Stempor'Arr 4 (7|11)</span>
+                            Stempor&#039;Arr 4 (7|11)</span>
                     </div>
                     <div>
-                        <img src="/assets/buttons/t_2.png" title="Tag">
+                        <img src="/assets/buttons/t_2.png"
+                            title="Tag" />
                         <span>11:53 Uhr</span>
                     </div>
                     <div>
-                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer">
+                        <img src="/assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
                         27h 50m 24s
                     </div>
                 </div>
@@ -138,21 +176,24 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1006.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1006.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1007.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1007.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1008.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1008.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -162,21 +203,25 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1106.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1106.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             <div style="font-size: 0.9vw; z-index: 7;" class="centered">3</div>
-<img src="/assets/map/starmap/1107.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/201.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+<img src="/assets/map/starmap/1107.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" /><img src="/assets/map/201.png" class="visualPanelLayer"
+                style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1108.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1108.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -186,21 +231,25 @@ updateSelectedSpacecraftId('77');"></a>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1206.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1206.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1207.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;"><img src="/assets/map/405.png" class="visualPanelLayer" style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;">
+<img src="/assets/map/starmap/1207.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" /><img src="/assets/map/405.png" class="visualPanelLayer"
+                style="z-index: 2; height: 1.7vw; width: 1.7vw; opacity:2;" />
 
         </div>
             </td>
         <td class="lss" style=" height: 1.7vw; width: 1.7vw; background-size: cover;">
                 <div class="imgOverlayText" style="height: 1.7vw; width: 1.7vw; position: relative !important; top: 0px;">
             
-<img src="/assets/map/starmap/1208.png" class="visualPanelLayer" style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;">
+<img src="/assets/map/starmap/1208.png" class="visualPanelLayer"
+                        style="z-index: 1; height: 1.7vw; width: 1.7vw; opacity:1;" />
 
         </div>
             </td>
@@ -212,9 +261,10 @@ updateSelectedSpacecraftId('77');"></a>
                 <div class="box">
             <div class="box_title">Sternensystem</div>
             <div class="box_body">
-                                <img src="/assets/map/systemtypes/1060.png" title="Roter Zwerg">
+                                <img src="/assets/map/systemtypes/1060.png"
+                    title="Roter Zwerg" />
                 <div>
-                    <span style="display: block; white-space:pre-line;">Stempor'Arr
+                    <span style="display: block; white-space:pre-line;">Stempor&#039;Arr
                         (7|8)</span>
                 </div>
                                 <div>
@@ -227,43 +277,44 @@ updateSelectedSpacecraftId('77');"></a>
             </div>
             <table id="colonypopulation" class="tcal population">
         <tr>
-            <th colspan="5">Bev&Atilde;&para;lkerung</th>
+            <th colspan="5">Bevölkerung</th>
         </tr>
         <tr>
             <td class="populationValue">
                 <div>Gesamt</div>
-                <img src="/assets/bev/bev_free_5_1.png" title="Bev&Atilde;&para;lkerung">
+                <img src="/assets/bev/bev_free_5_1.png" title="Bevölkerung" />
                 84
             </td>
             <td class="populationValue">
                 <div>Arbeiter</div>
-                <img src="/assets/bev/bev_used_5_1.png" title="Arbeiter">
+                <img src="/assets/bev/bev_used_5_1.png" title="Arbeiter" />
                 0
             </td>
             <td class="populationValue">
-                <div>Verf&Atilde;&frac14;gbar</div>
-                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bev&Atilde;&para;lkerung">
+                <div>Verfügbar</div>
+                <img src="/assets/bev/bev_unused_5_1.png" title="Freie Bevölkerung" />
                 84
             </td>
             <td class="populationValue">
                 <div>Wohnraum</div>
-                <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum">
+                <img src="/assets/bev/bev_free_5_1.png" title="Wohnraum" />
                 0 (84)
             </td>
             <td class="populationValue">
                                 <div>Entwicklung</div>
-                <img src="/assets/bev/bev_unused_5_1.png" title="Wachstum">
+                <img src="/assets/bev/bev_unused_5_1.png" title="Wachstum" />
                             </td>
         </tr>
     </table>
-        <br>
+        <br />
     <div id="colonyeffects" style="white-space: normal">
         <div class="box">
             <div class="box_title">Effekte</div>
             <div class="box_body">
                 <div class="colonyEffectGrid">
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1505.png" title="Deuterium-Vorkommen">
+                        <img src="/assets/commodities/1505.png"
+                            title="Deuterium-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Deuterium-Vorkommen
                         </span>
@@ -272,7 +323,8 @@ updateSelectedSpacecraftId('77');"></a>
                         +12
                     </div>
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1508.png" title="Dilithium-Vorkommen">
+                        <img src="/assets/commodities/1508.png"
+                            title="Dilithium-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Dilithium-Vorkommen
                         </span>
@@ -281,7 +333,8 @@ updateSelectedSpacecraftId('77');"></a>
                         +2
                     </div>
                                         <div class="colonyEffectContainer">
-                        <img src="/assets/commodities/1511.png" title="Iridium-Erz-Vorkommen">
+                        <img src="/assets/commodities/1511.png"
+                            title="Iridium-Erz-Vorkommen" />
                         <span style="word-wrap: break-word; white-space: normal;">
                             Iridium-Erz-Vorkommen
                         </span>
@@ -296,5 +349,4 @@ updateSelectedSpacecraftId('77');"></a>
     </div>
 </form>
 
-</body>
 </html>

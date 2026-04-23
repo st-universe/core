@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="theme-color" content="#121220">
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#121220" />
     <script src="/static/js/prototype.js"></script>
     <script src="/static/js/lib/Sortable.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.js"></script>
 
-    <!-- Three.js f&Atilde;&frac14;r 3D-Schiffsmodelle -->
+    <!-- Three.js für 3D-Schiffsmodelle -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script src="/static/js/ally.js"></script>
@@ -29,9 +29,9 @@
     <script>
         var gfx_path = '/assets';
     </script>
-    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css">
-    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css" />
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
 </head>
 
 <body onload="startUp();">
@@ -53,28 +53,42 @@
     </div>
             <div id="GAME_NAGUS_POPUP">
     </div>
-            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')" onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')"
+                onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
+                onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout">
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout"
+                        src="/assets/navigation/menu_logout0.png" title="Logout" />
                     <div style="margin-top: 5px">Logout</div>
                 </div>
             </div>
-                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')" onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')"
+                onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
+                onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Wiki">
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu"
+                        src="/assets/navigation/menu_doku0.png" title="Wiki" />
                     <div style="margin-top: 5px">Wiki</div>
                 </div>
             </div>
-                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')" onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')" onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')"
+                onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')"
+                onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
                 <div>
-                    <img style="width: 40px; height: 40px;" id="header_menu_board" src="/assets/navigation/menu_scripts0.png" title="Forum">
+                    <img style="width: 40px; height: 40px;" id="header_menu_board"
+                        src="/assets/navigation/menu_scripts0.png" title="Forum" />
                     <div style="margin-top: 5px">Forum</div>
                 </div>
             </div>
-                        <div class="header_box header_box_settings border_box action" onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
-                <a href="options.php" onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }" style="display: block; text-decoration: none; color: inherit;">
+                        <div class="header_box header_box_settings border_box action"
+                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <a href="options.php"
+                    onclick="if(event.button === 0) { switchInnerContent('', '', '', '/options.php'); event.preventDefault(); }"
+                    style="display: block; text-decoration: none; color: inherit;">
                     <div>
-                        <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen">
+                        <img style="width: 40px; height: 40px;" id="header_menu_settings"
+                            src="/assets/navigation/menu_option0.png" title="Einstellungen" />
                         <div style="margin-top: 5px">Einstellungen</div>
                     </div>
                 </a>
@@ -90,11 +104,11 @@
             </div>
             <div id="innerContent" class="innerContent">
                 
+<html>
 
-
-
-    <meta charset="utf-8">
-
+<head>
+    <meta charset="utf-8" />
+</head>
 
 
 <div class="box">
@@ -112,14 +126,14 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 <form action="station.php" method="post" name="stationmanform">
   
-<input type="hidden" name="id" value="43">
-<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
-<input type="hidden" name="SHOW_SPACECRAFT_MANAGEMENT" value="1">
+<input type="hidden" name="id" value="43" />
+<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+<input type="hidden" name="SHOW_SPACECRAFT_MANAGEMENT" value="1" />
 <table class="tcal">
   <tr>
     <th>Klasse</th>
@@ -139,28 +153,35 @@
   </tr>
           <tr class="row">
     <td>
-      <input type="hidden" name="spacecrafts[]" value="42">
-            <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+      <input type="hidden" name="spacecrafts[]" value="42" />
+            <a href="/ship.php?SHOW_SPACECRAFT=1&id=42"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
 'id=42',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('42');">
-        <img src="assets/ships/6501.png" title="Aerie">
+updateSelectedSpacecraftId('42');"
+>
+        <img src="assets/ships/6501.png" title="Aerie" />
       </a>
           </td>
         <td>
-      <a href="/ship.php?SHOW_SPACECRAFT=1&amp;id=42" onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
+      <a href="/ship.php?SHOW_SPACECRAFT=1&id=42"
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', 'Aerie',
 'id=42',
 'ship.php'); event.preventDefault();}
-updateSelectedSpacecraftId('42');">Aerie</a>
+updateSelectedSpacecraftId('42');"
+>Aerie</a>
     </td>
         <td>
     
-                         <input type="hidden" id="currentCrew_42" value"11">
+                         <input type="hidden" id="currentCrew_42" value"11" />
 
-    <input type="checkbox" id="crewToggle_42" onchange="toggleCrew(42, 11, 11);">
+    <input type="checkbox" id="crewToggle_42"
+        onchange="toggleCrew(42, 11, 11);">
     <label for="crewToggle_42">Alle runter beamen</label><br>
 
-    <input style="accent-color: green;" type="range" id="crewRange_42" name="crew[42]" min="0" max="18" value="11" oninput="setCrew(this, 42, 11);">
+    <input style="accent-color: green;" type="range" id="crewRange_42" name="crew[42]"
+        min="0" max="18" value="11"
+        oninput="setCrew(this, 42, 11);">
     <span style="display: inline-block; min-width: 20px;" id="crewCount_42">
         11
     </span>von 18
@@ -168,15 +189,17 @@ updateSelectedSpacecraftId('42');">Aerie</a>
     </td>
     <td>
                   <div>
-        <img class="center" onclick="this.up('div').down('input').value=36" src="assets/buttons/batt.png" title="Ersatzbatterie">
-        <input type="text" size="3" name="batt[42]">
+        <img class="center" onclick="this.up('div').down('input').value=36"
+          src="assets/buttons/batt.png" title="Ersatzbatterie" />
+        <input type="text" size="3" name="batt[42]" />
                 36/36
               </div>
           </td>
     <td>
                   <div>
-        <img class="center" onclick="this.up('div').down('input').value=810" src="assets/buttons/warpk.png" title="Reaktorladung">
-        <input type="text" size="3" name="reactor[42]">
+        <img class="center" onclick="this.up('div').down('input').value=810"
+          src="assets/buttons/warpk.png" title="Reaktorladung" />
+        <input type="text" size="3" name="reactor[42]" />
                 <span style="">810/810</span>
               </div>
           </td>
@@ -186,8 +209,8 @@ updateSelectedSpacecraftId('42');">Aerie</a>
           </td>
   </tr>
     </table>
-<br>
-<input type="submit" style="cursor: pointer" name="B_MANAGE_SPACECRAFTS" value="Ausf&Atilde;&frac14;hren">
+<br />
+<input type="submit" style="cursor: pointer" name="B_MANAGE_SPACECRAFTS" value="Ausführen" />
 </form>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
@@ -198,7 +221,7 @@ updateSelectedSpacecraftId('42');">Aerie</a>
         </script>
 
 
-
+</html>
                 <script>
                     window.addEventListener("popstate", function (e) {
                         window.location.reload();

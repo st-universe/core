@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="trade.php">
@@ -17,7 +17,7 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 <script src="/static/js/trade.js"></script>
@@ -34,9 +34,10 @@
     <div class="box_title">Kursverlauf Basishandel</div>
     <div class="box_body">
         <form method="post" action="trade.php" class="basic-trade-chart-controls">
-            <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+            <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
             <span>Trades pro Chart</span>
-            <input type="text" maxlength="9" size="5" inputmode="numeric" pattern="[0-9]*" name="chart_trade_count" value="50">
+            <input type="text" maxlength="9" size="5" inputmode="numeric" pattern="[0-9]*" name="chart_trade_count"
+                value="50" />
             <button type="submit" name="B_SET_BASIC_TRADE_CHART_LIMIT" value="1" class="button">Aktualisieren</button>
         </form>
     </div>
@@ -53,5 +54,4 @@
 </div>
 
 
-</body>
 </html>

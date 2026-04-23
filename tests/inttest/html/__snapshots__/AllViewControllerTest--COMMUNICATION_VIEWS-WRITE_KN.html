@@ -1,11 +1,11 @@
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 </head>
 
 
-<body>
 <div class="box">
     <div class="box_title" style="text-align: left">/
                 <a href="comm.php">
@@ -17,26 +17,26 @@
         </a>
                     </div>
 </div>
-<br>
+<br />
 
 <div id="result" style="display: none;">..</div>
 <form action="comm.php" method="post">
-	<input type="hidden" name="WRITE_KN" value="1">
-	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
+	<input type="hidden" name="WRITE_KN" value="1" />
+	<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
 	<table class="tcal">
 				<tr>
 			<td>
 				<div id="writekntitle" class="selected" style="float: left; padding: 5px;">Titel
 					(6 bis 80 Zeichen, bei Plots optional)
 				</div>
-				<br style="clear: both;">
+				<br style="clear: both;" />
 				<div id="writekntitleinput" style="clear: both; margin: 5px;">
-										<input type="text" name="title" style="width: 100%;" maxlength="80">
+										<input type="text" name="title" style="width: 100%;" maxlength="80" />
 									</div>
-				<br style="clear: both;">
+				<br style="clear: both;" />
 				<div id="writeknplot" class="selected" style="float: left; width: 300px; padding: 5px;">zu Plot
-					hinzuf&Atilde;&frac14;gen</div>
-				<br style="clear: both;">
+					hinzufügen</div>
+				<br style="clear: both;" />
 				<div id="writeknplotselect" style="clear: both; margin: 5px;">
 					<select name="plotid" style="width: 500px;">
     <option value="0">------------------------------</option>
@@ -56,44 +56,30 @@
 			<td>
 				<div style="display: grid; grid-template-columns: 50% 40% 30%">
 					<div>
-						<input type="submit" name="B_WRITE_KN" value="Hinzuf&Atilde;&frac14;gen">
-						<input type="submit" name="B_PREVIEW_KN" value="Vorschau">
-												<input value="1" type="checkbox" name="markposting">
+						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
+						<input type="submit" name="B_PREVIEW_KN" value="Vorschau" />
+												<input value="1" type="checkbox" name="markposting" />
 												Lesezeichen bei diesem Beitrag setzen
 					</div>
 					<div style="display: flex; justify-content: space-between; align-items: center;">
 						<div style="flex-grow: 1;">
-							<span>Character IDs (mit Komma getrennt): </span><input type="text" name="characterids" placeholder="Character ID's" style="width: 150px;" value="">
+							<span>Character IDs (mit Komma getrennt): </span><input type="text" name="characterids"
+								placeholder="Character ID's" style="width: 150px;" value="" />
 						</div>
 
 						<div style="flex-grow: 1; text-align: left;">
-														<a href="https://wiki.stuniverse.de/index.php?title=KN-Leitfaden" target="_blank" data-tippy-content="&lt;table class='tcal' style='width:350px'&gt;
-								&lt;tr&gt;
-									&lt;th style='text-align: left'&gt;&lt;img src='/assets/buttons/info2.png' /&gt; Ein KN
-										schreiben&lt;/th&gt;
-								&lt;/tr&gt;
-								&lt;tr&gt;
-									&lt;td&gt;In einem KN-Beitrag k&Atilde;&para;nnen folgende BBCodes verwendet werden:
-										&lt;/br&gt;[b]fett[/b], [i]kursiv[/i]
-										&lt;/br&gt;[u]unterstrichen[/u], [h2]&Atilde;berschrift[/h2]
-										&lt;/br&gt;[h3]Unter&Atilde;&frac14;berschrift[/h3], [quote]Zitat[/quote]
-										&lt;/br&gt;[translate]Hello World[translation]Hallo Welt[/translate]
-										&lt;/br&gt;
-										&lt;/br&gt;Klicke auf das &lt;img style='height:16px' src='/assets/buttons/info2.png' /&gt;
-										f&Atilde;&frac14;r mehr Infos zum Thema KommunikationsNetzwerk.&lt;/td&gt;
-								&lt;/tr&gt;
-							&lt;/table&gt;"><img src="/assets/buttons/info2.png" style="height:16px;"></a>
+														<a href="https://wiki.stuniverse.de/index.php?title=KN-Leitfaden" target="_blank"
+								data-tippy-content="&lt;table&#x20;class&#x3D;&#x27;tcal&#x27;&#x20;style&#x3D;&#x27;width&#x3A;350px&#x27;&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;tr&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;th&#x20;style&#x3D;&#x27;text-align&#x3A;&#x20;left&#x27;&gt;&lt;img&#x20;src&#x3D;&#x27;&#x2F;assets&#x2F;buttons&#x2F;info2.png&#x27;&#x20;&#x2F;&gt;&#x20;Ein&#x20;KN&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;schreiben&lt;&#x2F;th&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;tr&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;tr&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;td&gt;In&#x20;einem&#x20;KN-Beitrag&#x20;k&#x00F6;nnen&#x20;folgende&#x20;BBCodes&#x20;verwendet&#x20;werden&#x3A;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;&#x5B;b&#x5D;fett&#x5B;&#x2F;b&#x5D;,&#x20;&#x5B;i&#x5D;kursiv&#x5B;&#x2F;i&#x5D;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;&#x5B;u&#x5D;unterstrichen&#x5B;&#x2F;u&#x5D;,&#x20;&#x5B;h2&#x5D;&#x00DC;berschrift&#x5B;&#x2F;h2&#x5D;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;&#x5B;h3&#x5D;Unter&#x00FC;berschrift&#x5B;&#x2F;h3&#x5D;,&#x20;&#x5B;quote&#x5D;Zitat&#x5B;&#x2F;quote&#x5D;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;&#x5B;translate&#x5D;Hello&#x20;World&#x5B;translation&#x5D;Hallo&#x20;Welt&#x5B;&#x2F;translate&#x5D;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;br&gt;Klicke&#x20;auf&#x20;das&#x20;&lt;img&#x20;style&#x3D;&#x27;height&#x3A;16px&#x27;&#x20;src&#x3D;&#x27;&#x2F;assets&#x2F;buttons&#x2F;info2.png&#x27;&#x20;&#x2F;&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;f&#x00FC;r&#x20;mehr&#x20;Infos&#x20;zum&#x20;Thema&#x20;KommunikationsNetzwerk.&lt;&#x2F;td&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;tr&gt;&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&lt;&#x2F;table&gt;"><img src="/assets/buttons/info2.png"
+									style="height:16px;" /></a>
 						</div>
 					</div>
 				</div>
 			</td>
 		</tr>
 	</table>
-</form>
-<div class="footer">
+</form><div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>
 
 
-</body>
 </html>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use DOMDocument;
 use PHPUnit\Framework\Assert;
 use Spatie\Snapshots\Driver;
 use Spatie\Snapshots\Exceptions\CantBeSerialized;
@@ -21,21 +20,7 @@ final class LegacyWindowsHtmlDriver implements Driver
             return "\n";
         }
 
-        $domDocument = new DOMDocument('1.0');
-        $domDocument->preserveWhiteSpace = false;
-        $domDocument->formatOutput = true;
-
-        @$domDocument->loadHTML($data, LIBXML_HTML_NODEFDTD); // to ignore HTML5 errors
-
-        $htmlValue = $domDocument->saveHTML();
-        $htmlValue = $this->normalizeRelevantHtmlEntities($htmlValue);
-
-        // Keep the historic snapshot encoding from older Windows runs so
-        // cross-platform snapshot updates do not rewrite thousands of lines.
-        $htmlValue = mb_convert_encoding($htmlValue, 'UTF-8', 'ISO-8859-1');
-        $htmlValue = $this->encodeLegacyWindowsHighChars($htmlValue);
-
-        return $htmlValue;
+        return $this->normalizeLineEndings($data);
     }
 
     public function extension(): string
@@ -48,41 +33,10 @@ final class LegacyWindowsHtmlDriver implements Driver
         Assert::assertEquals($expected, $this->serialize($actual));
     }
 
-    private function normalizeRelevantHtmlEntities(string $htmlValue): string
+    private function normalizeLineEndings(string $htmlValue): string
     {
-        return strtr($htmlValue, [
-            '&auml;' => 'ä',
-            '&ouml;' => 'ö',
-            '&uuml;' => 'ü',
-            '&Auml;' => 'Ä',
-            '&Ouml;' => 'Ö',
-            '&Uuml;' => 'Ü',
-            '&szlig;' => 'ß',
-            '&nbsp;' => "\u{00A0}",
-            '&#160;' => "\u{00A0}",
-        ]);
-    }
+        $htmlValue = str_replace(["\r\n", "\r"], "\n", $htmlValue);
 
-    private function encodeLegacyWindowsHighChars(string $htmlValue): string
-    {
-        $result = '';
-
-        foreach (preg_split('//u', $htmlValue, -1, PREG_SPLIT_NO_EMPTY) as $char) {
-            $ord = mb_ord($char, 'UTF-8');
-
-            if ($ord === 0x00A0) {
-                $result .= '&nbsp;';
-                continue;
-            }
-
-            if ($ord >= 0x80 && !($ord >= 0x80 && $ord <= 0x9F)) {
-                $result .= htmlentities($char, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-                continue;
-            }
-
-            $result .= $char;
-        }
-
-        return $result;
+        return rtrim($htmlValue, "\n") . "\n";
     }
 }

@@ -1,61 +1,50 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:stu="stu">
-<body>
 <form action="colony.php" method="post">
-    <input type="hidden" name="id" value="42">
-    <input type="hidden" name="hosttype" value="1">
-    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING">
-    <input type="hidden" name="SHOW_SHIP_REPAIR" value="1">
+    <input type="hidden" name="id" value="42" />
+    <input type="hidden" name="hosttype" value="1" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+    <input type="hidden" name="SHOW_SHIP_REPAIR" value="1" />
 
 <table class="tcal" style="width: 40vw;">
         <tr>
                 <td class="colonymenu ">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonySubmenu(8, null, , 26);">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonySubmenu(8, null, , 26);">
                 <span>Schiffbau</span>
             </a>
         </td>
                 <td class="colonymenu selected">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonySubmenu(18, null, , 26);">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonySubmenu(18, null, , 26);">
                 <span>Schiffsreparatur</span>
             </a>
         </td>
         <td class="colonymenu ">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonySubmenu(17, null, , 26);">
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonySubmenu(17, null, , 26);">
                 <span>Schiffsdemontage</span>
             </a>
         </td>
         <td class="colonymenu ">
-            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonySubmenu(19, null, , 26);">
-                <span>Schiffsumr&Atilde;&frac14;stung</span>
+            <a class="colmenubutton" href="javascript:void(0);"
+                onclick="switchColonySubmenu(19, null, , 26);">
+                <span>Schiffsumrüstung</span>
             </a>
         </td>
     </tr>
-</table>
-<br>
+</table><br />
 <table class="tcal" style="width: 40vw;">
     
     <tr class="responsive-hide">
         <th>Klasse</th>
         <th>Name</th>
         <th>Vorauss. Dauer</th>
-        <th>Insgesamt ben&Atilde;&para;tigte Teile</th>
-        <th>
-<a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank" data-tippy-content="    &lt;table class='tcal' style='width:250px'&gt;
-        &lt;tr&gt;
-            &lt;th style='text-align: left'&gt;&lt;img src='/assets/buttons/info2.png' /&gt; Reparatur &lt;/th&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-            &lt;td&gt;Die Reparatur eines Raumschiffes l&auml;uft in einzelnen Reparaturschritten und wird min&uuml;tlich weitergef&uuml;hrt.
-                Hierbei entstehen beim abschluss jedes Reparaturzyklus Kosten.
-                Eine Reparaturstation erh&ouml;ht auf Kolonien die Zahl gleichzeitiger Reparaturen und senkt Zeit und
-                Kosten.&lt;/br&gt;Klicke auf das &lt;img style='height:16px' src='/assets/buttons/info2.png' /&gt; f&uuml;r mehr Infos.
-            &lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/table&gt; "><img src=" /assets/buttons/info2.png" style="height:16px;"></a>
+        <th>Insgesamt benötigte Teile</th>
+        <th><a href="https://wiki.stuniverse.de/index.php?title=Anfaenger:Reparaturen" target="_blank"
+                data-tippy-content="&#x20;&#x20;&#x20;&#x20;&lt;table&#x20;class&#x3D;&#x27;tcal&#x27;&#x20;style&#x3D;&#x27;width&#x3A;250px&#x27;&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;tr&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;th&#x20;style&#x3D;&#x27;text-align&#x3A;&#x20;left&#x27;&gt;&lt;img&#x20;src&#x3D;&#x27;&#x2F;assets&#x2F;buttons&#x2F;info2.png&#x27;&#x20;&#x2F;&gt;&#x20;Reparatur&#x20;&lt;&#x2F;th&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;&#x2F;tr&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;tr&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;td&gt;Die&#x20;Reparatur&#x20;eines&#x20;Raumschiffes&#x20;l&#x00E4;uft&#x20;in&#x20;einzelnen&#x20;Reparaturschritten&#x20;und&#x20;wird&#x20;min&#x00FC;tlich&#x20;weitergef&#x00FC;hrt.&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;Hierbei&#x20;entstehen&#x20;beim&#x20;abschluss&#x20;jedes&#x20;Reparaturzyklus&#x20;Kosten.&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;Eine&#x20;Reparaturstation&#x20;erh&#x00F6;ht&#x20;auf&#x20;Kolonien&#x20;die&#x20;Zahl&#x20;gleichzeitiger&#x20;Reparaturen&#x20;und&#x20;senkt&#x20;Zeit&#x20;und&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;Kosten.&lt;&#x2F;br&gt;Klicke&#x20;auf&#x20;das&#x20;&lt;img&#x20;style&#x3D;&#x27;height&#x3A;16px&#x27;&#x20;src&#x3D;&#x27;&#x2F;assets&#x2F;buttons&#x2F;info2.png&#x27;&#x20;&#x2F;&gt;&#x20;f&#x00FC;r&#x20;mehr&#x20;Infos.&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;&#x2F;td&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;&lt;&#x2F;tr&gt;&#x0A;&#x20;&#x20;&#x20;&#x20;&lt;&#x2F;table&gt;&#x20;"><img src=" /assets/buttons/info2.png"
+                    style="height:16px;" /></a>
         </th>
-    </tr>
-</table>
-</form>
+    </tr></table></form>
 
-</body>
 </html>
