@@ -40,13 +40,12 @@ final class CancelRepair implements CancelRepairInterface
 
             $this->setStateNoneAndSave($ship);
 
-            $this->colonyShipRepairRepository->truncateByShipId($ship->getId());
-            $this->stationShipRepairRepository->truncateByShipId($ship->getId());
-
             if ($colonyRepairJob !== null) {
+                $this->colonyShipRepairRepository->delete($colonyRepairJob);
                 $this->refreshColonyQueueAfterRemoval($colonyRepairJob->getColony(), $colonyRepairJob->getFieldId());
             }
             if ($stationRepairJob !== null) {
+                $this->stationShipRepairRepository->delete($stationRepairJob);
                 $this->refreshStationQueueAfterRemoval($stationRepairJob->getStation());
             }
 

@@ -135,6 +135,9 @@ class FightLibTest extends StuTestCase
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
+        $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
 
         $informations->shouldReceive('addInformationf')
             ->with('Aktionen der %s', 'SHIPNAME')
@@ -166,6 +169,9 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
 
         $this->subject->ready($this->wrapper, true, $informations);
     }
@@ -190,6 +196,9 @@ class FightLibTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->cancelRepair->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
 
         $this->subject->ready($this->wrapper, false, $informations);
     }
