@@ -73,6 +73,8 @@ final class FightLib implements FightLibInterface
             $informations->addInformation("- Das Schiff hat abgedockt");
         }
 
+        $this->cancelRepair->cancelRepair($spacecraft);
+
         if ($spacecraft->getBuildplan() === null) {
             return;
         }
@@ -89,8 +91,6 @@ final class FightLib implements FightLibInterface
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK);
         } catch (SpacecraftSystemException) {
         }
-
-        $this->cancelRepair->cancelRepair($spacecraft);
 
         if ($spacecraft instanceof Ship) {
             $this->cancelRetrofit->cancelRetrofit($spacecraft);

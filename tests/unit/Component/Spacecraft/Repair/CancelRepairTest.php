@@ -69,7 +69,7 @@ class CancelRepairTest extends StuTestCase
             ->andReturn(SpacecraftStateEnum::REPAIR_PASSIVE);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->times(4)
+            ->times(2)
             ->andReturn(42);
         $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
@@ -82,12 +82,8 @@ class CancelRepairTest extends StuTestCase
             ->with(42)
             ->once()
             ->andReturnNull();
-        $this->colonyShipRepairRepo->shouldReceive('truncateByShipId')
-            ->with(42)
-            ->once();
-        $this->stationShipRepairRepo->shouldReceive('truncateByShipId')
-            ->with(42)
-            ->once();
+        $this->colonyShipRepairRepo->shouldNotReceive('delete');
+        $this->stationShipRepairRepo->shouldNotReceive('delete');
 
         $result = $this->cancelRepair->cancelRepair($this->ship);
 
@@ -108,7 +104,7 @@ class CancelRepairTest extends StuTestCase
             ->andReturn(SpacecraftStateEnum::REPAIR_PASSIVE);
         $this->ship->shouldReceive('getId')
             ->withNoArgs()
-            ->times(4)
+            ->times(2)
             ->andReturn(42);
         $this->ship->shouldReceive('getCondition->setState')
             ->with(SpacecraftStateEnum::NONE)
@@ -122,12 +118,10 @@ class CancelRepairTest extends StuTestCase
             ->with(42)
             ->once()
             ->andReturnNull();
-        $this->colonyShipRepairRepo->shouldReceive('truncateByShipId')
-            ->with(42)
+        $this->colonyShipRepairRepo->shouldReceive('delete')
+            ->with($repairJob)
             ->once();
-        $this->stationShipRepairRepo->shouldReceive('truncateByShipId')
-            ->with(42)
-            ->once();
+        $this->stationShipRepairRepo->shouldNotReceive('delete');
 
         $repairJob->shouldReceive('getColony')
             ->withNoArgs()
