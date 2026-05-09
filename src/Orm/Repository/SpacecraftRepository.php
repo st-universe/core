@@ -274,7 +274,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[\Override]
-    public function getRandomSpacecraftWithCrewByUser(int $userId): ?Spacecraft
+    public function getRandomSpacecraftWithCrewByUser(int $userId, array $excludedIds = []): ?Spacecraft
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -283,6 +283,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->createNativeQuery(
                 'SELECT s.id as id FROM stu_spacecraft s
                 WHERE s.user_id = :userId
+                AND s.id NOT IN (:excludedIds)
                 AND EXISTS (SELECT ca.crew_id
                             FROM stu_crew_assign ca
                             WHERE s.id = ca.spacecraft_id)
@@ -291,7 +292,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 $rsm
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
+                'excludedIds' => $excludedIds === [] ? [0] : $excludedIds
             ])
             ->getOneOrNullResult();
 

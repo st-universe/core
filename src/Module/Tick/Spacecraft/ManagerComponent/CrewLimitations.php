@@ -159,26 +159,24 @@ final class CrewLimitations implements ManagerComponentInterface
 
     private function letShipAssignmentsQuit(int $userId, int $crewToQuit): int
     {
-        $wipedShipsIds = [];
+        $wipedShipIds = [];
         $amount = 0;
 
-        $wipedShipIds = [];
-
         while ($amount < $crewToQuit) {
-            $randomSpacecraft = $this->spacecraftRepository->getRandomSpacecraftWithCrewByUser($userId);
+            $randomSpacecraft = $this->spacecraftRepository->getRandomSpacecraftWithCrewByUser($userId, $wipedShipIds);
 
             //if no more ships available
             if ($randomSpacecraft === null) {
                 break;
             }
 
-            //if ship already wiped, go to next
-            if (in_array($randomSpacecraft->getId(), $wipedShipIds)) {
-                continue;
+            //if ship already wiped, stop to avoid spinning on stale query results
+            if (in_array($randomSpacecraft->getId(), $wipedShipIds, true)) {
+                break;
             }
 
             //wipe ship crew
-            $wipedShipsIds[] = $randomSpacecraft->getId();
+            $wipedShipIds[] = $randomSpacecraft->getId();
             $amount += $this->letCrewQuit($randomSpacecraft, $userId);
         }
 
