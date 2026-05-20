@@ -136,9 +136,16 @@
 					{% endif %}
 					{% for data in PROFILE.getAwards %}
 					{% set award = data.getAward %}
+					{% set awardCount = data.getCount|default(1) %}
 					{% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : 'assets/awards/' ~ award.getId ~ '.png' %}
-					<img src="{{ awardImagePath }}" title="{{ award.getDescription }}"
-						style="width: 65px; height: 65px; padding: 5px;" />
+					<span class="profileAward">
+						<span class="profileAwardImageBox">
+							<img src="{{ awardImagePath }}" title="{{ award.getDescription }}" class="profileAwardImage" />
+							{% if awardCount > 1 %}
+							<span class="profileAwardCount">{{ awardCount }}</span>
+							{% endif %}
+						</span>
+					</span>
 					{% endfor %}
 				</td>
 			</tr>

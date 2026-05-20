@@ -15,6 +15,10 @@ final class UserAwardEnum
     public const int RPG_AQUA = 18;
     public const int ADVENT = 19;
     public const int LOTTERY_WINNER = 49;
+    public const int KAZON_TOP_TEN = 50;
+    public const int KAZON_THIRD_PLACE = 51;
+    public const int KAZON_SECOND_PLACE = 52;
+    public const int KAZON_FIRST_PLACE = 53;
 
 
     //npc awards
