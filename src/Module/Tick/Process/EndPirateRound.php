@@ -4,7 +4,9 @@ namespace Stu\Module\Tick\Process;
 
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Map\MapEnum;
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -12,6 +14,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\PirateRound;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserPirateRound;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\PirateRoundRepositoryInterface;
@@ -32,7 +35,9 @@ final class EndPirateRound implements ProcessTickHandlerInterface
         private EntryCreatorInterface $entryCreator,
         private LayerRepositoryInterface $layerRepository,
         private MapRepositoryInterface $mapRepository,
-        private CreatePrestigeLogInterface $createPrestigeLog
+        private CreatePrestigeLogInterface $createPrestigeLog,
+        private AwardRepositoryInterface $awardRepository,
+        private CreateUserAwardInterface $createUserAward
     ) {}
 
 
@@ -72,6 +77,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
         $this->pirateRoundRepository->save($pirateRound);
 
         $this->distributePrestigeRewards($pirateRound->getId(), $winningFactionData);
+        $this->distributeAwardRewards($pirateRound->getId());
 
 
         $this->createHistoryEntry(
@@ -163,6 +169,30 @@ final class EndPirateRound implements ProcessTickHandlerInterface
 
         return $map;
     }
+
+    private function distributeAwardRewards(int $pirateRoundId): void
+    {
+        $topTenUsers = array_slice($this->userPirateRoundRepository->findByPirateRound($pirateRoundId), 0, 10);
+
+        foreach ($topTenUsers as $index => $userPirateRound) {
+            $award = $this->awardRepository->find($this->getAwardIdForPlacement($index + 1));
+
+            if ($award !== null) {
+                $this->createUserAward->createAwardForUser($userPirateRound->getUser(), $award, true);
+            }
+        }
+    }
+
+    private function getAwardIdForPlacement(int $placement): int
+    {
+        return match ($placement) {
+            1 => UserAwardEnum::KAZON_FIRST_PLACE,
+            2 => UserAwardEnum::KAZON_SECOND_PLACE,
+            3 => UserAwardEnum::KAZON_THIRD_PLACE,
+            default => UserAwardEnum::KAZON_TOP_TEN
+        };
+    }
+
     /**
      * @param array{factionId: int, factionName: string} $winningFactionData
      */

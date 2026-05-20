@@ -7,5 +7,5 @@ use Stu\Orm\Entity\User;
 
 interface CreateUserAwardInterface
 {
-    public function createAwardForUser(User $user, Award $award): void;
+    public function createAwardForUser(User $user, Award $award, bool $incrementExisting = false): void;
 }
