@@ -7,10 +7,15 @@ namespace Stu\Component\Spacecraft\Repair;
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
@@ -24,6 +29,8 @@ class CancelRepairTest extends StuTestCase
     private StationShipRepairRepositoryInterface&MockInterface $stationShipRepairRepo;
     private ColonyFunctionManagerInterface&MockInterface $colonyFunctionManager;
     private PlanetFieldRepositoryInterface&MockInterface $planetFieldRepository;
+    private StorageManagerInterface&MockInterface $storageManager;
+    private CommodityRepositoryInterface&MockInterface $commodityRepository;
 
     private Ship&MockInterface $ship;
 
@@ -37,6 +44,8 @@ class CancelRepairTest extends StuTestCase
         $this->stationShipRepairRepo = $this->mock(StationShipRepairRepositoryInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
+        $this->storageManager = $this->mock(StorageManagerInterface::class);
+        $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
 
         $this->ship = $this->mock(Ship::class);
 
@@ -45,7 +54,9 @@ class CancelRepairTest extends StuTestCase
             $this->colonyShipRepairRepo,
             $this->stationShipRepairRepo,
             $this->colonyFunctionManager,
-            $this->planetFieldRepository
+            $this->planetFieldRepository,
+            $this->storageManager,
+            $this->commodityRepository
         );
     }
 
@@ -204,9 +215,70 @@ class CancelRepairTest extends StuTestCase
         $this->repairTaskRepo->shouldReceive('truncateByShipId')
             ->with(42)
             ->once();
+        $this->repairTaskRepo->shouldReceive('getByShip')
+            ->with(42)
+            ->once()
+            ->andReturnNull();
+        $this->storageManager->shouldNotReceive('upperStorage');
 
         $result = $this->cancelRepair->cancelRepair($this->ship);
 
         $this->assertTrue($result);
+    }
+
+    public function testCancelRepairWithResultExpectRefundIfUnderActiveRepair(): void
+    {
+        $repairTask = $this->mock(RepairTask::class);
+        $sparePart = $this->mock(Commodity::class);
+        $systemComponent = $this->mock(Commodity::class);
+
+        $this->ship->shouldReceive('getState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftStateEnum::REPAIR_ACTIVE);
+        $this->ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->ship->shouldReceive('getMaxHull')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(450);
+        $this->ship->shouldReceive('getCondition->setState')
+            ->with(SpacecraftStateEnum::NONE)
+            ->once();
+
+        $this->repairTaskRepo->shouldReceive('getByShip')
+            ->with(42)
+            ->once()
+            ->andReturn($repairTask);
+        $repairTask->shouldReceive('getHealingPercentage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(RepairTaskConstants::BOTH_MIN);
+
+        $this->commodityRepository->shouldReceive('find')
+            ->with(CommodityTypeConstants::COMMODITY_SPARE_PART)
+            ->once()
+            ->andReturn($sparePart);
+        $this->commodityRepository->shouldReceive('find')
+            ->with(CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT)
+            ->once()
+            ->andReturn($systemComponent);
+        $this->storageManager->shouldReceive('upperStorage')
+            ->with($this->ship, $sparePart, 3)
+            ->once();
+        $this->storageManager->shouldReceive('upperStorage')
+            ->with($this->ship, $systemComponent, 3)
+            ->once();
+        $this->repairTaskRepo->shouldReceive('truncateByShipId')
+            ->with(42)
+            ->once();
+
+        $result = $this->cancelRepair->cancelRepairWithResult($this->ship);
+
+        $this->assertTrue($result->isCancelled());
+        $this->assertSame(3, $result->getRefundedSpareParts());
+        $this->assertSame(3, $result->getRefundedSystemComponents());
     }
 }

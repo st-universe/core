@@ -7,4 +7,6 @@ use Stu\Orm\Entity\Spacecraft;
 interface CancelRepairInterface
 {
     public function cancelRepair(Spacecraft $spacecraft): bool;
+
+    public function cancelRepairWithResult(Spacecraft $spacecraft): CancelRepairResult;
 }
