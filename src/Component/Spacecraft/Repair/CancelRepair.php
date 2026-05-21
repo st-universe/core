@@ -8,12 +8,17 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
+use Stu\Lib\Transfer\Storage\StorageManagerInterface;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
@@ -26,12 +31,20 @@ final class CancelRepair implements CancelRepairInterface
         private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         private StationShipRepairRepositoryInterface $stationShipRepairRepository,
         private ColonyFunctionManagerInterface $colonyFunctionManager,
-        private PlanetFieldRepositoryInterface $planetFieldRepository
+        private PlanetFieldRepositoryInterface $planetFieldRepository,
+        private StorageManagerInterface $storageManager,
+        private CommodityRepositoryInterface $commodityRepository
     ) {}
 
 
     #[\Override]
     public function cancelRepair(Spacecraft $ship): bool
+    {
+        return $this->cancelRepairWithResult($ship)->isCancelled();
+    }
+
+    #[\Override]
+    public function cancelRepairWithResult(Spacecraft $ship): CancelRepairResult
     {
         $state = $ship->getState();
         if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {
@@ -49,21 +62,100 @@ final class CancelRepair implements CancelRepairInterface
                 $this->refreshStationQueueAfterRemoval($stationRepairJob->getStation());
             }
 
-            return true;
+            return new CancelRepairResult(true);
         } elseif ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
+            $shipId = $ship->getId();
+            $repairTask = $this->repairTaskRepository->getByShip($shipId);
+            [$refundedSpareParts, $refundedSystemComponents] = $repairTask === null
+                ? [0, 0]
+                : $this->refundActiveRepairCommodities($ship, $repairTask);
+
             $this->setStateNoneAndSave($ship);
 
-            $this->repairTaskRepository->truncateByShipId($ship->getId());
+            $this->repairTaskRepository->truncateByShipId($shipId);
 
-            return true;
+            return new CancelRepairResult(true, $refundedSpareParts, $refundedSystemComponents);
         }
 
-        return false;
+        return new CancelRepairResult(false);
     }
 
     private function setStateNoneAndSave(Spacecraft $ship): void
     {
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
+    }
+
+    /** @return array{0: int, 1: int} */
+    private function refundActiveRepairCommodities(Spacecraft $ship, RepairTask $repairTask): array
+    {
+        $repairType = $this->determineRepairType($repairTask->getHealingPercentage());
+        if ($repairType === null) {
+            return [0, 0];
+        }
+
+        $neededPartCount = (int) ($ship->getMaxHull() / 150);
+        $refundedSpareParts = 0;
+        $refundedSystemComponents = 0;
+
+        if ($repairType === RepairTaskConstants::SPARE_PARTS_ONLY || $repairType === RepairTaskConstants::BOTH) {
+            $refundedSpareParts = $this->refundCommodity(
+                $ship,
+                CommodityTypeConstants::COMMODITY_SPARE_PART,
+                $neededPartCount
+            );
+        }
+
+        if ($repairType === RepairTaskConstants::SYSTEM_COMPONENTS_ONLY || $repairType === RepairTaskConstants::BOTH) {
+            $refundedSystemComponents = $this->refundCommodity(
+                $ship,
+                CommodityTypeConstants::COMMODITY_SYSTEM_COMPONENT,
+                $neededPartCount
+            );
+        }
+
+        return [$refundedSpareParts, $refundedSystemComponents];
+    }
+
+    private function determineRepairType(int $healingPercentage): ?int
+    {
+        if (
+            $healingPercentage >= RepairTaskConstants::SPARE_PARTS_ONLY_MIN
+            && $healingPercentage <= RepairTaskConstants::SPARE_PARTS_ONLY_MAX
+        ) {
+            return RepairTaskConstants::SPARE_PARTS_ONLY;
+        }
+
+        if (
+            $healingPercentage >= RepairTaskConstants::SYSTEM_COMPONENTS_ONLY_MIN
+            && $healingPercentage <= RepairTaskConstants::SYSTEM_COMPONENTS_ONLY_MAX
+        ) {
+            return RepairTaskConstants::SYSTEM_COMPONENTS_ONLY;
+        }
+
+        if (
+            $healingPercentage >= RepairTaskConstants::BOTH_MIN
+            && $healingPercentage <= RepairTaskConstants::BOTH_MAX
+        ) {
+            return RepairTaskConstants::BOTH;
+        }
+
+        return null;
+    }
+
+    private function refundCommodity(Spacecraft $ship, int $commodityId, int $amount): int
+    {
+        if ($amount <= 0) {
+            return 0;
+        }
+
+        $commodity = $this->commodityRepository->find($commodityId);
+        if (!$commodity instanceof Commodity) {
+            return 0;
+        }
+
+        $this->storageManager->upperStorage($ship, $commodity, $amount);
+
+        return $amount;
     }
 
     private function refreshColonyQueueAfterRemoval(Colony $colony, int $fieldId): void

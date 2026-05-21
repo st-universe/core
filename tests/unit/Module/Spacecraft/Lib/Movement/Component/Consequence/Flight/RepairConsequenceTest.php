@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairResult;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
@@ -106,9 +107,10 @@ class RepairConsequenceTest extends StuTestCase
             ->once()
             ->andReturn('SHIP');
 
-        $this->cancelRepair->shouldReceive('cancelRepair')
+        $this->cancelRepair->shouldReceive('cancelRepairWithResult')
             ->with($this->ship)
-            ->once();
+            ->once()
+            ->andReturn(new CancelRepairResult(true));
 
         $messages->shouldReceive('add')
             ->with($message)
@@ -121,6 +123,53 @@ class RepairConsequenceTest extends StuTestCase
 
         $message->shouldReceive('add')
             ->with('Die Reparatur der SHIP wurde abgebrochen')
+            ->once();
+
+        $this->subject->trigger(
+            $this->wrapper,
+            $this->flightRoute,
+            $messages
+        );
+    }
+
+    public function testTriggerExpectRefundMessageWhenActiveRepairReturnedCommodities(): void
+    {
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $message = $this->mock(MessageInterface::class);
+
+        $this->ship->shouldReceive('getCondition->isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getCondition->isUnderRepair')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SHIP');
+
+        $this->cancelRepair->shouldReceive('cancelRepairWithResult')
+            ->with($this->ship)
+            ->once()
+            ->andReturn(new CancelRepairResult(true, 3, 3));
+
+        $messages->shouldReceive('add')
+            ->with($message)
+            ->once();
+
+        $this->messageFactory->shouldReceive('createMessage')
+            ->with(null, 123)
+            ->once()
+            ->andReturn($message);
+
+        $message->shouldReceive('add')
+            ->with('Die Reparatur der SHIP wurde abgebrochen. 3 Ersatzteile und 3 Systemkomponenten wurden zurückerstattet')
             ->once();
 
         $this->subject->trigger(

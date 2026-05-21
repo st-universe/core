@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\Flight;
 
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
+use Stu\Component\Spacecraft\Repair\CancelRepairResult;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
@@ -36,8 +37,45 @@ class RepairConsequence extends AbstractFlightConsequence implements FlightStart
         if ($ship->getCondition()->isUnderRepair()) {
             $message = $this->messageFactory->createMessage(null, $ship->getUser()->getId());
             $messages->add($message);
-            $this->cancelRepair->cancelRepair($ship);
-            $message->add(sprintf('Die Reparatur der %s wurde abgebrochen', $ship->getName()));
+            $cancelRepairResult = $this->cancelRepair->cancelRepairWithResult($ship);
+            $message->add(sprintf(
+                'Die Reparatur der %s wurde abgebrochen%s',
+                $ship->getName(),
+                $this->getRefundMessageSuffix($cancelRepairResult)
+            ));
         }
+    }
+
+    private function getRefundMessageSuffix(CancelRepairResult $cancelRepairResult): string
+    {
+        $refundTexts = [];
+        $refundedSpareParts = $cancelRepairResult->getRefundedSpareParts();
+        $refundedSystemComponents = $cancelRepairResult->getRefundedSystemComponents();
+
+        if ($refundedSpareParts > 0) {
+            $refundTexts[] = sprintf(
+                '%d %s',
+                $refundedSpareParts,
+                $refundedSpareParts === 1 ? 'Ersatzteil' : 'Ersatzteile'
+            );
+        }
+
+        if ($refundedSystemComponents > 0) {
+            $refundTexts[] = sprintf(
+                '%d %s',
+                $refundedSystemComponents,
+                $refundedSystemComponents === 1 ? 'Systemkomponente' : 'Systemkomponenten'
+            );
+        }
+
+        return match (count($refundTexts)) {
+            1 => sprintf(
+                '. %s %s zurückerstattet',
+                $refundTexts[0],
+                $refundedSpareParts + $refundedSystemComponents === 1 ? 'wurde' : 'wurden'
+            ),
+            2 => sprintf('. %s und %s wurden zurückerstattet', $refundTexts[0], $refundTexts[1]),
+            default => ''
+        };
     }
 }
