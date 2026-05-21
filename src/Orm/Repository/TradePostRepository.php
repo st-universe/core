@@ -92,7 +92,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                 sprintf(
                     'SELECT tp FROM %s tp
                     JOIN %s u WITH tp.user = u
-                    WHERE u.id < :firstUserId AND tp.id IN (
+                    WHERE u.id < :firstUserId AND u.id >= 10 AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     )',
                     TradePost::class,
