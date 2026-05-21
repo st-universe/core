@@ -422,6 +422,15 @@ final class RepairUtil implements RepairUtilInterface
             * $this->getPassiveRepairStepDuration($wrapper->get());
     }
 
+    #[\Override]
+    public function getPassiveRepairEstimatedDurationForSpacecraft(
+        Spacecraft $spacecraft,
+        bool $isRepairStationBonus
+    ): int {
+        return $this->getPassiveRepairStepsForSpacecraft($spacecraft, $isRepairStationBonus)
+            * $this->getPassiveRepairStepDuration($spacecraft);
+    }
+
     private function getRepairTicks(SpacecraftWrapperInterface $wrapper): int
     {
         $ship = $wrapper->get();
@@ -442,6 +451,28 @@ final class RepairUtil implements RepairUtilInterface
 
         $hullSteps = (int) ceil(max(0, $ship->getMaxHull() - $ship->getCondition()->getHull()) / $hullRepairRate);
         $systemSteps = (int) ceil(count($wrapper->getDamagedSystems()) / $systemRepairRate);
+
+        return max($hullSteps, $systemSteps);
+    }
+
+    private function getPassiveRepairStepsForSpacecraft(
+        Spacecraft $spacecraft,
+        bool $isRepairStationBonus
+    ): int {
+        $hullRepairRate = $isRepairStationBonus
+            ? self::REPAIR_RATE_PER_TICK * 2
+            : self::REPAIR_RATE_PER_TICK;
+        $systemRepairRate = $isRepairStationBonus ? 4 : 2;
+
+        $damagedSystemCount = 0;
+        foreach ($spacecraft->getSystems() as $system) {
+            if ($system->getStatus() < 100) {
+                $damagedSystemCount++;
+            }
+        }
+
+        $hullSteps = (int) ceil(max(0, $spacecraft->getMaxHull() - $spacecraft->getCondition()->getHull()) / $hullRepairRate);
+        $systemSteps = (int) ceil($damagedSystemCount / $systemRepairRate);
 
         return max($hullSteps, $systemSteps);
     }

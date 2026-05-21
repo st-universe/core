@@ -224,6 +224,8 @@ use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactory;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\ReactorUtil;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculator;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoader;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemover;
@@ -314,6 +316,7 @@ return [
     ClearTorpedoInterface::class => autowire(ClearTorpedo::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
     ReactorWrapperFactoryInterface::class => autowire(ReactorWrapperFactory::class),
+    PassiveRepairProjectionCalculatorInterface::class => autowire(PassiveRepairProjectionCalculator::class),
     SpacecraftWrapperFactoryInterface::class => autowire(SpacecraftWrapperFactory::class)
         ->constructorParameter('stateIconAndTitle', autowire(StateIconAndTitle::class)),
     SpacecraftStateChangerInterface::class => autowire(SpacecraftStateChanger::class),

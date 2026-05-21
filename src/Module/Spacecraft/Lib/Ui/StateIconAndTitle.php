@@ -5,20 +5,31 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Ui;
 
 use JBBCode\Parser;
+use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 class StateIconAndTitle
 {
     public function __construct(
         private GameControllerInterface $game,
-        private Parser $bbCodeParser
+        private Parser $bbCodeParser,
+        private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        private StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        private ColonyFunctionManagerInterface $colonyFunctionManager,
+        private PassiveRepairProjectionCalculatorInterface $passiveRepairProjectionCalculator,
+        private StuTime $stuTime
     ) {}
 
     /**
@@ -54,11 +65,70 @@ class StateIconAndTitle
     /** @return array<string> */
     private function getForActivePassive(SpacecraftWrapperInterface $wrapper): array
     {
+        $shipRepairTitle = $this->getPassiveShipRepairTitle($wrapper->get());
+        if ($shipRepairTitle !== null) {
+            return ['buttons/rep2', $shipRepairTitle];
+        }
+
         return ['buttons/rep2', sprintf(
             '%s wird repariert (noch %d Runden)',
             $wrapper->get()->isStation() ? 'Station' : 'Schiff',
             $wrapper->getRepairDuration()
         )];
+    }
+
+    private function getPassiveShipRepairTitle(Spacecraft $spacecraft): ?string
+    {
+        if (!$spacecraft instanceof Ship) {
+            return null;
+        }
+
+        $shipId = $spacecraft->getId();
+        $colonyRepair = $this->colonyShipRepairRepository->getByShip($shipId);
+        if ($colonyRepair !== null) {
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction(
+                $colonyRepair->getColony(),
+                BuildingFunctionEnum::REPAIR_SHIPYARD
+            );
+
+            return $this->formatPassiveShipRepairTitle(
+                $this->passiveRepairProjectionCalculator->getPotentialFinishTime(
+                    $this->colonyShipRepairRepository->getByColonyField(
+                        $colonyRepair->getColonyId(),
+                        $colonyRepair->getFieldId()
+                    ),
+                    $isRepairStationBonus ? 2 : 1,
+                    $isRepairStationBonus,
+                    $shipId
+                )
+            );
+        }
+
+        $stationRepair = $this->stationShipRepairRepository->getByShip($shipId);
+        if ($stationRepair === null) {
+            return $this->formatPassiveShipRepairTitle(0);
+        }
+
+        return $this->formatPassiveShipRepairTitle(
+            $this->passiveRepairProjectionCalculator->getPotentialFinishTime(
+                $this->stationShipRepairRepository->getByStation($stationRepair->getStationId()),
+                1,
+                false,
+                $shipId
+            )
+        );
+    }
+
+    private function formatPassiveShipRepairTitle(int $potentialFinishTime): string
+    {
+        if ($potentialFinishTime <= 0) {
+            return 'Schiff wird repariert (Fertigstellung ausstehend)';
+        }
+
+        return sprintf(
+            'Schiff wird repariert (voraussichtliche Fertigstellung: %s)',
+            $this->stuTime->transformToStuDateTime($potentialFinishTime)
+        );
     }
 
     /** @return array<string>|null */
