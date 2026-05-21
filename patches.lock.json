@@ -1,0 +1,17 @@
+{
+    "_hash": "fe58a577488490e3863673754ddc77973c8a3ceff27890efcce51cb65d10354c",
+    "patches": {
+        "jbbcode/jbbcode": [
+            {
+                "package": "jbbcode/jbbcode",
+                "description": "Fix PHP 8.4 deprecated implicit nullable",
+                "url": "patches/jbbcode-parser-nullable.patch",
+                "sha256": "4840635f75700e40b4acc5bfc866f9ad69a5756b53670fdd02a5a8c3d32dfc35",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}
