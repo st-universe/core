@@ -75,4 +75,9 @@ interface RepairUtilInterface
         SpacecraftWrapperInterface $wrapper,
         bool $isRepairStationBonus
     ): int;
+
+    public function getPassiveRepairEstimatedDurationForSpacecraft(
+        Spacecraft $spacecraft,
+        bool $isRepairStationBonus
+    ): int;
 }
