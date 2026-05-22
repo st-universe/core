@@ -27,6 +27,7 @@ interface PlayerCreatorInterface
         string $password,
         ?string $mobile = null,
         ?string $smsCode = null,
+        ?string $emailCode = null,
         ?string $referer = null
     ): User;
 }

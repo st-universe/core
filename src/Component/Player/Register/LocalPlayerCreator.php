@@ -21,7 +21,7 @@ class LocalPlayerCreator extends PlayerCreator
         ?string $mobile = null,
         ?string $smsCode = null,
         ?string $emailCode = null,
-        ?string $referrer = null
+        ?string $referer = null
     ): User {
 
         $player = $this->userRepository->prototype();
