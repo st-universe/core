@@ -9,9 +9,11 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
+use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -27,6 +29,8 @@ class RegisterTest extends StuTestCase
 
     private MockInterface&ConfigInterface $config;
 
+    private MockInterface&RegistrationReferralTrackerInterface $registrationReferralTracker;
+
     private MockInterface&GameControllerInterface $game;
 
     private MockInterface&Faction $faction;
@@ -38,6 +42,7 @@ class RegisterTest extends StuTestCase
         $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
         $this->playerCreator = $this->mock(PlayerCreatorInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
+        $this->registrationReferralTracker = $this->mock(RegistrationReferralTrackerInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->faction = $this->mock(Faction::class);
 
@@ -45,7 +50,8 @@ class RegisterTest extends StuTestCase
             $this->registerRequest,
             $this->factionRepository,
             $this->playerCreator,
-            $this->config
+            $this->config,
+            $this->registrationReferralTracker
         );
     }
 
@@ -159,6 +165,13 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
+        $this->registrationReferralTracker->shouldReceive('prependStoredReferralCode')
+            ->with(null)
+            ->once()
+            ->andReturn(null);
+        $this->registrationReferralTracker->shouldReceive('clearStoredReferralCode')
+            ->never();
+
         $this->playerCreator->shouldReceive('createWithMobileNumber')
             ->with('login', 'email', $this->faction, '+4912345', $password, null)
             ->once()
@@ -201,10 +214,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -248,10 +257,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('+49');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->registerRequest->shouldReceive('getPassword')
             ->withNoArgs()
             ->once()
@@ -305,10 +310,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('+49');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->registerRequest->shouldReceive('getPassword')
             ->withNoArgs()
             ->once()
@@ -364,10 +365,6 @@ class RegisterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('+49');
-        $this->registerRequest->shouldReceive('getReferer')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
         $this->registerRequest->shouldReceive('getPassword')
             ->withNoArgs()
             ->once()
@@ -447,9 +444,96 @@ class RegisterTest extends StuTestCase
             ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
             ->once();
 
+        $this->registrationReferralTracker->shouldReceive('prependStoredReferralCode')
+            ->with(null)
+            ->once()
+            ->andReturn(null);
+        $this->registrationReferralTracker->shouldReceive('clearStoredReferralCode')
+            ->withNoArgs()
+            ->once();
+
         $this->playerCreator->shouldReceive('createWithMobileNumber')
             ->with('login', 'email', $this->faction, '+4912345', $password, null)
             ->once();
+        $this->subject->handle($this->game);
+    }
+
+    public function testHandleShowFinishRegistrationWithReferralIfRegistrationWithoutSmsIsSuccessful(): void
+    {
+        $factionId = 123;
+        $password = 'ValidPass1!';
+        $referer = 'Discord';
+        $refererWithReferralCode = 'yt Discord';
+        $user = $this->mock(User::class);
+
+        $this->config->shouldReceive('get')
+            ->with('game.registration.enabled')
+            ->andReturn(true);
+        $this->config->shouldReceive('get')
+            ->with('game.registration.sms_code_verification.enabled')
+            ->once()
+            ->andReturn(false);
+
+        $this->registerRequest->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($factionId);
+        $this->registerRequest->shouldReceive('getLoginName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(' LOGIN ');
+        $this->registerRequest->shouldReceive('getEmailAddress')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(' EMAIL ');
+        $this->registerRequest->shouldReceive('getMobileNumber')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('');
+        $this->registerRequest->shouldReceive('getCountryCode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('');
+        $this->registerRequest->shouldReceive('getPassword')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($password);
+        $this->registerRequest->shouldReceive('getPasswordReEntered')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($password);
+        $this->registerRequest->shouldReceive('getReferer')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($referer);
+
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
+
+        $this->faction->shouldReceive('getPlayerLimit')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $this->registrationReferralTracker->shouldReceive('prependStoredReferralCode')
+            ->with($referer)
+            ->once()
+            ->andReturn($refererWithReferralCode);
+        $this->registrationReferralTracker->shouldReceive('clearStoredReferralCode')
+            ->withNoArgs()
+            ->once();
+
+        $this->playerCreator->shouldReceive('createPlayer')
+            ->with('login', 'email', $this->faction, $password, null, null, null, $refererWithReferralCode)
+            ->once()
+            ->andReturn($user);
+
+        $this->game->shouldReceive('setView')
+            ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
+            ->once();
+
         $this->subject->handle($this->game);
     }
 

@@ -6,6 +6,7 @@ namespace Stu\Module\Index\Action\Register;
 
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
+use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
@@ -20,7 +21,8 @@ final class Register implements ActionControllerInterface
         private RegisterRequestInterface $registerRequest,
         private FactionRepositoryInterface $factionRepository,
         private PlayerCreatorInterface $playerCreator,
-        private ConfigInterface $config
+        private ConfigInterface $config,
+        private RegistrationReferralTrackerInterface $registrationReferralTracker
     ) {}
 
     /**
@@ -53,7 +55,6 @@ final class Register implements ActionControllerInterface
 
         $loginname = trim(mb_strtolower($this->registerRequest->getLoginName()));
         $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
-        $referer = $this->registerRequest->getReferer();
 
         $mobileNumber = $this->getMobileNumber();
 
@@ -73,6 +74,10 @@ final class Register implements ActionControllerInterface
             return;
         }
 
+        $referer = $this->registrationReferralTracker->prependStoredReferralCode(
+            $this->registerRequest->getReferer()
+        );
+
         if ($mobileNumber !== null) {
             $this->playerCreator->createWithMobileNumber(
                 $loginname,
@@ -90,10 +95,12 @@ final class Register implements ActionControllerInterface
                 $password,
                 null,
                 null,
+                null,
                 $referer
             );
         }
 
+        $this->registrationReferralTracker->clearStoredReferralCode();
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }
 

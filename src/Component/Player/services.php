@@ -39,6 +39,8 @@ use Stu\Component\Player\Register\PlayerDefaultsCreator;
 use Stu\Component\Player\Register\PlayerDefaultsCreatorInterface;
 use Stu\Component\Player\Register\RegistrationEmailSender;
 use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
+use Stu\Component\Player\Register\RegistrationReferralTracker;
+use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Component\Player\Register\SmsVerificationCodeSender;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Component\Player\Relation\EnemyDeterminator;
@@ -81,6 +83,7 @@ return [
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),
+    RegistrationReferralTrackerInterface::class => autowire(RegistrationReferralTracker::class),
     SmsVerificationCodeSenderInterface::class => autowire(SmsVerificationCodeSender::class),
     PlayerRelationDeterminatorInterface::class => autowire(PlayerRelationDeterminator::class)
         ->constructorParameter(

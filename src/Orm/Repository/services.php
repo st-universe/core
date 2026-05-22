@@ -108,6 +108,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\RegistrationReferralCode;
 use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
@@ -277,6 +278,7 @@ return [
     PrestigeLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PrestigeLog::class),
     PrivateMessageRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PrivateMessage::class),
     PrivateMessageFolderRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(PrivateMessageFolder::class),
+    RegistrationReferralCodeRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RegistrationReferralCode::class),
     RepairTaskRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RepairTask::class),
     ResearchRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Research::class),
     ResearchedRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Researched::class),
