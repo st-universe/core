@@ -15,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\StuTestCase;
 
@@ -82,6 +83,10 @@ class InterceptShipCoreTest extends StuTestCase
         $this->ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(false);
+        $this->ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $this->target->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -110,10 +115,22 @@ class InterceptShipCoreTest extends StuTestCase
             ->andReturn($tractoredWrapper2);
 
         $this->spacecraftSystemManager->shouldReceive('deactivate')
-            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
-            ->once();
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::CLOAK, true)
+            ->once()
+            ->globally()
+            ->ordered();
+        $this->informations->shouldReceive('addInformationf')
+            ->with('%s: System %s deaktiviert', 'SHIP', 'Tarnung')
+            ->once()
+            ->globally()
+            ->ordered();
         $this->spacecraftSystemManager->shouldReceive('deactivate')
             ->with($this->targetWrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
+            ->once()
+            ->globally()
+            ->ordered();
+        $this->spacecraftSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
             ->once();
 
         $this->alertReactionFacade->shouldReceive('doItAll')
@@ -165,6 +182,10 @@ class InterceptShipCoreTest extends StuTestCase
         $this->ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(true);
+        $this->ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->target->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -227,6 +248,110 @@ class InterceptShipCoreTest extends StuTestCase
         $this->subject->intercept($this->wrapper, $this->targetWrapper, $this->informations);
     }
 
+    public function testInterceptExpectPreDeactivatedSourceCloakInformationBeforeTargetFleetInterception(): void
+    {
+        $targetFleetWrapper = $this->mock(FleetWrapperInterface::class);
+        $targetFleet = $this->mock(Fleet::class);
+
+        $userId = 123;
+        $targetUserId = 456;
+
+        $this->ship->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+        $this->ship->shouldReceive('getName')
+            ->withNoArgs()
+            ->andReturn('SHIP');
+        $this->ship->shouldReceive('isWarped')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldNotReceive('isCloaked');
+
+        $this->target->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($targetUserId);
+
+        $this->wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $this->wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $this->targetWrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($targetFleetWrapper);
+        $this->targetWrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $targetFleetWrapper->shouldReceive('getShipWrappers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->targetWrapper]));
+        $targetFleetWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($targetFleet);
+
+        $targetFleet->shouldReceive('getName')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn('FLEET');
+
+        $this->spacecraftSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::CLOAK, true)
+            ->never();
+        $this->informations->shouldReceive('addInformationf')
+            ->with('%s: System %s deaktiviert', 'SHIP', 'Tarnung')
+            ->once()
+            ->globally()
+            ->ordered();
+        $this->spacecraftSystemManager->shouldReceive('deactivate')
+            ->with($this->targetWrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
+            ->once()
+            ->globally()
+            ->ordered();
+        $this->informations->shouldReceive('addInformationf')
+            ->with('Die Flotte %s wurde abgefangen', 'FLEET')
+            ->once()
+            ->globally()
+            ->ordered();
+        $this->spacecraftSystemManager->shouldReceive('deactivate')
+            ->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
+            ->once();
+
+        $this->alertReactionFacade->shouldReceive('doItAll')
+            ->with($this->targetWrapper, $this->informations)
+            ->once();
+        $this->alertReactionFacade->shouldReceive('doItAll')
+            ->with($this->wrapper, $this->informations)
+            ->once();
+
+        $this->privateMessageSender->shouldReceive('send')
+            ->with(
+                $userId,
+                $targetUserId,
+                'Die Flotte FLEET wurde von der SHIP abgefangen',
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+                $this->target
+            )
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
+            ->once();
+
+        $this->subject->intercept($this->wrapper, $this->targetWrapper, $this->informations, true);
+    }
+
     public function testInterceptExpectAlertReactionForSourceFleetIfWarped(): void
     {
         $fleetWrapper = $this->mock(FleetWrapperInterface::class);
@@ -248,6 +373,10 @@ class InterceptShipCoreTest extends StuTestCase
         $this->ship->shouldReceive('isWarped')
             ->withNoArgs()
             ->andReturn(true);
+        $this->ship->shouldReceive('isCloaked')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->target->shouldReceive('getUser->getId')
             ->withNoArgs()

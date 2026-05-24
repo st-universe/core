@@ -366,7 +366,6 @@
 </td>
 {% else %}
 <td colspan="2" style="text-align: center;">
-    {% if SPACECRAFT.getWarpDriveState %}
     {% if SPACECRAFT.canIntercept and nbsItem.isInterceptable %}
     <a href="?B_INTERCEPT=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
         onmouseover="cp('int_{{ targetId }}','buttons/inc2')" onmouseout="cp('int_{{ targetId }}','buttons/inc1')">
@@ -374,13 +373,14 @@
             title="{{ nbsItem.getName|bbcode2txt }} abfangen" />
     </a>
     {% endif %}
-    {% if not nbsItem.isCloaked %}
+    {% if nbsItem.isScanPossible %}
     <a href="javascript:void(0);" onclick="showScanWindow(this, {{ spacecraftId }},{{ targetId }});"
         onmouseover="cp('scn_{{ targetId }}','buttons/lupe2')" onmouseout="cp('scn_{{ targetId }}','buttons/lupe1')">
         <img src="/assets/buttons/lupe1.png" name="scn_{{ targetId }}"
             title="{{ nbsItem.getName|bbcode2txt }} scannen" />
     </a>
     {% endif %}
+    {% if SPACECRAFT.getWarpDriveState %}
     <span style="width: 100%; color: #49495f;">Warpantrieb aktiv</span>
     {% endif %}
     {% if SPACECRAFT.isCloaked %}

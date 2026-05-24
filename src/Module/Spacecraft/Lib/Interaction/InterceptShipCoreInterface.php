@@ -10,6 +10,7 @@ interface InterceptShipCoreInterface
     public function intercept(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
-        InformationInterface $informations
+        InformationInterface $informations,
+        bool $sourceCloakWasDeactivated = false
     ): void;
 }
