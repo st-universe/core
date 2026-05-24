@@ -134,11 +134,16 @@ class RegenerationChanceEffectHandler implements EffectHandlerInterface
             return null;
         }
 
-        $maxShields = $spacecraft->getMaxShield(true);
+        $maxShields = $spacecraft->getMaxShield();
         $condition = $spacecraft->getCondition();
+        $currentShields = $condition->getShield();
+
+        if ($currentShields >= $maxShields) {
+            return null;
+        }
 
         $gain = min(
-            $maxShields - $condition->getShield(),
+            $maxShields - $currentShields,
             $this->stuRandom->rand(
                 1,
                 (int)ceil($maxShields / 100 * $percentage),
