@@ -8,12 +8,14 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Mockery\MockInterface;
+use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\StuTestCase;
 
 class ReopeningEntityManagerTest extends StuTestCase
 {
     private MockInterface&EntityManagerFactoryInterface  $entityManagerFactory;
     private MockInterface&Configuration  $configuration;
+    private MockInterface&SemaphoreUtilInterface $semaphoreUtil;
 
     private MockInterface&EntityManagerInterface $wrapped;
 
@@ -24,6 +26,7 @@ class ReopeningEntityManagerTest extends StuTestCase
     {
         $this->entityManagerFactory = $this->mock(EntityManagerFactoryInterface::class);
         $this->configuration = $this->mock(Configuration::class);
+        $this->semaphoreUtil = $this->mock(SemaphoreUtilInterface::class);
 
         $this->wrapped = $this->mock(EntityManagerInterface::class);
 
@@ -35,6 +38,7 @@ class ReopeningEntityManagerTest extends StuTestCase
         $this->subject = new ReopeningEntityManager(
             $this->entityManagerFactory,
             $this->configuration,
+            $this->semaphoreUtil,
             $this->initLoggerUtil()
         );
     }
@@ -119,6 +123,9 @@ class ReopeningEntityManagerTest extends StuTestCase
         $this->wrapped->shouldReceive('rollback')
             ->withNoArgs()
             ->once();
+        $this->semaphoreUtil->shouldReceive('releaseAllSemaphores')
+            ->withNoArgs()
+            ->once();
 
         $this->wrapped->shouldReceive('getConnection->isTransactionActive')
             ->withNoArgs()
@@ -126,5 +133,22 @@ class ReopeningEntityManagerTest extends StuTestCase
             ->andReturn(true);
 
         $this->subject->rollback();
+    }
+
+    public function testCommitReleasesSemaphoresAfterSuccessfulTransaction(): void
+    {
+        $this->wrapped->shouldReceive('getConnection->isTransactionActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->wrapped->shouldReceive('commit')
+            ->withNoArgs()
+            ->once();
+        $this->semaphoreUtil->shouldReceive('releaseAllSemaphores')
+            ->withNoArgs()
+            ->once();
+
+        $this->subject->commit();
     }
 }
