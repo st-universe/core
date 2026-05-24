@@ -21,7 +21,7 @@ function selectFaction(faction_id) {
   $("factionerror").hide();
 }
 function checkEmail(el, value) {
-  if (value.length < 8) {
+  if (value.length < 8 || value.length > 200) {
     $("emailok").hide();
     $("emailerror").show();
     $("emaildup").hide();
@@ -70,7 +70,7 @@ function checkMobile(el, number) {
   number = number.replace(/^0+/, "");
 
   value = countryCode + number;
-  if (value.length < 10) {
+  if (value.length < 10 || value.length > 255) {
     $("mobileok").hide();
     $("mobileerror").show();
     $("mobiledup").hide();
@@ -134,7 +134,7 @@ function checkMobile(el, number) {
   return true;
 }
 function checkLogin(el, value) {
-  if (value.length < 6) {
+  if (value.length < 6 || value.length > 20) {
     $("loginok").hide();
     $("loginerror").show();
     $("logindup").hide();

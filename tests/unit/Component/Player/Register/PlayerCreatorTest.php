@@ -63,6 +63,26 @@ class PlayerCreatorTest extends MockeryTestCase
         );
     }
 
+    public function testCreateThrowsErrorOnTooLongLoginNameWithoutPersisting(): void
+    {
+        $this->expectException(RegistrationException::class);
+        $this->expectExceptionMessage('The provided login name is invalid (invalid characters or invalid length)');
+
+        $this->userRepository->shouldReceive('prototype')
+            ->never();
+        $this->userRepository->shouldReceive('save')
+            ->never();
+        $this->entityManager->shouldReceive('flush')
+            ->never();
+
+        $this->creator->createPlayer(
+            str_repeat('a', UserRegistration::LOGIN_MAX_LENGTH + 1),
+            'valid@example.com',
+            Mockery::mock(Faction::class),
+            'password'
+        );
+    }
+
     public function testCreateThrowsErrorOnInvalidEmail(): void
     {
         $this->expectException(RegistrationException::class);
@@ -135,6 +155,14 @@ class PlayerCreatorTest extends MockeryTestCase
         $registration = Mockery::mock(UserRegistration::class);
         $faction = Mockery::mock(Faction::class);
 
+        $this->userRepository->shouldReceive('getByLogin')
+            ->with($loginname)
+            ->once()
+            ->andReturnNull();
+        $this->userRepository->shouldReceive('getByEmail')
+            ->with($email)
+            ->once()
+            ->andReturnNull();
         $this->userRepository->shouldReceive('save')
             ->with($user)
             ->twice();

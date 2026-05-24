@@ -45,7 +45,7 @@ class PlayerCreator implements PlayerCreatorInterface
         $randomSmsHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
         $randomEmailHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
 
-        $player = $this->createPlayer(
+        $player = $this->createPlayerUnchecked(
             $loginName,
             $emailAddress,
             $faction,
@@ -63,21 +63,32 @@ class PlayerCreator implements PlayerCreatorInterface
     {
         if (
             !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
-            mb_strlen($loginName) < 6
+            mb_strlen($loginName) < UserRegistration::LOGIN_MIN_LENGTH ||
+            mb_strlen($loginName) > UserRegistration::LOGIN_MAX_LENGTH
         ) {
             throw new RegistrationException(ErrorCodeEnum::LOGIN_NAME_INVALID);
         }
-        if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+        if (
+            !filter_var($emailAddress, FILTER_VALIDATE_EMAIL) ||
+            mb_strlen($emailAddress) > UserRegistration::EMAIL_MAX_LENGTH
+        ) {
             throw new RegistrationException(ErrorCodeEnum::EMAIL_ADDRESS_INVALID);
         }
         if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
             throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
+        if (
+            $mobile !== null
+            && (
+                mb_strlen($mobile) > UserRegistration::MOBILE_MAX_LENGTH
+                || !$this->isMobileNumberCountryAllowed($mobile)
+                || !$this->isMobileFormatCorrect($mobile)
+            )
+        ) {
+            throw new RegistrationException(ErrorCodeEnum::SMS_VERIFICATION_CODE_INVALID);
+        }
         if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile))) {
             throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
-        }
-        if ($mobile !== null && (!$this->isMobileNumberCountryAllowed($mobile) || !$this->isMobileFormatCorrect($mobile))) {
-            throw new RegistrationException(ErrorCodeEnum::SMS_VERIFICATION_CODE_INVALID);
         }
     }
 
@@ -102,7 +113,30 @@ class PlayerCreator implements PlayerCreatorInterface
         ?string $emailCode = null,
         ?string $referer = null
     ): User {
+        $this->checkForException($loginName, $emailAddress, $mobile);
 
+        return $this->createPlayerUnchecked(
+            $loginName,
+            $emailAddress,
+            $faction,
+            $password,
+            $mobile,
+            $smsCode,
+            $emailCode,
+            $referer
+        );
+    }
+
+    private function createPlayerUnchecked(
+        string $loginName,
+        string $emailAddress,
+        Faction $faction,
+        string $password,
+        ?string $mobile = null,
+        ?string $smsCode = null,
+        ?string $emailCode = null,
+        ?string $referer = null
+    ): User {
         $player = $this->userRepository->prototype();
         $player->setFaction($faction);
 

@@ -8,6 +8,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Control\StuHashInterface;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -39,7 +40,10 @@ final class CheckInput implements ActionControllerInterface, NoAccessCheckContro
                 if (!preg_match('=^[a-zA-Z0-9]+$=i', $value)) {
                     break;
                 }
-                if (strlen($value) < 6) {
+                if (
+                    mb_strlen($value) < UserRegistration::LOGIN_MIN_LENGTH
+                    || mb_strlen($value) > UserRegistration::LOGIN_MAX_LENGTH
+                ) {
                     break;
                 }
                 if ($this->userRepository->getByLogin($value) !== null) {
@@ -49,7 +53,10 @@ final class CheckInput implements ActionControllerInterface, NoAccessCheckContro
                 $state = self::REGISTER_STATE_OK;
                 break;
             case 'email':
-                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                if (
+                    !filter_var($value, FILTER_VALIDATE_EMAIL)
+                    || mb_strlen($value) > UserRegistration::EMAIL_MAX_LENGTH
+                ) {
                     break;
                 }
                 $existingUser = $this->userRepository->getByEmail($value);
@@ -71,7 +78,10 @@ final class CheckInput implements ActionControllerInterface, NoAccessCheckContro
                     $state = self::REGISTER_STATE_UCP;
                     break;
                 }
-                if (!$this->isMobileFormatCorrect($trimmedMobile)) {
+                if (
+                    mb_strlen($trimmedMobile) > UserRegistration::MOBILE_MAX_LENGTH
+                    || !$this->isMobileFormatCorrect($trimmedMobile)
+                ) {
                     $state = self::REGISTER_STATE_UPD;
                     break;
                 }

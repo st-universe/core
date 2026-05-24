@@ -42,10 +42,15 @@ class ParameterSanitizerTest extends StuTestCase
     {
         return [
             [['_' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['email' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['sstr' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['login' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['loginname' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['mobile' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['pass' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['pass2' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['password' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['password2' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
         ];
     }
 }

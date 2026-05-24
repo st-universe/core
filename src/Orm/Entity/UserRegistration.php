@@ -15,12 +15,17 @@ use Doctrine\ORM\Mapping\Table;
 #[Entity]
 class UserRegistration
 {
+    public const int LOGIN_MIN_LENGTH = 6;
+    public const int LOGIN_MAX_LENGTH = 20;
+    public const int EMAIL_MAX_LENGTH = 200;
+    public const int MOBILE_MAX_LENGTH = 255;
+
     #[Id]
     #[OneToOne(targetEntity: User::class, inversedBy: 'registration')]
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;
 
-    #[Column(type: 'string', length: 20)]
+    #[Column(type: 'string', length: self::LOGIN_MAX_LENGTH)]
     private string $login = '';
 
     #[Column(type: 'string', length: 255)]
@@ -29,10 +34,10 @@ class UserRegistration
     #[Column(type: 'string', length: 6, nullable: true)]
     private ?string $sms_code = null;
 
-    #[Column(type: 'string', length: 200)]
+    #[Column(type: 'string', length: self::EMAIL_MAX_LENGTH)]
     private string $email = '';
 
-    #[Column(type: 'string', length: 255, nullable: true)]
+    #[Column(type: 'string', length: self::MOBILE_MAX_LENGTH, nullable: true)]
     private ?string $mobile = null;
 
     #[Column(type: 'integer')]
