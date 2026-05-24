@@ -79,6 +79,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             return;
         }
 
+        if ($this->isTargetHeldByForeignTholianWeb($target, $userId)) {
+            $game->getInfo()->addInformation('Rettungskapseln können nur vom Besitzer des Energienetzes geborgen werden');
+            return;
+        }
+
         if ($target->getCrewCount() == 0) {
             $game->getInfo()->addInformation('Keine Rettungskapseln vorhanden');
             return;
@@ -112,6 +117,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
 
         $epsSystem->lowerEps(1)->update();
+    }
+
+    private function isTargetHeldByForeignTholianWeb(Spacecraft $target, int $userId): bool
+    {
+        $holdingWeb = $target->getHoldingWeb();
+
+        return $holdingWeb !== null && $holdingWeb->getUser()->getId() !== $userId;
     }
 
     /**

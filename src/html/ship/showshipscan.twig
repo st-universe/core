@@ -59,6 +59,11 @@
       <td colspan="2">Das Schiff ist im Traktorstrahl von der {{ TRACTORING_SHIP.getName|bbcode }}</td>
     </tr>
     {% endif %}
+    {% if IS_TARGET_HELD_BY_THOLIAN_WEB %}
+    <tr>
+      <td colspan="2">Ist in einem Energienetz gefangen</td>
+    </tr>
+    {% endif %}
 
     {% if TARGETSHIP.getBuildplan %}
     <tr>
@@ -101,8 +106,10 @@
       <tr>
         <td style="width: 450px;">
           <span>Es befinden sich {{ TARGETSHIP.getCrewCount }} Crewman in den Rettungskapseln</span><br /><br />
+          {% if CAN_SALVAGE_ESCAPE_PODS %}
           <input type="hidden" name="target" value="{{ TARGETSHIP.getId }}" />
           <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
+          {% endif %}
         </td>
       </tr>
     </table>
