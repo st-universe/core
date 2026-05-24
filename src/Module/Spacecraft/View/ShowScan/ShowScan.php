@@ -110,6 +110,8 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($targetWrapper));
         $game->setTemplateVar('TRACTORING_SHIP', $this->getTractoringSpacecraft($target));
+        $game->setTemplateVar('IS_TARGET_HELD_BY_THOLIAN_WEB', $target->getHoldingWeb() !== null);
+        $game->setTemplateVar('CAN_SALVAGE_ESCAPE_PODS', $this->canSalvageEscapePods($target, $user->getId()));
         $game->setTemplateVar('SHIP', $ship);
 
         $tradePostCrewCount = null;
@@ -133,6 +135,13 @@ final class ShowScan implements ViewControllerInterface
         return $target instanceof Ship
             ? $this->spacecraftRepository->getTractoringSpacecraft($target)
             : null;
+    }
+
+    private function canSalvageEscapePods(Spacecraft $target, int $userId): bool
+    {
+        $holdingWeb = $target->getHoldingWeb();
+
+        return $holdingWeb === null || $holdingWeb->getUser()->getId() === $userId;
     }
 
     private function calculateReactorPercentage(SpacecraftWrapperInterface $wrapper): ?int
