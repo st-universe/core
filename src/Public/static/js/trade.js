@@ -45,8 +45,8 @@ function openShoutbox(networkid) {
 	updatePopup('trade.php?SHOW_SHOUTBOX=1&network=' + networkid,
 		800, 90, 60, false
 	);
-	setTimeout('refreshShoutbox()', 5000);
-	setTimeout('startKeyObserver()', 1000);
+	setTimeout(refreshShoutbox, 5000);
+	setTimeout(startKeyObserver, 1000);
 }
 function openShiplist(tradepostid) {
 	updatePopup('trade.php?SHOW_SHIPLIST=1&postid=' + tradepostid,
@@ -64,22 +64,27 @@ function startKeyObserver() {
 	});
 }
 function addShoutboxEntry() {
-	if (!$('shoutboxentry')) {
+	if (!$('shoutboxentry') || !$('network') || !$('shoutbox_sstr')) {
 		return;
 	}
-	obj = $('shoutboxentry');
+	const obj = $('shoutboxentry');
 	if (obj.value.length <= 0) {
 		return;
 	}
-	ajaxPostUpdate('shoutbox_list', 'trade.php', 'B_ADD_SHOUTBOX_ENTRY=1&network=' + $('network').value + '&' + Form.Element.serialize('shoutboxentry'));
+	ajaxPostUpdate(
+		'shoutbox_list',
+		'trade.php',
+		'B_ADD_SHOUTBOX_ENTRY=1&network=' + $('network').value + '&sstr=' + encodeURIComponent($('shoutbox_sstr').value) + '&' + Form.Element.serialize('shoutboxentry')
+	);
 	obj.value = '';
 }
 function refreshShoutbox() {
-	if (over == null) {
+	const popup = document.getElementById('popupWindow');
+	if (!popup || popup.style.display === 'none' || !$('network')) {
 		return;
 	}
 	ajax_update('shoutbox_list', 'trade.php?SHOW_SHOUTBOX_LIST=1&network=' + $('network').value);
-	setTimeout('refreshShoutbox()', 5000);
+	setTimeout(refreshShoutbox, 5000);
 }
 function calculatePirateProtectionDates(currentWrath, currentTimeout) {
 	const prestigeInput = document.getElementById('prestigeInput');
