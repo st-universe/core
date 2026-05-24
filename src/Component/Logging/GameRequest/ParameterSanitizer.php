@@ -14,11 +14,16 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
     /** @var array<string> */
     private const array PARAMETER_BLACKLIST = [
         '_',
+        'email',
         'sstr',
         'login',
+        'loginname',
+        'mobile',
         'pass',
         'pass2',
         'oldpass',
+        'password',
+        'password2',
     ];
 
     #[\Override]

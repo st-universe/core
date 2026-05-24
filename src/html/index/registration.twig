@@ -25,12 +25,12 @@
 						</label>
 						<div class="d-flex align-items-center">
 							<input type="text" class="form-control me-2" name="loginname" id="loginname"
-								onblur="checkLogin(this, this.value)" />
+								maxlength="20" onblur="checkLogin(this, this.value)" />
 						</div>
 						<div id="logindup" class="text-warning" style="display: none;">
 							Dieser Loginname ist bereits registriert
 						</div>
-						<small class="form-text">Minimum 6 Buchstaben/Zahlen</small>
+						<small class="form-text">6 bis 20 Buchstaben/Zahlen</small>
 					</div>
 
 					<div class="mb-3">
@@ -41,7 +41,7 @@
 						</label>
 						<div class="d-flex align-items-center">
 							<input type="email" class="form-control me-2" name="email" id="email"
-								onblur="checkEmail(this, this.value);" />
+								maxlength="200" onblur="checkEmail(this, this.value);" />
 						</div>
 						<div id="emaildup" class="text-warning" style="display: none;">
 							Diese E-Mailadresse ist bereits registriert
@@ -122,7 +122,7 @@
 								<option value="+41">(CH) +41</option>
 							</select>
 							<input type="tel" class="form-control" style="width: 100px;" name="mobile" id="mobile"
-								oninput="debouncedCheckMobile(this, this.value); updateMobileValue()" />
+								maxlength="255" oninput="debouncedCheckMobile(this, this.value); updateMobileValue()" />
 						</div>
 						<div id="mobiledup" class="text-warning" style="display: none;">Diese Mobilfunknummer ist
 							bereits registriert</div>
