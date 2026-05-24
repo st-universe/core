@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -35,6 +36,11 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
     /**
      * @return array<CrewAssignment>
      */
+    public function getByColony(Colony $colony, int $limit): array;
+
+    /**
+     * @return array<CrewAssignment>
+     */
     public function getByUserOnEscapePods(User $user): array;
 
     /**
@@ -48,6 +54,8 @@ interface CrewAssignmentRepositoryInterface extends ObjectRepository
     public function getAmountByUserAtTradeposts(User $user): int;
 
     public function getAmountByUserOnColonies(User $user): int;
+
+    public function getAmountByColony(Colony $colony): int;
 
     public function getAmountByUserOnShips(User $user): int;
 

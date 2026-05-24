@@ -17,6 +17,7 @@ use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Module\Tick\Colony\Component\AdvanceResearch;
+use Stu\Module\Tick\Colony\Component\LimitCrewAssignments;
 use Stu\Module\Tick\Colony\Component\ProceedMigration;
 use Stu\Module\Tick\Colony\Component\ProceedStorage;
 use Stu\Module\Tick\History\Component\EventMapGeneration;
@@ -76,7 +77,8 @@ return [
             [
                 autowire(AdvanceResearch::class),
                 autowire(ProceedStorage::class),
-                autowire(ProceedMigration::class)
+                autowire(ProceedMigration::class),
+                autowire(LimitCrewAssignments::class)
             ]
         ),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class)->lazy(),

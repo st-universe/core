@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
@@ -127,12 +128,41 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
                 sprintf(
                     'SELECT ca
                     FROM %s ca
+                    JOIN %s c
+                    WITH ca.crew = c
                     WHERE ca.user = :user
-                    AND ca.colony IS NOT NULL',
-                    CrewAssignment::class
+                    AND ca.colony IS NOT NULL
+                    ORDER BY c.id ASC',
+                    CrewAssignment::class,
+                    Crew::class
                 )
             )
             ->setParameter('user', $user)
+            ->getResult();
+    }
+
+    #[\Override]
+    public function getByColony(Colony $colony, int $limit): array
+    {
+        if ($limit < 1) {
+            return [];
+        }
+
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ca
+                    FROM %s ca
+                    JOIN %s c
+                    WITH ca.crew = c
+                    WHERE ca.colony = :colony
+                    ORDER BY c.id ASC',
+                    CrewAssignment::class,
+                    Crew::class
+                )
+            )
+            ->setParameter('colony', $colony)
+            ->setMaxResults($limit)
             ->getResult();
     }
 
@@ -191,6 +221,19 @@ final class CrewAssignmentRepository extends EntityRepository implements CrewAss
                 CrewAssignment::class
             )
         )->setParameter('user', $user)->getSingleScalarResult();
+    }
+
+    #[\Override]
+    public function getAmountByColony(Colony $colony): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(ca.crew)
+                FROM %s ca
+                WHERE ca.colony = :colony',
+                CrewAssignment::class
+            )
+        )->setParameter('colony', $colony)->getSingleScalarResult();
     }
 
     #[\Override]

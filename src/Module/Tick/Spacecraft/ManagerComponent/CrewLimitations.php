@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
+use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -31,7 +33,8 @@ final class CrewLimitations implements ManagerComponentInterface
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private AlertReactionFacadeInterface $alertReactionFacade,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private CrewLimitCalculatorInterface $crewLimitCalculator
+        private CrewLimitCalculatorInterface $crewLimitCalculator,
+        private EntityManagerInterface $entityManager
     ) {}
 
     #[\Override]
@@ -47,12 +50,19 @@ final class CrewLimitations implements ManagerComponentInterface
 
             $userId = $user->getId();
 
-            $crewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($user);
-            $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user);
-            $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user);
-            $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
+            [$crewToQuit, $crewOnColonies, $crewOnShips, $crewAtTradeposts] = $this->getCrewLimitData($user);
 
-            $crewToQuit = max(0, $crewOnColonies + $crewOnShips + $crewAtTradeposts - $crewLimit);
+            if ($crewToQuit === 0) {
+                continue;
+            }
+
+            $this->lockUserForCrewRemoval($user);
+
+            [$crewToQuit, $crewOnColonies, $crewOnShips, $crewAtTradeposts] = $this->getCrewLimitData($user);
+
+            if ($crewToQuit === 0) {
+                continue;
+            }
 
             //mutiny order: colonies, ships, tradeposts, escape pods
             if ($crewToQuit > 0 && $crewOnColonies > 0) {
@@ -68,6 +78,34 @@ final class CrewLimitations implements ManagerComponentInterface
                 $this->letEscapePodAssignmentsQuit($user, $crewToQuit);
             }
         }
+    }
+
+    private function lockUserForCrewRemoval(User $user): void
+    {
+        if (!$this->entityManager->getConnection()->isTransactionActive()) {
+            return;
+        }
+
+        // The colony tick can also remove colony crew, so serialize per user and recalculate after waiting.
+        $this->entityManager->lock($user, LockMode::PESSIMISTIC_WRITE);
+    }
+
+    /**
+     * @return array{int, int, int, int}
+     */
+    private function getCrewLimitData(User $user): array
+    {
+        $crewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($user);
+        $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user);
+        $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user);
+        $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
+
+        return [
+            max(0, $crewOnColonies + $crewOnShips + $crewAtTradeposts - $crewLimit),
+            $crewOnColonies,
+            $crewOnShips,
+            $crewAtTradeposts
+        ];
     }
 
     private function letColonyAssignmentsQuit(User $user, int $crewToQuit): int
