@@ -173,20 +173,18 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     public function getDamagedSystems(): array
     {
         $damagedSystems = [];
-        $prioArray = [];
         foreach ($this->spacecraft->getSystems() as $system) {
             if ($system->getStatus() < 100) {
                 $damagedSystems[] = $system;
-                $prioArray[$system->getSystemType()->value] = $system->getSystemType()->getPriority();
             }
         }
 
         // sort by damage and priority
         usort(
             $damagedSystems,
-            function (SpacecraftSystem $a, SpacecraftSystem $b) use ($prioArray): int {
+            function (SpacecraftSystem $a, SpacecraftSystem $b): int {
                 if ($a->getStatus() === $b->getStatus()) {
-                    return $prioArray[$b->getSystemType()->value] <=> $prioArray[$a->getSystemType()->value];
+                    return $b->getSystemType()->getPriority() <=> $a->getSystemType()->getPriority();
                 }
                 return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
             }

@@ -19,7 +19,7 @@ class SystemDeactivation
 
     public function deactivateIntern(
         SpacecraftWrapperInterface $wrapper,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool {
         $systemName = $type->getDescription();

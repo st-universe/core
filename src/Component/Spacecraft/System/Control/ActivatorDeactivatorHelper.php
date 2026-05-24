@@ -29,7 +29,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     #[\Override]
     public function activate(
         SpacecraftWrapperInterface|int $target,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         ConditionCheckResult|InformationInterface $logger,
         bool $allowUplink = false,
         bool $isDryRun = false
@@ -47,7 +47,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     #[\Override]
     public function activateFleet(
         int $shipId,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
@@ -83,7 +83,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     #[\Override]
     public function deactivate(
         SpacecraftWrapperInterface|int $target,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations,
         bool $allowUplink = false
     ): bool {
@@ -100,7 +100,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     #[\Override]
     public function deactivateFleet(
         SpacecraftWrapperInterface|int $target,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool {
         $wrapper = $this->getTargetWrapper(
@@ -119,7 +119,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private function deactivateFleetIntern(
         ShipWrapperInterface $wrapper,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool {
         $fleetWrapper = $wrapper->getFleetWrapper();

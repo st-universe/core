@@ -64,6 +64,8 @@ final class TransformResources implements ActionControllerInterface
             }
 
             $canProduce = false;
+            $sourceCommodity = null;
+            $targetCommodity = null;
             foreach (CommodityTypeConstants::COMMODITY_CONVERSIONS as $conversion) {
                 if ($conversion[0] === $commodityId) {
                     $targetCommodityId = $conversion[1];
