@@ -5,6 +5,7 @@ namespace Stu\Orm\Transaction;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\EntityRepository;
+use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -15,6 +16,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
     public function __construct(
         private EntityManagerFactoryInterface $entityManagerFactory,
         private Configuration $configuration,
+        private SemaphoreUtilInterface $semaphoreUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         parent::__construct($entityManagerFactory->createEntityManager());
@@ -66,6 +68,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
         if ($this->wrapped->getConnection()->isTransactionActive()) {
             //$this->logger->log('COMMIT_TRANSACTION');
             $this->wrapped->commit();
+            $this->semaphoreUtil->releaseAllSemaphores();
         }
     }
 
@@ -77,6 +80,7 @@ class ReopeningEntityManager extends EntityManagerDecorator
             $this->wrapped->clear();
             $this->logger->log('ROLLBACK_TRANSACTION');
             $this->wrapped->rollback();
+            $this->semaphoreUtil->releaseAllSemaphores();
         }
     }
 }

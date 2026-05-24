@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
@@ -22,7 +23,14 @@ use Whoops\Util\Misc;
  */
 final class ErrorHandler
 {
-    public function __construct(private Connection $database, private GameRequestSaverInterface $gameRequestSaver, private GameControllerInterface $game, private StuConfigInterface $stuConfig, private SessionInterface $session) {}
+    public function __construct(
+        private Connection $database,
+        private GameRequestSaverInterface $gameRequestSaver,
+        private GameControllerInterface $game,
+        private StuConfigInterface $stuConfig,
+        private SessionInterface $session,
+        private SemaphoreUtilInterface $semaphoreUtil
+    ) {}
 
     public function register(bool $registerErrorHandlers): void
     {
@@ -81,6 +89,7 @@ final class ErrorHandler
             if ($this->database->isTransactionActive()) {
                 $this->database->rollBack();
             }
+            $this->semaphoreUtil->releaseAllSemaphores();
 
             // save the game request
             $this->gameRequestSaver->save(

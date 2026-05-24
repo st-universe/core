@@ -55,8 +55,7 @@ final class GameController implements GameControllerInterface
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
         private readonly JavascriptExecutionInterface $javascriptExecution,
-        private readonly SessionStringFactoryInterface $sessionStringFactory,
-        private readonly SemaphoreUtilInterface $semaphoreUtil
+        private readonly SessionStringFactoryInterface $sessionStringFactory
     ) {
         $this->gameData = new GameData();
     }
@@ -281,8 +280,6 @@ final class GameController implements GameControllerInterface
         } catch (FallbackRouteException $e) {
             $this->fallbackRouter->showFallbackSite($e, $this);
         }
-
-        $this->semaphoreUtil->releaseAllSemaphores();
 
         $isTemplateSet = $this->twigPage->isTemplateSet();
 
