@@ -38,6 +38,14 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     }
 
     #[\Override]
+    public function hasBuildplan(int $buildplanId): bool
+    {
+        return $this->count([
+            'buildplan_id' => $buildplanId
+        ]) > 0;
+    }
+
+    #[\Override]
     public function hasActiveDeals(int $userId): bool
     {
         return $this->getEntityManager()
