@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Noodlehaus\ConfigInterface;
+use request;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
@@ -44,10 +45,17 @@ final class ShowKnComments implements ViewControllerInterface
             }
         }
 
+        $isInitialPopup = request::has(self::VIEW_IDENTIFIER);
+
         $game->setPageTitle(sprintf(_('Kommentare für Beitrag %d'), $post->getId()));
-        $game->setMacroInAjaxWindow('html/communication/knComments.twig');
+        if ($isInitialPopup) {
+            $game->setMacroInAjaxWindow('html/communication/knComments.twig');
+        } else {
+            $game->showMacro('html/communication/knComments.twig');
+        }
         $game->setTemplateVar('POST', $post);
         $game->setTemplateVar('COMMENTS', $list);
         $game->setTemplateVar('CHARLIMIT', PostKnComment::CHARACTER_LIMIT);
+        $game->setTemplateVar('WRAP_KN_COMMENTS', $isInitialPopup);
     }
 }

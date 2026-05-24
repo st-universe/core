@@ -1,3 +1,6 @@
+{% if WRAP_KN_COMMENTS is not defined or WRAP_KN_COMMENTS %}
+<div id="kncomments">
+{% endif %}
 <br />
 <div id="writecomment" style="display: none;">
   <table class="tcal">
@@ -75,3 +78,6 @@
       false
     );
   </script>
+{% if WRAP_KN_COMMENTS is not defined or WRAP_KN_COMMENTS %}
+</div>
+{% endif %}
