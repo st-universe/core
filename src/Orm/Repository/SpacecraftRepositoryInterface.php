@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Spacecraft\Lib\TSpacecraftItemInterface;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
@@ -60,6 +61,8 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
 
     /** @param array<int, int> $excludedIds */
     public function getRandomSpacecraftWithCrewByUser(int $userId, array $excludedIds = []): ?Spacecraft;
+
+    public function getTractoringSpacecraft(Ship $tractoredShip): ?Spacecraft;
 
     /**
      * @return array<Spacecraft>
