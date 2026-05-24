@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
+use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
@@ -15,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 final class InterceptShipCore implements InterceptShipCoreInterface
 {
@@ -29,10 +31,17 @@ final class InterceptShipCore implements InterceptShipCoreInterface
     public function intercept(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
-        InformationInterface $informations
+        InformationInterface $informations,
+        bool $sourceCloakWasDeactivated = false
     ): void {
 
         $ship = $wrapper->get();
+        if ($sourceCloakWasDeactivated) {
+            $this->addCloakDeactivationInformation($ship, $informations);
+        } else {
+            $this->deactivateCloak($wrapper, $informations);
+        }
+
         $target = $targetWrapper->get();
         $userId = $ship->getUser()->getId();
 
@@ -101,5 +110,28 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         } catch (AlreadyOffException) {
             // nothing to do here
         }
+    }
+
+    private function deactivateCloak(SpacecraftWrapperInterface $wrapper, InformationInterface $informations): void
+    {
+        $ship = $wrapper->get();
+        if (!$ship->isCloaked()) {
+            return;
+        }
+
+        try {
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::CLOAK, true);
+            $this->addCloakDeactivationInformation($ship, $informations);
+        } catch (SpacecraftSystemException) {
+        }
+    }
+
+    private function addCloakDeactivationInformation(Spacecraft $ship, InformationInterface $informations): void
+    {
+        $informations->addInformationf(
+            _('%s: System %s deaktiviert'),
+            $ship->getName(),
+            SpacecraftSystemTypeEnum::CLOAK->getDescription()
+        );
     }
 }
