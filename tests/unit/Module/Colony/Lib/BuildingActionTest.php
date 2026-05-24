@@ -289,7 +289,7 @@ class BuildingActionTest extends StuTestCase
             ->andReturn('BUILDING');
         $building->shouldReceive('getCommodities')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn(new ArrayCollection([$commodity]));
 
         $commodity->shouldReceive('getCommodityId')
@@ -304,6 +304,71 @@ class BuildingActionTest extends StuTestCase
 
         $this->planetFieldRepository->shouldReceive('getCommodityConsumingByHostAndCommodity')
             ->with($host, CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE, [1])
+            ->once()
+            ->andReturn([$activeConsumerField]);
+
+        $activeConsumerField->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $activeConsumerField->shouldReceive('getHost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($host);
+        $activeConsumerField->shouldReceive('getBuilding')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+
+        $this->buildingManager->shouldReceive('deactivate')
+            ->with($activeConsumerField)
+            ->once();
+        $this->buildingManager->shouldReceive('deactivate')
+            ->with($field)
+            ->once();
+
+        $game->shouldReceive('getInfo->addInformationf')
+            ->twice();
+
+        $this->subject->deactivate($field, $game);
+    }
+
+    public function testDeactivateDeactivatesShipyardLogisticsConsumers(): void
+    {
+        $game = $this->mock(GameControllerInterface::class);
+        $field = $this->mock(PlanetField::class);
+        $building = (new Building())->setName('WERFTHUB');
+        $building->getCommodities()->add(
+            (new BuildingCommodity())
+                ->setCommodityId(CommodityTypeConstants::COMMODITY_EFFECT_SHIPYARD_LOGISTICS)
+                ->setAmount(5)
+        );
+        $host = $this->mock(Colony::class);
+        $activeConsumerField = $this->mock(PlanetField::class);
+
+        $field->shouldReceive('getBuilding')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($building);
+        $field->shouldReceive('isActivateable')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $field->shouldReceive('isActive')
+            ->withNoArgs()
+            ->twice()
+            ->andReturnTrue();
+        $field->shouldReceive('getHost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($host);
+        $field->shouldReceive('getFieldId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->planetFieldRepository->shouldReceive('getCommodityConsumingByHostAndCommodity')
+            ->with($host, CommodityTypeConstants::COMMODITY_EFFECT_SHIPYARD_LOGISTICS, [1])
             ->once()
             ->andReturn([$activeConsumerField]);
 
