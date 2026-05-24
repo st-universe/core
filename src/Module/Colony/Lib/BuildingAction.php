@@ -72,6 +72,7 @@ final class BuildingAction implements BuildingActionInterface
         if ($host instanceof Colony) {
             $this->handleUndergroundLogisticsDeactivation($building, $host);
             $this->handleOrbitalMaintenanceDeactivation($building, $host, $game);
+            $this->handleShipyardLogisticsDeactivation($building, $host, $game);
         }
 
         $this->buildingManager->deactivate($field);
@@ -301,15 +302,10 @@ final class BuildingAction implements BuildingActionInterface
         Colony $host,
         GameControllerInterface $game
     ): void {
-        $deactivatedCount = $this->colonyBuildingEffects->deactivateOrbitalMaintenanceConsumers(
+        $deactivatedCount = $this->deactivateCommodityConsumers(
             $building,
             $host,
-            function (PlanetField $field): void {
-                $this->buildingManager->deactivate($field);
-            },
-            function (PlanetField $field): void {
-                $this->buildingCommodityDeltaTracker->registerOnSuccessfulDeactivation($field);
-            }
+            CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE
         );
 
         if ($deactivatedCount > 0) {
@@ -318,6 +314,43 @@ final class BuildingAction implements BuildingActionInterface
                 $deactivatedCount
             );
         }
+    }
+
+    private function handleShipyardLogisticsDeactivation(
+        Building $building,
+        Colony $host,
+        GameControllerInterface $game
+    ): void {
+        $deactivatedCount = $this->deactivateCommodityConsumers(
+            $building,
+            $host,
+            CommodityTypeConstants::COMMODITY_EFFECT_SHIPYARD_LOGISTICS
+        );
+
+        if ($deactivatedCount > 0) {
+            $game->getInfo()->addInformationf(
+                _('Es wurden %d Werftgebäude deaktiviert'),
+                $deactivatedCount
+            );
+        }
+    }
+
+    private function deactivateCommodityConsumers(
+        Building $building,
+        Colony $host,
+        int $commodityId
+    ): int {
+        return $this->colonyBuildingEffects->deactivateCommodityConsumers(
+            $building,
+            $host,
+            $commodityId,
+            function (PlanetField $field): void {
+                $this->buildingManager->deactivate($field);
+            },
+            function (PlanetField $field): void {
+                $this->buildingCommodityDeltaTracker->registerOnSuccessfulDeactivation($field);
+            }
+        );
     }
 
     private function handleOrbitalMaintenanceRemovalForUpgrade(

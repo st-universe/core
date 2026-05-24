@@ -100,14 +100,35 @@ final class ColonyBuildingEffects
         ?callable $afterDeactivate = null,
         ?int $reactivationId = null
     ): int {
-        $maintenanceCommodityId = CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE;
-        if (!$this->buildingProducesCommodity($building, $maintenanceCommodityId)) {
+        return $this->deactivateCommodityConsumers(
+            $building,
+            $host,
+            CommodityTypeConstants::COMMODITY_EFFECT_ORBITAL_MAINTENANCE,
+            $deactivateField,
+            $afterDeactivate,
+            $reactivationId
+        );
+    }
+
+    /**
+     * @param callable(PlanetField):void $deactivateField
+     * @param callable(PlanetField):void|null $afterDeactivate
+     */
+    public function deactivateCommodityConsumers(
+        Building $building,
+        Colony $host,
+        int $commodityId,
+        callable $deactivateField,
+        ?callable $afterDeactivate = null,
+        ?int $reactivationId = null
+    ): int {
+        if (!$this->buildingProducesCommodity($building, $commodityId)) {
             return 0;
         }
 
         $consumingFields = $this->planetFieldRepository->getCommodityConsumingByHostAndCommodity(
             $host,
-            $maintenanceCommodityId,
+            $commodityId,
             [1]
         );
 
@@ -258,4 +279,3 @@ final class ColonyBuildingEffects
         return [$totalStorage, $totalEps];
     }
 }
-
