@@ -41,7 +41,6 @@ abstract class StuTestCase extends MockeryTestCase
     {
         $class = new ReflectionClass($subject);
         $method = $class->getMethod($methodName);
-        $method->setAccessible(true);
         return $method;
     }
 
