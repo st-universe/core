@@ -103,6 +103,12 @@ function showKnComments(element, knId) {
 	);
 }
 function postComment(knId) {
+	if ($('postCommentButton')) {
+		if ($('postCommentButton').disabled) {
+			return;
+		}
+		$('postCommentButton').disabled = true;
+	}
 	comment = Form.Element.serialize('comment');
 	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&knid=" + knId + "&" + comment);
 }
