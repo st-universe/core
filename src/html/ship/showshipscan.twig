@@ -53,6 +53,13 @@
       <td>{{ REACTOR_PERCENTAGE }}%</td>
     </tr>
     {% endif %}
+
+    {% if TRACTORING_SHIP %}
+    <tr>
+      <td colspan="2">Das Schiff ist im Traktorstrahl von der {{ TRACTORING_SHIP.getName|bbcode }}</td>
+    </tr>
+    {% endif %}
+
     {% if TARGETSHIP.getBuildplan %}
     <tr>
       <td>Verbaute Module</td>

@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\TShipItem;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -300,6 +301,14 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return $result != null
             ? $this->findOneBy(['id' => $result['id']])
             : null;
+    }
+
+    #[\Override]
+    public function getTractoringSpacecraft(Ship $tractoredShip): ?Spacecraft
+    {
+        return $this->findOneBy([
+            'tractored_ship_id' => $tractoredShip->getId()
+        ]);
     }
 
     #[\Override]

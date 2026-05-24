@@ -14,8 +14,10 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShowScan implements ViewControllerInterface
 {
@@ -27,7 +29,8 @@ final class ShowScan implements ViewControllerInterface
         private InteractionCheckerInterface $interactionChecker,
         private PirateReactionInterface $pirateReaction,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private readonly AchievementManagerInterface $achievementManager
+        private readonly AchievementManagerInterface $achievementManager,
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository
     ) {}
 
     #[\Override]
@@ -106,6 +109,7 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($targetWrapper));
+        $game->setTemplateVar('TRACTORING_SHIP', $this->getTractoringSpacecraft($target));
         $game->setTemplateVar('SHIP', $ship);
 
         $tradePostCrewCount = null;
@@ -122,6 +126,13 @@ final class ShowScan implements ViewControllerInterface
         return $target->getMaxShield() === 0
             ? 0
             : (int)ceil($target->getCondition()->getShield() / $target->getMaxShield() * 100);
+    }
+
+    private function getTractoringSpacecraft(Spacecraft $target): ?Spacecraft
+    {
+        return $target instanceof Ship
+            ? $this->spacecraftRepository->getTractoringSpacecraft($target)
+            : null;
     }
 
     private function calculateReactorPercentage(SpacecraftWrapperInterface $wrapper): ?int
