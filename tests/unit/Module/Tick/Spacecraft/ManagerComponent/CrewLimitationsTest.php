@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
@@ -43,6 +44,8 @@ class CrewLimitationsTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
@@ -60,7 +63,8 @@ class CrewLimitationsTest extends StuTestCase
             $this->spacecraftSystemManager,
             $this->alertReactionFacade,
             $this->spacecraftWrapperFactory,
-            $this->mock(CrewLimitCalculatorInterface::class)
+            $this->mock(CrewLimitCalculatorInterface::class),
+            $this->mock(EntityManagerInterface::class)
         );
     }
 

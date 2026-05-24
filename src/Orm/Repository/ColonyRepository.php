@@ -149,7 +149,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 sprintf(
                     'SELECT c FROM %s c
                     WHERE MOD(c.user_id, :groupCount) + 1 = :groupId
-                    AND c.user_id != :userId',
+                    AND c.user_id != :userId
+                    ORDER BY c.user_id ASC, c.id ASC',
                     Colony::class
                 )
             )
