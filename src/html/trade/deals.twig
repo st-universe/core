@@ -16,7 +16,7 @@
 
         {% if PROTECTIONTIME %}
         <br />
-        <span>Aktueller NAP gilt bis: {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
+        <span>{{ PROTECTIONTIME_IS_PAST ? 'Letzter NAP galt bis:' : 'Aktueller NAP gilt bis:' }} {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
         {% endif %}
     </div>
 </div>
@@ -45,7 +45,7 @@
 
             {% if PROTECTIONTIME %}
             <br />
-            <span>Aktueller NAP gilt bis: {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
+            <span>{{ PROTECTIONTIME_IS_PAST ? 'Letzter NAP galt bis:' : 'Aktueller NAP gilt bis:' }} {{ PROTECTIONTIME | date('d.m.Y H:i') }} Uhr</span>
             {% endif %}
             <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 

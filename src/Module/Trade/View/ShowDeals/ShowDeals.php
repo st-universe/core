@@ -57,8 +57,9 @@ final class ShowDeals implements ViewControllerInterface
             $protectionTimeout = $pirateWrath->getProtectionTimeout();
             $game->setTemplateVar('PROTECTIONTIMEOUT', $protectionTimeout);
 
-            if ($protectionTimeout !== null && $pirateWrath->getProtectionTimeout() < $time) {
+            if ($protectionTimeout !== null) {
                 $game->setTemplateVar('PROTECTIONTIME', $this->stuTime->transformToStuDateTime($protectionTimeout));
+                $game->setTemplateVar('PROTECTIONTIME_IS_PAST', $protectionTimeout < $time);
             }
         }
 
