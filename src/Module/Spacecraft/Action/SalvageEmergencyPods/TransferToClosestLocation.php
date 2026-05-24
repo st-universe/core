@@ -43,7 +43,7 @@ final class TransferToClosestLocation
         $minimumDistance = $this->getMinimumDistance($colonyDistance, $stationDistance, $tradepostDistance);
 
         //transfer to closest colony
-        if ($colonyDistance === $minimumDistance && $closestColony !== null) {
+        if ($colonyDistance === $minimumDistance) {
             foreach ($target->getCrewAssignments() as $crewAssignment) {
                 if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
                     $crewAssignment->setColony($closestColony);
@@ -59,7 +59,7 @@ final class TransferToClosestLocation
         }
 
         //transfer to closest station
-        if ($stationDistance === $minimumDistance && $closestStation !== null) {
+        if ($stationDistance === $minimumDistance) {
             foreach ($target->getCrewAssignments() as $crewAssignment) {
                 if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
                     $crewAssignment->setSpacecraft($closestStation);

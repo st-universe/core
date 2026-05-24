@@ -27,14 +27,14 @@ interface ActivatorDeactivatorHelperInterface
 
     public function deactivate(
         SpacecraftWrapperInterface|int $shipId,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations,
         bool $allowUplink = false
     ): bool;
 
     public function deactivateFleet(
         SpacecraftWrapperInterface|int $target,
-        spacecraftSystemTypeEnum $type,
+        SpacecraftSystemTypeEnum $type,
         InformationInterface $informations
     ): bool;
 

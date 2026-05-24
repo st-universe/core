@@ -216,20 +216,16 @@ final class SpacecraftSystemManager implements SpacecraftSystemManagerInterface
     public function getActiveSystems(Spacecraft $ship, bool $sort = false): Collection
     {
         $activeSystems = [];
-        $prioArray = [];
         foreach ($ship->getSystems() as $system) {
             if ($system->getMode()->isActivated()) {
                 $activeSystems[] = $system;
-                if ($sort) {
-                    $prioArray[$system->getSystemType()->value] = $system->getSystemType()->getPriority();
-                }
             }
         }
 
         if ($sort) {
             usort(
                 $activeSystems,
-                fn (SpacecraftSystem $a, SpacecraftSystem $b): int => $prioArray[$a->getSystemType()->value] <=> $prioArray[$b->getSystemType()->value]
+                fn (SpacecraftSystem $a, SpacecraftSystem $b): int => $a->getSystemType()->getPriority() <=> $b->getSystemType()->getPriority()
             );
         }
 
