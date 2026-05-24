@@ -20,6 +20,8 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function delete(Deals $post): void;
 
+    public function hasBuildplan(int $buildplanId): bool;
+
     public function hasActiveDeals(int $userId): bool;
 
     /**
