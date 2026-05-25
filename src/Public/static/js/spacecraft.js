@@ -249,24 +249,27 @@ function renameCrew(crew_id) {
 function adjustCellHeight(image) {
   var cell = image.parentNode.parentNode;
   var height = image.offsetHeight;
+
+  if (height === 0) {
+    return;
+  }
+
   cell.style.height = height + 10 + "px";
 
-  var graphics = cell.querySelectorAll(".indexedGraphics");
+  var graphics = cell.querySelectorAll(".indexedGraphics, .indexedGraphicsShips");
   graphics.forEach(function (graphic) {
-    graphic.style.marginTop = -(height / 2) + "px";
+    graphic.style.top = "50%";
+    graphic.style.marginTop = -((graphic.offsetHeight || height) / 2) + "px";
   });
-
-  var graphics = cell.querySelectorAll(".indexedGraphicsShips");
-  graphics.forEach(function (graphic) {
-    graphic.style.marginTop = -(height / 2) + "px";
-  });
-
-
-
 }
 function adjustCellWidth(image) {
   var cell = image.parentNode.parentNode;
   var width = image.offsetWidth;
+
+  if (width === 0) {
+    return;
+  }
+
   var cellWidth = cell.offsetWidth;
 
   if (width > cellWidth) {

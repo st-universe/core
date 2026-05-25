@@ -38,11 +38,30 @@ function toggleFleet(fleetid) {
 
 	if (x.style.display === "none") {
 		x.style.display = "";
+		refreshFleetShipImages(x);
 	} else {
 		x.style.display = "none";
 	}
 
 	ajaxrequest('ship.php?B_TOGGLE_FLEET=1&fleet=' + fleetid);
+}
+
+function refreshFleetShipImages(fleetBody) {
+	var refresh = function () {
+		fleetBody.querySelectorAll('.indexedGraphicsShips').forEach(function (image) {
+			if (image.complete) {
+				adjustCellHeight(image);
+				adjustCellWidth(image);
+			}
+		});
+	};
+
+	if (window.requestAnimationFrame) {
+		window.requestAnimationFrame(refresh);
+		return;
+	}
+
+	window.setTimeout(refresh, 0);
 }
 function joinFleetInShiplist(fleetid) {
 

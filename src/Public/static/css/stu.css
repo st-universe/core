@@ -594,7 +594,12 @@ td.shiplistshipimage {
   background-color: #000000 ! important;
   display: table-cell;
   overflow: hidden;
-  Vertical-align: middle;
+  position: relative;
+  vertical-align: middle;
+}
+
+td.shiplistshipimage .shipImgOverlayText {
+  position: static;
 }
 
 td.nbsshipimage {
