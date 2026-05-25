@@ -222,6 +222,18 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    #[\Override]
+    public function getByCommodityIds(array $commodityIds): array
+    {
+        if ($commodityIds === []) {
+            return [];
+        }
+
+        return $this->findBy([
+            'commodity_id' => $commodityIds
+        ]);
+    }
+
     private function getResultSetMapping(): ResultSetMapping
     {
         $rsm = new ResultSetMapping();
