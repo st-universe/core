@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance\Relations\Renderer;
 
 use JBBCode\Parser;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Orm\Entity\Alliance;
@@ -14,7 +15,7 @@ use Stu\Orm\Entity\Alliance;
  */
 final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraphAttributeConverterInterface
 {
-    public function __construct(private Parser $bbCodeParser) {}
+    public function __construct(private Parser $bbCodeParser, private ConfigInterface $config) {}
 
     #[\Override]
     public function convertName(
@@ -52,7 +53,8 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         Alliance $alliance
     ): string {
         return sprintf(
-            '/%s?id=%d',
+            '%s/%s?id=%d',
+            $this->getBaseUrl(),
             ModuleEnum::ALLIANCE->getPhpPage(),
             $alliance->getId()
         );
@@ -65,5 +67,50 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         return $alliance->isNpcAlliance()
             ? '#2b2b2b'
             : '#4b4b4b';
+    }
+
+    private function getBaseUrl(): string
+    {
+        $requestHost = $this->getRequestHost();
+
+        if ($requestHost !== null) {
+            return sprintf('%s://%s', $this->getRequestScheme(), $requestHost);
+        }
+
+        return rtrim((string) $this->config->get('game.base_url'), '/');
+    }
+
+    private function getRequestHost(): ?string
+    {
+        $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? null;
+
+        if (!is_string($host)) {
+            return null;
+        }
+
+        $host = str_replace(["\r", "\n"], '', trim($host));
+
+        return $host !== '' && preg_match('/^[A-Za-z0-9.\-:\[\]]+$/', $host) === 1
+            ? $host
+            : null;
+    }
+
+    private function getRequestScheme(): string
+    {
+        $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? null;
+
+        if (is_string($forwardedProto)) {
+            $proto = strtolower(trim(explode(',', $forwardedProto)[0]));
+
+            if ($proto === 'http' || $proto === 'https') {
+                return $proto;
+            }
+        }
+
+        return (
+            isset($_SERVER['HTTPS'])
+            && $_SERVER['HTTPS'] !== ''
+            && $_SERVER['HTTPS'] !== 'off'
+        ) ? 'https' : 'http';
     }
 }

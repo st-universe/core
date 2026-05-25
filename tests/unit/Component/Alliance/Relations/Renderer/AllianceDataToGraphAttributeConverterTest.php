@@ -6,6 +6,7 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Faction;
@@ -15,6 +16,8 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 {
     private MockInterface&Parser $bbCodeParser;
 
+    private MockInterface&ConfigInterface $config;
+
     private AllianceDataToGraphAttributeConverter $subject;
 
     #[\Override]
@@ -23,9 +26,11 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
         parent::setUp();
 
         $this->bbCodeParser = $this->mock(Parser::class);
+        $this->config = $this->mock(ConfigInterface::class);
 
         $this->subject = new AllianceDataToGraphAttributeConverter(
-            $this->bbCodeParser
+            $this->bbCodeParser,
+            $this->config
         );
     }
 
@@ -119,24 +124,72 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
         );
     }
 
-    public function testGetUrlReturnsRootRelativeUrl(): void
+    public function testGetUrlReturnsAbsoluteUrlForCurrentRequestHost(): void
     {
+        $serverBackup = $_SERVER;
+
+        try {
+            $_SERVER['HTTP_HOST'] = 'www.stuniverse.de';
+            $_SERVER['HTTPS'] = 'on';
+            unset($_SERVER['HTTP_X_FORWARDED_PROTO'], $_SERVER['SERVER_NAME']);
+
+            $alliance = $this->mock(Alliance::class);
+
+            $allianceId = 666;
+
+            $alliance->shouldReceive('getId')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($allianceId);
+
+            static::assertSame(
+                sprintf(
+                    'https://www.stuniverse.de/alliance.php?id=%d',
+                    $allianceId
+                ),
+                $this->subject->getUrl($alliance)
+            );
+        } finally {
+            $_SERVER = $serverBackup;
+        }
+    }
+
+    public function testGetUrlFallsBackToConfiguredBaseUrl(): void
+    {
+        $serverBackup = $_SERVER;
         $alliance = $this->mock(Alliance::class);
 
         $allianceId = 666;
+        $baseUrl = 'some-url/';
 
-        $alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($allianceId);
+        try {
+            unset(
+                $_SERVER['HTTP_HOST'],
+                $_SERVER['SERVER_NAME'],
+                $_SERVER['HTTPS'],
+                $_SERVER['HTTP_X_FORWARDED_PROTO']
+            );
 
-        static::assertSame(
-            sprintf(
-                '/alliance.php?id=%d',
-                $allianceId
-            ),
-            $this->subject->getUrl($alliance)
-        );
+            $alliance->shouldReceive('getId')
+                ->withNoArgs()
+                ->once()
+                ->andReturn($allianceId);
+
+            $this->config->shouldReceive('get')
+                ->with('game.base_url')
+                ->once()
+                ->andReturn($baseUrl);
+
+            static::assertSame(
+                sprintf(
+                    'some-url/alliance.php?id=%d',
+                    $allianceId
+                ),
+                $this->subject->getUrl($alliance)
+            );
+        } finally {
+            $_SERVER = $serverBackup;
+        }
     }
 
     public function testGetFillColorReturnsValueForNpcAlliance(): void
