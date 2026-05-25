@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\RemoveWaste;
 
 use request;
-
-;
-
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -38,7 +35,7 @@ final class RemoveWaste implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
+        $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::indInt('id'), $userId);
 
         $commodities = request::postArray('commodity');
 
