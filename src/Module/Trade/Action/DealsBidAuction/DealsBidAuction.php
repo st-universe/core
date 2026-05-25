@@ -118,6 +118,11 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private function raiseOwnBid(int $maxAmount, AuctionBid $bid, GameControllerInterface $game, Deals $auction): void
     {
+        if ($maxAmount <= $bid->getMaxAmount()) {
+            $game->getInfo()->addInformation(_('Dein neues Maximalgebot muss über deinem bisherigen Maximalgebot liegen'));
+            return;
+        }
+
         $additionalAmount = $maxAmount - $bid->getMaxAmount();
 
         //check if enough available
