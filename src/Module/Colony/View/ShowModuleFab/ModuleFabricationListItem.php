@@ -17,6 +17,10 @@ final class ModuleFabricationListItem
     private array $rump_ids = [];
     /** @var array<int> */
     private array $buildplan_ids = [];
+    /** @var array<int, int> */
+    private array $required_amounts_by_rump = [];
+    /** @var array<int, int> */
+    private array $required_amounts_by_buildplan = [];
 
     public function __construct(
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
@@ -83,18 +87,38 @@ final class ModuleFabricationListItem
         return $result->getAmount();
     }
 
-    public function addRump(SpacecraftRump $shipRump): void
+    public function addRump(SpacecraftRump $shipRump, int $requiredAmount = 1): void
     {
-        if (!in_array($shipRump->getId(), $this->rump_ids)) {
-            $this->rump_ids[] = $shipRump->getId();
+        $rumpId = $shipRump->getId();
+
+        if (!in_array($rumpId, $this->rump_ids, true)) {
+            $this->rump_ids[] = $rumpId;
         }
+
+        $this->addRequiredAmount($this->required_amounts_by_rump, $rumpId, $requiredAmount);
     }
 
-    public function addBuildplan(SpacecraftBuildplan $buildplan): void
+    public function addBuildplan(SpacecraftBuildplan $buildplan, int $requiredAmount = 1): void
     {
-        if (!in_array($buildplan->getId(), $this->buildplan_ids)) {
-            $this->buildplan_ids[] = $buildplan->getId();
+        $buildplanId = $buildplan->getId();
+
+        if (!in_array($buildplanId, $this->buildplan_ids, true)) {
+            $this->buildplan_ids[] = $buildplanId;
         }
+
+        $this->addRequiredAmount($this->required_amounts_by_buildplan, $buildplanId, $requiredAmount);
+    }
+
+    /** @return array<int, int> */
+    public function getRequiredAmountsByRump(): array
+    {
+        return $this->required_amounts_by_rump;
+    }
+
+    /** @return array<int, int> */
+    public function getRequiredAmountsByBuildplan(): array
+    {
+        return $this->required_amounts_by_buildplan;
     }
 
     public function getClass(): string
@@ -106,5 +130,17 @@ final class ModuleFabricationListItem
             implode(' rump_', $this->rump_ids),
             implode(' buildplan_', $this->buildplan_ids)
         );
+    }
+
+    /**
+     * @param array<int, int> $requiredAmounts
+     */
+    private function addRequiredAmount(array &$requiredAmounts, int $id, int $requiredAmount): void
+    {
+        if ($requiredAmount <= 1) {
+            return;
+        }
+
+        $requiredAmounts[$id] = max($requiredAmounts[$id] ?? 1, $requiredAmount);
     }
 }

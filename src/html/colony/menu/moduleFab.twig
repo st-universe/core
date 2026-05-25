@@ -65,6 +65,14 @@
                     <td>
                         <div style="margin-bottom: 5px;">
                             <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
+                            {% for rumpId, requiredAmount in data.getRequiredAmountsByRump %}
+                            <span class="module-required-count required-rump-{{ rumpId }}"
+                                style="display: none;">(Benötigt: {{ requiredAmount }})</span>
+                            {% endfor %}
+                            {% for buildplanId, requiredAmount in data.getRequiredAmountsByBuildplan %}
+                            <span class="module-required-count required-buildplan-{{ buildplanId }}"
+                                style="display: none;">(Benötigt: {{ requiredAmount }})</span>
+                            {% endfor %}
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
                             <div style="display: flex; align-items: center;">

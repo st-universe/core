@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -11,6 +12,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildplanHangar;
+use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ShipRumpCost;
@@ -183,6 +185,38 @@ class ShowModuleFabTest extends StuTestCase
         $this->assertStringNotContainsString('rump_5', $genericItem->getClass());
     }
 
+    public function testGetModuleFabRumpsAddsStationBuildplanRumps(): void
+    {
+        $shipRump = $this->mock(SpacecraftRump::class);
+        $stationRump = $this->mock(SpacecraftRump::class);
+        $stationBuildplan = $this->mock(SpacecraftBuildplan::class);
+
+        $this->spacecraftRumpRepository->shouldReceive('getBuildableByUser')
+            ->with(42)
+            ->once()
+            ->andReturn([5 => $shipRump]);
+
+        $this->spacecraftBuildplanRepository->shouldReceive('getStationBuildplansByUser')
+            ->with(42)
+            ->once()
+            ->andReturn([$stationBuildplan]);
+
+        $stationBuildplan->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($stationRump);
+
+        $stationRump->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(12);
+
+        $this->assertSame(
+            [5 => $shipRump, 12 => $stationRump],
+            $this->invokeGetModuleFabRumps(42)
+        );
+    }
+
     public function testSetRumpModulesUsesHangarCostModulesOnly(): void
     {
         $colony = $this->mock(Colony::class);
@@ -227,10 +261,11 @@ class ShowModuleFabTest extends StuTestCase
             1002 => $theoreticalItem
         ];
 
-        $this->invokeSetRumpModules($colony, [$rump], $allModules, [5 => [$hangarCostModule]]);
+        $this->invokeSetRumpModules($colony, [$rump], $allModules, [5 => [$this->moduleRequirement($hangarCostModule, 3)]]);
 
         $this->assertStringContainsString('rump_5', $hangarCostItem->getClass());
         $this->assertStringNotContainsString('rump_5', $theoreticalItem->getClass());
+        $this->assertSame([5 => 3], $hangarCostItem->getRequiredAmountsByRump());
     }
 
     public function testSetBuildplansUsesHangarCostModulesInsteadOfBuildplanModules(): void
@@ -238,7 +273,6 @@ class ShowModuleFabTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $colony = $this->mock(Colony::class);
         $rump = $this->mock(SpacecraftRump::class);
-        $hangar = $this->mock(BuildplanHangar::class);
         $hangarBuildplan = $this->mock(SpacecraftBuildplan::class);
         $hangarCostModule = $this->mock(Module::class);
         $buildplanOnlyModule = $this->mock(Module::class);
@@ -246,10 +280,6 @@ class ShowModuleFabTest extends StuTestCase
         $rump->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(5);
-
-        $hangar->shouldReceive('getBuildplan')
-            ->withNoArgs()
-            ->andReturn($hangarBuildplan);
 
         $hangarBuildplan->shouldReceive('getId')
             ->withNoArgs()
@@ -297,16 +327,18 @@ class ShowModuleFabTest extends StuTestCase
             [$rump],
             $allModules,
             $game,
-            [5 => $hangar],
-            [5 => [$hangarCostModule]]
+            [5 => $hangarBuildplan],
+            [5 => [$this->moduleRequirement($hangarCostModule, 3)]]
         );
 
         $this->assertStringContainsString('buildplan_55', $hangarCostItem->getClass());
         $this->assertStringNotContainsString('buildplan_55', $buildplanOnlyItem->getClass());
+        $this->assertSame([55 => 3], $hangarCostItem->getRequiredAmountsByBuildplan());
     }
 
     public function testPrepareRumpsRemovesHangarRumpWhenCostCommodityHasNoModule(): void
     {
+        $colony = $this->mock(Colony::class);
         $rump = $this->mock(SpacecraftRump::class);
         $hangar = $this->mock(BuildplanHangar::class);
         $cost = $this->mock(ShipRumpCost::class);
@@ -334,17 +366,19 @@ class ShowModuleFabTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        [$rumps, $hangarsByRump, $hangarModulesByRump] = $this->invokePrepareRumps([$rump]);
+        [$rumps, $buildplansByRump, $modulesByRump] = $this->invokePrepareRumps($colony, [$rump]);
 
         $this->assertSame([], $rumps);
-        $this->assertSame([], $hangarsByRump);
-        $this->assertSame([], $hangarModulesByRump);
+        $this->assertSame([], $buildplansByRump);
+        $this->assertSame([], $modulesByRump);
     }
 
     public function testPrepareRumpsKeepsHangarRumpWhenCostsResolveToModules(): void
     {
+        $colony = $this->mock(Colony::class);
         $rump = $this->mock(SpacecraftRump::class);
         $hangar = $this->mock(BuildplanHangar::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
         $cost = $this->mock(ShipRumpCost::class);
         $module = $this->mock(Module::class);
 
@@ -356,6 +390,11 @@ class ShowModuleFabTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($hangar);
+
+        $hangar->shouldReceive('getBuildplan')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($buildplan);
 
         $this->shipRumpCostRepository->shouldReceive('getByShipRump')
             ->with(5)
@@ -375,11 +414,107 @@ class ShowModuleFabTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(42);
 
-        [$rumps, $hangarsByRump, $hangarModulesByRump] = $this->invokePrepareRumps([$rump]);
+        [$rumps, $buildplansByRump, $modulesByRump] = $this->invokePrepareRumps($colony, [$rump]);
 
         $this->assertSame([$rump], $rumps);
-        $this->assertSame([5 => $hangar], $hangarsByRump);
-        $this->assertSame([5 => [$module]], $hangarModulesByRump);
+        $this->assertSame([5 => $buildplan], $buildplansByRump);
+        $this->assertSame([5 => [$this->moduleRequirement($module)]], $modulesByRump);
+    }
+
+    public function testPrepareRumpsRemovesStationRumpWithoutStationBuildplan(): void
+    {
+        $colony = $this->mock(Colony::class);
+        $rump = $this->mock(SpacecraftRump::class);
+
+        $rump->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(5);
+        $rump->shouldReceive('isStation')
+            ->withNoArgs()
+            ->andReturnTrue();
+
+        $this->buildplanHangarRepository->shouldReceive('getByRump')
+            ->with(5)
+            ->once()
+            ->andReturnNull();
+
+        $this->spacecraftBuildplanRepository->shouldReceive('getStationBuildplanByRump')
+            ->with(5)
+            ->once()
+            ->andReturnNull();
+
+        [$rumps, $buildplansByRump, $modulesByRump] = $this->invokePrepareRumps($colony, [$rump]);
+
+        $this->assertSame([], $rumps);
+        $this->assertSame([], $buildplansByRump);
+        $this->assertSame([], $modulesByRump);
+    }
+
+    public function testPrepareRumpsUsesStationBuildplanModulesAndSpecialModules(): void
+    {
+        $colony = $this->mock(Colony::class);
+        $rump = $this->mock(SpacecraftRump::class);
+        $buildplan = $this->mock(SpacecraftBuildplan::class);
+        $buildplanModule = $this->mock(BuildplanModule::class);
+        $module = $this->mock(Module::class);
+        $specialModule = $this->mock(Module::class);
+
+        $rump->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(5);
+        $rump->shouldReceive('isStation')
+            ->withNoArgs()
+            ->andReturnTrue();
+
+        $this->buildplanHangarRepository->shouldReceive('getByRump')
+            ->with(5)
+            ->once()
+            ->andReturnNull();
+
+        $this->spacecraftBuildplanRepository->shouldReceive('getStationBuildplanByRump')
+            ->with(5)
+            ->once()
+            ->andReturn($buildplan);
+
+        $buildplan->shouldReceive('getModules')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$buildplanModule]));
+        $buildplan->shouldReceive('getRumpId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+
+        $buildplanModule->shouldReceive('getModule')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($module);
+        $buildplanModule->shouldReceive('getModuleCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(3);
+
+        $module->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1001);
+
+        $specialModule->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1002);
+
+        $this->moduleRepository->shouldReceive('getBySpecialTypeAndRump')
+            ->with($colony, SpacecraftModuleTypeEnum::SPECIAL, 5)
+            ->once()
+            ->andReturn([$specialModule]);
+
+        [$rumps, $buildplansByRump, $modulesByRump] = $this->invokePrepareRumps($colony, [$rump]);
+
+        $this->assertSame([$rump], $rumps);
+        $this->assertSame([5 => $buildplan], $buildplansByRump);
+        $this->assertSame([5 => [
+            $this->moduleRequirement($module, 3),
+            $this->moduleRequirement($specialModule)
+        ]], $modulesByRump);
     }
 
     public function testSetRumpModulesThrowsWithoutRole(): void
@@ -403,55 +538,71 @@ class ShowModuleFabTest extends StuTestCase
     }
 
     /**
-     * @param array<SpacecraftRump> $rumps
-     * @param array<int, ModuleFabricationListItem> $allModules
-     * @param array<int, array<int, Module>> $hangarModulesByRump
+     * @return array<int, SpacecraftRump>
      */
-    private function invokeSetRumpModules(
-        Colony $colony,
-        array $rumps,
-        array &$allModules,
-        array $hangarModulesByRump = []
-    ): void {
+    private function invokeGetModuleFabRumps(int $userId): array
+    {
         $callable = \Closure::bind(
-            function (Colony $colony, array $rumps, array &$allModules, array $hangarModulesByRump): void {
-                $this->setRumpModules($colony, $rumps, $allModules, $hangarModulesByRump);
+            function (int $userId): array {
+                return $this->getModuleFabRumps($userId);
             },
             $this->subject,
             ShowModuleFab::class
         );
 
-        $callable($colony, $rumps, $allModules, $hangarModulesByRump);
+        return $callable($userId);
     }
 
     /**
      * @param array<SpacecraftRump> $rumps
      * @param array<int, ModuleFabricationListItem> $allModules
-     * @param array<int, BuildplanHangar> $hangarsByRump
-     * @param array<int, array<int, Module>> $hangarModulesByRump
+     * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
+     */
+    private function invokeSetRumpModules(
+        Colony $colony,
+        array $rumps,
+        array &$allModules,
+        array $exclusiveModulesByRump = []
+    ): void {
+        $callable = \Closure::bind(
+            function (Colony $colony, array $rumps, array &$allModules, array $exclusiveModulesByRump): void {
+                $this->setRumpModules($colony, $rumps, $allModules, $exclusiveModulesByRump);
+            },
+            $this->subject,
+            ShowModuleFab::class
+        );
+
+        $callable($colony, $rumps, $allModules, $exclusiveModulesByRump);
+    }
+
+    /**
+     * @param array<SpacecraftRump> $rumps
+     * @param array<int, ModuleFabricationListItem> $allModules
+     * @param array<int, SpacecraftBuildplan> $exclusiveBuildplansByRump
+     * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
      */
     private function invokeSetBuildplans(
         array $rumps,
         array &$allModules,
         GameControllerInterface $game,
-        array $hangarsByRump,
-        array $hangarModulesByRump
+        array $exclusiveBuildplansByRump,
+        array $exclusiveModulesByRump
     ): void {
         $callable = \Closure::bind(
             function (
                 array $rumps,
                 array &$allModules,
                 GameControllerInterface $game,
-                array $hangarsByRump,
-                array $hangarModulesByRump
+                array $exclusiveBuildplansByRump,
+                array $exclusiveModulesByRump
             ): void {
-                $this->setBuildplans($rumps, $allModules, $game, $hangarsByRump, $hangarModulesByRump);
+                $this->setBuildplans($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump);
             },
             $this->subject,
             ShowModuleFab::class
         );
 
-        $callable($rumps, $allModules, $game, $hangarsByRump, $hangarModulesByRump);
+        $callable($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump);
     }
 
     /**
@@ -459,16 +610,27 @@ class ShowModuleFabTest extends StuTestCase
      *
      * @return array<int, mixed>
      */
-    private function invokePrepareRumps(array $rumps): array
+    private function invokePrepareRumps(Colony $colony, array $rumps): array
     {
         $callable = \Closure::bind(
-            function (array $rumps): array {
-                return $this->prepareRumps($rumps);
+            function (Colony $colony, array $rumps): array {
+                return $this->prepareRumps($colony, $rumps);
             },
             $this->subject,
             ShowModuleFab::class
         );
 
-        return $callable($rumps);
+        return $callable($colony, $rumps);
+    }
+
+    /**
+     * @return array{module: Module, requiredAmount: int}
+     */
+    private function moduleRequirement(Module $module, int $requiredAmount = 1): array
+    {
+        return [
+            'module' => $module,
+            'requiredAmount' => $requiredAmount
+        ];
     }
 }
