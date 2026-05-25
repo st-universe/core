@@ -533,6 +533,7 @@ function filterByRump(selectedRump) {
 	const isSelected = selectedRump !== '0' && selectedRump !== '';
 
 	applyFilter(isSelected, `.rump_${selectedRump}`, false);
+	showModuleRequiredCounts(isSelected ? `required-rump-${selectedRump}` : null);
 
 	updateBuildplanDropdown(selectedRump);
 }
@@ -572,8 +573,21 @@ function filterByBuildplan(selectedBuildplan) {
 
 	if (isSelected) {
 		applyFilter(isSelected, `.buildplan_${selectedBuildplan}`, true);
+		showModuleRequiredCounts(`required-buildplan-${selectedBuildplan}`);
 	} else {
 		filterByRump(document.getElementById('rump-select').value);
+	}
+}
+
+function showModuleRequiredCounts(requiredCountClass) {
+	document.querySelectorAll('.module-required-count').forEach(count => {
+		count.style.display = 'none';
+	});
+
+	if (requiredCountClass) {
+		document.querySelectorAll(`.${requiredCountClass}`).forEach(count => {
+			count.style.display = 'inline';
+		});
 	}
 }
 

@@ -14,7 +14,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\BuildingFunction;
-use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -73,13 +72,13 @@ final class ShowModuleFab implements ViewControllerInterface
         /** @var array<int, ModuleFabricationListItem> $allModules */
         $allModules = [];
 
-        $rumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
-        [$rumps, $hangarsByRump, $hangarModulesByRump] = $this->prepareRumps($rumps);
+        $rumps = $this->getModuleFabRumps($userId);
+        [$rumps, $exclusiveBuildplansByRump, $exclusiveModulesByRump] = $this->prepareRumps($colony, $rumps);
 
         $this->setModules($colony, $func, $game, $allModules);
-        $this->setRumpModules($colony, $rumps, $allModules, $hangarModulesByRump);
+        $this->setRumpModules($colony, $rumps, $allModules, $exclusiveModulesByRump);
         $this->setModuleTypes($game);
-        $this->setBuildplans($rumps, $allModules, $game, $hangarsByRump, $hangarModulesByRump);
+        $this->setBuildplans($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump);
 
         $game->showMacro($template);
 
@@ -89,6 +88,25 @@ final class ShowModuleFab implements ViewControllerInterface
         $game->setTemplateVar('SHIP_RUMPS', $rumps);
 
         $game->addExecuteJS('clearModuleInputs();', JavascriptExecutionTypeEnum::AFTER_RENDER);
+    }
+
+    /**
+     * @return array<int, SpacecraftRump>
+     */
+    private function getModuleFabRumps(int $userId): array
+    {
+        $rumps = $this->spacecraftRumpRepository->getBuildableByUser($userId);
+
+        foreach ($this->spacecraftBuildplanRepository->getStationBuildplansByUser($userId) as $buildplan) {
+            $rump = $buildplan->getRump();
+            $rumpId = $rump->getId();
+
+            if (!array_key_exists($rumpId, $rumps)) {
+                $rumps[$rumpId] = $rump;
+            }
+        }
+
+        return $rumps;
     }
 
     private function setModuleTypes(GameControllerInterface $game): void
@@ -107,26 +125,26 @@ final class ShowModuleFab implements ViewControllerInterface
     /**
      * @param array<SpacecraftRump> $rumps
      * @param array<int, ModuleFabricationListItem> $allModules
-     * @param array<int, BuildplanHangar> $hangarsByRump
-     * @param array<int, array<int, Module>> $hangarModulesByRump
+     * @param array<int, SpacecraftBuildplan> $exclusiveBuildplansByRump
+     * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
      */
     private function setBuildplans(
         array $rumps,
         array &$allModules,
         GameControllerInterface $game,
-        array $hangarsByRump = [],
-        array $hangarModulesByRump = []
+        array $exclusiveBuildplansByRump = [],
+        array $exclusiveModulesByRump = []
     ): void {
         $buildplans = [];
         foreach ($rumps as $rump) {
             $rumpId = $rump->getId();
 
-            if (array_key_exists($rumpId, $hangarsByRump)) {
-                $hangarBuildplan = $hangarsByRump[$rumpId]->getBuildplan();
-                $buildplans[$rumpId] = [$hangarBuildplan];
+            if (array_key_exists($rumpId, $exclusiveBuildplansByRump)) {
+                $exclusiveBuildplan = $exclusiveBuildplansByRump[$rumpId];
+                $buildplans[$rumpId] = [$exclusiveBuildplan];
                 $this->addBuildplanToModules(
-                    $hangarBuildplan,
-                    $hangarModulesByRump[$rumpId] ?? [],
+                    $exclusiveBuildplan,
+                    $exclusiveModulesByRump[$rumpId] ?? [],
                     $allModules
                 );
                 continue;
@@ -190,19 +208,19 @@ final class ShowModuleFab implements ViewControllerInterface
     /**
      * @param array<SpacecraftRump> $rumps
      * @param array<int, ModuleFabricationListItem> $allModules
-     * @param array<int, array<int, Module>> $hangarModulesByRump
+     * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
      */
     private function setRumpModules(
         Colony $colony,
         array $rumps,
         array &$allModules,
-        array $hangarModulesByRump = []
+        array $exclusiveModulesByRump = []
     ): void {
         foreach ($rumps as $rump) {
             $rumpId = $rump->getId();
 
-            if (array_key_exists($rumpId, $hangarModulesByRump)) {
-                $this->addRumpToModules($rump, $hangarModulesByRump[$rumpId], $allModules);
+            if (array_key_exists($rumpId, $exclusiveModulesByRump)) {
+                $this->addRumpToModules($rump, $exclusiveModulesByRump[$rumpId], $allModules);
                 continue;
             }
 
@@ -255,38 +273,48 @@ final class ShowModuleFab implements ViewControllerInterface
     /**
      * @param array<SpacecraftRump> $rumps
      *
-     * @return array{0: array<SpacecraftRump>, 1: array<int, BuildplanHangar>, 2: array<int, array<int, Module>>}
+     * @return array{0: array<SpacecraftRump>, 1: array<int, SpacecraftBuildplan>, 2: array<int, array<int, array{module: Module, requiredAmount: int}>>}
      */
-    private function prepareRumps(array $rumps): array
+    private function prepareRumps(Colony $colony, array $rumps): array
     {
         $validRumps = [];
-        $hangarsByRump = [];
-        $hangarModulesByRump = [];
+        $exclusiveBuildplansByRump = [];
+        $exclusiveModulesByRump = [];
 
         foreach ($rumps as $key => $rump) {
             $rumpId = $rump->getId();
             $hangar = $this->buildplanHangarRepository->getByRump($rumpId);
 
-            if ($hangar === null) {
+            if ($hangar !== null) {
+                $modules = $this->getModulesByRumpCosts($rumpId);
+                if ($modules === []) {
+                    continue;
+                }
+
                 $validRumps[$key] = $rump;
+                $exclusiveBuildplansByRump[$rumpId] = $hangar->getBuildplan();
+                $exclusiveModulesByRump[$rumpId] = $modules;
                 continue;
             }
 
-            $modules = $this->getModulesByRumpCosts($rumpId);
-            if ($modules === []) {
-                continue;
+            if ($rump->isStation()) {
+                $buildplan = $this->spacecraftBuildplanRepository->getStationBuildplanByRump($rumpId);
+                if ($buildplan === null) {
+                    continue;
+                }
+
+                $exclusiveBuildplansByRump[$rumpId] = $buildplan;
+                $exclusiveModulesByRump[$rumpId] = $this->getStationBuildplanModules($colony, $buildplan);
             }
 
             $validRumps[$key] = $rump;
-            $hangarsByRump[$rumpId] = $hangar;
-            $hangarModulesByRump[$rumpId] = $modules;
         }
 
-        return [$validRumps, $hangarsByRump, $hangarModulesByRump];
+        return [$validRumps, $exclusiveBuildplansByRump, $exclusiveModulesByRump];
     }
 
     /**
-     * @return array<int, Module>
+     * @return array<int, array{module: Module, requiredAmount: int}>
      */
     private function getModulesByRumpCosts(int $rumpId): array
     {
@@ -310,34 +338,71 @@ final class ShowModuleFab implements ViewControllerInterface
             }
         }
 
-        return array_values($modulesByCommodityId);
+        return array_map(
+            fn (Module $module): array => ['module' => $module, 'requiredAmount' => 1],
+            array_values($modulesByCommodityId)
+        );
     }
 
     /**
-     * @param array<int, Module> $modules
+     * @return array<int, array{module: Module, requiredAmount: int}>
+     */
+    private function getStationBuildplanModules(Colony $colony, SpacecraftBuildplan $buildplan): array
+    {
+        $moduleRequirements = [];
+        foreach ($buildplan->getModules() as $buildplanModule) {
+            $module = $buildplanModule->getModule();
+            $moduleRequirements[$module->getId()] = [
+                'module' => $module,
+                'requiredAmount' => $buildplanModule->getModuleCount()
+            ];
+        }
+
+        foreach (
+            $this->moduleRepository->getBySpecialTypeAndRump(
+                $colony,
+                SpacecraftModuleTypeEnum::SPECIAL,
+                $buildplan->getRumpId()
+            ) as $module
+        ) {
+            if (!array_key_exists($module->getId(), $moduleRequirements)) {
+                $moduleRequirements[$module->getId()] = [
+                    'module' => $module,
+                    'requiredAmount' => 1
+                ];
+            }
+        }
+
+        return array_values($moduleRequirements);
+    }
+
+    /**
+     * @param array<int, array{module: Module, requiredAmount: int}> $moduleRequirements
      * @param array<int, ModuleFabricationListItem> $allModules
      */
-    private function addRumpToModules(SpacecraftRump $rump, array $modules, array &$allModules): void
+    private function addRumpToModules(SpacecraftRump $rump, array $moduleRequirements, array &$allModules): void
     {
-        foreach ($modules as $module) {
+        foreach ($moduleRequirements as $moduleRequirement) {
+            $module = $moduleRequirement['module'];
             if (array_key_exists($module->getId(), $allModules)) {
-                $allModules[$module->getId()]->addRump($rump);
+                $allModules[$module->getId()]->addRump($rump, $moduleRequirement['requiredAmount']);
             }
         }
     }
 
     /**
-     * @param array<int, Module> $modules
+     * @param array<int, array{module: Module, requiredAmount: int}> $moduleRequirements
      * @param array<int, ModuleFabricationListItem> $allModules
      */
     private function addBuildplanToModules(
         SpacecraftBuildplan $buildplan,
-        array $modules,
+        array $moduleRequirements,
         array &$allModules
     ): void {
-        foreach ($modules as $module) {
+        foreach ($moduleRequirements as $moduleRequirement) {
+            $module = $moduleRequirement['module'];
             if (array_key_exists($module->getId(), $allModules)) {
-                $allModules[$module->getId()]->addBuildplan($buildplan);
+                $allModules[$module->getId()]->addBuildplan($buildplan, $moduleRequirement['requiredAmount']);
             }
         }
     }
