@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowBroadcastResponse\ShowBroadcastResponse;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -44,17 +45,35 @@ final class SendBroadcast implements ActionControllerInterface
         $this->searchBroadcastableStationsInRange($ship, $usersToBroadcast);
 
         if ($usersToBroadcast->toArray() == []) {
-            $game->getInfo()->addInformation(_("Keine Ziele in Reichweite"));
+            $message = _("Keine Ziele in Reichweite");
+            $game->getInfo()->addInformation($message);
+
+            if ($this->isPopupBroadcast()) {
+                $this->finishFailedPopupBroadcast($game, $message);
+                return;
+            }
         } else {
             $this->privateMessageSender->sendBroadcast(
                 $ship->getUser(),
                 $usersToBroadcast->toArray(),
                 $text
             );
-            $game->getInfo()->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
+            $message = _("Der Broadcast wurde erfolgreich versendet");
+            $game->getInfo()->addInformation($message);
         }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+    }
+
+    private function isPopupBroadcast(): bool
+    {
+        return request::has('broadcastPopup');
+    }
+
+    private function finishFailedPopupBroadcast(GameControllerInterface $game, string $message): void
+    {
+        $game->setTemplateVar('BROADCAST_MESSAGE', $message);
+        $game->setView(ShowBroadcastResponse::VIEW_IDENTIFIER);
     }
 
     /**

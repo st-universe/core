@@ -39,7 +39,8 @@
 <div class="box" id="broadcast" style="width: 500px;">
   <div class="box_title">Broadcast</div>
   <div class="box_body">
-    <form method="post" action="ship.php">
+    <form id="broadcastForm" method="post" action="ship.php"
+      onsubmit="return sendBroadcast(this);">
       <input type="hidden" name="id" value="42" />
       <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
       <table class="tcal">

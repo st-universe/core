@@ -19,7 +19,8 @@
 <div class="box" id="broadcast" style="width: 500px;">
   <div class="box_title">Broadcast</div>
   <div class="box_body">
-    <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+    <form id="broadcastForm" method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}"
+      onsubmit="return sendBroadcast(this);">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
       <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
       <table class="tcal">
