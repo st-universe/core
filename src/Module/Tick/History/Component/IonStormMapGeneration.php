@@ -124,7 +124,9 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
 
         $gif->addImage($frame);
         $gif = $gif->coalesceImages();
-        $gif = $gif->optimizeImageLayers();
+        if ($gif->optimizeImageLayers() === false) {
+            throw new InvalidArgumentException('Fehler bei Optimierung des GIFs');
+        }
         $gif->setFirstIterator();
         $gif->setImageIterations(0); // loop indefinitely
         $gif->writeImages($gifPath, true);
