@@ -45,7 +45,7 @@
             {% if allowMultiple %}
             <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
                 value="{{ moduleId }}"
-                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ module.getCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
+                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
             {% else %}
             <input type="radio" {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
                 onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
@@ -80,7 +80,7 @@
             {% if allowMultiple %}
             <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
                 value="{{ moduleId }}"
-                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ module.getCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
+                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
             {% else %}
             <input type="radio" {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
                 onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
