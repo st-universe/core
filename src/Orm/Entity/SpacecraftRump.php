@@ -95,6 +95,9 @@ class SpacecraftRump
     #[column(type: 'integer', nullable: true)]
     private ?int $commodity_id = 0;
 
+    #[column(type: 'integer', nullable: true)]
+    private ?int $faction_id = null;
+
     #[column(type: 'smallint')]
     private int $flight_ecost = 0;
 
@@ -336,6 +339,17 @@ class SpacecraftRump
         return $this;
     }
 
+    public function getFactionId(): ?int
+    {
+        return $this->faction_id;
+    }
+
+    public function setFactionId(?int $factionId): SpacecraftRump
+    {
+        $this->faction_id = $factionId;
+        return $this;
+    }
+
     public function getFlightEcost(): int
     {
         return $this->flight_ecost;
@@ -430,12 +444,6 @@ class SpacecraftRump
     public function hasSpecialAbility(int $value): bool
     {
         return $this->specialAbilities->containsKey($value);
-    }
-
-    public function getFactionId(): int
-    {
-        //last digit of id shows faction id
-        return $this->getId() % 10;
     }
 
     /**
