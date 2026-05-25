@@ -2,6 +2,22 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
+<form action="/admin/index.php" method="post" name="gamestateform" id="gamestateform">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead">Spielmodus</div>
+    <div class="divbody">
+        <select name="game_state" id="game_state">
+            {% for state in GAME_STATES %}
+            <option value="{{ state.value }}" {% if CURRENT_GAME_STATE.value == state.value %}selected="selected"{% endif %}>
+                {{ state.getDescription() }}
+            </option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="button" name="B_SET_GAME_STATE" value="Modus setzen"
+            id="setgamestatebutton" />
+    </div>
+</form>
+<br />
 <form action="/admin/index.php" method="post" name="scriptform1" id="scriptform1">
     <div class="divhead">Signaturen</div>
     <div class="divbody">

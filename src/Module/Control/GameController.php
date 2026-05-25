@@ -4,10 +4,13 @@ namespace Stu\Module\Control;
 
 use BadMethodCallException;
 use request;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Game\RedirectionException;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
@@ -34,6 +37,7 @@ final class GameController implements GameControllerInterface
 {
     public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
 
+    private const string LOGIN_ACTION_IDENTIFIER = 'B_LOGIN';
     private const string REDIRECT_TO_DOMAIN_ROOT = 'Location: /';
 
     private GameData $gameData;
@@ -264,9 +268,18 @@ final class GameController implements GameControllerInterface
             }
 
             $this->checkUserLock($gameRequest);
+
+            $callbackExecuted = false;
+            if ($this->shouldExecuteLoginBeforeGameState($module)) {
+                $this->executeLoginBeforeGameState($module);
+                $callbackExecuted = true;
+            }
+
             $this->gameState->checkGameState($this->isAdmin());
 
-            $this->callbackExecution->execute($module, $this);
+            if (!$callbackExecuted) {
+                $this->callbackExecution->execute($module, $this);
+            }
             $this->viewExecution->execute($module, $this);
         } catch (SessionInvalidException) {
             session_destroy();
@@ -328,6 +341,27 @@ final class GameController implements GameControllerInterface
                     sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                 );
             }
+        }
+    }
+
+    private function shouldExecuteLoginBeforeGameState(ModuleEnum $module): bool
+    {
+        return $module === ModuleEnum::INDEX
+            && request::has(self::LOGIN_ACTION_IDENTIFIER)
+            && $this->gameState->getGameState() === GameStateEnum::MAINTENANCE;
+    }
+
+    private function executeLoginBeforeGameState(ModuleEnum $module): void
+    {
+        try {
+            $this->callbackExecution->execute($module, $this);
+        } catch (RedirectionException $e) {
+            if (!$this->isAdmin()) {
+                $this->session->logout();
+                throw new MaintenanceGameStateException();
+            }
+
+            throw $e;
         }
     }
 
