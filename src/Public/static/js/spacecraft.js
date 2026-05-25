@@ -134,6 +134,143 @@ function showCommunication(element, id) {
     }
   });
 }
+function sendBroadcast(form) {
+  if (form.dataset.submitting === "1") {
+    return false;
+  }
+
+  form.dataset.submitting = "1";
+
+  var submitButton = form.querySelector('input[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+  }
+
+  new Ajax.Request(form.action, {
+    method: "post",
+    parameters: getBroadcastParameters(form),
+    onSuccess: function (response) {
+      var broadcastResponse = getBroadcastResponse(response.responseText);
+
+      if (!broadcastResponse) {
+        if (!updateBroadcastInnerContent(response.responseText, form)) {
+          showBroadcastFeedback("Broadcast konnte nicht verarbeitet werden");
+        }
+        return;
+      }
+
+      updateBroadcastSessionString(form, broadcastResponse.sessionString);
+      showBroadcastFeedback(broadcastResponse.message);
+    },
+    onFailure: function () {
+      showBroadcastFeedback("Broadcast konnte nicht gesendet werden");
+    },
+    onComplete: function () {
+      form.dataset.submitting = "0";
+
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    }
+  });
+
+  return false;
+}
+
+function getBroadcastParameters(form) {
+  return [
+    "B_SEND_BROADCAST=1",
+    "broadcastPopup=1",
+    "switch=1",
+    "id=" + encodeURIComponent(getBroadcastFormValue(form, "id")),
+    "sstr=" + encodeURIComponent(getBroadcastFormValue(form, "sstr")),
+    "text=" + encodeURIComponent(getBroadcastFormValue(form, "text"))
+  ].join("&");
+}
+
+function getBroadcastFormValue(form, name) {
+  var element = form.querySelector('[name="' + name + '"]');
+
+  if (!element) {
+    return "";
+  }
+
+  return element.value;
+}
+
+function getBroadcastResponse(responseText) {
+  var wrapper = document.createElement("div");
+  wrapper.innerHTML = responseText;
+
+  var responseElement = wrapper.querySelector("#broadcast_response");
+
+  if (!responseElement) {
+    return null;
+  }
+
+  return {
+    message: responseElement.getAttribute("data-message") || "",
+    sessionString: responseElement.getAttribute("data-sstr") || ""
+  };
+}
+
+function updateBroadcastSessionString(form, sessionString) {
+  if (!sessionString) {
+    return;
+  }
+
+  var sessionStringElement = form.querySelector('[name="sstr"]');
+
+  if (sessionStringElement) {
+    sessionStringElement.value = sessionString;
+  }
+}
+
+function updateBroadcastInnerContent(responseText, form) {
+  var innerContent = $("innerContent");
+
+  if (!innerContent) {
+    return false;
+  }
+
+  innerContent.update(responseText);
+  closeAjaxWindow();
+  window.history.pushState(
+    null,
+    "",
+    form.action + "?SHOW_SPACECRAFT=1&id=" + encodeURIComponent(getBroadcastFormValue(form, "id"))
+  );
+
+  if (typeof initTooltips === "function") {
+    initTooltips();
+  }
+
+  return true;
+}
+
+function showBroadcastFeedback(message) {
+  var result = $("result");
+
+  if (!result) {
+    return;
+  }
+
+  result.update(
+    '<table class="use"><tr><th>Meldung</th></tr><tr><td>'
+    + escapeBroadcastMessage(message)
+    + '</td></tr></table><br />'
+  );
+  result.show();
+}
+
+function escapeBroadcastMessage(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 function openTradeMenu(element, postid) {
   updatePopupAtElement(element,
     "?SHOW_TRADEMENU=1&id=" + spacecraftid + "&postid=" + postid
