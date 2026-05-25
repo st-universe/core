@@ -107,8 +107,6 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
                     $message
                 );
             }
-
-            $messageCollection->add($message);
         }
 
         $this->informSpacecraftOwnersAboutConsequences(

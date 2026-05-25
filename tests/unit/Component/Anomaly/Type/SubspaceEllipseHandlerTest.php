@@ -17,6 +17,7 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\Message;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageFactory;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -46,6 +47,8 @@ class SubspaceEllipseHandlerTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->locationRepository = $this->mock(LocationRepositoryInterface::class);
         $this->anomalyCreation = $this->mock(AnomalyCreationInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
@@ -277,14 +280,10 @@ class SubspaceEllipseHandlerTest extends StuTestCase
                 $filledMessage
             );
 
-        $shipsMessageCollecton->shouldReceive('add')
-            ->with($filledMessage);
         $shipsMessageCollecton->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
 
-        $basesMessageCollecton->shouldReceive('add')
-            ->with($depletedMessage);
         $basesMessageCollecton->shouldReceive('isEmpty')
             ->withNoArgs()
             ->andReturn(false);
@@ -303,6 +302,94 @@ class SubspaceEllipseHandlerTest extends StuTestCase
                 PrivateMessageFolderTypeEnum::SPECIAL_STATION,
                 "[b][color=red]Subraumellipse in Sektor SECTOR[/color][/b]"
             );
+
+        $this->subject->handleSpacecraftTick($this->anomaly);
+    }
+
+    public function testHandleSpacecraftTickDoesNotAddCreatedMessageTwice(): void
+    {
+        $messageFactory = new MessageFactory();
+        $location = $this->mock(Location::class);
+        $spacecraft = $this->mock(Spacecraft::class);
+        $condition = $this->mock(SpacecraftCondition::class);
+        $shieldSystem = $this->mock(SpacecraftSystem::class);
+
+        $this->anomaly->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($location);
+
+        $location->shouldReceive('getSpacecraftsWithoutVacation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$spacecraft]));
+        $location->shouldReceive('getSectorString')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SECTOR');
+
+        $spacecraft->shouldReceive('hasSpacecraftSystem')
+            ->with(SpacecraftSystemTypeEnum::SHIELDS)
+            ->once()
+            ->andReturn(true);
+        $spacecraft->shouldReceive('getSpacecraftSystem')
+            ->with(SpacecraftSystemTypeEnum::SHIELDS)
+            ->once()
+            ->andReturn($shieldSystem);
+        $spacecraft->shouldReceive('getCondition')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($condition);
+        $spacecraft->shouldReceive('isStation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $spacecraft->shouldReceive('getName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('SHIP_NAME');
+        $spacecraft->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(222);
+
+        $condition->shouldReceive('getShield')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(10);
+        $condition->shouldReceive('setShield')
+            ->with(0)
+            ->once();
+
+        $shieldSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftSystemModeEnum::MODE_OFF);
+        $shieldSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
+
+        $this->messageFactory->shouldReceive('createMessageCollection')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(
+                $messageFactory->createMessageCollection(),
+                $messageFactory->createMessageCollection()
+            );
+
+        $this->distributedMessageSender->shouldReceive('distributeMessageCollection')
+            ->with(
+                \Mockery::on(fn (MessageCollectionInterface $messages): bool =>
+                    $messages->getInformationDump(222)->getInformations() === [
+                        'SHIP_NAME',
+                        '- die Schilde wurden entladen'
+                    ]),
+                UserConstants::USER_NOONE,
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
+                "[b][color=red]Subraumellipse in Sektor SECTOR[/color][/b]"
+            )
+            ->once();
 
         $this->subject->handleSpacecraftTick($this->anomaly);
     }
