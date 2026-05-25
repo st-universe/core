@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance\Relations\Renderer;
 
 use JBBCode\Parser;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Orm\Entity\Alliance;
@@ -15,7 +14,7 @@ use Stu\Orm\Entity\Alliance;
  */
 final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraphAttributeConverterInterface
 {
-    public function __construct(private Parser $bbCodeParser, private ConfigInterface $config) {}
+    public function __construct(private Parser $bbCodeParser) {}
 
     #[\Override]
     public function convertName(
@@ -53,8 +52,7 @@ final class AllianceDataToGraphAttributeConverter implements AllianceDataToGraph
         Alliance $alliance
     ): string {
         return sprintf(
-            '%s/%s?id=%d',
-            $this->config->get('game.base_url'),
+            '/%s?id=%d',
             ModuleEnum::ALLIANCE->getPhpPage(),
             $alliance->getId()
         );

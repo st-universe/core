@@ -6,7 +6,6 @@ namespace Stu\Component\Alliance\Relations\Renderer;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Faction;
@@ -16,19 +15,17 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
 {
     private MockInterface&Parser $bbCodeParser;
 
-    private MockInterface&ConfigInterface $config;
-
     private AllianceDataToGraphAttributeConverter $subject;
 
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->bbCodeParser = $this->mock(Parser::class);
-        $this->config = $this->mock(ConfigInterface::class);
 
         $this->subject = new AllianceDataToGraphAttributeConverter(
-            $this->bbCodeParser,
-            $this->config
+            $this->bbCodeParser
         );
     }
 
@@ -122,27 +119,20 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
         );
     }
 
-    public function testGetUrlReturnsAbsoluteUrl(): void
+    public function testGetUrlReturnsRootRelativeUrl(): void
     {
         $alliance = $this->mock(Alliance::class);
 
         $allianceId = 666;
-        $base_url = 'some-url';
 
         $alliance->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($allianceId);
 
-        $this->config->shouldReceive('get')
-            ->with('game.base_url')
-            ->once()
-            ->andReturn($base_url);
-
         static::assertSame(
             sprintf(
-                '%s/alliance.php?id=%d',
-                $base_url,
+                '/alliance.php?id=%d',
                 $allianceId
             ),
             $this->subject->getUrl($alliance)
