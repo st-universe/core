@@ -49,7 +49,7 @@ final class ShowSectorScan implements ViewControllerInterface
             true
         );
 
-        $game->setPageTitle("Sektor Scan");
+        $game->setPageTitle("Sektor-Scan");
         $game->setMacroInAjaxWindow('');
         $ship = $wrapper->get();
 
