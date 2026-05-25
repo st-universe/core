@@ -102,6 +102,10 @@ function openStarMap(obj, id) {
 
 storageTimer = null;
 function openStorageInit(element, id) {
+  if (isPopupOpen() && getCurrentPopupType() !== 'storage') {
+    return;
+  }
+
   storageTimer = setTimeout(() => openStorage(element, id), 1000); //wait 1 second
   closeAjaxCallbacks.push(() => {
     clearTimeout(storageTimer);
@@ -111,10 +115,18 @@ function openStorageInit(element, id) {
   }; //remove timer
 }
 function openStorage(element, id) {
-  updatePopupAtElement(element, "?SHOW_SPACECRAFTSTORAGE=1&id=" + id);
+  if (isPopupOpen() && getCurrentPopupType() !== 'storage') {
+    return;
+  }
+
+  updatePopupAtElement(element, "?SHOW_SPACECRAFTSTORAGE=1&id=" + id, null, 'storage');
 }
 function closeStorage() {
-  closeAjaxWindow();
+  clearTimeout(storageTimer);
+
+  if (getCurrentPopupType() === 'storage') {
+    closeAjaxWindow();
+  }
 }
 function showSpacecraftDetails(element, id) {
   updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
