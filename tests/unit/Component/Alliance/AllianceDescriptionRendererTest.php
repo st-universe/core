@@ -57,7 +57,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
 
         $this->createRendererExpectations(
             'ALLIANCE_HOMEPAGE_LINK',
-            sprintf('<a href="%s" target="_blank">%s</a>', $homepage, 'Zur Allianz Homepage')
+            sprintf('<a href="%s" target="_blank">%s</a>', $homepage, 'Zur Allianz-Homepage')
         );
     }
 

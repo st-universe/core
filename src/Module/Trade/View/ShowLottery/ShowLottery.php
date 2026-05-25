@@ -26,7 +26,7 @@ final class ShowLottery implements ViewControllerInterface
             sprintf('trade.php?%s=1', self::VIEW_IDENTIFIER),
             _('Lotterie')
         );
-        $game->setPageTitle(_('/ Handel / Nagus Lotterie'));
+        $game->setPageTitle(_('/ Handel / Nagus-Lotterie'));
         $game->setViewTemplate('html/trade/lottery.twig');
 
         $ticketCount = $this->lotteryFacade->getTicketAmount(false);

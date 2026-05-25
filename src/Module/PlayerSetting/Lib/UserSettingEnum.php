@@ -55,22 +55,22 @@ enum UserSettingEnum: string
         return match ($this) {
             self::AVATAR => 'Hier kannst Du einen Avatar
                             hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte
-                            150x150 Pixel groß sein und im PNG-Format vorliegen.',
+                            150x150 Pixel groß sein und im PNG-Format vorliegen',
             self::RGB_CODE => 'Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
                                 werden können. Beispiel: #9ab5ef',
-            self::EMAIL_NOTIFICATION => 'Emailbenachrichtigung bei privaten Nachrichten',
+            self::EMAIL_NOTIFICATION => 'E-Mail-Benachrichtigung bei privaten Nachrichten',
             self::STORAGE_NOTIFICATION => 'Nachricht bei vollen Lagern zum Tick',
-            self::SAVE_LOGIN => 'Login nicht speichern (Ideal an fremden Computern)',
-            self::DEFAULT_VIEW => 'Auswahl der Startseite, welche nach dem Login angezeigt werden soll.',
-            self::SHOW_ONLINE_STATUS => 'Online Status öffentlich',
+            self::SAVE_LOGIN => 'Login nicht speichern (ideal an fremden Computern)',
+            self::DEFAULT_VIEW => 'Auswahl der Startseite, welche nach dem Login angezeigt werden soll',
+            self::SHOW_ONLINE_STATUS => 'Online-Status öffentlich',
             self::SHOW_PM_READ_RECEIPT => 'Lesebestätigungen bei PMs anzeigen (nur wenn sowohl Sender als auch Empfänger den Haken gesetzt haben)',
-            self::FLEET_FIXED_DEFAULT => 'Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren gehen können.',
-            self::WARPSPLIT_AUTO_CARRYOVER_DEFAULT => 'Führt dazu, dass überschüssige Reaktorleistung bei Schiffen automatisch an die übrigen Systeme transferiert wird.',
-            self::RPG_BEHAVIOR => 'Information für andere Spieler ob man selbst gern Rollenspiel betreibt.',
-            self::CSS_COLOR_SHEET => 'Auswahl der Interface-Farben.',
-            self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt einträge in der History an die durch Interaktion mit dem Piraten NPC entstanden sind.',
-            self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert.',
-            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester).'
+            self::FLEET_FIXED_DEFAULT => 'Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren gehen können',
+            self::WARPSPLIT_AUTO_CARRYOVER_DEFAULT => 'Führt dazu, dass überschüssige Reaktorleistung bei Schiffen automatisch an die übrigen Systeme transferiert wird',
+            self::RPG_BEHAVIOR => 'Information für andere Spieler, ob man selbst gern Rollenspiel betreibt',
+            self::CSS_COLOR_SHEET => 'Auswahl der Interface-Farben',
+            self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt Einträge in der History an, die durch Interaktion mit dem Piraten-NPC entstanden sind',
+            self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert',
+            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)'
         };
     }
 

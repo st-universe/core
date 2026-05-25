@@ -40,7 +40,7 @@ final class ShowSectorScan implements ViewControllerInterface
             false
         );
 
-        $game->setPageTitle("Sektor Scan");
+        $game->setPageTitle("Sektor-Scan");
 
         $mapField = $this->mapRepository->getByCoordinates(
             $colony->getSystem()->getId(),
