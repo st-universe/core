@@ -47,6 +47,12 @@ class SpacecraftBuildplan
     #[Column(type: 'smallint')]
     private int $crew = 0;
 
+    #[Column(type: 'boolean', nullable: true, options: ['default' => false])]
+    private ?bool $npc_gift = false;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $count = null;
+
     /**
      * @var ArrayCollection<int, Spacecraft>
      */
@@ -149,6 +155,30 @@ class SpacecraftBuildplan
     public function setCrew(int $crew): SpacecraftBuildplan
     {
         $this->crew = $crew;
+
+        return $this;
+    }
+
+    public function getNpcGift(): ?bool
+    {
+        return $this->npc_gift;
+    }
+
+    public function setNpcGift(?bool $npcGift): SpacecraftBuildplan
+    {
+        $this->npc_gift = $npcGift;
+
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): SpacecraftBuildplan
+    {
+        $this->count = $count;
 
         return $this;
     }

@@ -31,6 +31,8 @@ class ViewExecutionTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->controllerDiscovery = $this->mock(ControllerDiscoveryInterface::class);
         $this->accessCheck = $this->mock(AccessCheckInterface::class);
         $this->tutorialProvider = $this->mock(TutorialProvider::class);
@@ -249,6 +251,8 @@ class ViewExecutionTest extends StuTestCase
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ControllerInterface::class);
         $controller2 = $this->mock(ControllerInterface::class);
+
+        request::setMockVars(['SHOW_THIS' => 1]);
 
         $game->shouldReceive('getViewContext')
             ->with(ViewContextTypeEnum::VIEW)

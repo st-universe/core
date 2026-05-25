@@ -115,6 +115,8 @@
             <div>Flugkosten: {{ RUMP.getFlightEcost }} pro Feld</div>
             <div>Beamfaktor: {{ RUMP.getBeamFactor }}x Multiplikator</div>
             <div>Energiewaffensalven: {{ RUMP.getPhaserVolleys }} pro Kampfrunde</div>
+{% if PLAN and PLAN.getCount is not null %}
+            <div>{% if PLAN.getCount > 0 %}Noch {{ PLAN.getCount }} mal baubar{% else %}Nicht mehr baubar{% endif %}</div>{% endif %}
             <div id="torpedo_info" style="display: none;">
               <div>Torpedolevel: {{ RUMP.getTorpedoLevel }}</div>
               <div>Torpedosalven: {{ RUMP.getTorpedoVolleys }} pro Kampfrunde</div>
@@ -169,7 +171,7 @@
       </div>
     </div>
   </div>
-  {% if PLAN %}
+  {% if PLAN and (PLAN.getCount is null or PLAN.getCount > 0) %}
   <script defer="defer">
       enableShipBuildButton();
   </script>

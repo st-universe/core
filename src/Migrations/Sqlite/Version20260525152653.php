@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260525110336 extends AbstractMigration
+final class Version20260525152653 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -99,7 +99,7 @@ final class Version20260525110336 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_buildings_upgrades_cost (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, buildings_upgrades_id BIGINT NOT NULL, commodity_id INTEGER NOT NULL, amount INTEGER NOT NULL, CONSTRAINT FK_37358E19B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_37358E1927B02F4A FOREIGN KEY (buildings_upgrades_id) REFERENCES stu_buildings_upgrades (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_37358E19B4ACC212 ON stu_buildings_upgrades_cost (commodity_id)');
         $this->addSql('CREATE INDEX buildings_upgrades_idx ON stu_buildings_upgrades_cost (buildings_upgrades_id)');
-        $this->addSql('CREATE TABLE stu_buildplan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, user_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, buildtime INTEGER NOT NULL, signature VARCHAR(32) DEFAULT NULL, crew SMALLINT NOT NULL, CONSTRAINT FK_8FFD6A1A2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8FFD6A1AA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_buildplan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, user_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, buildtime INTEGER NOT NULL, signature VARCHAR(32) DEFAULT NULL, crew SMALLINT NOT NULL, npc_gift BOOLEAN DEFAULT 0, count INTEGER DEFAULT NULL, CONSTRAINT FK_8FFD6A1A2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8FFD6A1AA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8FFD6A1A2EE98D4C ON stu_buildplan (rump_id)');
         $this->addSql('CREATE INDEX IDX_8FFD6A1AA76ED395 ON stu_buildplan (user_id)');
         $this->addSql('CREATE UNIQUE INDEX buildplan_signatures_idx ON stu_buildplan (user_id, rump_id, signature)');

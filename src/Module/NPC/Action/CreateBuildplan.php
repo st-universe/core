@@ -44,6 +44,11 @@ final class CreateBuildplan implements ActionControllerInterface
         $game->setView(ShowBuildplanCreator::VIEW_IDENTIFIER);
         $userId = request::postIntFatal('userId');
         $rumpId = request::postIntFatal('rumpId');
+        $buildplanCount = $this->determineBuildplanCount($game);
+        if ($buildplanCount === false) {
+            return;
+        }
+
         $modInput = request::postArray('mod');
         $moduleList = [];
 
@@ -108,6 +113,8 @@ final class CreateBuildplan implements ActionControllerInterface
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime(0);
+            $plan->setNpcGift(true);
+            $plan->setCount($buildplanCount);
 
             $this->buildplanRepository->save($plan);
             $this->entityManager->flush();
@@ -172,13 +179,14 @@ final class CreateBuildplan implements ActionControllerInterface
             }
 
             $logText = sprintf(
-                '%s hat für Spieler %s (%s) einen Bauplan erstellt. Rumpf: %s, Module: %s, Crew: %d, Grund: %s',
+                '%s hat für Spieler %s (%s) einen Bauplan erstellt. Rumpf: %s, Module: %s, Crew: %d, Baubar: %s, Grund: %s',
                 $game->getUser()->getName(),
                 $user->getName(),
                 $user->getId(),
                 $rump->getName(),
                 implode(', ', $moduleNames),
                 $plan->getCrew(),
+                $buildplanCount === null ? 'unlimitiert' : sprintf('%d mal', $buildplanCount),
                 $reason
             );
 
@@ -206,5 +214,20 @@ final class CreateBuildplan implements ActionControllerInterface
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    private function determineBuildplanCount(GameControllerInterface $game): int|false|null
+    {
+        $buildplanCount = request::postString('buildplan_count');
+        if ($buildplanCount === false || $buildplanCount === '') {
+            return null;
+        }
+
+        if (!ctype_digit($buildplanCount) || (int)$buildplanCount <= 0) {
+            $game->getInfo()->addInformation('X mal baubar muss leer sein oder eine Zahl größer 0 enthalten');
+            return false;
+        }
+
+        return (int)$buildplanCount;
     }
 }

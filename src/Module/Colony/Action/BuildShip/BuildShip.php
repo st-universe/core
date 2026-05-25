@@ -16,9 +16,12 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
+use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -78,7 +81,7 @@ final class BuildShip implements ActionControllerInterface
             $game->getInfo()->addInformation(_('Die Werft ist nicht aktiviert'));
             return;
         }
-        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+        $this->setModuleScreenView($game);
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
             $game->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
@@ -171,6 +174,25 @@ final class BuildShip implements ActionControllerInterface
             $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
+
+        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
+        $submittedPlan = $this->getSubmittedBuildplan($userId, $rump->getId());
+
+        if (
+            $submittedPlan !== null
+            && $submittedPlan->getNpcGift() === true
+            && $submittedPlan->getSignature() !== $signature
+        ) {
+            $game->getInfo()->addInformation(_('Du kannst diesen Bauplan nicht ändern'));
+            return;
+        }
+
+        $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        if ($plan !== null && $plan->getCount() !== null && $plan->getCount() <= 0) {
+            $game->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
+            return;
+        }
+
         $storage = $colony->getStorage();
         foreach ($modules as $module) {
             if (!$storage->containsKey($module->getCommodityId())) {
@@ -191,8 +213,6 @@ final class BuildShip implements ActionControllerInterface
             $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
-        $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
             if (
@@ -237,6 +257,9 @@ final class BuildShip implements ActionControllerInterface
                 $plan->getName()
             );
         }
+
+        $this->lowerBuildplanCount($plan);
+
         $queue = $this->colonyShipQueueRepository->prototype();
         $queue->setColony($colony);
         $queue->setUserId($userId);
@@ -263,5 +286,43 @@ final class BuildShip implements ActionControllerInterface
     public function performSessionCheck(): bool
     {
         return false;
+    }
+
+    private function setModuleScreenView(GameControllerInterface $game): void
+    {
+        $planId = request::indInt('planid');
+
+        if ($planId > 0) {
+            $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+            $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $planId);
+            return;
+        }
+
+        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+    }
+
+    private function getSubmittedBuildplan(int $userId, int $rumpId): ?SpacecraftBuildplan
+    {
+        $planId = request::indInt('planid');
+        if ($planId === 0) {
+            return null;
+        }
+
+        $plan = $this->spacecraftBuildplanRepository->find($planId);
+        if ($plan === null || $plan->getUserId() !== $userId || $plan->getRumpId() !== $rumpId) {
+            return null;
+        }
+
+        return $plan;
+    }
+
+    private function lowerBuildplanCount(SpacecraftBuildplan $plan): void
+    {
+        $count = $plan->getCount();
+        if ($count === null) {
+            return;
+        }
+
+        $plan->setCount(max(0, $count - 1));
     }
 }

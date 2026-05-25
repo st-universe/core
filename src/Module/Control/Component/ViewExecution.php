@@ -49,18 +49,21 @@ class ViewExecution
         $views = $this->controllerDiscovery->getControllers($module, true);
 
         foreach ($views as $viewIdentifier => $controller) {
-            if (
-                request::has($viewIdentifier)
-                || $viewIdentifier === $viewFromContext
-            ) {
-                $game->getGameRequest()->setView($viewIdentifier);
-
-                if ($this->accessCheck->checkUserAccess($controller, $game)) {
-                    $this->handleView($controller, $game);
-                    return;
+            if ($viewFromContext !== null && $viewFromContext !== '') {
+                if ($viewIdentifier !== $viewFromContext) {
+                    continue;
                 }
-                break;
+            } elseif (!request::has($viewIdentifier)) {
+                continue;
             }
+
+            $game->getGameRequest()->setView($viewIdentifier);
+
+            if ($this->accessCheck->checkUserAccess($controller, $game)) {
+                $this->handleView($controller, $game);
+                return;
+            }
+            break;
         }
 
         $view = $views[GameController::DEFAULT_VIEW] ?? null;

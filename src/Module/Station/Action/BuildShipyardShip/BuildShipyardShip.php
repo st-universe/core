@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -58,6 +59,11 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
+        if ($plan->getCount() !== null && $plan->getCount() <= 0) {
+            $game->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
+            return;
+        }
+
         $rump = $plan->getRump();
 
         $epsSystem = $wrapper->getEpsSystemData();
@@ -96,6 +102,8 @@ final class BuildShipyardShip implements ActionControllerInterface
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
 
+        $this->lowerBuildplanCount($plan);
+
         $epsSystem->lowerEps($rump->getEpsCost())->update();
 
         $this->stationRepository->save($shipyard);
@@ -112,5 +120,15 @@ final class BuildShipyardShip implements ActionControllerInterface
     public function performSessionCheck(): bool
     {
         return false;
+    }
+
+    private function lowerBuildplanCount(SpacecraftBuildplan $plan): void
+    {
+        $count = $plan->getCount();
+        if ($count === null) {
+            return;
+        }
+
+        $plan->setCount(max(0, $count - 1));
     }
 }
