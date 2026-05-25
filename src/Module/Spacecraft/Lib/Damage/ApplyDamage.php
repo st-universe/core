@@ -60,6 +60,9 @@ final class ApplyDamage implements ApplyDamageInterface
                 $informations->addInformation($disablemessage);
             }
         } else {
+            if ($damageWrapper->isCrit()) {
+                $informations->addInformation("- Kritischer Hüllen-Treffer");
+            }
             $informations->addInformation("- Hüllenschaden: " . $damage);
             $informations->addInformation("-- Das Schiff wurde zerstört!");
             $spacecraft->getCondition()->setIsDestroyed(true);

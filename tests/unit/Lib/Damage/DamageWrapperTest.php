@@ -6,7 +6,10 @@ namespace Stu\Lib\Damage;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class DamageWrapperTest extends StuTestCase
@@ -16,6 +19,8 @@ class DamageWrapperTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new DamageWrapper(0);
     }
 
@@ -87,6 +92,50 @@ class DamageWrapperTest extends StuTestCase
         $result = $this->subject->getDamageRelative($target, $mode);
 
         $this->assertEquals($expectedHullDamage, $result);
+    }
+
+    public function testGetDamageRelativeAppliesPirateWrathOnlyOnceAfterShieldDamage(): void
+    {
+        $attacker = $this->mock(User::class);
+        $targetUser = $this->mock(User::class);
+        $target = $this->mock(Ship::class);
+        $pirateWrath = $this->mock(PirateWrath::class);
+
+        $attacker->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(UserConstants::USER_NPC_KAZON);
+        $target->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($targetUser);
+        $targetUser->shouldReceive('getPirateWrath')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($pirateWrath);
+        $pirateWrath->shouldReceive('getWrath')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1800);
+
+        $target->shouldReceive('getCondition->getShield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(18);
+
+        $this->subject->setNetDamage(314);
+        $this->subject->setIsTorpedoDamage(true);
+        $this->subject->setShieldDamageFactor(100);
+        $this->subject->setHullDamageFactor(200);
+        $this->subject->setModificator(97);
+        $this->subject->setPirateWrath($attacker, $target);
+
+        $shieldDamage = $this->subject->getDamageRelative($target, DamageModeEnum::SHIELDS);
+        $hullDamage = $this->subject->getDamageRelative($target, DamageModeEnum::HULL);
+
+        $this->assertEquals(18, $shieldDamage);
+        $this->assertEquals(547, $this->subject->getNetDamage());
+        $this->assertEquals(1061, $hullDamage);
     }
 
     public function testCanDamageSystemExpectTrueIfNoWhitelistDefined(): void

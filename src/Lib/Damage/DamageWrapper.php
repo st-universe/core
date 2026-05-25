@@ -15,6 +15,7 @@ class DamageWrapper
     private bool $isShieldPenetration = false;
     private int $modificator = 100;
     private ?int $pirateWrath = null;
+    private bool $pirateWrathAppliedToNetDamage = false;
 
     /** @var null|array<SpacecraftSystemTypeEnum> */
     private ?array $targetSystemTypes = null;
@@ -170,7 +171,7 @@ class DamageWrapper
     private function calculateDamageShields(Spacecraft $target): float
     {
         $netDamage = $this->getNetDamage();
-        $netDamage = $this->mindPirateWrath($netDamage);
+        $netDamage = $this->applyPirateWrathToNetDamage($netDamage);
 
         $targetShields = $target->getCondition()->getShield();
 
@@ -209,7 +210,9 @@ class DamageWrapper
     private function calculateDamageHull(): float
     {
         $damage = round($this->getNetDamage() / 100 * $this->getHullDamageFactor());
-        $damage = $this->mindPirateWrath($damage);
+        if (!$this->pirateWrathAppliedToNetDamage) {
+            $damage = $this->mindPirateWrath($damage);
+        }
 
         if ($this->getIsTorpedoDamage() === true) {
             $damage = round($damage * ($this->getModificator() / 100));
@@ -230,5 +233,12 @@ class DamageWrapper
         }
 
         return round($damage / PirateWrathManager::DEFAULT_WRATH * $this->pirateWrath);
+    }
+
+    private function applyPirateWrathToNetDamage(float $damage): float
+    {
+        $this->pirateWrathAppliedToNetDamage = true;
+
+        return $this->mindPirateWrath($damage);
     }
 }
