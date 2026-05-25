@@ -74,4 +74,11 @@ interface ModuleRepositoryInterface extends ObjectRepository
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId
     ): array;
+
+    /**
+     * @param array<int> $commodityIds
+     *
+     * @return array<Module>
+     */
+    public function getByCommodityIds(array $commodityIds): array;
 }
