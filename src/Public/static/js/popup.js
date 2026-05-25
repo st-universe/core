@@ -1,6 +1,17 @@
 const ID = "popupWindow";
 const CONTENT_ID = "popupContent";
 
+var currentPopupType = null;
+
+function isPopupOpen() {
+	const popup = document.getElementById(ID);
+	return popup !== null && popup.style.display !== 'none';
+}
+
+function getCurrentPopupType() {
+	return currentPopupType;
+}
+
 
 function showPopup(width = null, posX = null, posY = null, relative = true) {
 
@@ -43,6 +54,7 @@ function showPopup(width = null, posX = null, posY = null, relative = true) {
 }
 function hidePopup() {
 	$(ID).style.display = 'none';
+	currentPopupType = null;
 }
 
 function enablePopupDrag() {
@@ -76,7 +88,7 @@ function enablePopupDrag() {
 	popupDragEnabled = true;
 };
 
-function updatePopupAtElement(element, url, width) {
+function updatePopupAtElement(element, url, width, popupType = null) {
 
 	var posX = null;
 	var posY = null;
@@ -90,10 +102,10 @@ function updatePopupAtElement(element, url, width) {
 		posY = window.scrollY;
 	}
 
-	updatePopup(url, width, posX, posY, false, element !== null);
+	updatePopup(url, width, posX, posY, false, element !== null, popupType);
 }
 
-function updatePopup(url, width = null, posX = null, posY = null, relative = true, hide = true) {
+function updatePopup(url, width = null, posX = null, posY = null, relative = true, hide = true, popupType = null) {
 	if (hide) {
 		hidePopup();
 	}
@@ -103,6 +115,7 @@ function updatePopup(url, width = null, posX = null, posY = null, relative = tru
 			onComplete: function (response) {
 				enablePopupDrag();
 				showPopup(width, posX, posY, relative);
+				currentPopupType = popupType;
 			},
 			method: "get",
 			evalScripts: true
@@ -110,6 +123,7 @@ function updatePopup(url, width = null, posX = null, posY = null, relative = tru
 	} else {
 		enablePopupDrag();
 		showPopup(width, posX, posY, relative);
+		currentPopupType = popupType;
 	}
 }
 
