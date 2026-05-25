@@ -88,7 +88,19 @@
 
                     <tr>
                         <td>Crewbedarf</td>
-                        <td>{{ data.getCrew }}</td>
+                        <td>
+                            {{ data.getCrew }}
+                        </td>
+                    </tr>
+                    <tr>
+                            <td>
+                            {% if data.getNpcGift %}
+                            NPC Geschenk
+                            {% endif %}
+                            </td>
+                            <td>                                                    {% if data.getCount is not null %}
+                            {% if data.getCount > 0 %}Noch {{ data.getCount }} mal baubar{% else %}Nicht mehr baubar{% endif %}
+                            {% endif %}</td>
                     </tr>
                 </table>
             </td>

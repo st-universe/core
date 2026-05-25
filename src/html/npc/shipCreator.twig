@@ -36,6 +36,12 @@
             </form>
             {% endif %}
             <br>
+            {% if buildplan.getNpcGift %}
+            <div>Durch NPC erstellt</div>
+            {% endif %}
+            {% if buildplan.getCount is not null %}
+            <div>{% if buildplan.getCount > 0 %}Noch {{ buildplan.getCount }} mal baubar{% else %}Nicht mehr baubar{% endif %}</div>
+            {% endif %}
             <span>Crew: {{ buildplan.getCrew }}</span>
             <div style="margin-top: 10px;">
                 {% for module in buildplan.getModulesOrdered %}
@@ -87,6 +93,19 @@
                         <span style="color: #888;">Mindestcrew:</span>
                         <span style="color: #ddd;">{{ SELECTED_BUILDPLAN.getCrew }}</span>
                     </div>
+                    {% if SELECTED_BUILDPLAN.getCount is not null %}
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Baubar:</span>
+                        <span style="color: #ddd;">{% if SELECTED_BUILDPLAN.getCount > 0 %}Noch {{
+                            SELECTED_BUILDPLAN.getCount }} mal baubar{% else %}Nicht mehr baubar{% endif %}</span>
+                    </div>
+                    {% endif %}
+                    {% if SELECTED_BUILDPLAN.getNpcGift %}
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #888;">Typ:</span>
+                        <span style="color: #ddd;">Durch NPC erstellt</span>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
