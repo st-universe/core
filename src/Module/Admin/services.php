@@ -42,6 +42,7 @@ use Stu\Module\Admin\Action\PostNews;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
+use Stu\Module\Admin\Action\SetGameState;
 use Stu\Module\Admin\Action\SpawnPirateFleet;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequest;
@@ -123,6 +124,7 @@ return [
         GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
         RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class),
         RecalculateBuildplanCrewUsage::ACTION_IDENTIFIER => autowire(RecalculateBuildplanCrewUsage::class),
+        SetGameState::ACTION_IDENTIFIER => autowire(SetGameState::class),
         SpawnPirateFleet::ACTION_IDENTIFIER => autowire(SpawnPirateFleet::class)
     ],
     'ADMIN_VIEWS' => [

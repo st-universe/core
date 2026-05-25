@@ -138,6 +138,32 @@
 <br />
 
 <div id="result" style="display: none;">..</div>
+<form action="/admin/index.php" method="post" name="gamestateform" id="gamestateform">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+    <div class="divhead">Spielmodus</div>
+    <div class="divbody">
+        <select name="game_state" id="game_state">
+                        <option value="1" selected="selected">
+                Online
+            </option>
+                        <option value="2" >
+                Tick
+            </option>
+                        <option value="3" >
+                Wartung
+            </option>
+                        <option value="4" >
+                Umzug
+            </option>
+                        <option value="5" >
+                Reset
+            </option>
+                    </select>
+        <input type="submit" class="button" name="B_SET_GAME_STATE" value="Modus setzen"
+            id="setgamestatebutton" />
+    </div>
+</form>
+<br />
 <form action="/admin/index.php" method="post" name="scriptform1" id="scriptform1">
     <div class="divhead">Signaturen</div>
     <div class="divbody">
