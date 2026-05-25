@@ -3,7 +3,11 @@
 namespace Stu\Component\Spacecraft\Trait;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Config\Init;
+use Stu\Exception\AccessViolationException;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\CrewAssignment;
 
 trait SpacecraftCrewTrait
 {
@@ -23,6 +27,19 @@ trait SpacecraftCrewTrait
     public function getCrewCount(): int
     {
         return $this->getThis()->getCrewAssignments()->count();
+    }
+
+    public function getOwnCrewCount(): int
+    {
+        $user = Init::getContainer()->get(SessionInterface::class)->getUser();
+        if ($user === null) {
+            throw new AccessViolationException('User not set');
+        }
+        $userId = $user->getId();
+
+        return $this->getThis()->getCrewAssignments()
+            ->filter(fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getUser()->getId() === $userId)
+            ->count();
     }
 
     public function getExcessCrewCount(): int
