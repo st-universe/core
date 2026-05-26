@@ -104,10 +104,17 @@ final class CreateBuildplan implements ActionControllerInterface
             $modules[$moduleId] = $module;
         }
 
-        $crewInput = request::postInt('crew_input');
-        $crewUsage = $crewInput > 0
-            ? $crewInput
-            : $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+        $crewInput = request::postString('crew_input');
+        if ($crewInput !== false && $crewInput !== '') {
+            if (!ctype_digit($crewInput)) {
+                $game->getInfo()->addInformation('Benötigte Crew muss leer sein oder eine Zahl größer/gleich 0 enthalten');
+                return;
+            }
+
+            $crewUsage = (int)$crewInput;
+        } else {
+            $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+        }
 
         $signature = $this->buildplanSignatureCreation->createSignatureByModuleIds(
             $moduleIds,
