@@ -13,6 +13,9 @@
             {% for rump in SHIP_RUMPS %}
             <option value="{{ rump.getId }}">{{ rump.getName }}</option>
             {% endfor %}
+            {% if ADDITIONAL_BUILDPLANS %}
+            <option value="additional">Weitere Baupläne</option>
+            {% endif %}
         </select>
         <select style="width:55%" id="buildplan-select" onchange="filterByBuildplan(this.value);">
             <option value="0" selected>Alle Baupläne</option>

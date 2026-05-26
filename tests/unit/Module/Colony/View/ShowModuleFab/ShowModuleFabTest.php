@@ -217,6 +217,42 @@ class ShowModuleFabTest extends StuTestCase
         );
     }
 
+    public function testGetAdditionalBuildplansReturnsPlansForUnavailableRumps(): void
+    {
+        $availableRump = $this->mock(SpacecraftRump::class);
+        $availableBuildplan = $this->mock(SpacecraftBuildplan::class);
+        $additionalBuildplan = $this->mock(SpacecraftBuildplan::class);
+
+        $availableRump->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+
+        $this->spacecraftBuildplanRepository->shouldReceive('getByUser')
+            ->with(42)
+            ->once()
+            ->andReturn([$availableBuildplan, $additionalBuildplan]);
+
+        $availableBuildplan->shouldReceive('getRumpId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+
+        $additionalBuildplan->shouldReceive('getRumpId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(9);
+        $additionalBuildplan->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(77);
+
+        $this->assertSame(
+            [77 => $additionalBuildplan],
+            $this->invokeGetAdditionalBuildplans(42, [$availableRump])
+        );
+    }
+
     public function testSetRumpModulesUsesHangarCostModulesOnly(): void
     {
         $colony = $this->mock(Colony::class);
@@ -334,6 +370,68 @@ class ShowModuleFabTest extends StuTestCase
         $this->assertStringContainsString('buildplan_55', $hangarCostItem->getClass());
         $this->assertStringNotContainsString('buildplan_55', $buildplanOnlyItem->getClass());
         $this->assertSame([55 => 3], $hangarCostItem->getRequiredAmountsByBuildplan());
+    }
+
+    public function testSetBuildplansAddsAdditionalBuildplansWithoutAvailableRump(): void
+    {
+        $game = $this->mock(GameControllerInterface::class);
+        $colony = $this->mock(Colony::class);
+        $additionalBuildplan = $this->mock(SpacecraftBuildplan::class);
+        $buildplanModule = $this->mock(BuildplanModule::class);
+        $module = $this->mock(Module::class);
+
+        $additionalBuildplan->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(77);
+        $additionalBuildplan->shouldReceive('getModules')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$buildplanModule]));
+
+        $buildplanModule->shouldReceive('getModule')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($module);
+        $buildplanModule->shouldReceive('getModuleCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $module->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(1001);
+        $module->shouldReceive('getType')
+            ->withNoArgs()
+            ->andReturn(SpacecraftModuleTypeEnum::PHASER);
+        $module->shouldReceive('getLevel')
+            ->withNoArgs()
+            ->andReturn(2);
+
+        $game->shouldReceive('setTemplateVar')
+            ->with('BUILDPLANS', ['additional' => [77 => $additionalBuildplan]])
+            ->once();
+
+        $moduleItem = new ModuleFabricationListItem(
+            $this->moduleQueueRepository,
+            $module,
+            $colony
+        );
+
+        $allModules = [
+            1001 => $moduleItem
+        ];
+
+        $this->invokeSetBuildplans(
+            [],
+            $allModules,
+            $game,
+            [],
+            [],
+            [77 => $additionalBuildplan]
+        );
+
+        $this->assertStringContainsString('buildplan_77', $moduleItem->getClass());
+        $this->assertSame([77 => 2], $moduleItem->getRequiredAmountsByBuildplan());
     }
 
     public function testPrepareRumpsRemovesHangarRumpWhenCostCommodityHasNoModule(): void
@@ -554,6 +652,24 @@ class ShowModuleFabTest extends StuTestCase
     }
 
     /**
+     * @param array<SpacecraftRump> $availableRumps
+     *
+     * @return array<int, SpacecraftBuildplan>
+     */
+    private function invokeGetAdditionalBuildplans(int $userId, array $availableRumps): array
+    {
+        $callable = \Closure::bind(
+            function (int $userId, array $availableRumps): array {
+                return $this->getAdditionalBuildplans($userId, $availableRumps);
+            },
+            $this->subject,
+            ShowModuleFab::class
+        );
+
+        return $callable($userId, $availableRumps);
+    }
+
+    /**
      * @param array<SpacecraftRump> $rumps
      * @param array<int, ModuleFabricationListItem> $allModules
      * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
@@ -580,13 +696,15 @@ class ShowModuleFabTest extends StuTestCase
      * @param array<int, ModuleFabricationListItem> $allModules
      * @param array<int, SpacecraftBuildplan> $exclusiveBuildplansByRump
      * @param array<int, array<int, array{module: Module, requiredAmount: int}>> $exclusiveModulesByRump
+     * @param array<int, SpacecraftBuildplan> $additionalBuildplans
      */
     private function invokeSetBuildplans(
         array $rumps,
         array &$allModules,
         GameControllerInterface $game,
         array $exclusiveBuildplansByRump,
-        array $exclusiveModulesByRump
+        array $exclusiveModulesByRump,
+        array $additionalBuildplans = []
     ): void {
         $callable = \Closure::bind(
             function (
@@ -594,15 +712,23 @@ class ShowModuleFabTest extends StuTestCase
                 array &$allModules,
                 GameControllerInterface $game,
                 array $exclusiveBuildplansByRump,
-                array $exclusiveModulesByRump
+                array $exclusiveModulesByRump,
+                array $additionalBuildplans
             ): void {
-                $this->setBuildplans($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump);
+                $this->setBuildplans(
+                    $rumps,
+                    $allModules,
+                    $game,
+                    $exclusiveBuildplansByRump,
+                    $exclusiveModulesByRump,
+                    $additionalBuildplans
+                );
             },
             $this->subject,
             ShowModuleFab::class
         );
 
-        $callable($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump);
+        $callable($rumps, $allModules, $game, $exclusiveBuildplansByRump, $exclusiveModulesByRump, $additionalBuildplans);
     }
 
     /**
