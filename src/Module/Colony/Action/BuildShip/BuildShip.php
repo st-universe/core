@@ -169,14 +169,17 @@ final class BuildShip implements ActionControllerInterface
             $modules[current($module)] = $mod;
         }
 
-        $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+        $submittedPlan = $this->getSubmittedBuildplan($userId, $rump->getId());
+        $crewUsage = $submittedPlan?->getNpcGift() === true
+            ? $submittedPlan->getCrew()
+            : $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
 
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
-        $submittedPlan = $this->getSubmittedBuildplan($userId, $rump->getId());
 
         if (
             $submittedPlan !== null
@@ -187,7 +190,9 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        $plan = $submittedPlan?->getNpcGift() === true
+            ? $submittedPlan
+            : $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan !== null && $plan->getCount() !== null && $plan->getCount() <= 0) {
             $game->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
             return;

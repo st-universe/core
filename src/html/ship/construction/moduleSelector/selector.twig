@@ -27,7 +27,7 @@
         <td></td>
         {% set colspan = allowMultiple ? 4 : 5 %}
         <td colspan="{{ colspan }}">
-            <input type="radio" name="mod_{{ type }}[]" value="0" onchange="replaceTabImage({{ type }}, 0);" />
+            <input type="radio"{% if SELECTOR.isEmptySlot %} checked="true"{% endif %} name="mod_{{ type }}[]" value="0" onchange="replaceTabImage({{ type }}, 0);" />
             <span>Keine Auswahl</span>
         </td>
     </tr>
