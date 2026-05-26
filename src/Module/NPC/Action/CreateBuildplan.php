@@ -93,9 +93,25 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         $moduleIds = array_merge($moduleList, $moduleSpecialList);
+        $modules = [];
+
+        foreach ($moduleIds as $moduleId) {
+            $module = $this->moduleRepository->find($moduleId);
+            if ($module === null) {
+                throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
+            }
+
+            $modules[$moduleId] = $module;
+        }
+
+        $crewInput = request::postInt('crew_input');
+        $crewUsage = $crewInput > 0
+            ? $crewInput
+            : $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
+
         $signature = $this->buildplanSignatureCreation->createSignatureByModuleIds(
             $moduleIds,
-            0
+            $crewUsage
         );
 
         $plan = $this->buildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
@@ -112,36 +128,27 @@ final class CreateBuildplan implements ActionControllerInterface
             $plan->setRump($rump);
             $plan->setName($planname);
             $plan->setSignature($signature);
-            $plan->setBuildtime(0);
+            $plan->setBuildtime($rump->getBuildtime());
+            $plan->setCrew($crewUsage);
             $plan->setNpcGift(true);
             $plan->setCount($buildplanCount);
 
             $this->buildplanRepository->save($plan);
             $this->entityManager->flush();
 
-            $modules = [];
-
             foreach ($moduleList as $moduleId) {
-                $module = $this->moduleRepository->find($moduleId);
-                if ($module === null) {
-                    throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
-                }
+                $module = $modules[$moduleId];
 
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType($module->getType());
                 $mod->setBuildplan($plan);
                 $mod->setModule($module);
 
-                $modules[$moduleId] = $module;
-
                 $this->buildplanModuleRepository->save($mod);
             }
 
             foreach ($moduleSpecialList as $moduleId) {
-                $module = $this->moduleRepository->find($moduleId);
-                if ($module === null) {
-                    throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
-                }
+                $module = $modules[$moduleId];
 
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType($module->getType());
@@ -149,20 +156,8 @@ final class CreateBuildplan implements ActionControllerInterface
                 $mod->setModule($module);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 
-                $modules[$moduleId] = $module;
-
                 $this->buildplanModuleRepository->save($mod);
             }
-
-            $crewInput = request::postInt('crew_input');
-
-            if ($crewInput > 0) {
-                $plan->setCrew($crewInput);
-            } else {
-                $plan->setCrew($this->shipCrewCalculator->getCrewUsage($modules, $rump, $user));
-            }
-
-            $this->buildplanRepository->save($plan);
 
             $this->entityManager->flush();
 
