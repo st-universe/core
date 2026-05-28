@@ -38,6 +38,9 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
     #[Column(type: 'integer', nullable: true)]
     private ?int $uplink_state = null;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $rpg_module_state = null;
+
     #[Column(type: 'string')]
     private string $spacecraft_type = '';
 
@@ -126,6 +129,12 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
     public function getUplinkState(): int
     {
         return $this->uplink_state ?? 0;
+    }
+
+    #[\Override]
+    public function getRPGModuleState(): int
+    {
+        return $this->rpg_module_state ?? 0;
     }
 
     #[\Override]
@@ -222,6 +231,7 @@ abstract class TSpacecraftItem implements TSpacecraftItemInterface
         $rsm->addFieldResult('s', 'cloakstate', 'cloak_state');
         $rsm->addFieldResult('s', 'shieldstate', 'shield_state');
         $rsm->addFieldResult('s', 'uplinkstate', 'uplink_state');
+        $rsm->addFieldResult('s', 'rpgmodulestate', 'rpg_module_state');
         $rsm->addFieldResult('s', 'spacecrafttype', 'spacecraft_type');
         $rsm->addFieldResult('s', 'shipname', 'ship_name');
         $rsm->addFieldResult('s', 'hull', 'hull');

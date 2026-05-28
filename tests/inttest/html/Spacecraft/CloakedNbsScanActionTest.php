@@ -108,6 +108,11 @@ class CloakedNbsScanActionTest extends TwigTestCase
                 return false;
             }
 
+            public function getRPGModuleState(): bool
+            {
+                return false;
+            }
+
             public function isTrumfield(): bool
             {
                 return false;

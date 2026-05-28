@@ -211,6 +211,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 sprintf(
                     'SELECT s.id as shipid, s.rump_id as rumpid , ss.mode as warpstate,
                     COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate,
+                    COALESCE(ss5.mode,0) as rpgmodulestate,
                     s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_hull as maxhull,
                     sc.shield as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
@@ -233,6 +234,9 @@ final class StationRepository extends EntityRepository implements StationReposit
                 LEFT JOIN stu_spacecraft_system ss4
                 ON s.id = ss4.spacecraft_id
                 AND ss4.system_type = :uplinkType
+                LEFT JOIN stu_spacecraft_system ss5
+                ON s.id = ss5.spacecraft_id
+                AND ss5.system_type = :rpgModuleType
                 JOIN stu_rump r
                 ON s.rump_id = r.id
                 LEFT OUTER JOIN stu_tholian_web tw
@@ -260,6 +264,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
                 'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
                 'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
+                'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
                 'false' => false
             ]);
 
