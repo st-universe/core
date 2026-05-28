@@ -147,6 +147,11 @@ class SpacecraftNfsItem
         return $this->item->getUplinkState() > SpacecraftSystemModeEnum::MODE_OFF->value;
     }
 
+    public function getRPGModuleState(): bool
+    {
+        return $this->item->getRPGModuleState() > SpacecraftSystemModeEnum::MODE_OFF->value;
+    }
+
     public function getRump(): mixed
     {
         return $this;

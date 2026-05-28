@@ -24,6 +24,8 @@ interface TSpacecraftItemInterface
 
     public function getUplinkState(): int;
 
+    public function getRPGModuleState(): int;
+
     public function getType(): SpacecraftTypeEnum;
 
     public function getShipName(): string;

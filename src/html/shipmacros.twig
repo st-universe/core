@@ -408,6 +408,9 @@
     {% else %}
     {{ nbsItem.getName|bbcode }}
     {% endif %}
+    {% if nbsItem.getRPGModuleState %}
+    <img src="/assets/buttons/rpg1.png" title="RPG-Modul aktiv" />
+    {% endif %}
 </td>
 {% if nbsItem.isTrumfield %}
 <td style="width: 160px;">{{ nbsItem.getHull }}</td>
