@@ -51,7 +51,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
 
     /**
      * @param array<Colony> $planets
-     * @return array<int, array{layer_name: string, layer_description: string|null, regions: array<int, array{region_name: string, planets: array<Colony>}>}>
+     * @return array<int, array{layer_name: string, layer_description: string|null, is_noobzone: bool, regions: array<int, array{region_name: string, planets: array<Colony>}>}>
      */
     private function groupPlanetsByLayerAndRegion(array $planets): array
     {

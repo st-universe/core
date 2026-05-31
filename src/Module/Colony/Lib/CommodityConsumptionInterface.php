@@ -11,7 +11,7 @@ interface CommodityConsumptionInterface
     /**
      * @param array<ColonyProduction> $production
      *
-     * @return array<int, array{turnsleft: int, commodity: Commodity}>
+     * @return array<int, array{turnsleft: int, commodity: Commodity, production: int}>
      */
     public function getConsumption(
         array $production,
