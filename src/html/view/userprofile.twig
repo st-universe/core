@@ -269,7 +269,7 @@
 						style="float: left; max-width: 120px; margin-right: 10px; margin-bottom: 10px;">
 					{% endif %}
 					{% if logbook.scanDate %}
-					<div>Zuletzt gescannt: {{ logbook.scanDate|date('Y-m-d H:i:s') }}</div>
+					<div>Zuletzt gescannt: {{ logbook.scanDate|stuDateTime }}</div>
 					{% else %}
 					<div>Eigene Logbuchdaten</div>
 					{% endif %}
@@ -278,7 +278,7 @@
 				{% for DATA in logbook.logs %}
 				<table class="tcal" style="width: 100%; margin-top: 3px;">
 					<tr>
-						<th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+						<th style="width: 120px; text-align: center;">{{ DATA.getDate|stuDateTime }}</th>
 					</tr>
 					<tr>
 						<td>{{ DATA.getText|nl2br|bbcode }}</td>
