@@ -12,6 +12,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ModuleBuildingFunction;
+use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -67,6 +68,13 @@ final class CreateModules implements ActionControllerInterface
 
         $storage = $colony->getStorage();
         $changeable = $colony->getChangeable();
+        $projectedStorageAmounts = [];
+        foreach ($storage as $storageItem) {
+            $projectedStorageAmounts[$storageItem->getCommodityId()] = $storageItem->getAmount();
+        }
+        $projectedEps = $changeable->getEps();
+        $failedModuleIds = [];
+        $missingCommodityTotals = [];
 
         foreach ($moduleIds as $key => $moduleId) {
             if (!array_key_exists($moduleId, $modules_av)) {
@@ -79,12 +87,10 @@ final class CreateModules implements ActionControllerInterface
             $isEnoughAvailable = false;
             $initialcount = $count;
             $module = $modules_av[$moduleId]->getModule();
-            $missingcounteps = 0;
-            $missingeps = 0;
-            if ($module->getEcost() * $initialcount > $changeable->getEps()) {
-                $missingeps = $initialcount * $module->getEcost() - $changeable->getEps();
-                $missingcounteps = $initialcount - (int) floor($changeable->getEps() / $module->getEcost());
-                $count = (int) floor($changeable->getEps() / $module->getEcost());
+            $moduleEcost = $module->getEcost();
+            $availableEps = $changeable->getEps();
+            if ($moduleEcost > 0 && $moduleEcost * $initialcount > $availableEps) {
+                $count = (int) floor($availableEps / $moduleEcost);
             }
             $costs = $module->getCost();
 
@@ -92,7 +98,6 @@ final class CreateModules implements ActionControllerInterface
             foreach ($costs as $cost) {
                 $commodity = $cost->getCommodity();
                 $commodityId = $commodity->getId();
-
 
                 $stor = $storage[$commodityId] ?? null;
                 $availableAmount = ($stor !== null) ? $stor->getAmount() : 0;
@@ -111,7 +116,9 @@ final class CreateModules implements ActionControllerInterface
                 foreach ($costs as $cost) {
                     $this->storageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
                 }
-                $changeable->lowerEps($count * $module->getEcost());
+                $changeable->lowerEps($count * $moduleEcost);
+                $this->lowerProjectedStorageAmounts($projectedStorageAmounts, $costs, $count);
+                $projectedEps = max(0, $projectedEps - $count * $moduleEcost);
 
                 $this->colonyRepository->save($colony);
                 if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $function->value)) !== null) {
@@ -137,52 +144,43 @@ final class CreateModules implements ActionControllerInterface
             $missing = $isEnoughAvailable ? '' : sprintf(_(' von %s'), $initialcount);
 
             $prod[] = $count . $missing . ' ' . $module->getName();
-            $epsmessage = $missingeps > 0 ? sprintf(
-                _('%s Energie, '),
-                $missingeps
-            ) : '';
 
             if (!$isEnoughAvailable) {
-                $missingCommodities = [];
+                $failedModuleIds[(int) $moduleId] = true;
+                $missingModuleCount = $initialcount - $count;
+                $requiredMissingEps = $moduleEcost * $missingModuleCount;
+                $missingEps = max(0, $requiredMissingEps - $projectedEps);
+                $projectedEps = max(0, $projectedEps - $requiredMissingEps);
+                $missingText = $missingEps > 0
+                    ? [sprintf(_('%s Energie'), $missingEps)]
+                    : [];
 
-                foreach ($costs as $cost) {
-                    $commodity = $cost->getCommodity();
-                    $commodityId = $commodity->getId();
-                    $stor = $storage[$commodityId] ?? null;
-                    $availableAmount = ($stor !== null) ? $stor->getAmount() : 0;
-
-                    $requiredAmount = $cost->getAmount() * $missingcount;
-                    $missingAmount = $requiredAmount - $availableAmount;
-
-                    if ($missingAmount > 0) {
-                        $missingCommodities[] = [
-                            'id' => $commodityId,
-                            'name' => $commodity->getName(),
-                            'missing' => $missingAmount
-                        ];
-                    }
-                }
-
-                usort($missingCommodities, function (array $a, array $b): int {
-                    return $a['id'] <=> $b['id'];
-                });
-
-                $missingText = array_map(function (array $commodity): string {
-                    return sprintf(
-                        '%d %s',
-                        $commodity['missing'],
-                        $commodity['name']
-                    );
-                }, $missingCommodities);
+                $missingText = array_merge(
+                    $missingText,
+                    $this->formatMissingCommodities($this->getMissingCommodities(
+                        $missingModuleCount,
+                        $costs,
+                        $projectedStorageAmounts,
+                        $missingCommodityTotals
+                    ))
+                );
 
                 $prod[] = sprintf(
-                    _('<div style="padding-left: 20px;">- Zur Herstellung von weiteren %d %s werden benötigt: %s%s</div>'),
-                    max($missingcount, $missingcounteps),
+                    _('<div style="padding-left: 20px;">- Zur Herstellung von weiteren %d %s werden benötigt: %s</div>'),
+                    $missingModuleCount,
                     $module->getName(),
-                    $epsmessage,
                     implode(', ', $missingText)
                 );
             }
+        }
+
+        if (count($failedModuleIds) > 1 && $missingCommodityTotals !== []) {
+            ksort($missingCommodityTotals);
+
+            $prod[] = sprintf(
+                _('<div style="padding-left: 20px;">- Insgesamt werden zusätzlich benötigt: %s</div>'),
+                implode(', ', $this->formatMissingCommodities($missingCommodityTotals))
+            );
         }
 
         if ($moduleAdded) {
@@ -203,5 +201,79 @@ final class CreateModules implements ActionControllerInterface
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    /**
+     * @param array<int, int> $projectedStorageAmounts
+     * @param iterable<ModuleCost> $costs
+     */
+    private function lowerProjectedStorageAmounts(array &$projectedStorageAmounts, iterable $costs, int $count): void
+    {
+        foreach ($costs as $cost) {
+            $commodityId = $cost->getCommodity()->getId();
+            $projectedStorageAmounts[$commodityId] = max(
+                0,
+                ($projectedStorageAmounts[$commodityId] ?? 0) - $cost->getAmount() * $count
+            );
+        }
+    }
+
+    /**
+     * @param iterable<ModuleCost> $costs
+     * @param array<int, int> $projectedStorageAmounts
+     * @param array<int, array{name: string, missing: int}> $missingCommodityTotals
+     *
+     * @return array<int, array{name: string, missing: int}>
+     */
+    private function getMissingCommodities(
+        int $missingModuleCount,
+        iterable $costs,
+        array &$projectedStorageAmounts,
+        array &$missingCommodityTotals
+    ): array {
+        $missingCommodities = [];
+
+        foreach ($costs as $cost) {
+            $commodity = $cost->getCommodity();
+            $commodityId = $commodity->getId();
+            $requiredAmount = $cost->getAmount() * $missingModuleCount;
+            $availableAmount = $projectedStorageAmounts[$commodityId] ?? 0;
+            $missingAmount = max(0, $requiredAmount - $availableAmount);
+
+            $projectedStorageAmounts[$commodityId] = max(0, $availableAmount - $requiredAmount);
+
+            if ($missingAmount > 0) {
+                $missingCommodities[$commodityId] = [
+                    'name' => $commodity->getName(),
+                    'missing' => $missingAmount
+                ];
+                $missingCommodityTotals[$commodityId] ??= [
+                    'name' => $commodity->getName(),
+                    'missing' => 0
+                ];
+                $missingCommodityTotals[$commodityId]['missing'] += $missingAmount;
+            }
+        }
+
+        ksort($missingCommodities);
+
+        return $missingCommodities;
+    }
+
+    /**
+     * @param array<int, array{name: string, missing: int}> $missingCommodities
+     *
+     * @return array<string>
+     */
+    private function formatMissingCommodities(array $missingCommodities): array
+    {
+        return array_map(
+            fn (array $commodity): string => sprintf(
+                '%d %s',
+                $commodity['missing'],
+                $commodity['name']
+            ),
+            $missingCommodities
+        );
     }
 }
