@@ -90,6 +90,18 @@
                             </div>
                             {% endfor %}
                         </div>
+                        {% set constructionCosts = data.getConstructionCosts %}
+                        {% if constructionCosts %}
+                        <div style="display: none;">
+                            {% for cost in constructionCosts %}
+                            <span class="module-production-preview-cost" data-module-id="{{ moduleId }}"
+                                data-commodity-id="{{ cost.getCommodity.getId }}"
+                                data-commodity-name="{{ cost.getCommodity.getName }}"
+                                data-cost="{{ cost.getAmount }}"
+                                data-stock="{{ data.getAmountInStockByCommodityId(cost.getCommodity.getId) }}"></span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                     </td>
                     <td id="module_{{ moduleId }}_action" class="responsive-hide"
                         style="vertical-align: middle; text-align: center;">
@@ -113,10 +125,15 @@
                         {% endif %}
                     </td>
                     <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                        {{ data.getAmountInStock }}
+                        {{ data.getAmountInStock }}{{ (
+                            data.getAmountInStockAccountWide > data.getAmountInStock
+                                ? ' (<a href="javascript:void(0);" onclick="getCommodityLocations(this, ' ~ data.getCommodityId ~ ', -50, 10);">' ~ data.getAmountInStockAccountWide ~ '</a>)'
+                                : ''
+                        )|raw }}
                     </td>
                     <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
                         <input type="text" size="2" data-module-id="{{ moduleId }}"
+                            data-energy-cost="{{ data.getEnergyCost }}"
                             onkeydown="event.key == 'Enter' && $('producebutton').click()"
                             oninput="setModuleInput(this);" />
                     </td>
@@ -153,10 +170,15 @@
                                     {% endif %}
                                 </td>
                                 <td style="vertical-align: middle; text-align: center;">
-                                    {{ data.getAmountInStock }}
+                                    {{ data.getAmountInStock }}{{ (
+                                        data.getAmountInStockAccountWide > data.getAmountInStock
+                                            ? ' (<a href="javascript:void(0);" onclick="getCommodityLocations(this, ' ~ data.getCommodityId ~ ', -50, 10);">' ~ data.getAmountInStockAccountWide ~ '</a>)'
+                                            : ''
+                                    )|raw }}
                                 </td>
                                 <td style="vertical-align: middle; text-align: center;">
                                     <input type="text" size="2" data-module-id="{{ moduleId }}"
+                                        data-energy-cost="{{ data.getEnergyCost }}"
                                         onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                         oninput="setModuleInput(this);" />
                                 </td>
@@ -175,12 +197,44 @@
         <a id="producebutton" href="javascript:void(0);" onclick="clearAjaxCallbacks(); startModuleProduction();"
             class="fabutton">Modulherstellung</a>
     </div>
+    <div id="module-production-preview" data-energy-stock="{{ HOST.getChangeable.getEps }}"
+        style="display: none; margin-top: 10px;"></div>
 
 </div>
 {{ executeJs(EXECUTEJSAFTERRENDER) }}
 <style>
     .level-box button.active {
         background-color: #d3d3d3;
+    }
+
+    #module-production-preview {
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px 10px;
+        line-height: 1.8;
+        white-space: normal;
+    }
+
+    .module-production-preview-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .module-production-preview-item img {
+        height: 16px;
+        width: 16px;
+    }
+
+    .module-production-preview-shortage {
+        color: #ff2626;
+    }
+
+    .module-production-preview-missing {
+        color: #ff2626;
+        margin-left: 4px;
     }
 </style>
 {% endblock %}

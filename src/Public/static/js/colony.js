@@ -503,11 +503,13 @@ function calculateLocalCrew() {
 var moduleProductionInputs = new Map();
 function clearModuleInputs() {
 	moduleProductionInputs.clear();
+	updateModuleProductionPreview();
 }
 
 function setModuleInput(input) {
 	moduleProductionInputs.set(input.getAttribute('data-module-id'), input.value);
 	syncAllInputFields(input);
+	updateModuleProductionPreview();
 }
 
 function syncAllInputFields(input) {
@@ -527,6 +529,120 @@ function startModuleProduction() {
 	let values = [...moduleProductionInputs.values()].join("&values[]=");
 
 	actionToInnerContent('B_CREATE_MODULES', `id=${colonyId}&func=${func}&moduleids[]=${moduleIds}&values[]=${values}&sstr=${sstr}`);
+}
+
+function updateModuleProductionPreview() {
+	const preview = document.getElementById('module-production-preview');
+
+	if (!preview) {
+		return;
+	}
+
+	const resourceTotals = new Map();
+	const resourceStocks = new Map();
+	const energyStock = parseInt(preview.getAttribute('data-energy-stock'), 10) || 0;
+	let energyTotal = 0;
+	let hasSelection = false;
+
+	moduleProductionInputs.forEach((value, moduleId) => {
+		const count = getPositiveModuleProductionCount(value);
+
+		if (count < 1) {
+			return;
+		}
+
+		const input = document.querySelector(`input[data-module-id="${moduleId}"]`);
+		if (!input) {
+			return;
+		}
+
+		hasSelection = true;
+		energyTotal += (parseInt(input.getAttribute('data-energy-cost'), 10) || 0) * count;
+
+		document.querySelectorAll(`.module-production-preview-cost[data-module-id="${moduleId}"]`).forEach(cost => {
+			const commodityId = cost.getAttribute('data-commodity-id');
+			const requiredAmount = (parseInt(cost.getAttribute('data-cost'), 10) || 0) * count;
+			const existing = resourceTotals.get(commodityId) || {
+				id: commodityId,
+				name: cost.getAttribute('data-commodity-name') || '',
+				total: 0
+			};
+
+			existing.total += requiredAmount;
+			resourceTotals.set(commodityId, existing);
+			resourceStocks.set(commodityId, parseInt(cost.getAttribute('data-stock'), 10) || 0);
+		});
+	});
+
+	if (!hasSelection) {
+		preview.style.display = 'none';
+		preview.innerHTML = '';
+		return;
+	}
+
+	const previewItems = [];
+	if (energyTotal > 0) {
+		previewItems.push(createModuleProductionPreviewItem(
+			'/assets/buttons/e_trans2.png',
+			'Energie',
+			energyTotal,
+			energyStock
+		));
+	}
+
+	Array.from(resourceTotals.values())
+		.sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10))
+		.forEach(resource => {
+			previewItems.push(createModuleProductionPreviewItem(
+				`/assets/commodities/${resource.id}.png`,
+				resource.name,
+				resource.total,
+				resourceStocks.get(resource.id) || 0
+			));
+		});
+
+	if (previewItems.length === 0) {
+		preview.style.display = 'none';
+		preview.innerHTML = '';
+		return;
+	}
+
+	preview.innerHTML = `<strong>Benötigt:</strong>${previewItems.join('')}`;
+	preview.style.display = 'flex';
+}
+
+function getPositiveModuleProductionCount(value) {
+	const count = parseInt(value, 10);
+
+	if (!Number.isFinite(count) || count < 1) {
+		return 0;
+	}
+
+	return count;
+}
+
+function createModuleProductionPreviewItem(imagePath, title, total, stock) {
+	const missing = Math.max(0, total - stock);
+	const shortageClass = missing > 0 ? ' class="module-production-preview-shortage"' : '';
+	const missingText = missing > 0
+		? `<span class="module-production-preview-missing">-${missing}</span>`
+		: '';
+
+	return `<span class="module-production-preview-item">` +
+		`<img src="${imagePath}" title="${escapeHtml(title)}" />` +
+		`<span${shortageClass}>${total}</span>` +
+		`<span>/ ${stock}</span>` +
+		missingText +
+		`</span>`;
+}
+
+function escapeHtml(value) {
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
 }
 
 function filterByRump(selectedRump) {

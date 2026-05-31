@@ -27,6 +27,7 @@ use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
@@ -43,7 +44,8 @@ final class ShowModuleFab implements ViewControllerInterface
         private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
         private ModuleRepositoryInterface $moduleRepository,
         private BuildplanHangarRepositoryInterface $buildplanHangarRepository,
-        private ShipRumpCostRepositoryInterface $shipRumpCostRepository
+        private ShipRumpCostRepositoryInterface $shipRumpCostRepository,
+        private StorageRepositoryInterface $storageRepository
     ) {}
 
     #[\Override]
@@ -76,7 +78,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $additionalBuildplans = $this->getAdditionalBuildplans($userId, $rumps);
         [$rumps, $exclusiveBuildplansByRump, $exclusiveModulesByRump] = $this->prepareRumps($colony, $rumps);
 
-        $this->setModules($colony, $func, $game, $allModules);
+        $this->setModules($colony, $func, $game, $allModules, $this->getAccumulatedStorageByCommodityId($game));
         $this->setRumpModules($colony, $rumps, $allModules, $exclusiveModulesByRump);
         $this->setModuleTypes($game);
         $this->setBuildplans(
@@ -203,10 +205,16 @@ final class ShowModuleFab implements ViewControllerInterface
     }
 
     /**
+     * @param array<int, int> $accumulatedStorage
      * @param array<int, ModuleFabricationListItem> $allModules
      */
-    private function setModules(Colony $colony, BuildingFunction $func, GameControllerInterface $game, array &$allModules): void
-    {
+    private function setModules(
+        Colony $colony,
+        BuildingFunction $func,
+        GameControllerInterface $game,
+        array &$allModules,
+        array $accumulatedStorage
+    ): void {
         /** @var array<int, array<int, array<int, ModuleFabricationListItem>>> $sortedModules */
         $sortedModules = [];
 
@@ -229,7 +237,8 @@ final class ShowModuleFab implements ViewControllerInterface
             $moduleFabricationListItem = new ModuleFabricationListItem(
                 $this->moduleQueueRepository,
                 $module,
-                $colony
+                $colony,
+                $accumulatedStorage[$module->getCommodityId()] ?? 0
             );
 
             $sortedModules[$moduleType][$moduleLevel][] = $moduleFabricationListItem;
@@ -237,6 +246,18 @@ final class ShowModuleFab implements ViewControllerInterface
         }
 
         $game->setTemplateVar('MODULES_BY_TYPE_AND_LEVEL', $sortedModules);
+    }
+
+    /** @return array<int, int> */
+    private function getAccumulatedStorageByCommodityId(GameControllerInterface $game): array
+    {
+        $storage = [];
+
+        foreach ($this->storageRepository->getByUserAccumulated($game->getUser()) as $entry) {
+            $storage[$entry['commodity_id']] = $entry['amount'];
+        }
+
+        return $storage;
     }
 
     /**

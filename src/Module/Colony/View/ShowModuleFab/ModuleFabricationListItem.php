@@ -25,7 +25,8 @@ final class ModuleFabricationListItem
     public function __construct(
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private Module $module,
-        private Colony $colony
+        private Colony $colony,
+        private int $amountInStockAccountWide = 0
     ) {}
 
     public function getModule(): Module
@@ -79,12 +80,22 @@ final class ModuleFabricationListItem
 
     public function getAmountInStock(): int
     {
-        $result = $this->colony->getStorage()[$this->getCommodityId()] ?? null;
+        return $this->getAmountInStockByCommodityId($this->getCommodityId());
+    }
+
+    public function getAmountInStockByCommodityId(int $commodityId): int
+    {
+        $result = $this->colony->getStorage()[$commodityId] ?? null;
 
         if ($result === null) {
             return 0;
         }
         return $result->getAmount();
+    }
+
+    public function getAmountInStockAccountWide(): int
+    {
+        return $this->amountInStockAccountWide;
     }
 
     public function addRump(SpacecraftRump $shipRump, int $requiredAmount = 1): void

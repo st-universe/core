@@ -63,7 +63,7 @@
                                 <span style="margin-left: 4px;">5</span>
                             </div>
                                                     </div>
-                    </td>
+                                                                    </td>
                     <td id="module_10101_action" class="responsive-hide"
                         style="vertical-align: middle; text-align: center;">
                                                 <div>
@@ -86,6 +86,7 @@
                     </td>
                     <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
                         <input type="text" size="2" data-module-id="10101"
+                            data-energy-cost="5"
                             onkeydown="event.key == 'Enter' && $('producebutton').click()"
                             oninput="setModuleInput(this);" />
                     </td>
@@ -122,6 +123,7 @@
                                 </td>
                                 <td style="vertical-align: middle; text-align: center;">
                                     <input type="text" size="2" data-module-id="10101"
+                                        data-energy-cost="5"
                                         onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                         oninput="setModuleInput(this);" />
                                 </td>
@@ -137,6 +139,8 @@
         <a id="producebutton" href="javascript:void(0);" onclick="clearAjaxCallbacks(); startModuleProduction();"
             class="fabutton">Modulherstellung</a>
     </div>
+    <div id="module-production-preview" data-energy-stock="96"
+        style="display: none; margin-top: 10px;"></div>
 
 </div>
 <script>
@@ -146,6 +150,36 @@
 <style>
     .level-box button.active {
         background-color: #d3d3d3;
+    }
+
+    #module-production-preview {
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px 10px;
+        line-height: 1.8;
+        white-space: normal;
+    }
+
+    .module-production-preview-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .module-production-preview-item img {
+        height: 16px;
+        width: 16px;
+    }
+
+    .module-production-preview-shortage {
+        color: #ff2626;
+    }
+
+    .module-production-preview-missing {
+        color: #ff2626;
+        margin-left: 4px;
     }
 </style>
 </form>
