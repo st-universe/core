@@ -170,6 +170,13 @@ abstract class Spacecraft implements
     #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
     private Location $location;
 
+    /**
+     * @var ArrayCollection<int, ShipLog>
+     */
+    #[OneToMany(targetEntity: ShipLog::class, mappedBy: 'spacecraft', fetch: 'EXTRA_LAZY')]
+    #[OrderBy(['id' => 'DESC'])]
+    private Collection $logbook;
+
     #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'source')]
     private ?ShipTakeover $takeoverActive = null;
 
@@ -181,6 +188,7 @@ abstract class Spacecraft implements
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
+        $this->logbook = new ArrayCollection();
     }
 
     abstract public function getType(): SpacecraftTypeEnum;
@@ -324,6 +332,14 @@ abstract class Spacecraft implements
         }
 
         throw new RuntimeException('unknown type');
+    }
+
+    /**
+     * @return Collection<int, ShipLog> Ordered by id
+     */
+    public function getLogbook(): Collection
+    {
+        return $this->logbook;
     }
 
     public function getTakeoverActive(): ?ShipTakeover

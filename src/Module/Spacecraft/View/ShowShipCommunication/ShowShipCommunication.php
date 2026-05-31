@@ -11,7 +11,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Action\StartEmergency\StartEmergency;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
-use Stu\Orm\Repository\ShipLogRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
 final class ShowShipCommunication implements ViewControllerInterface
@@ -22,7 +21,6 @@ final class ShowShipCommunication implements ViewControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
-        private ShipLogRepositoryInterface $shipLogRepository,
         private Parser $bbCodeParser
     ) {}
 
@@ -45,7 +43,6 @@ final class ShowShipCommunication implements ViewControllerInterface
 
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('SHIP', $spacecraft);
-        $game->setTemplateVar('LOGBOOK', $this->shipLogRepository->getBySpacecraftId($spacecraft->getId()));
         $game->setTemplateVar(
             'TEMPLATETEXT',
             sprintf(
