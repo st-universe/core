@@ -48,7 +48,7 @@ interface ColonyListItemInterface
     public function getProductionSum(): int;
 
     /**
-     * @return array<int, array{turnsleft:int, commodity:Commodity}>
+     * @return array<int, array{turnsleft:int, commodity:Commodity, production:int}>
      */
     public function getCommodityUseView(): array;
 
