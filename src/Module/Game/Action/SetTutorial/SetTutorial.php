@@ -30,32 +30,33 @@ final class SetTutorial implements ActionControllerInterface
         $game->setView(Noop::VIEW_IDENTIFIER);
 
         $currentStepId = request::postIntFatal('currentstep');
-        $isForward = request::postIntFatal('isforward');
+        $isForward = request::postIntFatal('isforward') !== 0;
 
         $tutorialStep = $this->tutorialStepRepository->find($currentStepId);
         if ($tutorialStep == null) {
             throw new RuntimeException('Current Tutorial not found');
         }
 
-        $userTutorial = $this->determineUserTutorial($tutorialStep, $isForward === 1, $game->getUser());
+        $userTutorial = $this->determineUserTutorial($tutorialStep, $isForward, $game->getUser());
 
-        $followingTutorial = $isForward !== 0 ? $tutorialStep->getNextStep() : $tutorialStep->getPreviousStep();
+        $followingTutorial = $isForward ? $tutorialStep->getNextStep() : $tutorialStep->getPreviousStep();
         if ($followingTutorial == null) {
             throw new RuntimeException(sprintf(
                 'Tutorial not found for currentStepId %d and isForward %d',
                 $currentStepId,
-                $isForward
+                $isForward ? 1 : 0
             ));
         }
 
         if ($userTutorial == null) {
-            throw new RuntimeException('this should not happen');
+            return;
         }
+
         $userTutorial->setTutorialStep($followingTutorial);
         $this->userTutorialRepository->save($userTutorial);
     }
 
-    private function determineUserTutorial(TutorialStep $tutorialStep, bool $isForward, User $user): UserTutorial
+    private function determineUserTutorial(TutorialStep $tutorialStep, bool $isForward, User $user): ?UserTutorial
     {
         $step = $tutorialStep;
         $tutorials = $user->getTutorials();
@@ -69,7 +70,7 @@ final class SetTutorial implements ActionControllerInterface
             $step = $isForward ? $step->getPreviousStep() : $step->getNextStep();
         } while ($step !== null);
 
-        throw new RuntimeException('UserTutorial not found');
+        return null;
     }
 
     #[\Override]
