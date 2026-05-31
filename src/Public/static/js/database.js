@@ -1,5 +1,10 @@
-function getCommodityLocations(element, commodityId) {
-	updatePopupAtElement(element, 'database.php?commodityid=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
+function getCommodityLocations(element, commodityId, offsetX = 0, offsetY = 0) {
+	var pos = findObject(element);
+
+	updatePopup(
+		'database.php?commodityid=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1',
+		null, pos[0] + offsetX, pos[1] + offsetY, false
+	);
 }
 
 function showColonySurface(element, id) {
@@ -386,4 +391,3 @@ function initializeSpacyProgressBar(maxPrestige, actualPrestige) {
 		progressBar.style.filter = 'brightness(1)';
 	});
 }
-

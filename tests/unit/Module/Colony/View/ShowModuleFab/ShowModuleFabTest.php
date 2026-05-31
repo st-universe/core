@@ -19,6 +19,7 @@ use Stu\Orm\Entity\ShipRumpCost;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
@@ -28,6 +29,7 @@ use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShowModuleFabTest extends StuTestCase
@@ -54,6 +56,8 @@ class ShowModuleFabTest extends StuTestCase
 
     private MockInterface&ShipRumpCostRepositoryInterface $shipRumpCostRepository;
 
+    private MockInterface&StorageRepositoryInterface $storageRepository;
+
     private ShowModuleFab $subject;
 
     #[\Override]
@@ -72,6 +76,7 @@ class ShowModuleFabTest extends StuTestCase
         $this->moduleRepository = $this->mock(ModuleRepositoryInterface::class);
         $this->buildplanHangarRepository = $this->mock(BuildplanHangarRepositoryInterface::class);
         $this->shipRumpCostRepository = $this->mock(ShipRumpCostRepositoryInterface::class);
+        $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
 
         $this->subject = new ShowModuleFab(
             $this->colonyLoader,
@@ -84,7 +89,8 @@ class ShowModuleFabTest extends StuTestCase
             $this->spacecraftBuildplanRepository,
             $this->moduleRepository,
             $this->buildplanHangarRepository,
-            $this->shipRumpCostRepository
+            $this->shipRumpCostRepository,
+            $this->storageRepository
         );
     }
 
@@ -250,6 +256,30 @@ class ShowModuleFabTest extends StuTestCase
         $this->assertSame(
             [77 => $additionalBuildplan],
             $this->invokeGetAdditionalBuildplans(42, [$availableRump])
+        );
+    }
+
+    public function testGetAccumulatedStorageByCommodityIdReturnsAmountIndexedByCommodity(): void
+    {
+        $game = $this->mock(GameControllerInterface::class);
+        $user = $this->mock(User::class);
+
+        $game->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
+        $this->storageRepository->shouldReceive('getByUserAccumulated')
+            ->with($user)
+            ->once()
+            ->andReturn([
+                ['commodity_id' => 100, 'amount' => 3],
+                ['commodity_id' => 200, 'amount' => 7]
+            ]);
+
+        $this->assertSame(
+            [100 => 3, 200 => 7],
+            $this->invokeGetAccumulatedStorageByCommodityId($game)
         );
     }
 
@@ -747,6 +777,20 @@ class ShowModuleFabTest extends StuTestCase
         );
 
         return $callable($colony, $rumps);
+    }
+
+    /** @return array<int, int> */
+    private function invokeGetAccumulatedStorageByCommodityId(GameControllerInterface $game): array
+    {
+        $callable = \Closure::bind(
+            function (GameControllerInterface $game): array {
+                return $this->getAccumulatedStorageByCommodityId($game);
+            },
+            $this->subject,
+            ShowModuleFab::class
+        );
+
+        return $callable($game);
     }
 
     /**
