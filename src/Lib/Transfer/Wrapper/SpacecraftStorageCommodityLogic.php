@@ -96,7 +96,7 @@ class SpacecraftStorageCommodityLogic
             $spacecraft->getName(),
             $isUnload ? 'zur' : 'von der',
             $target->get()->getTransferEntityType()->getName(),
-            $target->getName()
+            $target->get()->getName()
         );
 
         $hasTransfered = false;
