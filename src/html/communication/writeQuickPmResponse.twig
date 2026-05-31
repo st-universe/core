@@ -1,0 +1,2 @@
+<span id="quickpm_response" data-success="{% if QUICKPM_SUCCESS|default(false) %}1{% else %}0{% endif %}"
+  data-message="{{ QUICKPM_MESSAGE|default('')|e('html_attr') }}" data-sstr="{{ SESSIONSTRING|e('html_attr') }}"></span>

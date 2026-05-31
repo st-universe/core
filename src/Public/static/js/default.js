@@ -157,10 +157,126 @@ function openPmWindow(fromId, toId, fromType, toType) {
 	);
 }
 function sendQuickPM(userId) {
-	var elem = $("quickpm").serialize() + "&sstr=" + $("pm_sstr").value;
-	ajaxPost("/pm.php", "B_WRITE_PM=1&recipient=" + userId + "&" + elem);
-	$("quickpm_compose").hide();
-	$("quickpm_done").show();
+	var form = $("quickpm");
+
+	if (!form || form.dataset.submitting === "1") {
+		return false;
+	}
+
+	var submitButton = form.querySelector('input[type="button"]');
+	var done = $("quickpm_done");
+	form.dataset.submitting = "1";
+
+	if (submitButton) {
+		submitButton.disabled = true;
+	}
+	if (done) {
+		done.hide();
+	}
+
+	refreshQuickPMSessionString(
+		form,
+		function () {
+			postQuickPM(userId, form, submitButton);
+		},
+		function () {
+			showQuickPMResult(false, "Die Nachricht konnte nicht verschickt werden. Bitte versuche es erneut.");
+			setQuickPMSubmitting(form, submitButton, false);
+		}
+	);
+
+	return false;
+}
+function postQuickPM(userId, form, submitButton) {
+	new Ajax.Request("/pm.php", {
+		method: "post",
+		parameters: "B_WRITE_PM=1&quickPm=1&recipient=" + encodeURIComponent(userId) + "&" + form.serialize(),
+		onSuccess: function (response) {
+			var quickPmResponse = getQuickPMResponse(response.responseText);
+
+			if (!quickPmResponse) {
+				showQuickPMResult(false, "Die Nachricht konnte nicht verarbeitet werden. Bitte öffne das Popup neu und versuche es erneut.");
+				return;
+			}
+
+			updateQuickPMSessionString(form, quickPmResponse.sessionString);
+			showQuickPMResult(quickPmResponse.success, quickPmResponse.message);
+		},
+		onFailure: function () {
+			showQuickPMResult(false, "Die Nachricht konnte nicht verschickt werden. Bitte versuche es erneut.");
+		},
+		onComplete: function () {
+			setQuickPMSubmitting(form, submitButton, false);
+		}
+	});
+}
+function refreshQuickPMSessionString(form, onSuccess, onFailure) {
+	new Ajax.Request("/pm.php?SHOW_WRITE_QUICKPM_RESPONSE=1", {
+		method: "get",
+		onSuccess: function (response) {
+			var quickPmResponse = getQuickPMResponse(response.responseText);
+
+			if (!quickPmResponse || !quickPmResponse.sessionString) {
+				onFailure();
+				return;
+			}
+
+			updateQuickPMSessionString(form, quickPmResponse.sessionString);
+			onSuccess();
+		},
+		onFailure: onFailure
+	});
+}
+function setQuickPMSubmitting(form, submitButton, submitting) {
+	form.dataset.submitting = submitting ? "1" : "0";
+
+	if (submitButton) {
+		submitButton.disabled = submitting;
+	}
+}
+function getQuickPMResponse(responseText) {
+	var wrapper = document.createElement("div");
+	wrapper.innerHTML = responseText;
+
+	var responseElement = wrapper.querySelector("#quickpm_response");
+
+	if (!responseElement) {
+		return null;
+	}
+
+	return {
+		success: responseElement.getAttribute("data-success") === "1",
+		message: responseElement.getAttribute("data-message") || "",
+		sessionString: responseElement.getAttribute("data-sstr") || ""
+	};
+}
+function updateQuickPMSessionString(form, sessionString) {
+	if (!sessionString) {
+		return;
+	}
+
+	var sessionStringElement = form.querySelector('[name="sstr"]');
+
+	if (sessionStringElement) {
+		sessionStringElement.value = sessionString;
+	}
+}
+function showQuickPMResult(success, message) {
+	var compose = $("quickpm_compose");
+	var done = $("quickpm_done");
+	var doneText = $("quickpm_done_text");
+
+	if (doneText) {
+		doneText.update(message || (success ? "Die Nachricht wurde verschickt" : "Die Nachricht konnte nicht verschickt werden"));
+	}
+
+	if (compose && success) {
+		compose.hide();
+	}
+
+	if (done) {
+		done.show();
+	}
 }
 function ajaxPostUpdate(destelement, url, elements) {
 	new Ajax.Updater(destelement, url, {
