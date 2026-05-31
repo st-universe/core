@@ -17,6 +17,9 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftLogScanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShowScan implements ViewControllerInterface
@@ -30,7 +33,9 @@ final class ShowScan implements ViewControllerInterface
         private PirateReactionInterface $pirateReaction,
         private PrivateMessageSenderInterface $privateMessageSender,
         private readonly AchievementManagerInterface $achievementManager,
-        private readonly SpacecraftRepositoryInterface $spacecraftRepository
+        private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly SpacecraftLogRepositoryInterface $spacecraftLogRepository,
+        private readonly SpacecraftLogScanRepositoryInterface $spacecraftLogScanRepository
     ) {}
 
     #[\Override]
@@ -106,7 +111,12 @@ final class ShowScan implements ViewControllerInterface
             return;
         }
 
+        $scanDate = time();
+        $scanLogbook = $this->spacecraftLogRepository->getBySpacecraftIdUntil($target->getId(), $scanDate, false);
+        $this->saveSpacecraftLogScan($user, $target, $scanDate, $scanLogbook !== []);
+
         $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);
+        $game->setTemplateVar('SCAN_LOGBOOK', $scanLogbook);
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($targetWrapper));
         $game->setTemplateVar('TRACTORING_SHIP', $this->getTractoringSpacecraft($target));
@@ -121,6 +131,15 @@ final class ShowScan implements ViewControllerInterface
             $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
         }
         $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
+    }
+
+    private function saveSpacecraftLogScan(User $user, Spacecraft $target, int $scanDate, bool $hasLogbook): void
+    {
+        if (!$hasLogbook) {
+            return;
+        }
+
+        $this->spacecraftLogScanRepository->saveScan($user, $target->getId(), $scanDate);
     }
 
     private function calculateShieldPercentage(Spacecraft $target): int

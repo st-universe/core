@@ -252,4 +252,43 @@
 	{% else %}
 	<p>Keine Charaktere gefunden</p>
 	{% endfor %}
+
+	<div class="divhead" style="margin-top: 20px;">Schiffslogbücher</div>
+	{% for logbook in SPACECRAFT_LOGBOOKS %}
+	<table class="tcal" style="width: 100%; margin-top: 3px;">
+		<tr class="spacecraft-log-bar" data-spacecraft-id="{{ logbook.spacecraftId }}" style="cursor: pointer;">
+			<th>
+				{{ logbook.name|bbcode }}
+			</th>
+		</tr>
+		<tr id="spacecraft-log-{{ logbook.spacecraftId }}" class="spacecraft-log-content" style="display: none;">
+			<td>
+				<div style="overflow: hidden;">
+					{% if logbook.rumpId %}
+					<img src="assets/ships/{{ logbook.rumpId }}.png" alt="Rumpf"
+						style="float: left; max-width: 120px; margin-right: 10px; margin-bottom: 10px;">
+					{% endif %}
+					{% if logbook.scanDate %}
+					<div>Zuletzt gescannt: {{ logbook.scanDate|date('Y-m-d H:i:s') }}</div>
+					{% else %}
+					<div>Eigene Logbuchdaten</div>
+					{% endif %}
+				</div>
+				<br style="clear: both;" />
+				{% for DATA in logbook.logs %}
+				<table class="tcal" style="width: 100%; margin-top: 3px;">
+					<tr>
+						<th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+					</tr>
+					<tr>
+						<td>{{ DATA.getText|nl2br|bbcode }}</td>
+					</tr>
+				</table>
+				{% endfor %}
+			</td>
+		</tr>
+	</table>
+	{% else %}
+	<p>Keine Schiffslogbücher gefunden</p>
+	{% endfor %}
 </div>
