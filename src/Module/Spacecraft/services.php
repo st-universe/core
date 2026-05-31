@@ -21,11 +21,13 @@ use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Spacecraft\Action\DeactivateSystem\DeactivateSystem;
 use Stu\Module\Spacecraft\Action\DeactivateTractorBeam\DeactivateTractorBeam;
+use Stu\Module\Spacecraft\Action\DeleteSpacecraftLog\DeleteSpacecraftLog;
 use Stu\Module\Spacecraft\Action\DeleteWormholeRestriction\DeleteWormholeRestriction;
 use Stu\Module\Spacecraft\Action\DoSubspaceAnalysis\DoSubspaceAnalysis;
 use Stu\Module\Spacecraft\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Spacecraft\Action\DropBuoy\DropBuoy;
 use Stu\Module\Spacecraft\Action\DumpForeignCrewman\DumpForeignCrewman;
+use Stu\Module\Spacecraft\Action\EditSpacecraftLog\EditSpacecraftLog;
 use Stu\Module\Spacecraft\Action\EnterStarSystem\EnterStarSystem;
 use Stu\Module\Spacecraft\Action\EnterWormhole\EnterWormhole;
 use Stu\Module\Spacecraft\Action\EpsTransfer\EpsTransfer;
@@ -220,12 +222,12 @@ use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdder;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMovementInformationAdderInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMover;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculator;
+use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactory;
 use Stu\Module\Spacecraft\Lib\Reactor\ReactorWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\ReactorUtil;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
-use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculator;
-use Stu\Module\Spacecraft\Lib\PassiveRepairProjectionCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoader;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemover;
@@ -424,6 +426,8 @@ return [
     ],
     'SPACECRAFT_ACTIONS' => [
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
+        DeleteSpacecraftLog::ACTION_IDENTIFIER => autowire(DeleteSpacecraftLog::class),
+        EditSpacecraftLog::ACTION_IDENTIFIER => autowire(EditSpacecraftLog::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
         DoSubspaceAnalysis::ACTION_IDENTIFIER => autowire(DoSubspaceAnalysis::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),

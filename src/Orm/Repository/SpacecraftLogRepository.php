@@ -71,6 +71,7 @@ final class SpacecraftLogRepository extends EntityRepository implements Spacecra
                     FROM %s sl
                     WHERE sl.spacecraft_id = :spacecraftId
                     AND sl.date <= :date
+                    AND (sl.edited IS NULL OR sl.edited <= :date)
                     AND sl.deleted IS NULL
                     %s
                     ORDER BY sl.date DESC, sl.id DESC',
@@ -117,7 +118,7 @@ final class SpacecraftLogRepository extends EntityRepository implements Spacecra
                     FROM %s sl
                     WHERE sl.user = :profileUser
                     AND sl.deleted IS NULL
-                    ORDER BY sl.spacecraft_id ASC, sl.date DESC, sl.id DESC',
+                    ORDER BY sl.date DESC, sl.id DESC',
                     SpacecraftLog::class
                 )
             )
@@ -142,9 +143,10 @@ final class SpacecraftLogRepository extends EntityRepository implements Spacecra
                     WHERE sl.user = :profileUser
                     AND scan.user = :visitor
                     AND sl.date <= scan.date
+                    AND (sl.edited IS NULL OR sl.edited <= scan.date)
                     AND sl.is_private = false
                     AND sl.deleted IS NULL
-                    ORDER BY sl.spacecraft_id ASC, sl.date DESC, sl.id DESC',
+                    ORDER BY sl.date DESC, sl.id DESC',
                     SpacecraftLog::class,
                     SpacecraftLogScan::class
                 )

@@ -283,6 +283,113 @@ function escapeBroadcastMessage(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+function startNewSpacecraftLog() {
+  resetSpacecraftLogForm("", "B_ADD_SHIP_LOG", "Eintrag erstellen", "Kommentar schreiben", false);
+
+  if ($("showWriteLogButtonContainer")) {
+    Element.hide($("showWriteLogButtonContainer"));
+  }
+  if ($("writelog")) {
+    Element.show($("writelog"));
+  }
+  if ($("spacecraftLogText")) {
+    $("spacecraftLogText").focus();
+  }
+}
+
+function startSpacecraftLogEdit(element, logId) {
+  resetSpacecraftLogForm(
+    element.getAttribute("data-log-text") || "",
+    "B_EDIT_SPACECRAFT_LOG",
+    "Eintrag speichern",
+    "Logeintrag bearbeiten",
+    true,
+    logId
+  );
+
+  if ($("showWriteLogButtonContainer")) {
+    Element.hide($("showWriteLogButtonContainer"));
+  }
+  if ($("writelog")) {
+    Element.show($("writelog"));
+  }
+  if ($("spacecraftLogText")) {
+    $("spacecraftLogText").focus();
+  }
+}
+
+function cancelSpacecraftLogEdit() {
+  resetSpacecraftLogForm("", "B_ADD_SHIP_LOG", "Eintrag erstellen", "Kommentar schreiben", false);
+
+  if ($("writelog")) {
+    Element.hide($("writelog"));
+  }
+  if ($("showWriteLogButtonContainer")) {
+    Element.show($("showWriteLogButtonContainer"));
+  }
+}
+
+function resetSpacecraftLogForm(text, actionName, submitLabel, title, showCancel, logId) {
+  if ($("spacecraftLogText")) {
+    $("spacecraftLogText").value = text;
+  }
+  if ($("spacecraftLogId")) {
+    $("spacecraftLogId").value = logId || 0;
+  }
+  if ($("spacecraftLogSubmit")) {
+    $("spacecraftLogSubmit").name = actionName;
+    $("spacecraftLogSubmit").value = submitLabel;
+  }
+  if ($("spacecraftLogFormTitle")) {
+    $("spacecraftLogFormTitle").update(title);
+  }
+  if ($("spacecraftLogCancel")) {
+    $("spacecraftLogCancel").style.display = showCancel ? "" : "none";
+  }
+
+  setSpacecraftLogbookAction(actionName, logId || 1);
+}
+
+function setSpacecraftLogbookAction(actionName, actionValue) {
+  if ($("spacecraftLogbookAction")) {
+    $("spacecraftLogbookAction").value = actionName;
+  }
+  if ($("spacecraftLogbookActionValue")) {
+    $("spacecraftLogbookActionValue").value = actionValue;
+  }
+}
+
+function submitSpacecraftLogbookForm(form) {
+  if (form.dataset.submitting === "1") {
+    return false;
+  }
+
+  form.dataset.submitting = "1";
+
+  var actionName = $("spacecraftLogbookAction") ? $("spacecraftLogbookAction").value : "B_ADD_SHIP_LOG";
+  var actionValue = $("spacecraftLogbookActionValue") ? $("spacecraftLogbookActionValue").value : 1;
+  var parameters = Form.serialize(form, { hash: false, submit: false });
+  parameters += "&" + encodeURIComponent(actionName) + "=" + encodeURIComponent(actionValue);
+  parameters += "&communicationPopup=1";
+  parameters += "&SHOW_SPACECRAFT_COMMUNICATION=1";
+
+  new Ajax.Updater("popupContent", form.action, {
+    method: "post",
+    parameters: parameters,
+    evalScripts: true,
+    onComplete: function () {
+      form.dataset.submitting = "0";
+      enablePopupDrag();
+      switchMenuToLogbook();
+
+      if (typeof initTooltips === "function") {
+        initTooltips();
+      }
+    }
+  });
+
+  return false;
+}
 function openTradeMenu(element, postid) {
   updatePopupAtElement(element,
     "?SHOW_TRADEMENU=1&id=" + spacecraftid + "&postid=" + postid

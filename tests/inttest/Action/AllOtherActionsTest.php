@@ -94,6 +94,8 @@ class AllOtherActionsTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_MOVE' => ['posx' => 7, 'posy' => 7],
             'SPACECRAFT_ACTIONS-B_SEND_BROADCAST' => ['text' => 'BROADCAST TXT'],
             'SPACECRAFT_ACTIONS-B_ADD_SHIP_LOG' => ['log' => 'LOGBOOK TXT'],
+            'SPACECRAFT_ACTIONS-B_DELETE_SPACECRAFT_LOG' => ['B_DELETE_SPACECRAFT_LOG' => 1],
+            'SPACECRAFT_ACTIONS-B_EDIT_SPACECRAFT_LOG' => ['logid' => 1, 'log' => 'EDITED LOGBOOK TXT'],
             'SPACECRAFT_ACTIONS-B_ATTACK_BUILDING' => ['id' => 77, 'field' => 25],
             'SPACECRAFT_ACTIONS-B_ADVENT_DOOR' => ['target' => 1],
             'SPACECRAFT_ACTIONS-B_EASTER_EGG' => ['target' => 2],

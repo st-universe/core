@@ -40,38 +40,70 @@
 <div class="box" id="logbook" style="width: 500px; display: none;">
   <div class="box_title">Logbuch</div>
   <div class="box_body">
-    <form method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}">
+    <form id="spacecraftLogbookForm" method="post" action="{{ SHIP.getType.getModuleView.getPhpPage }}"
+      onsubmit="return submitSpacecraftLogbookForm(this);">
       <input type="hidden" name="id" value="{{ SHIP.getId }}" />
       <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+      <input type="hidden" name="logid" id="spacecraftLogId" value="0" />
+      <input type="hidden" id="spacecraftLogbookAction" value="B_ADD_SHIP_LOG" />
+      <input type="hidden" id="spacecraftLogbookActionValue" value="1" />
       <div id="writelog" style="display: none;">
         <table class="tcal">
           <tr>
-            <th colspan="2">Kommentar schreiben</th>
+            <th colspan="2" id="spacecraftLogFormTitle">Kommentar schreiben</th>
           </tr>
           <tr>
             <td colspan="2">
-              <textarea style="width: 100%; height: 100px;" name="log"></textarea>
+              <textarea id="spacecraftLogText" style="width: 100%; height: 100px;" name="log"></textarea>
             </td>
           </tr>
           <tr>
             <td colspan="2" style="text-align: right;">
-              <input type="submit" class="button" name="B_ADD_SHIP_LOG" value="Eintrag erstellen" />
+              <input id="spacecraftLogCancel" type="button" class="button" value="Abbrechen"
+                onclick="cancelSpacecraftLogEdit()" style="display: none;" />
+              <input id="spacecraftLogSubmit" type="submit" class="button" name="B_ADD_SHIP_LOG"
+                value="Eintrag erstellen" />
             </td>
           </tr>
         </table>
       </div>
-      <div style="width: 100%; text-align: right;">
+      <div id="showWriteLogButtonContainer" style="width: 100%; text-align: right;">
         <input type="button" class="button" value="Logeintrag schreiben"
-          onclick="Element.hide(this.parentNode);Element.show($('writelog'))" />
+          onclick="startNewSpacecraftLog()" />
       </div>
       <br />
       {% for DATA in LOGBOOK %}
       <table class="tcal">
         <tr>
-          <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+          <th style="width: 120px; text-align: center;">{{ DATA.getDate|stuDateTime }}</th>
+          <th style="width: 20px; text-align: center;">
+            {% set editIconId = 'editSpacecraftLog' ~ DATA.getId %}
+            <button type="button" data-log-text="{{ DATA.getText|e('html_attr') }}"
+              style="border: 0; background: transparent; padding: 0; cursor: pointer;"
+              onclick="startSpacecraftLogEdit(this, {{ DATA.getId }})"
+              onmouseover="cp('{{ editIconId }}','buttons/knedit2')"
+              onmouseout="cp('{{ editIconId }}','buttons/knedit1')">
+              <img src="/assets/buttons/knedit1.png" name="{{ editIconId }}" title="Logbucheintrag bearbeiten" />
+            </button>
+          </th>
+          <th style="width: 20px; text-align: center;">
+            {% set deleteIconId = 'deleteSpacecraftLog' ~ DATA.getId %}
+            <button type="submit" name="B_DELETE_SPACECRAFT_LOG" value="{{ DATA.getId }}"
+              style="border: 0; background: transparent; padding: 0; cursor: pointer;"
+              onclick="setSpacecraftLogbookAction(this.name, this.value)"
+              onmouseover="cp('{{ deleteIconId }}','buttons/x2')"
+              onmouseout="cp('{{ deleteIconId }}','buttons/x1')">
+              <img src="/assets/buttons/x1.png" name="{{ deleteIconId }}" title="Logbucheintrag löschen" />
+            </button>
+          </th>
         </tr>
+        {% if DATA.getEdited %}
         <tr>
-          <td>{{ DATA.getText|nl2br|bbcode }}</td>
+          <td colspan="3" class="knedit">Bearbeitet: {{ DATA.getEdited|stuDateTime }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td colspan="3">{{ DATA.getText|nl2br|bbcode }}</td>
         </tr>
       </table>
       {% if not loop.last %}
