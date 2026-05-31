@@ -215,7 +215,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                     s.type as spacecrafttype, s.name as shipname, sc.hull as hull, s.max_hull as maxhull,
                     sc.shield as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false) as haslogbook,
+                    (SELECT count(*) > 0 FROM stu_spacecraft_log sl WHERE sl.spacecraft_id = s.id AND sl.is_private = :false AND sl.deleted IS NULL) as haslogbook,
                     (SELECT count(*) > 0 FROM stu_crew_assign ca WHERE ca.spacecraft_id = s.id) as hascrew
                 FROM stu_spacecraft s
                 JOIN stu_spacecraft_condition sc
