@@ -119,7 +119,6 @@ use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\RpgPlotMemberArchiv;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipLog;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategory;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
@@ -294,7 +293,6 @@ return [
     SpacecraftLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLog::class),
     SpacecraftLogScanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLogScan::class),
     CrewAssignmentRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewAssignment::class),
-    ShipLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class),
     ShipRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Ship::class),
     ShipRumpBuildingFunctionRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class),
     ShipRumpCategoryRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategory::class),
