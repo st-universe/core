@@ -77,6 +77,7 @@ use Stu\Module\Message\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequestInterface;
 use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPm;
+use Stu\Module\Message\View\ShowWriteQuickPmResponse\ShowWriteQuickPmResponse;
 
 use function DI\autowire;
 
@@ -123,6 +124,7 @@ return [
     'PM_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
+        ShowWriteQuickPmResponse::VIEW_IDENTIFIER => autowire(ShowWriteQuickPmResponse::class),
         ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
         ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
         ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),

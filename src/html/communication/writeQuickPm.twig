@@ -1,6 +1,6 @@
-  <input type="hidden" name="pm_sstr" id="pm_sstr" value="{{ SESSIONSTRING }}" />
   {% if RECIPIENT %}
     <form id="quickpm">
+      <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
       <table class="tcal" id="quickpm_compose">
         <tr>
           <td>
@@ -18,14 +18,14 @@
         </tr>
         <tr>
           <td>
-            <input type="button" class="button" onclick="sendQuickPM({{ RECIPIENT.getId }})" value="Absenden" />
+            <input type="button" class="button" onclick="return sendQuickPM({{ RECIPIENT.getId }})" value="Absenden" />
           </td>
         </tr>
       </table>
       <div id="quickpm_done" style="display: none;">
         <table class="tcal">
           <tr>
-            <td>Die Nachricht wurde verschickt</td>
+            <td id="quickpm_done_text">Die Nachricht wurde verschickt</td>
           </tr>
         </table>
       </div>
