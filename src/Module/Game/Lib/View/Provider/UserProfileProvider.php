@@ -15,7 +15,6 @@ use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
@@ -24,7 +23,6 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         private ContactRepositoryInterface $contactRepository,
         private UserRepositoryInterface $userRepository,
-        private SpacecraftLogRepositoryInterface $spacecraftLogRepository,
         private ParserWithImageInterface $parserWithImage,
         private ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {}
@@ -50,7 +48,6 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('PROFILE', $user);
         $game->setTemplateVar('HAS_TRANSLATION', $this->hasTranslation($user));
         $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($user, $visitor));
-        $game->setTemplateVar('SPACECRAFT_LOGBOOKS', $this->spacecraftLogRepository->getGroupedLogbooksForProfile($user, $visitor));
         $game->setTemplateVar(
             'DESCRIPTION',
             $this->parserWithImage->parse($user->getDescription())->getAsHTML()

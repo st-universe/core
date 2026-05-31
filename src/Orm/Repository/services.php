@@ -134,8 +134,6 @@ use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftEmergency;
-use Stu\Orm\Entity\SpacecraftLog;
-use Stu\Orm\Entity\SpacecraftLogScan;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRump3DModel;
 use Stu\Orm\Entity\SpacecraftSystem;
@@ -291,8 +289,6 @@ return [
     RpgPlotMemberRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class),
     SessionStringRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SessionString::class),
     SpacecraftBuildplanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftBuildplan::class),
-    SpacecraftLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLog::class),
-    SpacecraftLogScanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLogScan::class),
     CrewAssignmentRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewAssignment::class),
     ShipLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class),
     ShipRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Ship::class),

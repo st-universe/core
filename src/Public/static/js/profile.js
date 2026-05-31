@@ -8,16 +8,6 @@ function toggleCharacterDetails() {
     });
 }
 
-function toggleSpacecraftLogDetails() {
-    document.querySelectorAll('.spacecraft-log-bar').forEach(function (bar) {
-        bar.addEventListener('click', function () {
-            var spacecraftId = this.getAttribute('data-spacecraft-id');
-            var content = document.getElementById('spacecraft-log-' + spacecraftId);
-            content.style.display = content.style.display === 'none' || content.style.display === '' ? 'table-row' : 'none';
-        });
-    });
-}
-
 function addNewCharacterForm() {
     document.querySelectorAll('.character-content').forEach(function (c) {
         c.style.display = 'none';
@@ -83,7 +73,6 @@ function createEditCharacterForm(characterId, characterName, characterDescriptio
 
 document.addEventListener('DOMContentLoaded', function () {
     toggleCharacterDetails();
-    toggleSpacecraftLogDetails();
 
     const addButton = document.getElementById('addCharacterButton');
     if (addButton) {
