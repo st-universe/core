@@ -65,7 +65,7 @@
           onclick="Element.hide(this.parentNode);Element.show($('writelog'))" />
       </div>
       <br />
-      {% for DATA in SHIP.getLogbook %}
+      {% for DATA in LOGBOOK %}
       <table class="tcal">
         <tr>
           <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
@@ -78,7 +78,7 @@
       <br />
       {% endif %}
       {% endfor %}
-      {% if not SHIP.getLogbook %}
+      {% if not LOGBOOK %}
       <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
       {% endif %}
     </form>

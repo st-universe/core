@@ -43,7 +43,6 @@ final class AddShipLog implements ActionControllerInterface
         $shipLog->setDate(time());
 
         $this->shipLogRepository->save($shipLog);
-        $spacecraft->getLogbook()->add($shipLog);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');

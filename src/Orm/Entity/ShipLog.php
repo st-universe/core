@@ -8,12 +8,15 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\ShipLogRepository;
 
-#[Table(name: 'stu_ship_log')]
+#[Table(name: 'stu_spacecraft_log')]
+#[Index(name: 'spacecraft_log_spacecraft_idx', columns: ['spacecraft_id'])]
+#[Index(name: 'spacecraft_log_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: ShipLogRepository::class)]
 class ShipLog
 {
@@ -24,6 +27,15 @@ class ShipLog
 
     #[Column(type: 'integer')]
     private int $spacecraft_id;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $user_id = null;
+
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $rump_id = null;
+
+    #[Column(type: 'string', nullable: true)]
+    private ?string $name = null;
 
     #[Column(type: 'text')]
     private string $text = '';
@@ -37,9 +49,9 @@ class ShipLog
     #[Column(type: 'integer', nullable: true)]
     private ?int $deleted = null;
 
-    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'logbook')]
-    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?Spacecraft $spacecraft = null;
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', nullable: true, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?User $user = null;
 
     public function getId(): int
     {
@@ -48,7 +60,64 @@ class ShipLog
 
     public function setSpacecraft(Spacecraft $spacecraft): ShipLog
     {
-        $this->spacecraft = $spacecraft;
+        $this->spacecraft_id = $spacecraft->getId();
+        $this->setUser($spacecraft->getUser());
+        $this->rump_id = $spacecraft->getRump()->getId();
+        $this->name = $spacecraft->getName();
+
+        return $this;
+    }
+
+    public function getSpacecraftId(): int
+    {
+        return $this->spacecraft_id;
+    }
+
+    public function setSpacecraftId(int $spacecraftId): ShipLog
+    {
+        $this->spacecraft_id = $spacecraftId;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): ShipLog
+    {
+        $this->user = $user;
+        $this->user_id = $user?->getId();
+
+        return $this;
+    }
+
+    public function getRumpId(): ?int
+    {
+        return $this->rump_id;
+    }
+
+    public function setRumpId(?int $rumpId): ShipLog
+    {
+        $this->rump_id = $rumpId;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): ShipLog
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -87,5 +156,17 @@ class ShipLog
     public function isDeleted(): bool
     {
         return $this->deleted !== null;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->is_private;
+    }
+
+    public function setPrivate(bool $isPrivate): ShipLog
+    {
+        $this->is_private = $isPrivate;
+
+        return $this;
     }
 }
