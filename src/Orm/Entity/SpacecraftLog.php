@@ -43,6 +43,9 @@ class SpacecraftLog
     #[Column(type: 'integer')]
     private int $date;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $edited = null;
+
     #[Column(type: 'boolean')]
     private bool $is_private = false;
 
@@ -142,6 +145,18 @@ class SpacecraftLog
     public function setDate(int $date): SpacecraftLog
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getEdited(): ?int
+    {
+        return $this->edited;
+    }
+
+    public function setEdited(int $timestamp): SpacecraftLog
+    {
+        $this->edited = $timestamp;
 
         return $this;
     }

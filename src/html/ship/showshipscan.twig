@@ -136,8 +136,13 @@
     {% for DATA in SCAN_LOGBOOK %}
     <table class="tcal">
       <tr>
-        <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
+        <th style="width: 120px; text-align: center;">{{ DATA.getDate|stuDateTime }}</th>
       </tr>
+      {% if DATA.getEdited %}
+      <tr>
+        <td class="knedit">Bearbeitet: {{ DATA.getEdited|stuDateTime }}</td>
+      </tr>
+      {% endif %}
       <tr>
         <td>{{ DATA.getText|nl2br|bbcode }}</td>
       </tr>
