@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260531175808 extends AbstractMigration
+final class Version20260525152653 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -447,12 +447,6 @@ final class Version20260531175808 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_spacecraft_condition (hull INTEGER NOT NULL, shield INTEGER NOT NULL, is_disabled BOOLEAN NOT NULL, state SMALLINT NOT NULL, spacecraft_id INTEGER NOT NULL, PRIMARY KEY (spacecraft_id), CONSTRAINT FK_6B28914D1C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_spacecraft_emergency (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, deleted INTEGER DEFAULT NULL, CONSTRAINT FK_F02308131C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_F02308131C6AF6FD ON stu_spacecraft_emergency (spacecraft_id)');
-        $this->addSql('CREATE TABLE stu_spacecraft_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, user_id INTEGER DEFAULT NULL, rump_id INTEGER DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, is_private BOOLEAN NOT NULL, deleted INTEGER DEFAULT NULL, CONSTRAINT FK_DA27BBBDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX spacecraft_log_spacecraft_idx ON stu_spacecraft_log (spacecraft_id)');
-        $this->addSql('CREATE INDEX spacecraft_log_user_idx ON stu_spacecraft_log (user_id)');
-        $this->addSql('CREATE TABLE stu_spacecraft_log_scan (spacecraft_id INTEGER NOT NULL, date INTEGER NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, spacecraft_id), CONSTRAINT FK_FD67BB7BA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_FD67BB7BA76ED395 ON stu_spacecraft_log_scan (user_id)');
-        $this->addSql('CREATE INDEX spacecraft_log_scan_spacecraft_idx ON stu_spacecraft_log_scan (spacecraft_id)');
         $this->addSql('CREATE TABLE stu_spacecraft_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, system_type SMALLINT NOT NULL, module_id INTEGER DEFAULT NULL, status SMALLINT NOT NULL, mode SMALLINT NOT NULL, cooldown INTEGER DEFAULT NULL, data CLOB DEFAULT NULL, CONSTRAINT FK_2AD626BCAFC2B591 FOREIGN KEY (module_id) REFERENCES stu_modules (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2AD626BC1C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_2AD626BCAFC2B591 ON stu_spacecraft_system (module_id)');
         $this->addSql('CREATE INDEX IDX_2AD626BC1C6AF6FD ON stu_spacecraft_system (spacecraft_id)');
@@ -739,8 +733,6 @@ final class Version20260531175808 extends AbstractMigration
         $this->addSql('DROP TABLE stu_spacecraft');
         $this->addSql('DROP TABLE stu_spacecraft_condition');
         $this->addSql('DROP TABLE stu_spacecraft_emergency');
-        $this->addSql('DROP TABLE stu_spacecraft_log');
-        $this->addSql('DROP TABLE stu_spacecraft_log_scan');
         $this->addSql('DROP TABLE stu_spacecraft_system');
         $this->addSql('DROP TABLE stu_station');
         $this->addSql('DROP TABLE stu_station_shiprepair');

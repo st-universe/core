@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
+use Stu\Orm\Repository\ShipLogRepositoryInterface;
 
 final class AddShipLog implements ActionControllerInterface
 {
@@ -19,7 +19,7 @@ final class AddShipLog implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private SpacecraftLogRepositoryInterface $spacecraftLogRepository
+        private ShipLogRepositoryInterface $shipLogRepository
     ) {}
 
     #[\Override]
@@ -37,12 +37,13 @@ final class AddShipLog implements ActionControllerInterface
 
         $text = request::postStringFatal('log');
 
-        $spacecraftLog = $this->spacecraftLogRepository->prototype();
-        $spacecraftLog->setSpacecraft($spacecraft);
-        $spacecraftLog->setText($text);
-        $spacecraftLog->setDate(time());
+        $shipLog = $this->shipLogRepository->prototype();
+        $shipLog->setSpacecraft($spacecraft);
+        $shipLog->setText($text);
+        $shipLog->setDate(time());
 
-        $this->spacecraftLogRepository->save($spacecraftLog);
+        $this->shipLogRepository->save($shipLog);
+        $spacecraft->getLogbook()->add($shipLog);
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');

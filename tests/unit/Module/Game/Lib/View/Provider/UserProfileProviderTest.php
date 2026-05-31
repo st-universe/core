@@ -21,7 +21,6 @@ use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -33,8 +32,6 @@ class UserProfileProviderTest extends StuTestCase
 
     private MockInterface&UserRepositoryInterface $userRepository;
 
-    private MockInterface&SpacecraftLogRepositoryInterface $spacecraftLogRepository;
-
     private MockInterface&ParserWithImageInterface $parserWithImage;
 
     private MockInterface&ProfileVisitorRegistrationInterface $profileVisitorRegistration;
@@ -44,12 +41,9 @@ class UserProfileProviderTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
-        $this->spacecraftLogRepository = $this->mock(SpacecraftLogRepositoryInterface::class);
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
         $this->profileVisitorRegistration = $this->mock(ProfileVisitorRegistrationInterface::class);
 
@@ -57,7 +51,6 @@ class UserProfileProviderTest extends StuTestCase
             $this->rpgPlotMemberRepository,
             $this->contactRepository,
             $this->userRepository,
-            $this->spacecraftLogRepository,
             $this->parserWithImage,
             $this->profileVisitorRegistration
         );
@@ -139,9 +132,6 @@ class UserProfileProviderTest extends StuTestCase
         $game->shouldReceive('setTemplateVar')
             ->with('CONTACT_LIST_MODES', ContactListModeEnum::cases())
             ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('SPACECRAFT_LOGBOOKS', [])
-            ->once();
 
         $visitor->shouldReceive('getId')
             ->withNoArgs()
@@ -196,11 +186,6 @@ class UserProfileProviderTest extends StuTestCase
             ->with($player, null)
             ->once()
             ->andReturn([$friend]);
-
-        $this->spacecraftLogRepository->shouldReceive('getGroupedLogbooksForProfile')
-            ->with($player, $visitor)
-            ->once()
-            ->andReturn([]);
 
         $game->shouldReceive('addExecuteJS')
             ->with("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER)

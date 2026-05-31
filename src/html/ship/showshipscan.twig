@@ -133,7 +133,8 @@
 <div class="box" id="scanlogbook" style="width: 500px; display: none;">
   <div class="box_title">Logbuch</div>
   <div class="box_body">
-    {% for DATA in SCAN_LOGBOOK %}
+    {% set TARGET = TARGETWRAPPER.get %}
+    {% for DATA in TARGET.getLogbook %}
     <table class="tcal">
       <tr>
         <th style="width: 120px; text-align: center;">{{ DATA.getDate|date('Y-m-d H:i:s') }}</th>
@@ -146,7 +147,7 @@
     <br />
     {% endif %}
     {% endfor %}
-    {% if SCAN_LOGBOOK is empty %}
+    {% if TARGET.getLogbook is empty %}
     <div class="divhead" style="text-align: center;">Keine Logbucheinträge vorhanden</div>
     {% endif %}
   </div>
