@@ -373,6 +373,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 WHERE fs.time >= :minTime
                 AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
                 AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+                AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
                 ORDER BY fs.time DESC
                 LIMIT %d',
                     $limit
@@ -451,6 +452,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 AND fs.ship_id = :shipId
                 AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
                 AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+                AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
                 ORDER BY fs.time DESC
                 LIMIT %d',
                     $limit
