@@ -17,6 +17,9 @@ use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
 use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepair;
 use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequest;
 use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequestInterface;
+use Stu\Module\Colony\Action\ChangeColonyMessage\ChangeColonyMessage;
+use Stu\Module\Colony\Action\ChangeColonyMessage\ChangeColonyMessageRequest;
+use Stu\Module\Colony\Action\ChangeColonyMessage\ChangeColonyMessageRequestInterface;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
 use Stu\Module\Colony\Action\ChangeName\ChangeName;
 use Stu\Module\Colony\Action\ChangeName\ChangeNameRequest;
@@ -196,6 +199,7 @@ return [
     BuildingCommodityDeltaTracker::class => autowire(BuildingCommodityDeltaTracker::class),
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
+    ChangeColonyMessageRequestInterface::class => autowire(ChangeColonyMessageRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
@@ -241,6 +245,7 @@ return [
         CreateBuildplan::ACTION_IDENTIFIER => autowire(CreateBuildplan::class),
         BuildTorpedos::ACTION_IDENTIFIER => autowire(BuildTorpedos::class),
         CancelModuleCreation::ACTION_IDENTIFIER => autowire(CancelModuleCreation::class),
+        ChangeColonyMessage::ACTION_IDENTIFIER => autowire(ChangeColonyMessage::class),
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
         CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
         CreateModules::ACTION_IDENTIFIER => autowire(CreateModules::class),

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260531193945 extends AbstractMigration
+final class Version20260604155531 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -144,7 +144,7 @@ final class Version20260531193945 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_174814E1496DDE10 ON stu_colony (starsystem_map_id)');
         $this->addSql('CREATE INDEX IDX_174814E1A76ED395 ON stu_colony (user_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_174814E1F0AA09DB ON stu_colony (database_id)');
-        $this->addSql('CREATE TABLE stu_colony_changeable (bev_work INTEGER NOT NULL, bev_free INTEGER NOT NULL, bev_max INTEGER NOT NULL, eps INTEGER NOT NULL, max_eps INTEGER NOT NULL, max_storage INTEGER NOT NULL, populationlimit INTEGER NOT NULL, immigrationstate BOOLEAN NOT NULL, shields INTEGER DEFAULT NULL, shield_frequency INTEGER DEFAULT NULL, colony_id INTEGER NOT NULL, torpedo_type INTEGER DEFAULT NULL, PRIMARY KEY (colony_id), CONSTRAINT FK_39D2AE0F96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_39D2AE0F942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_colony_changeable (bev_work INTEGER NOT NULL, bev_free INTEGER NOT NULL, bev_max INTEGER NOT NULL, eps INTEGER NOT NULL, max_eps INTEGER NOT NULL, max_storage INTEGER NOT NULL, populationlimit INTEGER NOT NULL, immigrationstate BOOLEAN NOT NULL, shields INTEGER DEFAULT NULL, shield_frequency INTEGER DEFAULT NULL, colony_message CLOB DEFAULT NULL, colony_id INTEGER NOT NULL, torpedo_type INTEGER DEFAULT NULL, PRIMARY KEY (colony_id), CONSTRAINT FK_39D2AE0F96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_39D2AE0F942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_39D2AE0F942323E3 ON stu_colony_changeable (torpedo_type)');
         $this->addSql('CREATE TABLE stu_colony_class_deposit (min_amount INTEGER NOT NULL, max_amount INTEGER NOT NULL, colony_class_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, PRIMARY KEY (colony_class_id, commodity_id), CONSTRAINT FK_A843E75CBA61CECC FOREIGN KEY (colony_class_id) REFERENCES stu_colonies_classes (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A843E75CB4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A843E75CBA61CECC ON stu_colony_class_deposit (colony_class_id)');

@@ -471,6 +471,9 @@ function showRegionInfo(element, region) {
 function showColonyScan(element) {
   updatePopupAtElement(element, "?SHOW_COLONY_SCAN=1&id=" + spacecraftid);
 }
+function showColonyMessage(element) {
+  updatePopupAtElement(element, "?SHOW_COLONY_MESSAGE=1&id=" + spacecraftid, 500);
+}
 function showRepairOptions(element, spacecraftid) {
   updatePopupAtElement(element, "?id=" + spacecraftid + "&SHOW_REPAIR_OPTIONS=1");
 }

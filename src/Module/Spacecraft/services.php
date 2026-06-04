@@ -248,6 +248,7 @@ use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Module\Spacecraft\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Spacecraft\View\ShowBroadcastResponse\ShowBroadcastResponse;
+use Stu\Module\Spacecraft\View\ShowColonyMessage\ShowColonyMessage;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Spacecraft\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Spacecraft\View\ShowEpsUsage\ShowEpsUsage;
@@ -501,6 +502,7 @@ return [
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowAnalyseBuoy::VIEW_IDENTIFIER => autowire(ShowAnalyseBuoy::class),
         ShowBroadcastResponse::VIEW_IDENTIFIER => autowire(ShowBroadcastResponse::class),
+        ShowColonyMessage::VIEW_IDENTIFIER => autowire(ShowColonyMessage::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowEpsUsage::VIEW_IDENTIFIER => autowire(ShowEpsUsage::class),

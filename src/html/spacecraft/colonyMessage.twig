@@ -1,0 +1,23 @@
+{% from 'html/macros.twig' import translationSwitcher %}
+
+<table class="tcal">
+    <tr>
+        <th>
+            {{ COLONY.getName|bbcode }}
+            {{ translationSwitcher(HAS_TRANSLATION, 'colonyMessage', 'Koloniebotschaft übersetzen') }}
+        </th>
+    </tr>
+    <tr>
+        <td>
+            {% if COLONY_MESSAGE %}
+            <div id="colonyMessage" class="translatable-content" style="overflow-wrap: break-word;">
+                {% autoescape false %}
+                {{ COLONY_MESSAGE|nl2br }}
+                {% endautoescape %}
+            </div>
+            {% else %}
+            Keine Koloniebotschaft hinterlegt
+            {% endif %}
+        </td>
+    </tr>
+</table>

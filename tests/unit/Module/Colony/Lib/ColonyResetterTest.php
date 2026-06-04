@@ -236,6 +236,10 @@ class ColonyResetterTest extends StuTestCase
             ->with(0)
             ->once()
             ->andReturnSelf();
+        $changeable->shouldReceive('setColonyMessage')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
 
         $this->colonyRepository->shouldReceive('save')
             ->with($colony)
