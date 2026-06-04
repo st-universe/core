@@ -10,4 +10,5 @@ return [
     OrbitShipWrappersRetrieverInterface::class => autowire(OrbitShipWrappersRetriever::class),
     ColonyFunctionManagerInterface::class => autowire(ColonyFunctionManager::class),
     ColonyCreationInterface::class => autowire(ColonyCreation::class),
+    ColonyMessageBbCodeParser::class => autowire(ColonyMessageBbCodeParser::class),
 ];

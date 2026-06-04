@@ -51,6 +51,9 @@ class ColonyChangeable
     #[Column(type: 'integer', length: 6, nullable: true)]
     private ?int $shield_frequency = 0;
 
+    #[Column(type: 'text', nullable: true)]
+    private ?string $colony_message = null;
+
     #[ManyToOne(targetEntity: TorpedoType::class)]
     #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id')]
     private ?TorpedoType $torpedo = null;
@@ -172,6 +175,17 @@ class ColonyChangeable
     public function setShieldFrequency(?int $shieldFrequency): ColonyChangeable
     {
         $this->shield_frequency = $shieldFrequency;
+        return $this;
+    }
+
+    public function getColonyMessage(): ?string
+    {
+        return $this->colony_message;
+    }
+
+    public function setColonyMessage(?string $colonyMessage): ColonyChangeable
+    {
+        $this->colony_message = $colonyMessage;
         return $this;
     }
 

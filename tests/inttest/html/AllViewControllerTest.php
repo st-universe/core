@@ -49,6 +49,7 @@ class AllViewControllerTest extends TwigTestCase
         'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
         'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
+        'SPACECRAFT_VIEWS-SHOW_COLONY_MESSAGE',     // needs ship over colony
         'SPACECRAFT_VIEWS-SHOW_COLONY_SCAN',        // needs ship over colony with matrix scanner
         'SPACECRAFT_VIEWS-SHOW_RENAME_CREW',
         'SPACECRAFT_VIEWS-SHOW_SCAN',               // needs ship on same location

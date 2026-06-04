@@ -25,6 +25,6 @@
     <br />
     {% include 'html/component.twig' with COLONY_STORAGE %}
 </div>
-<div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter';">
+<div id="submenu" class="colonymenu_container" onkeydown="return event.key != 'Enter' || event.target.tagName == 'TEXTAREA';">
     {% include SELECTED_COLONY_SUB_MENU_TEMPLATE %}
 </div>

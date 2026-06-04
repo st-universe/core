@@ -60,7 +60,8 @@ final class ColonyResetter implements ColonyResetterInterface
             ->setShieldFrequency(0)
             ->setShields(0)
             ->setImmigrationstate(true)
-            ->setPopulationlimit(0);
+            ->setPopulationlimit(0)
+            ->setColonyMessage(null);
 
         $this->colonyRepository->save($colony);
 

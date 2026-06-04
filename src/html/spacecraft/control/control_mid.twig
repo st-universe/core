@@ -368,6 +368,12 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
         <td style="width: 50%;">
             {{ _self.colonyImageAndName(spacecraftId, currentColony, ownsCurrentColony) }}
             <div>
+                {% if not currentColony.isFree %}
+                <a href="javascript:void(0);" onmouseover="cp('colony_message','buttons/info2', 'png');"
+                    onmouseout="cp('colony_message','buttons/info1', 'png');" onclick="showColonyMessage(this);">
+                    <img src="/assets/buttons/info1.png" name="colony_message" title="Koloniebotschaft anzeigen" />
+                </a>
+                {% endif %}
                 {% if currentColony.getUser.isContactable and not ownsCurrentColony %}
                 {% set fromType = SPACECRAFT.isStation ? 4 : 2 %}
                 <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
