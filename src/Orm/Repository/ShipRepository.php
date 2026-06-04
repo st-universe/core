@@ -63,6 +63,36 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     #[\Override]
+    public function getByUserIds(array $userIds): array
+    {
+        if ($userIds === []) {
+            return [];
+        }
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.user_id IN (:userIds)
+                ORDER BY s.id ASC',
+                Ship::class
+            )
+        )->setParameter('userIds', $userIds)->getResult();
+    }
+
+    #[\Override]
+    public function getByUserIdAbove(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.user_id > :userId
+                ORDER BY s.id ASC',
+                Ship::class
+            )
+        )->setParameter('userId', $userId)->getResult();
+    }
+
+    #[\Override]
     public function getByLocationAndUser(Location $location, User $user): array
     {
         return $this->findBy([

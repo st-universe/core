@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin;
 
 use Stu\Module\Admin\Action\BlockUser;
+use Stu\Module\Admin\Action\ChargeSpacecraftResources;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
 use Stu\Module\Admin\Action\CreateCrew;
 use Stu\Module\Admin\Action\CreateMissingUserWards;
@@ -125,6 +126,7 @@ return [
         RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class),
         RecalculateBuildplanCrewUsage::ACTION_IDENTIFIER => autowire(RecalculateBuildplanCrewUsage::class),
         SetGameState::ACTION_IDENTIFIER => autowire(SetGameState::class),
+        ChargeSpacecraftResources::ACTION_IDENTIFIER => autowire(ChargeSpacecraftResources::class),
         SpawnPirateFleet::ACTION_IDENTIFIER => autowire(SpawnPirateFleet::class)
     ],
     'ADMIN_VIEWS' => [

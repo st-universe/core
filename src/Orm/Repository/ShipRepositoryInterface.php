@@ -32,6 +32,18 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getByUserAndFleet(int $userId, ?int $fleetId): array;
 
     /**
+     * @param array<int, int> $userIds
+     *
+     * @return array<Ship>
+     */
+    public function getByUserIds(array $userIds): array;
+
+    /**
+     * @return array<Ship>
+     */
+    public function getByUserIdAbove(int $userId): array;
+
+    /**
      * @return array<Ship>
      */
     public function getByLocationAndUser(

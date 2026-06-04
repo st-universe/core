@@ -28,6 +28,16 @@ interface StationRepositoryInterface extends ObjectRepository
     /** @return array<Station> */
     public function getByUser(int $userId): array;
 
+    /**
+     * @param array<int, int> $userIds
+     *
+     * @return array<Station>
+     */
+    public function getByUserIds(array $userIds): array;
+
+    /** @return array<Station> */
+    public function getByUserIdAbove(int $userId): array;
+
     /** @return array<Station> */
     public function getForeignStationsInBroadcastRange(Spacecraft $spacecraft): array;
 
