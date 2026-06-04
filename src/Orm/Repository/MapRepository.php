@@ -312,6 +312,70 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[\Override]
+    public function getAdminLiveMapOverlayFields(int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('territory_color', 'territory_color', 'string');
+        $rsm->addScalarResult('territory_name', 'territory_name', 'string');
+        $rsm->addScalarResult('impassable', 'impassable', 'boolean');
+        $rsm->addScalarResult('impassable_color', 'impassable_color', 'string');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT
+                    l.cx AS x,
+                    l.cy AS y,
+                    CASE
+                        WHEN COALESCE(mbt.color, \'\') != \'\' THEN mbt.color
+                        WHEN COALESCE(al.rgb_code, \'\') != \'\' THEN al.rgb_code
+                        WHEN COALESCE(us.value, \'\') != \'\' THEN us.value
+                        ELSE NULL
+                    END AS territory_color,
+                    CASE
+                        WHEN mbt.id IS NOT NULL THEN mbt.description
+                        WHEN al.id IS NOT NULL THEN al.name
+                        WHEN u.id IS NOT NULL THEN u.username
+                        ELSE NULL
+                    END AS territory_name,
+                    CASE WHEN COALESCE(mf.passable, TRUE) = FALSE THEN TRUE ELSE FALSE END AS impassable,
+                    mf.complementary_color AS impassable_color
+                FROM stu_map m
+                JOIN stu_location l
+                ON m.id = l.id
+                LEFT JOIN stu_map_ftypes mf
+                ON l.field_id = mf.id
+                LEFT JOIN stu_map_bordertypes mbt
+                ON m.bordertype_id = mbt.id
+                LEFT JOIN stu_station station
+                ON station.influence_area_id = m.influence_area_id
+                LEFT JOIN stu_spacecraft base_sp
+                ON base_sp.id = station.id
+                LEFT JOIN stu_user u
+                ON u.id = base_sp.user_id
+                LEFT JOIN stu_alliances al
+                ON al.id = u.allys_id
+                LEFT JOIN stu_user_setting us
+                ON us.user_id = u.id
+                AND us.setting = :rgbCodeSetting
+                WHERE l.layer_id = :layerId
+                AND (
+                    m.bordertype_id IS NOT NULL
+                    OR m.influence_area_id IS NOT NULL
+                    OR COALESCE(mf.passable, TRUE) = FALSE
+                )
+                ORDER BY l.cy, l.cx',
+                $rsm
+            )
+            ->setParameters([
+                'layerId' => $layerId,
+                'rgbCodeSetting' => UserSettingEnum::RGB_CODE->value
+            ])
+            ->getResult();
+    }
+
+    #[\Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()

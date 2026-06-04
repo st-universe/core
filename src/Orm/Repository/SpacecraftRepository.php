@@ -365,4 +365,74 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
         return new ArrayCollection($filteredSpacecrafts);
     }
+
+    #[\Override]
+    public function getAdminLiveMapSpacecrafts(int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('type', 'type', 'string');
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('user_name', 'user_name', 'string');
+        $rsm->addScalarResult('alliance_id', 'alliance_id', 'integer');
+        $rsm->addScalarResult('alliance_name', 'alliance_name', 'string');
+        $rsm->addScalarResult('rump_id', 'rump_id', 'integer');
+        $rsm->addScalarResult('rump_name', 'rump_name', 'string');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('in_system', 'in_system', 'boolean');
+        $rsm->addScalarResult('system_name', 'system_name', 'string');
+        $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT sp.id,
+                    sp.name,
+                    sp.type,
+                    sp.user_id,
+                    u.username as user_name,
+                    al.id as alliance_id,
+                    al.name as alliance_name,
+                    sp.rump_id,
+                    r.name as rump_name,
+                    CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
+                    CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                    CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
+                    systems.name as system_name,
+                    CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked
+                FROM stu_spacecraft sp
+                JOIN stu_location location
+                ON sp.location_id = location.id
+                LEFT JOIN stu_map map_field
+                ON map_field.id = location.id
+                LEFT JOIN stu_sys_map system_field
+                ON system_field.id = location.id
+                LEFT JOIN stu_map parent_map
+                ON parent_map.systems_id = system_field.systems_id
+                LEFT JOIN stu_location parent_location
+                ON parent_location.id = parent_map.id
+                LEFT JOIN stu_systems systems
+                ON systems.id = system_field.systems_id
+                JOIN stu_user u
+                ON u.id = sp.user_id
+                LEFT JOIN stu_alliances al
+                ON al.id = u.allys_id
+                JOIN stu_rump r
+                ON r.id = sp.rump_id
+                LEFT JOIN stu_spacecraft_system cloak_system
+                ON cloak_system.spacecraft_id = sp.id
+                AND cloak_system.system_type = :cloakType
+                WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+                AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+                ORDER BY sp.id ASC',
+                $rsm
+            )
+            ->setParameters([
+                'layerId' => $layerId,
+                'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+                'cloakMode' => SpacecraftSystemModeEnum::MODE_ON->value
+            ])
+            ->getResult();
+    }
 }

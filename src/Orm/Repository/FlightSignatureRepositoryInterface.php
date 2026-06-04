@@ -63,4 +63,51 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      * @return array<array{FlightSignature, Spacecraft}>
      */
     public function getSignaturesInSensorRange(int $user_id, int $cx, int $cy, int $location_id, int $sensorRange, int $timeThreshold): array;
+
+    /**
+     * @return array<array{
+     *     id: int,
+     *     ship_id: int,
+     *     ship_name: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     time: int,
+     *     from_direction: null|int,
+     *     to_direction: null|int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool
+     * }>
+     */
+    public function getAdminLiveMapFlightSignatures(int $layerId, int $minTime, int $limit): array;
+
+    /**
+     * @return array<array{
+     *     id: int,
+     *     ship_id: int,
+     *     ship_name: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     time: int,
+     *     from_direction: null|int,
+     *     to_direction: null|int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool
+     * }>
+     */
+    public function getAdminLiveMapFlightSignaturesForShip(int $layerId, int $minTime, int $shipId, int $limit): array;
+
 }

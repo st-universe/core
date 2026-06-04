@@ -132,7 +132,7 @@ class ChargeSpacecraftResourcesTest extends StuTestCase
             ->withNoArgs()
             ->once();
         $this->game->shouldReceive('getInfo->addInformation')
-            ->with('1 Spacecraft wurde für EPS mit Wert 100 verarbeitet (je Spacecraft auf das aktuelle Maximum begrenzt).')
+            ->with('1 Spacecraft wurde für EPS mit Wert 100 verarbeitet (je Spacecraft auf das aktuelle Maximum begrenzt)')
             ->once();
 
         $this->subject->handle($this->game);

@@ -54,6 +54,9 @@ use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualSpacecraftTick;
 use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
+use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMap;
+use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapData;
+use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapImage;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
@@ -134,6 +137,9 @@ return [
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
+        ShowLiveMap::VIEW_IDENTIFIER => autowire(ShowLiveMap::class),
+        ShowLiveMapImage::VIEW_IDENTIFIER => autowire(ShowLiveMapImage::class),
+        ShowLiveMapData::VIEW_IDENTIFIER => autowire(ShowLiveMapData::class),
         ShowScripts::VIEW_IDENTIFIER => autowire(ShowScripts::class),
         ShowTicks::VIEW_IDENTIFIER => autowire(ShowTicks::class),
         EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),

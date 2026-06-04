@@ -54,7 +54,7 @@ class ColonyShieldLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $this->assertEquals(
-            '<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: 4; H+W;" />',
+            '<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: 4; H+W;" loading="lazy" decoding="async" alt="" draggable="false" />',
             $result
         );
     }

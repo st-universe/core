@@ -51,7 +51,7 @@ class SystemLayerRendererTest extends StuTestCase
 
         $expected = sprintf(
             '<img src="/assets/map/starmap/%s.png" class="visualPanelLayer"
-                        style="z-index: 1; H+W; opacity:1;" />',
+                        style="z-index: 1; H+W; opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />',
             $expectedBackGroundId
         );
 
@@ -70,9 +70,9 @@ class SystemLayerRendererTest extends StuTestCase
         $result = $this->subject->render($mapData, $this->panel);
 
         $expected = '<img src="/assets/map/starmap/0201.png" class="visualPanelLayer"
-                        style="z-index: 1; H+W; opacity:1;" />
+                        style="z-index: 1; H+W; opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />
             <img src="/assets/map/3.png" class="visualPanelLayer"
-                        style="z-index: 2; H+W; opacity:2;" />';
+                        style="z-index: 2; H+W; opacity:2;" loading="lazy" decoding="async" alt="" draggable="false" />';
 
         $this->assertEquals(
             preg_replace('/\s+/', '', $expected),
