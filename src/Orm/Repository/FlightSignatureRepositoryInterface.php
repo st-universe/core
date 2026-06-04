@@ -88,6 +88,29 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function getAdminLiveMapFlightSignatures(int $layerId, int $minTime, int $limit): array;
 
     /**
+     * @return iterable<array{
+     *     id: int,
+     *     ship_id: int,
+     *     ship_name: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     time: int,
+     *     from_direction: null|int,
+     *     to_direction: null|int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool
+     * }>
+     */
+    public function iterateAdminLiveMapFlightSignatures(int $layerId, int $minTime, int $limit): iterable;
+
+    /**
      * @return array<array{
      *     id: int,
      *     ship_id: int,
@@ -109,5 +132,28 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      * }>
      */
     public function getAdminLiveMapFlightSignaturesForShip(int $layerId, int $minTime, int $shipId, int $limit): array;
+
+    /**
+     * @return iterable<array{
+     *     id: int,
+     *     ship_id: int,
+     *     ship_name: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     time: int,
+     *     from_direction: null|int,
+     *     to_direction: null|int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool
+     * }>
+     */
+    public function iterateAdminLiveMapFlightSignaturesForShip(int $layerId, int $minTime, int $shipId, int $limit): iterable;
 
 }

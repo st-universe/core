@@ -312,83 +312,47 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     #[\Override]
     public function getAdminLiveMapFlightSignatures(int $layerId, int $minTime, int $limit): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id', 'integer');
-        $rsm->addScalarResult('ship_id', 'ship_id', 'integer');
-        $rsm->addScalarResult('ship_name', 'ship_name', 'string');
-        $rsm->addScalarResult('user_id', 'user_id', 'integer');
-        $rsm->addScalarResult('user_name', 'user_name', 'string');
-        $rsm->addScalarResult('alliance_id', 'alliance_id', 'integer');
-        $rsm->addScalarResult('alliance_name', 'alliance_name', 'string');
-        $rsm->addScalarResult('rump_id', 'rump_id', 'integer');
-        $rsm->addScalarResult('rump_name', 'rump_name', 'string');
-        $rsm->addScalarResult('x', 'x', 'integer');
-        $rsm->addScalarResult('y', 'y', 'integer');
-        $rsm->addScalarResult('time', 'time', 'integer');
-        $rsm->addScalarResult('from_direction', 'from_direction', 'integer');
-        $rsm->addScalarResult('to_direction', 'to_direction', 'integer');
-        $rsm->addScalarResult('in_system', 'in_system', 'boolean');
-        $rsm->addScalarResult('system_name', 'system_name', 'string');
-        $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        return iterator_to_array($this->iterateAdminLiveMapFlightSignatures($layerId, $minTime, $limit), false);
+    }
 
+    #[\Override]
+    public function iterateAdminLiveMapFlightSignatures(int $layerId, int $minTime, int $limit): iterable
+    {
         return $this->getEntityManager()
             ->createNativeQuery(
-                sprintf(
-                    'SELECT fs.id,
-                    fs.ship_id,
-                    fs.ship_name,
-                    fs.user_id,
-                    u.username as user_name,
-                    al.id as alliance_id,
-                    al.name as alliance_name,
-                    fs.rump_id,
-                    r.name as rump_name,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
-                    fs.time,
-                    fs.from_direction,
-                    fs.to_direction,
-                    CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
-                    systems.name as system_name,
-                    fs.is_cloaked
-                FROM stu_flight_sig fs
-                JOIN stu_location location
-                ON fs.location_id = location.id
-                LEFT JOIN stu_map map_field
-                ON map_field.id = location.id
-                LEFT JOIN stu_sys_map system_field
-                ON system_field.id = location.id
-                LEFT JOIN stu_map parent_map
-                ON parent_map.systems_id = system_field.systems_id
-                LEFT JOIN stu_location parent_location
-                ON parent_location.id = parent_map.id
-                LEFT JOIN stu_systems systems
-                ON systems.id = system_field.systems_id
-                JOIN stu_user u
-                ON u.id = fs.user_id
-                LEFT JOIN stu_alliances al
-                ON al.id = u.allys_id
-                JOIN stu_rump r
-                ON r.id = fs.rump_id
-                WHERE fs.time >= :minTime
-                AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
-                AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
-                AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
-                ORDER BY fs.time DESC
-                LIMIT %d',
-                    $limit
-                ),
-                $rsm
+                $this->getAdminLiveMapFlightSignaturesSql('', $limit),
+                $this->getAdminLiveMapFlightSignatureResultSetMapping()
             )
             ->setParameters([
                 'layerId' => $layerId,
                 'minTime' => $minTime
             ])
-            ->getResult();
+            ->toIterable();
     }
 
     #[\Override]
     public function getAdminLiveMapFlightSignaturesForShip(int $layerId, int $minTime, int $shipId, int $limit): array
+    {
+        return iterator_to_array($this->iterateAdminLiveMapFlightSignaturesForShip($layerId, $minTime, $shipId, $limit), false);
+    }
+
+    #[\Override]
+    public function iterateAdminLiveMapFlightSignaturesForShip(int $layerId, int $minTime, int $shipId, int $limit): iterable
+    {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                $this->getAdminLiveMapFlightSignaturesSql('AND fs.ship_id = :shipId', $limit),
+                $this->getAdminLiveMapFlightSignatureResultSetMapping()
+            )
+            ->setParameters([
+                'layerId' => $layerId,
+                'minTime' => $minTime,
+                'shipId' => $shipId
+            ])
+            ->toIterable();
+    }
+
+    private function getAdminLiveMapFlightSignatureResultSetMapping(): ResultSetMapping
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -409,62 +373,58 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('system_name', 'system_name', 'string');
         $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
 
-        return $this->getEntityManager()
-            ->createNativeQuery(
-                sprintf(
-                    'SELECT fs.id,
-                    fs.ship_id,
-                    fs.ship_name,
-                    fs.user_id,
-                    u.username as user_name,
-                    al.id as alliance_id,
-                    al.name as alliance_name,
-                    fs.rump_id,
-                    r.name as rump_name,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
-                    fs.time,
-                    fs.from_direction,
-                    fs.to_direction,
-                    CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
-                    systems.name as system_name,
-                    fs.is_cloaked
-                FROM stu_flight_sig fs
-                JOIN stu_location location
-                ON fs.location_id = location.id
-                LEFT JOIN stu_map map_field
-                ON map_field.id = location.id
-                LEFT JOIN stu_sys_map system_field
-                ON system_field.id = location.id
-                LEFT JOIN stu_map parent_map
-                ON parent_map.systems_id = system_field.systems_id
-                LEFT JOIN stu_location parent_location
-                ON parent_location.id = parent_map.id
-                LEFT JOIN stu_systems systems
-                ON systems.id = system_field.systems_id
-                JOIN stu_user u
-                ON u.id = fs.user_id
-                LEFT JOIN stu_alliances al
-                ON al.id = u.allys_id
-                JOIN stu_rump r
-                ON r.id = fs.rump_id
-                WHERE fs.time >= :minTime
-                AND fs.ship_id = :shipId
-                AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
-                AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
-                AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
-                ORDER BY fs.time DESC
-                LIMIT %d',
-                    $limit
-                ),
-                $rsm
-            )
-            ->setParameters([
-                'layerId' => $layerId,
-                'minTime' => $minTime,
-                'shipId' => $shipId
-            ])
-            ->getResult();
+        return $rsm;
+    }
+
+    private function getAdminLiveMapFlightSignaturesSql(string $additionalWhere, int $limit): string
+    {
+        return sprintf(
+            'SELECT fs.id,
+            fs.ship_id,
+            fs.ship_name,
+            fs.user_id,
+            u.username as user_name,
+            al.id as alliance_id,
+            al.name as alliance_name,
+            fs.rump_id,
+            r.name as rump_name,
+            CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
+            CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+            fs.time,
+            fs.from_direction,
+            fs.to_direction,
+            CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
+            systems.name as system_name,
+            fs.is_cloaked
+        FROM stu_flight_sig fs
+        JOIN stu_location location
+        ON fs.location_id = location.id
+        LEFT JOIN stu_map map_field
+        ON map_field.id = location.id
+        LEFT JOIN stu_sys_map system_field
+        ON system_field.id = location.id
+        LEFT JOIN stu_map parent_map
+        ON parent_map.systems_id = system_field.systems_id
+        LEFT JOIN stu_location parent_location
+        ON parent_location.id = parent_map.id
+        LEFT JOIN stu_systems systems
+        ON systems.id = system_field.systems_id
+        JOIN stu_user u
+        ON u.id = fs.user_id
+        LEFT JOIN stu_alliances al
+        ON al.id = u.allys_id
+        JOIN stu_rump r
+        ON r.id = fs.rump_id
+        WHERE fs.time >= :minTime
+        %s
+        AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+        AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+        AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
+        ORDER BY fs.time DESC
+        LIMIT %d',
+            $additionalWhere,
+            $limit
+        );
     }
 
 }
