@@ -158,7 +158,8 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $this;
     }
 
-    private function getBorder(): string
+    #[\Override]
+    public function getBorderStyle(): string
     {
         $borderType = $this->exploreableStarMap->getMapBorderType();
         if ($borderType === null) {
@@ -186,17 +187,23 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     }
 
     #[\Override]
-    public function getFieldStyle(): string
+    public function getFieldImagePath(): string
     {
         if ($this->hide === true) {
-            $imageUrl = '0.png';
-        } elseif ($this->layer->isEncoded()) {
-            $imageUrl = $this->encodedMap->getEncodedMapPath($this->getFieldId(), $this->getLayer());
-        } else {
-            $imageUrl = sprintf('%d/%d.png', $this->getLayer()->getId(), $this->getFieldId());
+            return '0.png';
         }
 
-        $style = "background-image: url('assets/map/" . $imageUrl . "'); opacity:1;";
-        return $style . $this->getBorder();
+        if ($this->layer->isEncoded()) {
+            return $this->encodedMap->getEncodedMapPath($this->getFieldId(), $this->getLayer());
+        }
+
+        return sprintf('%d/%d.png', $this->getLayer()->getId(), $this->getFieldId());
+    }
+
+    #[\Override]
+    public function getFieldStyle(): string
+    {
+        $style = "background-image: url('assets/map/" . $this->getFieldImagePath() . "'); opacity:1;";
+        return $style . $this->getBorderStyle();
     }
 }

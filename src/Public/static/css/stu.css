@@ -449,8 +449,39 @@ div.arrow:hover {
 }
 
 .starmapInner {
+  position: relative;
   width: 28px;
   height: 28px;
+  overflow: hidden;
+}
+
+.starmapFieldImage {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.starmapIconImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+}
+
+.starmapIconLink {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+}
+
+.starmapIconLink .starmapIconImage {
+  position: static;
 }
 
 .lss {

@@ -24,5 +24,9 @@ interface ExplorableStarMapItemInterface
 
     public function setHide(bool $hide): ExplorableStarMapItemInterface;
 
+    public function getFieldImagePath(): string;
+
+    public function getBorderStyle(): string;
+
     public function getFieldStyle(): string;
 }

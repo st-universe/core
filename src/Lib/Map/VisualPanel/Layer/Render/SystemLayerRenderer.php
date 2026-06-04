@@ -28,7 +28,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
     {
         return sprintf(
             '<img src="/assets/map/starmap/%s.png" class="visualPanelLayer"
-                        style="z-index: %d; %s opacity:1;" />',
+                        style="z-index: %d; %s opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />',
             $this->getSystemBackgroundId($data),
             PanelLayerEnum::BACKGROUND->value,
             $panel->getHeightAndWidth()
@@ -44,7 +44,7 @@ final class SystemLayerRenderer implements LayerRendererInterface
 
         return sprintf(
             '<img src="/assets/map/%d.png" class="visualPanelLayer"
-                style="z-index: %d; %s opacity:2;" />',
+                style="z-index: %d; %s opacity:2;" loading="lazy" decoding="async" alt="" draggable="false" />',
             $fieldId,
             PanelLayerEnum::SYSTEM->value,
             $panel->getHeightAndWidth()
