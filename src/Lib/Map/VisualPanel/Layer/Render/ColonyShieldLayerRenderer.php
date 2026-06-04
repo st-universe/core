@@ -20,7 +20,7 @@ final class ColonyShieldLayerRenderer implements LayerRendererInterface
         }
 
         return sprintf(
-            '<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: %d; %s" />',
+            '<img src="/assets/planets/s1.png" class="lssColoShield" style="z-index: %d; %s" loading="lazy" decoding="async" alt="" draggable="false" />',
             PanelLayerEnum::COLONY_SHIELD->value,
             $panel->getHeightAndWidth()
         );

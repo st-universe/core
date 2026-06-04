@@ -13,14 +13,15 @@
     <tr>
         <th>{{ yrow.getRow }}</th>
         {% for data in yrow.getFields %}
-        <td class="starmap" style="{{ data.getFieldStyle }}" id="{{ data.getCx }}_{{ data.getCy }}">
+        <td class="starmap" style="{{ data.getBorderStyle }}" id="{{ data.getCx }}_{{ data.getCy }}">
             <div title="{{ data.getTitle }}" onmouseover="updateTelescopeEnergy({{ data.getCx }}, {{ data.getCy }});"
                 onclick="showTelescopeScan(this, {{ data.getCx }}, {{ data.getCy }});" class="starmapInner"
                 style="cursor: auto ! important;">
+                <img src="/assets/map/{{ data.getFieldImagePath }}" class="starmapFieldImage" width="28" height="28"
+                    loading="lazy" decoding="async" alt="" draggable="false" />
                 {% if data.getIcon %}
-                <img src="/assets/map/{{ data.getIcon }}.png" style=" height: 28px; width: 28px;" />
-                {% else %}
-                &nbsp;
+                <img src="/assets/map/{{ data.getIcon }}.png" class="starmapIconImage" width="28" height="28"
+                    loading="lazy" decoding="async" alt="" draggable="false" />
                 {% endif %}
             </div>
         </td>

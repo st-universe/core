@@ -20,7 +20,7 @@ final class MapLayerRenderer implements LayerRendererInterface
     public function render(CellDataInterface $data, PanelAttributesInterface $panel): string
     {
         return sprintf(
-            '<img src="/assets/map/%s" style="z-index: %d; %s opacity:1;" />',
+            '<img src="/assets/map/%s" style="z-index: %d; %s opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />',
             $this->getMapGraphicPath($data),
             PanelLayerEnum::MAP->value,
             $panel->getHeightAndWidth()

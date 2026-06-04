@@ -25,7 +25,7 @@ final class AnomalyLayerRenderer implements LayerRendererInterface
             "\n",
             array_map(function (string $anomalyType) use (&$zIndex, $panel): string {
                 return sprintf(
-                    '<img src="/assets/map/anomalies/%s.png" class="visualPanelLayer" style="z-index: %d; %s opacity: 0.8;" />',
+                    '<img src="/assets/map/anomalies/%s.png" class="visualPanelLayer" style="z-index: %d; %s opacity: 0.8;" loading="lazy" decoding="async" alt="" draggable="false" />',
                     $anomalyType,
                     $zIndex++,
                     $panel->getHeightAndWidth()
