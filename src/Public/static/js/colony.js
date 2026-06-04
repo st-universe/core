@@ -273,7 +273,7 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 	Element.removeClassName(tabElement, 'module_selector_skipped');
 
 	if (moduleId == 0) {
-		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
+		$('tab_image_mod_' + type).src = 'assets/buttons/modul_screen_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
 		Element.addClassName(tabElement, 'module_selector_skipped');
 		updateCrewCount(type, 0);
