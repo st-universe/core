@@ -4,6 +4,7 @@
 	const DATA_REFRESH_MS = 4000;
 	const MOVE_ANIMATION_MS = 900;
 	const SIGNATURE_MAX_AGE = 172800;
+	const SIGNATURE_DEFAULT_AGE = 900;
 	const PANEL_ITEM_LIMIT = 80;
 	const TOOLTIP_ITEM_LIMIT = 8;
 	const CONTACT_COLOR = "#ffe06b";
@@ -76,6 +77,8 @@
 			followInput: document.getElementById("adminLiveMapFollowSelected"),
 			signatureAgeInput: document.getElementById("adminLiveMapSignatureAge"),
 			signatureAgeLabel: document.getElementById("adminLiveMapSignatureAgeLabel"),
+			signatureSinceLabel: document.getElementById("adminLiveMapSignatureSinceLabel"),
+			contactMovementSinceLabel: document.getElementById("adminLiveMapContactMovementSinceLabel"),
 			signatureColorModeInput: document.getElementById("adminLiveMapSignatureColorMode"),
 			imageUrl: root.dataset.imageUrl,
 			dataUrl: root.dataset.dataUrl,
@@ -119,7 +122,9 @@
 			selectedUserIds: new Set(),
 			selectedAllianceIds: new Set(),
 			followSelected: false,
-			maxSignatureAge: SIGNATURE_MAX_AGE,
+			maxSignatureAge: SIGNATURE_DEFAULT_AGE,
+			signatureSinceTime: 0,
+			contactMovementSinceTime: 0,
 			signatureColorMode: "age",
 			showSpacecrafts: true,
 			showSignatures: true,
@@ -170,6 +175,10 @@
 		const clearFiltersButton = document.getElementById("adminLiveMapClearFilters");
 		const clearSelectionButton = document.getElementById("adminLiveMapClearSelection");
 		const signatureAgeInput = document.getElementById("adminLiveMapSignatureAge");
+		const setSignatureSinceButton = document.getElementById("adminLiveMapSetSignatureSince");
+		const clearSignatureSinceButton = document.getElementById("adminLiveMapClearSignatureSince");
+		const setContactMovementSinceButton = document.getElementById("adminLiveMapSetContactMovementSince");
+		const clearContactMovementSinceButton = document.getElementById("adminLiveMapClearContactMovementSince");
 		const signatureColorModeInput = document.getElementById("adminLiveMapSignatureColorMode");
 
 		layerSelect.addEventListener("change", function () {
@@ -204,6 +213,34 @@
 			renderFilterLists(state);
 		});
 		signatureAgeInput.addEventListener("change", function () {
+			loadLiveData(state);
+		});
+		setSignatureSinceButton.addEventListener("click", function () {
+			state.signatureSinceTime = getCurrentThresholdTime(state);
+			afterFilterChanged(state);
+			renderFilterLists(state);
+			updateThresholdLabels(state);
+			loadLiveData(state);
+		});
+		clearSignatureSinceButton.addEventListener("click", function () {
+			state.signatureSinceTime = 0;
+			afterFilterChanged(state);
+			renderFilterLists(state);
+			updateThresholdLabels(state);
+			loadLiveData(state);
+		});
+		setContactMovementSinceButton.addEventListener("click", function () {
+			state.contactMovementSinceTime = getCurrentThresholdTime(state);
+			afterFilterChanged(state);
+			renderFilterLists(state);
+			updateThresholdLabels(state);
+			loadLiveData(state);
+		});
+		clearContactMovementSinceButton.addEventListener("click", function () {
+			state.contactMovementSinceTime = 0;
+			afterFilterChanged(state);
+			renderFilterLists(state);
+			updateThresholdLabels(state);
 			loadLiveData(state);
 		});
 		signatureColorModeInput.addEventListener("change", function () {
@@ -315,6 +352,7 @@
 		});
 
 		updateSignatureAgeLabel(state);
+		updateThresholdLabels(state);
 	}
 
 	function updateSetFromCheckbox(set, id, checked) {
@@ -349,6 +387,48 @@
 			return;
 		}
 		state.signatureAgeLabel.textContent = formatDuration(state.maxSignatureAge);
+	}
+
+	function updateThresholdLabels(state) {
+		if (state.signatureSinceLabel) {
+			state.signatureSinceLabel.textContent = state.signatureSinceTime > 0
+				? "Spuren seit " + formatThresholdTime(state.signatureSinceTime)
+				: "Spuren ohne Startzeit-Threshold";
+		}
+		if (state.contactMovementSinceLabel) {
+			state.contactMovementSinceLabel.textContent = state.contactMovementSinceTime > 0
+				? "Kontaktzahlen zählen nur Schiffe mit Bewegung seit " + formatThresholdTime(state.contactMovementSinceTime)
+				: "Kontaktzahlen zählen alle sichtbaren Schiffe";
+		}
+	}
+
+	function getCurrentThresholdTime(state) {
+		if (Number(state.stats.generatedAt) > 0 && Number(state.liveDataFinishedAt) > 0) {
+			return Number(state.stats.generatedAt) +
+				Math.max(0, Math.floor((Date.now() - Number(state.liveDataFinishedAt)) / 1000));
+		}
+
+		return Math.floor(Date.now() / 1000);
+	}
+
+	function getDataRequestMaxSignatureAge(state) {
+		const now = getCurrentThresholdTime(state);
+		const thresholdAges = [state.signatureSinceTime, state.contactMovementSinceTime]
+			.filter(function (timestamp) {
+				return Number(timestamp) > 0;
+			})
+			.map(function (timestamp) {
+				return Math.max(60, now - Number(timestamp) + DATA_REFRESH_MS / 1000);
+			});
+
+		return Math.min(
+			SIGNATURE_MAX_AGE,
+			Math.max(state.maxSignatureAge, 60, ...thresholdAges)
+		);
+	}
+
+	function formatThresholdTime(timestamp) {
+		return formatClockTime(Number(timestamp) * 1000);
 	}
 
 	function afterViewOptionChanged(state) {
@@ -442,7 +522,7 @@
 			state.dataUrl +
 			selectedShipParam +
 			"&maxSignatureAge=" +
-			encodeURIComponent(state.maxSignatureAge) +
+			encodeURIComponent(getDataRequestMaxSignatureAge(state)) +
 			"&ts=" +
 			Date.now(),
 			{
@@ -548,6 +628,7 @@
 		const fieldIndex = new Map();
 		const territoryByField = new Map();
 		const impassableByField = new Map();
+		const movedSpacecraftIds = getMovedSpacecraftIdsSinceContactThreshold(state);
 		const visibleSignatures = dedupeSignatures(
 			state.flightSignatures.filter(function (item) {
 				return passesEntityFilter(state, item) && signaturePassesAge(state, item);
@@ -556,6 +637,9 @@
 
 		state.spacecrafts.forEach(function (item) {
 			if (!passesEntityFilter(state, item)) {
+				return;
+			}
+			if (!passesContactMovementThreshold(state, item, movedSpacecraftIds)) {
 				return;
 			}
 			const entry = getFieldEntry(fieldIndex, item.x, item.y);
@@ -629,7 +713,29 @@
 	}
 
 	function signaturePassesAge(state, item) {
-		return Number(item.age) <= state.maxSignatureAge;
+		if (Number(item.age) > state.maxSignatureAge) {
+			return false;
+		}
+		return state.signatureSinceTime === 0 || Number(item.time) >= state.signatureSinceTime;
+	}
+
+	function passesContactMovementThreshold(state, item, movedSpacecraftIds) {
+		return movedSpacecraftIds === null || movedSpacecraftIds.has(Number(item.id));
+	}
+
+	function getMovedSpacecraftIdsSinceContactThreshold(state) {
+		if (state.contactMovementSinceTime === 0) {
+			return null;
+		}
+
+		const movedSpacecraftIds = new Set();
+		state.flightSignatures.concat(state.selectedShipSignatures).forEach(function (item) {
+			if (Number(item.time) >= state.contactMovementSinceTime && getTraceDirection(item) !== 0) {
+				movedSpacecraftIds.add(Number(item.shipId));
+			}
+		});
+
+		return movedSpacecraftIds;
 	}
 
 	function getTraceDirection(item) {
@@ -860,19 +966,17 @@
 
 		const ctx = state.ctx;
 		const selectedShipId = Number(state.selectedShipId);
-		const points = getSelectedCourseSignatures(state)
-			.sort(function (a, b) {
-				return Number(a.time) - Number(b.time);
-			})
-			.map(function (item) {
-				return getCellCenter(state, item.x, item.y);
-			});
+		const points = getSelectedCoursePoints(state);
 
 		const spacecraft = state.spacecrafts.get(String(selectedShipId));
 		if (spacecraft) {
-			const current = getAnimatedPosition(spacecraft, performance.now());
-			if (points.length === 0 || Math.hypot(points[points.length - 1].x - current.x, points[points.length - 1].y - current.y) > 0.1) {
-				points.push(current);
+			const last = points[points.length - 1] || null;
+			if (last === null || last.cellX !== Number(spacecraft.x) || last.cellY !== Number(spacecraft.y)) {
+				points.push({
+					cellX: Number(spacecraft.x),
+					cellY: Number(spacecraft.y),
+					point: getAnimatedPosition(spacecraft, performance.now()),
+				});
 			}
 		}
 
@@ -887,17 +991,68 @@
 		ctx.lineWidth = 2.4 / state.scale;
 		ctx.lineCap = "round";
 		ctx.lineJoin = "round";
-		ctx.beginPath();
-		ctx.moveTo(points[0].x, points[0].y);
-		for (let i = 1; i < points.length; i++) {
-			ctx.lineTo(points[i].x, points[i].y);
-		}
-		ctx.stroke();
 
 		for (let i = 1; i < points.length; i++) {
-			drawArrowHead(ctx, points[i - 1], points[i], 7 / state.scale);
+			const from = points[i - 1];
+			const to = points[i];
+			if (!isDrawableCourseStep(state, from, to)) {
+				continue;
+			}
+
+			ctx.beginPath();
+			ctx.moveTo(from.point.x, from.point.y);
+			ctx.lineTo(to.point.x, to.point.y);
+			ctx.stroke();
+			drawArrowHead(ctx, from.point, to.point, 7 / state.scale);
 		}
 		ctx.restore();
+	}
+
+	function getSelectedCoursePoints(state) {
+		const points = [];
+		getSelectedCourseSignatures(state)
+			.sort(sortCourseSignatures)
+			.forEach(function (item) {
+				const cellX = Number(item.x);
+				const cellY = Number(item.y);
+				const last = points[points.length - 1] || null;
+				if (last !== null && last.cellX === cellX && last.cellY === cellY) {
+					return;
+				}
+
+				points.push({
+					cellX,
+					cellY,
+					point: getCellCenter(state, cellX, cellY),
+				});
+			});
+
+		return points;
+	}
+
+	function isDrawableCourseStep(state, from, to) {
+		const cellDx = to.cellX - from.cellX;
+		const cellDy = to.cellY - from.cellY;
+		const isNeighbor = Math.abs(cellDx) + Math.abs(cellDy) === 1;
+		if (!isNeighbor) {
+			return false;
+		}
+
+		const tolerance = state.cellSize * 0.12;
+		if (cellDx !== 0) {
+			return Math.abs(to.point.y - from.point.y) <= tolerance;
+		}
+
+		return Math.abs(to.point.x - from.point.x) <= tolerance;
+	}
+
+	function sortCourseSignatures(a, b) {
+		const timeDiff = Number(a.time) - Number(b.time);
+		if (timeDiff !== 0) {
+			return timeDiff;
+		}
+
+		return Number(a.id) - Number(b.id);
 	}
 
 	function drawArrowHead(ctx, from, to, size) {
@@ -1445,8 +1600,12 @@
 	function buildFilterData(state) {
 		const users = new Map();
 		const alliances = new Map();
+		const movedSpacecraftIds = getMovedSpacecraftIdsSinceContactThreshold(state);
 
 		state.spacecrafts.forEach(function (item) {
+			if (!passesContactMovementThreshold(state, item, movedSpacecraftIds)) {
+				return;
+			}
 			addFilterEntity(users, alliances, item, true);
 		});
 		dedupeSignatures(state.flightSignatures.filter(function (item) {
