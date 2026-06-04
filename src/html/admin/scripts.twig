@@ -126,6 +126,60 @@
     </div>
 </form>
 <br />
+<form action="/admin/index.php" method="post" name="spacecraftChargeForm" id="spacecraftChargeForm"
+    onsubmit="return confirmSpacecraftChargeSubmit(this);">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <input type="hidden" name="B_CHARGE_SPACECRAFT" value="1" />
+    <input type="hidden" name="spacecraft_charge_confirmed" id="spacecraft_charge_confirmed" value="0" />
+    <div class="divhead">Spacecraft laden</div>
+    <div class="divbody">
+        <div>
+            Option:
+            <select name="spacecraft_charge_target" id="spacecraft_charge_target">
+                <option value="eps">EPS</option>
+                <option value="warpdrive">Warpantrieb</option>
+                <option value="shields">Schilde</option>
+                <option value="warpcore">Warpkern/Reaktor</option>
+                <option value="battery">Ersatzbatterie</option>
+            </select>
+            <label>
+                <input type="checkbox" name="spacecraft_charge_ships" id="spacecraft_charge_ships" value="1"
+                    checked="checked" />
+                Schiffe
+            </label>
+            <label>
+                <input type="checkbox" name="spacecraft_charge_stations" id="spacecraft_charge_stations" value="1" />
+                Stationen
+            </label>
+        </div>
+        <br />
+        <div>
+            User ID:
+            <input type="text" size="18" name="spacecraft_charge_user_ids" id="spacecraft_charge_user_ids" />
+            Spacecraft ID:
+            <input type="text" size="18" name="spacecraft_charge_spacecraft_ids"
+                id="spacecraft_charge_spacecraft_ids" />
+        </div>
+        <br />
+        <div>
+            Wert:
+            <input type="text" size="10" name="spacecraft_charge_value" id="spacecraft_charge_value" />
+            <input type="button" class="button" value="max" onclick="setSpacecraftChargeMax();" />
+            <label>
+                <input type="checkbox" name="spacecraft_charge_override" id="spacecraft_charge_override" value="1" />
+                Override
+            </label>
+            <input type="submit" class="button" value="Aufladen" />
+        </div>
+        <div id="spacecraft_charge_confirm" style="display: none; margin-top: 10px;">
+            <div id="spacecraft_charge_confirm_text"></div>
+            <br />
+            <input type="button" class="button" value="Ja, aufladen" onclick="confirmSpacecraftChargeBulk();" />
+            <input type="button" class="button" value="Abbrechen" onclick="cancelSpacecraftChargeBulk();" />
+        </div>
+    </div>
+</form>
+<br />
 <form action="/admin/index.php" method="post" name="scriptform3" id="scriptform3">
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <div class="divhead">News</div>
