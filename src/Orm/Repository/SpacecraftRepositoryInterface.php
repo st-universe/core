@@ -75,4 +75,24 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
      * @return Collection<int, Spacecraft>
      */
     public function getNearbySpacecraftsForWarpcoreTransfer(Spacecraft $spacecraft): Collection;
+
+    /**
+     * @return array<array{
+     *     id: int,
+     *     name: string,
+     *     type: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool
+     * }>
+     */
+    public function getAdminLiveMapSpacecrafts(int $layerId): array;
 }

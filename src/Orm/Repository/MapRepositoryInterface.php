@@ -73,6 +73,18 @@ interface MapRepositoryInterface extends ObjectRepository
     /** @return array<CellDataInterface> */
     public function getImpassableBorderData(PanelBoundaries $boundaries, User $user, ResultSetMapping $rsm): array;
 
+    /**
+     * @return array<array{
+     *     x: int,
+     *     y: int,
+     *     territory_color: null|string,
+     *     territory_name: null|string,
+     *     impassable: bool,
+     *     impassable_color: null|string
+     * }>
+     */
+    public function getAdminLiveMapOverlayFields(int $layerId): array;
+
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 

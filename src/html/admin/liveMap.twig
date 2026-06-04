@@ -1,0 +1,219 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/adminLiveMap.js?v=live-map-field-flow-1"></script>
+<style>
+    .adminLiveMapPanel .adminLiveMapFilterTable {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        table-layout: fixed !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterTable td {
+        vertical-align: top !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterRow {
+        display: table-row !important;
+        line-height: normal !important;
+        white-space: normal !important;
+    }
+
+    .adminLiveMapPanel button {
+        height: auto !important;
+        line-height: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFieldDetails {
+        gap: 3px !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapEntityButton {
+        display: grid !important;
+        grid-template-columns: 38px minmax(0, 1fr) !important;
+        align-items: start !important;
+        column-gap: 6px !important;
+        min-height: 0 !important;
+        height: auto !important;
+        padding: 4px !important;
+        line-height: normal !important;
+        overflow: visible !important;
+        white-space: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapEntityButton>.adminLiveMapEntityText {
+        display: block !important;
+        min-width: 0 !important;
+        line-height: 1.35 !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapEntityName {
+        font-weight: bold !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapEntityMeta {
+        color: #b9c6d8 !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapEntityText span,
+    .adminLiveMapPanel .adminLiveMapEntityText strong,
+    .adminLiveMapPanel .adminLiveMapEntityText em,
+    .adminLiveMapPanel .adminLiveMapEntityText u {
+        display: inline !important;
+        line-height: inherit !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterItem {
+        display: grid !important;
+        grid-template-columns: 18px minmax(0, 1fr) !important;
+        grid-template-rows: auto auto !important;
+        column-gap: 8px !important;
+        row-gap: 4px !important;
+        align-items: start !important;
+        padding: 12px 0 !important;
+        min-height: 0 !important;
+        line-height: normal !important;
+        white-space: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterItem>input {
+        grid-column: 1 !important;
+        grid-row: 1 / span 2 !important;
+        margin-top: 5px !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterText {
+        grid-column: 2 !important;
+        grid-row: 1 / span 2 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+        min-width: 0 !important;
+        line-height: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterItem>span:not(.adminLiveMapFilterText) {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        display: block !important;
+        min-width: 0 !important;
+        line-height: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterName,
+    .adminLiveMapPanel .adminLiveMapFilterItem>span:not(.adminLiveMapFilterText) {
+        min-height: 1.35em !important;
+        line-height: 1.35 !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapFilterStats,
+    .adminLiveMapPanel .adminLiveMapFilterItem>small {
+        display: block !important;
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+        margin-left: 0 !important;
+        padding-top: 1px !important;
+        line-height: 1.3 !important;
+        color: #b9c6d8 !important;
+        white-space: normal !important;
+    }
+</style>
+{% include 'html/breadcrumb.twig' %}
+
+<div id="adminLiveMap" class="adminLiveMap" data-layer-id="{{ LAYER.getId }}"
+    data-layer-width="{{ LAYER.getWidth }}" data-layer-height="{{ LAYER.getHeight }}" data-cell-size="{{ CELL_SIZE }}"
+    data-image-url="/admin/?SHOW_ADMIN_LIVE_MAP_IMAGE=1&amp;layerid={{ LAYER.getId }}"
+    data-data-url="/admin/?SHOW_ADMIN_LIVE_MAP_DATA=1&amp;layerid={{ LAYER.getId }}">
+    <div class="adminLiveMapToolbar">
+        <select id="adminLiveMapLayer">
+            {% for layer in LAYERS %}
+            <option value="{{ layer.getId }}" {% if layer.getId == LAYER.getId %}selected="selected" {% endif %}>
+                {{ layer.getName }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" id="adminLiveMapRefreshImage">Basisgrafik neu laden</button>
+        <span id="adminLiveMapStatus" class="adminLiveMapStatus">Bereit</span>
+    </div>
+
+    <div class="adminLiveMapLayout">
+        <div class="adminLiveMapStage">
+            <canvas id="adminLiveMapCanvas"></canvas>
+            <div id="adminLiveMapLoading" class="adminLiveMapLoading">Lade Karte...</div>
+            <div id="adminLiveMapTooltip" class="adminLiveMapTooltip"></div>
+        </div>
+
+        <aside class="adminLiveMapPanel">
+            <div class="adminLiveMapPanelSection">
+                <div class="adminLiveMapPanelTitle">Ansicht</div>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowSpacecrafts" checked="checked" />
+                    Kontakte
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowSignatures" checked="checked" />
+                    Spuren
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowTerritory" />
+                    Territorium
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowImpassable" />
+                    Unpassierbar
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowCounts" checked="checked" />
+                    Zahlen
+                </label>
+                <label>
+                    Spur-Alter
+                    <input type="range" id="adminLiveMapSignatureAge" min="900" max="172800" step="900" value="172800" />
+                </label>
+                <span id="adminLiveMapSignatureAgeLabel" class="adminLiveMapFilterSummary">48h</span>
+                <label>
+                    Spurfarbe
+                    <select id="adminLiveMapSignatureColorMode">
+                        <option value="age">Alter</option>
+                        <option value="direction">Richtung</option>
+                        <option value="user">User</option>
+                        <option value="alliance">Allianz</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="adminLiveMapPanelSection">
+                <div class="adminLiveMapPanelTitle">Auswahl</div>
+                <label>
+                    <input type="checkbox" id="adminLiveMapFollowSelected" />
+                    Live folgen
+                </label>
+                <span id="adminLiveMapSelected" class="adminLiveMapSelected">Keine Auswahl</span>
+                <button type="button" id="adminLiveMapClearSelection">Auswahl leeren</button>
+            </div>
+
+            <div class="adminLiveMapPanelSection">
+                <div class="adminLiveMapPanelTitle">Feld</div>
+                <div id="adminLiveMapFieldDetails" class="adminLiveMapFieldDetails">
+                    <div class="adminLiveMapEmpty">Feld anklicken</div>
+                </div>
+            </div>
+
+            <div class="adminLiveMapPanelSection">
+                <div class="adminLiveMapPanelTitle">Filter</div>
+                <div id="adminLiveMapFilterSummary" class="adminLiveMapFilterSummary">Alle Kontakte und Spuren sichtbar</div>
+                <button type="button" id="adminLiveMapClearFilters">Filter leeren</button>
+                <div class="adminLiveMapPanelSubTitle">Allianzen</div>
+                <div id="adminLiveMapAllianceFilterList" class="adminLiveMapFilterList"></div>
+                <div class="adminLiveMapPanelSubTitle">User</div>
+                <div id="adminLiveMapUserFilterList" class="adminLiveMapFilterList"></div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

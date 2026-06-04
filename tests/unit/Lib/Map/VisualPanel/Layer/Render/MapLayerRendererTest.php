@@ -56,7 +56,7 @@ class MapLayerRendererTest extends StuTestCase
 
         $result = $this->subject->render($mapData, $this->panel);
 
-        $expected = '<img src="/assets/map/ENCODED" style="z-index: 3; H+W; opacity:1;" />';
+        $expected = '<img src="/assets/map/ENCODED" style="z-index: 3; H+W; opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />';
 
         $this->assertEquals($expected, $result);
     }
@@ -81,7 +81,7 @@ class MapLayerRendererTest extends StuTestCase
 
         $result = $this->subject->render($mapData, $this->panel);
 
-        $expected = '<img src="/assets/map/99/5.png" style="z-index: 3; H+W; opacity:1;" />';
+        $expected = '<img src="/assets/map/99/5.png" style="z-index: 3; H+W; opacity:1;" loading="lazy" decoding="async" alt="" draggable="false" />';
 
         $this->assertEquals($expected, $result);
     }
