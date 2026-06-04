@@ -20,8 +20,8 @@ final class ShowLiveMapData implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ADMIN_LIVE_MAP_DATA';
 
-    private const int DEFAULT_SIGNATURE_LIMIT = 4000;
-    private const int MAX_SIGNATURE_LIMIT = 10000;
+    private const int DEFAULT_SIGNATURE_LIMIT = 10000;
+    private const int MAX_SIGNATURE_LIMIT = 100000;
     private const int SELECTED_SHIP_SIGNATURE_LIMIT = 800;
 
     public function __construct(

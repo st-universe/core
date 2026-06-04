@@ -5,6 +5,8 @@
 	const MOVE_ANIMATION_MS = 900;
 	const SIGNATURE_MAX_AGE = 172800;
 	const SIGNATURE_DEFAULT_AGE = 900;
+	const SIGNATURE_DEFAULT_LIMIT = 10000;
+	const SIGNATURE_MAX_LIMIT = 100000;
 	const PANEL_ITEM_LIMIT = 80;
 	const TOOLTIP_ITEM_LIMIT = 8;
 	const CONTACT_COLOR = "#ffe06b";
@@ -79,6 +81,7 @@
 			signatureAgeLabel: document.getElementById("adminLiveMapSignatureAgeLabel"),
 			signatureSinceLabel: document.getElementById("adminLiveMapSignatureSinceLabel"),
 			contactMovementSinceLabel: document.getElementById("adminLiveMapContactMovementSinceLabel"),
+			signatureLimitInput: document.getElementById("adminLiveMapSignatureLimit"),
 			signatureColorModeInput: document.getElementById("adminLiveMapSignatureColorMode"),
 			imageUrl: root.dataset.imageUrl,
 			dataUrl: root.dataset.dataUrl,
@@ -104,6 +107,7 @@
 			flightSignatures: [],
 			selectedShipSignatures: [],
 			visibleSignatures: [],
+			maxSignatureHeat: 0,
 			territoryFields: [],
 			impassableFields: [],
 			territoryByField: new Map(),
@@ -117,6 +121,7 @@
 			liveDataFinishedAt: 0,
 			liveDataDurationMs: 0,
 			liveDataStatus: "ausstehend",
+			signatureRequestLimit: SIGNATURE_DEFAULT_LIMIT,
 			selectedShipId: null,
 			selectedField: null,
 			selectedUserIds: new Set(),
@@ -134,7 +139,8 @@
 			stats: {
 				spacecrafts: 0,
 				flightSignatures: 0,
-				loadedFlightSignatures: 0,
+				signatureLimit: SIGNATURE_DEFAULT_LIMIT,
+				signatureLimitHit: false,
 				signatureFields: 0,
 				coordX: 0,
 				coordY: 0,
@@ -179,6 +185,8 @@
 		const clearSignatureSinceButton = document.getElementById("adminLiveMapClearSignatureSince");
 		const setContactMovementSinceButton = document.getElementById("adminLiveMapSetContactMovementSince");
 		const clearContactMovementSinceButton = document.getElementById("adminLiveMapClearContactMovementSince");
+		const signatureLimitInput = document.getElementById("adminLiveMapSignatureLimit");
+		const reloadSignatureLimitButton = document.getElementById("adminLiveMapReloadSignatureLimit");
 		const signatureColorModeInput = document.getElementById("adminLiveMapSignatureColorMode");
 
 		layerSelect.addEventListener("change", function () {
@@ -243,6 +251,18 @@
 			updateThresholdLabels(state);
 			loadLiveData(state);
 		});
+		if (signatureLimitInput) {
+			signatureLimitInput.addEventListener("change", function () {
+				updateSignatureRequestLimitFromInput(state);
+				loadLiveData(state);
+			});
+		}
+		if (reloadSignatureLimitButton) {
+			reloadSignatureLimitButton.addEventListener("click", function () {
+				updateSignatureRequestLimitFromInput(state);
+				loadLiveData(state);
+			});
+		}
 		signatureColorModeInput.addEventListener("change", function () {
 			state.signatureColorMode = this.value;
 		});
@@ -353,6 +373,7 @@
 
 		updateSignatureAgeLabel(state);
 		updateThresholdLabels(state);
+		updateSignatureRequestLimitFromInput(state);
 	}
 
 	function updateSetFromCheckbox(set, id, checked) {
@@ -400,6 +421,21 @@
 				? "Kontaktzahlen zählen nur Schiffe mit Bewegung seit " + formatThresholdTime(state.contactMovementSinceTime)
 				: "Kontaktzahlen zählen alle sichtbaren Schiffe";
 		}
+	}
+
+	function updateSignatureRequestLimitFromInput(state) {
+		if (!state.signatureLimitInput) {
+			return;
+		}
+
+		const value = clamp(
+			Math.floor(Number(state.signatureLimitInput.value) || SIGNATURE_DEFAULT_LIMIT),
+			1,
+			SIGNATURE_MAX_LIMIT
+		);
+		state.signatureRequestLimit = value;
+		state.signatureLimitInput.value = String(value);
+		updateStatus(state);
 	}
 
 	function getCurrentThresholdTime(state) {
@@ -514,6 +550,7 @@
 		state.liveDataStartedAt = startedAt;
 		state.liveDataStatus = "läuft";
 		updateStatus(state);
+		const requestMaxSignatureAge = getDataRequestMaxSignatureAge(state);
 		const selectedShipParam = state.selectedShipId === null
 			? ""
 			: "&shipId=" + encodeURIComponent(state.selectedShipId);
@@ -522,7 +559,9 @@
 			state.dataUrl +
 			selectedShipParam +
 			"&maxSignatureAge=" +
-			encodeURIComponent(getDataRequestMaxSignatureAge(state)) +
+			encodeURIComponent(requestMaxSignatureAge) +
+			"&signatureLimit=" +
+			encodeURIComponent(state.signatureRequestLimit) +
 			"&ts=" +
 			Date.now(),
 			{
@@ -568,12 +607,15 @@
 	}
 
 	function applyLiveDataPayload(state, payload) {
+		const payloadSignatures = payload.flightSignatures || [];
 		mergeSpacecrafts(state, payload.spacecrafts || []);
-		state.flightSignatures = payload.flightSignatures || [];
+		state.flightSignatures = payloadSignatures;
 		state.selectedShipSignatures = payload.selectedShipSignatures || [];
 		state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
 		state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
 		state.stats.generatedAt = payload.generatedAt || 0;
+		state.stats.signatureLimit = Number(payload.signatureDetailLimit || state.signatureRequestLimit);
+		state.stats.signatureLimitHit = payloadSignatures.length >= state.stats.signatureLimit;
 		rebuildIndexes(state);
 		pruneSelection(state);
 		renderFilterLists(state);
@@ -661,13 +703,13 @@
 		let signatureFields = 0;
 		let signatureCount = 0;
 		let spacecraftCount = 0;
-		let loadedSignatureCount = 0;
+		let maxSignatureHeat = 0;
 		fieldIndex.forEach(function (entry) {
-			loadedSignatureCount += entry.signatures.length;
 			entry.signatureCount = entry.signatures.length;
 			if (entry.signatureCount > 0) {
 				signatureFields++;
 				signatureCount += entry.signatureCount;
+				maxSignatureHeat = Math.max(maxSignatureHeat, entry.signatureCount);
 			}
 			spacecraftCount += entry.spacecraftCount;
 		});
@@ -676,10 +718,10 @@
 		state.visibleSignatures = visibleSignatures;
 		state.territoryByField = territoryByField;
 		state.impassableByField = impassableByField;
+		state.maxSignatureHeat = maxSignatureHeat;
 		state.stats.spacecrafts = spacecraftCount;
 		state.stats.signatureFields = signatureFields;
 		state.stats.flightSignatures = signatureCount;
-		state.stats.loadedFlightSignatures = loadedSignatureCount;
 	}
 
 	function getFieldEntry(index, x, y) {
@@ -1198,6 +1240,9 @@
 	}
 
 	function getSignatureColor(state, item) {
+		if (state.signatureColorMode === "heatmap") {
+			return getHeatmapSignatureColor(state, item);
+		}
 		if (item.isCloaked) {
 			return "#d98cff";
 		}
@@ -1216,6 +1261,21 @@
 				return "hsl(" + hue + ", 88%, 62%)";
 			}
 		}
+	}
+
+	function getHeatmapSignatureColor(state, item) {
+		const entry = state.fieldIndex.get(fieldKey(item.x, item.y));
+		const count = entry ? Math.max(1, Number(entry.signatureCount) || 1) : 1;
+		const max = Math.max(1, Number(state.maxSignatureHeat) || 1);
+		if (max <= 1) {
+			return "hsl(128, 88%, 56%)";
+		}
+
+		const ratio = clamp((count - 1) / (max - 1), 0, 1);
+		const hue = Math.round(128 - ratio * 128);
+		const lightness = Math.round(56 - ratio * 8);
+
+		return "hsl(" + hue + ", 88%, " + lightness + "%)";
 	}
 
 	function hashColor(value) {
@@ -1759,8 +1819,8 @@
 			state.stats.spacecrafts +
 			" | Spuren " +
 			state.stats.flightSignatures +
-			(state.stats.loadedFlightSignatures < state.stats.flightSignatures
-				? " (" + state.stats.loadedFlightSignatures + " geladen)"
+			(state.stats.signatureLimitHit
+				? " (Limit " + state.stats.signatureLimit + " erreicht)"
 				: "") +
 			" auf " +
 			state.stats.signatureFields +

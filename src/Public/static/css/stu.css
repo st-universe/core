@@ -645,7 +645,8 @@ div.lssobj {
 }
 
 .adminLiveMapPanel select,
-.adminLiveMapPanel input[type="range"] {
+.adminLiveMapPanel input[type="range"],
+.adminLiveMapPanel input[type="number"] {
   width: 100%;
 }
 
