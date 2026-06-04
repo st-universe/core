@@ -6,7 +6,7 @@
 	const SIGNATURE_MAX_AGE = 172800;
 	const SIGNATURE_DEFAULT_AGE = 900;
 	const SIGNATURE_DEFAULT_LIMIT = 10000;
-	const SIGNATURE_MAX_LIMIT = 100000;
+	const SIGNATURE_MAX_LIMIT = 250000;
 	const PANEL_ITEM_LIMIT = 80;
 	const TOOLTIP_ITEM_LIMIT = 8;
 	const CONTACT_COLOR = "#ffe06b";
@@ -52,6 +52,21 @@
 				return "Nord";
 			default:
 				return "unbekannt";
+		}
+	}
+
+	function oppositeDirection(direction) {
+		switch (direction) {
+			case 1:
+				return 3;
+			case 2:
+				return 4;
+			case 3:
+				return 1;
+			case 4:
+				return 2;
+			default:
+				return 0;
 		}
 	}
 
@@ -139,6 +154,7 @@
 			stats: {
 				spacecrafts: 0,
 				flightSignatures: 0,
+				loadedFlightSignatures: 0,
 				signatureLimit: SIGNATURE_DEFAULT_LIMIT,
 				signatureLimitHit: false,
 				signatureFields: 0,
@@ -614,6 +630,7 @@
 		state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
 		state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
 		state.stats.generatedAt = payload.generatedAt || 0;
+		state.stats.loadedFlightSignatures = payloadSignatures.length;
 		state.stats.signatureLimit = Number(payload.signatureDetailLimit || state.signatureRequestLimit);
 		state.stats.signatureLimitHit = payloadSignatures.length >= state.stats.signatureLimit;
 		rebuildIndexes(state);
@@ -781,7 +798,12 @@
 	}
 
 	function getTraceDirection(item) {
-		const direction = Number(item.toDirection);
+		const toDirection = Number(item.toDirection);
+		if (TRACE_COLORS[toDirection]) {
+			return toDirection;
+		}
+
+		const direction = oppositeDirection(Number(item.fromDirection));
 		return TRACE_COLORS[direction] ? direction : 0;
 	}
 
@@ -1819,6 +1841,9 @@
 			state.stats.spacecrafts +
 			" | Spuren " +
 			state.stats.flightSignatures +
+			" sichtbar / " +
+			state.stats.loadedFlightSignatures +
+			" geladen" +
 			(state.stats.signatureLimitHit
 				? " (Limit " + state.stats.signatureLimit + " erreicht)"
 				: "") +
