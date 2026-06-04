@@ -20,9 +20,16 @@ final class ShowLiveMapData implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_ADMIN_LIVE_MAP_DATA';
 
+    private const int JSON_FLAGS = JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE;
     private const int DEFAULT_SIGNATURE_LIMIT = 10000;
     private const int MAX_SIGNATURE_LIMIT = 250000;
     private const int SELECTED_SHIP_SIGNATURE_LIMIT = 800;
+
+    /** @var array<string, string> */
+    private array $bbCodeTextCache = [];
+
+    /** @var array<string, string> */
+    private array $bbCodeHtmlCache = [];
 
     public function __construct(
         private LayerRepositoryInterface $layerRepository,
@@ -62,50 +69,77 @@ final class ShowLiveMapData implements ViewControllerInterface
         $minSignatureTime = $now - $maxSignatureAge;
         $selectedShipId = request::getInt('shipId');
 
-        $payload = [
-            'generatedAt' => $now,
-            'cellSize' => ShowLiveMapImage::CELL_SIZE,
-            'layer' => [
-                'id' => $layer->getId(),
-                'name' => $layer->getName(),
-                'width' => $layer->getWidth(),
-                'height' => $layer->getHeight()
-            ],
-            'spacecrafts' => array_map(
-                fn (array $row): array => $this->normalizeSpacecraft($row),
-                $this->spacecraftRepository->getAdminLiveMapSpacecrafts($layer->getId())
-            ),
-            'flightSignatures' => array_map(
-                fn (array $row): array => $this->normalizeFlightSignature($row, $now),
-                $this->flightSignatureRepository->getAdminLiveMapFlightSignatures(
-                    $layer->getId(),
-                    $minSignatureTime,
-                    $signatureLimit
-                )
-            ),
-            'signatureDetailLimit' => $signatureLimit,
-            'maxSignatureAge' => $maxSignatureAge,
-            'overlays' => $this->normalizeOverlays(
-                $this->mapRepository->getAdminLiveMapOverlayFields($layer->getId())
-            )
-        ];
-
-        if ($selectedShipId > 0) {
-            $payload['selectedShipSignatures'] = array_map(
-                fn (array $row): array => $this->normalizeFlightSignature($row, $now),
-                $this->flightSignatureRepository->getAdminLiveMapFlightSignaturesForShip(
-                    $layer->getId(),
-                    $minSignatureTime,
-                    $selectedShipId,
-                    self::SELECTED_SHIP_SIGNATURE_LIMIT
-                )
-            );
-        }
-
         header('Content-Type: application/json; charset=utf-8');
         header('Cache-Control: no-store');
-        echo json_encode($payload, JSON_THROW_ON_ERROR);
+
+        echo '{';
+        echo '"generatedAt":' . $now . ',';
+        echo '"cellSize":' . ShowLiveMapImage::CELL_SIZE . ',';
+        echo '"layer":' . $this->encodeJson([
+            'id' => $layer->getId(),
+            'name' => $layer->getName(),
+            'width' => $layer->getWidth(),
+            'height' => $layer->getHeight()
+        ]) . ',';
+        echo '"spacecrafts":' . $this->encodeJson(array_map(
+            fn (array $row): array => $this->normalizeSpacecraft($row),
+            $this->spacecraftRepository->getAdminLiveMapSpacecrafts($layer->getId())
+        )) . ',';
+        echo '"flightSignatures":';
+        $this->writeFlightSignatures($this->flightSignatureRepository->iterateAdminLiveMapFlightSignatures(
+            $layer->getId(),
+            $minSignatureTime,
+            $signatureLimit
+        ), $now);
+        echo ',"signatureDetailLimit":' . $signatureLimit . ',';
+        echo '"maxSignatureAge":' . $maxSignatureAge . ',';
+        echo '"overlays":' . $this->encodeJson($this->normalizeOverlays(
+            $this->mapRepository->getAdminLiveMapOverlayFields($layer->getId())
+        ));
+
+        if ($selectedShipId > 0) {
+            echo ',"selectedShipSignatures":';
+            $this->writeFlightSignatures($this->flightSignatureRepository->iterateAdminLiveMapFlightSignaturesForShip(
+                $layer->getId(),
+                $minSignatureTime,
+                $selectedShipId,
+                self::SELECTED_SHIP_SIGNATURE_LIMIT
+            ), $now);
+        }
+
+        echo '}';
         exit;
+    }
+
+    /**
+     * @param iterable<array<string, mixed>> $rows
+     * @throws JsonException
+     */
+    private function writeFlightSignatures(iterable $rows, int $now): void
+    {
+        echo '[';
+        $first = true;
+        $count = 0;
+        foreach ($rows as $row) {
+            if (!$first) {
+                echo ',';
+            }
+            $first = false;
+            echo $this->encodeJson($this->normalizeFlightSignature($row, $now));
+            $count++;
+            if ($count % 1000 === 0) {
+                $this->flushOutput();
+            }
+        }
+        echo ']';
+    }
+
+    private function flushOutput(): void
+    {
+        if (ob_get_level() > 0) {
+            @ob_flush();
+        }
+        flush();
     }
 
     /**
@@ -217,12 +251,20 @@ final class ShowLiveMapData implements ViewControllerInterface
 
     private function parseBbCodeText(string $value): string
     {
-        return trim($this->bbCodeParser->parse($value)->getAsText());
+        return $this->bbCodeTextCache[$value] ??= trim($this->bbCodeParser->parse($value)->getAsText());
     }
 
     private function parseBbCodeHtml(string $value): string
     {
-        return $this->bbCodeParser->parse($value)->getAsHTML();
+        return $this->bbCodeHtmlCache[$value] ??= $this->bbCodeParser->parse($value)->getAsHTML();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function encodeJson(mixed $value): string
+    {
+        return json_encode($value, self::JSON_FLAGS);
     }
 
     private function getRumpImage(int $rumpId, bool $isCloaked): string
