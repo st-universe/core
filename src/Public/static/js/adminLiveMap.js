@@ -1290,11 +1290,11 @@
 		const count = entry ? Math.max(1, Number(entry.signatureCount) || 1) : 1;
 		const max = Math.max(1, Number(state.maxSignatureHeat) || 1);
 		if (max <= 1) {
-			return "hsl(128, 88%, 56%)";
+			return "hsl(120, 88%, 56%)";
 		}
 
 		const ratio = clamp((count - 1) / (max - 1), 0, 1);
-		const hue = Math.round(128 - ratio * 128);
+		const hue = Math.round(120 - ratio * 120);
 		const lightness = Math.round(56 - ratio * 8);
 
 		return "hsl(" + hue + ", 88%, " + lightness + "%)";

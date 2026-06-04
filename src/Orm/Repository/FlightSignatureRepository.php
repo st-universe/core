@@ -388,27 +388,19 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             al.name as alliance_name,
             fs.rump_id,
             r.name as rump_name,
-            CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-            CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+            location.cx as x,
+            location.cy as y,
             fs.time,
             fs.from_direction,
             fs.to_direction,
-            CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
-            systems.name as system_name,
+            false as in_system,
+            NULL as system_name,
             fs.is_cloaked
         FROM stu_flight_sig fs
         JOIN stu_location location
         ON fs.location_id = location.id
-        LEFT JOIN stu_map map_field
+        JOIN stu_map map_field
         ON map_field.id = location.id
-        LEFT JOIN stu_sys_map system_field
-        ON system_field.id = location.id
-        LEFT JOIN stu_map parent_map
-        ON parent_map.systems_id = system_field.systems_id
-        LEFT JOIN stu_location parent_location
-        ON parent_location.id = parent_map.id
-        LEFT JOIN stu_systems systems
-        ON systems.id = system_field.systems_id
         JOIN stu_user u
         ON u.id = fs.user_id
         LEFT JOIN stu_alliances al
@@ -417,8 +409,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         ON r.id = fs.rump_id
         WHERE fs.time >= :minTime
         %s
-        AND COALESCE(location.layer_id, parent_location.layer_id) = :layerId
-        AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+        AND location.layer_id = :layerId
         AND (fs.from_direction BETWEEN 1 AND 4 OR fs.to_direction BETWEEN 1 AND 4)
         ORDER BY fs.time DESC
         LIMIT %d',
