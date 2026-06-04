@@ -137,7 +137,7 @@
 
             </div>
             <div id="innerContent" class="innerContent">
-                <script src="/static/js/adminLiveMap.js?v=live-map-field-flow-1"></script>
+                <script src="/static/js/adminLiveMap.js?v=live-map-limit-heatmap-1"></script>
 <style>
     .adminLiveMapPanel .adminLiveMapFilterTable {
         width: 100% !important;
@@ -159,6 +159,16 @@
     .adminLiveMapPanel button {
         height: auto !important;
         line-height: normal !important;
+    }
+
+    .adminLiveMapPanel .adminLiveMapThresholdControls {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 4px !important;
+    }
+
+    .adminLiveMapPanel input[type="number"] {
+        width: 100% !important;
     }
 
     .adminLiveMapPanel .adminLiveMapFieldDetails {
@@ -320,13 +330,29 @@
                 </label>
                 <label>
                     Spur-Alter
-                    <input type="range" id="adminLiveMapSignatureAge" min="900" max="172800" step="900" value="172800" />
+                    <input type="range" id="adminLiveMapSignatureAge" min="900" max="172800" step="900" value="900" />
                 </label>
-                <span id="adminLiveMapSignatureAgeLabel" class="adminLiveMapFilterSummary">48h</span>
+                <span id="adminLiveMapSignatureAgeLabel" class="adminLiveMapFilterSummary">15m</span>
+                <div class="adminLiveMapThresholdControls">
+                    <button type="button" id="adminLiveMapSetSignatureSince">Spuren ab jetzt</button>
+                    <button type="button" id="adminLiveMapClearSignatureSince">Spurenfilter löschen</button>
+                </div>
+                <span id="adminLiveMapSignatureSinceLabel" class="adminLiveMapFilterSummary">Spuren ohne Startzeit-Threshold</span>
+                <div class="adminLiveMapThresholdControls">
+                    <button type="button" id="adminLiveMapSetContactMovementSince">Kontaktzahlen ab jetzt</button>
+                    <button type="button" id="adminLiveMapClearContactMovementSince">Kontaktfilter löschen</button>
+                </div>
+                <span id="adminLiveMapContactMovementSinceLabel" class="adminLiveMapFilterSummary">Kontaktzahlen zählen alle sichtbaren Schiffe</span>
+                <label>
+                    Spurenlimit
+                    <input type="number" id="adminLiveMapSignatureLimit" min="1" max="100000" step="1000" value="10000" />
+                </label>
+                <button type="button" id="adminLiveMapReloadSignatureLimit">Limit laden</button>
                 <label>
                     Spurfarbe
                     <select id="adminLiveMapSignatureColorMode">
                         <option value="age">Alter</option>
+                        <option value="heatmap">Heatmap</option>
                         <option value="direction">Richtung</option>
                         <option value="user">User</option>
                         <option value="alliance">Allianz</option>
