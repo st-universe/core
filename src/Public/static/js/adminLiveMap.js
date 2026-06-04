@@ -106,6 +106,14 @@
 			territoryByField: new Map(),
 			impassableByField: new Map(),
 			fieldIndex: new Map(),
+			liveDataInFlight: false,
+			liveDataQueued: false,
+			liveDataRequestSeq: 0,
+			liveDataAppliedSeq: 0,
+			liveDataStartedAt: 0,
+			liveDataFinishedAt: 0,
+			liveDataDurationMs: 0,
+			liveDataStatus: "ausstehend",
 			selectedShipId: null,
 			selectedField: null,
 			selectedUserIds: new Set(),
@@ -135,8 +143,16 @@
 		loadMapImage(state, false);
 		loadLiveData(state);
 		setInterval(function () {
+			if (document.hidden) {
+				return;
+			}
 			loadLiveData(state);
 		}, DATA_REFRESH_MS);
+		document.addEventListener("visibilitychange", function () {
+			if (!document.hidden) {
+				loadLiveData(state);
+			}
+		});
 		requestAnimationFrame(function frame() {
 			draw(state);
 			requestAnimationFrame(frame);
@@ -405,6 +421,19 @@
 	}
 
 	function loadLiveData(state) {
+		if (state.liveDataInFlight) {
+			state.liveDataQueued = true;
+			updateStatus(state);
+			return;
+		}
+
+		const requestSeq = ++state.liveDataRequestSeq;
+		const startedAt = Date.now();
+		state.liveDataInFlight = true;
+		state.liveDataQueued = false;
+		state.liveDataStartedAt = startedAt;
+		state.liveDataStatus = "läuft";
+		updateStatus(state);
 		const selectedShipParam = state.selectedShipId === null
 			? ""
 			: "&shipId=" + encodeURIComponent(state.selectedShipId);
@@ -417,9 +446,9 @@
 			"&ts=" +
 			Date.now(),
 			{
-			headers: {
-				Accept: "application/json",
-			},
+				headers: {
+					Accept: "application/json",
+				},
 			}
 		)
 			.then(function (response) {
@@ -429,24 +458,50 @@
 				return response.json();
 			})
 			.then(function (payload) {
-				mergeSpacecrafts(state, payload.spacecrafts || []);
-				state.flightSignatures = payload.flightSignatures || [];
-				state.selectedShipSignatures = payload.selectedShipSignatures || [];
-				state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
-				state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
-				state.stats.generatedAt = payload.generatedAt || 0;
-				rebuildIndexes(state);
-				pruneSelection(state);
-				renderFilterLists(state);
-				updateSelectedLabel(state);
-				updateFieldPanel(state);
-				updateStatus(state);
-				updateHover(state);
-				followSelectedShip(state, false);
+				state.liveDataFinishedAt = Date.now();
+				state.liveDataDurationMs = state.liveDataFinishedAt - startedAt;
+				if (requestSeq < state.liveDataAppliedSeq) {
+					state.liveDataStatus = "veraltet";
+					return;
+				}
+				if (payload.generatedAt && payload.generatedAt < state.stats.generatedAt) {
+					state.liveDataStatus = "veraltet";
+					return;
+				}
+
+				state.liveDataStatus = "ok";
+				state.liveDataAppliedSeq = requestSeq;
+				applyLiveDataPayload(state, payload);
 			})
 			.catch(function () {
-				state.status.textContent = "Live-Daten nicht erreichbar";
+				state.liveDataFinishedAt = Date.now();
+				state.liveDataDurationMs = state.liveDataFinishedAt - startedAt;
+				state.liveDataStatus = "Fehler";
+			})
+			.finally(function () {
+				state.liveDataInFlight = false;
+				updateStatus(state);
+				if (state.liveDataQueued && !document.hidden) {
+					loadLiveData(state);
+				}
 			});
+	}
+
+	function applyLiveDataPayload(state, payload) {
+		mergeSpacecrafts(state, payload.spacecrafts || []);
+		state.flightSignatures = payload.flightSignatures || [];
+		state.selectedShipSignatures = payload.selectedShipSignatures || [];
+		state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
+		state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
+		state.stats.generatedAt = payload.generatedAt || 0;
+		rebuildIndexes(state);
+		pruneSelection(state);
+		renderFilterLists(state);
+		updateSelectedLabel(state);
+		updateFieldPanel(state);
+		updateStatus(state);
+		updateHover(state);
+		followSelectedShip(state, false);
 	}
 
 	function mergeSpacecrafts(state, rows) {
@@ -1552,7 +1607,48 @@
 			state.stats.signatureFields +
 			" Feldern | Refresh " +
 			DATA_REFRESH_MS / 1000 +
-			"s";
+			"s | " +
+			getLiveDataRequestStatus(state);
+	}
+
+	function getLiveDataRequestStatus(state) {
+		if (state.liveDataInFlight) {
+			return "Request läuft seit " +
+				formatClockTime(state.liveDataStartedAt) +
+				(state.liveDataQueued ? ", nächster wartet" : "");
+		}
+
+		if (state.liveDataFinishedAt === 0) {
+			return "Request ausstehend";
+		}
+
+		return "Request " +
+			state.liveDataStatus +
+			" " +
+			formatClockTime(state.liveDataFinishedAt) +
+			" (" +
+			formatRequestDuration(state.liveDataDurationMs) +
+			")";
+	}
+
+	function formatClockTime(timestamp) {
+		if (!timestamp) {
+			return "-";
+		}
+
+		return new Date(timestamp).toLocaleTimeString("de-DE", {
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+		});
+	}
+
+	function formatRequestDuration(milliseconds) {
+		if (milliseconds >= 1000) {
+			return (milliseconds / 1000).toFixed(milliseconds < 10000 ? 1 : 0) + "s";
+		}
+
+		return Math.max(0, Math.round(milliseconds)) + "ms";
 	}
 
 	function sortById(a, b) {
