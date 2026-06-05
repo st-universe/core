@@ -34,6 +34,28 @@ use Stu\Orm\Entity\User;
 final class SpacecraftRepository extends EntityRepository implements SpacecraftRepositoryInterface
 {
     #[\Override]
+    public function findFresh(int $spacecraftId): ?Spacecraft
+    {
+        $spacecraftExists = (bool) $this->getEntityManager()->getConnection()->fetchOne(
+            'SELECT 1 FROM stu_spacecraft WHERE id = :spacecraftId',
+            ['spacecraftId' => $spacecraftId]
+        );
+
+        if (!$spacecraftExists) {
+            return null;
+        }
+
+        $spacecraft = $this->find($spacecraftId);
+        if ($spacecraft === null) {
+            return null;
+        }
+
+        $this->getEntityManager()->refresh($spacecraft);
+
+        return $spacecraft;
+    }
+
+    #[\Override]
     public function save(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
