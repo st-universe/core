@@ -2,18 +2,22 @@
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 class MessengerStyleProvider implements ViewComponentProviderInterface
 {
     public function __construct(
+        private readonly PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
         private readonly ContactRepositoryInterface $contactRepository,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
@@ -24,6 +28,14 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
     public function setTemplateVariables(GameControllerInterface $game): void
     {
         $user = $game->getUser();
+        $category = $this->privateMessageFolderRepository->getByUserAndSpecial(
+            $user->getId(),
+            PrivateMessageFolderTypeEnum::SPECIAL_MAIN
+        );
+        if ($category === null) {
+            throw new RuntimeException('main PM category not found');
+        }
+
         $messages = $this->privateMessageRepository->getConversations($user);
         $timestamp = $this->stuTime->time();
 
@@ -56,6 +68,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
             }
         }
 
+        $game->setTemplateVar('CATEGORY', $category);
         $game->setTemplateVar('CONVERSATIONS', $conversations);
     }
 

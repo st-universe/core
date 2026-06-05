@@ -149,6 +149,28 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     }
 
     #[\Override]
+    public function markAsReadByFolder(int $folderId): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'UPDATE %s pm
+                    SET pm.new = :read
+                    WHERE pm.cat_id = :folderId
+                    AND pm.new = :unread
+                    AND pm.deleted IS NULL',
+                    PrivateMessage::class
+                )
+            )
+            ->setParameters([
+                'folderId' => $folderId,
+                'read' => false,
+                'unread' => true
+            ])
+            ->execute();
+    }
+
+    #[\Override]
     public function hasRecentMessage(User $user): bool
     {
         return

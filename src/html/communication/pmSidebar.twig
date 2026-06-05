@@ -18,6 +18,12 @@
                 <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);"
                     onclick="deleteAllMarkedPMs();">Alle
                     selektierten löschen</a>
+                {% if CATEGORY is defined %}
+                <br /><br />
+                <span style="color: #cecece">&gt;</span> <a
+                    href="?B_MARK_PMS_READ=1&pmcat={{ CATEGORY.getId }}&sstr={{ SESSIONSTRING }}">Ordner als gelesen
+                    markieren</a>
+                {% endif %}
                 <br /><br />
                 <span style="color: #cecece">&gt;</span> <a
                     href="?B_DELETE_ALL_PMS=1&pmcat={{ CATEGORY.getId }}&sstr={{ SESSIONSTRING }}">Ordner leeren</a>

@@ -61,6 +61,8 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
 
+    public function markAsReadByFolder(int $folderId): int;
+
     public function hasRecentMessage(User $user): bool;
 
     public function getAmountSince(int $timestamp): int;
