@@ -38,6 +38,9 @@ use Stu\Module\Message\Action\EditPmCategory\EditPmCategoryRequestInterface;
 use Stu\Module\Message\Action\IgnoreUser\IgnoreUser;
 use Stu\Module\Message\Action\IgnoreUser\IgnoreUserRequest;
 use Stu\Module\Message\Action\IgnoreUser\IgnoreUserRequestInterface;
+use Stu\Module\Message\Action\MarkPmsRead\MarkPmsRead;
+use Stu\Module\Message\Action\MarkPmsRead\MarkPmsReadRequest;
+use Stu\Module\Message\Action\MarkPmsRead\MarkPmsReadRequestInterface;
 use Stu\Module\Message\Action\MovePm\MovePm;
 use Stu\Module\Message\Action\MovePm\MovePmRequest;
 use Stu\Module\Message\Action\MovePm\MovePmRequestInterface;
@@ -99,6 +102,7 @@ return [
     DeletePmCategoryRequestInterface::class => autowire(DeletePmCategoryRequest::class),
     DeletePmsRequestInterface::class => autowire(DeletePmsRequest::class),
     DeleteAllPmsRequestInterface::class => autowire(DeleteAllPmsRequest::class),
+    MarkPmsReadRequestInterface::class => autowire(MarkPmsReadRequest::class),
     MovePmRequestInterface::class => autowire(MovePmRequest::class),
     WritePmRequestInterface::class => autowire(WritePmRequest::class),
     EditContactCommentRequestInterface::class => autowire(EditContactCommentRequest::class),
@@ -117,6 +121,7 @@ return [
         DeletePmCategory::ACTION_IDENTIFIER => autowire(DeletePmCategory::class),
         DeletePms::ACTION_IDENTIFIER => autowire(DeletePms::class),
         DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
+        MarkPmsRead::ACTION_IDENTIFIER => autowire(MarkPmsRead::class),
         MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
         WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
         EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
