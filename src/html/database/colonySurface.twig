@@ -4,8 +4,11 @@
         <div
             style="background-image: url(assets/generated/fields/t{{ field.type_id }}.png); width: 40px; height: 40px;">
             <div>
+                {% set buildingId = field.buildings_id|default(field.id|default(null)) %}
+                {% if buildingId %}
                 <img style="width: 40px; height: 40px;"
-                    src="assets/generated/buildings/{{ field.buildings_id }}/0at.png" />
+                    src="assets/generated/buildings/{{ buildingId }}/0at.png" />
+                {% endif %}
             </div>
         </div>
     </div>
