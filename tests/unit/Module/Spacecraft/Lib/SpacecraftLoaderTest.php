@@ -35,11 +35,13 @@ class SpacecraftLoaderTest extends StuTestCase
     private int $spacecraftId = 5;
     private int $userId = 42;
 
-    private SpacecraftLoaderInterface $subject;
+    private SpacecraftLoader $subject;
 
     #[\Override]
     public function setUp(): void
     {
+        parent::setUp();
+
         //injected
         $this->spacecraft = $this->mock(Spacecraft::class);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -222,6 +224,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -258,6 +264,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -287,6 +297,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -325,6 +339,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with($this->userId)
             ->once()
             ->andReturn($userSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($this->spacecraft)
             ->once()
@@ -340,6 +358,10 @@ class SpacecraftLoaderTest extends StuTestCase
             ->with(999)
             ->once()
             ->andReturn($targetUserSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with(1)
+            ->once()
+            ->andReturn($target);
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
             ->with($target)
             ->once()
@@ -357,6 +379,67 @@ class SpacecraftLoaderTest extends StuTestCase
 
         $this->assertEquals($this->wrapper, $result->getSource());
         $this->assertEquals($targetWrapper, $result->getTarget());
+    }
+
+    public function testgetWrappersBySourceAndUserAndTargetReturnsNullWhenTargetGotDeletedAfterSemaphoreWait(): void
+    {
+        $userSema = 123456;
+        $targetUserSema = 23456;
+        $target = $this->mock(Ship::class);
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
+
+        //ship
+        $this->spacecraftRepository->shouldReceive('find')
+            ->with(5)
+            ->once()
+            ->andReturn($this->spacecraft);
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
+            ->with($this->userId)
+            ->once()
+            ->andReturn($userSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
+            ->with($this->spacecraft)
+            ->once()
+            ->andReturn($this->wrapper);
+        $this->verifyMainSemaphore();
+
+        //target
+        $this->spacecraftRepository->shouldReceive('find')
+            ->with(1)
+            ->once()
+            ->andReturn($target);
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
+            ->with(999)
+            ->once()
+            ->andReturn($targetUserSema);
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with(1)
+            ->once()
+            ->andReturn(null);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
+            ->with($target)
+            ->never();
+        $target->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(999);
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(1);
+
+        $result = $this->subject->getWrappersBySourceAndUserAndTarget($this->spacecraftId, $this->userId, 1);
+
+        $this->assertEquals($this->wrapper, $result->getSource());
+        $this->assertNull($result->getTarget());
     }
 
     private function verifyMainSemaphore(): void

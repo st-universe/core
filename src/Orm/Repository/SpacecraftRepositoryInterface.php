@@ -19,6 +19,8 @@ use Stu\Orm\Entity\User;
  */
 interface SpacecraftRepositoryInterface extends ObjectRepository
 {
+    public function findFresh(int $spacecraftId): ?Spacecraft;
+
     public function save(Spacecraft $spacecraft): void;
 
     public function delete(Spacecraft $spacecraft): void;

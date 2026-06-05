@@ -102,6 +102,9 @@ final class ApplyDamage implements ApplyDamageInterface
 
         if ($damageWrapper->isCrit()) {
             $this->handleCriticalHit($wrapper, $damageWrapper, $informations);
+            if ($condition->isDestroyed()) {
+                return;
+            }
         }
 
         $huelleVorher = $condition->getHull();
@@ -132,8 +135,8 @@ final class ApplyDamage implements ApplyDamageInterface
 
         if ($hullPercentage > 50) {
             $criticalDamage = random_int(30, 60);
-            $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
             $informations->addInformationf("- Kritischer Hüllen-Treffer verursacht %d%% Systemschaden", $criticalDamage);
+            $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
         } else {
             $destructionChance = (50 - $hullPercentage) / 50;
 
@@ -141,11 +144,14 @@ final class ApplyDamage implements ApplyDamageInterface
                 $systemName = $this->systemDamage->destroyRandomShipSystem($wrapper, $damageWrapper);
                 if ($systemName !== null) {
                     $informations->addInformationf("- Kritischer Hüllen-Treffer zerstört System: %s", $systemName);
+                    if ($spacecraft->getCondition()->isDestroyed()) {
+                        $informations->addInformation('-- Das Schiff wurde zerstört!');
+                    }
                 }
             } else {
                 $criticalDamage = random_int(50, 90);
-                $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
                 $informations->addInformationf("- Kritischer Hüllen-Treffer verursacht %d%% Systemschaden", $criticalDamage);
+                $this->systemDamage->damageRandomShipSystem($wrapper, $damageWrapper, $informations, $criticalDamage);
             }
         }
     }

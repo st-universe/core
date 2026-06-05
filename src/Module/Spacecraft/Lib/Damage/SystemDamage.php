@@ -35,6 +35,9 @@ final class SystemDamage implements SystemDamageInterface
 
         for ($i = 1; $i <= $systemsToDamage; $i++) {
             $this->damageRandomShipSystem($wrapper, $damageWrapper, $informations);
+            if ($ship->getCondition()->isDestroyed()) {
+                break;
+            }
         }
 
         return true;
@@ -105,6 +108,9 @@ final class SystemDamage implements SystemDamageInterface
             $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
             $informations->addInformation("- Der Schaden zerstört folgendes System: " . $systemName);
+            if ($wrapper->get()->getCondition()->isDestroyed()) {
+                $informations->addInformation('-- Das Schiff wurde zerstört!');
+            }
 
             return true;
         }

@@ -244,6 +244,11 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         ), LogTypeEnum::SEMAPHORE);
         $this->semaphoreUtil->acquireSemaphore($key);
 
+        $spacecraft = $this->spacecraftRepository->findFresh($spacecraft->getId());
+        if ($spacecraft === null) {
+            return null;
+        }
+
         return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
     }
 }
