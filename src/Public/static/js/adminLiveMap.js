@@ -20,6 +20,7 @@
 	const ION_STORM_MOVEMENT_STATIC = 1;
 	const ION_STORM_MOVEMENT_VARIABLE = 2;
 	const ION_STORM_MAX_VELOCITY = 5;
+	const ION_STORM_OVERRIDE_TTL_MS = 15000;
 
 	function clamp(value, min, max) {
 		return Math.max(min, Math.min(max, value));
@@ -169,6 +170,7 @@
 			ionStormDragging: null,
 			ionStormSaveInFlight: false,
 			ionStormEditMessage: "",
+			ionStormMovementOverrides: new Map(),
 			stats: {
 				spacecrafts: 0,
 				anomalies: 0,
@@ -706,6 +708,7 @@
 		state.flightSignatures = payloadSignatures;
 		state.selectedShipSignatures = payload.selectedShipSignatures || [];
 		state.anomalies = payload.anomalies || [];
+		applyIonStormMovementOverrides(state);
 		state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
 		state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
 		state.stats.generatedAt = payload.generatedAt || 0;
@@ -1571,7 +1574,10 @@
 				});
 			})
 			.then(function (payload) {
-				applyIonStormMovementUpdate(state, Number(payload.rootId), payload.movement);
+				const rootId = Number(payload.rootId);
+				rememberIonStormMovementOverride(state, rootId, payload.movement);
+				state.liveDataAppliedSeq = Math.max(state.liveDataAppliedSeq, state.liveDataRequestSeq + 1);
+				applyIonStormMovementUpdate(state, rootId, payload.movement);
 				state.ionStormEditMessage =
 					"Ionensturm #" +
 					payload.rootId +
@@ -1601,6 +1607,75 @@
 		});
 		updateFieldPanel(state);
 		updateHover(state);
+	}
+
+	function rememberIonStormMovementOverride(state, rootId, movement) {
+		state.ionStormMovementOverrides.set(Number(rootId), {
+			movement: normalizeIonStormMovementForCompare(movement),
+			expiresAt: Date.now() + ION_STORM_OVERRIDE_TTL_MS,
+		});
+	}
+
+	function applyIonStormMovementOverrides(state) {
+		if (state.ionStormMovementOverrides.size === 0) {
+			return;
+		}
+
+		const now = Date.now();
+		state.ionStormMovementOverrides.forEach(function (override, rootId) {
+			const rootAnomalies = state.anomalies.filter(function (item) {
+				return Number(item.rootId) === rootId;
+			});
+			if (rootAnomalies.length === 0) {
+				state.ionStormMovementOverrides.delete(rootId);
+				return;
+			}
+
+			if (rootAnomalies.some(function (item) {
+				return item.movement && ionStormMovementsMatch(item.movement, override.movement);
+			})) {
+				state.ionStormMovementOverrides.delete(rootId);
+				return;
+			}
+
+			if (override.expiresAt < now) {
+				state.ionStormMovementOverrides.delete(rootId);
+				return;
+			}
+
+			rootAnomalies.forEach(function (item) {
+				item.movement = {
+					...item.movement,
+					...override.movement,
+				};
+			});
+		});
+	}
+
+	function ionStormMovementsMatch(left, right) {
+		const normalizedLeft = normalizeIonStormMovementForCompare(left);
+		const normalizedRight = normalizeIonStormMovementForCompare(right);
+
+		return normalizedLeft.directionInDegrees === normalizedRight.directionInDegrees &&
+			normalizedLeft.velocity === normalizedRight.velocity &&
+			normalizedLeft.movementType === normalizedRight.movementType;
+	}
+
+	function normalizeIonStormMovementForCompare(movement) {
+		const directionInDegrees = normalizeDegrees(movement.directionInDegrees);
+		const velocity = clamp(Math.round(Number(movement.velocity) || 0), 0, ION_STORM_MAX_VELOCITY);
+		const movementType = Number(movement.movementType) ||
+			(movement.isVariable ? ION_STORM_MOVEMENT_VARIABLE : ION_STORM_MOVEMENT_STATIC);
+		const angle = directionInDegrees * Math.PI / 180;
+
+		return {
+			directionInDegrees,
+			velocity,
+			movementType,
+			isVariable: movementType === ION_STORM_MOVEMENT_VARIABLE,
+			dx: Math.round(Math.sin(angle) * velocity),
+			dy: Math.round(Math.cos(angle) * velocity),
+		};
 	}
 
 	function drawSelectedCourse(state) {
