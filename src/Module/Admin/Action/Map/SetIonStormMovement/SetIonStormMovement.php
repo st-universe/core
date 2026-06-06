@@ -60,6 +60,7 @@ final class SetIonStormMovement implements ActionControllerInterface
         $root->setData(json_encode($movement['data'], self::JSON_FLAGS));
         $this->anomalyRepository->save($root);
         $this->entityManager->flush();
+        $this->entityManager->commit();
 
         $this->respondJson([
             'success' => true,

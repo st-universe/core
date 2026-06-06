@@ -1499,6 +1499,7 @@
 	}
 
 	function createIonStormMovementFromVector(state, drag, mapPosition) {
+		syncIonStormMovementModeFromInput(state);
 		const offsetX = (mapPosition.x - drag.centerX) / state.cellSize;
 		const offsetY = (mapPosition.y - drag.centerY) / state.cellSize;
 		const distance = Math.hypot(offsetX, offsetY);
@@ -1532,6 +1533,12 @@
 			default:
 				return Number(originalMovement.movementType) ||
 					(originalMovement.isVariable ? ION_STORM_MOVEMENT_VARIABLE : ION_STORM_MOVEMENT_STATIC);
+		}
+	}
+
+	function syncIonStormMovementModeFromInput(state) {
+		if (state.ionStormMovementModeInput) {
+			state.ionStormMovementMode = state.ionStormMovementModeInput.value;
 		}
 	}
 
