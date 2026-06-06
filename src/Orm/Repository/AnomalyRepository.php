@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
@@ -141,6 +142,47 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
         } catch (NoResultException) {
             return null;
         }
+    }
+
+    #[\Override]
+    public function getAdminLiveMapAnomalies(int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('type_id', 'type_id', 'integer');
+        $rsm->addScalarResult('type_name', 'type_name', 'string');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('remaining_ticks', 'remaining_ticks', 'integer');
+        $rsm->addScalarResult('root_id', 'root_id', 'integer');
+        $rsm->addScalarResult('root_data', 'root_data', 'string');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT a.id,
+                    a.anomaly_type_id as type_id,
+                    atype.name as type_name,
+                    l.cx as x,
+                    l.cy as y,
+                    a.remaining_ticks,
+                    COALESCE(a.parent_id, a.id) as root_id,
+                    root.data as root_data
+                FROM stu_anomaly a
+                LEFT JOIN stu_anomaly root
+                ON root.id = COALESCE(a.parent_id, a.id)
+                JOIN stu_anomaly_type atype
+                ON atype.id = a.anomaly_type_id
+                JOIN stu_location l
+                ON l.id = a.location_id
+                JOIN stu_map m
+                ON m.id = l.id
+                WHERE a.remaining_ticks > 0
+                AND l.layer_id = :layerId
+                ORDER BY l.cy, l.cx, a.anomaly_type_id',
+                $rsm
+            )
+            ->setParameter('layerId', $layerId)
+            ->getResult();
     }
 
     #[\Override]
