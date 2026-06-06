@@ -21,6 +21,8 @@ class AttackMatchupTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->stuRandom = $this->mock(StuRandom::class);
 
         $this->subject = new AttackMatchup(

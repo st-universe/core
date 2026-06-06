@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use RuntimeException;
-use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
@@ -25,6 +24,8 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
  */
 final class SpacecraftLoader implements SpacecraftLoaderInterface
 {
+    private const int SPACECRAFT_SEMAPHORE_TIMEOUT_SECONDS = 5;
+
     public function __construct(
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
@@ -159,91 +160,79 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             return new SourceAndTargetWrappers($this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
         }
 
-        //main spacecraft sema on
-        StuLogger::log(sprintf(
-            'Acquiring main semaphore for user %d and spacecraft %d%s',
-            $spacecraft->getUser()->getId(),
-            $spacecraft->getId(),
-            $targetId !== null ? ', target ' . $targetId : ''
-        ), LogTypeEnum::SEMAPHORE);
+        $target = $targetId === null ? null : $this->spacecraftRepository->find($targetId);
+        $this->acquireSemaphoresForSpacecrafts(
+            $target === null ? [$spacecraft] : [$spacecraft, $target]
+        );
 
-        $startTime = microtime(true);
-        $mainSema = $this->semaphoreUtil->acquireSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
-
-        StuLogger::log(sprintf(
-            'Main semaphore acquired for user %d, waited %F seconds',
-            $spacecraft->getUser()->getId(),
-            microtime(true) - $startTime
-        ), LogTypeEnum::SEMAPHORE);
-
-        StuLogger::log(sprintf(
-            'Acquiring spacecraft semaphore for user %d and spacecraft %d',
-            $spacecraft->getUser()->getId(),
-            $spacecraft->getId()
-        ), LogTypeEnum::SEMAPHORE);
-
-        $startTime = microtime(true);
-        $wrapper = $this->acquireSemaphoreForSpacecraft($spacecraft);
+        $wrapper = $this->createFreshWrapper($spacecraft);
         if ($wrapper === null) {
             throw new RuntimeException('wrapper should not be null here');
         }
 
-        StuLogger::log(sprintf(
-            'Spacecraft semaphore acquired for user %d and spacecraft %d, waited %F seconds',
-            $spacecraft->getUser()->getId(),
-            $spacecraft->getId(),
-            microtime(true) - $startTime
-        ), LogTypeEnum::SEMAPHORE);
-
         $result = new SourceAndTargetWrappers($wrapper);
 
-        if ($targetId !== null) {
-
-            StuLogger::log(sprintf(
-                'Acquiring target spacecraft semaphore for user %d and target %d',
-                $spacecraft->getUser()->getId(),
-                $targetId
-            ), LogTypeEnum::SEMAPHORE);
-
-            $startTime = microtime(true);
-            $result->setTarget($this->acquireSemaphoreForSpacecraft($targetId));
-
-            StuLogger::log(sprintf(
-                'Target spacecraft semaphore acquired for user %d and target %d, waited %F seconds',
-                $spacecraft->getUser()->getId(),
-                $targetId,
-                microtime(true) - $startTime
-            ), LogTypeEnum::SEMAPHORE);
+        if ($target !== null) {
+            $result->setTarget($this->createFreshWrapper($target));
         }
-
-        //main spacecraft sema off
-        $this->semaphoreUtil->releaseSemaphore($mainSema);
-        StuLogger::log(sprintf(
-            'Main semaphore released for user %d',
-            $spacecraft->getUser()->getId()
-        ), LogTypeEnum::SEMAPHORE);
 
         return $result;
     }
 
-    private function acquireSemaphoreForSpacecraft(Spacecraft|int $spacecraft): ?SpacecraftWrapperInterface
+    /**
+     * @param array<int, Spacecraft> $spacecrafts
+     */
+    private function acquireSemaphoresForSpacecrafts(array $spacecrafts): void
     {
-        $spacecraft = $spacecraft instanceof Spacecraft
-            ? $spacecraft
-            : $this->spacecraftRepository->find($spacecraft);
-
-        if ($spacecraft === null) {
-            return null;
+        /** @var array<int, Spacecraft> $spacecraftsBySemaphoreKey */
+        $spacecraftsBySemaphoreKey = [];
+        foreach ($spacecrafts as $spacecraft) {
+            $spacecraftsBySemaphoreKey[$spacecraft->getUser()->getId()] ??= $spacecraft;
         }
 
+        ksort($spacecraftsBySemaphoreKey);
+
+        foreach ($spacecraftsBySemaphoreKey as $spacecraft) {
+            $this->acquireSemaphoreForSpacecraft($spacecraft);
+        }
+    }
+
+    private function acquireSemaphoreForSpacecraft(Spacecraft $spacecraft): void
+    {
         $key = $spacecraft->getUser()->getId();
+        if ($this->semaphoreUtil->isSemaphoreAlreadyAcquired($key)) {
+            StuLogger::log(sprintf(
+                'Spacecraft semaphore already acquired for user %d and spacecraft %d',
+                $key,
+                $spacecraft->getId()
+            ), LogTypeEnum::SEMAPHORE);
+            return;
+        }
+
+        StuLogger::log(sprintf(
+            'Acquiring spacecraft semaphore for user %d and spacecraft %d',
+            $key,
+            $spacecraft->getId()
+        ), LogTypeEnum::SEMAPHORE);
         StuLogger::log(sprintf(
             'spacecraft %d with key %d',
             $spacecraft->getId(),
             $key
         ), LogTypeEnum::SEMAPHORE);
-        $this->semaphoreUtil->acquireSemaphore($key);
 
+        $startTime = microtime(true);
+        $this->semaphoreUtil->acquireSemaphore($key, self::SPACECRAFT_SEMAPHORE_TIMEOUT_SECONDS);
+
+        StuLogger::log(sprintf(
+            'Spacecraft semaphore acquired for user %d and spacecraft %d, waited %F seconds',
+            $key,
+            $spacecraft->getId(),
+            microtime(true) - $startTime
+        ), LogTypeEnum::SEMAPHORE);
+    }
+
+    private function createFreshWrapper(Spacecraft $spacecraft): ?SpacecraftWrapperInterface
+    {
         $spacecraft = $this->spacecraftRepository->findFresh($spacecraft->getId());
         if ($spacecraft === null) {
             return null;
