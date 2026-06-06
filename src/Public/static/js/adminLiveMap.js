@@ -16,6 +16,10 @@
 		3: "#57d68d",
 		4: "#6fb7ff",
 	};
+	const ANOMALY_TYPE_ION_STORM = 2;
+	const ION_STORM_MOVEMENT_STATIC = 1;
+	const ION_STORM_MOVEMENT_VARIABLE = 2;
+	const ION_STORM_MAX_VELOCITY = 5;
 
 	function clamp(value, min, max) {
 		return Math.max(min, Math.min(max, value));
@@ -98,8 +102,12 @@
 			contactMovementSinceLabel: document.getElementById("adminLiveMapContactMovementSinceLabel"),
 			signatureLimitInput: document.getElementById("adminLiveMapSignatureLimit"),
 			signatureColorModeInput: document.getElementById("adminLiveMapSignatureColorMode"),
+			ionStormEditInput: document.getElementById("adminLiveMapIonStormEdit"),
+			ionStormMovementModeInput: document.getElementById("adminLiveMapIonStormMovementMode"),
+			ionStormEditStatus: document.getElementById("adminLiveMapIonStormEditStatus"),
 			imageUrl: root.dataset.imageUrl,
 			dataUrl: root.dataset.dataUrl,
+			ionStormMovementActionUrl: root.dataset.ionStormMovementActionUrl,
 			layerWidth: Number(root.dataset.layerWidth),
 			layerHeight: Number(root.dataset.layerHeight),
 			cellSize: Number(root.dataset.cellSize),
@@ -123,6 +131,9 @@
 			selectedShipSignatures: [],
 			visibleSignatures: [],
 			maxSignatureHeat: 0,
+			anomalies: [],
+			anomalyByField: new Map(),
+			anomalyImageCache: new Map(),
 			territoryFields: [],
 			impassableFields: [],
 			territoryByField: new Map(),
@@ -148,11 +159,19 @@
 			signatureColorMode: "age",
 			showSpacecrafts: true,
 			showSignatures: true,
+			showAnomalies: true,
+			showAnomalyMovement: true,
 			showTerritory: false,
 			showImpassable: false,
 			showCounts: true,
+			ionStormEditEnabled: false,
+			ionStormMovementMode: "keep",
+			ionStormDragging: null,
+			ionStormSaveInFlight: false,
+			ionStormEditMessage: "",
 			stats: {
 				spacecrafts: 0,
+				anomalies: 0,
 				flightSignatures: 0,
 				loadedFlightSignatures: 0,
 				signatureLimit: SIGNATURE_DEFAULT_LIMIT,
@@ -191,6 +210,10 @@
 		const refreshImageButton = document.getElementById("adminLiveMapRefreshImage");
 		const showSpacecraftsInput = document.getElementById("adminLiveMapShowSpacecrafts");
 		const showSignaturesInput = document.getElementById("adminLiveMapShowSignatures");
+		const showAnomaliesInput = document.getElementById("adminLiveMapShowAnomalies");
+		const showAnomalyMovementInput = document.getElementById("adminLiveMapShowAnomalyMovement");
+		const ionStormEditInput = document.getElementById("adminLiveMapIonStormEdit");
+		const ionStormMovementModeInput = document.getElementById("adminLiveMapIonStormMovementMode");
 		const showTerritoryInput = document.getElementById("adminLiveMapShowTerritory");
 		const showImpassableInput = document.getElementById("adminLiveMapShowImpassable");
 		const showCountsInput = document.getElementById("adminLiveMapShowCounts");
@@ -219,6 +242,32 @@
 			state.showSignatures = this.checked;
 			afterViewOptionChanged(state);
 		});
+		showAnomaliesInput.addEventListener("change", function () {
+			state.showAnomalies = this.checked;
+			afterViewOptionChanged(state);
+		});
+		showAnomalyMovementInput.addEventListener("change", function () {
+			state.showAnomalyMovement = this.checked;
+			updateHover(state);
+		});
+		if (ionStormEditInput) {
+			state.ionStormEditEnabled = ionStormEditInput.checked;
+			ionStormEditInput.addEventListener("change", function () {
+				state.ionStormEditEnabled = this.checked;
+				if (!state.ionStormEditEnabled) {
+					state.ionStormDragging = null;
+				}
+				updateIonStormEditStatus(state);
+				updateHover(state);
+			});
+		}
+		if (ionStormMovementModeInput) {
+			state.ionStormMovementMode = ionStormMovementModeInput.value;
+			ionStormMovementModeInput.addEventListener("change", function () {
+				state.ionStormMovementMode = this.value;
+				updateIonStormEditStatus(state);
+			});
+		}
 		showTerritoryInput.addEventListener("change", function () {
 			state.showTerritory = this.checked;
 			updateHover(state);
@@ -336,6 +385,20 @@
 		});
 
 		state.canvas.addEventListener("mousedown", function (event) {
+			if (event.button !== 0) {
+				return;
+			}
+			if (state.ionStormEditEnabled) {
+				const cluster = getIonStormClusterAtScreen(state, event.offsetX, event.offsetY);
+				if (cluster !== null) {
+					event.preventDefault();
+					state.ionStormDragging = createIonStormDrag(state, cluster, event.offsetX, event.offsetY);
+					hideTooltip(state);
+					updateIonStormEditStatus(state);
+					return;
+				}
+			}
+
 			state.dragging = true;
 			state.dragMoved = false;
 			state.dragStartX = event.clientX;
@@ -345,11 +408,19 @@
 			state.canvas.classList.add("isDragging");
 		});
 		state.canvas.addEventListener("mouseup", function (event) {
+			if (state.ionStormDragging) {
+				return;
+			}
 			if (state.dragging && !state.dragMoved) {
 				selectFieldAt(state, event.offsetX, event.offsetY);
 			}
 		});
-		window.addEventListener("mouseup", function () {
+		window.addEventListener("mouseup", function (event) {
+			if (state.ionStormDragging) {
+				finishIonStormDrag(state, event);
+				return;
+			}
+
 			state.dragging = false;
 			state.canvas.classList.remove("isDragging");
 		});
@@ -357,6 +428,12 @@
 			const rect = state.canvas.getBoundingClientRect();
 			state.mouseX = event.clientX - rect.left;
 			state.mouseY = event.clientY - rect.top;
+
+			if (state.ionStormDragging) {
+				updateIonStormDrag(state, event);
+				hideTooltip(state);
+				return;
+			}
 
 			if (state.dragging) {
 				const deltaX = event.clientX - state.dragStartX;
@@ -390,6 +467,7 @@
 		updateSignatureAgeLabel(state);
 		updateThresholdLabels(state);
 		updateSignatureRequestLimitFromInput(state);
+		updateIonStormEditStatus(state);
 	}
 
 	function updateSetFromCheckbox(set, id, checked) {
@@ -627,9 +705,11 @@
 		mergeSpacecrafts(state, payload.spacecrafts || []);
 		state.flightSignatures = payloadSignatures;
 		state.selectedShipSignatures = payload.selectedShipSignatures || [];
+		state.anomalies = payload.anomalies || [];
 		state.territoryFields = (payload.overlays && payload.overlays.territory) || [];
 		state.impassableFields = (payload.overlays && payload.overlays.impassable) || [];
 		state.stats.generatedAt = payload.generatedAt || 0;
+		state.stats.anomalies = state.anomalies.length;
 		state.stats.loadedFlightSignatures = payloadSignatures.length;
 		state.stats.signatureLimit = Number(payload.signatureDetailLimit || state.signatureRequestLimit);
 		state.stats.signatureLimitHit = payloadSignatures.length >= state.stats.signatureLimit;
@@ -638,6 +718,7 @@
 		renderFilterLists(state);
 		updateSelectedLabel(state);
 		updateFieldPanel(state);
+		updateIonStormEditStatus(state);
 		updateStatus(state);
 		updateHover(state);
 		followSelectedShip(state, false);
@@ -685,6 +766,7 @@
 
 	function rebuildIndexes(state) {
 		const fieldIndex = new Map();
+		const anomalyByField = new Map();
 		const territoryByField = new Map();
 		const impassableByField = new Map();
 		const movedSpacecraftIds = getMovedSpacecraftIdsSinceContactThreshold(state);
@@ -710,6 +792,13 @@
 			item.displayIndex = entry.signatures.length;
 			entry.signatures.push(item);
 		});
+		state.anomalies.forEach(function (item) {
+			const key = fieldKey(item.x, item.y);
+			if (!anomalyByField.has(key)) {
+				anomalyByField.set(key, []);
+			}
+			anomalyByField.get(key).push(item);
+		});
 		state.territoryFields.forEach(function (item) {
 			territoryByField.set(fieldKey(item.x, item.y), item);
 		});
@@ -733,6 +822,7 @@
 
 		state.fieldIndex = fieldIndex;
 		state.visibleSignatures = visibleSignatures;
+		state.anomalyByField = anomalyByField;
 		state.territoryByField = territoryByField;
 		state.impassableByField = impassableByField;
 		state.maxSignatureHeat = maxSignatureHeat;
@@ -930,6 +1020,12 @@
 		if (state.showImpassable) {
 			drawImpassableOverlay(state);
 		}
+		if (state.showAnomalies) {
+			drawAnomalies(state);
+		}
+		if (state.showAnomalyMovement || state.ionStormDragging || state.ionStormEditEnabled) {
+			drawAnomalyMovement(state);
+		}
 		if (state.showSignatures) {
 			drawSelectedCourse(state);
 		}
@@ -1021,6 +1117,490 @@
 			ctx.stroke();
 		});
 		ctx.restore();
+	}
+
+	function drawAnomalies(state) {
+		const ctx = state.ctx;
+		const bounds = getVisibleCellBounds(state);
+		const fieldOffsets = new Map();
+
+		ctx.save();
+		state.anomalies.forEach(function (item) {
+			if (!isCellVisible(bounds, item)) {
+				return;
+			}
+
+			const key = fieldKey(item.x, item.y);
+			const displayIndex = fieldOffsets.get(key) || 0;
+			fieldOffsets.set(key, displayIndex + 1);
+			drawAnomalyIcon(state, item, displayIndex);
+		});
+		ctx.restore();
+	}
+
+	function drawAnomalyIcon(state, item, displayIndex) {
+		const ctx = state.ctx;
+		const center = getCellCenter(state, item.x, item.y);
+		const offsets = [
+			{ x: 0, y: 0 },
+			{ x: -0.17, y: -0.17 },
+			{ x: 0.17, y: -0.17 },
+			{ x: -0.17, y: 0.17 },
+			{ x: 0.17, y: 0.17 },
+		];
+		const offset = offsets[displayIndex % offsets.length];
+		const size = state.cellSize * 0.78;
+		const x = center.x - size / 2 + offset.x * state.cellSize;
+		const y = center.y - size / 2 + offset.y * state.cellSize;
+		const image = getAnomalyImage(state, item.typeId);
+
+		ctx.save();
+		ctx.globalAlpha = 0.86;
+		if (image.complete && image.naturalWidth > 0) {
+			ctx.drawImage(image, x, y, size, size);
+		} else {
+			ctx.fillStyle = getAnomalyFallbackColor(item.typeId);
+			ctx.strokeStyle = "rgba(255,255,255,0.82)";
+			ctx.lineWidth = 1.4 / state.scale;
+			ctx.beginPath();
+			ctx.arc(center.x + offset.x * state.cellSize, center.y + offset.y * state.cellSize, size * 0.32, 0, Math.PI * 2);
+			ctx.fill();
+			ctx.stroke();
+		}
+		ctx.restore();
+	}
+
+	function getAnomalyImage(state, typeId) {
+		const key = String(typeId);
+		if (!state.anomalyImageCache.has(key)) {
+			const image = new Image();
+			image.dataset.fallbackTried = "0";
+			image.onerror = function () {
+				if (image.dataset.fallbackTried === "1") {
+					return;
+				}
+				image.dataset.fallbackTried = "1";
+				image.src = "/assets/anomalies/" + key + ".png";
+			};
+			image.src = "/assets/map/anomalies/" + key + ".png";
+			state.anomalyImageCache.set(key, image);
+		}
+
+		return state.anomalyImageCache.get(key);
+	}
+
+	function getAnomalyFallbackColor(typeId) {
+		switch (Number(typeId)) {
+			case ANOMALY_TYPE_ION_STORM:
+				return "rgba(91, 202, 255, 0.76)";
+			default:
+				return "rgba(214, 140, 255, 0.72)";
+		}
+	}
+
+	function drawAnomalyMovement(state) {
+		const ctx = state.ctx;
+		const clusters = buildIonStormMovementClusters(state);
+
+		ctx.save();
+		clusters.forEach(function (cluster) {
+			const start = {
+				x: cluster.centerX * state.cellSize,
+				y: cluster.centerY * state.cellSize,
+			};
+			const vector = getIonStormMovementVector(cluster.movement);
+			if (vector.x === 0 && vector.y === 0) {
+				if (state.ionStormEditEnabled) {
+					drawIonStormEditHandle(state, start, cluster);
+				}
+				return;
+			}
+
+			const end = {
+				x: start.x + vector.x * state.cellSize,
+				y: start.y + vector.y * state.cellSize,
+			};
+			if (
+				!isMapPointVisible(state, start.x, start.y, state.cellSize * 3) &&
+				!isMapPointVisible(state, end.x, end.y, state.cellSize * 3)
+			) {
+				return;
+			}
+
+			ctx.globalAlpha = 0.94;
+			ctx.strokeStyle = cluster.movement.isVariable ? "#ff7adf" : "#76d9ff";
+			ctx.fillStyle = ctx.strokeStyle;
+			ctx.lineWidth = Math.max(2.6 / state.scale, state.cellSize * 0.055);
+			ctx.lineCap = "round";
+			ctx.lineJoin = "round";
+			ctx.shadowColor = "rgba(0,0,0,0.88)";
+			ctx.shadowBlur = 5 / state.scale;
+			ctx.beginPath();
+			ctx.moveTo(start.x, start.y);
+			ctx.lineTo(end.x, end.y);
+			ctx.stroke();
+			drawArrowHead(ctx, start, end, Math.max(12 / state.scale, state.cellSize * 0.22));
+			if (state.ionStormEditEnabled) {
+				drawIonStormEditHandle(state, start, cluster);
+			}
+		});
+		drawIonStormEditPreview(state);
+		ctx.restore();
+	}
+
+	function getIonStormMovementVector(movement) {
+		const velocity = Number(movement.velocity) || 0;
+		if (velocity <= 0) {
+			return { x: 0, y: 0 };
+		}
+
+		const directionInDegrees = normalizeDegrees(Number(movement.directionInDegrees) || 0);
+		const angle = directionInDegrees * Math.PI / 180;
+
+		return {
+			x: Math.sin(angle) * velocity,
+			y: Math.cos(angle) * velocity,
+		};
+	}
+
+	function normalizeDegrees(value) {
+		const normalized = Math.round(Number(value) || 0) % 360;
+		return normalized < 0 ? normalized + 360 : normalized;
+	}
+
+	function drawIonStormEditHandle(state, start, cluster) {
+		const ctx = state.ctx;
+		if (!isMapPointVisible(state, start.x, start.y, state.cellSize * 2)) {
+			return;
+		}
+
+		const radius = Math.max(5 / state.scale, state.cellSize * 0.18);
+		ctx.save();
+		ctx.globalAlpha = state.ionStormDragging && state.ionStormDragging.rootId === cluster.rootId ? 0.95 : 0.68;
+		ctx.strokeStyle = "#ffcf54";
+		ctx.fillStyle = "rgba(8,10,14,0.62)";
+		ctx.lineWidth = 1.8 / state.scale;
+		ctx.beginPath();
+		ctx.arc(start.x, start.y, radius, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.stroke();
+		ctx.restore();
+	}
+
+	function drawIonStormEditPreview(state) {
+		const drag = state.ionStormDragging;
+		if (!drag || !drag.previewMovement) {
+			return;
+		}
+
+		const ctx = state.ctx;
+		const start = { x: drag.centerX, y: drag.centerY };
+		const vector = getIonStormMovementVector(drag.previewMovement);
+		const end = {
+			x: start.x + vector.x * state.cellSize,
+			y: start.y + vector.y * state.cellSize,
+		};
+
+		ctx.save();
+		ctx.globalAlpha = 0.98;
+		ctx.strokeStyle = "#ffcf54";
+		ctx.fillStyle = "#ffcf54";
+		ctx.lineWidth = Math.max(3.2 / state.scale, state.cellSize * 0.065);
+		ctx.lineCap = "round";
+		ctx.lineJoin = "round";
+		ctx.setLineDash([Math.max(6 / state.scale, 3), Math.max(5 / state.scale, 2)]);
+		ctx.shadowColor = "rgba(0,0,0,0.92)";
+		ctx.shadowBlur = 6 / state.scale;
+
+		if (vector.x === 0 && vector.y === 0) {
+			ctx.beginPath();
+			ctx.arc(start.x, start.y, Math.max(12 / state.scale, state.cellSize * 0.36), 0, Math.PI * 2);
+			ctx.stroke();
+		} else {
+			ctx.beginPath();
+			ctx.moveTo(start.x, start.y);
+			ctx.lineTo(end.x, end.y);
+			ctx.stroke();
+			drawArrowHead(ctx, start, end, Math.max(14 / state.scale, state.cellSize * 0.24));
+		}
+
+		const effectiveEnd = {
+			x: start.x + Number(drag.previewMovement.dx || 0) * state.cellSize,
+			y: start.y + Number(drag.previewMovement.dy || 0) * state.cellSize,
+		};
+		ctx.setLineDash([]);
+		ctx.globalAlpha = 0.55;
+		ctx.strokeStyle = "#ffffff";
+		ctx.lineWidth = 1.4 / state.scale;
+		ctx.beginPath();
+		ctx.moveTo(start.x, start.y);
+		ctx.lineTo(effectiveEnd.x, effectiveEnd.y);
+		ctx.stroke();
+		ctx.restore();
+	}
+
+	function buildIonStormMovementClusters(state) {
+		const clusters = new Map();
+
+		state.anomalies.forEach(function (item) {
+			if (Number(item.typeId) !== ANOMALY_TYPE_ION_STORM || !item.movement) {
+				return;
+			}
+
+			const rootId = Number(item.rootId) || Number(item.id);
+			if (!clusters.has(rootId)) {
+				clusters.set(rootId, {
+					rootId,
+					movement: item.movement,
+					count: 0,
+					weight: 0,
+					weightedX: 0,
+					weightedY: 0,
+				});
+			}
+
+			const cluster = clusters.get(rootId);
+			const weight = Math.max(1, Number(item.remainingTicks) || 1);
+			cluster.count++;
+			cluster.weight += weight;
+			cluster.weightedX += (Number(item.x) - 0.5) * weight;
+			cluster.weightedY += (Number(item.y) - 0.5) * weight;
+		});
+
+		return Array.from(clusters.values()).map(function (cluster) {
+			cluster.centerX = cluster.weightedX / cluster.weight;
+			cluster.centerY = cluster.weightedY / cluster.weight;
+			return cluster;
+		});
+	}
+
+	function getIonStormClusterAtScreen(state, screenX, screenY) {
+		if (!state.mapLoaded) {
+			return null;
+		}
+
+		const mapPosition = screenToMap(state, screenX, screenY);
+		const clusters = buildIonStormMovementClusters(state);
+		const centerPickRadius = Math.max(state.cellSize * 0.7, 24 / state.scale);
+		const linePickRadius = Math.max(state.cellSize * 0.34, 12 / state.scale);
+		let bestCluster = null;
+		let bestDistance = Infinity;
+
+		clusters.forEach(function (cluster) {
+			const start = {
+				x: cluster.centerX * state.cellSize,
+				y: cluster.centerY * state.cellSize,
+			};
+			const vector = getIonStormMovementVector(cluster.movement);
+			const end = {
+				x: start.x + vector.x * state.cellSize,
+				y: start.y + vector.y * state.cellSize,
+			};
+			const centerDistance = Math.hypot(mapPosition.x - start.x, mapPosition.y - start.y);
+			const lineDistance = vector.x === 0 && vector.y === 0
+				? centerDistance
+				: distanceToSegment(mapPosition, start, end);
+			const distance = Math.min(centerDistance, lineDistance);
+
+			if (
+				(centerDistance <= centerPickRadius || lineDistance <= linePickRadius) &&
+				distance < bestDistance
+			) {
+				bestDistance = distance;
+				bestCluster = {
+					...cluster,
+					centerMapX: start.x,
+					centerMapY: start.y,
+				};
+			}
+		});
+
+		return bestCluster;
+	}
+
+	function distanceToSegment(point, start, end) {
+		const dx = end.x - start.x;
+		const dy = end.y - start.y;
+		const lengthSquared = dx * dx + dy * dy;
+		if (lengthSquared === 0) {
+			return Math.hypot(point.x - start.x, point.y - start.y);
+		}
+
+		const t = clamp(((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared, 0, 1);
+		const projected = {
+			x: start.x + t * dx,
+			y: start.y + t * dy,
+		};
+
+		return Math.hypot(point.x - projected.x, point.y - projected.y);
+	}
+
+	function createIonStormDrag(state, cluster, screenX, screenY) {
+		const drag = {
+			rootId: Number(cluster.rootId),
+			centerX: cluster.centerMapX,
+			centerY: cluster.centerMapY,
+			startScreenX: screenX,
+			startScreenY: screenY,
+			originalMovement: cluster.movement,
+			previewMovement: {
+				...cluster.movement,
+				movementType: Number(cluster.movement.movementType) || (cluster.movement.isVariable ? ION_STORM_MOVEMENT_VARIABLE : ION_STORM_MOVEMENT_STATIC),
+			},
+			dirty: false,
+		};
+
+		if (state.ionStormMovementMode === "stop") {
+			drag.previewMovement = createIonStormMovementFromVector(state, drag, { x: drag.centerX, y: drag.centerY });
+			drag.dirty = true;
+		}
+
+		return drag;
+	}
+
+	function updateIonStormDrag(state, event) {
+		const drag = state.ionStormDragging;
+		if (!drag) {
+			return;
+		}
+
+		const rect = state.canvas.getBoundingClientRect();
+		const screenX = event.clientX - rect.left;
+		const screenY = event.clientY - rect.top;
+		if (!drag.dirty && Math.hypot(screenX - drag.startScreenX, screenY - drag.startScreenY) < 3) {
+			return;
+		}
+
+		drag.dirty = true;
+		drag.previewMovement = createIonStormMovementFromVector(
+			state,
+			drag,
+			screenToMap(state, screenX, screenY)
+		);
+		updateIonStormEditStatus(state);
+	}
+
+	function finishIonStormDrag(state) {
+		const drag = state.ionStormDragging;
+		if (!drag) {
+			return;
+		}
+
+		state.ionStormDragging = null;
+		if (drag.dirty) {
+			saveIonStormMovement(state, drag);
+			return;
+		}
+
+		updateIonStormEditStatus(state);
+	}
+
+	function createIonStormMovementFromVector(state, drag, mapPosition) {
+		const offsetX = (mapPosition.x - drag.centerX) / state.cellSize;
+		const offsetY = (mapPosition.y - drag.centerY) / state.cellSize;
+		const distance = Math.hypot(offsetX, offsetY);
+		const velocity = state.ionStormMovementMode === "stop"
+			? 0
+			: clamp(Math.round(distance), 0, ION_STORM_MAX_VELOCITY);
+		const directionInDegrees = velocity === 0
+			? normalizeDegrees(drag.originalMovement.directionInDegrees)
+			: normalizeDegrees(Math.atan2(offsetX, offsetY) * 180 / Math.PI);
+		const movementType = getIonStormMovementTypeForMode(state, drag.originalMovement);
+		const angle = directionInDegrees * Math.PI / 180;
+
+		return {
+			directionInDegrees,
+			velocity,
+			movementType,
+			isVariable: movementType === ION_STORM_MOVEMENT_VARIABLE,
+			dx: Math.round(Math.sin(angle) * velocity),
+			dy: Math.round(Math.cos(angle) * velocity),
+		};
+	}
+
+	function getIonStormMovementTypeForMode(state, originalMovement) {
+		switch (state.ionStormMovementMode) {
+			case "static":
+			case "stop":
+				return ION_STORM_MOVEMENT_STATIC;
+			case "variable":
+				return ION_STORM_MOVEMENT_VARIABLE;
+			case "keep":
+			default:
+				return Number(originalMovement.movementType) ||
+					(originalMovement.isVariable ? ION_STORM_MOVEMENT_VARIABLE : ION_STORM_MOVEMENT_STATIC);
+		}
+	}
+
+	function saveIonStormMovement(state, drag) {
+		if (!state.ionStormMovementActionUrl) {
+			state.ionStormEditMessage = "Speichern nicht moeglich: Action-URL fehlt";
+			updateIonStormEditStatus(state);
+			return;
+		}
+
+		const movement = drag.previewMovement;
+		const params = new URLSearchParams();
+		params.set("rootId", String(drag.rootId));
+		params.set("directionInDegrees", String(movement.directionInDegrees));
+		params.set("velocity", String(movement.velocity));
+		params.set("movementType", String(movement.movementType));
+
+		state.ionStormSaveInFlight = true;
+		state.ionStormEditMessage = "Speichere Ionensturm #" + drag.rootId + "...";
+		updateIonStormEditStatus(state);
+		updateStatus(state);
+
+		fetch(state.ionStormMovementActionUrl, {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				"X-Requested-With": "XMLHttpRequest",
+			},
+			body: params.toString(),
+		})
+			.then(function (response) {
+				return response.json().catch(function () {
+					return {};
+				}).then(function (payload) {
+					if (!response.ok || !payload.success) {
+						throw new Error(payload.message || ("HTTP " + response.status));
+					}
+					return payload;
+				});
+			})
+			.then(function (payload) {
+				applyIonStormMovementUpdate(state, Number(payload.rootId), payload.movement);
+				state.ionStormEditMessage =
+					"Ionensturm #" +
+					payload.rootId +
+					" gesetzt: " +
+					formatIonStormMovement(payload.movement);
+				loadLiveData(state);
+			})
+			.catch(function (error) {
+				state.ionStormEditMessage = "Ionensturm konnte nicht gespeichert werden: " + error.message;
+			})
+			.finally(function () {
+				state.ionStormSaveInFlight = false;
+				updateIonStormEditStatus(state);
+				updateStatus(state);
+				updateHover(state);
+			});
+	}
+
+	function applyIonStormMovementUpdate(state, rootId, movement) {
+		state.anomalies.forEach(function (item) {
+			if (Number(item.rootId) === rootId) {
+				item.movement = {
+					...item.movement,
+					...movement,
+				};
+			}
+		});
+		updateFieldPanel(state);
+		updateHover(state);
 	}
 
 	function drawSelectedCourse(state) {
@@ -1306,7 +1886,7 @@
 	}
 
 	function updateHover(state) {
-		if (!state.mapLoaded || state.dragging) {
+		if (!state.mapLoaded || state.dragging || state.ionStormDragging) {
 			return;
 		}
 
@@ -1342,6 +1922,7 @@
 		if (
 			data.spacecrafts.length === 0 &&
 			data.signatures.length === 0 &&
+			data.anomalies.length === 0 &&
 			!data.territory &&
 			!data.impassable
 		) {
@@ -1357,6 +1938,14 @@
 				html.push(buildEntitySummaryHtml(item, item.nameHtml, typeLabel(item.type)));
 			});
 			appendRemainder(html, data.spacecrafts.length, TOOLTIP_ITEM_LIMIT);
+		}
+
+		if (data.anomalies.length > 0) {
+			html.push("<br /><br /><strong>Anomalien</strong>");
+			data.anomalies.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (item) {
+				html.push(buildAnomalySummaryHtml(item));
+			});
+			appendRemainder(html, data.anomalies.length, TOOLTIP_ITEM_LIMIT);
 		}
 
 		if (data.signatures.length > 0) {
@@ -1380,10 +1969,12 @@
 		};
 		const spacecrafts = state.showSpacecrafts ? entry.spacecrafts.slice().sort(sortById) : [];
 		const signatures = state.showSignatures ? entry.signatures.slice().sort(sortByNewestTime) : [];
+		const anomalies = state.showAnomalies ? (state.anomalyByField.get(key) || []).slice().sort(sortAnomalies) : [];
 
 		return {
 			spacecrafts,
 			signatures,
+			anomalies,
 			signatureCount: state.showSignatures ? Math.max(entry.signatureCount || 0, signatures.length) : 0,
 			territory: state.showTerritory ? state.territoryByField.get(key) : null,
 			impassable: state.showImpassable ? state.impassableByField.get(key) : null,
@@ -1396,6 +1987,11 @@
 		}
 		if (data.impassable) {
 			html.push("<br />Unpassierbar");
+		}
+		if (data.anomalies.length > 0) {
+			html.push("<br />Anomalien: " + data.anomalies.map(function (item) {
+				return escapeHtml(getAnomalyLabel(item));
+			}).join(", "));
 		}
 	}
 
@@ -1449,6 +2045,40 @@
 			(item.isCloaked ? " | getarnt" : "") +
 			"</span></span></div>"
 		);
+	}
+
+	function buildAnomalySummaryHtml(item) {
+		return (
+			"<div class=\"adminLiveMapTooltipItem\">" +
+			"<span>" +
+			escapeHtml(getAnomalyLabel(item)) +
+			"<br /><span class=\"adminLiveMapTooltipMeta\">" +
+			"Restticks " +
+			escapeHtml(item.remainingTicks) +
+			getAnomalyMovementMeta(item) +
+			"</span></span></div>"
+		);
+	}
+
+	function getAnomalyLabel(item) {
+		return item.typeName || ("Anomalie " + item.typeId);
+	}
+
+	function getAnomalyMovementMeta(item) {
+		if (Number(item.typeId) !== ANOMALY_TYPE_ION_STORM || !item.movement) {
+			return "";
+		}
+
+		return " | Richtung " +
+			escapeHtml(normalizeDegrees(item.movement.directionInDegrees)) +
+			"° | Bewegung " +
+			escapeHtml(item.movement.dx) +
+			"|" +
+			escapeHtml(item.movement.dy) +
+			" | " +
+			escapeHtml(item.movement.velocity) +
+			" Felder/Tick" +
+			(item.movement.isVariable ? " | variabel" : "");
 	}
 
 	function appendRemainder(html, length, limit) {
@@ -1519,8 +2149,21 @@
 				metaHtml: escapeHtml(item.rumpName) + " | " + buildOwnerMetaHtml(item) + " | " + formatAge(item.age) + " | Richtung " + directionLabel(getTraceDirection(item)),
 			};
 		});
-		if (data.spacecrafts.length === 0 && data.signatures.length === 0) {
-			html.push("<div class=\"adminLiveMapEmpty\">Keine Kontakte oder Spuren für die aktuelle Filterung</div>");
+		if (data.anomalies.length > 0) {
+			html.push("<div class=\"adminLiveMapPanelSubTitle\">Anomalien</div>");
+			data.anomalies.forEach(function (item) {
+				html.push(
+					"<div class=\"adminLiveMapFieldMeta\">" +
+					escapeHtml(getAnomalyLabel(item)) +
+					" | Restticks " +
+					escapeHtml(item.remainingTicks) +
+					getAnomalyMovementMeta(item) +
+					"</div>"
+				);
+			});
+		}
+		if (data.spacecrafts.length === 0 && data.signatures.length === 0 && data.anomalies.length === 0) {
+			html.push("<div class=\"adminLiveMapEmpty\">Keine Kontakte, Spuren oder Anomalien für die aktuelle Filterung</div>");
 		}
 
 		state.fieldDetails.innerHTML = html.join("");
@@ -1533,6 +2176,11 @@
 		}
 		if (data.impassable) {
 			meta.push("Unpassierbar");
+		}
+		if (data.anomalies.length > 0) {
+			meta.push("Anomalien: " + data.anomalies.map(function (item) {
+				return escapeHtml(getAnomalyLabel(item));
+			}).join(", "));
 		}
 		if (meta.length > 0) {
 			html.push("<div class=\"adminLiveMapFieldMeta\">" + meta.join("<br />") + "</div>");
@@ -1829,6 +2477,52 @@
 		state.tooltip.style.display = "none";
 	}
 
+	function updateIonStormEditStatus(state) {
+		if (!state.ionStormEditStatus) {
+			return;
+		}
+
+		if (state.ionStormSaveInFlight) {
+			state.ionStormEditStatus.textContent = state.ionStormEditMessage || "Speichere Ionensturm...";
+			return;
+		}
+
+		if (!state.ionStormEditEnabled) {
+			state.ionStormEditStatus.textContent = "Ionensturm-Bearbeitung aus";
+			return;
+		}
+
+		if (state.ionStormDragging) {
+			state.ionStormEditStatus.textContent =
+				"Ionensturm #" +
+				state.ionStormDragging.rootId +
+				": " +
+				formatIonStormMovement(state.ionStormDragging.previewMovement);
+			return;
+		}
+
+		state.ionStormEditStatus.textContent = state.ionStormEditMessage ||
+			"Ionensturm anklicken und Richtung ziehen, Velocity 0-" +
+			ION_STORM_MAX_VELOCITY;
+	}
+
+	function formatIonStormMovement(movement) {
+		const movementType = Number(movement.movementType) === ION_STORM_MOVEMENT_VARIABLE
+			? "variabel"
+			: "statisch";
+
+		return "Richtung " +
+			normalizeDegrees(movement.directionInDegrees) +
+			"°, Geschwindigkeit " +
+			(Number(movement.velocity) || 0) +
+			", effektiv " +
+			(Number(movement.dx) || 0) +
+			"|" +
+			(Number(movement.dy) || 0) +
+			", " +
+			movementType;
+	}
+
 	function updateStatus(state) {
 		state.status.textContent =
 			"X " +
@@ -1839,6 +2533,8 @@
 			Math.round(state.scale * 100) +
 			"% | Kontakte " +
 			state.stats.spacecrafts +
+			" | Anomalien " +
+			state.stats.anomalies +
 			" | Spuren " +
 			state.stats.flightSignatures +
 			" sichtbar / " +
@@ -1901,6 +2597,11 @@
 
 	function sortByNewestTime(a, b) {
 		return Number(b.time) - Number(a.time);
+	}
+
+	function sortAnomalies(a, b) {
+		const typeDiff = Number(a.typeId) - Number(b.typeId);
+		return typeDiff !== 0 ? typeDiff : Number(a.id) - Number(b.id);
 	}
 
 	function sortByName(a, b) {

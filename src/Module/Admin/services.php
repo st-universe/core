@@ -39,6 +39,7 @@ use Stu\Module\Admin\Action\Map\EditSystemType\EditSystemTypeRequestInterface;
 use Stu\Module\Admin\Action\Map\GenerateEmptySystems\GenerateEmptySystems;
 use Stu\Module\Admin\Action\Map\RegenerateSystem\RegenerateSystem;
 use Stu\Module\Admin\Action\Map\ResetEffects\ResetEffects;
+use Stu\Module\Admin\Action\Map\SetIonStormMovement\SetIonStormMovement;
 use Stu\Module\Admin\Action\PostNews;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
@@ -127,6 +128,7 @@ return [
         CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
         GenerateEmptySystems::ACTION_IDENTIFIER => autowire(GenerateEmptySystems::class),
         RegenerateSystem::ACTION_IDENTIFIER => autowire(RegenerateSystem::class),
+        SetIonStormMovement::ACTION_IDENTIFIER => autowire(SetIonStormMovement::class),
         RecalculateBuildplanCrewUsage::ACTION_IDENTIFIER => autowire(RecalculateBuildplanCrewUsage::class),
         SetGameState::ACTION_IDENTIFIER => autowire(SetGameState::class),
         ChargeSpacecraftResources::ACTION_IDENTIFIER => autowire(ChargeSpacecraftResources::class),

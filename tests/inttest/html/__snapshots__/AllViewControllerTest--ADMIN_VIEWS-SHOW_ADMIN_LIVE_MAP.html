@@ -137,7 +137,7 @@
 
             </div>
             <div id="innerContent" class="innerContent">
-                <script src="/static/js/adminLiveMap.js?v=live-map-limit-heatmap-3"></script>
+                <script src="/static/js/adminLiveMap.js?v=live-map-ionstorm-edit-1"></script>
 <style>
     .adminLiveMapPanel .adminLiveMapFilterTable {
         width: 100% !important;
@@ -284,7 +284,8 @@
 <div id="adminLiveMap" class="adminLiveMap" data-layer-id="2"
     data-layer-width="7" data-layer-height="8" data-cell-size="30"
     data-image-url="/admin/?SHOW_ADMIN_LIVE_MAP_IMAGE=1&amp;layerid=2"
-    data-data-url="/admin/?SHOW_ADMIN_LIVE_MAP_DATA=1&amp;layerid=2">
+    data-data-url="/admin/?SHOW_ADMIN_LIVE_MAP_DATA=1&amp;layerid=2"
+    data-ion-storm-movement-action-url="/admin/?B_SET_ION_STORM_MOVEMENT=1">
     <div class="adminLiveMapToolbar">
         <select id="adminLiveMapLayer">
                         <option value="1" >
@@ -316,6 +317,28 @@
                     <input type="checkbox" id="adminLiveMapShowSignatures" checked="checked" />
                     Spuren
                 </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowAnomalies" checked="checked" />
+                    Anomalien
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapShowAnomalyMovement" checked="checked" />
+                    Ionensturmrichtung
+                </label>
+                <label>
+                    <input type="checkbox" id="adminLiveMapIonStormEdit" />
+                    Ionensturm einstellen
+                </label>
+                <label>
+                    Sturmverhalten
+                    <select id="adminLiveMapIonStormMovementMode">
+                        <option value="keep">Typ behalten</option>
+                        <option value="static">Statisch setzen</option>
+                        <option value="variable">Nach Tick variabel</option>
+                        <option value="stop">Stehen lassen</option>
+                    </select>
+                </label>
+                <span id="adminLiveMapIonStormEditStatus" class="adminLiveMapFilterSummary">Ionensturm-Bearbeitung aus</span>
                 <label>
                     <input type="checkbox" id="adminLiveMapShowTerritory" />
                     Territorium

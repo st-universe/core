@@ -33,6 +33,20 @@ interface AnomalyRepositoryInterface extends ObjectRepository
     public function getClosestAnomalyDistance(SpacecraftWrapperInterface $wrapper): ?int;
 
     /**
+     * @return array<array{
+     *     id: int,
+     *     type_id: int,
+     *     type_name: string,
+     *     x: int,
+     *     y: int,
+     *     remaining_ticks: int,
+     *     root_id: int,
+     *     root_data: null|string
+     * }>
+     */
+    public function getAdminLiveMapAnomalies(int $layerId): array;
+
+    /**
      * Retrieves all locations with ionstorm anomalies.
      *
      * @return array<Location>

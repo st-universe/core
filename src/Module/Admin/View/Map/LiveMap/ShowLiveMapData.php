@@ -7,10 +7,12 @@ namespace Stu\Module\Admin\View\Map\LiveMap;
 use JBBCode\Parser;
 use JsonException;
 use request;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Repository\AnomalyRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -36,6 +38,7 @@ final class ShowLiveMapData implements ViewControllerInterface
         private MapRepositoryInterface $mapRepository,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private FlightSignatureRepositoryInterface $flightSignatureRepository,
+        private AnomalyRepositoryInterface $anomalyRepository,
         private Parser $bbCodeParser
     ) {}
 
@@ -95,6 +98,10 @@ final class ShowLiveMapData implements ViewControllerInterface
         echo '"maxSignatureAge":' . $maxSignatureAge . ',';
         echo '"overlays":' . $this->encodeJson($this->normalizeOverlays(
             $this->mapRepository->getAdminLiveMapOverlayFields($layer->getId())
+        )) . ',';
+        echo '"anomalies":' . $this->encodeJson(array_map(
+            fn (array $row): array => $this->normalizeAnomaly($row),
+            $this->anomalyRepository->getAdminLiveMapAnomalies($layer->getId())
         ));
 
         if ($selectedShipId > 0) {
@@ -205,6 +212,61 @@ final class ShowLiveMapData implements ViewControllerInterface
             'inSystem' => (bool) $row['in_system'],
             'systemName' => $row['system_name'] !== null ? (string) $row['system_name'] : null,
             'isCloaked' => (bool) $row['is_cloaked']
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private function normalizeAnomaly(array $row): array
+    {
+        $typeId = (int) $row['type_id'];
+        $result = [
+            'id' => (int) $row['id'],
+            'typeId' => $typeId,
+            'typeName' => (string) $row['type_name'],
+            'x' => (int) $row['x'],
+            'y' => (int) $row['y'],
+            'remainingTicks' => (int) $row['remaining_ticks'],
+            'rootId' => (int) $row['root_id'],
+        ];
+
+        if ($typeId === AnomalyTypeEnum::ION_STORM->value && $row['root_data'] !== null) {
+            $movement = $this->normalizeIonStormMovement((string) $row['root_data']);
+            if ($movement !== null) {
+                $result['movement'] = $movement;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return null|array<string, int|bool>
+     */
+    private function normalizeIonStormMovement(string $data): ?array
+    {
+        $decoded = json_decode($data, true);
+        if (!is_array($decoded)) {
+            return null;
+        }
+
+        $directionInDegrees = ((int) ($decoded['directionInDegrees'] ?? 0)) % 360;
+        if ($directionInDegrees < 0) {
+            $directionInDegrees += 360;
+        }
+
+        $velocity = max(0, (int) ($decoded['velocity'] ?? 0));
+        $movementType = (int) ($decoded['movementType'] ?? 1);
+
+        return [
+            'directionInDegrees' => $directionInDegrees,
+            'velocity' => $velocity,
+            'movementType' => $movementType,
+            'isVariable' => $movementType === 2,
+            'dx' => (int) round(sin(deg2rad($directionInDegrees)) * $velocity),
+            'dy' => (int) round(cos(deg2rad($directionInDegrees)) * $velocity),
         ];
     }
 
