@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Battle\Party\RoundBasedBattleParty;
 
@@ -59,7 +58,7 @@ final class AttackMatchup implements AttackMatchupInterface
         bool $oneWay
     ): ?Matchup {
         $attackersDone = $attackers->isDone();
-        $defendersDone = $oneWay ? new ArrayCollection() : $defenders->isDone();
+        $defendersDone = $oneWay || $defenders->isDone();
 
         if ($attackersDone && $defendersDone) {
             return null;

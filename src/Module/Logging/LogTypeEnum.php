@@ -12,6 +12,7 @@ enum LogTypeEnum: string
     case DBAL = 'dbal';
     case TICK = 'tick';
     case SEMAPHORE = 'semaphore';
+    case BATTLE = 'battle';
 
     public function isRotating(): bool
     {
@@ -31,6 +32,7 @@ enum LogTypeEnum: string
             self::DBAL => '/dbal/sql.log',
             self::TICK => '/tick.log',
             self::SEMAPHORE => '/semaphore/semaphore.log',
+            self::BATTLE => '/battle/battle.log',
         };
 
         return sprintf('%s%s', $logFolder, $subPath);

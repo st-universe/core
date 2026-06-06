@@ -15,6 +15,13 @@ class LogTypeEnumTest extends StuTestCase
         $this->assertEquals('path/to/logs/anomaly/anomaly.log', $result);
     }
 
+    public function testGetBattleLogfilePath(): void
+    {
+        $result = LogTypeEnum::BATTLE->getLogfilePath('path/to/logs');
+
+        $this->assertEquals('path/to/logs/battle/battle.log', $result);
+    }
+
     public function testIsRotating(): void
     {
         $result = LogTypeEnum::DEFAULT->isRotating();

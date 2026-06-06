@@ -23,7 +23,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     }
 
     #[\Override]
-    public function acquireSemaphore(int $key): null|int|SysvSemaphore
+    public function acquireSemaphore(int $key, ?float $timeoutSeconds = null): null|int|SysvSemaphore
     {
         if (!$this->isSemaphoreUsageActive()) {
             return null;
@@ -35,7 +35,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
             return null;
         }
 
-        $this->acquire($semaphore);
+        $this->acquire($semaphore, $key, $timeoutSeconds);
         self::$semaphores[$key] = $semaphore;
 
         return $semaphore;
@@ -57,11 +57,28 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         return $semaphore;
     }
 
-    private function acquire(SysvSemaphore $semaphore): void
+    private function acquire(SysvSemaphore $semaphore, int $key, ?float $timeoutSeconds): void
     {
-        if (!sem_acquire($semaphore)) {
-            throw new SemaphoreException("Error acquiring Semaphore!");
+        if ($timeoutSeconds === null) {
+            if (!sem_acquire($semaphore)) {
+                throw new SemaphoreException("Error acquiring Semaphore!");
+            }
+            return;
         }
+
+        $deadline = microtime(true) + $timeoutSeconds;
+        do {
+            if (sem_acquire($semaphore, true)) {
+                return;
+            }
+            usleep(100_000);
+        } while (microtime(true) < $deadline);
+
+        throw new SemaphoreException(sprintf(
+            'Timeout acquiring semaphore with key %d after %.1f seconds',
+            $key,
+            $timeoutSeconds
+        ));
     }
 
     #[\Override]
