@@ -127,7 +127,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
         gap: 4px;
-        max-height: 190px;
         overflow: auto;
         padding: 4px;
         border: 1px solid #263143;
@@ -164,8 +163,40 @@
         width: 100%;
     }
 
+    .adminFullMapEditorDisclosure {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid #334058;
+        background: #101827;
+        color: #e9f0ff;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .adminFullMapEditorDisclosureState {
+        color: #ffe06b;
+        font-weight: bold;
+    }
+
+    .adminFullMapEditorCollapsibleBody {
+        margin-top: 4px;
+    }
+
+    .adminFullMapEditorCollapsible.isCollapsed .adminFullMapEditorCollapsibleBody {
+        display: none;
+    }
+
+    .adminFullMapEditorResizableList {
+        height: 190px;
+        min-height: 72px;
+        max-height: 620px;
+        resize: vertical;
+    }
+
     .adminFullMapEditorEffectList {
-        max-height: 180px;
         overflow: auto;
         padding: 4px;
         border: 1px solid #263143;
@@ -261,16 +292,23 @@
             <div class="adminFullMapEditorPanelSection">
                 <div class="adminFullMapEditorPanelTitle">Werte</div>
                 <div class="adminFullMapEditorValueGrid">
-                    <div>
-                        <div>Feldtyp</div>
-                        <div id="adminFullMapEditorFieldTypes" class="adminFullMapEditorTileGrid">
-                            {% for fieldType in FIELD_TYPES %}
-                            <button type="button" class="adminFullMapEditorTileButton"
-                                data-field-type-id="{{ fieldType.id }}" data-label="{{ fieldType.name }}"
-                                title="{{ fieldType.name }}">
-                                <img src="/assets/map/{{ fieldType.type }}.png" alt="" />
-                            </button>
-                            {% endfor %}
+                    <div class="adminFullMapEditorCollapsible">
+                        <button type="button" class="adminFullMapEditorDisclosure" data-admin-full-map-toggle
+                            aria-expanded="true">
+                            <span>Feldtyp</span>
+                            <span class="adminFullMapEditorDisclosureState">[-]</span>
+                        </button>
+                        <div class="adminFullMapEditorCollapsibleBody">
+                            <div id="adminFullMapEditorFieldTypes"
+                                class="adminFullMapEditorTileGrid adminFullMapEditorResizableList">
+                                {% for fieldType in FIELD_TYPES %}
+                                <button type="button" class="adminFullMapEditorTileButton"
+                                    data-field-type-id="{{ fieldType.id }}" data-label="{{ fieldType.name }}"
+                                    title="{{ fieldType.name }}">
+                                    <img src="/assets/map/{{ fieldType.type }}.png" alt="" />
+                                </button>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
 
@@ -341,13 +379,23 @@
                             <option value="replace">Durch Auswahl ersetzen</option>
                         </select>
                     </label>
-                    <div id="adminFullMapEditorEffects" class="adminFullMapEditorEffectList">
-                        {% for effect in FIELD_EFFECTS %}
-                        <label>
-                            <input type="checkbox" name="adminFullMapEditorEffects[]" value="{{ effect.value }}" />
-                            <span title="{{ effect.value }}">{{ effect.description }}</span>
-                        </label>
-                        {% endfor %}
+                    <div class="adminFullMapEditorCollapsible">
+                        <button type="button" class="adminFullMapEditorDisclosure" data-admin-full-map-toggle
+                            aria-expanded="true">
+                            <span>Effekte</span>
+                            <span class="adminFullMapEditorDisclosureState">[-]</span>
+                        </button>
+                        <div class="adminFullMapEditorCollapsibleBody">
+                            <div id="adminFullMapEditorEffects"
+                                class="adminFullMapEditorEffectList adminFullMapEditorResizableList">
+                                {% for effect in FIELD_EFFECTS %}
+                                <label>
+                                    <input type="checkbox" name="adminFullMapEditorEffects[]" value="{{ effect.value }}" />
+                                    <span title="{{ effect.value }}">{{ effect.description }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

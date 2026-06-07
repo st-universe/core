@@ -100,6 +100,11 @@
 		document.getElementById("adminFullMapEditorRefreshData").addEventListener("click", function () {
 			loadEditorData(state);
 		});
+		document.querySelectorAll("[data-admin-full-map-toggle]").forEach(function (button) {
+			button.addEventListener("click", function () {
+				toggleCollapsibleSection(button);
+			});
+		});
 		const rectangleSelectionInput = document.getElementById("adminFullMapEditorRectangleSelection");
 		state.selectionModeRectangle = rectangleSelectionInput.checked;
 		rectangleSelectionInput.addEventListener("change", function () {
@@ -269,6 +274,21 @@
 			updateTooltip(state);
 			scheduleDraw(state);
 		});
+	}
+
+	function toggleCollapsibleSection(button) {
+		const section = button.closest(".adminFullMapEditorCollapsible");
+		if (!section) {
+			return;
+		}
+
+		const collapsed = section.classList.toggle("isCollapsed");
+		button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+
+		const stateLabel = button.querySelector(".adminFullMapEditorDisclosureState");
+		if (stateLabel) {
+			stateLabel.textContent = collapsed ? "[+]" : "[-]";
+		}
 	}
 
 	function selectTool(state, tool) {
