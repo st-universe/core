@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Mockery\MockInterface;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -93,5 +94,42 @@ class StarmapUiFactoryTest extends StuTestCase
                 $this->mock(Layer::class)
             )
         );
+    }
+
+    public function testExplorableStarmapItemDoesNotShowUndescribedEffects(): void
+    {
+        $exploreableStarMap = $this->mock(ExploreableStarMapInterface::class);
+
+        $exploreableStarMap->shouldReceive('getEffects')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([FieldTypeEffectEnum::NO_PIRATES]);
+
+        $item = $this->subject->createExplorableStarmapItem(
+            $exploreableStarMap,
+            $this->mock(Layer::class)
+        );
+
+        static::assertFalse($item->hasEffects());
+    }
+
+    public function testExplorableStarmapItemShowsDescribedEffects(): void
+    {
+        $exploreableStarMap = $this->mock(ExploreableStarMapInterface::class);
+
+        $exploreableStarMap->shouldReceive('getEffects')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([
+                FieldTypeEffectEnum::NO_PIRATES,
+                FieldTypeEffectEnum::LSS_BLOCKADE
+            ]);
+
+        $item = $this->subject->createExplorableStarmapItem(
+            $exploreableStarMap,
+            $this->mock(Layer::class)
+        );
+
+        static::assertTrue($item->hasEffects());
     }
 }

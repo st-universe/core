@@ -77,38 +77,31 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         )->fetchAllAssociative();
 
         $runs = [];
-        $currentY = null;
-        $startX = null;
-        $endX = null;
+        /** @var null|array{y: int, startX: int, endX: int} $currentRun */
+        $currentRun = null;
 
         foreach ($rows as $row) {
             $x = (int)$row['cx'];
             $y = (int)$row['cy'];
 
-            if ($currentY === $y && $endX !== null && $x === $endX + 1) {
-                $endX = $x;
+            if ($currentRun !== null && $currentRun['y'] === $y && $x === $currentRun['endX'] + 1) {
+                $currentRun['endX'] = $x;
                 continue;
             }
 
-            if ($currentY !== null && $startX !== null && $endX !== null) {
-                $runs[] = [
-                    'y' => $currentY,
-                    'startX' => $startX,
-                    'endX' => $endX
-                ];
+            if ($currentRun !== null) {
+                $runs[] = $currentRun;
             }
 
-            $currentY = $y;
-            $startX = $x;
-            $endX = $x;
+            $currentRun = [
+                'y' => $y,
+                'startX' => $x,
+                'endX' => $x
+            ];
         }
 
-        if ($currentY !== null && $startX !== null && $endX !== null) {
-            $runs[] = [
-                'y' => $currentY,
-                'startX' => $startX,
-                'endX' => $endX
-            ];
+        if ($currentRun !== null) {
+            $runs[] = $currentRun;
         }
 
         return $runs;
