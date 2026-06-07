@@ -85,6 +85,62 @@ interface MapRepositoryInterface extends ObjectRepository
      */
     public function getAdminLiveMapOverlayFields(int $layerId): array;
 
+    /**
+     * @return array<array{
+     *     id: int,
+     *     x: int,
+     *     y: int,
+     *     field_type_id: int,
+     *     field_type_graphic: int,
+     *     field_name: string,
+     *     is_system: bool,
+     *     passable: bool,
+     *     effects: null|string,
+     *     system_type_id: null|int,
+     *     system_type_name: null|string,
+     *     system_id: null|int,
+     *     system_name: null|string,
+     *     influence_area_id: null|int,
+     *     influence_area_name: null|string,
+     *     border_type_id: null|int,
+     *     border_color: null|string,
+     *     border_description: null|string,
+     *     region_id: null|int,
+     *     region_name: null|string,
+     *     admin_region_id: null|int,
+     *     admin_region_name: null|string
+     * }>
+     */
+    public function getAdminFullMapEditorFields(int $layerId): array;
+
+    /**
+     * @return null|array{
+     *     id: int,
+     *     x: int,
+     *     y: int,
+     *     field_type_id: int,
+     *     field_type_graphic: int,
+     *     field_name: string,
+     *     is_system: bool,
+     *     passable: bool,
+     *     effects: null|string,
+     *     system_type_id: null|int,
+     *     system_type_name: null|string,
+     *     system_id: null|int,
+     *     system_name: null|string,
+     *     influence_area_id: null|int,
+     *     influence_area_name: null|string,
+     *     border_type_id: null|int,
+     *     border_color: null|string,
+     *     border_description: null|string,
+     *     region_id: null|int,
+     *     region_name: null|string,
+     *     admin_region_id: null|int,
+     *     admin_region_name: null|string
+     * }
+     */
+    public function getAdminFullMapEditorField(int $fieldId): ?array;
+
     /** @return array<CellDataInterface> */
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 

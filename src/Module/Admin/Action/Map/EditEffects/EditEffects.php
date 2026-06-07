@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use ValueError;
 
 final class EditEffects implements ActionControllerInterface
 {
@@ -31,12 +32,37 @@ final class EditEffects implements ActionControllerInterface
 
         $mapFieldType = $selectedField->getFieldType();
 
-        $effectArray = array_map(
-            fn (string $value): FieldTypeEffectEnum => FieldTypeEffectEnum::from($value),
-            request::getArrayFatal('effects')
-        );
+        $effectArray = [];
+        foreach (request::getArrayFatal('effects') as $value) {
+            if (!is_string($value)) {
+                continue;
+            }
 
-        $mapFieldType->setEffects($effectArray);
+            try {
+                $effectArray[] = FieldTypeEffectEnum::from($value);
+            } catch (ValueError) {
+                return;
+            }
+        }
+
+        $mode = request::getString('mode');
+        $currentEffects = [];
+        foreach ($mapFieldType->getEffects() as $effect) {
+            $currentEffects[$effect->value] = $effect;
+        }
+
+        $selectedEffects = [];
+        foreach ($effectArray as $effect) {
+            $selectedEffects[$effect->value] = $effect;
+        }
+
+        $result = match ($mode) {
+            'replace' => $selectedEffects,
+            'remove' => array_diff_key($currentEffects, $selectedEffects),
+            default => $currentEffects + $selectedEffects
+        };
+
+        $mapFieldType->setEffects($result === [] ? null : array_values($result));
 
         $this->mapFieldTypeRepository->save($mapFieldType);
 

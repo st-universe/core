@@ -90,7 +90,7 @@ function updateField(obj, fieldid) {
 		&& passableselector == 0
 		&& borderselector == 0
 		&& areaid == 0
-		&& selectedEffects == null
+		&& selectedEffects.size === 0
 		&& $('reseteffects').checked == false
 	) {
 		alert(
@@ -203,16 +203,24 @@ function updateField(obj, fieldid) {
 	if (selectedEffects.size > 0) {
 
 		const joined = [...selectedEffects].join('&effects[]=');
+		const effectMode = getSelectedEffectMode();
 
 		ajax_update(
 			false,
-			`/admin/?B_EDIT_EFFECTS=1&field=${fieldid}&effects[]=${joined}`
+			`/admin/?B_EDIT_EFFECTS=1&field=${fieldid}&mode=${effectMode}&effects[]=${joined}`
 		);
-		parentTd.setAttribute("data-effects", [...selectedEffects].join(','));
+		const currentEffects = getCurrentEffects(parentTd);
+		const selectedEffectArray = [...selectedEffects];
+		const nextEffects = getNextEffects(currentEffects, selectedEffectArray, effectMode);
+		parentTd.setAttribute("data-effects", nextEffects.join('\n'));
 
 		if (fieldevent == 6) {
-			parentTd.title = [...selectedEffects].join('\n');
-			createOverlay(parentTd, "rgba(255, 174, 0, 0.5)");
+			parentTd.title = nextEffects.join('\n');
+			if (nextEffects.length > 0) {
+				createOverlay(parentTd, "rgba(255, 174, 0, 0.5)");
+			} else {
+				removeOverlay(parentTd);
+			}
 		}
 	}
 	if ($('reseteffects').checked) {
@@ -226,6 +234,31 @@ function updateField(obj, fieldid) {
 			removeOverlay(parentTd);
 		}
 	}
+}
+
+function getSelectedEffectMode() {
+	const selectedMode = document.querySelector('input[name="effects_mode"]:checked');
+	return selectedMode ? selectedMode.value : 'add';
+}
+
+function getCurrentEffects(field) {
+	const value = field.getAttribute("data-effects");
+	if (!value) {
+		return [];
+	}
+	return value.split(/[\n,]+/).map(effect => effect.trim()).filter(Boolean);
+}
+
+function getNextEffects(currentEffects, selectedEffectArray, mode) {
+	if (mode === 'replace') {
+		return [...new Set(selectedEffectArray)];
+	}
+	if (mode === 'remove') {
+		const selected = new Set(selectedEffectArray);
+		return currentEffects.filter(effect => !selected.has(effect));
+	}
+
+	return [...new Set([...currentEffects, ...selectedEffectArray])];
 }
 
 var selectedFieldType = 0;

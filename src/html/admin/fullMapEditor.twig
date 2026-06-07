@@ -1,0 +1,362 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+<script src="{{ JAVASCRIPTPATH }}/js/adminFullMapEditor.js?v=full-map-editor"></script>
+<style>
+    .adminFullMapEditor {
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .adminFullMapEditorToolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 6px;
+        border: 1px solid #303846;
+        background: #0d121c;
+    }
+
+    .adminFullMapEditorToolbar select,
+    .adminFullMapEditorToolbar button,
+    .adminFullMapEditorPanel select,
+    .adminFullMapEditorPanel button {
+        max-width: 100%;
+    }
+
+    .adminFullMapEditorStatus {
+        color: #d9e6ff;
+    }
+
+    .adminFullMapEditorLayout {
+        display: grid;
+        grid-template-columns: minmax(420px, 1fr) 360px;
+        gap: 8px;
+        min-height: 650px;
+        height: calc(100vh - 170px);
+    }
+
+    .adminFullMapEditorStage {
+        position: relative;
+        min-height: 420px;
+        overflow: hidden;
+        border: 1px solid #303846;
+        background: #000;
+    }
+
+    .adminFullMapEditorStage canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+    }
+
+    .adminFullMapEditorStage canvas.isDragging {
+        cursor: grabbing;
+    }
+
+    .adminFullMapEditorStage canvas.isSelecting {
+        cursor: crosshair;
+    }
+
+    .adminFullMapEditorLoading {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.68);
+        color: #d9e6ff;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .adminFullMapEditorTooltip {
+        position: absolute;
+        display: none;
+        max-width: 320px;
+        padding: 6px 8px;
+        border: 1px solid #4d5970;
+        background: rgba(2, 5, 12, 0.94);
+        color: #d9e6ff;
+        pointer-events: none;
+        z-index: 4;
+        line-height: 1.35;
+    }
+
+    .adminFullMapEditorPanel {
+        min-width: 0;
+        overflow: auto;
+        border: 1px solid #303846;
+        background: #0d121c;
+        padding: 8px;
+    }
+
+    .adminFullMapEditorPanelSection {
+        border-bottom: 1px solid #283142;
+        padding: 0 0 10px;
+        margin-bottom: 10px;
+    }
+
+    .adminFullMapEditorPanelSection:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .adminFullMapEditorPanelTitle {
+        font-weight: bold;
+        color: #e9f0ff;
+        margin-bottom: 6px;
+    }
+
+    .adminFullMapEditorPanel label {
+        display: block;
+        line-height: 1.35;
+        margin: 4px 0;
+    }
+
+    .adminFullMapEditorToolGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px 8px;
+    }
+
+    .adminFullMapEditorTileGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+        gap: 4px;
+        max-height: 190px;
+        overflow: auto;
+        padding: 4px;
+        border: 1px solid #263143;
+        background: #05080d;
+    }
+
+    .adminFullMapEditorTileButton {
+        width: 34px;
+        height: 34px;
+        padding: 1px;
+        border: 1px solid #334058;
+        background: #05080d;
+        cursor: pointer;
+    }
+
+    .adminFullMapEditorTileButton.isSelected {
+        border-color: #ffe06b;
+        box-shadow: 0 0 0 1px #ffe06b inset;
+    }
+
+    .adminFullMapEditorTileButton img {
+        display: block;
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+    }
+
+    .adminFullMapEditorValueGrid {
+        display: grid;
+        gap: 6px;
+    }
+
+    .adminFullMapEditorValueGrid select {
+        width: 100%;
+    }
+
+    .adminFullMapEditorEffectList {
+        max-height: 180px;
+        overflow: auto;
+        padding: 4px;
+        border: 1px solid #263143;
+        background: #05080d;
+    }
+
+    .adminFullMapEditorEffectList label {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 4px;
+        align-items: start;
+    }
+
+    .adminFullMapEditorDetails {
+        display: grid;
+        gap: 4px;
+        line-height: 1.35;
+    }
+
+    .adminFullMapEditorDetails strong {
+        color: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+        .adminFullMapEditorLayout {
+            grid-template-columns: 1fr;
+            height: auto;
+        }
+
+        .adminFullMapEditorStage {
+            height: 70vh;
+        }
+    }
+</style>
+{% include 'html/breadcrumb.twig' %}
+
+<div id="adminFullMapEditor" class="adminFullMapEditor" data-layer-id="{{ LAYER.getId }}"
+    data-layer-width="{{ LAYER.getWidth }}" data-layer-height="{{ LAYER.getHeight }}" data-cell-size="{{ CELL_SIZE }}"
+    data-image-url="/admin/?SHOW_ADMIN_LIVE_MAP_IMAGE=1&amp;layerid={{ LAYER.getId }}"
+    data-data-url="/admin/?SHOW_ADMIN_FULL_MAP_EDITOR_DATA=1&amp;layerid={{ LAYER.getId }}"
+    data-edit-url="/admin/?B_EDIT_FULL_MAP_FIELD=1">
+    <div class="adminFullMapEditorToolbar">
+        <select id="adminFullMapEditorLayer">
+            {% for layer in LAYERS %}
+            <option value="{{ layer.getId }}" {% if layer.getId == LAYER.getId %}selected="selected" {% endif %}>
+                {{ layer.getName }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" id="adminFullMapEditorRefreshImage">Basisgrafik neu laden</button>
+        <button type="button" id="adminFullMapEditorRefreshData">Daten neu laden</button>
+        <span id="adminFullMapEditorStatus" class="adminFullMapEditorStatus">Bereit</span>
+    </div>
+
+    <div class="adminFullMapEditorLayout">
+        <div class="adminFullMapEditorStage">
+            <canvas id="adminFullMapEditorCanvas"></canvas>
+            <div id="adminFullMapEditorLoading" class="adminFullMapEditorLoading">Lade Karte...</div>
+            <div id="adminFullMapEditorTooltip" class="adminFullMapEditorTooltip"></div>
+        </div>
+
+        <aside class="adminFullMapEditorPanel">
+            <div class="adminFullMapEditorPanelSection">
+                <div class="adminFullMapEditorPanelTitle">Ansicht</div>
+                <label><input type="checkbox" id="adminFullMapEditorShowGrid" checked="checked" /> Raster</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowRegion" /> Regionen</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowAdminRegion" /> Admin-Regionen</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowSystemType" /> Systemtypen</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowPassable" /> Unpassierbar</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowInfluence" /> Einflussbereiche</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowBorder" checked="checked" /> Grenzen</label>
+                <label><input type="checkbox" id="adminFullMapEditorShowEffects" checked="checked" /> Effekte</label>
+            </div>
+
+            <div class="adminFullMapEditorPanelSection">
+                <div class="adminFullMapEditorPanelTitle">Werkzeug</div>
+                <div class="adminFullMapEditorToolGrid">
+                    <label><input type="radio" name="adminFullMapEditorTool" value="none" checked="checked" /> Nur Auswahl</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="fieldType" /> Feldtyp</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="systemType" /> Systemtyp</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="region" /> Region</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="adminRegion" /> Admin-Region</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="influenceArea" /> Einflussbereich</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="passable" /> Passierbar</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="border" /> Grenze</label>
+                    <label><input type="radio" name="adminFullMapEditorTool" value="effects" /> Effekte</label>
+                </div>
+                <div id="adminFullMapEditorSelectedValue" class="adminFullMapEditorStatus">Keine Auswahl</div>
+                <label><input type="checkbox" id="adminFullMapEditorRectangleSelection" /> Rechteckauswahl</label>
+                <button type="button" id="adminFullMapEditorApplySelected">Auf Auswahl anwenden</button>
+            </div>
+
+            <div class="adminFullMapEditorPanelSection">
+                <div class="adminFullMapEditorPanelTitle">Werte</div>
+                <div class="adminFullMapEditorValueGrid">
+                    <div>
+                        <div>Feldtyp</div>
+                        <div id="adminFullMapEditorFieldTypes" class="adminFullMapEditorTileGrid">
+                            {% for fieldType in FIELD_TYPES %}
+                            <button type="button" class="adminFullMapEditorTileButton"
+                                data-field-type-id="{{ fieldType.id }}" data-label="{{ fieldType.name }}"
+                                title="{{ fieldType.name }}">
+                                <img src="/assets/map/{{ fieldType.type }}.png" alt="" />
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <label>
+                        Systemtyp
+                        <select id="adminFullMapEditorSystemTypeValue">
+                            <option value="0">Systemtyp entfernen</option>
+                            {% for systemType in SYSTEM_TYPES %}
+                            <option value="{{ systemType.id }}">{{ systemType.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Region
+                        <select id="adminFullMapEditorRegionValue">
+                            <option value="0">Region entfernen</option>
+                            {% for region in REGIONS %}
+                            <option value="{{ region.id }}">{{ region.id }} - {{ region.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Admin-Region
+                        <select id="adminFullMapEditorAdminRegionValue">
+                            <option value="0">Admin-Region entfernen</option>
+                            {% for region in ADMIN_REGIONS %}
+                            <option value="{{ region.id }}">{{ region.id }} - {{ region.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Einflussbereich
+                        <select id="adminFullMapEditorInfluenceAreaValue">
+                            {% for area in INFLUENCE_AREAS %}
+                            <option value="{{ area }}">{% if area == 9999 %}Einflussbereich entfernen{% else %}{{ area }}{% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Passierbarkeit des Feldtyps
+                        <select id="adminFullMapEditorPassableValue">
+                            <option value="1">Passierbar</option>
+                            <option value="2">Unpassierbar</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Grenze
+                        <select id="adminFullMapEditorBorderValue">
+                            <option value="0">Grenze entfernen</option>
+                            {% for border in BORDER_TYPES %}
+                            <option value="{{ border.id }}" data-color="{{ border.color }}">
+                                {{ border.description }} ({{ border.color }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Effektmodus
+                        <select id="adminFullMapEditorEffectsMode">
+                            <option value="add" selected="selected">Hinzufügen</option>
+                            <option value="remove">Ausgewählte entfernen</option>
+                            <option value="replace">Durch Auswahl ersetzen</option>
+                        </select>
+                    </label>
+                    <div id="adminFullMapEditorEffects" class="adminFullMapEditorEffectList">
+                        {% for effect in FIELD_EFFECTS %}
+                        <label>
+                            <input type="checkbox" name="adminFullMapEditorEffects[]" value="{{ effect.value }}" />
+                            <span title="{{ effect.value }}">{{ effect.description }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="adminFullMapEditorPanelSection">
+                <div class="adminFullMapEditorPanelTitle">Feld</div>
+                <div id="adminFullMapEditorDetails" class="adminFullMapEditorDetails">Feld anklicken</div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

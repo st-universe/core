@@ -29,6 +29,7 @@ class AllViewControllerTest extends TwigTestCase
         'ADMIN_VIEWS-SHOW_EVENT_MAP',
         'ADMIN_VIEWS-SHOW_ADMIN_LIVE_MAP_DATA',
         'ADMIN_VIEWS-SHOW_ADMIN_LIVE_MAP_IMAGE',
+        'ADMIN_VIEWS-SHOW_ADMIN_FULL_MAP_EDITOR_DATA',
         'ADMIN_VIEWS-SHOW_MAP_OVERALL',
         'ADMIN_VIEWS-SHOW_RESEARCH_TREE',
         'ALLIANCE_VIEWS-CREATE_ALLIANCE',
@@ -113,7 +114,8 @@ class AllViewControllerTest extends TwigTestCase
         return match ($key) {
             'NPC_VIEWS-SHOW_PLAYER_DETAILS',
             'MAINDESK_VIEWS-SHOW_COLONYLIST' => 2,
-            'ADMIN_VIEWS-SHOW_ADMIN_LIVE_MAP' => 102,
+            'ADMIN_VIEWS-SHOW_ADMIN_LIVE_MAP',
+            'ADMIN_VIEWS-SHOW_ADMIN_FULL_MAP_EDITOR' => 102,
             'SHIP_VIEWS-SHOW_COLONIZATION' => 103,
             default => 101
         };

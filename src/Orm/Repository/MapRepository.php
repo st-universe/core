@@ -376,6 +376,114 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     }
 
     #[\Override]
+    public function getAdminFullMapEditorFields(int $layerId): array
+    {
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                $this->getAdminFullMapEditorFieldSql('l.layer_id = :layerId', true),
+                $this->getAdminFullMapEditorFieldResultSetMapping()
+            )
+            ->setParameters([
+                'layerId' => $layerId
+            ])
+            ->getResult();
+    }
+
+    #[\Override]
+    public function getAdminFullMapEditorField(int $fieldId): ?array
+    {
+        $result = $this->getEntityManager()
+            ->createNativeQuery(
+                $this->getAdminFullMapEditorFieldSql('m.id = :fieldId', false),
+                $this->getAdminFullMapEditorFieldResultSetMapping()
+            )
+            ->setParameters([
+                'fieldId' => $fieldId
+            ])
+            ->getResult();
+
+        return $result[0] ?? null;
+    }
+
+    private function getAdminFullMapEditorFieldResultSetMapping(): ResultSetMapping
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('field_type_id', 'field_type_id', 'integer');
+        $rsm->addScalarResult('field_type_graphic', 'field_type_graphic', 'integer');
+        $rsm->addScalarResult('field_name', 'field_name', 'string');
+        $rsm->addScalarResult('is_system', 'is_system', 'boolean');
+        $rsm->addScalarResult('passable', 'passable', 'boolean');
+        $rsm->addScalarResult('effects', 'effects', 'string');
+        $rsm->addScalarResult('system_type_id', 'system_type_id', 'integer');
+        $rsm->addScalarResult('system_type_name', 'system_type_name', 'string');
+        $rsm->addScalarResult('system_id', 'system_id', 'integer');
+        $rsm->addScalarResult('system_name', 'system_name', 'string');
+        $rsm->addScalarResult('influence_area_id', 'influence_area_id', 'integer');
+        $rsm->addScalarResult('influence_area_name', 'influence_area_name', 'string');
+        $rsm->addScalarResult('border_type_id', 'border_type_id', 'integer');
+        $rsm->addScalarResult('border_color', 'border_color', 'string');
+        $rsm->addScalarResult('border_description', 'border_description', 'string');
+        $rsm->addScalarResult('region_id', 'region_id', 'integer');
+        $rsm->addScalarResult('region_name', 'region_name', 'string');
+        $rsm->addScalarResult('admin_region_id', 'admin_region_id', 'integer');
+        $rsm->addScalarResult('admin_region_name', 'admin_region_name', 'string');
+
+        return $rsm;
+    }
+
+    private function getAdminFullMapEditorFieldSql(string $whereClause, bool $ordered): string
+    {
+        return sprintf(
+            'SELECT
+                m.id,
+                l.cx AS x,
+                l.cy AS y,
+                ft.id AS field_type_id,
+                ft.type AS field_type_graphic,
+                ft.name AS field_name,
+                ft.is_system,
+                ft.passable,
+                ft.effects,
+                m.system_type_id,
+                st.description AS system_type_name,
+                m.systems_id AS system_id,
+                ss.name AS system_name,
+                m.influence_area_id,
+                ia.name AS influence_area_name,
+                m.bordertype_id AS border_type_id,
+                mbt.color AS border_color,
+                mbt.description AS border_description,
+                m.region_id,
+                mr.description AS region_name,
+                m.admin_region_id,
+                ar.description AS admin_region_name
+            FROM stu_map m
+            JOIN stu_location l
+            ON m.id = l.id
+            JOIN stu_map_ftypes ft
+            ON ft.id = l.field_id
+            LEFT JOIN stu_system_types st
+            ON st.id = m.system_type_id
+            LEFT JOIN stu_systems ss
+            ON ss.id = m.systems_id
+            LEFT JOIN stu_systems ia
+            ON ia.id = m.influence_area_id
+            LEFT JOIN stu_map_bordertypes mbt
+            ON mbt.id = m.bordertype_id
+            LEFT JOIN stu_map_regions mr
+            ON mr.id = m.region_id
+            LEFT JOIN stu_map_regions ar
+            ON ar.id = m.admin_region_id
+            WHERE %s%s',
+            $whereClause,
+            $ordered ? ' ORDER BY l.cy, l.cx' : ''
+        );
+    }
+
+    #[\Override]
     public function getAnomalyData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array
     {
         return $this->getEntityManager()
