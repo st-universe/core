@@ -749,17 +749,33 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name, mf.passable, mf.effects,
+                'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name,
+                    CASE
+                        WHEN field_region.id IS NULL OR field_region_user.id IS NOT NULL THEN mf.passable
+                        ELSE TRUE
+                    END as passable,
+                    CASE
+                        WHEN field_region.id IS NULL OR field_region_user.id IS NOT NULL THEN mf.effects
+                        ELSE NULL
+                    END as effects,
                     m.systems_id, m.bordertype_id, um.user_id,
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                     sys.name as system_name, l.layer_id,
                     (SELECT tp.id FROM stu_spacecraft s JOIN stu_trade_posts tp ON s.id = tp.station_id WHERE s.location_id = m.id) as tradepost_id,
-                    (SELECT mr.description FROM stu_map_regions mr JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
+                    CASE
+                        WHEN field_region_user.id IS NOT NULL THEN field_region.description
+                        ELSE NULL
+                    END as region_description
                 FROM stu_map m
                 JOIN stu_location l
                 ON m.id = l.id
                 JOIN stu_map_ftypes mf
                 ON l.field_id = mf.id
+                LEFT JOIN stu_map_regions field_region
+                    ON m.region_id = field_region.id
+                LEFT JOIN stu_database_user field_region_user
+                    ON field_region_user.user_id = :userId
+                    AND field_region.database_id = field_region_user.database_id
                 LEFT JOIN stu_user_map um
                     ON um.cx = l.cx AND um.cy = l.cy AND um.user_id = :userId AND um.layer_id = l.layer_id
                 LEFT JOIN stu_systems sys
@@ -814,17 +830,33 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->getEntityManager()
             ->createNativeQuery(
                 sprintf(
-                    'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name, mf.passable, mf.effects,
+                    'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name,
+                        CASE
+                            WHEN field_region.id IS NULL OR field_region_user.id IS NOT NULL THEN mf.passable
+                            ELSE TRUE
+                        END as passable,
+                        CASE
+                            WHEN field_region.id IS NULL OR field_region_user.id IS NOT NULL THEN mf.effects
+                            ELSE NULL
+                        END as effects,
                         m.systems_id, m.bordertype_id, %s,
                         dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                         sys.name as system_name, l.layer_id,
                         (SELECT tp.id FROM stu_spacecraft s JOIN stu_trade_posts tp ON s.id = tp.station_id WHERE s.location_id = m.id) as tradepost_id,
-                        (SELECT mr.description FROM stu_map_regions mr JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
+                        CASE
+                            WHEN field_region_user.id IS NOT NULL THEN field_region.description
+                            ELSE NULL
+                        END as region_description
                     FROM stu_map m
                     JOIN stu_location l
                     ON m.id = l.id
                     JOIN stu_map_ftypes mf
                     ON l.field_id = mf.id
+                    LEFT JOIN stu_map_regions field_region
+                        ON m.region_id = field_region.id
+                    LEFT JOIN stu_database_user field_region_user
+                        ON field_region_user.user_id = :userId
+                        AND field_region.database_id = field_region_user.database_id
                     %s
                     LEFT JOIN stu_systems sys
                         ON m.systems_id = sys.id

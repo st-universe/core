@@ -110,6 +110,11 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             $lines[] = 'Unpassierbar';
         }
 
+        $territoryOwnerTitle = $this->getTerritoryOwnerTitle();
+        if ($territoryOwnerTitle !== null) {
+            $lines[] = $territoryOwnerTitle;
+        }
+
         $title = $this->getTitle();
         if ($title !== null && $title !== '') {
             $lines[] = $title;
@@ -138,6 +143,39 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     private function getStringWithoutBbCode(string $string): string
     {
         return $this->bbCodeParser->parse($string)->getAsText();
+    }
+
+    private function getTerritoryOwnerTitle(): ?string
+    {
+        if ($this->hide === true || $this->exploreableStarMap->getAdminRegion() !== null) {
+            return null;
+        }
+
+        $influenceArea = $this->exploreableStarMap->getInfluenceArea();
+        if ($influenceArea === null) {
+            return null;
+        }
+
+        $base = $influenceArea->getStation();
+        if ($base === null) {
+            return null;
+        }
+
+        $user = $base->getUser();
+        $userName = trim($this->getStringWithoutBbCode($user->getName()));
+        if ($userName === '') {
+            return null;
+        }
+
+        $alliance = $user->getAlliance();
+        if ($alliance !== null) {
+            $allianceName = trim($this->getStringWithoutBbCode($alliance->getName()));
+            if ($allianceName !== '') {
+                return sprintf('Gebiet: %s (%s)', $allianceName, $userName);
+            }
+        }
+
+        return sprintf('Gebiet: %s', $userName);
     }
 
     #[\Override]
@@ -263,7 +301,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             return false;
         }
 
-        return $this->exploreableStarMap->getEffects() !== [];
+        return $this->getEffectDescriptions() !== [];
     }
 
     #[\Override]

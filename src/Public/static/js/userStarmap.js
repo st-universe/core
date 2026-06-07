@@ -31,6 +31,22 @@
 		return value || fallback;
 	}
 
+	function getMapViewportWidth(state) {
+		return Math.max(1, state.canvasWidth - AXIS_LEFT_WIDTH);
+	}
+
+	function getMapViewportHeight(state) {
+		return Math.max(1, state.canvasHeight - AXIS_TOP_HEIGHT);
+	}
+
+	function getCanvasPoint(state, clientX, clientY) {
+		const rect = state.canvas.getBoundingClientRect();
+		return {
+			x: clientX - rect.left,
+			y: clientY - rect.top
+		};
+	}
+
 	function initUserStarmap() {
 		const root = document.getElementById("userStarmap");
 		if (!root) {
@@ -76,6 +92,12 @@
 			dragViewY: 0,
 			mouseX: 0,
 			mouseY: 0,
+			lastTouchAt: 0,
+			pinching: false,
+			pinchStartDistance: 0,
+			pinchStartScale: 1,
+			pinchWorldX: 0,
+			pinchWorldY: 0,
 			showTerritory: true,
 			showImpassable: false,
 			showEffects: false,
@@ -142,31 +164,20 @@
 				return;
 			}
 
-			state.dragging = true;
-			state.dragMoved = false;
-			state.dragStartX = event.clientX;
-			state.dragStartY = event.clientY;
-			state.dragViewX = state.viewX;
-			state.dragViewY = state.viewY;
-			state.canvas.classList.add("isDragging");
+			if (Date.now() - state.lastTouchAt < 700) {
+				return;
+			}
+
+			beginDrag(state, event.clientX, event.clientY);
 		});
 
 		window.addEventListener("mousemove", function (event) {
-			const rect = state.canvas.getBoundingClientRect();
-			state.mouseX = event.clientX - rect.left;
-			state.mouseY = event.clientY - rect.top;
+			const point = getCanvasPoint(state, event.clientX, event.clientY);
+			state.mouseX = point.x;
+			state.mouseY = point.y;
 
 			if (state.dragging) {
-				const deltaX = event.clientX - state.dragStartX;
-				const deltaY = event.clientY - state.dragStartY;
-				if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
-					state.dragMoved = true;
-				}
-				state.viewX = state.dragViewX - deltaX / state.scale;
-				state.viewY = state.dragViewY - deltaY / state.scale;
-				clampView(state);
-				hideTooltip(state);
-				scheduleDraw(state);
+				updateDrag(state, event.clientX, event.clientY);
 				return;
 			}
 
@@ -178,14 +189,7 @@
 				return;
 			}
 
-			state.dragging = false;
-			state.canvas.classList.remove("isDragging");
-
-			if (!state.dragMoved) {
-				const rect = state.canvas.getBoundingClientRect();
-				const field = getFieldAtScreen(state, event.clientX - rect.left, event.clientY - rect.top);
-				selectField(state, field);
-			}
+			finishDrag(state, event.clientX, event.clientY);
 		});
 
 		state.canvas.addEventListener("mouseleave", function () {
@@ -196,20 +200,78 @@
 
 		state.canvas.addEventListener("wheel", function (event) {
 			event.preventDefault();
-			const rect = state.canvas.getBoundingClientRect();
-			const screenX = event.clientX - rect.left;
-			const screenY = event.clientY - rect.top;
-			const worldX = state.viewX + screenX / state.scale;
-			const worldY = state.viewY + screenY / state.scale;
+			const point = getCanvasPoint(state, event.clientX, event.clientY);
+			const mapScreenX = clamp(point.x - AXIS_LEFT_WIDTH, 0, getMapViewportWidth(state));
+			const mapScreenY = clamp(point.y - AXIS_TOP_HEIGHT, 0, getMapViewportHeight(state));
+			const worldX = state.viewX + mapScreenX / state.scale;
+			const worldY = state.viewY + mapScreenY / state.scale;
 			const zoomFactor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
 			const nextScale = clamp(state.scale * zoomFactor, MIN_SCALE, MAX_SCALE);
 
 			state.scale = nextScale;
-			state.viewX = worldX - screenX / state.scale;
-			state.viewY = worldY - screenY / state.scale;
+			state.viewX = worldX - mapScreenX / state.scale;
+			state.viewY = worldY - mapScreenY / state.scale;
 			clampView(state);
 			updateTooltip(state);
 			scheduleDraw(state);
+		}, { passive: false });
+
+		state.canvas.addEventListener("touchstart", function (event) {
+			state.lastTouchAt = Date.now();
+			if (event.touches.length === 1) {
+				event.preventDefault();
+				state.pinching = false;
+				beginDrag(state, event.touches[0].clientX, event.touches[0].clientY);
+				return;
+			}
+
+			if (event.touches.length === 2) {
+				event.preventDefault();
+				beginPinch(state, event.touches[0], event.touches[1]);
+			}
+		}, { passive: false });
+
+		state.canvas.addEventListener("touchmove", function (event) {
+			state.lastTouchAt = Date.now();
+			if (event.touches.length === 1 && state.dragging) {
+				event.preventDefault();
+				updateDrag(state, event.touches[0].clientX, event.touches[0].clientY);
+				return;
+			}
+
+			if (event.touches.length === 2 && state.pinching) {
+				event.preventDefault();
+				updatePinch(state, event.touches[0], event.touches[1]);
+			}
+		}, { passive: false });
+
+		state.canvas.addEventListener("touchend", function (event) {
+			state.lastTouchAt = Date.now();
+			event.preventDefault();
+
+			if (state.pinching) {
+				state.pinching = false;
+				if (event.touches.length === 1) {
+					beginDrag(state, event.touches[0].clientX, event.touches[0].clientY);
+					state.dragMoved = true;
+					return;
+				}
+				state.canvas.classList.remove("isDragging");
+				return;
+			}
+
+			if (state.dragging && event.changedTouches.length > 0) {
+				finishDrag(state, event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+			}
+		}, { passive: false });
+
+		state.canvas.addEventListener("touchcancel", function (event) {
+			state.lastTouchAt = Date.now();
+			event.preventDefault();
+			state.dragging = false;
+			state.pinching = false;
+			state.canvas.classList.remove("isDragging");
+			hideTooltip(state);
 		}, { passive: false });
 	}
 
@@ -366,6 +428,10 @@
 		ctx.fillRect(0, 0, state.canvasWidth, state.canvasHeight);
 
 		ctx.save();
+		ctx.beginPath();
+		ctx.rect(AXIS_LEFT_WIDTH, AXIS_TOP_HEIGHT, getMapViewportWidth(state), getMapViewportHeight(state));
+		ctx.clip();
+		ctx.translate(AXIS_LEFT_WIDTH, AXIS_TOP_HEIGHT);
 		ctx.scale(state.scale, state.scale);
 		ctx.translate(-state.viewX, -state.viewY);
 
@@ -448,9 +514,9 @@
 		}
 
 		const startX = clamp(Math.floor(state.viewX / state.cellSize), 0, state.layerWidth);
-		const endX = clamp(Math.ceil((state.viewX + state.canvasWidth / state.scale) / state.cellSize), 0, state.layerWidth);
+		const endX = clamp(Math.ceil((state.viewX + getMapViewportWidth(state) / state.scale) / state.cellSize), 0, state.layerWidth);
 		const startY = clamp(Math.floor(state.viewY / state.cellSize), 0, state.layerHeight);
-		const endY = clamp(Math.ceil((state.viewY + state.canvasHeight / state.scale) / state.cellSize), 0, state.layerHeight);
+		const endY = clamp(Math.ceil((state.viewY + getMapViewportHeight(state) / state.scale) / state.cellSize), 0, state.layerHeight);
 
 		ctx.strokeStyle = state.colors.grid;
 		ctx.lineWidth = 1 / state.scale;
@@ -487,9 +553,9 @@
 
 		const tickStep = getAxisTickStep(cellScreenSize);
 		const visibleStartX = Math.max(1, Math.floor(state.viewX / state.cellSize) + 1);
-		const visibleEndX = Math.min(state.layerWidth, Math.ceil((state.viewX + state.canvasWidth / state.scale) / state.cellSize));
+		const visibleEndX = Math.min(state.layerWidth, Math.ceil((state.viewX + getMapViewportWidth(state) / state.scale) / state.cellSize));
 		const visibleStartY = Math.max(1, Math.floor(state.viewY / state.cellSize) + 1);
-		const visibleEndY = Math.min(state.layerHeight, Math.ceil((state.viewY + state.canvasHeight / state.scale) / state.cellSize));
+		const visibleEndY = Math.min(state.layerHeight, Math.ceil((state.viewY + getMapViewportHeight(state) / state.scale) / state.cellSize));
 
 		ctx.save();
 		ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
@@ -527,7 +593,7 @@
 				continue;
 			}
 
-			const screenX = ((x - 0.5) * state.cellSize - state.viewX) * state.scale;
+			const screenX = AXIS_LEFT_WIDTH + ((x - 0.5) * state.cellSize - state.viewX) * state.scale;
 			if (screenX < AXIS_LEFT_WIDTH - AXIS_MIN_LABEL_SPACING || screenX > state.canvasWidth + AXIS_MIN_LABEL_SPACING) {
 				continue;
 			}
@@ -541,7 +607,7 @@
 				continue;
 			}
 
-			const screenY = ((y - 0.5) * state.cellSize - state.viewY) * state.scale;
+			const screenY = AXIS_TOP_HEIGHT + ((y - 0.5) * state.cellSize - state.viewY) * state.scale;
 			if (screenY < AXIS_TOP_HEIGHT - AXIS_MIN_LABEL_SPACING || screenY > state.canvasHeight + AXIS_MIN_LABEL_SPACING) {
 				continue;
 			}
@@ -559,7 +625,7 @@
 
 		const firstBoundaryX = Math.max(0, Math.floor((visibleStartX - 1) / tickStep) * tickStep);
 		for (let x = firstBoundaryX; x <= visibleEndX; x += tickStep) {
-			const screenX = (x * state.cellSize - state.viewX) * state.scale;
+			const screenX = AXIS_LEFT_WIDTH + (x * state.cellSize - state.viewX) * state.scale;
 			if (screenX < AXIS_LEFT_WIDTH || screenX > state.canvasWidth) {
 				continue;
 			}
@@ -571,7 +637,7 @@
 
 		const firstBoundaryY = Math.max(0, Math.floor((visibleStartY - 1) / tickStep) * tickStep);
 		for (let y = firstBoundaryY; y <= visibleEndY; y += tickStep) {
-			const screenY = (y * state.cellSize - state.viewY) * state.scale;
+			const screenY = AXIS_TOP_HEIGHT + (y * state.cellSize - state.viewY) * state.scale;
 			if (screenY < AXIS_TOP_HEIGHT || screenY > state.canvasHeight) {
 				continue;
 			}
@@ -630,13 +696,96 @@
 		state.iconCache.set(src, image);
 	}
 
+	function beginDrag(state, clientX, clientY) {
+		state.dragging = true;
+		state.dragMoved = false;
+		state.dragStartX = clientX;
+		state.dragStartY = clientY;
+		state.dragViewX = state.viewX;
+		state.dragViewY = state.viewY;
+		state.canvas.classList.add("isDragging");
+		hideTooltip(state);
+	}
+
+	function updateDrag(state, clientX, clientY) {
+		const deltaX = clientX - state.dragStartX;
+		const deltaY = clientY - state.dragStartY;
+		if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+			state.dragMoved = true;
+		}
+		state.viewX = state.dragViewX - deltaX / state.scale;
+		state.viewY = state.dragViewY - deltaY / state.scale;
+		clampView(state);
+		hideTooltip(state);
+		scheduleDraw(state);
+	}
+
+	function finishDrag(state, clientX, clientY) {
+		state.dragging = false;
+		state.canvas.classList.remove("isDragging");
+
+		if (!state.dragMoved) {
+			const point = getCanvasPoint(state, clientX, clientY);
+			const field = getFieldAtScreen(state, point.x, point.y);
+			selectField(state, field);
+		}
+	}
+
+	function beginPinch(state, touchA, touchB) {
+		const center = getTouchCenter(state, touchA, touchB);
+		const mapScreenX = clamp(center.x - AXIS_LEFT_WIDTH, 0, getMapViewportWidth(state));
+		const mapScreenY = clamp(center.y - AXIS_TOP_HEIGHT, 0, getMapViewportHeight(state));
+
+		state.dragging = false;
+		state.pinching = true;
+		state.pinchStartDistance = getTouchDistance(touchA, touchB);
+		state.pinchStartScale = state.scale;
+		state.pinchWorldX = state.viewX + mapScreenX / state.scale;
+		state.pinchWorldY = state.viewY + mapScreenY / state.scale;
+		state.canvas.classList.add("isDragging");
+		hideTooltip(state);
+	}
+
+	function updatePinch(state, touchA, touchB) {
+		const distance = getTouchDistance(touchA, touchB);
+		if (state.pinchStartDistance <= 0 || distance <= 0) {
+			return;
+		}
+
+		const center = getTouchCenter(state, touchA, touchB);
+		const mapScreenX = clamp(center.x - AXIS_LEFT_WIDTH, 0, getMapViewportWidth(state));
+		const mapScreenY = clamp(center.y - AXIS_TOP_HEIGHT, 0, getMapViewportHeight(state));
+
+		state.scale = clamp(state.pinchStartScale * (distance / state.pinchStartDistance), MIN_SCALE, MAX_SCALE);
+		state.viewX = state.pinchWorldX - mapScreenX / state.scale;
+		state.viewY = state.pinchWorldY - mapScreenY / state.scale;
+		clampView(state);
+		hideTooltip(state);
+		scheduleDraw(state);
+	}
+
+	function getTouchCenter(state, touchA, touchB) {
+		return getCanvasPoint(
+			state,
+			(touchA.clientX + touchB.clientX) / 2,
+			(touchA.clientY + touchB.clientY) / 2
+		);
+	}
+
+	function getTouchDistance(touchA, touchB) {
+		const deltaX = touchA.clientX - touchB.clientX;
+		const deltaY = touchA.clientY - touchB.clientY;
+
+		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+	}
+
 	function getFieldAtScreen(state, screenX, screenY) {
-		if (screenX < AXIS_LEFT_WIDTH || screenY < AXIS_TOP_HEIGHT) {
+		if (screenX < AXIS_LEFT_WIDTH || screenY < AXIS_TOP_HEIGHT || screenX > state.canvasWidth || screenY > state.canvasHeight) {
 			return null;
 		}
 
-		const worldX = state.viewX + screenX / state.scale;
-		const worldY = state.viewY + screenY / state.scale;
+		const worldX = state.viewX + (screenX - AXIS_LEFT_WIDTH) / state.scale;
+		const worldY = state.viewY + (screenY - AXIS_TOP_HEIGHT) / state.scale;
 		const x = Math.floor(worldX / state.cellSize) + 1;
 		const y = Math.floor(worldY / state.cellSize) + 1;
 
@@ -737,11 +886,13 @@
 		const padding = VIEW_PADDING_CELLS * state.cellSize;
 		const width = Math.max(state.cellSize, bounds.maxX - bounds.minX + state.cellSize + padding * 2);
 		const height = Math.max(state.cellSize, bounds.maxY - bounds.minY + state.cellSize + padding * 2);
-		const scale = Math.min(state.canvasWidth / width, state.canvasHeight / height);
+		const viewportWidth = getMapViewportWidth(state);
+		const viewportHeight = getMapViewportHeight(state);
+		const scale = Math.min(viewportWidth / width, viewportHeight / height);
 
 		state.scale = clamp(scale, MIN_SCALE, MAX_SCALE);
-		state.viewX = bounds.minX + (bounds.maxX - bounds.minX + state.cellSize) / 2 - state.canvasWidth / (2 * state.scale);
-		state.viewY = bounds.minY + (bounds.maxY - bounds.minY + state.cellSize) / 2 - state.canvasHeight / (2 * state.scale);
+		state.viewX = bounds.minX + (bounds.maxX - bounds.minX + state.cellSize) / 2 - viewportWidth / (2 * state.scale);
+		state.viewY = bounds.minY + (bounds.maxY - bounds.minY + state.cellSize) / 2 - viewportHeight / (2 * state.scale);
 		clampView(state);
 	}
 
@@ -776,8 +927,8 @@
 	}
 
 	function clampView(state) {
-		const visibleWidth = state.canvasWidth / state.scale;
-		const visibleHeight = state.canvasHeight / state.scale;
+		const visibleWidth = getMapViewportWidth(state) / state.scale;
+		const visibleHeight = getMapViewportHeight(state) / state.scale;
 		const maxX = state.mapPixelWidth - visibleWidth;
 		const maxY = state.mapPixelHeight - visibleHeight;
 
