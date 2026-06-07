@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class MapProvider implements ViewComponentProviderInterface
@@ -35,6 +36,8 @@ final class MapProvider implements ViewComponentProviderInterface
             $layer = $layers[$layerId];
         }
         $game->setTemplateVar('LAYERID', $layer->getId());
+        $game->setTemplateVar('LAYER', $layer);
+        $game->setTemplateVar('CELL_SIZE', ShowUserStarmapImage::CELL_SIZE);
 
         //HEADROW
         $xHeadRow = [];

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Starmap\Lib;
 
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\StarSystem;
@@ -15,6 +16,13 @@ interface ExploreableStarMapInterface
     public function getCy(): int;
 
     public function getFieldId(): int;
+
+    public function getFieldName(): string;
+
+    public function getPassable(): bool;
+
+    /** @return array<FieldTypeEffectEnum> */
+    public function getEffects(): array;
 
     public function getLayer(): int;
 

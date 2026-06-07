@@ -7,6 +7,7 @@ namespace Stu\Module\Starmap\Lib;
 use JBBCode\Parser;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -14,6 +15,10 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 {
     private ?TradePost $tradepost = null;
+
+    private ?string $borderCssValue = null;
+
+    private bool $borderCssValueLoaded = false;
 
     private bool $hide = false;
 
@@ -82,6 +87,35 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         }
 
         return $result;
+    }
+
+    #[\Override]
+    public function getTooltip(): string
+    {
+        if ($this->hide === true) {
+            return '';
+        }
+
+        $lines = [];
+        $fieldName = $this->exploreableStarMap->getFieldName();
+        if ($fieldName !== '') {
+            $lines[] = $fieldName;
+
+            foreach ($this->getEffectDescriptions() as $description) {
+                $lines[] = $description;
+            }
+        }
+
+        if ($this->isImpassable()) {
+            $lines[] = 'Unpassierbar';
+        }
+
+        $title = $this->getTitle();
+        if ($title !== null && $title !== '') {
+            $lines[] = $title;
+        }
+
+        return implode("\n", array_unique($lines));
     }
 
     private function getTradepostTitle(TradePost $tradepost): string
@@ -154,6 +188,8 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     public function setHide(bool $hide): ExplorableStarMapItemInterface
     {
         $this->hide = $hide;
+        $this->borderCssValue = null;
+        $this->borderCssValueLoaded = false;
 
         return $this;
     }
@@ -161,6 +197,37 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     #[\Override]
     public function getBorderStyle(): string
     {
+        $borderCssValue = $this->getBorderCssValue();
+
+        return $borderCssValue !== null ? 'border: ' . $borderCssValue : '';
+    }
+
+    #[\Override]
+    public function getTerritoryStyle(): string
+    {
+        $borderCssValue = $this->getBorderCssValue();
+
+        return $borderCssValue !== null ? '--starmap-territory-border: ' . $borderCssValue . ';' : '';
+    }
+
+    #[\Override]
+    public function hasTerritory(): bool
+    {
+        return $this->getBorderCssValue() !== null;
+    }
+
+    private function getBorderCssValue(): ?string
+    {
+        if ($this->borderCssValueLoaded) {
+            return $this->borderCssValue;
+        }
+
+        $this->borderCssValueLoaded = true;
+
+        if ($this->hide === true) {
+            return null;
+        }
+
         $borderType = $this->exploreableStarMap->getMapBorderType();
         if ($borderType === null) {
             if ($this->exploreableStarMap->getAdminRegion() === null && $this->exploreableStarMap->getInfluenceArea() !== null) {
@@ -173,17 +240,40 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
                     $userRgbCode = $this->userSettingsProvider->getRgbCode($user);
 
                     if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
-                        return 'border: 1px solid ' . $ally->getRgbCode();
+                        $this->borderCssValue = '1px solid ' . $ally->getRgbCode();
+                        return $this->borderCssValue;
                     } elseif (strlen($userRgbCode) > 0) {
-                        return 'border: 1px solid ' . $userRgbCode;
+                        $this->borderCssValue = '1px solid ' . $userRgbCode;
+                        return $this->borderCssValue;
                     }
                 }
             }
         } else {
-            return 'border: 1px solid ' . $borderType->getColor();
+            $this->borderCssValue = '1px solid ' . $borderType->getColor();
+            return $this->borderCssValue;
         }
 
-        return '';
+        return null;
+    }
+
+    #[\Override]
+    public function hasEffects(): bool
+    {
+        if ($this->hide === true) {
+            return false;
+        }
+
+        return $this->exploreableStarMap->getEffects() !== [];
+    }
+
+    #[\Override]
+    public function isImpassable(): bool
+    {
+        if ($this->hide === true) {
+            return false;
+        }
+
+        return !$this->exploreableStarMap->getPassable();
     }
 
     #[\Override]
@@ -205,5 +295,18 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     {
         $style = "background-image: url('assets/map/" . $this->getFieldImagePath() . "'); opacity:1;";
         return $style . $this->getBorderStyle();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function getEffectDescriptions(): array
+    {
+        return array_values(array_filter(
+            array_map(
+                fn (FieldTypeEffectEnum $effect): ?string => $effect->getDescription(),
+                $this->exploreableStarMap->getEffects()
+            )
+        ));
     }
 }

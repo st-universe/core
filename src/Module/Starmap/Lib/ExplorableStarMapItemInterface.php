@@ -18,6 +18,8 @@ interface ExplorableStarMapItemInterface
 
     public function getTitle(): ?string;
 
+    public function getTooltip(): string;
+
     public function getIcon(): ?string;
 
     public function getHref(): ?string;
@@ -27,6 +29,14 @@ interface ExplorableStarMapItemInterface
     public function getFieldImagePath(): string;
 
     public function getBorderStyle(): string;
+
+    public function getTerritoryStyle(): string;
+
+    public function hasTerritory(): bool;
+
+    public function hasEffects(): bool;
+
+    public function isImpassable(): bool;
 
     public function getFieldStyle(): string;
 }

@@ -734,6 +734,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm->addFieldResult('m', 'cx', 'cx');
         $rsm->addFieldResult('m', 'cy', 'cy');
         $rsm->addFieldResult('m', 'field_id', 'field_id');
+        $rsm->addFieldResult('m', 'field_name', 'field_name');
+        $rsm->addFieldResult('m', 'passable', 'passable');
+        $rsm->addFieldResult('m', 'effects', 'effects');
         $rsm->addFieldResult('m', 'bordertype_id', 'bordertype_id');
         $rsm->addFieldResult('m', 'user_id', 'user_id');
         $rsm->addFieldResult('m', 'mapped', 'mapped');
@@ -746,7 +749,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id, l.cx, l.cy, l.field_id, m.systems_id, m.bordertype_id, um.user_id,
+                'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name, mf.passable, mf.effects,
+                    m.systems_id, m.bordertype_id, um.user_id,
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                     sys.name as system_name, l.layer_id,
                     (SELECT tp.id FROM stu_spacecraft s JOIN stu_trade_posts tp ON s.id = tp.station_id WHERE s.location_id = m.id) as tradepost_id,
@@ -754,6 +758,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 FROM stu_map m
                 JOIN stu_location l
                 ON m.id = l.id
+                JOIN stu_map_ftypes mf
+                ON l.field_id = mf.id
                 LEFT JOIN stu_user_map um
                     ON um.cx = l.cx AND um.cy = l.cy AND um.user_id = :userId AND um.layer_id = l.layer_id
                 LEFT JOIN stu_systems sys
@@ -773,6 +779,68 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'startX' => $startX,
                 'endX' => $endX,
                 'cy' => $cy
+            ])
+            ->getResult();
+    }
+
+    #[\Override]
+    public function getUserStarmapFields(int $userId, int $layerId, bool $includeFullLayer): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult(ExploreableStarMap::class, 'm');
+        $rsm->addFieldResult('m', 'id', 'id');
+        $rsm->addFieldResult('m', 'cx', 'cx');
+        $rsm->addFieldResult('m', 'cy', 'cy');
+        $rsm->addFieldResult('m', 'field_id', 'field_id');
+        $rsm->addFieldResult('m', 'field_name', 'field_name');
+        $rsm->addFieldResult('m', 'passable', 'passable');
+        $rsm->addFieldResult('m', 'effects', 'effects');
+        $rsm->addFieldResult('m', 'bordertype_id', 'bordertype_id');
+        $rsm->addFieldResult('m', 'user_id', 'user_id');
+        $rsm->addFieldResult('m', 'mapped', 'mapped');
+        $rsm->addFieldResult('m', 'system_name', 'system_name');
+        $rsm->addFieldResult('m', 'influence_area_id', 'influence_area_id');
+        $rsm->addFieldResult('m', 'region_id', 'region_id');
+        $rsm->addFieldResult('m', 'tradepost_id', 'tradepost_id');
+        $rsm->addFieldResult('m', 'region_description', 'region_description');
+        $rsm->addFieldResult('m', 'layer_id', 'layer_id');
+
+        $userMapJoin = $includeFullLayer
+            ? ''
+            : 'JOIN stu_user_map um
+                ON um.cx = l.cx AND um.cy = l.cy AND um.user_id = :userId AND um.layer_id = l.layer_id';
+        $userIdSelect = $includeFullLayer ? ':userId as user_id' : 'um.user_id';
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'SELECT m.id, l.cx, l.cy, l.field_id, mf.name as field_name, mf.passable, mf.effects,
+                        m.systems_id, m.bordertype_id, %s,
+                        dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
+                        sys.name as system_name, l.layer_id,
+                        (SELECT tp.id FROM stu_spacecraft s JOIN stu_trade_posts tp ON s.id = tp.station_id WHERE s.location_id = m.id) as tradepost_id,
+                        (SELECT mr.description FROM stu_map_regions mr JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
+                    FROM stu_map m
+                    JOIN stu_location l
+                    ON m.id = l.id
+                    JOIN stu_map_ftypes mf
+                    ON l.field_id = mf.id
+                    %s
+                    LEFT JOIN stu_systems sys
+                        ON m.systems_id = sys.id
+                    LEFT JOIN stu_database_user dbu
+                        ON dbu.user_id = :userId
+                        AND sys.database_id = dbu.database_id
+                    WHERE l.layer_id = :layerId
+                    ORDER BY l.cy ASC, l.cx ASC',
+                    $userIdSelect,
+                    $userMapJoin
+                ),
+                $rsm
+            )
+            ->setParameters([
+                'layerId' => $layerId,
+                'userId' => $userId
             ])
             ->getResult();
     }

@@ -1,38 +1,69 @@
 {% if LAYERS %}
-<div>
-	<select onchange="window.location.href='?layerid=' + this.value">
-		{% for layer in LAYERS %}
-		{% if layer.getId == LAYERID %}
-		<option value="{{ layer.getId }}" selected="1">
-			{{ layer.getName }}</option>
-		{% else %}
-		<option value="{{ layer.getId }}">
-			{{ layer.getName }}</option>
-		{% endif %}
-		{% endfor %}
-	</select>
+<div id="userStarmap" class="userStarmap" data-layer-id="{{ LAYER.getId }}"
+    data-layer-width="{{ LAYER.getWidth }}" data-layer-height="{{ LAYER.getHeight }}" data-cell-size="{{ CELL_SIZE }}"
+    data-image-url="starmap.php?SHOW_USER_STARMAP_IMAGE=1&amp;layerid={{ LAYER.getId }}"
+    data-data-url="starmap.php?SHOW_USER_STARMAP_DATA=1&amp;layerid={{ LAYER.getId }}">
+    <div class="userStarmapToolbar">
+        <select id="userStarmapLayer">
+            {% for layer in LAYERS %}
+            <option value="{{ layer.getId }}" {% if layer.getId == LAYER.getId %}selected="selected" {% endif %}>
+                {{ layer.getName }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="button" id="userStarmapRefresh" class="linkbutton">Aktualisieren</button>
+        <button type="button" id="userStarmapFit" class="linkbutton">Einpassen</button>
+        <span id="userStarmapStatus" class="userStarmapStatus">Bereit</span>
+    </div>
+
+    <div class="userStarmapLayout">
+        <div class="userStarmapStage">
+            <canvas id="userStarmapCanvas"></canvas>
+            <div id="userStarmapLoading" class="userStarmapLoading">Lade Karte. 0%</div>
+            <div id="userStarmapTooltip" class="userStarmapTooltip"></div>
+        </div>
+
+        <aside class="userStarmapPanel">
+            <div class="userStarmapPanelSection">
+                <div class="userStarmapPanelTitle">Ansicht</div>
+                <div class="starmapSectionControls userStarmapControls">
+                    <label>
+                        <input type="checkbox" id="userStarmapShowTerritory" checked="checked" />
+                        Territorium
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowImpassable" />
+                        Unpassierbar
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowEffects" />
+                        Effekte
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowGrid" checked="checked" />
+                        Raster
+                    </label>
+                </div>
+            </div>
+
+            <div class="userStarmapPanelSection">
+                <div class="userStarmapPanelTitle">Feld</div>
+                <div id="userStarmapFieldDetails" class="userStarmapFieldDetails">
+                    <div class="userStarmapEmpty">Feld anklicken</div>
+                </div>
+            </div>
+        </aside>
+    </div>
 </div>
-<br />
-<table class="tcal">
-	<tr>
-		<th>x|y</th>
-		{% for data in X_HEAD_ROW %}
-		{% set x = data * FIELDS_PER_SECTION %}
-		<th>{{ x }}</th>
-		{% endfor %}
-	</tr>
-	{% for rowy in SECTIONS %}
-	<tr>
-		{% set y = loop.index * FIELDS_PER_SECTION %}
-		<th style="width: 30px;">{{ y }}</th>
-		{% for data in rowy %}
-		<td>
-			<a href="javascript:void(0);"
-				onclick="switchInnerContent('SHOW_SECTION', 'Sektion anzeigen', 'section={{ data }}&layerid={{ LAYERID }}');">
-				Sektor {{ data }}</a>
-		</td>
-		{% endfor %}
-	</tr>
-	{% endfor %}
-</table>
+<script>
+    if (typeof initUserStarmap === 'function') {
+        initUserStarmap();
+    } else if (typeof appendJsAsync === 'function') {
+        appendJsAsync('{{ JAVASCRIPTPATH }}/js/userStarmap.js?v=user-full-starmap-axis', function () {
+            if (typeof initUserStarmap === 'function') {
+                initUserStarmap();
+            }
+        });
+    }
+</script>
 {% endif %}

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\StarSystem;
@@ -28,6 +29,18 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     #[Column(type: 'integer')]
     private int $field_id = 0;
+
+    #[Column(type: 'string')]
+    private string $field_name = '';
+
+    #[Column(type: 'boolean')]
+    private bool $passable = false;
+
+    #[Column(type: 'string', nullable: true)]
+    private ?string $effects = null;
+
+    /** @var null|array<FieldTypeEffectEnum> */
+    private ?array $decodedEffects = null;
 
     #[Column(type: 'integer')]
     private int $layer_id = 0;
@@ -90,6 +103,39 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     public function getFieldId(): int
     {
         return $this->field_id;
+    }
+
+    #[\Override]
+    public function getFieldName(): string
+    {
+        return $this->field_name;
+    }
+
+    #[\Override]
+    public function getPassable(): bool
+    {
+        return $this->passable;
+    }
+
+    #[\Override]
+    public function getEffects(): array
+    {
+        if ($this->decodedEffects !== null) {
+            return $this->decodedEffects;
+        }
+
+        $effects = json_decode($this->effects ?? '[]', true);
+        if (!is_array($effects)) {
+            $this->decodedEffects = [];
+            return [];
+        }
+
+        $this->decodedEffects = array_map(
+            fn (string $effect): FieldTypeEffectEnum => FieldTypeEffectEnum::from($effect),
+            $effects
+        );
+
+        return $this->decodedEffects;
     }
 
     #[\Override]
