@@ -183,6 +183,11 @@
 				return;
 			}
 			if ((event.ctrlKey || event.metaKey) && state.dataLoaded) {
+				if (state.editInFlight) {
+					event.preventDefault();
+					setStatus(state, "Speichern läuft bereits");
+					return;
+				}
 				if (startFieldSelection(state, event)) {
 					event.preventDefault();
 					return;
@@ -228,7 +233,9 @@
 			state.mouseY = event.clientY - rect.top;
 
 			if (state.selecting) {
-				updateFieldSelection(state, event);
+				if (!updateFieldSelection(state, event)) {
+					cancelFieldSelection(state);
+				}
 				hideTooltip(state);
 				return;
 			}
@@ -676,6 +683,10 @@
 	}
 
 	function updateFieldSelection(state, event) {
+		if (!state.selecting || !state.selectionStart) {
+			return false;
+		}
+
 		const rect = state.canvas.getBoundingClientRect();
 		const cell = getCellAtScreen(
 			state,
@@ -695,10 +706,16 @@
 		}
 		setStatus(state, "Auswahl: " + getFieldsInSelection(state).length + " Felder");
 		scheduleDraw(state);
+		return true;
 	}
 
 	function finishFieldSelection(state, event) {
-		updateFieldSelection(state, event);
+		if (!updateFieldSelection(state, event)) {
+			cancelFieldSelection(state);
+			setStatus(state, "Auswahl abgebrochen");
+			return;
+		}
+
 		const fields = getFieldsInSelection(state);
 		state.selecting = false;
 		state.canvas.classList.remove("isSelecting");
@@ -723,6 +740,16 @@
 		}
 
 		setStatus(state, fields.length === 1 ? "1 Feld gewählt" : fields.length + " Felder gewählt");
+		scheduleDraw(state);
+	}
+
+	function cancelFieldSelection(state) {
+		state.selecting = false;
+		state.selectionStart = null;
+		state.selectionEnd = null;
+		state.selectionLastCell = null;
+		state.selectionPathKeys.clear();
+		state.canvas.classList.remove("isSelecting");
 		scheduleDraw(state);
 	}
 
@@ -1068,6 +1095,8 @@
 	}
 
 	function applyEditResponse(state, data) {
+		const selectionInProgress = state.selecting;
+
 		if (Array.isArray(data.fieldTypeUpdates)) {
 			data.fieldTypeUpdates.forEach(function (fieldTypeUpdate) {
 				applyFieldTypeUpdate(state, fieldTypeUpdate);
@@ -1083,9 +1112,11 @@
 			changedFields.forEach(function (field) {
 				replaceField(state, field);
 			});
-			state.selectedFields = changedFields;
-			state.selectedField = changedFields[changedFields.length - 1];
-			if (changedFields.length === 1) {
+			if (!selectionInProgress) {
+				state.selectedFields = changedFields;
+				state.selectedField = changedFields[changedFields.length - 1];
+			}
+			if (!selectionInProgress && changedFields.length === 1) {
 				state.selectionStart = null;
 				state.selectionEnd = null;
 			}
@@ -1093,8 +1124,10 @@
 		if (data.baseImageChanged === true) {
 			scheduleBaseImageRefresh(state);
 		}
-		updateDetails(state);
-		updateTooltip(state);
+		if (!selectionInProgress) {
+			updateDetails(state);
+			updateTooltip(state);
+		}
 		scheduleDraw(state);
 	}
 
