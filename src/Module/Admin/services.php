@@ -21,6 +21,7 @@ use Stu\Module\Admin\Action\Map\EditEffects\EditEffects;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequest;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
+use Stu\Module\Admin\Action\Map\EditFullMapField\EditFullMapField;
 use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceArea;
 use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceAreaRequest;
 use Stu\Module\Admin\Action\Map\EditInfluenceArea\EditInfluenceAreaRequestInterface;
@@ -55,6 +56,8 @@ use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualSpacecraftTick;
 use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
+use Stu\Module\Admin\View\Map\FullMapEditor\ShowFullMapEditor;
+use Stu\Module\Admin\View\Map\FullMapEditor\ShowFullMapEditorData;
 use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMap;
 use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapData;
 use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapImage;
@@ -103,6 +106,7 @@ return [
         EditPassable::ACTION_IDENTIFIER => autowire(EditPassable::class),
         EditBorder::ACTION_IDENTIFIER => autowire(EditBorder::class),
         ResetEffects::ACTION_IDENTIFIER => autowire(ResetEffects::class),
+        EditFullMapField::ACTION_IDENTIFIER => autowire(EditFullMapField::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)
@@ -139,6 +143,8 @@ return [
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
+        ShowFullMapEditor::VIEW_IDENTIFIER => autowire(ShowFullMapEditor::class),
+        ShowFullMapEditorData::VIEW_IDENTIFIER => autowire(ShowFullMapEditorData::class),
         ShowLiveMap::VIEW_IDENTIFIER => autowire(ShowLiveMap::class),
         ShowLiveMapImage::VIEW_IDENTIFIER => autowire(ShowLiveMapImage::class),
         ShowLiveMapData::VIEW_IDENTIFIER => autowire(ShowLiveMapData::class),
