@@ -1,11 +1,14 @@
 {# needs following variables: HEAD_ROW, MAP_FIELDS ) #}
 
-<div id="elt">
+<div id="elt" class="starmapSectionInfo starmapSectionShowTerritory" data-starmap-section-info>
+    {% include 'html/map/starmapSectionControls.twig' %}
     <div style="float: left">
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <td>
+                    <div id="starmapsectioncontent">
                     {% include TABLE_MACRO %}
+                    </div>
                 </td>
             </tr>
         </table>

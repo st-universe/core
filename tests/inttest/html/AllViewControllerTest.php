@@ -50,6 +50,8 @@ class AllViewControllerTest extends TwigTestCase
         'GAME_VIEWS-SHOW_COMPONENT',                // has own test case
         'GAME_VIEWS-SHOW_INNER_CONTENT',            // make separate tests for each ModuleEnum
         'PM_VIEWS-SHOW_CONTACT_MODESWITCH',
+        'STARMAP_VIEWS-SHOW_USER_STARMAP_DATA',
+        'STARMAP_VIEWS-SHOW_USER_STARMAP_IMAGE',
         'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
         'SPACECRAFT_VIEWS-SHOW_COLONY_MESSAGE',     // needs ship over colony

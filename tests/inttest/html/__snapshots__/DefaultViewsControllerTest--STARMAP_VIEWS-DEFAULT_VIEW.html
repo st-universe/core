@@ -16,27 +16,71 @@
 <br />
 
 <div id="result" style="display: none;">..</div>
-<div>
-	<select onchange="window.location.href='?layerid=' + this.value">
-						<option value="2" selected="1">
-			Tullamore Trench</option>
-					</select>
+<div id="userStarmap" class="userStarmap" data-layer-id="2"
+    data-layer-width="7" data-layer-height="8" data-cell-size="30"
+    data-image-url="starmap.php?SHOW_USER_STARMAP_IMAGE=1&amp;layerid=2"
+    data-data-url="starmap.php?SHOW_USER_STARMAP_DATA=1&amp;layerid=2">
+    <div class="userStarmapToolbar">
+        <select id="userStarmapLayer">
+                        <option value="2" selected="selected" >
+                Tullamore Trench
+            </option>
+                    </select>
+        <button type="button" id="userStarmapRefresh" class="linkbutton">Aktualisieren</button>
+        <button type="button" id="userStarmapFit" class="linkbutton">Einpassen</button>
+        <span id="userStarmapStatus" class="userStarmapStatus">Bereit</span>
+    </div>
+
+    <div class="userStarmapLayout">
+        <div class="userStarmapStage">
+            <canvas id="userStarmapCanvas"></canvas>
+            <div id="userStarmapLoading" class="userStarmapLoading">Lade Karte. 0%</div>
+            <div id="userStarmapTooltip" class="userStarmapTooltip"></div>
+        </div>
+
+        <aside class="userStarmapPanel">
+            <div class="userStarmapPanelSection">
+                <div class="userStarmapPanelTitle">Ansicht</div>
+                <div class="starmapSectionControls userStarmapControls">
+                    <label>
+                        <input type="checkbox" id="userStarmapShowTerritory" checked="checked" />
+                        Territorium
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowImpassable" />
+                        Unpassierbar
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowEffects" />
+                        Effekte
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowGrid" checked="checked" />
+                        Raster
+                    </label>
+                </div>
+            </div>
+
+            <div class="userStarmapPanelSection">
+                <div class="userStarmapPanelTitle">Feld</div>
+                <div id="userStarmapFieldDetails" class="userStarmapFieldDetails">
+                    <div class="userStarmapEmpty">Feld anklicken</div>
+                </div>
+            </div>
+        </aside>
+    </div>
 </div>
-<br />
-<table class="tcal">
-	<tr>
-		<th>x|y</th>
-						<th>20</th>
-			</tr>
-		<tr>
-				<th style="width: 30px;">20</th>
-				<td>
-			<a href="javascript:void(0);"
-				onclick="switchInnerContent('SHOW_SECTION', 'Sektion anzeigen', 'section=1&layerid=2');">
-				Sektor 1</a>
-		</td>
-			</tr>
-	</table>
+<script>
+    if (typeof initUserStarmap === 'function') {
+        initUserStarmap();
+    } else if (typeof appendJsAsync === 'function') {
+        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-axis', function () {
+            if (typeof initUserStarmap === 'function') {
+                initUserStarmap();
+            }
+        });
+    }
+</script>
 <div class="footer">
     Rendered in 4.203s - Memory usage: 42.77Mb
 </div>

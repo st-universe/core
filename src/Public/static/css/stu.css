@@ -455,6 +455,132 @@ div.arrow:hover {
   overflow: hidden;
 }
 
+.starmapSectionControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.starmapSectionControls label {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  white-space: nowrap;
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  color: var(--color-6);
+  cursor: pointer;
+}
+
+.regionMapControls label {
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  color: var(--color-6);
+  cursor: pointer;
+}
+
+.starmapSectionControls label:hover,
+.regionMapControls label:hover {
+  border-color: var(--color-53);
+  background-color: var(--color-37);
+}
+
+.starmapSectionControls input[type="checkbox"],
+.regionMapControls input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-53);
+  background: var(--color-51);
+  box-shadow: inset 0 0 0 1px #000000;
+  cursor: pointer;
+}
+
+.starmapSectionControls input[type="checkbox"]:hover,
+.regionMapControls input[type="checkbox"]:hover {
+  border-color: var(--color-35);
+  background: var(--color-31);
+}
+
+.starmapSectionControls input[type="checkbox"]:checked,
+.regionMapControls input[type="checkbox"]:checked {
+  border-color: var(--color-35);
+  background:
+    linear-gradient(180deg, var(--color-31), var(--color-34));
+  box-shadow:
+    inset 0 0 0 1px #000000,
+    0 0 4px var(--color-31);
+}
+
+.starmapSectionControls input[type="checkbox"]:checked::after,
+.regionMapControls input[type="checkbox"]:checked::after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid var(--color-56);
+  border-bottom: 2px solid var(--color-56);
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.starmapSectionControls input[type="checkbox"]:focus-visible,
+.regionMapControls input[type="checkbox"]:focus-visible {
+  outline: 1px solid var(--color-56);
+  outline-offset: 2px;
+}
+
+.starmapSectionInfo .starmapInner {
+  cursor: auto !important;
+  touch-action: manipulation;
+}
+
+.starmapSectionInfo.starmapSectionShowTerritory .starmapSectionTable td[data-starmap-territory="1"] {
+  border: var(--starmap-territory-border) !important;
+}
+
+.starmapSectionInfo.starmapSectionShowEffects .starmapSectionTable td[data-starmap-effects="1"] .starmapInner::before,
+.starmapSectionInfo.starmapSectionShowImpassable .starmapSectionTable td[data-starmap-impassable="1"] .starmapInner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.starmapSectionInfo.starmapSectionShowEffects .starmapSectionTable td[data-starmap-effects="1"] .starmapInner::before {
+  box-shadow: inset 0 0 0 2px var(--color-35);
+  z-index: 3;
+}
+
+.starmapSectionInfo.starmapSectionShowImpassable .starmapSectionTable td[data-starmap-impassable="1"] .starmapInner::after {
+  background:
+    linear-gradient(135deg, transparent 0 42%, var(--color-25) 42% 52%, transparent 52%),
+    linear-gradient(45deg, transparent 0 42%, var(--color-25) 42% 52%, transparent 52%);
+  z-index: 4;
+}
+
+.starmapSectionTooltip {
+  position: fixed;
+  display: none;
+  max-width: 360px;
+  padding: 6px 8px;
+  border: 1px solid var(--color-53);
+  background: var(--color-31);
+  color: var(--color-56);
+  line-height: 1.35;
+  white-space: pre-line;
+  pointer-events: none;
+  z-index: 10000;
+  box-shadow: 0 0 0 1px var(--color-53), 0 4px 12px #000000;
+}
+
 .starmapFieldImage {
   display: block;
   width: 28px;
@@ -553,6 +679,154 @@ div.lssobj {
 
 .inverted {
   filter: saturate(10000%) invert(100%);
+}
+
+.userStarmap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: calc(100vh - 150px);
+}
+
+.userStarmapToolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 6px;
+  border: 1px solid var(--color-53);
+  background: var(--color-29);
+}
+
+.userStarmapToolbar select,
+.userStarmapToolbar button {
+  height: 28px;
+}
+
+.userStarmapStatus {
+  margin-left: auto;
+  color: var(--color-56);
+  white-space: nowrap;
+}
+
+.userStarmapLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 620px;
+}
+
+.userStarmapStage {
+  position: relative;
+  min-height: 620px;
+  border: 1px solid var(--color-53);
+  overflow: hidden;
+  background: #000000;
+}
+
+#userStarmapCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+#userStarmapCanvas.isDragging {
+  cursor: grabbing;
+}
+
+.userStarmapLoading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.78);
+  color: var(--color-56);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.userStarmapTooltip {
+  position: absolute;
+  display: none;
+  max-width: 360px;
+  max-height: 70vh;
+  overflow: auto;
+  padding: 6px 8px;
+  border: 1px solid var(--color-53);
+  background: var(--color-31);
+  color: var(--color-56);
+  line-height: 1.35;
+  white-space: pre-line;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 0 0 1px var(--color-53), 0 4px 12px #000000;
+}
+
+.userStarmapPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  max-height: calc(100vh - 198px);
+  overflow: auto;
+  border: 1px solid var(--color-53);
+  background: var(--color-29);
+  padding: 8px;
+}
+
+.userStarmapPanelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-53);
+}
+
+.userStarmapPanelSection:last-child {
+  border-bottom: 0;
+}
+
+.userStarmapPanelTitle,
+.userStarmapFieldTitle {
+  color: var(--color-56);
+  font-weight: bold;
+}
+
+.userStarmapControls {
+  gap: 6px;
+}
+
+.userStarmapMeta,
+.userStarmapEmpty,
+.userStarmapFieldText {
+  color: var(--color-6);
+  line-height: 1.35;
+}
+
+.userStarmapFieldDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.userStarmapFieldDetails button {
+  min-height: 26px;
+  height: auto;
+  line-height: normal;
+}
+
+@media (max-width: 1050px) {
+  .userStarmapLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .userStarmapPanel {
+    max-height: none;
+  }
 }
 
 .adminLiveMap {
@@ -881,7 +1155,8 @@ div.error {
   font-weight: bold;
 }
 
-a.linkbutton {
+a.linkbutton,
+button.linkbutton {
   text-align: center;
   display: inline-block;
   padding: 3px;
@@ -889,9 +1164,11 @@ a.linkbutton {
   border: 1px solid var(--color-16);
   color: var(--color-35);
   white-space: nowrap;
+  cursor: pointer;
 }
 
-a.linkbutton:hover {
+a.linkbutton:hover,
+button.linkbutton:hover {
   text-decoration: none;
   background-color: #3c3c3c;
 }

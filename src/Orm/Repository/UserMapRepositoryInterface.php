@@ -17,6 +17,11 @@ interface UserMapRepositoryInterface extends ObjectRepository
 
     public function getAmountByUser(User $user, Layer $layer): int;
 
+    /**
+     * @return array<int, array{y: int, startX: int, endX: int}>
+     */
+    public function getVisibleMapFieldRuns(int $userId, int $layerId): array;
+
     public function truncateByUser(User $user): void;
 
     public function truncateByUserAndLayer(UserLayer $userLayer): void;

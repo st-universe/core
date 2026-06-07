@@ -13,6 +13,8 @@ use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+use Stu\Module\Starmap\View\ShowUserStarmapData\ShowUserStarmapData;
+use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
 use Stu\StarsystemGenerator\StarsystemGenerator;
 use Stu\StarsystemGenerator\StarsystemGeneratorInterface;
 
@@ -26,7 +28,9 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
         ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
-        RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class)
+        RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class),
+        ShowUserStarmapImage::VIEW_IDENTIFIER => autowire(ShowUserStarmapImage::class),
+        ShowUserStarmapData::VIEW_IDENTIFIER => autowire(ShowUserStarmapData::class)
     ],
     StarmapUiFactoryInterface::class => autowire(StarmapUiFactory::class),
 ];

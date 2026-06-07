@@ -2,7 +2,7 @@
 {% from 'html/executeJavascript.twig' import executeJs %}
 
 {{ executeJs(EXECUTEJSAJAXUPDATE) }}
-<table id="starmapsectiontable" class="use">
+<table id="starmapsectiontable" class="use starmapSectionTable">
     <tr>
         <th>x|y</th>
         {% for head in HEAD_ROW %}
@@ -13,9 +13,13 @@
     <tr>
         <th>{{ yrow.getRow }}</th>
         {% for data in yrow.getFields %}
-        <td class="starmap" style="{{ data.getBorderStyle }}" id="{{ data.getCx }}_{{ data.getCy }}">
+        <td class="starmap" style="{{ data.getTerritoryStyle }}" id="{{ data.getCx }}_{{ data.getCy }}"
+            data-starmap-tooltip="{{ data.getTooltip|e('html_attr') }}"
+            data-starmap-effects="{{ data.hasEffects ? '1' : '0' }}"
+            data-starmap-impassable="{{ data.isImpassable ? '1' : '0' }}"
+            data-starmap-territory="{{ data.hasTerritory ? '1' : '0' }}">
             {% if data.getIcon %}
-            <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
+            <div class="starmapInner">
                 <img src="/assets/map/{{ data.getFieldImagePath }}" class="starmapFieldImage" width="28" height="28"
                     loading="lazy" decoding="async" alt="" draggable="false" />
                 {% if data.getHref %}
@@ -29,7 +33,7 @@
                 {% endif %}
             </div>
             {% else %}
-            <div title="{{ data.getTitle }}" class="starmapInner" style="cursor: auto ! important;">
+            <div class="starmapInner">
                 <img src="/assets/map/{{ data.getFieldImagePath }}" class="starmapFieldImage" width="28" height="28"
                     loading="lazy" decoding="async" alt="" draggable="false" />
             </div>
@@ -39,3 +43,8 @@
     </tr>
     {% endfor %}
 </table>
+<script>
+    if (typeof initStarmapSectionInfo === 'function') {
+        initStarmapSectionInfo();
+    }
+</script>

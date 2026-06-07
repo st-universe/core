@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
@@ -370,7 +371,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
 
     /**
      * @param array<Map> $allMapFields
-     * @return array{head_row: array<int>, fields: array<array{row: int, fields: array<array{cx: int, cy: int, style: string, icon_path: string, title: string}>}>}
+     * @return array{head_row: array<int>, fields: array<array{row: int, fields: array<array{cx: int, cy: int, style: string, icon_path: string, tooltip: string, is_impassable: bool, has_effects: bool}>}>}
      */
     private function prepareRegionMapData(
         array $allMapFields,
@@ -402,7 +403,9 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                     'cy' => $y,
                     'style' => '',
                     'icon_path' => '',
-                    'title' => ''
+                    'tooltip' => '',
+                    'is_impassable' => false,
+                    'has_effects' => false
                 ];
 
                 if (isset($fieldMap[$key])) {
@@ -413,14 +416,26 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                     $border = $field->getBorder();
                     $fieldData['style'] = $border;
 
-                    $title = [];
-                    $title[] = $fieldType->getName();
+                    $tooltip = [];
+                    $tooltip[] = $fieldType->getName();
 
-                    if ($field->getSystem() !== null) {
-                        $title[] = 'System: ' . $field->getSystem()->getName();
+                    $fieldData['is_impassable'] = !$fieldType->getPassable();
+                    if ($fieldData['is_impassable']) {
+                        $tooltip[] = 'Unpassierbar';
                     }
 
-                    $fieldData['title'] = implode('\n', $title);
+                    $effects = $fieldType->getEffects();
+                    $effectDescriptions = $this->getFieldTypeEffectDescriptions($effects);
+                    $fieldData['has_effects'] = $effects !== [];
+                    foreach ($effectDescriptions as $effectDescription) {
+                        $tooltip[] = $effectDescription;
+                    }
+
+                    if ($field->getSystem() !== null) {
+                        $tooltip[] = 'System: ' . $field->getSystem()->getName();
+                    }
+
+                    $fieldData['tooltip'] = implode("\n", $tooltip);
 
                     if ($layer !== null) {
                         if ($layer->isEncoded()) {
@@ -448,5 +463,22 @@ final class ShowDatabaseEntry implements ViewControllerInterface
             'head_row' => $headRow,
             'fields' => $rows
         ];
+    }
+
+    /**
+     * @param array<FieldTypeEffectEnum> $effects
+     * @return array<int, string>
+     */
+    private function getFieldTypeEffectDescriptions(array $effects): array
+    {
+        $descriptions = [];
+        foreach ($effects as $effect) {
+            $description = $effect->getDescription();
+            if ($description !== null) {
+                $descriptions[] = $description;
+            }
+        }
+
+        return $descriptions;
     }
 }

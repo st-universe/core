@@ -168,6 +168,15 @@ interface MapRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
+     * @return array<ExploreableStarMapInterface>
+     */
+    public function getUserStarmapFields(
+        int $userId,
+        int $layerId,
+        bool $includeFullLayer
+    ): array;
+
+    /**
      * @return array<Map>
      */
     public function getWithEmptySystem(Layer $layer): array;

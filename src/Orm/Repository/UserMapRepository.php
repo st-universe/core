@@ -62,6 +62,59 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     }
 
     #[\Override]
+    public function getVisibleMapFieldRuns(int $userId, int $layerId): array
+    {
+        $rows = $this->getEntityManager()->getConnection()->executeQuery(
+            'SELECT cx, cy
+            FROM stu_user_map
+            WHERE user_id = :userId
+            AND layer_id = :layerId
+            ORDER BY cy ASC, cx ASC',
+            [
+                'userId' => $userId,
+                'layerId' => $layerId
+            ]
+        )->fetchAllAssociative();
+
+        $runs = [];
+        $currentY = null;
+        $startX = null;
+        $endX = null;
+
+        foreach ($rows as $row) {
+            $x = (int)$row['cx'];
+            $y = (int)$row['cy'];
+
+            if ($currentY === $y && $endX !== null && $x === $endX + 1) {
+                $endX = $x;
+                continue;
+            }
+
+            if ($currentY !== null && $startX !== null && $endX !== null) {
+                $runs[] = [
+                    'y' => $currentY,
+                    'startX' => $startX,
+                    'endX' => $endX
+                ];
+            }
+
+            $currentY = $y;
+            $startX = $x;
+            $endX = $x;
+        }
+
+        if ($currentY !== null && $startX !== null && $endX !== null) {
+            $runs[] = [
+                'y' => $currentY,
+                'startX' => $startX,
+                'endX' => $endX
+            ];
+        }
+
+        return $runs;
+    }
+
+    #[\Override]
     public function truncateByUser(User $user): void
     {
         $this->getEntityManager()->createQuery(
