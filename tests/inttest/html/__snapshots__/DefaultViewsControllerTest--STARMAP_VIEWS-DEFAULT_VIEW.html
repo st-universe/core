@@ -18,6 +18,7 @@
 <div id="result" style="display: none;">..</div>
 <div id="userStarmap" class="userStarmap" data-layer-id="2"
     data-layer-width="7" data-layer-height="8" data-cell-size="30"
+    data-fields-per-section="20"
     data-image-url="starmap.php?SHOW_USER_STARMAP_IMAGE=1&amp;layerid=2"
     data-data-url="starmap.php?SHOW_USER_STARMAP_DATA=1&amp;layerid=2">
     <div class="userStarmapToolbar">
@@ -58,6 +59,13 @@
                         <input type="checkbox" id="userStarmapShowGrid" checked="checked" />
                         Raster
                     </label>
+                    <label class="userStarmapSectorControl">
+                        <span>Sektor</span>
+                        <select id="userStarmapSectorHighlight">
+                            <option value="0">Kein Sektor</option>
+                                                                                    <option value="1">Sektor 1</option>
+                                                                                </select>
+                    </label>
                 </div>
             </div>
 
@@ -74,7 +82,7 @@
     if (typeof initUserStarmap === 'function') {
         initUserStarmap();
     } else if (typeof appendJsAsync === 'function') {
-        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-axis', function () {
+        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-sector', function () {
             if (typeof initUserStarmap === 'function') {
                 initUserStarmap();
             }

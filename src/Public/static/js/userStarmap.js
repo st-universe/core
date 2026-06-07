@@ -72,6 +72,7 @@
 			layerWidth: Number(root.dataset.layerWidth),
 			layerHeight: Number(root.dataset.layerHeight),
 			cellSize: Number(root.dataset.cellSize),
+			fieldsPerSection: Number(root.dataset.fieldsPerSection),
 			canvasWidth: 1,
 			canvasHeight: 1,
 			mapPixelWidth: 1,
@@ -102,6 +103,7 @@
 			showImpassable: false,
 			showEffects: false,
 			showGrid: true,
+			selectedSectorId: 0,
 			fields: [],
 			fieldByKey: new Map(),
 			territoryFields: [],
@@ -119,6 +121,7 @@
 				grid: "rgba(255, 255, 255, 0.16)",
 				effects: getCssColor("--color-35", "#d8b34a"),
 				impassable: getCssColor("--color-25", "#ff4040"),
+				sectorHighlight: getCssColor("--color-35", "#d8b34a"),
 				selection: getCssColor("--color-56", "#ffffff"),
 				axisBackground: getCssColor("--color-29", "#101010"),
 				axisBorder: getCssColor("--color-53", "#333333"),
@@ -158,6 +161,7 @@
 		wireCheckbox(state, "userStarmapShowImpassable", "showImpassable");
 		wireCheckbox(state, "userStarmapShowEffects", "showEffects");
 		wireCheckbox(state, "userStarmapShowGrid", "showGrid");
+		wireSectorSelect(state);
 
 		state.canvas.addEventListener("mousedown", function (event) {
 			if (event.button !== 0) {
@@ -284,6 +288,19 @@
 		});
 	}
 
+	function wireSectorSelect(state) {
+		const select = document.getElementById("userStarmapSectorHighlight");
+		if (!select) {
+			return;
+		}
+
+		state.selectedSectorId = Number(select.value) || 0;
+		select.addEventListener("change", function () {
+			state.selectedSectorId = Number(this.value) || 0;
+			scheduleDraw(state);
+		});
+	}
+
 	function resizeCanvas(state) {
 		const rect = state.canvas.parentElement.getBoundingClientRect();
 		const dpr = window.devicePixelRatio || 1;
@@ -323,6 +340,7 @@
 		state.layerWidth = Number(data.layer.width);
 		state.layerHeight = Number(data.layer.height);
 		state.cellSize = Number(data.cellSize);
+		state.fieldsPerSection = Number(data.fieldsPerSection || state.fieldsPerSection);
 		state.mapPixelWidth = state.layerWidth * state.cellSize;
 		state.mapPixelHeight = state.layerHeight * state.cellSize;
 		state.visibleRuns = Array.isArray(data.visibleRuns) ? data.visibleRuns : [];
@@ -452,6 +470,9 @@
 		if (state.showGrid) {
 			drawGrid(state, ctx);
 		}
+		if (state.selectedSectorId > 0) {
+			drawSelectedSector(state, ctx);
+		}
 		if (state.selectedField) {
 			drawSelection(state, ctx, state.selectedField);
 		}
@@ -539,6 +560,26 @@
 		ctx.strokeStyle = state.colors.selection;
 		ctx.lineWidth = Math.max(1, 2 / state.scale);
 		ctx.strokeRect(rect.x + 1, rect.y + 1, rect.size - 2, rect.size - 2);
+	}
+
+	function drawSelectedSector(state, ctx) {
+		const sector = getSectorById(state, state.selectedSectorId);
+		if (!sector) {
+			return;
+		}
+
+		const x = (sector.startX - 1) * state.cellSize;
+		const y = (sector.startY - 1) * state.cellSize;
+		const width = (sector.endX - sector.startX + 1) * state.cellSize;
+		const height = (sector.endY - sector.startY + 1) * state.cellSize;
+		const lineWidth = Math.max(2, 3 / state.scale);
+
+		ctx.save();
+		ctx.strokeStyle = state.colors.sectorHighlight;
+		ctx.lineWidth = lineWidth;
+		ctx.setLineDash([8 / state.scale, 4 / state.scale]);
+		ctx.strokeRect(x + lineWidth / 2, y + lineWidth / 2, width - lineWidth, height - lineWidth);
+		ctx.restore();
 	}
 
 	function drawAxes(state, ctx) {
@@ -683,6 +724,65 @@
 		};
 	}
 
+	function getSectorsHorizontal(state) {
+		return Math.max(1, Math.ceil(state.layerWidth / getFieldsPerSection(state)));
+	}
+
+	function getSectorsVertical(state) {
+		return Math.max(1, Math.ceil(state.layerHeight / getFieldsPerSection(state)));
+	}
+
+	function getFieldsPerSection(state) {
+		return Math.max(1, Number(state.fieldsPerSection) || 20);
+	}
+
+	function getSectorInfoForField(state, field) {
+		const fieldsPerSection = getFieldsPerSection(state);
+		const sectorX = Math.ceil(field.x / fieldsPerSection);
+		const sectorY = Math.ceil(field.y / fieldsPerSection);
+		const id = sectorX + (sectorY - 1) * getSectorsHorizontal(state);
+
+		return buildSectorInfo(state, id, sectorX, sectorY);
+	}
+
+	function getSectorById(state, id) {
+		const sectorId = Number(id);
+		const sectorsHorizontal = getSectorsHorizontal(state);
+		const sectorsVertical = getSectorsVertical(state);
+		const sectorCount = sectorsHorizontal * sectorsVertical;
+
+		if (!Number.isFinite(sectorId) || sectorId < 1 || sectorId > sectorCount) {
+			return null;
+		}
+
+		const sectorX = ((sectorId - 1) % sectorsHorizontal) + 1;
+		const sectorY = Math.floor((sectorId - 1) / sectorsHorizontal) + 1;
+
+		return buildSectorInfo(state, sectorId, sectorX, sectorY);
+	}
+
+	function buildSectorInfo(state, id, sectorX, sectorY) {
+		const fieldsPerSection = getFieldsPerSection(state);
+		const startX = (sectorX - 1) * fieldsPerSection + 1;
+		const startY = (sectorY - 1) * fieldsPerSection + 1;
+		const endX = Math.min(sectorX * fieldsPerSection, state.layerWidth);
+		const endY = Math.min(sectorY * fieldsPerSection, state.layerHeight);
+
+		return {
+			id,
+			x: sectorX,
+			y: sectorY,
+			startX,
+			startY,
+			endX,
+			endY
+		};
+	}
+
+	function getSectorLabel(sector) {
+		return "Sektor " + sector.id + " (" + sector.startX + "|" + sector.startY + " bis " + sector.endX + "|" + sector.endY + ")";
+	}
+
 	function ensureIcon(state, src) {
 		if (state.iconCache.has(src)) {
 			return;
@@ -809,6 +909,8 @@
 		}
 
 		const lines = ["Feld " + field.x + " | " + field.y];
+		const sector = getSectorInfoForField(state, field);
+		lines.push(getSectorLabel(sector));
 		if (field.tooltip) {
 			lines.push(field.tooltip);
 		}
@@ -861,12 +963,15 @@
 		const tooltip = field.tooltip
 			? '<div class="userStarmapFieldText">' + escapeHtml(field.tooltip).replace(/\n/g, "<br />") + "</div>"
 			: "";
+		const sector = getSectorInfoForField(state, field);
+		const sectorText = '<div class="userStarmapFieldText">' + escapeHtml(getSectorLabel(sector)) + "</div>";
 		const systemButton = field.databaseId
 			? '<button type="button" data-user-starmap-system="' + Number(field.databaseId) + '">Systemkarte</button>'
 			: "";
 
 		state.fieldDetails.innerHTML =
 			'<div class="userStarmapFieldTitle">Feld ' + field.x + ' | ' + field.y + "</div>" +
+			sectorText +
 			tooltip +
 			systemButton;
 
