@@ -97,4 +97,39 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
      * }>
      */
     public function getAdminLiveMapSpacecrafts(int $layerId): array;
+
+    /**
+     * @return array<array{
+     *     id: int,
+     *     name: string,
+     *     type: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool,
+     *     hull: int,
+     *     max_hull: int,
+     *     shield: int,
+     *     max_shield: int,
+     *     eps: int,
+     *     max_eps: int,
+     *     warpdrive: int,
+     *     max_warpdrive: int,
+     *     alert_state: int
+     * }>
+     */
+    public function getUserStarmapSpacecrafts(
+        int $userId,
+        int $layerId,
+        ?int $allianceId,
+        bool $includeAlliance,
+        bool $includeFullLayer
+    ): array;
 }

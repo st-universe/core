@@ -457,4 +457,138 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ])
             ->getResult();
     }
+
+    #[\Override]
+    public function getUserStarmapSpacecrafts(
+        int $userId,
+        int $layerId,
+        ?int $allianceId,
+        bool $includeAlliance,
+        bool $includeFullLayer
+    ): array {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('type', 'type', 'string');
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('user_name', 'user_name', 'string');
+        $rsm->addScalarResult('alliance_id', 'alliance_id', 'integer');
+        $rsm->addScalarResult('alliance_name', 'alliance_name', 'string');
+        $rsm->addScalarResult('rump_id', 'rump_id', 'integer');
+        $rsm->addScalarResult('rump_name', 'rump_name', 'string');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('in_system', 'in_system', 'boolean');
+        $rsm->addScalarResult('system_name', 'system_name', 'string');
+        $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        $rsm->addScalarResult('hull', 'hull', 'integer');
+        $rsm->addScalarResult('max_hull', 'max_hull', 'integer');
+        $rsm->addScalarResult('shield', 'shield', 'integer');
+        $rsm->addScalarResult('max_shield', 'max_shield', 'integer');
+        $rsm->addScalarResult('eps', 'eps', 'integer');
+        $rsm->addScalarResult('max_eps', 'max_eps', 'integer');
+        $rsm->addScalarResult('warpdrive', 'warpdrive', 'integer');
+        $rsm->addScalarResult('max_warpdrive', 'max_warpdrive', 'integer');
+        $rsm->addScalarResult('alert_state', 'alert_state', 'integer');
+
+        $ownerCondition = $includeAlliance && $allianceId !== null
+            ? '(sp.user_id = :userId OR u.allys_id = :allianceId)'
+            : 'sp.user_id = :userId';
+        $visibleJoin = $includeFullLayer
+            ? ''
+            : 'JOIN stu_user_map visible_map
+                ON visible_map.user_id = :userId
+                AND visible_map.layer_id = :layerId
+                AND visible_map.cx = ship_map.x
+                AND visible_map.cy = ship_map.y';
+        $parameters = [
+            'userId' => $userId,
+            'layerId' => $layerId,
+            'shipType' => SpacecraftTypeEnum::SHIP->value,
+            'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+            'cloakMode' => SpacecraftSystemModeEnum::MODE_ON->value,
+            'epsType' => SpacecraftSystemTypeEnum::EPS->value,
+            'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+            'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value
+        ];
+        if ($includeAlliance && $allianceId !== null) {
+            $parameters['allianceId'] = $allianceId;
+        }
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'SELECT ship_map.*
+                    FROM (
+                        SELECT sp.id,
+                            sp.name,
+                            sp.type,
+                            sp.user_id,
+                            u.username as user_name,
+                            al.id as alliance_id,
+                            al.name as alliance_name,
+                            sp.rump_id,
+                            r.name as rump_name,
+                            CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
+                            CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                            CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
+                            systems.name as system_name,
+                            CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked,
+                            sc.hull,
+                            sp.max_hull,
+                            sc.shield,
+                            sp.max_shield,
+                            COALESCE((NULLIF(eps_system.data, \'\')::json->>\'eps\')::int, 0) as eps,
+                            COALESCE(CEIL((NULLIF(eps_system.data, \'\')::json->>\'maxEps\')::numeric * eps_system.status / 100), 0)::int as max_eps,
+                            COALESCE((NULLIF(warp_system.data, \'\')::json->>\'wd\')::int, 0) as warpdrive,
+                            COALESCE(CEIL((NULLIF(warp_system.data, \'\')::json->>\'maxwd\')::numeric * warp_system.status / 100), 0)::int as max_warpdrive,
+                            COALESCE((NULLIF(computer_system.data, \'\')::json->>\'alertState\')::int, 1) as alert_state
+                        FROM stu_spacecraft sp
+                        JOIN stu_spacecraft_condition sc
+                        ON sc.spacecraft_id = sp.id
+                        JOIN stu_location location
+                        ON sp.location_id = location.id
+                        LEFT JOIN stu_map map_field
+                        ON map_field.id = location.id
+                        LEFT JOIN stu_sys_map system_field
+                        ON system_field.id = location.id
+                        LEFT JOIN stu_map parent_map
+                        ON parent_map.systems_id = system_field.systems_id
+                        LEFT JOIN stu_location parent_location
+                        ON parent_location.id = parent_map.id
+                        LEFT JOIN stu_systems systems
+                        ON systems.id = system_field.systems_id
+                        JOIN stu_user u
+                        ON u.id = sp.user_id
+                        LEFT JOIN stu_alliances al
+                        ON al.id = u.allys_id
+                        JOIN stu_rump r
+                        ON r.id = sp.rump_id
+                        LEFT JOIN stu_spacecraft_system cloak_system
+                        ON cloak_system.spacecraft_id = sp.id
+                        AND cloak_system.system_type = :cloakType
+                        LEFT JOIN stu_spacecraft_system eps_system
+                        ON eps_system.spacecraft_id = sp.id
+                        AND eps_system.system_type = :epsType
+                        LEFT JOIN stu_spacecraft_system warp_system
+                        ON warp_system.spacecraft_id = sp.id
+                        AND warp_system.system_type = :warpdriveType
+                        LEFT JOIN stu_spacecraft_system computer_system
+                        ON computer_system.spacecraft_id = sp.id
+                        AND computer_system.system_type = :computerType
+                        WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+                        AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+                        AND sp.type = :shipType
+                        AND %s
+                    ) ship_map
+                    %s
+                    ORDER BY ship_map.y ASC, ship_map.x ASC, ship_map.id ASC',
+                    $ownerCondition,
+                    $visibleJoin
+                ),
+                $rsm
+            )
+            ->setParameters($parameters)
+            ->getResult();
+    }
 }
