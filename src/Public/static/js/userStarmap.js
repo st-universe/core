@@ -8,6 +8,9 @@
 	const AXIS_LEFT_WIDTH = 42;
 	const AXIS_MIN_LABEL_SPACING = 26;
 	const AXIS_MIN_TICK_SPACING = 6;
+	const TOOLTIP_ITEM_LIMIT = 8;
+	const ALLIANCE_CONTACT_COLOR = "#ffe06b";
+	const OWN_CONTACT_COLOR = "#67e878";
 
 	function clamp(value, min, max) {
 		return Math.max(min, Math.min(max, value));
@@ -103,6 +106,8 @@
 			showImpassable: false,
 			showEffects: false,
 			showGrid: true,
+			showOwnSpacecrafts: false,
+			showAllianceSpacecrafts: false,
 			selectedSectorId: 0,
 			fields: [],
 			fieldByKey: new Map(),
@@ -110,6 +115,8 @@
 			effectFields: [],
 			impassableFields: [],
 			iconFields: [],
+			spacecrafts: [],
+			spacecraftByField: new Map(),
 			visibleRuns: [],
 			iconCache: new Map(),
 			selectedField: null,
@@ -161,6 +168,8 @@
 		wireCheckbox(state, "userStarmapShowImpassable", "showImpassable");
 		wireCheckbox(state, "userStarmapShowEffects", "showEffects");
 		wireCheckbox(state, "userStarmapShowGrid", "showGrid");
+		wireCheckbox(state, "userStarmapShowOwnSpacecrafts", "showOwnSpacecrafts");
+		wireCheckbox(state, "userStarmapShowAllianceSpacecrafts", "showAllianceSpacecrafts");
 		wireSectorSelect(state);
 
 		state.canvas.addEventListener("mousedown", function (event) {
@@ -284,6 +293,8 @@
 		state[property] = input.checked;
 		input.addEventListener("change", function () {
 			state[property] = this.checked;
+			updateTooltip(state);
+			updateFieldDetails(state, state.selectedField);
 			scheduleDraw(state);
 		});
 	}
@@ -350,10 +361,14 @@
 		state.effectFields = [];
 		state.impassableFields = [];
 		state.iconFields = [];
+		state.spacecrafts = Array.isArray(data.spacecrafts) ? data.spacecrafts.map(normalizeSpacecraft) : [];
+		state.spacecraftByField = new Map();
 
 		state.fields.forEach(function (field) {
 			field.x = Number(field.x);
 			field.y = Number(field.y);
+			field.territoryOwnerHtml = field.territoryOwnerHtml || null;
+			field.territoryOwnerText = field.territoryOwnerText || null;
 			state.fieldByKey.set(fieldKey(field.x, field.y), field);
 
 			if (field.hasTerritory && field.territoryColor) {
@@ -371,9 +386,65 @@
 			}
 		});
 
+		state.spacecrafts.forEach(function (spacecraft) {
+			const key = fieldKey(spacecraft.x, spacecraft.y);
+			if (!state.fieldByKey.has(key)) {
+				return;
+			}
+
+			let entry = state.spacecraftByField.get(key);
+			if (!entry) {
+				entry = {
+					x: spacecraft.x,
+					y: spacecraft.y,
+					spacecrafts: []
+				};
+				state.spacecraftByField.set(key, entry);
+			}
+
+			entry.spacecrafts.push(spacecraft);
+		});
+
 		state.dataLoaded = true;
 		state.selectedField = null;
 		updateFieldDetails(state, null);
+	}
+
+	function normalizeSpacecraft(spacecraft) {
+		return {
+			id: Number(spacecraft.id),
+			name: spacecraft.name || "",
+			nameText: spacecraft.nameText || spacecraft.name || "",
+			nameHtml: spacecraft.nameHtml || escapeHtml(spacecraft.name || ""),
+			type: spacecraft.type || "",
+			userId: Number(spacecraft.userId),
+			userName: spacecraft.userName || "",
+			userNameText: spacecraft.userNameText || spacecraft.userName || "",
+			userNameHtml: spacecraft.userNameHtml || escapeHtml(spacecraft.userName || ""),
+			allianceId: spacecraft.allianceId == null ? null : Number(spacecraft.allianceId),
+			allianceName: spacecraft.allianceName || null,
+			allianceNameText: spacecraft.allianceNameText || spacecraft.allianceName || null,
+			allianceNameHtml: spacecraft.allianceNameHtml || null,
+			rumpId: Number(spacecraft.rumpId),
+			rumpName: spacecraft.rumpName || "",
+			rumpImage: spacecraft.rumpImage || "",
+			x: Number(spacecraft.x),
+			y: Number(spacecraft.y),
+			inSystem: Boolean(spacecraft.inSystem),
+			systemName: spacecraft.systemName || null,
+			isCloaked: Boolean(spacecraft.isCloaked),
+			isOwn: Boolean(spacecraft.isOwn),
+			hull: Number(spacecraft.hull) || 0,
+			maxHull: Number(spacecraft.maxHull) || 0,
+			shield: Number(spacecraft.shield) || 0,
+			maxShield: Number(spacecraft.maxShield) || 0,
+			eps: Number(spacecraft.eps) || 0,
+			maxEps: Number(spacecraft.maxEps) || 0,
+			warpdrive: Number(spacecraft.warpdrive) || 0,
+			maxWarpdrive: Number(spacecraft.maxWarpdrive) || 0,
+			alertState: Number(spacecraft.alertState) || 1,
+			alertStateName: spacecraft.alertStateName || "Unbekannt"
+		};
 	}
 
 	function loadMapImage(state, imageVersion) {
@@ -473,6 +544,7 @@
 		if (state.selectedSectorId > 0) {
 			drawSelectedSector(state, ctx);
 		}
+		drawSpacecraftContacts(state, ctx);
 		if (state.selectedField) {
 			drawSelection(state, ctx, state.selectedField);
 		}
@@ -580,6 +652,75 @@
 		ctx.setLineDash([8 / state.scale, 4 / state.scale]);
 		ctx.strokeRect(x + lineWidth / 2, y + lineWidth / 2, width - lineWidth, height - lineWidth);
 		ctx.restore();
+	}
+
+	function drawSpacecraftContacts(state, ctx) {
+		if (!hasActiveSpacecraftFilter(state) || state.spacecraftByField.size === 0 || state.scale < 0.16) {
+			return;
+		}
+
+		const bounds = getVisibleFieldBounds(state);
+		state.spacecraftByField.forEach(function (entry) {
+			if (entry.x < bounds.startX || entry.x > bounds.endX || entry.y < bounds.startY || entry.y > bounds.endY) {
+				return;
+			}
+
+			const spacecrafts = getFilteredSpacecrafts(state, entry.spacecrafts);
+			if (spacecrafts.length === 0) {
+				return;
+			}
+
+			drawContactCount(state, ctx, entry.x, entry.y, getContactStats(spacecrafts));
+		});
+	}
+
+	function drawContactCount(state, ctx, x, y, stats) {
+		const rect = getFieldRect(state, { x, y });
+		const text = String(stats.count);
+		const centerX = rect.x + rect.size / 2;
+		const centerY = rect.y + rect.size / 2;
+		const fontSize = 18 / state.scale;
+		const radius = Math.max(10 / state.scale, state.cellSize * 0.28);
+		const strokeColor = stats.ownCount > 0 && stats.allianceCount === 0 ? OWN_CONTACT_COLOR : ALLIANCE_CONTACT_COLOR;
+		const textColor = stats.ownCount > 0 && stats.allianceCount === 0 ? OWN_CONTACT_COLOR : ALLIANCE_CONTACT_COLOR;
+
+		ctx.save();
+		ctx.globalAlpha = 0.9;
+		ctx.fillStyle = "rgba(8,10,14,0.78)";
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+		ctx.fill();
+		if (stats.ownCount > 0 && stats.allianceCount > 0) {
+			drawMixedContactStroke(state, ctx, centerX, centerY, radius);
+		} else {
+			ctx.strokeStyle = strokeColor;
+			ctx.lineWidth = 1.6 / state.scale;
+			ctx.stroke();
+		}
+		ctx.font = "bold " + fontSize + "px sans-serif";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.fillStyle = textColor;
+		ctx.strokeStyle = "rgba(0,0,0,0.9)";
+		ctx.lineWidth = 3 / state.scale;
+		ctx.strokeText(text, centerX, centerY + 0.5 / state.scale);
+		ctx.fillText(text, centerX, centerY + 0.5 / state.scale);
+		ctx.restore();
+	}
+
+	function drawMixedContactStroke(state, ctx, centerX, centerY, radius) {
+		const segments = 12;
+		const gap = 0.04;
+
+		ctx.lineWidth = 2 / state.scale;
+		for (let index = 0; index < segments; index++) {
+			const start = -Math.PI / 2 + index * (Math.PI * 2 / segments) + gap;
+			const end = -Math.PI / 2 + (index + 1) * (Math.PI * 2 / segments) - gap;
+			ctx.beginPath();
+			ctx.strokeStyle = index % 2 === 0 ? ALLIANCE_CONTACT_COLOR : OWN_CONTACT_COLOR;
+			ctx.arc(centerX, centerY, radius, start, end);
+			ctx.stroke();
+		}
 	}
 
 	function drawAxes(state, ctx) {
@@ -721,6 +862,15 @@
 			x: (field.x - 1) * state.cellSize,
 			y: (field.y - 1) * state.cellSize,
 			size: state.cellSize
+		};
+	}
+
+	function getVisibleFieldBounds(state) {
+		return {
+			startX: clamp(Math.floor(state.viewX / state.cellSize) + 1, 1, state.layerWidth),
+			endX: clamp(Math.ceil((state.viewX + getMapViewportWidth(state) / state.scale) / state.cellSize), 1, state.layerWidth),
+			startY: clamp(Math.floor(state.viewY / state.cellSize) + 1, 1, state.layerHeight),
+			endY: clamp(Math.ceil((state.viewY + getMapViewportHeight(state) / state.scale) / state.cellSize), 1, state.layerHeight)
 		};
 	}
 
@@ -908,14 +1058,16 @@
 			return;
 		}
 
-		const lines = ["Feld " + field.x + " | " + field.y];
+		const html = ['<div class="userStarmapTooltipLine">Feld ' + field.x + ' | ' + field.y + "</div>"];
 		const sector = getSectorInfoForField(state, field);
-		lines.push(getSectorLabel(sector));
+		html.push('<div class="userStarmapTooltipLine">' + escapeHtml(getSectorLabel(sector)) + "</div>");
 		if (field.tooltip) {
-			lines.push(field.tooltip);
+			html.push('<div class="userStarmapTooltipLine">' + escapeHtml(field.tooltip).replace(/\n/g, "<br />") + "</div>");
 		}
+		appendTerritoryOwnerTooltipHtml(field, html);
+		appendSpacecraftTooltipHtml(state, field, html);
 
-		state.tooltip.textContent = lines.join("\n");
+		state.tooltip.innerHTML = html.join("");
 		state.tooltip.style.display = "block";
 		positionTooltip(state);
 	}
@@ -965,15 +1117,20 @@
 			: "";
 		const sector = getSectorInfoForField(state, field);
 		const sectorText = '<div class="userStarmapFieldText">' + escapeHtml(getSectorLabel(sector)) + "</div>";
+		const territoryText = buildTerritoryOwnerFieldHtml(field);
 		const systemButton = field.databaseId
 			? '<button type="button" data-user-starmap-system="' + Number(field.databaseId) + '">Systemkarte</button>'
 			: "";
+		const spacecrafts = getSpacecraftsForField(state, field);
+		const spacecraftHtml = buildSpacecraftDetailsHtml(spacecrafts);
 
 		state.fieldDetails.innerHTML =
 			'<div class="userStarmapFieldTitle">Feld ' + field.x + ' | ' + field.y + "</div>" +
 			sectorText +
 			tooltip +
-			systemButton;
+			territoryText +
+			systemButton +
+			spacecraftHtml;
 
 		const button = state.fieldDetails.querySelector("[data-user-starmap-system]");
 		if (button) {
@@ -984,6 +1141,148 @@
 				}
 			});
 		}
+	}
+
+	function appendTerritoryOwnerTooltipHtml(field, html) {
+		if (!field.territoryOwnerHtml) {
+			return;
+		}
+
+		html.push('<div class="userStarmapTooltipLine">' + field.territoryOwnerHtml + "</div>");
+	}
+
+	function buildTerritoryOwnerFieldHtml(field) {
+		if (!field.territoryOwnerHtml) {
+			return "";
+		}
+
+		return '<div class="userStarmapFieldText">' + field.territoryOwnerHtml + "</div>";
+	}
+
+	function appendSpacecraftTooltipHtml(state, field, html) {
+		const spacecrafts = getSpacecraftsForField(state, field);
+		if (spacecrafts.length === 0) {
+			return;
+		}
+
+		html.push('<div class="userStarmapTooltipLine"><strong>Schiffe: ' + spacecrafts.length + "</strong></div>");
+		spacecrafts.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (spacecraft) {
+			html.push(
+				'<div class="userStarmapTooltipItem">' +
+				'<span class="userStarmapTooltipName">' +
+				spacecraft.nameHtml +
+				"</span>" +
+				'<span class="userStarmapTooltipMeta"> | ' +
+				escapeHtml(spacecraft.rumpName || "Rumpf unbekannt") +
+				" | " +
+				spacecraft.userNameHtml +
+				" (" +
+				spacecraft.userId +
+				")</span>" +
+				"</div>"
+			);
+		});
+		if (spacecrafts.length > TOOLTIP_ITEM_LIMIT) {
+			html.push('<div class="userStarmapTooltipLine">+' + (spacecrafts.length - TOOLTIP_ITEM_LIMIT) + " weitere</div>");
+		}
+	}
+
+	function getSpacecraftsForField(state, field) {
+		if (!hasActiveSpacecraftFilter(state) || !field) {
+			return [];
+		}
+
+		const entry = state.spacecraftByField.get(fieldKey(field.x, field.y));
+		if (!entry) {
+			return [];
+		}
+
+		return getFilteredSpacecrafts(state, entry.spacecrafts).sort(function (a, b) {
+			return a.id - b.id;
+		});
+	}
+
+	function hasActiveSpacecraftFilter(state) {
+		return state.showOwnSpacecrafts || state.showAllianceSpacecrafts;
+	}
+
+	function getFilteredSpacecrafts(state, spacecrafts) {
+		return spacecrafts.filter(function (spacecraft) {
+			return spacecraft.isOwn ? state.showOwnSpacecrafts : state.showAllianceSpacecrafts;
+		});
+	}
+
+	function getContactStats(spacecrafts) {
+		let ownCount = 0;
+		let allianceCount = 0;
+
+		spacecrafts.forEach(function (spacecraft) {
+			if (spacecraft.isOwn) {
+				ownCount++;
+			} else {
+				allianceCount++;
+			}
+		});
+
+		return {
+			count: spacecrafts.length,
+			ownCount,
+			allianceCount
+		};
+	}
+
+	function buildSpacecraftDetailsHtml(spacecrafts) {
+		if (spacecrafts.length === 0) {
+			return "";
+		}
+
+		return '<div class="userStarmapPanelSubTitle">Schiffe</div>' +
+			'<div class="userStarmapShipList">' +
+			spacecrafts.map(buildSpacecraftEntryHtml).join("") +
+			"</div>";
+	}
+
+	function buildSpacecraftEntryHtml(spacecraft) {
+		const owner = spacecraft.userNameHtml + " (" + spacecraft.userId + ")";
+		const location = spacecraft.inSystem && spacecraft.systemName
+			? "im System " + spacecraft.systemName
+			: "auf der Warpkarte";
+
+		return '<div class="userStarmapShipEntry">' +
+			'<img src="' + escapeHtml(spacecraft.rumpImage) + '" alt="" loading="lazy" decoding="async" draggable="false" />' +
+			'<div class="userStarmapShipText">' +
+			'<div class="userStarmapShipName">' + spacecraft.nameHtml + "</div>" +
+			'<div class="userStarmapShipMeta">' +
+			escapeHtml(spacecraft.rumpName || "Rumpf unbekannt") +
+			" | Besitzer: " +
+			owner +
+			" | " +
+			escapeHtml(location) +
+			"</div>" +
+			'<div class="userStarmapShipMeta">' +
+			"Hülle " +
+			formatValue(spacecraft.hull, spacecraft.maxHull) +
+			" | Schilde " +
+			formatValue(spacecraft.shield, spacecraft.maxShield) +
+			"</div>" +
+			'<div class="userStarmapShipMeta">' +
+			"Energie " +
+			formatValue(spacecraft.eps, spacecraft.maxEps) +
+			" | Warpantrieb " +
+			formatValue(spacecraft.warpdrive, spacecraft.maxWarpdrive) +
+			" | " +
+			escapeHtml(spacecraft.alertStateName) +
+			"</div>" +
+			"</div>" +
+			"</div>";
+	}
+
+	function formatValue(value, maxValue) {
+		if (maxValue > 0) {
+			return Number(value) + "/" + Number(maxValue);
+		}
+
+		return String(Number(value));
 	}
 
 	function fitToVisibleBounds(state) {
