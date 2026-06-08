@@ -1165,7 +1165,7 @@
 			return;
 		}
 
-		html.push('<div class="userStarmapTooltipLine"><strong>Schiffe: ' + spacecrafts.length + "</strong></div>");
+		html.push('<div class="userStarmapTooltipLine"><strong>Kontakte: ' + spacecrafts.length + "</strong></div>");
 		spacecrafts.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (spacecraft) {
 			html.push(
 				'<div class="userStarmapTooltipItem">' +
@@ -1236,7 +1236,7 @@
 			return "";
 		}
 
-		return '<div class="userStarmapPanelSubTitle">Schiffe</div>' +
+		return '<div class="userStarmapPanelSubTitle">Kontakte</div>' +
 			'<div class="userStarmapShipList">' +
 			spacecrafts.map(buildSpacecraftEntryHtml).join("") +
 			"</div>";

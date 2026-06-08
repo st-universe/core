@@ -491,9 +491,10 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $rsm->addScalarResult('max_warpdrive', 'max_warpdrive', 'integer');
         $rsm->addScalarResult('alert_state', 'alert_state', 'integer');
 
-        $ownerCondition = $includeAlliance && $allianceId !== null
-            ? '(sp.user_id = :userId OR u.allys_id = :allianceId)'
-            : 'sp.user_id = :userId';
+        $visibilityCondition = $includeAlliance && $allianceId !== null
+            ? '((sp.user_id = :userId AND sp.type IN (:ownShipType, :ownStationType))
+                OR (u.allys_id = :allianceId AND sp.type IN (:allianceShipType, :allianceStationType)))'
+            : '(sp.user_id = :userId AND sp.type IN (:ownShipType, :ownStationType))';
         $visibleJoin = $includeFullLayer
             ? ''
             : 'JOIN stu_user_map visible_map
@@ -504,7 +505,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $parameters = [
             'userId' => $userId,
             'layerId' => $layerId,
-            'shipType' => SpacecraftTypeEnum::SHIP->value,
+            'ownShipType' => SpacecraftTypeEnum::SHIP->value,
+            'ownStationType' => SpacecraftTypeEnum::STATION->value,
             'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
             'cloakMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'epsType' => SpacecraftSystemTypeEnum::EPS->value,
@@ -513,6 +515,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         ];
         if ($includeAlliance && $allianceId !== null) {
             $parameters['allianceId'] = $allianceId;
+            $parameters['allianceShipType'] = SpacecraftTypeEnum::SHIP->value;
+            $parameters['allianceStationType'] = SpacecraftTypeEnum::STATION->value;
         }
 
         return $this->getEntityManager()
@@ -578,12 +582,11 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                         AND computer_system.system_type = :computerType
                         WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
                         AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
-                        AND sp.type = :shipType
                         AND %s
                     ) ship_map
                     %s
                     ORDER BY ship_map.y ASC, ship_map.x ASC, ship_map.id ASC',
-                    $ownerCondition,
+                    $visibilityCondition,
                     $visibleJoin
                 ),
                 $rsm
