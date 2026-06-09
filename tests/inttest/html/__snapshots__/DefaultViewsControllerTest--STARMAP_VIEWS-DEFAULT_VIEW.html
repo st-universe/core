@@ -60,12 +60,20 @@
                         Raster
                     </label>
                     <label>
-                        <input type="checkbox" id="userStarmapShowOwnSpacecrafts" />
-                        Eigene Schiffe/Stationen
+                        <input type="checkbox" id="userStarmapShowOwnShips" />
+                        Eigene Schiffe
                     </label>
                     <label>
-                        <input type="checkbox" id="userStarmapShowAllianceSpacecrafts" />
-                        Verbündete Schiffe/Stationen
+                        <input type="checkbox" id="userStarmapShowOwnStations" />
+                        Eigene Stationen
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowAllianceShips" />
+                        Verbündete Schiffe
+                    </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowAllianceStations" />
+                        Verbündete Stationen
                     </label>
                     <label class="userStarmapSectorControl">
                         <span>Sektor</span>
@@ -90,7 +98,7 @@
     if (typeof initUserStarmap === 'function') {
         initUserStarmap();
     } else if (typeof appendJsAsync === 'function') {
-        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-ship-filters', function () {
+        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-contact-type-filters', function () {
             if (typeof initUserStarmap === 'function') {
                 initUserStarmap();
             }
