@@ -138,7 +138,8 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
      *     source_id: int,
      *     x: int,
      *     y: int,
-     *     sensor_range: int
+     *     sensor_range: int,
+     *     tachyon_range: int
      * }>
      */
     public function getUserStarmapRealtimeSensorRanges(int $userId, int $layerId): array;

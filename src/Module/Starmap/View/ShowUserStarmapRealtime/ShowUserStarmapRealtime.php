@@ -14,6 +14,9 @@ use Stu\Component\Realtime\RealtimeChannels;
 use Stu\Component\Realtime\RealtimeRedisFactory;
 use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Lib\Map\VisualPanel\LssBlockade\LssBlockadeGrid;
+use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,6 +27,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Throwable;
 
@@ -53,7 +57,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private ConfigInterface $config,
         private AllianceJobManagerInterface $allianceJobManager,
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
-        private ContactRepositoryInterface $contactRepository
+        private ContactRepositoryInterface $contactRepository,
+        private MapRepositoryInterface $mapRepository
     ) {}
 
     /**
@@ -79,12 +84,17 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         $canSeeAllianceShips = $alliance !== null
             && $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS);
         $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
-        $this->cacheCoverage($user->getId(), $layer->getId(), $ranges);
+        $coverage = $this->buildSensorCoverage($layer, $ranges);
+        $this->cacheCoverage($user->getId(), $layer->getId(), $coverage);
 
         $spacecrafts = $ranges === []
             ? []
             : $this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId());
         $relationContext = $this->getRelationContext($user);
+        $spacecrafts = array_values(array_filter(array_map(
+            fn (array $row): ?array => $this->normalizeVisibleSpacecraft($row, $user, $canSeeAllianceShips, $relationContext, $coverage),
+            $spacecrafts
+        )));
 
         header('Content-Type: application/json; charset=utf-8');
         header('Cache-Control: no-store');
@@ -101,10 +111,10 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'refreshAfter' => self::REFRESH_AFTER_SECONDS,
             'webSocketUrl' => $this->getWebSocketUrl(),
             'sensorRangeCount' => count($ranges),
-            'spacecrafts' => array_map(
-                fn (array $row): array => $this->normalizeSpacecraft($row, $user, $canSeeAllianceShips, $relationContext),
-                $spacecrafts
-            )
+            'sensorCoverageRuns' => $coverage['runs'],
+            'sensorCoverageFieldCount' => $coverage['fieldCount'],
+            'sensorTachyonFieldCount' => $coverage['tachyonFieldCount'],
+            'spacecrafts' => $spacecrafts
         ], self::JSON_FLAGS);
 
         exit;
@@ -123,9 +133,17 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     }
 
     /**
-     * @param array<int, array<string, mixed>> $ranges
+     * @param array{
+     *     runs: array<int, array{y: int, startX: int, endX: int}>,
+     *     tachyonRuns: array<int, array{y: int, startX: int, endX: int}>,
+     *     sourceCount: int,
+     *     fieldCount: int,
+     *     tachyonFieldCount: int,
+     *     visibleKeys: array<string, true>,
+     *     tachyonKeys: array<string, true>
+     * } $coverage
      */
-    private function cacheCoverage(int $userId, int $layerId, array $ranges): void
+    private function cacheCoverage(int $userId, int $layerId, array $coverage): void
     {
         try {
             $redis = $this->redisFactory->create();
@@ -136,18 +154,231 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $redis->setex(
                 RealtimeChannels::starmapCoverageKey($userId, $layerId),
                 self::COVERAGE_TTL_SECONDS,
-                json_encode(array_map(
-                    fn (array $range): array => [
-                        'x' => (int) $range['x'],
-                        'y' => (int) $range['y'],
-                        'range' => (int) $range['sensor_range']
-                    ],
-                    $ranges
-                ), self::JSON_FLAGS)
+                json_encode([
+                    'runs' => $coverage['runs'],
+                    'tachyonRuns' => $coverage['tachyonRuns'],
+                    'sourceCount' => $coverage['sourceCount'],
+                    'fieldCount' => $coverage['fieldCount'],
+                    'tachyonFieldCount' => $coverage['tachyonFieldCount']
+                ], self::JSON_FLAGS)
             );
         } catch (Throwable) {
             return;
         }
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $ranges
+     * @return array{
+     *     runs: array<int, array{y: int, startX: int, endX: int}>,
+     *     tachyonRuns: array<int, array{y: int, startX: int, endX: int}>,
+     *     sourceCount: int,
+     *     fieldCount: int,
+     *     tachyonFieldCount: int,
+     *     visibleKeys: array<string, true>,
+     *     tachyonKeys: array<string, true>
+     * }
+     */
+    private function buildSensorCoverage(Layer $layer, array $ranges): array
+    {
+        $visibleKeys = [];
+        $tachyonKeys = [];
+
+        if ($ranges === []) {
+            return $this->buildCoverageResult($visibleKeys, $tachyonKeys, 0);
+        }
+
+        $blockers = $this->getLssBlockadeKeys($layer, $ranges);
+
+        foreach ($ranges as $range) {
+            $sourceX = (int) $range['x'];
+            $sourceY = (int) $range['y'];
+            $sensorRange = max(0, (int) $range['sensor_range']);
+            $tachyonRange = max(0, (int) ($range['tachyon_range'] ?? 0));
+            $maxRange = max($sensorRange, $tachyonRange);
+
+            if ($maxRange <= 0) {
+                continue;
+            }
+
+            $minX = max(1, $sourceX - $maxRange);
+            $maxX = min($layer->getWidth(), $sourceX + $maxRange);
+            $minY = max(1, $sourceY - $maxRange);
+            $maxY = min($layer->getHeight(), $sourceY + $maxRange);
+
+            $grid = new LssBlockadeGrid($minX, $maxX, $minY, $maxY, $sourceX, $sourceY);
+            foreach ($blockers as $blockerKey => $_value) {
+                [$blockerX, $blockerY] = array_map('intval', explode(':', $blockerKey));
+                if ($blockerX < $minX || $blockerX > $maxX || $blockerY < $minY || $blockerY > $maxY) {
+                    continue;
+                }
+                $grid->setBlocked($blockerX, $blockerY);
+            }
+
+            for ($y = $minY; $y <= $maxY; $y++) {
+                for ($x = $minX; $x <= $maxX; $x++) {
+                    if (!$grid->isVisible($x, $y)) {
+                        continue;
+                    }
+
+                    $distanceX = abs($x - $sourceX);
+                    $distanceY = abs($y - $sourceY);
+                    $key = $this->fieldKey($x, $y);
+
+                    if ($sensorRange > 0 && $distanceX <= $sensorRange && $distanceY <= $sensorRange) {
+                        $visibleKeys[$key] = true;
+                    }
+                    if ($tachyonRange > 0 && $distanceX <= $tachyonRange && $distanceY <= $tachyonRange) {
+                        $tachyonKeys[$key] = true;
+                    }
+                }
+            }
+        }
+
+        return $this->buildCoverageResult($visibleKeys, $tachyonKeys, count($ranges));
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $ranges
+     * @return array<string, true>
+     */
+    private function getLssBlockadeKeys(Layer $layer, array $ranges): array
+    {
+        $minX = $layer->getWidth();
+        $maxX = 1;
+        $minY = $layer->getHeight();
+        $maxY = 1;
+
+        foreach ($ranges as $range) {
+            $sourceX = (int) $range['x'];
+            $sourceY = (int) $range['y'];
+            $maxRange = max(0, (int) $range['sensor_range'], (int) ($range['tachyon_range'] ?? 0));
+            if ($maxRange <= 0) {
+                continue;
+            }
+
+            $minX = min($minX, max(1, $sourceX - $maxRange));
+            $maxX = max($maxX, min($layer->getWidth(), $sourceX + $maxRange));
+            $minY = min($minY, max(1, $sourceY - $maxRange));
+            $maxY = max($maxY, min($layer->getHeight(), $sourceY + $maxRange));
+        }
+
+        if ($minX > $maxX || $minY > $maxY) {
+            return [];
+        }
+
+        $boundaries = new PanelBoundaries($minX, $maxX, $minY, $maxY, $layer);
+        $keys = [];
+        foreach ($this->mapRepository->getLssBlockadeLocations($boundaries) as $entry) {
+            $effects = $entry['effects'] ?? null;
+            if (!is_string($effects) || !str_contains($effects, FieldTypeEffectEnum::LSS_BLOCKADE->value)) {
+                continue;
+            }
+            $keys[$this->fieldKey((int) $entry['x'], (int) $entry['y'])] = true;
+        }
+
+        return $keys;
+    }
+
+    /**
+     * @param array<string, true> $visibleKeys
+     * @param array<string, true> $tachyonKeys
+     * @return array{
+     *     runs: array<int, array{y: int, startX: int, endX: int}>,
+     *     tachyonRuns: array<int, array{y: int, startX: int, endX: int}>,
+     *     sourceCount: int,
+     *     fieldCount: int,
+     *     tachyonFieldCount: int,
+     *     visibleKeys: array<string, true>,
+     *     tachyonKeys: array<string, true>
+     * }
+     */
+    private function buildCoverageResult(array $visibleKeys, array $tachyonKeys, int $sourceCount): array
+    {
+        return [
+            'runs' => $this->buildRunsFromKeys($visibleKeys),
+            'tachyonRuns' => $this->buildRunsFromKeys($tachyonKeys),
+            'sourceCount' => $sourceCount,
+            'fieldCount' => count($visibleKeys),
+            'tachyonFieldCount' => count($tachyonKeys),
+            'visibleKeys' => $visibleKeys,
+            'tachyonKeys' => $tachyonKeys
+        ];
+    }
+
+    /**
+     * @param array<string, true> $keys
+     * @return array<int, array{y: int, startX: int, endX: int}>
+     */
+    private function buildRunsFromKeys(array $keys): array
+    {
+        $rows = [];
+        foreach (array_keys($keys) as $key) {
+            [$x, $y] = array_map('intval', explode(':', $key));
+            $rows[$y][] = $x;
+        }
+        ksort($rows);
+
+        $runs = [];
+        foreach ($rows as $y => $xs) {
+            sort($xs);
+            $startX = $xs[0];
+            $lastX = $startX;
+            foreach (array_slice($xs, 1) as $x) {
+                if ($x === $lastX + 1) {
+                    $lastX = $x;
+                    continue;
+                }
+                $runs[] = ['y' => (int) $y, 'startX' => $startX, 'endX' => $lastX];
+                $startX = $lastX = $x;
+            }
+            $runs[] = ['y' => (int) $y, 'startX' => $startX, 'endX' => $lastX];
+        }
+
+        return $runs;
+    }
+
+    private function fieldKey(int $x, int $y): string
+    {
+        return sprintf('%d:%d', $x, $y);
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
+     * @param array{
+     *     runs: array<int, array{y: int, startX: int, endX: int}>,
+     *     tachyonRuns: array<int, array{y: int, startX: int, endX: int}>,
+     *     sourceCount: int,
+     *     fieldCount: int,
+     *     tachyonFieldCount: int,
+     *     visibleKeys: array<string, true>,
+     *     tachyonKeys: array<string, true>
+     * } $coverage
+     * @return null|array<string, mixed>
+     */
+    private function normalizeVisibleSpacecraft(
+        array $row,
+        User $user,
+        bool $canSeeAllianceShips,
+        array $relationContext,
+        array $coverage
+    ): ?array {
+        $key = $this->fieldKey((int) $row['x'], (int) $row['y']);
+        $isOwn = (int) $row['user_id'] === $user->getId();
+        $isCloaked = (bool) $row['is_cloaked'];
+
+        if (!$isOwn) {
+            if ($isCloaked) {
+                if (!isset($coverage['tachyonKeys'][$key])) {
+                    return null;
+                }
+            } elseif (!isset($coverage['visibleKeys'][$key])) {
+                return null;
+            }
+        }
+
+        return $this->normalizeSpacecraft($row, $user, $canSeeAllianceShips, $relationContext);
     }
 
     /**
@@ -159,6 +390,9 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     {
         $alertState = (int) $row['alert_state'];
         $relationship = $this->getSpacecraftRelationship($row, $user, $canSeeAllianceShips, $relationContext);
+        if ((bool) $row['is_cloaked'] && !$relationship['hasDetails']) {
+            return $this->normalizeCloakedSignature($row, $relationship);
+        }
 
         $spacecraft = [
             'id' => (int) $row['id'],
@@ -204,6 +438,44 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'maxWarpdrive' => (int) $row['max_warpdrive'],
             'alertState' => $alertState,
             'alertStateName' => SpacecraftAlertStateEnum::tryFrom($alertState)?->getDescription() ?? 'Unbekannt'
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @param array{isOwn: bool, isFriendly: bool, isEnemy: bool, hasDetails: bool} $relationship
+     * @return array<string, mixed>
+     */
+    private function normalizeCloakedSignature(array $row, array $relationship): array
+    {
+        return [
+            'id' => (int) $row['id'],
+            'name' => '?',
+            'nameText' => '?',
+            'nameHtml' => '?',
+            'type' => (string) $row['type'],
+            'userId' => 0,
+            'userName' => 'Unbekannt',
+            'userNameText' => 'Unbekannt',
+            'userNameHtml' => 'Unbekannt',
+            'allianceId' => null,
+            'allianceName' => null,
+            'allianceNameText' => null,
+            'allianceNameHtml' => null,
+            'rumpId' => 0,
+            'rumpName' => 'Tarnsignatur',
+            'rumpImage' => '',
+            'x' => (int) $row['x'],
+            'y' => (int) $row['y'],
+            'inSystem' => (bool) $row['in_system'],
+            'systemName' => $row['system_name'] !== null ? (string) $row['system_name'] : null,
+            'isCloaked' => true,
+            'isCloakedSignature' => true,
+            'isOwn' => $relationship['isOwn'],
+            'isFriendly' => false,
+            'isEnemy' => false,
+            'hasDetails' => false,
+            'isSensorContact' => true
         ];
     }
 

@@ -84,7 +84,9 @@ async function handleConnection(ws, request) {
 		type: "ready",
 		generatedAt: Math.floor(Date.now() / 1000),
 		layerId: client.layerId,
-		coverageCount: client.coverage.length
+		coverageCount: client.coverage.sourceCount,
+		coverageFieldCount: client.coverage.fieldCount,
+		tachyonFieldCount: client.coverage.tachyonFieldCount
 	});
 
 	ws.on("close", function () {
@@ -139,6 +141,11 @@ function dispatchPayload(rawPayload) {
 		return;
 	}
 
+	if (payload.type === "spacecraftState") {
+		dispatchStatePayload(payload);
+		return;
+	}
+
 	if (payload.type !== "spacecraftMovement" || !payload.spacecraft || !payload.from || !payload.to) {
 		return;
 	}
@@ -149,12 +156,8 @@ function dispatchPayload(rawPayload) {
 		}
 
 		refreshCoverageIfNeeded(client).then(function () {
-			if (payload.spacecraft.isCloaked && Number(payload.spacecraft.userId) !== client.userId) {
-				return;
-			}
-
-			const fromVisible = isPointCovered(client.coverage, payload.from);
-			const toVisible = isPointCovered(client.coverage, payload.to);
+			const fromVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.from);
+			const toVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.to);
 			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
 			if (!fromVisible && !toVisible && !staticVisible) {
 				return;
@@ -183,6 +186,43 @@ function dispatchPayload(rawPayload) {
 	}
 }
 
+function dispatchStatePayload(payload) {
+	if (!payload.spacecraft || !payload.position) {
+		return;
+	}
+
+	for (const client of clients) {
+		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+			continue;
+		}
+
+		refreshCoverageIfNeeded(client).then(function () {
+			const covered = isPointCovered(client.coverage, payload.position);
+			const visible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position);
+			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
+			if (!covered && !visible && !staticVisible) {
+				return;
+			}
+
+			const spacecraft = visible || staticVisible
+				? sanitizeSpacecraftForClient(client, payload.spacecraft)
+				: { id: payload.spacecraft.id };
+
+			sendJson(client.ws, {
+				type: "spacecraftState",
+				generatedAt: payload.generatedAt,
+				layerId: payload.layerId,
+				position: payload.position,
+				visible,
+				staticVisible,
+				spacecraft
+			});
+		}).catch(function (error) {
+			console.error("Coverage refresh failed:", error.message);
+		});
+	}
+}
+
 function dispatchRemovalPayload(payload) {
 	if (!payload.spacecraft || !payload.position) {
 		return;
@@ -194,7 +234,7 @@ function dispatchRemovalPayload(payload) {
 		}
 
 		refreshCoverageIfNeeded(client).then(function () {
-			if (!isPointCovered(client.coverage, payload.position)) {
+			if (!isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position)) {
 				if (!isSpacecraftStaticallyVisible(client, payload.spacecraft)) {
 					return;
 				}
@@ -232,44 +272,93 @@ async function refreshCoverageIfNeeded(client) {
 async function loadCoverage(userId, layerId) {
 	const raw = await redis.get(`${COVERAGE_PREFIX}${userId}:${layerId}`);
 	if (!raw) {
-		return [];
+		return createEmptyCoverage();
 	}
 
 	try {
 		const coverage = JSON.parse(raw);
-		if (!Array.isArray(coverage)) {
-			return [];
+		if (Array.isArray(coverage)) {
+			return {
+				runs: [],
+				tachyonRuns: [],
+				sourceCount: coverage.length,
+				fieldCount: 0,
+				tachyonFieldCount: 0
+			};
 		}
 
-		return coverage
-			.map(function (entry) {
-				return {
-					x: Number(entry.x),
-					y: Number(entry.y),
-					range: Number(entry.range)
-				};
-			})
-			.filter(function (entry) {
-				return Number.isFinite(entry.x) && Number.isFinite(entry.y) && Number.isFinite(entry.range) && entry.range >= 0;
-			});
+		return {
+			runs: normalizeRuns(coverage.runs),
+			tachyonRuns: normalizeRuns(coverage.tachyonRuns),
+			sourceCount: Number(coverage.sourceCount) || 0,
+			fieldCount: Number(coverage.fieldCount) || 0,
+			tachyonFieldCount: Number(coverage.tachyonFieldCount) || 0
+		};
 	} catch {
-		return [];
+		return createEmptyCoverage();
 	}
 }
 
+function createEmptyCoverage() {
+	return {
+		runs: [],
+		tachyonRuns: [],
+		sourceCount: 0,
+		fieldCount: 0,
+		tachyonFieldCount: 0
+	};
+}
+
+function normalizeRuns(runs) {
+	if (!Array.isArray(runs)) {
+		return [];
+	}
+
+	return runs
+		.map(function (run) {
+			return {
+				y: Number(run.y),
+				startX: Number(run.startX),
+				endX: Number(run.endX)
+			};
+		})
+		.filter(function (run) {
+			return Number.isFinite(run.y)
+				&& Number.isFinite(run.startX)
+				&& Number.isFinite(run.endX)
+				&& run.startX <= run.endX;
+		});
+}
+
 function isPointCovered(coverage, point) {
+	return isPointInRuns(coverage.runs, point);
+}
+
+function isPointTachyonCovered(coverage, point) {
+	return isPointInRuns(coverage.tachyonRuns, point);
+}
+
+function isPointInRuns(runs, point) {
 	const x = Number(point.x);
 	const y = Number(point.y);
 	if (!Number.isFinite(x) || !Number.isFinite(y)) {
 		return false;
 	}
 
-	return coverage.some(function (entry) {
-		return x >= entry.x - entry.range
-			&& x <= entry.x + entry.range
-			&& y >= entry.y - entry.range
-			&& y <= entry.y + entry.range;
+	return runs.some(function (run) {
+		return y === run.y && x >= run.startX && x <= run.endX;
 	});
+}
+
+function isSpacecraftVisibleAtPoint(client, spacecraft, point) {
+	if (Number(spacecraft.userId) === client.userId) {
+		return true;
+	}
+	if (spacecraft.isCloaked) {
+		return isPointTachyonCovered(client.coverage, point);
+	}
+
+	return isPointCovered(client.coverage, point);
 }
 
 function isSpacecraftStaticallyVisible(client, spacecraft) {
@@ -289,6 +378,10 @@ function isSpacecraftStaticallyVisible(client, spacecraft) {
 
 function sanitizeSpacecraftForClient(client, spacecraft) {
 	const relationship = getSpacecraftRelationship(client, spacecraft);
+	if (spacecraft.isCloaked && !relationship.hasDetails) {
+		return sanitizeCloakedSignature(spacecraft, relationship);
+	}
+
 	const result = {
 		...spacecraft,
 		isOwn: relationship.isOwn,
@@ -311,6 +404,37 @@ function sanitizeSpacecraftForClient(client, spacecraft) {
 	}
 
 	return result;
+}
+
+function sanitizeCloakedSignature(spacecraft, relationship) {
+	return {
+		id: spacecraft.id,
+		name: "?",
+		nameText: "?",
+		nameHtml: "?",
+		type: spacecraft.type,
+		userId: 0,
+		userName: "Unbekannt",
+		userNameText: "Unbekannt",
+		userNameHtml: "Unbekannt",
+		allianceId: null,
+		allianceName: null,
+		allianceNameText: null,
+		allianceNameHtml: null,
+		rumpId: 0,
+		rumpName: "Tarnsignatur",
+		rumpImage: "",
+		x: spacecraft.x,
+		y: spacecraft.y,
+		inSystem: Boolean(spacecraft.inSystem),
+		systemName: spacecraft.systemName || null,
+		isCloaked: true,
+		isCloakedSignature: true,
+		isOwn: relationship.isOwn,
+		isFriendly: false,
+		isEnemy: false,
+		hasDetails: false
+	};
 }
 
 function getSpacecraftRelationship(client, spacecraft) {

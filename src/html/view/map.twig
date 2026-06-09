@@ -69,6 +69,10 @@
                         <input type="checkbox" id="userStarmapShowSensorContacts" />
                         Sensor-Livekontakte
                     </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowSensorCoverage" />
+                        Sensorbereich
+                    </label>
                     <label class="userStarmapSectorControl">
                         <span>Sektor</span>
                         <select id="userStarmapSectorHighlight">
@@ -96,7 +100,7 @@
     if (typeof initUserStarmap === 'function') {
         initUserStarmap();
     } else if (typeof appendJsAsync === 'function') {
-        appendJsAsync('{{ JAVASCRIPTPATH }}/js/userStarmap.js?v=user-full-starmap-contact-relations', function () {
+        appendJsAsync('{{ JAVASCRIPTPATH }}/js/userStarmap.js?v=user-full-starmap-animation-groups', function () {
             if (typeof initUserStarmap === 'function') {
                 initUserStarmap();
             }

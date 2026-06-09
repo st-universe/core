@@ -6,6 +6,7 @@ namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -24,6 +25,7 @@ class CloakShipSystemTest extends StuTestCase
     private MockInterface&SpacecraftStateChangerInterface $spacecraftStateChanger;
     private MockInterface&Ship $ship;
     private MockInterface&ShipWrapperInterface $wrapper;
+    private MockInterface&SpacecraftMovementPublisherInterface $spacecraftMovementPublisher;
 
     private CloakShipSystem $system;
 
@@ -33,6 +35,10 @@ class CloakShipSystemTest extends StuTestCase
         $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->spacecraftStateChanger = $this->mock(SpacecraftStateChangerInterface::class);
+        $this->spacecraftMovementPublisher = $this->mock(SpacecraftMovementPublisherInterface::class);
+        $this->spacecraftMovementPublisher->shouldReceive('publishState')
+            ->zeroOrMoreTimes()
+            ->byDefault();
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
@@ -40,7 +46,8 @@ class CloakShipSystemTest extends StuTestCase
             ->andReturn($this->ship);
 
         $this->system = new CloakShipSystem(
-            $this->spacecraftStateChanger
+            $this->spacecraftStateChanger,
+            $this->spacecraftMovementPublisher
         );
     }
 
@@ -303,6 +310,9 @@ class CloakShipSystemTest extends StuTestCase
         $systemCloak->shouldReceive('setMode')
             ->with(SpacecraftSystemModeEnum::MODE_ON)
             ->once();
+        $this->spacecraftMovementPublisher->shouldReceive('publishState')
+            ->with($this->ship)
+            ->once();
         $managerMock->shouldReceive('deactivate')
             ->with($this->wrapper, SpacecraftSystemTypeEnum::TRACTOR_BEAM, true)
             ->once();
@@ -320,6 +330,9 @@ class CloakShipSystemTest extends StuTestCase
             ->andReturn($system);
         $system->shouldReceive('setMode')
             ->with(SpacecraftSystemModeEnum::MODE_OFF)
+            ->once();
+        $this->spacecraftMovementPublisher->shouldReceive('publishState')
+            ->with($this->ship)
             ->once();
 
         $this->system->deactivate($this->wrapper);

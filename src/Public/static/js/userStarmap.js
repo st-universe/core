@@ -10,9 +10,9 @@
 	const AXIS_MIN_TICK_SPACING = 6;
 	const TOOLTIP_ITEM_LIMIT = 8;
 	const CONTACT_ANIMATION_MS = 300;
-	const ALLIANCE_CONTACT_COLOR = "#ffe06b";
-	const OWN_CONTACT_COLOR = "#67e878";
-	const FOREIGN_CONTACT_COLOR = "#ffffff";
+	const ALLIANCE_CONTACT_COLOR = "#67e878";
+	const OWN_CONTACT_COLOR = "#ffffff";
+	const FOREIGN_CONTACT_COLOR = "#ffe06b";
 	const ENEMY_CONTACT_COLOR = "#ff4a4a";
 
 	function clamp(value, min, max) {
@@ -115,6 +115,7 @@
 			showAllianceShips: false,
 			showAllianceStations: false,
 			showSensorContacts: false,
+			showSensorCoverage: false,
 			selectedSectorId: 0,
 			fields: [],
 			fieldByKey: new Map(),
@@ -128,6 +129,8 @@
 			sensorSpacecrafts: [],
 			sensorSpacecraftById: new Map(),
 			sensorSpacecraftByField: new Map(),
+			sensorCoverageRuns: [],
+			sensorCoverageKeys: new Set(),
 			contactAnimations: new Map(),
 			contactAnimationFrame: 0,
 			visibleRuns: [],
@@ -151,7 +154,8 @@
 				axisBackground: getCssColor("--color-29", "#101010"),
 				axisBorder: getCssColor("--color-53", "#333333"),
 				axisTick: getCssColor("--color-16", "#555555"),
-				axisText: getCssColor("--color-56", "#ffffff")
+				axisText: getCssColor("--color-56", "#ffffff"),
+				sensorCoverage: getCssColor("--color-35", "#55d7ff")
 			}
 		};
 
@@ -197,6 +201,7 @@
 		wireCheckbox(state, "userStarmapShowAllianceShips", "showAllianceShips", true);
 		wireCheckbox(state, "userStarmapShowAllianceStations", "showAllianceStations", true);
 		wireSensorContacts(state);
+		wireCheckbox(state, "userStarmapShowSensorCoverage", "showSensorCoverage", true);
 		wireSectorSelect(state);
 
 		state.canvas.addEventListener("mousedown", function (event) {
@@ -472,6 +477,7 @@
 			isEnemy,
 			hasDetails,
 			isSensorContact: Boolean(spacecraft.isSensorContact),
+			isCloakedSignature: Boolean(spacecraft.isCloakedSignature),
 			hull: Number(spacecraft.hull) || 0,
 			maxHull: Number(spacecraft.maxHull) || 0,
 			shield: Number(spacecraft.shield) || 0,
@@ -545,6 +551,7 @@
 
 	function shouldKeepRealtimeConnection(state) {
 		return state.showSensorContacts
+			|| state.showSensorCoverage
 			|| state.showOwnShips
 			|| state.showOwnStations
 			|| state.showAllianceShips
@@ -585,6 +592,7 @@
 					return;
 				}
 
+				applySensorCoverage(state, Array.isArray(data.sensorCoverageRuns) ? data.sensorCoverageRuns : []);
 				applySensorSpacecrafts(state, state.showSensorContacts && Array.isArray(data.spacecrafts) ? data.spacecrafts : []);
 				updateFieldDetails(state, state.selectedField);
 				scheduleDraw(state);
@@ -605,8 +613,40 @@
 		clearRealtimeTimers(state);
 		closeRealtimeSocket(state);
 		applySensorSpacecrafts(state, []);
+		applySensorCoverage(state, []);
 		clearContactAnimations(state);
 		setStatus(state, "Livekontakte aus");
+	}
+
+	function applySensorCoverage(state, runs) {
+		state.sensorCoverageRuns = normalizeCoverageRuns(runs);
+		state.sensorCoverageKeys = buildCoverageKeys(state.sensorCoverageRuns);
+	}
+
+	function normalizeCoverageRuns(runs) {
+		return runs.map(function (run) {
+			return {
+				y: Number(run.y),
+				startX: Number(run.startX),
+				endX: Number(run.endX)
+			};
+		}).filter(function (run) {
+			return Number.isFinite(run.y)
+				&& Number.isFinite(run.startX)
+				&& Number.isFinite(run.endX)
+				&& run.startX <= run.endX;
+		});
+	}
+
+	function buildCoverageKeys(runs) {
+		const keys = new Set();
+		runs.forEach(function (run) {
+			for (let x = run.startX; x <= run.endX; x++) {
+				keys.add(fieldKey(x, run.y));
+			}
+		});
+
+		return keys;
 	}
 
 	function applySensorSpacecrafts(state, spacecrafts) {
@@ -706,7 +746,36 @@
 		}
 
 		if (message.type === "ready") {
-			setStatus(state, "Livekontakte verbunden (" + Number(message.coverageCount || 0) + " Sensorquellen)");
+			setStatus(
+				state,
+				"Livekontakte verbunden (" +
+				Number(message.coverageCount || 0) +
+				" Sensorquellen, " +
+				Number(message.coverageFieldCount || 0) +
+				" Felder)"
+			);
+			return;
+		}
+
+		if (message.type === "spacecraftState" && shouldKeepRealtimeConnection(state) && message.spacecraft) {
+			const spacecraftId = Number(message.spacecraft.id);
+			if (!Number.isFinite(spacecraftId)) {
+				return;
+			}
+
+			state.contactAnimations.delete(spacecraftId);
+			removeSensorSpacecraft(state, spacecraftId);
+			updateStaticSpacecraft(state, message.spacecraft, Boolean(message.staticVisible));
+
+			if (state.showSensorContacts && message.visible && message.spacecraft.x != null && message.spacecraft.y != null) {
+				const spacecraft = normalizeSpacecraft(message.spacecraft);
+				spacecraft.isSensorContact = true;
+				addSensorSpacecraft(state, spacecraft);
+			}
+
+			updateTooltip(state);
+			updateFieldDetails(state, state.selectedField);
+			scheduleDraw(state);
 			return;
 		}
 
@@ -997,6 +1066,9 @@
 		if (state.selectedSectorId > 0) {
 			drawSelectedSector(state, ctx);
 		}
+		if (state.showSensorCoverage) {
+			drawSensorCoverage(state, ctx);
+		}
 		drawSpacecraftContacts(state, ctx);
 		if (state.selectedField) {
 			drawSelection(state, ctx, state.selectedField);
@@ -1107,6 +1179,56 @@
 		ctx.restore();
 	}
 
+	function drawSensorCoverage(state, ctx) {
+		if (state.sensorCoverageKeys.size === 0 || state.scale < 0.08) {
+			return;
+		}
+
+		const bounds = getVisibleFieldBounds(state);
+		const lineWidth = Math.max(1, 2 / state.scale);
+
+		ctx.save();
+		ctx.strokeStyle = state.colors.sensorCoverage;
+		ctx.lineWidth = lineWidth;
+		ctx.beginPath();
+
+		state.sensorCoverageKeys.forEach(function (key) {
+			const coordinates = parseFieldKey(key);
+			if (!coordinates) {
+				return;
+			}
+			if (coordinates.x < bounds.startX || coordinates.x > bounds.endX || coordinates.y < bounds.startY || coordinates.y > bounds.endY) {
+				return;
+			}
+
+			const rect = getFieldRect(state, coordinates);
+			const left = rect.x;
+			const right = rect.x + rect.size;
+			const top = rect.y;
+			const bottom = rect.y + rect.size;
+
+			if (!state.sensorCoverageKeys.has(fieldKey(coordinates.x, coordinates.y - 1))) {
+				ctx.moveTo(left, top);
+				ctx.lineTo(right, top);
+			}
+			if (!state.sensorCoverageKeys.has(fieldKey(coordinates.x + 1, coordinates.y))) {
+				ctx.moveTo(right, top);
+				ctx.lineTo(right, bottom);
+			}
+			if (!state.sensorCoverageKeys.has(fieldKey(coordinates.x, coordinates.y + 1))) {
+				ctx.moveTo(right, bottom);
+				ctx.lineTo(left, bottom);
+			}
+			if (!state.sensorCoverageKeys.has(fieldKey(coordinates.x - 1, coordinates.y))) {
+				ctx.moveTo(left, bottom);
+				ctx.lineTo(left, top);
+			}
+		});
+
+		ctx.stroke();
+		ctx.restore();
+	}
+
 	function drawSpacecraftContacts(state, ctx) {
 		const now = performance.now();
 		updateContactAnimations(state, now);
@@ -1147,14 +1269,31 @@
 	}
 
 	function drawContactAnimations(state, ctx, bounds, now) {
+		const animationGroups = new Map();
+
 		state.contactAnimations.forEach(function (animation) {
-			const position = getContactAnimationPosition(animation, now);
+			const key = getContactAnimationGroupKey(animation);
+			let group = animationGroups.get(key);
+			if (!group) {
+				group = {
+					animations: [],
+					spacecrafts: []
+				};
+				animationGroups.set(key, group);
+			}
+
+			group.animations.push(animation);
+			group.spacecrafts.push(animation.spacecraft);
+		});
+
+		animationGroups.forEach(function (group) {
+			const position = getContactAnimationGroupPosition(group.animations, now);
 			if (position.x < bounds.startX - 1 || position.x > bounds.endX + 1 || position.y < bounds.startY - 1 || position.y > bounds.endY + 1) {
 				return;
 			}
 
 			const rect = getFieldRect(state, position);
-			const progress = clamp((now - animation.startedAt) / animation.duration, 0, 1);
+			const progress = getContactAnimationGroupProgress(group.animations, now);
 			const alpha = 0.72 + Math.sin(progress * Math.PI) * 0.23;
 
 			drawContactCountAt(
@@ -1162,10 +1301,45 @@
 				ctx,
 				rect.x + rect.size / 2,
 				rect.y + rect.size / 2,
-				getContactStats([animation.spacecraft]),
+				getContactStats(group.spacecrafts),
 				alpha
 			);
 		});
+	}
+
+	function getContactAnimationGroupKey(animation) {
+		return [
+			animation.fromX,
+			animation.fromY,
+			animation.toX,
+			animation.toY
+		].join(":");
+	}
+
+	function getContactAnimationGroupPosition(animations, now) {
+		let x = 0;
+		let y = 0;
+
+		animations.forEach(function (animation) {
+			const position = getContactAnimationPosition(animation, now);
+			x += position.x;
+			y += position.y;
+		});
+
+		return {
+			x: x / animations.length,
+			y: y / animations.length
+		};
+	}
+
+	function getContactAnimationGroupProgress(animations, now) {
+		let progress = 0;
+
+		animations.forEach(function (animation) {
+			progress += clamp((now - animation.startedAt) / animation.duration, 0, 1);
+		});
+
+		return progress / animations.length;
 	}
 
 	function updateContactAnimations(state, now) {
@@ -1245,14 +1419,14 @@
 		if (stats.enemyCount > 0) {
 			return ENEMY_CONTACT_COLOR;
 		}
-		if (stats.friendlyCount > 0) {
-			return ALLIANCE_CONTACT_COLOR;
+		if (stats.foreignCount > 0) {
+			return FOREIGN_CONTACT_COLOR;
 		}
 		if (stats.ownCount > 0) {
 			return OWN_CONTACT_COLOR;
 		}
 
-		return FOREIGN_CONTACT_COLOR;
+		return ALLIANCE_CONTACT_COLOR;
 	}
 
 	function drawAxes(state, ctx) {
@@ -1697,6 +1871,16 @@
 
 		html.push('<div class="userStarmapTooltipLine"><strong>Kontakte: ' + spacecrafts.length + "</strong></div>");
 		spacecrafts.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (spacecraft) {
+			if (spacecraft.isCloakedSignature) {
+				html.push(
+					'<div class="userStarmapTooltipItem">' +
+					'<span class="userStarmapTooltipName">?</span>' +
+					'<span class="userStarmapTooltipMeta"> | Tarnsignatur</span>' +
+					"</div>"
+				);
+				return;
+			}
+
 			html.push(
 				'<div class="userStarmapTooltipItem">' +
 				'<span class="userStarmapTooltipName">' +
@@ -1840,6 +2024,16 @@
 	}
 
 	function buildSpacecraftEntryHtml(spacecraft) {
+		if (spacecraft.isCloakedSignature) {
+			return '<div class="userStarmapShipEntry">' +
+				'<div class="userStarmapCloakedSignature">?</div>' +
+				'<div class="userStarmapShipText">' +
+				'<div class="userStarmapShipName">?</div>' +
+				'<div class="userStarmapShipMeta">Tarnsignatur</div>' +
+				"</div>" +
+				"</div>";
+		}
+
 		const owner = spacecraft.userNameHtml + " (" + spacecraft.userId + ")";
 		const location = spacecraft.inSystem && spacecraft.systemName
 			? "im System " + spacecraft.systemName
