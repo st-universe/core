@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+NODE_PID=""
+
+cleanup() {
+    if [[ -n "$NODE_PID" ]] && kill -0 "$NODE_PID" 2>/dev/null; then
+        kill "$NODE_PID" 2>/dev/null || true
+        wait "$NODE_PID" 2>/dev/null || true
+    fi
+}
+
+trap cleanup EXIT INT TERM
+
+redis_is_running() {
+    if command -v redis-cli >/dev/null 2>&1; then
+        redis-cli ping >/dev/null 2>&1
+        return
+    fi
+
+    (exec 3<>/dev/tcp/127.0.0.1/6379) 2>/dev/null || return 1
+    exec 3<>/dev/tcp/127.0.0.1/6379
+    printf '*1\r\n$4\r\nPING\r\n' >&3
+    IFS= read -r -t 1 response <&3 || response=""
+    exec 3<&-
+    exec 3>&-
+
+    [[ "$response" == +PONG* ]]
+}
+
+if ! redis_is_running; then
+    if ! command -v redis-server >/dev/null 2>&1; then
+        echo "Redis ist lokal nicht erreichbar und redis-server wurde nicht gefunden."
+        echo "Installiere Redis z.B. mit: sudo pacman -S redis"
+        echo "Oder starte Redis per Docker: docker run -d --name stu-redis -p 6379:6379 redis:7-alpine"
+        exit 1
+    fi
+
+    echo "Starte lokalen Redis auf 127.0.0.1:6379..."
+    redis-server --daemonize yes --save "" --appendonly no --bind 127.0.0.1 --port 6379
+
+    for _ in {1..20}; do
+        if redis_is_running; then
+            break
+        fi
+        sleep 0.25
+    done
+fi
+
+if ! redis_is_running; then
+    echo "Redis ist nicht erreichbar."
+    exit 1
+fi
+
+if [[ ! -d node_modules ]]; then
+    echo "Installiere Node-Abhängigkeiten..."
+    npm install
+fi
+
+export STU_REALTIME_WEBSOCKET_URL="${STU_REALTIME_WEBSOCKET_URL:-ws://127.0.0.1:8787/realtime/starmap}"
+
+npm run realtime:starmap &
+NODE_PID="$!"
+
+sleep 0.75
+if ! kill -0 "$NODE_PID" 2>/dev/null; then
+    wait "$NODE_PID"
+fi
+
+php -S localhost:1337 -d xdebug.mode=off -t src/Public/ router.php

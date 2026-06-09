@@ -42,6 +42,7 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Component/Map/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Player/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Refactor/services.php');
+            $builder->addDefinitions(__DIR__ . '/../Component/Realtime/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Ship/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Spacecraft/services.php');
             $builder->addDefinitions(__DIR__ . '/../Component/Station/services.php');

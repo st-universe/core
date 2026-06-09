@@ -2,38 +2,41 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowUserStarmapData;
+namespace Stu\Module\Starmap\View\ShowUserStarmapRealtime;
 
 use JBBCode\Parser;
 use JsonException;
+use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Realtime\RealtimeChannels;
+use Stu\Component\Realtime\RealtimeRedisFactory;
+use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
-use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
-use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
-use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
-use Stu\Orm\Repository\UserMapRepositoryInterface;
+use Throwable;
 
-final class ShowUserStarmapData implements ViewControllerInterface
+final class ShowUserStarmapRealtime implements ViewControllerInterface
 {
     use LayerExplorationTrait;
 
-    public const string VIEW_IDENTIFIER = 'SHOW_USER_STARMAP_DATA';
+    public const string VIEW_IDENTIFIER = 'SHOW_USER_STARMAP_REALTIME';
 
     private const int JSON_FLAGS = JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE;
+    private const int TOKEN_TTL_SECONDS = 300;
+    private const int COVERAGE_TTL_SECONDS = 360;
+    private const int REFRESH_AFTER_SECONDS = 240;
 
     /** @var array<string, string> */
     private array $bbCodeTextCache = [];
@@ -43,14 +46,14 @@ final class ShowUserStarmapData implements ViewControllerInterface
 
     public function __construct(
         private LayerRepositoryInterface $layerRepository,
-        private MapRepositoryInterface $mapRepository,
-        private UserMapRepositoryInterface $userMapRepository,
-        private StarmapUiFactoryInterface $starmapUiFactory,
         private SpacecraftRepositoryInterface $spacecraftRepository,
+        private StarmapRealtimeTokenFactory $tokenFactory,
+        private RealtimeRedisFactory $redisFactory,
+        private Parser $bbCodeParser,
+        private ConfigInterface $config,
         private AllianceJobManagerInterface $allianceJobManager,
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
-        private ContactRepositoryInterface $contactRepository,
-        private Parser $bbCodeParser
+        private ContactRepositoryInterface $contactRepository
     ) {}
 
     /**
@@ -72,18 +75,15 @@ final class ShowUserStarmapData implements ViewControllerInterface
             exit;
         }
 
-        $visibility = $this->getVisibility($user, $layer);
-        $fields = $this->mapRepository->getUserStarmapFields($user->getId(), $layer->getId(), $visibility['full']);
         $alliance = $user->getAlliance();
         $canSeeAllianceShips = $alliance !== null
             && $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS);
-        $spacecrafts = $this->spacecraftRepository->getUserStarmapSpacecrafts(
-            $user->getId(),
-            $layer->getId(),
-            $alliance?->getId(),
-            $canSeeAllianceShips,
-            $visibility['full']
-        );
+        $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
+        $this->cacheCoverage($user->getId(), $layer->getId(), $ranges);
+
+        $spacecrafts = $ranges === []
+            ? []
+            : $this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId());
         $relationContext = $this->getRelationContext($user);
 
         header('Content-Type: application/json; charset=utf-8');
@@ -91,22 +91,16 @@ final class ShowUserStarmapData implements ViewControllerInterface
 
         echo json_encode([
             'generatedAt' => time(),
-            'cellSize' => ShowUserStarmapImage::CELL_SIZE,
-            'imageVersion' => $visibility['version'],
-            'fullyExplored' => $visibility['full'],
-            'visibleRuns' => $visibility['runs'],
-            'visibleFieldCount' => count($fields),
-            'canSeeAllianceShips' => $canSeeAllianceShips,
-            'layer' => [
-                'id' => $layer->getId(),
-                'name' => $layer->getName(),
-                'width' => $layer->getWidth(),
-                'height' => $layer->getHeight()
-            ],
-            'fields' => array_map(
-                fn (ExploreableStarMapInterface $field): array => $this->normalizeField($field, $layer),
-                $fields
+            'token' => $this->tokenFactory->create(
+                $user->getId(),
+                $layer->getId(),
+                self::TOKEN_TTL_SECONDS,
+                $this->getRealtimeTokenClaims($alliance?->getId(), $canSeeAllianceShips, $relationContext)
             ),
+            'tokenTtl' => self::TOKEN_TTL_SECONDS,
+            'refreshAfter' => self::REFRESH_AFTER_SECONDS,
+            'webSocketUrl' => $this->getWebSocketUrl(),
+            'sensorRangeCount' => count($ranges),
             'spacecrafts' => array_map(
                 fn (array $row): array => $this->normalizeSpacecraft($row, $user, $canSeeAllianceShips, $relationContext),
                 $spacecrafts
@@ -116,142 +110,44 @@ final class ShowUserStarmapData implements ViewControllerInterface
         exit;
     }
 
-    /**
-     * @return array{full: bool, version: string, runs: array<int, array{y: int, startX: int, endX: int}>}
-     */
-    private function getVisibility(User $user, Layer $layer): array
+    private function getWebSocketUrl(): string
     {
-        if ($this->hasExplored($user, $layer)) {
-            return [
-                'full' => true,
-                'version' => 'full',
-                'runs' => $this->getFullLayerRuns($layer)
-            ];
+        $url = getenv('STU_REALTIME_WEBSOCKET_URL');
+        if (is_string($url) && trim($url) !== '') {
+            return trim($url);
         }
 
-        $runs = $this->userMapRepository->getVisibleMapFieldRuns($user->getId(), $layer->getId());
+        $url = $this->config->get('realtime.webSocketUrl');
 
-        return [
-            'full' => false,
-            'version' => $this->buildRunsVersion($runs),
-            'runs' => $runs
-        ];
+        return is_string($url) && trim($url) !== '' ? trim($url) : '/realtime/starmap';
     }
 
     /**
-     * @return array<int, array{y: int, startX: int, endX: int}>
+     * @param array<int, array<string, mixed>> $ranges
      */
-    private function getFullLayerRuns(Layer $layer): array
+    private function cacheCoverage(int $userId, int $layerId, array $ranges): void
     {
-        $runs = [];
-        for ($y = 1; $y <= $layer->getHeight(); $y++) {
-            $runs[] = [
-                'y' => $y,
-                'startX' => 1,
-                'endX' => $layer->getWidth()
-            ];
-        }
-
-        return $runs;
-    }
-
-    /**
-     * @param array<int, array{y: int, startX: int, endX: int}> $runs
-     */
-    private function buildRunsVersion(array $runs): string
-    {
-        $hash = hash_init('sha1');
-
-        foreach ($runs as $run) {
-            hash_update($hash, sprintf('%d:%d-%d;', $run['y'], $run['startX'], $run['endX']));
-        }
-
-        return hash_final($hash);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function normalizeField(ExploreableStarMapInterface $field, Layer $layer): array
-    {
-        $item = $this->starmapUiFactory->createExplorableStarmapItem($field, $layer);
-        $icon = $item->getIcon();
-        $territoryOwner = $this->getTerritoryOwner($field);
-
-        return [
-            'x' => $item->getCx(),
-            'y' => $item->getCy(),
-            'tooltip' => $this->removeTooltipLine($item->getTooltip(), $territoryOwner['text'] ?? null),
-            'icon' => $icon !== null ? sprintf('/assets/map/%s.png', $icon) : null,
-            'databaseId' => $field->getMapped(),
-            'hasTerritory' => $item->hasTerritory(),
-            'territoryColor' => $this->extractColor($item->getTerritoryStyle()),
-            'territoryOwnerText' => $territoryOwner['text'] ?? null,
-            'territoryOwnerHtml' => $territoryOwner['html'] ?? null,
-            'hasEffects' => $item->hasEffects(),
-            'isImpassable' => $item->isImpassable()
-        ];
-    }
-
-    /**
-     * @return null|array{text: string, html: string}
-     */
-    private function getTerritoryOwner(ExploreableStarMapInterface $field): ?array
-    {
-        if ($field->getAdminRegion() !== null) {
-            return null;
-        }
-
-        $influenceArea = $field->getInfluenceArea();
-        if ($influenceArea === null) {
-            return null;
-        }
-
-        $base = $influenceArea->getStation();
-        if ($base === null) {
-            return null;
-        }
-
-        $user = $base->getUser();
-        $userNameText = trim($this->parseBbCodeText($user->getName()));
-        if ($userNameText === '') {
-            return null;
-        }
-
-        $userNameHtml = $this->parseBbCodeHtml($user->getName());
-        $alliance = $user->getAlliance();
-        if ($alliance !== null) {
-            $allianceNameText = trim($this->parseBbCodeText($alliance->getName()));
-            if ($allianceNameText !== '') {
-                return [
-                    'text' => sprintf('Gebiet: %s (%s)', $allianceNameText, $userNameText),
-                    'html' => sprintf(
-                        'Gebiet: %s (%s)',
-                        $this->parseBbCodeHtml($alliance->getName()),
-                        $userNameHtml
-                    )
-                ];
+        try {
+            $redis = $this->redisFactory->create();
+            if ($redis === null) {
+                return;
             }
+
+            $redis->setex(
+                RealtimeChannels::starmapCoverageKey($userId, $layerId),
+                self::COVERAGE_TTL_SECONDS,
+                json_encode(array_map(
+                    fn (array $range): array => [
+                        'x' => (int) $range['x'],
+                        'y' => (int) $range['y'],
+                        'range' => (int) $range['sensor_range']
+                    ],
+                    $ranges
+                ), self::JSON_FLAGS)
+            );
+        } catch (Throwable) {
+            return;
         }
-
-        return [
-            'text' => sprintf('Gebiet: %s', $userNameText),
-            'html' => sprintf('Gebiet: %s', $userNameHtml)
-        ];
-    }
-
-    private function removeTooltipLine(string $tooltip, ?string $lineToRemove): string
-    {
-        if ($lineToRemove === null || $lineToRemove === '') {
-            return $tooltip;
-        }
-
-        $lineToRemove = trim($lineToRemove);
-
-        return implode("\n", array_filter(
-            explode("\n", $tooltip),
-            fn (string $line): bool => trim($line) !== $lineToRemove
-        ));
     }
 
     /**
@@ -289,7 +185,8 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'isOwn' => $relationship['isOwn'],
             'isFriendly' => $relationship['isFriendly'],
             'isEnemy' => $relationship['isEnemy'],
-            'hasDetails' => $relationship['hasDetails']
+            'hasDetails' => $relationship['hasDetails'],
+            'isSensorContact' => true
         ];
 
         if (!$relationship['hasDetails']) {
@@ -306,7 +203,23 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'warpdrive' => (int) $row['warpdrive'],
             'maxWarpdrive' => (int) $row['max_warpdrive'],
             'alertState' => $alertState,
-            'alertStateName' => $this->getAlertStateName($alertState)
+            'alertStateName' => SpacecraftAlertStateEnum::tryFrom($alertState)?->getDescription() ?? 'Unbekannt'
+        ];
+    }
+
+    /**
+     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
+     * @return array<string, mixed>
+     */
+    private function getRealtimeTokenClaims(?int $allianceId, bool $canSeeAllianceShips, array $relationContext): array
+    {
+        return [
+            'allianceId' => $allianceId,
+            'canSeeAllianceShips' => $canSeeAllianceShips,
+            'friendlyUserIds' => array_keys($relationContext['friendlyUserIds']),
+            'enemyUserIds' => array_keys($relationContext['enemyUserIds']),
+            'friendlyAllianceIds' => array_keys($relationContext['friendlyAllianceIds']),
+            'enemyAllianceIds' => array_keys($relationContext['enemyAllianceIds'])
         ];
     }
 
@@ -331,11 +244,11 @@ final class ShowUserStarmapData implements ViewControllerInterface
         $enemyAllianceIds = [];
         $alliance = $user->getAlliance();
         if ($alliance !== null) {
-            $allianceId = $alliance->getId();
-            $friendlyAllianceIds[$allianceId] = true;
+            $ownAllianceId = $alliance->getId();
+            $friendlyAllianceIds[$ownAllianceId] = true;
 
-            foreach ($this->allianceRelationRepository->getActiveByAlliance($allianceId) as $relation) {
-                $opponentId = $relation->getAllianceId() === $allianceId
+            foreach ($this->allianceRelationRepository->getActiveByAlliance($ownAllianceId) as $relation) {
+                $opponentId = $relation->getAllianceId() === $ownAllianceId
                     ? $relation->getOpponentId()
                     : $relation->getAllianceId();
 
@@ -404,19 +317,5 @@ final class ShowUserStarmapData implements ViewControllerInterface
     private function getRumpImage(int $rumpId, bool $isCloaked): string
     {
         return sprintf('/assets/ships/%d%s.png', $rumpId, $isCloaked ? '_cloaked' : '');
-    }
-
-    private function getAlertStateName(int $alertState): string
-    {
-        return SpacecraftAlertStateEnum::tryFrom($alertState)?->getDescription() ?? 'Unbekannt';
-    }
-
-    private function extractColor(string $style): ?string
-    {
-        if (preg_match('/#[0-9a-fA-F]{6}/', $style, $matches) !== 1) {
-            return null;
-        }
-
-        return $matches[0];
     }
 }

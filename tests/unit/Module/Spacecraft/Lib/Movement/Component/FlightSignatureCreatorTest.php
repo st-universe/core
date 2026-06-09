@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
@@ -25,8 +25,8 @@ class FlightSignatureCreatorTest extends StuTestCase
 {
     private MockInterface&FlightSignatureRepositoryInterface $flightSignatureRepository;
     private MockInterface&StuTime $stuTime;
-    private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
     private MockInterface&SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
+    private MockInterface&SpacecraftMovementPublisherInterface $spacecraftMovementPublisher;
 
     private FlightSignatureCreator $subject;
 
@@ -35,14 +35,16 @@ class FlightSignatureCreatorTest extends StuTestCase
     {
         $this->flightSignatureRepository = $this->mock(FlightSignatureRepositoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
-        $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);
         $this->spacecraftRumpRepository = $this->mock(SpacecraftRumpRepositoryInterface::class);
+        $this->spacecraftMovementPublisher = $this->mock(SpacecraftMovementPublisherInterface::class);
+        $this->spacecraftMovementPublisher->shouldReceive('publishMovement')
+            ->zeroOrMoreTimes();
 
         $this->subject = new FlightSignatureCreator(
             $this->flightSignatureRepository,
             $this->stuTime,
-            $this->spacecraftLoader,
-            $this->spacecraftRumpRepository
+            $this->spacecraftRumpRepository,
+            $this->spacecraftMovementPublisher
         );
     }
 
@@ -100,11 +102,11 @@ class FlightSignatureCreatorTest extends StuTestCase
         $cloakState = true;
         $ship->shouldReceive('getUser->getId')
             ->withNoArgs()
-            ->times(4)
+            ->twice()
             ->andReturn($userId);
         $ship->shouldReceive('getId')
             ->withNoArgs()
-            ->times(4)
+            ->twice()
             ->andReturn($shipId);
         $ship->shouldReceive('getName')
             ->withNoArgs()
@@ -118,17 +120,10 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);
-
-        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUser')
-            ->with($shipId, $userId)
-            ->twice()
-            ->andReturn($wrapper);
-
-        $wrapper->shouldReceive('getWarpDriveSystemData')
+        $ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
-            ->andReturn(null);
+            ->andReturn(new ArrayCollection());
 
         $fromSignature->shouldReceive('setLocation')
             ->with($currentField)
@@ -221,11 +216,11 @@ class FlightSignatureCreatorTest extends StuTestCase
         $cloakState = true;
         $ship->shouldReceive('getUser->getId')
             ->withNoArgs()
-            ->times(4)
+            ->twice()
             ->andReturn($userId);
         $ship->shouldReceive('getId')
             ->withNoArgs()
-            ->times(4)
+            ->twice()
             ->andReturn($shipId);
         $ship->shouldReceive('getName')
             ->withNoArgs()
@@ -239,17 +234,10 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);
-
-        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
-        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUser')
-            ->with($shipId, $userId)
-            ->twice()
-            ->andReturn($wrapper);
-
-        $wrapper->shouldReceive('getWarpDriveSystemData')
+        $ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
-            ->andReturn(null);
+            ->andReturn(new ArrayCollection());
 
         $fromSignature->shouldReceive('setLocation')
             ->with($currentField)

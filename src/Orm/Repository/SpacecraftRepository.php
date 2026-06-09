@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -593,5 +594,227 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             )
             ->setParameters($parameters)
             ->getResult();
+    }
+
+    #[\Override]
+    public function getUserStarmapRealtimeSensorRanges(int $userId, int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('source_id', 'source_id', 'integer');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('sensor_range', 'sensor_range', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'SELECT source_id, x, y, sensor_range
+                    FROM (%s) sensor_sources
+                    WHERE sensor_range > 0
+                    ORDER BY y ASC, x ASC, source_id ASC',
+                    $this->getRealtimeSensorSourceSql()
+                ),
+                $rsm
+            )
+            ->setParameters($this->getRealtimeSensorParameters($userId, $layerId))
+            ->getResult();
+    }
+
+    #[\Override]
+    public function getUserStarmapRealtimeSpacecrafts(int $userId, int $layerId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('type', 'type', 'string');
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('user_name', 'user_name', 'string');
+        $rsm->addScalarResult('alliance_id', 'alliance_id', 'integer');
+        $rsm->addScalarResult('alliance_name', 'alliance_name', 'string');
+        $rsm->addScalarResult('rump_id', 'rump_id', 'integer');
+        $rsm->addScalarResult('rump_name', 'rump_name', 'string');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('in_system', 'in_system', 'boolean');
+        $rsm->addScalarResult('system_name', 'system_name', 'string');
+        $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        $rsm->addScalarResult('hull', 'hull', 'integer');
+        $rsm->addScalarResult('max_hull', 'max_hull', 'integer');
+        $rsm->addScalarResult('shield', 'shield', 'integer');
+        $rsm->addScalarResult('max_shield', 'max_shield', 'integer');
+        $rsm->addScalarResult('eps', 'eps', 'integer');
+        $rsm->addScalarResult('max_eps', 'max_eps', 'integer');
+        $rsm->addScalarResult('warpdrive', 'warpdrive', 'integer');
+        $rsm->addScalarResult('max_warpdrive', 'max_warpdrive', 'integer');
+        $rsm->addScalarResult('alert_state', 'alert_state', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'WITH sensor_ranges AS (
+                        SELECT source_id, x, y, sensor_range
+                        FROM (%s) sensor_sources
+                        WHERE sensor_range > 0
+                    ),
+                    contact_positions AS (
+                        %s
+                    )
+                    SELECT DISTINCT ON (contact_positions.id) contact_positions.*
+                    FROM contact_positions
+                    JOIN sensor_ranges
+                    ON contact_positions.x BETWEEN sensor_ranges.x - sensor_ranges.sensor_range AND sensor_ranges.x + sensor_ranges.sensor_range
+                    AND contact_positions.y BETWEEN sensor_ranges.y - sensor_ranges.sensor_range AND sensor_ranges.y + sensor_ranges.sensor_range
+                    WHERE (contact_positions.user_id = :userId OR contact_positions.is_cloaked = false)
+                    ORDER BY contact_positions.id ASC',
+                    $this->getRealtimeSensorSourceSql(),
+                    $this->getRealtimeContactPositionSql()
+                ),
+                $rsm
+            )
+            ->setParameters($this->getRealtimeSensorParameters($userId, $layerId) + [
+                'shipType' => SpacecraftTypeEnum::SHIP->value,
+                'contactStationType' => SpacecraftTypeEnum::STATION->value,
+                'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+                'cloakMode' => SpacecraftSystemModeEnum::MODE_ON->value,
+                'epsType' => SpacecraftSystemTypeEnum::EPS->value,
+                'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+                'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value,
+                'nooneUserId' => UserConstants::USER_NOONE
+            ])
+            ->getResult();
+    }
+
+    private function getRealtimeSensorSourceSql(): string
+    {
+        return 'SELECT src.id as source_id,
+                CASE WHEN map_field.id IS NOT NULL THEN source_location.cx ELSE parent_location.cx END as x,
+                CASE WHEN map_field.id IS NOT NULL THEN source_location.cy ELSE parent_location.cy END as y,
+                COALESCE(CEIL((NULLIF(lss_system.data, \'\')::json->>\'sensorRange\')::numeric * lss_system.status / 100), 0)::int as sensor_range
+            FROM stu_spacecraft src
+            JOIN stu_location source_location
+            ON source_location.id = src.location_id
+            LEFT JOIN stu_map map_field
+            ON map_field.id = source_location.id
+            LEFT JOIN stu_sys_map system_field
+            ON system_field.id = source_location.id
+            LEFT JOIN stu_map parent_map
+            ON parent_map.systems_id = system_field.systems_id
+            LEFT JOIN stu_location parent_location
+            ON parent_location.id = parent_map.id
+            JOIN stu_rump source_rump
+            ON source_rump.id = src.rump_id
+            JOIN stu_user source_owner
+            ON source_owner.id = src.user_id
+            JOIN stu_spacecraft_system lss_system
+            ON lss_system.spacecraft_id = src.id
+            AND lss_system.system_type = :lssType
+            LEFT JOIN stu_spacecraft_system uplink_system
+            ON uplink_system.spacecraft_id = src.id
+            AND uplink_system.system_type = :uplinkType
+            WHERE src.type = :sourceStationType
+            AND COALESCE(source_location.layer_id, parent_location.layer_id) = :layerId
+            AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+            AND lss_system.status > 0
+            AND (source_owner.vac_active = :false OR source_owner.vac_request_date > :vacationThreshold)
+            AND (
+                (src.user_id = :userId AND source_rump.role_id IN (:baseRole, :outpostRole))
+                OR (
+                    source_rump.role_id = :sensorRole
+                    AND COALESCE(uplink_system.mode, 0) >= :uplinkMode
+                    AND (
+                        src.user_id = :userId
+                        OR EXISTS (
+                            SELECT 1
+                            FROM stu_crew_assign uplink_crew
+                            WHERE uplink_crew.spacecraft_id = src.id
+                            AND uplink_crew.user_id = :userId
+                        )
+                    )
+                )
+            )';
+    }
+
+    private function getRealtimeContactPositionSql(): string
+    {
+        return 'SELECT sp.id,
+                sp.name,
+                sp.type,
+                sp.user_id,
+                u.username as user_name,
+                al.id as alliance_id,
+                al.name as alliance_name,
+                sp.rump_id,
+                r.name as rump_name,
+                CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
+                CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
+                systems.name as system_name,
+                CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked,
+                sc.hull,
+                sp.max_hull,
+                sc.shield,
+                sp.max_shield,
+                COALESCE((NULLIF(eps_system.data, \'\')::json->>\'eps\')::int, 0) as eps,
+                COALESCE(CEIL((NULLIF(eps_system.data, \'\')::json->>\'maxEps\')::numeric * eps_system.status / 100), 0)::int as max_eps,
+                COALESCE((NULLIF(warp_system.data, \'\')::json->>\'wd\')::int, 0) as warpdrive,
+                COALESCE(CEIL((NULLIF(warp_system.data, \'\')::json->>\'maxwd\')::numeric * warp_system.status / 100), 0)::int as max_warpdrive,
+                COALESCE((NULLIF(computer_system.data, \'\')::json->>\'alertState\')::int, 1) as alert_state
+            FROM stu_spacecraft sp
+            JOIN stu_spacecraft_condition sc
+            ON sc.spacecraft_id = sp.id
+            JOIN stu_location location
+            ON sp.location_id = location.id
+            LEFT JOIN stu_map map_field
+            ON map_field.id = location.id
+            LEFT JOIN stu_sys_map system_field
+            ON system_field.id = location.id
+            LEFT JOIN stu_map parent_map
+            ON parent_map.systems_id = system_field.systems_id
+            LEFT JOIN stu_location parent_location
+            ON parent_location.id = parent_map.id
+            LEFT JOIN stu_systems systems
+            ON systems.id = system_field.systems_id
+            JOIN stu_user u
+            ON u.id = sp.user_id
+            LEFT JOIN stu_alliances al
+            ON al.id = u.allys_id
+            JOIN stu_rump r
+            ON r.id = sp.rump_id
+            LEFT JOIN stu_spacecraft_system cloak_system
+            ON cloak_system.spacecraft_id = sp.id
+            AND cloak_system.system_type = :cloakType
+            LEFT JOIN stu_spacecraft_system eps_system
+            ON eps_system.spacecraft_id = sp.id
+            AND eps_system.system_type = :epsType
+            LEFT JOIN stu_spacecraft_system warp_system
+            ON warp_system.spacecraft_id = sp.id
+            AND warp_system.system_type = :warpdriveType
+            LEFT JOIN stu_spacecraft_system computer_system
+            ON computer_system.spacecraft_id = sp.id
+            AND computer_system.system_type = :computerType
+            WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+            AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
+            AND sp.type IN (:shipType, :contactStationType)
+            AND sp.user_id != :nooneUserId';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getRealtimeSensorParameters(int $userId, int $layerId): array
+    {
+        return [
+            'userId' => $userId,
+            'layerId' => $layerId,
+            'sourceStationType' => SpacecraftTypeEnum::STATION->value,
+            'baseRole' => SpacecraftRumpRoleEnum::BASE->value,
+            'outpostRole' => SpacecraftRumpRoleEnum::OUTPOST->value,
+            'sensorRole' => SpacecraftRumpRoleEnum::SENSOR->value,
+            'lssType' => SpacecraftSystemTypeEnum::LSS->value,
+            'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
+            'uplinkMode' => SpacecraftSystemModeEnum::MODE_ON->value,
+            'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
+            'false' => false
+        ];
     }
 }

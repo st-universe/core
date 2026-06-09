@@ -27,6 +27,13 @@
     "redis_host": "localhost",
     "redis_port": 6379
   },
+  "realtime": {
+    "host": "127.0.0.1",
+    "port": 8787,
+    "path": "/realtime/starmap",
+    "webSocketUrl": "/realtime/starmap",
+    "coverageReloadMs": 60000
+  },
   "debug": {
     "debug_mode": true,
     "loglevel": 7,

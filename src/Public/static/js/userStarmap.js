@@ -9,8 +9,11 @@
 	const AXIS_MIN_LABEL_SPACING = 26;
 	const AXIS_MIN_TICK_SPACING = 6;
 	const TOOLTIP_ITEM_LIMIT = 8;
+	const CONTACT_ANIMATION_MS = 300;
 	const ALLIANCE_CONTACT_COLOR = "#ffe06b";
 	const OWN_CONTACT_COLOR = "#67e878";
+	const FOREIGN_CONTACT_COLOR = "#ffffff";
+	const ENEMY_CONTACT_COLOR = "#ff4a4a";
 
 	function clamp(value, min, max) {
 		return Math.max(min, Math.min(max, value));
@@ -71,6 +74,7 @@
 			fieldDetails: document.getElementById("userStarmapFieldDetails"),
 			imageUrl: root.dataset.imageUrl,
 			dataUrl: root.dataset.dataUrl,
+			realtimeUrl: root.dataset.realtimeUrl,
 			layerId: Number(root.dataset.layerId),
 			layerWidth: Number(root.dataset.layerWidth),
 			layerHeight: Number(root.dataset.layerHeight),
@@ -110,6 +114,7 @@
 			showOwnStations: false,
 			showAllianceShips: false,
 			showAllianceStations: false,
+			showSensorContacts: false,
 			selectedSectorId: 0,
 			fields: [],
 			fieldByKey: new Map(),
@@ -118,10 +123,21 @@
 			impassableFields: [],
 			iconFields: [],
 			spacecrafts: [],
+			spacecraftById: new Map(),
 			spacecraftByField: new Map(),
+			sensorSpacecrafts: [],
+			sensorSpacecraftById: new Map(),
+			sensorSpacecraftByField: new Map(),
+			contactAnimations: new Map(),
+			contactAnimationFrame: 0,
 			visibleRuns: [],
 			iconCache: new Map(),
 			selectedField: null,
+			realtimeSocket: null,
+			realtimeReconnectTimer: 0,
+			realtimeTokenTimer: 0,
+			realtimeConnecting: false,
+			realtimeBackoff: 1500,
 			loadingLabel: "Lade Karte",
 			loadingProgress: 0,
 			loadingDots: 1,
@@ -165,15 +181,22 @@
 			fitToVisibleBounds(state);
 			scheduleDraw(state);
 		});
+		document.getElementById("userStarmapZoomIn").addEventListener("click", function () {
+			zoomAtViewportCenter(state, 1.25);
+		});
+		document.getElementById("userStarmapZoomOut").addEventListener("click", function () {
+			zoomAtViewportCenter(state, 1 / 1.25);
+		});
 
 		wireCheckbox(state, "userStarmapShowTerritory", "showTerritory");
 		wireCheckbox(state, "userStarmapShowImpassable", "showImpassable");
 		wireCheckbox(state, "userStarmapShowEffects", "showEffects");
 		wireCheckbox(state, "userStarmapShowGrid", "showGrid");
-		wireCheckbox(state, "userStarmapShowOwnShips", "showOwnShips");
-		wireCheckbox(state, "userStarmapShowOwnStations", "showOwnStations");
-		wireCheckbox(state, "userStarmapShowAllianceShips", "showAllianceShips");
-		wireCheckbox(state, "userStarmapShowAllianceStations", "showAllianceStations");
+		wireCheckbox(state, "userStarmapShowOwnShips", "showOwnShips", true);
+		wireCheckbox(state, "userStarmapShowOwnStations", "showOwnStations", true);
+		wireCheckbox(state, "userStarmapShowAllianceShips", "showAllianceShips", true);
+		wireCheckbox(state, "userStarmapShowAllianceStations", "showAllianceStations", true);
+		wireSensorContacts(state);
 		wireSectorSelect(state);
 
 		state.canvas.addEventListener("mousedown", function (event) {
@@ -218,19 +241,8 @@
 		state.canvas.addEventListener("wheel", function (event) {
 			event.preventDefault();
 			const point = getCanvasPoint(state, event.clientX, event.clientY);
-			const mapScreenX = clamp(point.x - AXIS_LEFT_WIDTH, 0, getMapViewportWidth(state));
-			const mapScreenY = clamp(point.y - AXIS_TOP_HEIGHT, 0, getMapViewportHeight(state));
-			const worldX = state.viewX + mapScreenX / state.scale;
-			const worldY = state.viewY + mapScreenY / state.scale;
 			const zoomFactor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
-			const nextScale = clamp(state.scale * zoomFactor, MIN_SCALE, MAX_SCALE);
-
-			state.scale = nextScale;
-			state.viewX = worldX - mapScreenX / state.scale;
-			state.viewY = worldY - mapScreenY / state.scale;
-			clampView(state);
-			updateTooltip(state);
-			scheduleDraw(state);
+			zoomAtScreenPoint(state, point.x, point.y, zoomFactor);
 		}, { passive: false });
 
 		state.canvas.addEventListener("touchstart", function (event) {
@@ -292,11 +304,37 @@
 		}, { passive: false });
 	}
 
-	function wireCheckbox(state, id, property) {
+	function wireCheckbox(state, id, property, syncRealtime) {
 		const input = document.getElementById(id);
 		state[property] = input.checked;
 		input.addEventListener("change", function () {
 			state[property] = this.checked;
+			if (syncRealtime) {
+				syncRealtimeConnection(state);
+			}
+			updateTooltip(state);
+			updateFieldDetails(state, state.selectedField);
+			scheduleDraw(state);
+		});
+	}
+
+	function wireSensorContacts(state) {
+		const input = document.getElementById("userStarmapShowSensorContacts");
+		if (!input) {
+			return;
+		}
+
+		state.showSensorContacts = input.checked;
+		input.addEventListener("change", function () {
+			state.showSensorContacts = this.checked;
+			if (!state.showSensorContacts) {
+				applySensorSpacecrafts(state, []);
+			}
+			if (state.showSensorContacts && state.realtimeSocket && !state.realtimeConnecting) {
+				enableRealtimeContacts(state);
+			} else {
+				syncRealtimeConnection(state);
+			}
 			updateTooltip(state);
 			updateFieldDetails(state, state.selectedField);
 			scheduleDraw(state);
@@ -366,7 +404,9 @@
 		state.impassableFields = [];
 		state.iconFields = [];
 		state.spacecrafts = Array.isArray(data.spacecrafts) ? data.spacecrafts.map(normalizeSpacecraft) : [];
+		state.spacecraftById = new Map();
 		state.spacecraftByField = new Map();
+		clearContactAnimations(state);
 
 		state.fields.forEach(function (field) {
 			field.x = Number(field.x);
@@ -391,22 +431,7 @@
 		});
 
 		state.spacecrafts.forEach(function (spacecraft) {
-			const key = fieldKey(spacecraft.x, spacecraft.y);
-			if (!state.fieldByKey.has(key)) {
-				return;
-			}
-
-			let entry = state.spacecraftByField.get(key);
-			if (!entry) {
-				entry = {
-					x: spacecraft.x,
-					y: spacecraft.y,
-					spacecrafts: []
-				};
-				state.spacecraftByField.set(key, entry);
-			}
-
-			entry.spacecrafts.push(spacecraft);
+			addStaticSpacecraft(state, spacecraft);
 		});
 
 		state.dataLoaded = true;
@@ -415,6 +440,11 @@
 	}
 
 	function normalizeSpacecraft(spacecraft) {
+		const isOwn = Boolean(spacecraft.isOwn);
+		const isFriendly = Boolean(spacecraft.isFriendly) || isOwn;
+		const isEnemy = Boolean(spacecraft.isEnemy) && !isFriendly;
+		const hasDetails = spacecraft.hasDetails == null ? (isOwn || isFriendly) : Boolean(spacecraft.hasDetails);
+
 		return {
 			id: Number(spacecraft.id),
 			name: spacecraft.name || "",
@@ -437,7 +467,11 @@
 			inSystem: Boolean(spacecraft.inSystem),
 			systemName: spacecraft.systemName || null,
 			isCloaked: Boolean(spacecraft.isCloaked),
-			isOwn: Boolean(spacecraft.isOwn),
+			isOwn,
+			isFriendly,
+			isEnemy,
+			hasDetails,
+			isSensorContact: Boolean(spacecraft.isSensorContact),
 			hull: Number(spacecraft.hull) || 0,
 			maxHull: Number(spacecraft.maxHull) || 0,
 			shield: Number(spacecraft.shield) || 0,
@@ -449,6 +483,421 @@
 			alertState: Number(spacecraft.alertState) || 1,
 			alertStateName: spacecraft.alertStateName || "Unbekannt"
 		};
+	}
+
+	function addStaticSpacecraft(state, spacecraft) {
+		if (!Number.isFinite(spacecraft.id)) {
+			return;
+		}
+
+		const key = fieldKey(spacecraft.x, spacecraft.y);
+		if (!state.fieldByKey.has(key)) {
+			return;
+		}
+
+		state.spacecraftById.set(spacecraft.id, spacecraft);
+
+		let entry = state.spacecraftByField.get(key);
+		if (!entry) {
+			entry = {
+				x: spacecraft.x,
+				y: spacecraft.y,
+				spacecrafts: []
+			};
+			state.spacecraftByField.set(key, entry);
+		}
+
+		entry.spacecrafts.push(spacecraft);
+	}
+
+	function removeStaticSpacecraft(state, spacecraftId) {
+		const oldSpacecraft = state.spacecraftById.get(spacecraftId);
+		if (!oldSpacecraft) {
+			return null;
+		}
+
+		state.spacecraftById.delete(spacecraftId);
+		const key = fieldKey(oldSpacecraft.x, oldSpacecraft.y);
+		const entry = state.spacecraftByField.get(key);
+		if (!entry) {
+			return oldSpacecraft;
+		}
+
+		entry.spacecrafts = entry.spacecrafts.filter(function (spacecraft) {
+			return spacecraft.id !== spacecraftId;
+		});
+		if (entry.spacecrafts.length === 0) {
+			state.spacecraftByField.delete(key);
+		}
+
+		return oldSpacecraft;
+	}
+
+	function updateStaticSpacecraft(state, spacecraft, staticVisible) {
+		const oldSpacecraft = removeStaticSpacecraft(state, spacecraft.id);
+		if (!staticVisible) {
+			return;
+		}
+
+		const normalized = normalizeSpacecraft(Object.assign({}, oldSpacecraft || {}, spacecraft));
+		addStaticSpacecraft(state, normalized);
+	}
+
+	function shouldKeepRealtimeConnection(state) {
+		return state.showSensorContacts
+			|| state.showOwnShips
+			|| state.showOwnStations
+			|| state.showAllianceShips
+			|| state.showAllianceStations;
+	}
+
+	function syncRealtimeConnection(state) {
+		if (shouldKeepRealtimeConnection(state)) {
+			if (!state.realtimeSocket && !state.realtimeConnecting) {
+				enableRealtimeContacts(state);
+			}
+			return;
+		}
+
+		disableRealtimeContacts(state);
+	}
+
+	function enableRealtimeContacts(state) {
+		if (!state.realtimeUrl || state.realtimeConnecting) {
+			return;
+		}
+
+		clearRealtimeTimers(state);
+		closeRealtimeSocket(state);
+		state.realtimeConnecting = true;
+		setStatus(state, "Livekontakte werden geladen...");
+
+		fetch(state.realtimeUrl + "&ts=" + Date.now(), { cache: "no-store" })
+			.then(function (response) {
+				if (!response.ok) {
+					throw new Error("Livekontakte konnten nicht geladen werden");
+				}
+				return response.json();
+			})
+			.then(function (data) {
+				state.realtimeConnecting = false;
+				if (!shouldKeepRealtimeConnection(state)) {
+					return;
+				}
+
+				applySensorSpacecrafts(state, state.showSensorContacts && Array.isArray(data.spacecrafts) ? data.spacecrafts : []);
+				updateFieldDetails(state, state.selectedField);
+				scheduleDraw(state);
+				connectRealtimeSocket(state, data);
+				scheduleRealtimeTokenRefresh(state, Number(data.refreshAfter) || 240);
+			})
+			.catch(function () {
+				state.realtimeConnecting = false;
+				setStatus(state, "Livekontakte nicht erreichbar");
+				if (shouldKeepRealtimeConnection(state)) {
+					scheduleRealtimeReconnect(state);
+				}
+			});
+	}
+
+	function disableRealtimeContacts(state) {
+		state.realtimeConnecting = false;
+		clearRealtimeTimers(state);
+		closeRealtimeSocket(state);
+		applySensorSpacecrafts(state, []);
+		clearContactAnimations(state);
+		setStatus(state, "Livekontakte aus");
+	}
+
+	function applySensorSpacecrafts(state, spacecrafts) {
+		clearContactAnimations(state);
+		state.sensorSpacecrafts = spacecrafts.map(function (spacecraft) {
+			const normalized = normalizeSpacecraft(spacecraft);
+			normalized.isSensorContact = true;
+			return normalized;
+		});
+		state.sensorSpacecraftById = new Map();
+		state.sensorSpacecraftByField = new Map();
+
+		state.sensorSpacecrafts.forEach(function (spacecraft) {
+			addSensorSpacecraft(state, spacecraft);
+		});
+	}
+
+	function addSensorSpacecraft(state, spacecraft) {
+		state.sensorSpacecraftById.set(spacecraft.id, spacecraft);
+
+		const key = fieldKey(spacecraft.x, spacecraft.y);
+		let entry = state.sensorSpacecraftByField.get(key);
+		if (!entry) {
+			entry = {
+				x: spacecraft.x,
+				y: spacecraft.y,
+				spacecrafts: []
+			};
+			state.sensorSpacecraftByField.set(key, entry);
+		}
+
+		entry.spacecrafts.push(spacecraft);
+	}
+
+	function removeSensorSpacecraft(state, spacecraftId) {
+		const oldSpacecraft = state.sensorSpacecraftById.get(spacecraftId);
+		if (!oldSpacecraft) {
+			return;
+		}
+
+		state.sensorSpacecraftById.delete(spacecraftId);
+		const key = fieldKey(oldSpacecraft.x, oldSpacecraft.y);
+		const entry = state.sensorSpacecraftByField.get(key);
+		if (!entry) {
+			return;
+		}
+
+		entry.spacecrafts = entry.spacecrafts.filter(function (spacecraft) {
+			return spacecraft.id !== spacecraftId;
+		});
+		if (entry.spacecrafts.length === 0) {
+			state.sensorSpacecraftByField.delete(key);
+		}
+	}
+
+	function connectRealtimeSocket(state, data) {
+		if (!data.token || !data.webSocketUrl || typeof WebSocket !== "function") {
+			setStatus(state, "Livekontakte ohne WebSocket");
+			return;
+		}
+
+		const socket = new WebSocket(buildRealtimeWebSocketUrl(data.webSocketUrl, data.token));
+		state.realtimeSocket = socket;
+
+		socket.addEventListener("open", function () {
+			state.realtimeBackoff = 1500;
+			setStatus(state, "Livekontakte verbunden");
+		});
+
+		socket.addEventListener("message", function (event) {
+			handleRealtimeMessage(state, event.data);
+		});
+
+		socket.addEventListener("close", function () {
+			if (state.realtimeSocket === socket) {
+				state.realtimeSocket = null;
+			}
+			if (shouldKeepRealtimeConnection(state) && !state.realtimeConnecting) {
+				setStatus(state, "Livekontakte getrennt");
+				scheduleRealtimeReconnect(state);
+			}
+		});
+
+		socket.addEventListener("error", function () {
+			if (shouldKeepRealtimeConnection(state)) {
+				setStatus(state, "Livekontakte Fehler");
+			}
+		});
+	}
+
+	function handleRealtimeMessage(state, rawMessage) {
+		let message;
+		try {
+			message = JSON.parse(rawMessage);
+		} catch (error) {
+			return;
+		}
+
+		if (message.type === "ready") {
+			setStatus(state, "Livekontakte verbunden (" + Number(message.coverageCount || 0) + " Sensorquellen)");
+			return;
+		}
+
+		if (message.type === "spacecraftRemoval" && shouldKeepRealtimeConnection(state) && message.spacecraft) {
+			const removedId = Number(message.spacecraft.id);
+			if (Number.isFinite(removedId)) {
+				state.contactAnimations.delete(removedId);
+				removeSensorSpacecraft(state, removedId);
+				removeStaticSpacecraft(state, removedId);
+				updateTooltip(state);
+				updateFieldDetails(state, state.selectedField);
+				scheduleDraw(state);
+			}
+			return;
+		}
+
+		if (message.type !== "spacecraftMovement" || !shouldKeepRealtimeConnection(state) || !message.spacecraft) {
+			return;
+		}
+
+		const spacecraftId = Number(message.spacecraft.id);
+		if (!Number.isFinite(spacecraftId)) {
+			return;
+		}
+
+		const previousSpacecraft = getKnownSpacecraft(state, spacecraftId);
+		const fromPoint = getMovementPoint(message.from);
+		const toPoint = getMovementPoint(message.to);
+		const canAnimateFrom = previousSpacecraft !== null || message.fromVisible || message.staticVisible;
+		const canAnimateTo = message.visible || message.staticVisible;
+
+		removeSensorSpacecraft(state, spacecraftId);
+		if (message.spacecraft.x != null && message.spacecraft.y != null) {
+			updateStaticSpacecraft(state, message.spacecraft, Boolean(message.staticVisible));
+		}
+		if (state.showSensorContacts && message.visible && message.spacecraft.x != null && message.spacecraft.y != null) {
+			const spacecraft = normalizeSpacecraft(message.spacecraft);
+			spacecraft.isSensorContact = true;
+			addSensorSpacecraft(state, spacecraft);
+		}
+
+		const updatedSpacecraft = getKnownSpacecraft(state, spacecraftId);
+		if (updatedSpacecraft && fromPoint && toPoint && canAnimateFrom && canAnimateTo) {
+			startContactAnimation(
+				state,
+				spacecraftId,
+				previousSpacecraft ? { x: previousSpacecraft.x, y: previousSpacecraft.y } : fromPoint,
+				toPoint,
+				updatedSpacecraft
+			);
+		}
+
+		updateTooltip(state);
+		updateFieldDetails(state, state.selectedField);
+		scheduleDraw(state);
+	}
+
+	function scheduleRealtimeTokenRefresh(state, refreshAfterSeconds) {
+		if (!shouldKeepRealtimeConnection(state)) {
+			return;
+		}
+
+		state.realtimeTokenTimer = window.setTimeout(function () {
+			if (shouldKeepRealtimeConnection(state)) {
+				enableRealtimeContacts(state);
+			}
+		}, Math.max(30, refreshAfterSeconds) * 1000);
+	}
+
+	function scheduleRealtimeReconnect(state) {
+		if (!shouldKeepRealtimeConnection(state) || state.realtimeReconnectTimer !== 0) {
+			return;
+		}
+
+		const delay = state.realtimeBackoff;
+		state.realtimeBackoff = Math.min(15000, state.realtimeBackoff * 1.7);
+		state.realtimeReconnectTimer = window.setTimeout(function () {
+			state.realtimeReconnectTimer = 0;
+			enableRealtimeContacts(state);
+		}, delay);
+	}
+
+	function clearRealtimeTimers(state) {
+		if (state.realtimeReconnectTimer !== 0) {
+			window.clearTimeout(state.realtimeReconnectTimer);
+			state.realtimeReconnectTimer = 0;
+		}
+		if (state.realtimeTokenTimer !== 0) {
+			window.clearTimeout(state.realtimeTokenTimer);
+			state.realtimeTokenTimer = 0;
+		}
+	}
+
+	function closeRealtimeSocket(state) {
+		if (!state.realtimeSocket) {
+			return;
+		}
+
+		const socket = state.realtimeSocket;
+		state.realtimeSocket = null;
+		socket.close();
+	}
+
+	function buildRealtimeWebSocketUrl(path, token) {
+		const url = new URL(path, window.location.href);
+		url.protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+		url.searchParams.set("token", token);
+
+		return url.toString();
+	}
+
+	function getKnownSpacecraft(state, spacecraftId) {
+		return state.sensorSpacecraftById.get(spacecraftId)
+			|| state.spacecraftById.get(spacecraftId)
+			|| null;
+	}
+
+	function getMovementPoint(point) {
+		if (!point) {
+			return null;
+		}
+
+		const x = Number(point.x);
+		const y = Number(point.y);
+		if (!Number.isFinite(x) || !Number.isFinite(y)) {
+			return null;
+		}
+
+		return { x, y };
+	}
+
+	function startContactAnimation(state, spacecraftId, fromPoint, toPoint, spacecraft) {
+		if (fromPoint.x === toPoint.x && fromPoint.y === toPoint.y) {
+			state.contactAnimations.delete(spacecraftId);
+			return;
+		}
+
+		const now = performance.now();
+		const previousAnimation = state.contactAnimations.get(spacecraftId);
+		const startPoint = previousAnimation ? getContactAnimationPosition(previousAnimation, now) : fromPoint;
+
+		state.contactAnimations.set(spacecraftId, {
+			id: spacecraftId,
+			fromX: startPoint.x,
+			fromY: startPoint.y,
+			toX: toPoint.x,
+			toY: toPoint.y,
+			spacecraft,
+			startedAt: now,
+			duration: CONTACT_ANIMATION_MS
+		});
+
+		scheduleContactAnimationFrame(state);
+	}
+
+	function scheduleContactAnimationFrame(state) {
+		if (state.contactAnimationFrame !== 0 || state.contactAnimations.size === 0) {
+			return;
+		}
+
+		state.contactAnimationFrame = requestAnimationFrame(function () {
+			state.contactAnimationFrame = 0;
+			scheduleDraw(state);
+			if (state.contactAnimations.size > 0) {
+				scheduleContactAnimationFrame(state);
+			}
+		});
+	}
+
+	function clearContactAnimations(state) {
+		state.contactAnimations.clear();
+		if (state.contactAnimationFrame !== 0) {
+			cancelAnimationFrame(state.contactAnimationFrame);
+			state.contactAnimationFrame = 0;
+		}
+	}
+
+	function getContactAnimationPosition(animation, now) {
+		const progress = clamp((now - animation.startedAt) / animation.duration, 0, 1);
+		const easedProgress = easeInOutCubic(progress);
+
+		return {
+			x: animation.fromX + (animation.toX - animation.fromX) * easedProgress,
+			y: animation.fromY + (animation.toY - animation.fromY) * easedProgress
+		};
+	}
+
+	function easeInOutCubic(value) {
+		return value < 0.5
+			? 4 * value * value * value
+			: 1 - Math.pow(-2 * value + 2, 3) / 2;
 	}
 
 	function loadMapImage(state, imageVersion) {
@@ -659,48 +1108,87 @@
 	}
 
 	function drawSpacecraftContacts(state, ctx) {
-		if (!hasActiveSpacecraftFilter(state) || state.spacecraftByField.size === 0 || state.scale < 0.16) {
+		const now = performance.now();
+		updateContactAnimations(state, now);
+
+		if (!hasActiveSpacecraftFilter(state) || state.scale < 0.16) {
 			return;
 		}
 
 		const bounds = getVisibleFieldBounds(state);
-		state.spacecraftByField.forEach(function (entry) {
+		const animatedIds = new Set(state.contactAnimations.keys());
+		getSpacecraftFieldKeys(state).forEach(function (key) {
+			const coordinates = parseFieldKey(key);
+			if (!coordinates) {
+				return;
+			}
+			const entry = {
+				x: coordinates.x,
+				y: coordinates.y
+			};
 			if (entry.x < bounds.startX || entry.x > bounds.endX || entry.y < bounds.startY || entry.y > bounds.endY) {
 				return;
 			}
 
-			const spacecrafts = getFilteredSpacecrafts(state, entry.spacecrafts);
+			const spacecrafts = getSpacecraftsForFieldKey(state, key, animatedIds);
 			if (spacecrafts.length === 0) {
 				return;
 			}
 
 			drawContactCount(state, ctx, entry.x, entry.y, getContactStats(spacecrafts));
 		});
+
+		drawContactAnimations(state, ctx, bounds, now);
 	}
 
 	function drawContactCount(state, ctx, x, y, stats) {
 		const rect = getFieldRect(state, { x, y });
+		drawContactCountAt(state, ctx, rect.x + rect.size / 2, rect.y + rect.size / 2, stats, 0.9);
+	}
+
+	function drawContactAnimations(state, ctx, bounds, now) {
+		state.contactAnimations.forEach(function (animation) {
+			const position = getContactAnimationPosition(animation, now);
+			if (position.x < bounds.startX - 1 || position.x > bounds.endX + 1 || position.y < bounds.startY - 1 || position.y > bounds.endY + 1) {
+				return;
+			}
+
+			const rect = getFieldRect(state, position);
+			const progress = clamp((now - animation.startedAt) / animation.duration, 0, 1);
+			const alpha = 0.72 + Math.sin(progress * Math.PI) * 0.23;
+
+			drawContactCountAt(
+				state,
+				ctx,
+				rect.x + rect.size / 2,
+				rect.y + rect.size / 2,
+				getContactStats([animation.spacecraft]),
+				alpha
+			);
+		});
+	}
+
+	function updateContactAnimations(state, now) {
+		state.contactAnimations.forEach(function (animation, spacecraftId) {
+			if (now - animation.startedAt >= animation.duration) {
+				state.contactAnimations.delete(spacecraftId);
+			}
+		});
+	}
+
+	function drawContactCountAt(state, ctx, centerX, centerY, stats, alpha) {
 		const text = String(stats.count);
-		const centerX = rect.x + rect.size / 2;
-		const centerY = rect.y + rect.size / 2;
 		const fontSize = 18 / state.scale;
 		const radius = Math.max(10 / state.scale, state.cellSize * 0.28);
-		const strokeColor = stats.ownCount > 0 && stats.allianceCount === 0 ? OWN_CONTACT_COLOR : ALLIANCE_CONTACT_COLOR;
-		const textColor = stats.ownCount > 0 && stats.allianceCount === 0 ? OWN_CONTACT_COLOR : ALLIANCE_CONTACT_COLOR;
+		const textColor = getContactTextColor(stats);
 
 		ctx.save();
-		ctx.globalAlpha = 0.9;
+		ctx.globalAlpha = alpha;
 		ctx.fillStyle = "rgba(8,10,14,0.78)";
 		ctx.beginPath();
 		ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
 		ctx.fill();
-		if (stats.ownCount > 0 && stats.allianceCount > 0) {
-			drawMixedContactStroke(state, ctx, centerX, centerY, radius);
-		} else {
-			ctx.strokeStyle = strokeColor;
-			ctx.lineWidth = 1.6 / state.scale;
-			ctx.stroke();
-		}
+		drawContactStroke(state, ctx, centerX, centerY, radius, stats);
 		ctx.font = "bold " + fontSize + "px sans-serif";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
@@ -712,8 +1200,16 @@
 		ctx.restore();
 	}
 
-	function drawMixedContactStroke(state, ctx, centerX, centerY, radius) {
-		const segments = 12;
+	function drawContactStroke(state, ctx, centerX, centerY, radius, stats) {
+		const colors = getContactStrokeColors(stats);
+		if (colors.length === 1) {
+			ctx.strokeStyle = colors[0];
+			ctx.lineWidth = 1.6 / state.scale;
+			ctx.stroke();
+			return;
+		}
+
+		const segments = Math.max(12, colors.length * 4);
 		const gap = 0.04;
 
 		ctx.lineWidth = 2 / state.scale;
@@ -721,10 +1217,42 @@
 			const start = -Math.PI / 2 + index * (Math.PI * 2 / segments) + gap;
 			const end = -Math.PI / 2 + (index + 1) * (Math.PI * 2 / segments) - gap;
 			ctx.beginPath();
-			ctx.strokeStyle = index % 2 === 0 ? ALLIANCE_CONTACT_COLOR : OWN_CONTACT_COLOR;
+			ctx.strokeStyle = colors[index % colors.length];
 			ctx.arc(centerX, centerY, radius, start, end);
 			ctx.stroke();
 		}
+	}
+
+	function getContactStrokeColors(stats) {
+		const colors = [];
+		if (stats.ownCount > 0) {
+			colors.push(OWN_CONTACT_COLOR);
+		}
+		if (stats.friendlyCount > 0) {
+			colors.push(ALLIANCE_CONTACT_COLOR);
+		}
+		if (stats.foreignCount > 0) {
+			colors.push(FOREIGN_CONTACT_COLOR);
+		}
+		if (stats.enemyCount > 0) {
+			colors.push(ENEMY_CONTACT_COLOR);
+		}
+
+		return colors.length === 0 ? [FOREIGN_CONTACT_COLOR] : colors;
+	}
+
+	function getContactTextColor(stats) {
+		if (stats.enemyCount > 0) {
+			return ENEMY_CONTACT_COLOR;
+		}
+		if (stats.friendlyCount > 0) {
+			return ALLIANCE_CONTACT_COLOR;
+		}
+		if (stats.ownCount > 0) {
+			return OWN_CONTACT_COLOR;
+		}
+
+		return FOREIGN_CONTACT_COLOR;
 	}
 
 	function drawAxes(state, ctx) {
@@ -1140,9 +1668,7 @@
 		if (button) {
 			button.addEventListener("click", function () {
 				const databaseId = Number(this.dataset.userStarmapSystem);
-				if (typeof switchInnerContent === "function") {
-					switchInnerContent("SHOW_ENTRY", "Systemkarte", "cat=7&ent=" + databaseId, "database.php");
-				}
+				window.open("database.php?SHOW_ENTRY=1&cat=7&ent=" + encodeURIComponent(databaseId), "_blank", "noopener");
 			});
 		}
 	}
@@ -1196,18 +1722,73 @@
 			return [];
 		}
 
-		const entry = state.spacecraftByField.get(fieldKey(field.x, field.y));
-		if (!entry) {
-			return [];
-		}
-
-		return getFilteredSpacecrafts(state, entry.spacecrafts).sort(function (a, b) {
+		return getSpacecraftsForFieldKey(state, fieldKey(field.x, field.y)).sort(function (a, b) {
 			return a.id - b.id;
 		});
 	}
 
 	function hasActiveSpacecraftFilter(state) {
-		return state.showOwnShips || state.showOwnStations || state.showAllianceShips || state.showAllianceStations;
+		return state.showOwnShips
+			|| state.showOwnStations
+			|| state.showAllianceShips
+			|| state.showAllianceStations
+			|| state.showSensorContacts;
+	}
+
+	function getSpacecraftFieldKeys(state) {
+		const keys = new Set();
+		if (state.showOwnShips || state.showOwnStations || state.showAllianceShips || state.showAllianceStations) {
+			state.spacecraftByField.forEach(function (_entry, key) {
+				keys.add(key);
+			});
+		}
+		if (state.showSensorContacts) {
+			state.sensorSpacecraftByField.forEach(function (_entry, key) {
+				keys.add(key);
+			});
+		}
+
+		return keys;
+	}
+
+	function getSpacecraftsForFieldKey(state, key, excludedIds) {
+		const byId = new Map();
+		const entry = state.spacecraftByField.get(key);
+		if (entry && (state.showOwnShips || state.showOwnStations || state.showAllianceShips || state.showAllianceStations)) {
+			getFilteredSpacecrafts(state, entry.spacecrafts).forEach(function (spacecraft) {
+				if (excludedIds && excludedIds.has(spacecraft.id)) {
+					return;
+				}
+				byId.set(spacecraft.id, spacecraft);
+			});
+		}
+
+		const sensorEntry = state.sensorSpacecraftByField.get(key);
+		if (sensorEntry && state.showSensorContacts) {
+			sensorEntry.spacecrafts.forEach(function (spacecraft) {
+				if (excludedIds && excludedIds.has(spacecraft.id)) {
+					return;
+				}
+				byId.set(spacecraft.id, spacecraft);
+			});
+		}
+
+		return Array.from(byId.values());
+	}
+
+	function parseFieldKey(key) {
+		const parts = String(key).split(":");
+		if (parts.length !== 2) {
+			return null;
+		}
+
+		const x = Number(parts[0]);
+		const y = Number(parts[1]);
+		if (!Number.isFinite(x) || !Number.isFinite(y)) {
+			return null;
+		}
+
+		return { x, y };
 	}
 
 	function getFilteredSpacecrafts(state, spacecrafts) {
@@ -1222,20 +1803,28 @@
 
 	function getContactStats(spacecrafts) {
 		let ownCount = 0;
-		let allianceCount = 0;
+		let friendlyCount = 0;
+		let foreignCount = 0;
+		let enemyCount = 0;
 
 		spacecrafts.forEach(function (spacecraft) {
 			if (spacecraft.isOwn) {
 				ownCount++;
+			} else if (spacecraft.isEnemy) {
+				enemyCount++;
+			} else if (spacecraft.isFriendly) {
+				friendlyCount++;
 			} else {
-				allianceCount++;
+				foreignCount++;
 			}
 		});
 
 		return {
 			count: spacecrafts.length,
 			ownCount,
-			allianceCount
+			friendlyCount,
+			foreignCount,
+			enemyCount
 		};
 	}
 
@@ -1255,16 +1844,29 @@
 		const location = spacecraft.inSystem && spacecraft.systemName
 			? "im System " + spacecraft.systemName
 			: "auf der Warpkarte";
+		const baseInfo = '<div class="userStarmapShipMeta">' +
+			"Rumpf: " +
+			escapeHtml(spacecraft.rumpName || "Rumpf unbekannt") +
+			" | Besitzer: " +
+			owner +
+			"</div>";
+
+		if (!spacecraft.hasDetails) {
+			return '<div class="userStarmapShipEntry">' +
+				'<img src="' + escapeHtml(spacecraft.rumpImage) + '" alt="" loading="lazy" decoding="async" draggable="false" />' +
+				'<div class="userStarmapShipText">' +
+				'<div class="userStarmapShipName">' + spacecraft.nameHtml + "</div>" +
+				baseInfo +
+				"</div>" +
+				"</div>";
+		}
 
 		return '<div class="userStarmapShipEntry">' +
 			'<img src="' + escapeHtml(spacecraft.rumpImage) + '" alt="" loading="lazy" decoding="async" draggable="false" />' +
 			'<div class="userStarmapShipText">' +
 			'<div class="userStarmapShipName">' + spacecraft.nameHtml + "</div>" +
+			baseInfo +
 			'<div class="userStarmapShipMeta">' +
-			escapeHtml(spacecraft.rumpName || "Rumpf unbekannt") +
-			" | Besitzer: " +
-			owner +
-			" | " +
 			escapeHtml(location) +
 			"</div>" +
 			'<div class="userStarmapShipMeta">' +
@@ -1346,6 +1948,29 @@
 
 		state.viewX = maxX < 0 ? maxX / 2 : clamp(state.viewX, 0, maxX);
 		state.viewY = maxY < 0 ? maxY / 2 : clamp(state.viewY, 0, maxY);
+	}
+
+	function zoomAtViewportCenter(state, zoomFactor) {
+		zoomAtScreenPoint(
+			state,
+			AXIS_LEFT_WIDTH + getMapViewportWidth(state) / 2,
+			AXIS_TOP_HEIGHT + getMapViewportHeight(state) / 2,
+			zoomFactor
+		);
+	}
+
+	function zoomAtScreenPoint(state, screenX, screenY, zoomFactor) {
+		const mapScreenX = clamp(screenX - AXIS_LEFT_WIDTH, 0, getMapViewportWidth(state));
+		const mapScreenY = clamp(screenY - AXIS_TOP_HEIGHT, 0, getMapViewportHeight(state));
+		const worldX = state.viewX + mapScreenX / state.scale;
+		const worldY = state.viewY + mapScreenY / state.scale;
+
+		state.scale = clamp(state.scale * zoomFactor, MIN_SCALE, MAX_SCALE);
+		state.viewX = worldX - mapScreenX / state.scale;
+		state.viewY = worldY - mapScreenY / state.scale;
+		clampView(state);
+		updateTooltip(state);
+		scheduleDraw(state);
 	}
 
 	function startLoading(state, label, progress) {

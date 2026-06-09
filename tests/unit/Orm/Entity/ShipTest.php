@@ -27,6 +27,35 @@ class ShipTest extends StuTestCase
         $this->assertNull($this->subject->getStarsystemMap());
     }
 
+    public function testSetLocationSyncsLocationIdWhenLocationIsPersisted(): void
+    {
+        $map = new Map();
+        $this->setPrivateProperty(Location::class, $map, 'id', 42);
+
+        $this->subject->setLocation($map);
+
+        $this->assertSame(42, $this->getPrivateProperty(Spacecraft::class, $this->subject, 'locationId'));
+    }
+
+    public function testSetFleetSyncsFleetIdWhenFleetIsPersisted(): void
+    {
+        $fleet = new Fleet();
+        $this->setPrivateProperty(Fleet::class, $fleet, 'id', 23);
+
+        $this->subject->setFleet($fleet);
+
+        $this->assertSame(23, $this->subject->getFleetId());
+    }
+
+    public function testSetFleetNullClearsFleetId(): void
+    {
+        $this->setPrivateProperty(Ship::class, $this->subject, 'fleet_id', 23);
+
+        $this->subject->setFleet(null);
+
+        $this->assertNull($this->subject->getFleetId());
+    }
+
     public function testsetLocationWhenSystemMapAndNotWormhole(): void
     {
         $map = $this->mock(Map::class);
@@ -76,5 +105,18 @@ class ShipTest extends StuTestCase
         // REMOVAL
         $this->subject->setDockedTo(null);
         $this->assertNull($this->subject->getDockedTo());
+    }
+
+    private function setPrivateProperty(string $class, object $object, string $property, mixed $value): void
+    {
+        $reflection = new \ReflectionProperty($class, $property);
+        $reflection->setValue($object, $value);
+    }
+
+    private function getPrivateProperty(string $class, object $object, string $property): mixed
+    {
+        $reflection = new \ReflectionProperty($class, $property);
+
+        return $reflection->getValue($object);
     }
 }

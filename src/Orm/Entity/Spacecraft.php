@@ -353,6 +353,11 @@ abstract class Spacecraft implements
     public function setLocation(Location $location): Spacecraft
     {
         $this->location = $location;
+        try {
+            $this->locationId = $location->getId();
+        } catch (\Throwable) {
+            // New or mocked locations may not have an id yet.
+        }
 
         return $this;
     }
