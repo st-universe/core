@@ -721,18 +721,15 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             AND lss_system.status > 0
             AND (source_owner.vac_active = :false OR source_owner.vac_request_date > :vacationThreshold)
             AND (
-                (src.user_id = :userId AND source_rump.role_id IN (:baseRole, :outpostRole))
+                (src.user_id = :userId AND source_rump.role_id IN (:baseRole, :outpostRole, :sensorRole))
                 OR (
                     source_rump.role_id = :sensorRole
                     AND COALESCE(uplink_system.mode, 0) >= :uplinkMode
-                    AND (
-                        src.user_id = :userId
-                        OR EXISTS (
-                            SELECT 1
-                            FROM stu_crew_assign uplink_crew
-                            WHERE uplink_crew.spacecraft_id = src.id
-                            AND uplink_crew.user_id = :userId
-                        )
+                    AND EXISTS (
+                        SELECT 1
+                        FROM stu_crew_assign uplink_crew
+                        WHERE uplink_crew.spacecraft_id = src.id
+                        AND uplink_crew.user_id = :userId
                     )
                 )
             )';
