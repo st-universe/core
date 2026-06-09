@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -17,7 +18,10 @@ use Stu\Orm\Entity\Ship;
 
 final class CloakShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    public function __construct(private SpacecraftStateChangerInterface $spacecraftStateChanger) {}
+    public function __construct(
+        private SpacecraftStateChangerInterface $spacecraftStateChanger,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
+    ) {}
 
     #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
@@ -98,5 +102,13 @@ final class CloakShipSystem extends AbstractSpacecraftSystemType implements Spac
         }
 
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_ON);
+        $this->spacecraftMovementPublisher->publishState($spacecraft);
+    }
+
+    #[\Override]
+    public function deactivate(SpacecraftWrapperInterface $wrapper): void
+    {
+        parent::deactivate($wrapper);
+        $this->spacecraftMovementPublisher->publishState($wrapper->get());
     }
 }

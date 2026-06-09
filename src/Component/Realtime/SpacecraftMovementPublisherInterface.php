@@ -18,4 +18,6 @@ interface SpacecraftMovementPublisherInterface
     ): void;
 
     public function publishRemoval(Spacecraft $spacecraft): void;
+
+    public function publishState(Spacecraft $spacecraft): void;
 }

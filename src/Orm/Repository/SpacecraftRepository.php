@@ -604,13 +604,14 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $rsm->addScalarResult('x', 'x', 'integer');
         $rsm->addScalarResult('y', 'y', 'integer');
         $rsm->addScalarResult('sensor_range', 'sensor_range', 'integer');
+        $rsm->addScalarResult('tachyon_range', 'tachyon_range', 'integer');
 
         return $this->getEntityManager()
             ->createNativeQuery(
                 sprintf(
-                    'SELECT source_id, x, y, sensor_range
+                    'SELECT source_id, x, y, sensor_range, tachyon_range
                     FROM (%s) sensor_sources
-                    WHERE sensor_range > 0
+                    WHERE sensor_range > 0 OR tachyon_range > 0
                     ORDER BY y ASC, x ASC, source_id ASC',
                     $this->getRealtimeSensorSourceSql()
                 ),
@@ -652,9 +653,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->createNativeQuery(
                 sprintf(
                     'WITH sensor_ranges AS (
-                        SELECT source_id, x, y, sensor_range
+                        SELECT source_id, x, y, GREATEST(sensor_range, tachyon_range) as visibility_range
                         FROM (%s) sensor_sources
-                        WHERE sensor_range > 0
+                        WHERE sensor_range > 0 OR tachyon_range > 0
                     ),
                     contact_positions AS (
                         %s
@@ -662,9 +663,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                     SELECT DISTINCT ON (contact_positions.id) contact_positions.*
                     FROM contact_positions
                     JOIN sensor_ranges
-                    ON contact_positions.x BETWEEN sensor_ranges.x - sensor_ranges.sensor_range AND sensor_ranges.x + sensor_ranges.sensor_range
-                    AND contact_positions.y BETWEEN sensor_ranges.y - sensor_ranges.sensor_range AND sensor_ranges.y + sensor_ranges.sensor_range
-                    WHERE (contact_positions.user_id = :userId OR contact_positions.is_cloaked = false)
+                    ON contact_positions.x BETWEEN sensor_ranges.x - sensor_ranges.visibility_range AND sensor_ranges.x + sensor_ranges.visibility_range
+                    AND contact_positions.y BETWEEN sensor_ranges.y - sensor_ranges.visibility_range AND sensor_ranges.y + sensor_ranges.visibility_range
                     ORDER BY contact_positions.id ASC',
                     $this->getRealtimeSensorSourceSql(),
                     $this->getRealtimeContactPositionSql()
@@ -689,7 +689,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         return 'SELECT src.id as source_id,
                 CASE WHEN map_field.id IS NOT NULL THEN source_location.cx ELSE parent_location.cx END as x,
                 CASE WHEN map_field.id IS NOT NULL THEN source_location.cy ELSE parent_location.cy END as y,
-                COALESCE(CEIL((NULLIF(lss_system.data, \'\')::json->>\'sensorRange\')::numeric * lss_system.status / 100), 0)::int as sensor_range
+                COALESCE(CEIL((NULLIF(lss_system.data, \'\')::json->>\'sensorRange\')::numeric * lss_system.status / 100), 0)::int as sensor_range,
+                CASE WHEN COALESCE(tachyon_system.mode, 0) >= :tachyonMode THEN 7 ELSE 0 END as tachyon_range
             FROM stu_spacecraft src
             JOIN stu_location source_location
             ON source_location.id = src.location_id
@@ -708,6 +709,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             JOIN stu_spacecraft_system lss_system
             ON lss_system.spacecraft_id = src.id
             AND lss_system.system_type = :lssType
+            LEFT JOIN stu_spacecraft_system tachyon_system
+            ON tachyon_system.spacecraft_id = src.id
+            AND tachyon_system.system_type = :tachyonType
             LEFT JOIN stu_spacecraft_system uplink_system
             ON uplink_system.spacecraft_id = src.id
             AND uplink_system.system_type = :uplinkType
@@ -811,6 +815,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'outpostRole' => SpacecraftRumpRoleEnum::OUTPOST->value,
             'sensorRole' => SpacecraftRumpRoleEnum::SENSOR->value,
             'lssType' => SpacecraftSystemTypeEnum::LSS->value,
+            'tachyonType' => SpacecraftSystemTypeEnum::TACHYON_SCANNER->value,
+            'tachyonMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'uplinkMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
