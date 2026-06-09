@@ -14,6 +14,8 @@
 	const OWN_CONTACT_COLOR = "#ffffff";
 	const FOREIGN_CONTACT_COLOR = "#ffe06b";
 	const ENEMY_CONTACT_COLOR = "#ff4a4a";
+	const EFFECT_NO_SPACECRAFT_COUNT = "NO_SPACECRAFT_COUNT";
+	const EFFECT_DUBIOUS_SPACECRAFT_COUNT = "DUBIOUS_SPACECRAFT_COUNT";
 
 	function clamp(value, min, max) {
 		return Math.max(min, Math.min(max, value));
@@ -416,6 +418,7 @@
 		state.fields.forEach(function (field) {
 			field.x = Number(field.x);
 			field.y = Number(field.y);
+			field.effects = Array.isArray(field.effects) ? field.effects : [];
 			field.territoryOwnerHtml = field.territoryOwnerHtml || null;
 			field.territoryOwnerText = field.territoryOwnerText || null;
 			state.fieldByKey.set(fieldKey(field.x, field.y), field);
@@ -1261,7 +1264,12 @@
 				return;
 			}
 
-			drawContactCount(state, ctx, entry.x, entry.y, getContactStats(spacecrafts));
+			const stats = getContactStatsForField(state, entry.x, entry.y, spacecrafts);
+			if (stats === null) {
+				return;
+			}
+
+			drawContactCount(state, ctx, entry.x, entry.y, stats);
 		});
 
 		drawContactAnimations(state, ctx, bounds, now);
@@ -1299,13 +1307,18 @@
 			const rect = getFieldRect(state, position);
 			const progress = getContactAnimationGroupProgress(group.animations, now);
 			const alpha = 0.72 + Math.sin(progress * Math.PI) * 0.23;
+			const target = getContactAnimationGroupTarget(group.animations);
+			const stats = getContactStatsForField(state, target.x, target.y, group.spacecrafts);
+			if (stats === null) {
+				return;
+			}
 
 			drawContactCountAt(
 				state,
 				ctx,
 				rect.x + rect.size / 2,
 				rect.y + rect.size / 2,
-				getContactStats(group.spacecrafts),
+				stats,
 				alpha
 			);
 		});
@@ -1344,6 +1357,15 @@
 		});
 
 		return progress / animations.length;
+	}
+
+	function getContactAnimationGroupTarget(animations) {
+		const animation = animations[0];
+
+		return {
+			x: animation.groupToX ?? animation.toX,
+			y: animation.groupToY ?? animation.toY
+		};
 	}
 
 	function updateContactAnimations(state, now) {
@@ -1415,6 +1437,9 @@
 		if (stats.enemyCount > 0) {
 			colors.push(ENEMY_CONTACT_COLOR);
 		}
+		if (stats.isDubious) {
+			colors.push(FOREIGN_CONTACT_COLOR);
+		}
 		if (colors.length === 0 && stats.cloakedSignatureCount > 0) {
 			colors.push(FOREIGN_CONTACT_COLOR);
 		}
@@ -1423,6 +1448,9 @@
 	}
 
 	function getContactDisplayText(stats) {
+		if (stats.isDubious) {
+			return "!";
+		}
 		if (stats.visibleCount === 0 && stats.cloakedSignatureCount > 0) {
 			return "?";
 		}
@@ -1431,6 +1459,9 @@
 	}
 
 	function getContactTextColor(stats) {
+		if (stats.isDubious) {
+			return FOREIGN_CONTACT_COLOR;
+		}
 		if (stats.enemyCount > 0) {
 			return ENEMY_CONTACT_COLOR;
 		}
@@ -1882,12 +1913,19 @@
 	}
 
 	function appendSpacecraftTooltipHtml(state, field, html) {
-		const spacecrafts = getSpacecraftsForField(state, field);
-		if (spacecrafts.length === 0) {
+		const display = getSpacecraftsForSignatureDisplay(state, field.x, field.y, getSpacecraftsForField(state, field));
+		const spacecrafts = display.spacecrafts;
+		if (spacecrafts.length === 0 && !display.hasDubiousContacts) {
 			return;
 		}
 
-		html.push('<div class="userStarmapTooltipLine"><strong>Kontakte: ' + spacecrafts.length + "</strong></div>");
+		html.push('<div class="userStarmapTooltipLine"><strong>Kontakte: ' + (display.hasDubiousContacts ? "!" : spacecrafts.length) + "</strong></div>");
+		if (display.hasDubiousContacts) {
+			html.push('<div class="userStarmapTooltipItem">' +
+				'<span class="userStarmapTooltipName">!</span>' +
+				'<span class="userStarmapTooltipMeta"> | Signaturen verschleiert</span>' +
+				"</div>");
+		}
 		spacecrafts.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (spacecraft) {
 			if (spacecraft.isCloakedSignature) {
 				html.push(
@@ -1978,6 +2016,46 @@
 		return Array.from(byId.values());
 	}
 
+	function getSpacecraftsForSignatureDisplay(state, x, y, spacecrafts) {
+		const field = state.fieldByKey.get(fieldKey(Math.round(Number(x)), Math.round(Number(y))));
+		if (!field || spacecrafts.length === 0) {
+			return {
+				spacecrafts,
+				hasDubiousContacts: false
+			};
+		}
+
+		const trustedSpacecrafts = spacecrafts.filter(isTrustedSpacecraftForSignatureEffects);
+		const hasUntrustedSpacecrafts = trustedSpacecrafts.length < spacecrafts.length;
+
+		if (fieldHasEffect(field, EFFECT_NO_SPACECRAFT_COUNT)) {
+			return {
+				spacecrafts: trustedSpacecrafts,
+				hasDubiousContacts: false
+			};
+		}
+
+		if (hasUntrustedSpacecrafts && fieldHasEffect(field, EFFECT_DUBIOUS_SPACECRAFT_COUNT)) {
+			return {
+				spacecrafts: trustedSpacecrafts,
+				hasDubiousContacts: true
+			};
+		}
+
+		return {
+			spacecrafts,
+			hasDubiousContacts: false
+		};
+	}
+
+	function fieldHasEffect(field, effect) {
+		return Array.isArray(field.effects) && field.effects.indexOf(effect) !== -1;
+	}
+
+	function isTrustedSpacecraftForSignatureEffects(spacecraft) {
+		return Boolean(spacecraft.hasDetails);
+	}
+
 	function parseFieldKey(key) {
 		const parts = String(key).split(":");
 		if (parts.length !== 2) {
@@ -2038,6 +2116,29 @@
 			foreignCount,
 			enemyCount
 		};
+	}
+
+	function getContactStatsForField(state, x, y, spacecrafts) {
+		const display = getSpacecraftsForSignatureDisplay(state, x, y, spacecrafts);
+		if (display.hasDubiousContacts) {
+			return getDubiousContactStats(display.spacecrafts);
+		}
+
+		if (display.spacecrafts.length === 0) {
+			return null;
+		}
+
+		return getContactStats(display.spacecrafts);
+	}
+
+	function getDubiousContactStats(trustedSpacecrafts) {
+		const stats = getContactStats(trustedSpacecrafts);
+		stats.isDubious = true;
+		if (trustedSpacecrafts.length === 0) {
+			stats.foreignCount = 1;
+		}
+
+		return stats;
 	}
 
 	function buildSpacecraftDetailsHtml(spacecrafts) {

@@ -10,6 +10,7 @@ use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -189,6 +190,10 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'territoryOwnerText' => $territoryOwner['text'] ?? null,
             'territoryOwnerHtml' => $territoryOwner['html'] ?? null,
             'hasEffects' => $item->hasEffects(),
+            'effects' => array_map(
+                static fn (FieldTypeEffectEnum $effect): string => $effect->value,
+                $field->getEffects()
+            ),
             'isImpassable' => $item->isImpassable()
         ];
     }
