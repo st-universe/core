@@ -419,8 +419,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                     al.name as alliance_name,
                     sp.rump_id,
                     r.name as rump_name,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-                    CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                    CASE WHEN system_field.id IS NOT NULL THEN parent_location.cx ELSE location.cx END as x,
+                    CASE WHEN system_field.id IS NOT NULL THEN parent_location.cy ELSE location.cy END as y,
                     CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
                     systems.name as system_name,
                     CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked
@@ -446,7 +446,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 LEFT JOIN stu_spacecraft_system cloak_system
                 ON cloak_system.spacecraft_id = sp.id
                 AND cloak_system.system_type = :cloakType
-                WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+                WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
                 AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
                 ORDER BY sp.id ASC',
                 $rsm
@@ -534,8 +534,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                             al.name as alliance_name,
                             sp.rump_id,
                             r.name as rump_name,
-                            CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-                            CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                            CASE WHEN system_field.id IS NOT NULL THEN parent_location.cx ELSE location.cx END as x,
+                            CASE WHEN system_field.id IS NOT NULL THEN parent_location.cy ELSE location.cy END as y,
                             CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
                             systems.name as system_name,
                             CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked,
@@ -581,7 +581,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                         LEFT JOIN stu_spacecraft_system computer_system
                         ON computer_system.spacecraft_id = sp.id
                         AND computer_system.system_type = :computerType
-                        WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+                        WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
                         AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
                         AND %s
                     ) ship_map
@@ -687,8 +687,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     private function getRealtimeSensorSourceSql(): string
     {
         return 'SELECT src.id as source_id,
-                CASE WHEN map_field.id IS NOT NULL THEN source_location.cx ELSE parent_location.cx END as x,
-                CASE WHEN map_field.id IS NOT NULL THEN source_location.cy ELSE parent_location.cy END as y,
+                CASE WHEN system_field.id IS NOT NULL THEN parent_location.cx ELSE source_location.cx END as x,
+                CASE WHEN system_field.id IS NOT NULL THEN parent_location.cy ELSE source_location.cy END as y,
                 COALESCE(CEIL((NULLIF(lss_system.data, \'\')::json->>\'sensorRange\')::numeric * lss_system.status / 100), 0)::int as sensor_range,
                 CASE WHEN COALESCE(tachyon_system.mode, 0) >= :tachyonMode THEN 7 ELSE 0 END as tachyon_range
             FROM stu_spacecraft src
@@ -716,7 +716,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ON uplink_system.spacecraft_id = src.id
             AND uplink_system.system_type = :uplinkType
             WHERE src.type = :sourceStationType
-            AND COALESCE(source_location.layer_id, parent_location.layer_id) = :layerId
+            AND CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE source_location.layer_id END = :layerId
             AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
             AND lss_system.status > 0
             AND (source_owner.vac_active = :false OR source_owner.vac_request_date > :vacationThreshold)
@@ -749,8 +749,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 al.name as alliance_name,
                 sp.rump_id,
                 r.name as rump_name,
-                CASE WHEN map_field.id IS NOT NULL THEN location.cx ELSE parent_location.cx END as x,
-                CASE WHEN map_field.id IS NOT NULL THEN location.cy ELSE parent_location.cy END as y,
+                CASE WHEN system_field.id IS NOT NULL THEN parent_location.cx ELSE location.cx END as x,
+                CASE WHEN system_field.id IS NOT NULL THEN parent_location.cy ELSE location.cy END as y,
                 CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
                 systems.name as system_name,
                 CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked,
@@ -796,7 +796,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             LEFT JOIN stu_spacecraft_system computer_system
             ON computer_system.spacecraft_id = sp.id
             AND computer_system.system_type = :computerType
-            WHERE COALESCE(location.layer_id, parent_location.layer_id) = :layerId
+            WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
             AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
             AND sp.type IN (:shipType, :contactStationType)
             AND sp.user_id != :nooneUserId';

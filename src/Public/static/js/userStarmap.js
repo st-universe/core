@@ -1351,7 +1351,7 @@
 	}
 
 	function drawContactCountAt(state, ctx, centerX, centerY, stats, alpha) {
-		const text = String(stats.count);
+		const text = getContactDisplayText(stats);
 		const fontSize = 18 / state.scale;
 		const radius = Math.max(10 / state.scale, state.cellSize * 0.28);
 		const textColor = getContactTextColor(stats);
@@ -1411,8 +1411,19 @@
 		if (stats.enemyCount > 0) {
 			colors.push(ENEMY_CONTACT_COLOR);
 		}
+		if (colors.length === 0 && stats.cloakedSignatureCount > 0) {
+			colors.push(FOREIGN_CONTACT_COLOR);
+		}
 
 		return colors.length === 0 ? [FOREIGN_CONTACT_COLOR] : colors;
+	}
+
+	function getContactDisplayText(stats) {
+		if (stats.visibleCount === 0 && stats.cloakedSignatureCount > 0) {
+			return "?";
+		}
+
+		return String(stats.visibleCount);
 	}
 
 	function getContactTextColor(stats) {
@@ -1424,6 +1435,9 @@
 		}
 		if (stats.ownCount > 0) {
 			return OWN_CONTACT_COLOR;
+		}
+		if (stats.cloakedSignatureCount > 0) {
+			return FOREIGN_CONTACT_COLOR;
 		}
 
 		return ALLIANCE_CONTACT_COLOR;
@@ -1990,8 +2004,16 @@
 		let friendlyCount = 0;
 		let foreignCount = 0;
 		let enemyCount = 0;
+		let cloakedSignatureCount = 0;
+		let visibleCount = 0;
 
 		spacecrafts.forEach(function (spacecraft) {
+			if (spacecraft.isCloakedSignature) {
+				cloakedSignatureCount++;
+				return;
+			}
+
+			visibleCount++;
 			if (spacecraft.isOwn) {
 				ownCount++;
 			} else if (spacecraft.isEnemy) {
@@ -2005,6 +2027,8 @@
 
 		return {
 			count: spacecrafts.length,
+			visibleCount,
+			cloakedSignatureCount,
 			ownCount,
 			friendlyCount,
 			foreignCount,
