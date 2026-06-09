@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -30,6 +31,7 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private SpacecraftShutdownInterface $spacecraftShutdown,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher,
     ) {}
 
     private function resetTrackerDevices(int $shipId): void
@@ -44,6 +46,8 @@ final class SpacecraftRemover implements SpacecraftRemoverInterface
     #[\Override]
     public function remove(Spacecraft $spacecraft, ?bool $truncateCrew = false): void
     {
+        $this->spacecraftMovementPublisher->publishRemoval($spacecraft);
+
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
 
         $this->spacecraftShutdown->shutdown($wrapper, true);

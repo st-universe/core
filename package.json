@@ -1,0 +1,12 @@
+{
+  "name": "st-universe-core-realtime",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "realtime:starmap": "node realtime/starmap-server.js"
+  },
+  "dependencies": {
+    "redis": "^4.7.0",
+    "ws": "^8.18.0"
+  }
+}

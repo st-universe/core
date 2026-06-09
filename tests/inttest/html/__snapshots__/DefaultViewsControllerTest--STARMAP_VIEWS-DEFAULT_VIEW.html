@@ -20,7 +20,8 @@
     data-layer-width="7" data-layer-height="8" data-cell-size="30"
     data-fields-per-section="20"
     data-image-url="starmap.php?SHOW_USER_STARMAP_IMAGE=1&amp;layerid=2"
-    data-data-url="starmap.php?SHOW_USER_STARMAP_DATA=1&amp;layerid=2">
+    data-data-url="starmap.php?SHOW_USER_STARMAP_DATA=1&amp;layerid=2"
+    data-realtime-url="starmap.php?SHOW_USER_STARMAP_REALTIME=1&amp;layerid=2">
     <div class="userStarmapToolbar">
         <select id="userStarmapLayer">
                         <option value="2" selected="selected" >
@@ -35,6 +36,10 @@
     <div class="userStarmapLayout">
         <div class="userStarmapStage">
             <canvas id="userStarmapCanvas"></canvas>
+            <div class="userStarmapZoomControls" aria-label="Kartenzoom">
+                <button type="button" id="userStarmapZoomIn" title="Hineinzoomen">+</button>
+                <button type="button" id="userStarmapZoomOut" title="Herauszoomen">-</button>
+            </div>
             <div id="userStarmapLoading" class="userStarmapLoading">Lade Karte. 0%</div>
             <div id="userStarmapTooltip" class="userStarmapTooltip"></div>
         </div>
@@ -75,6 +80,10 @@
                         <input type="checkbox" id="userStarmapShowAllianceStations" />
                         Verbündete Stationen
                     </label>
+                    <label>
+                        <input type="checkbox" id="userStarmapShowSensorContacts" />
+                        Sensor-Livekontakte
+                    </label>
                     <label class="userStarmapSectorControl">
                         <span>Sektor</span>
                         <select id="userStarmapSectorHighlight">
@@ -98,7 +107,7 @@
     if (typeof initUserStarmap === 'function') {
         initUserStarmap();
     } else if (typeof appendJsAsync === 'function') {
-        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-contact-type-filters', function () {
+        appendJsAsync('/static/js/userStarmap.js?v=user-full-starmap-contact-relations', function () {
             if (typeof initUserStarmap === 'function') {
                 initUserStarmap();
             }

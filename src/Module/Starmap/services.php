@@ -15,6 +15,7 @@ use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
 use Stu\Module\Starmap\View\ShowUserStarmapData\ShowUserStarmapData;
 use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
+use Stu\Module\Starmap\View\ShowUserStarmapRealtime\ShowUserStarmapRealtime;
 use Stu\StarsystemGenerator\StarsystemGenerator;
 use Stu\StarsystemGenerator\StarsystemGeneratorInterface;
 
@@ -30,7 +31,8 @@ return [
         ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
         RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class),
         ShowUserStarmapImage::VIEW_IDENTIFIER => autowire(ShowUserStarmapImage::class),
-        ShowUserStarmapData::VIEW_IDENTIFIER => autowire(ShowUserStarmapData::class)
+        ShowUserStarmapData::VIEW_IDENTIFIER => autowire(ShowUserStarmapData::class),
+        ShowUserStarmapRealtime::VIEW_IDENTIFIER => autowire(ShowUserStarmapRealtime::class)
     ],
     StarmapUiFactoryInterface::class => autowire(StarmapUiFactory::class),
 ];

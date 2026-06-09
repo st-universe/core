@@ -74,6 +74,15 @@ class Ship extends Spacecraft
 
     public function setFleet(?Fleet $fleet): Ship
     {
+        $this->fleet_id = null;
+        if ($fleet !== null) {
+            try {
+                $this->fleet_id = $fleet->getId();
+            } catch (\Throwable) {
+                // New fleets receive their id on flush; Doctrine persists the association itself.
+            }
+        }
+
         if ($this->fleet === $fleet) {
             return $this;
         }

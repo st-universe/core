@@ -116,6 +116,8 @@
       "@php -d xdebug.mode=off vendor/bin/phpunit -c phpunit.xml --colors=always tests"
     ],
     "dev:serve": "@php -S localhost:1337 -d xdebug.mode=off -t src/Public/ router.php",
+    "dev:serve-php": "@php -S localhost:1337 -d xdebug.mode=off -t src/Public/ router.php",
+    "dev:serve-node": "bash bin/dev-serve-realtime",
     "dev:serve-debug": "@php -S localhost:1337 -t src/Public/ router.php",
     "mago:analyze": "@php -d xdebug.mode=off vendor/bin/mago analyze --fix --fmt",
     "unittests": "@php vendor/bin/phpunit --testsuite 'STU unit'",
