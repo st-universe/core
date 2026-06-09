@@ -194,8 +194,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $sourceX = (int) $range['x'];
             $sourceY = (int) $range['y'];
             $sensorRange = max(0, (int) $range['sensor_range']);
-            $tachyonRange = max(0, (int) ($range['tachyon_range'] ?? 0));
-            $maxRange = max($sensorRange, $tachyonRange);
+            $tachyonRange = $this->getEffectiveTachyonRange($sensorRange, max(0, (int) ($range['tachyon_range'] ?? 0)));
+            $maxRange = $sensorRange;
 
             if ($maxRange <= 0) {
                 continue;
@@ -225,7 +225,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                     $distanceY = abs($y - $sourceY);
                     $key = $this->fieldKey($x, $y);
 
-                    if ($sensorRange > 0 && $distanceX <= $sensorRange && $distanceY <= $sensorRange) {
+                    if ($distanceX <= $sensorRange && $distanceY <= $sensorRange) {
                         $visibleKeys[$key] = true;
                     }
                     if ($tachyonRange > 0 && $distanceX <= $tachyonRange && $distanceY <= $tachyonRange) {
@@ -252,7 +252,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         foreach ($ranges as $range) {
             $sourceX = (int) $range['x'];
             $sourceY = (int) $range['y'];
-            $maxRange = max(0, (int) $range['sensor_range'], (int) ($range['tachyon_range'] ?? 0));
+            $maxRange = max(0, (int) $range['sensor_range']);
             if ($maxRange <= 0) {
                 continue;
             }
@@ -278,6 +278,11 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         }
 
         return $keys;
+    }
+
+    private function getEffectiveTachyonRange(int $sensorRange, int $tachyonRange): int
+    {
+        return min($sensorRange, $tachyonRange);
     }
 
     /**

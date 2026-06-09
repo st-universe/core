@@ -611,7 +611,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 sprintf(
                     'SELECT source_id, x, y, sensor_range, tachyon_range
                     FROM (%s) sensor_sources
-                    WHERE sensor_range > 0 OR tachyon_range > 0
+                    WHERE sensor_range > 0
                     ORDER BY y ASC, x ASC, source_id ASC',
                     $this->getRealtimeSensorSourceSql()
                 ),
@@ -653,9 +653,9 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->createNativeQuery(
                 sprintf(
                     'WITH sensor_ranges AS (
-                        SELECT source_id, x, y, GREATEST(sensor_range, tachyon_range) as visibility_range
+                        SELECT source_id, x, y, sensor_range as visibility_range
                         FROM (%s) sensor_sources
-                        WHERE sensor_range > 0 OR tachyon_range > 0
+                        WHERE sensor_range > 0
                     ),
                     contact_positions AS (
                         %s

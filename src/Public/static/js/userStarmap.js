@@ -923,6 +923,10 @@
 			fromY: startPoint.y,
 			toX: toPoint.x,
 			toY: toPoint.y,
+			groupFromX: fromPoint.x,
+			groupFromY: fromPoint.y,
+			groupToX: toPoint.x,
+			groupToY: toPoint.y,
 			spacecraft,
 			startedAt: now,
 			duration: CONTACT_ANIMATION_MS
@@ -1309,10 +1313,10 @@
 
 	function getContactAnimationGroupKey(animation) {
 		return [
-			animation.fromX,
-			animation.fromY,
-			animation.toX,
-			animation.toY
+			animation.groupFromX ?? animation.fromX,
+			animation.groupFromY ?? animation.fromY,
+			animation.groupToX ?? animation.toX,
+			animation.groupToY ?? animation.toY
 		].join(":");
 	}
 
