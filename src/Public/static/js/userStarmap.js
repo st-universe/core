@@ -106,8 +106,10 @@
 			showImpassable: false,
 			showEffects: false,
 			showGrid: true,
-			showOwnSpacecrafts: false,
-			showAllianceSpacecrafts: false,
+			showOwnShips: false,
+			showOwnStations: false,
+			showAllianceShips: false,
+			showAllianceStations: false,
 			selectedSectorId: 0,
 			fields: [],
 			fieldByKey: new Map(),
@@ -168,8 +170,10 @@
 		wireCheckbox(state, "userStarmapShowImpassable", "showImpassable");
 		wireCheckbox(state, "userStarmapShowEffects", "showEffects");
 		wireCheckbox(state, "userStarmapShowGrid", "showGrid");
-		wireCheckbox(state, "userStarmapShowOwnSpacecrafts", "showOwnSpacecrafts");
-		wireCheckbox(state, "userStarmapShowAllianceSpacecrafts", "showAllianceSpacecrafts");
+		wireCheckbox(state, "userStarmapShowOwnShips", "showOwnShips");
+		wireCheckbox(state, "userStarmapShowOwnStations", "showOwnStations");
+		wireCheckbox(state, "userStarmapShowAllianceShips", "showAllianceShips");
+		wireCheckbox(state, "userStarmapShowAllianceStations", "showAllianceStations");
 		wireSectorSelect(state);
 
 		state.canvas.addEventListener("mousedown", function (event) {
@@ -1203,12 +1207,16 @@
 	}
 
 	function hasActiveSpacecraftFilter(state) {
-		return state.showOwnSpacecrafts || state.showAllianceSpacecrafts;
+		return state.showOwnShips || state.showOwnStations || state.showAllianceShips || state.showAllianceStations;
 	}
 
 	function getFilteredSpacecrafts(state, spacecrafts) {
 		return spacecrafts.filter(function (spacecraft) {
-			return spacecraft.isOwn ? state.showOwnSpacecrafts : state.showAllianceSpacecrafts;
+			if (spacecraft.isOwn) {
+				return spacecraft.type === "STATION" ? state.showOwnStations : state.showOwnShips;
+			}
+
+			return spacecraft.type === "STATION" ? state.showAllianceStations : state.showAllianceShips;
 		});
 	}
 
