@@ -21,10 +21,6 @@
     <div class="userStarmapLayout">
         <div class="userStarmapStage">
             <canvas id="userStarmapCanvas"></canvas>
-            <div class="userStarmapZoomControls" aria-label="Kartenzoom">
-                <button type="button" id="userStarmapZoomIn" title="Hineinzoomen">+</button>
-                <button type="button" id="userStarmapZoomOut" title="Herauszoomen">-</button>
-            </div>
             <div id="userStarmapLoading" class="userStarmapLoading">Lade Karte. 0%</div>
             <div id="userStarmapTooltip" class="userStarmapTooltip"></div>
         </div>
@@ -32,6 +28,10 @@
         <aside class="userStarmapPanel">
             <div class="userStarmapPanelSection">
                 <div class="userStarmapPanelTitle">Ansicht</div>
+                <div class="userStarmapZoomControls" aria-label="Kartenzoom">
+                    <button type="button" id="userStarmapZoomIn" title="Hineinzoomen">+</button>
+                    <button type="button" id="userStarmapZoomOut" title="Herauszoomen">-</button>
+                </div>
                 <div class="starmapSectionControls userStarmapControls">
                     <label>
                         <input type="checkbox" id="userStarmapShowTerritory" checked="checked" />
