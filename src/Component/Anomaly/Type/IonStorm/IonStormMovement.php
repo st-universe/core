@@ -55,7 +55,11 @@ class IonStormMovement
             || $newLocation->isAnomalyForbidden()
         ) {
             $this->anomalyRepository->delete($child);
-            StuLogger::log(sprintf('deleted ionstorm at %s', $currentLocation->getSectorString()), LogTypeEnum::ANOMALY);
+            StuLogger::log(sprintf(
+                'deleted ionstorm at %s (remainingTicks: %d)',
+                $currentLocation->getSectorString(),
+                $child->getRemainingTicks()
+            ), LogTypeEnum::ANOMALY);
             return;
         }
 
@@ -67,9 +71,10 @@ class IonStormMovement
         $child->setLocation($newLocation);
 
         StuLogger::log(sprintf(
-            'moved ionstorm from %s to %s',
+            'moved ionstorm from %s to %s (remainingTicks: %d)',
             $currentLocation->getSectorString(),
-            $newLocation->getSectorString()
+            $newLocation->getSectorString(),
+            $child->getRemainingTicks()
         ), LogTypeEnum::ANOMALY);
 
         $this->anomalyRepository->save($child);

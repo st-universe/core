@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use OutOfBoundsException;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
+use Stu\Module\Logging\LogTypeEnum;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Anomaly;
@@ -53,6 +56,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         $remainingTicks = $anomaly->getRemainingTicks();
 
         if ($remainingTicks <= 1) {
+            $this->logExpiredAnomalyDeletion($anomaly, $remainingTicks);
             $handler->letAnomalyDisappear($anomaly);
             $this->anomalyRepository->delete($anomaly);
         } else {
@@ -63,6 +67,25 @@ final class AnomalyHandling implements AnomalyHandlingInterface
         foreach ($anomaly->getChildren() as $child) {
             $this->decreaseLifespan($child, $handler);
         }
+    }
+
+    private function logExpiredAnomalyDeletion(Anomaly $anomaly, int $remainingTicks): void
+    {
+        $location = $anomaly->getLocation();
+        if ($location === null) {
+            return;
+        }
+
+        $type = $anomaly->getAnomalyType()->getId() === AnomalyTypeEnum::ION_STORM->value
+            ? 'ionstorm'
+            : $anomaly->getAnomalyType()->getName();
+
+        StuLogger::log(sprintf(
+            'deleted %s at %s (remainingTicks: %d)',
+            $type,
+            $location->getSectorString(),
+            $remainingTicks
+        ), LogTypeEnum::ANOMALY);
     }
 
     private function getHandler(Anomaly $anomaly): AnomalyHandlerInterface

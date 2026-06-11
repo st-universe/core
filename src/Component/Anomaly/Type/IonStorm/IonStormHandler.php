@@ -120,6 +120,10 @@ final class IonStormHandler implements AnomalyHandlerInterface
     private function damageSpacecrafts(Anomaly $root): void
     {
         foreach ($root->getChildren() as $child) {
+            if ($child->getRemainingTicks() <= 1) {
+                continue;
+            }
+
             $location = $child->getLocation();
             if ($location === null) {
                 throw new AnomalyException('this should not happen');
