@@ -33,10 +33,12 @@ final class AnomalyCreation implements AnomalyCreationInterface
             throw new InvalidArgumentException(sprintf('no anomaly in database for type: %d', $type->value));
         }
 
+        $remainingTicks = $anomalyType->getLifespanInTicks();
+
         $anomaly = $this->anomalyRepository
             ->prototype()
             ->setAnomalyType($anomalyType)
-            ->setRemainingTicks($anomalyType->getLifespanInTicks())
+            ->setRemainingTicks($remainingTicks)
             ->setLocation($location);
 
         if ($parent !== null && $location !== null) {
@@ -49,7 +51,12 @@ final class AnomalyCreation implements AnomalyCreationInterface
         }
 
         if ($location !== null) {
-            StuLogger::log(sprintf('created %s at %s', $type->name, $location->getSectorString()), LogTypeEnum::ANOMALY);
+            StuLogger::log(sprintf(
+                'created %s at %s (remainingTicks: %d)',
+                $type->name,
+                $location->getSectorString(),
+                $remainingTicks
+            ), LogTypeEnum::ANOMALY);
         }
 
         $this->anomalyRepository->save($anomaly);

@@ -66,6 +66,10 @@ class AnomalyHandlingTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+        $anomaly->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
         $anomaly->shouldReceive('getChildren')
             ->withNoArgs()
             ->once()

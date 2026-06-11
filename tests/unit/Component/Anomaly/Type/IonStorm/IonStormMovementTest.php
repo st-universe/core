@@ -99,14 +99,26 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($childLocation);
+        $child->shouldReceive('getRemainingTicks')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
         $child2->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($child2Location);
+        $child2->shouldReceive('getRemainingTicks')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(21);
         $childOnBorder->shouldReceive('getLocation')
             ->withNoArgs()
             ->once()
             ->andReturn($childOnBorderLocation);
+        $childOnBorder->shouldReceive('getRemainingTicks')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(13);
 
         $childLocation->shouldReceive('getX')
             ->withNoArgs()
@@ -229,6 +241,10 @@ class IonStormMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($childWithForbiddenTargetLocation);
+        $childWithForbiddenTarget->shouldReceive('getRemainingTicks')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(13);
 
         $childWithForbiddenTargetLocation->shouldReceive('getX')
             ->withNoArgs()
