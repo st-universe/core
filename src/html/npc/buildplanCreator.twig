@@ -12,77 +12,237 @@
     {% endfor %}
 
     {% elseif not RUMP_ID %}
-    <h2>Rumpf auswählen für {{ SELECTED_USER.getName |bbcode }} ({{SELECTED_USER.getId}})</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+    <h2>Rumpf auswählen für {{ SELECTED_USER.getName|bbcode }} ({{ SELECTED_USER.getId }})</h2>
+    <div class="npc-buildplan-rump-grid">
         {% for rump in SHIP_RUMPS|sort((a, b) => a.getId() <=> b.getId()) %}
-            <div style="border: 1px solid #444; padding: 5px; text-align: center;">
-                <a href="?SHOW_BUILDPLAN_CREATOR=1&userId={{ USER_ID }}&rumpId={{ rump.getId }}">
-                    <img src="/assets/ships/{{ rump.getId }}.png" /><br />
-                    {{ rump.getName }}
-                </a>
-            </div>
-            {% endfor %}
+        <div class="npc-buildplan-rump">
+            <a href="?SHOW_BUILDPLAN_CREATOR=1&userId={{ USER_ID }}&rumpId={{ rump.getId }}">
+                <img src="/assets/ships/{{ rump.getId }}.png" alt="{{ rump.getName }}" /><br />
+                {{ rump.getName }}
+            </a>
+        </div>
+        {% endfor %}
     </div>
 
     {% else %}
-    <h2>Module auswählen</h2>
-    <form action="/npc/index.php" method="post">
+    <h2>Bauplan erstellen</h2>
+    <form action="/npc/index.php" method="post" id="npcBuildplanCreator" data-base-crew="{{ MIN_CREW_COUNT }}"
+        data-max-crew="{{ MAX_CREW_COUNT }}" data-special-slots="{{ SPECIAL_SLOTS }}">
         <input type="hidden" name="userId" value="{{ USER_ID }}">
         <input type="hidden" name="rumpId" value="{{ RUMP_ID }}">
         <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
 
-        {% for moduleType in MODULE_TYPES %}
-        <div class="module-section">
-            <h3>{{ moduleType.getDescription }}</h3>
-            {% if not MANDATORY_MODULES[moduleType.value] %}
+        <div class="npc-buildplan-grid">
             <div>
-                <input type="radio" name="mod[{{ moduleType.value }}]" value="0" checked />
-                Kein Modul
+                <div class="box">
+                    <div class="box_title" style="margin: 0; padding: 0">Modultyp-Auswahl</div>
+                    <div class="box_body">
+                        <div id="npc_module_select_tabs" class="npc-buildplan-tabs">
+                            {% for moduleType in MODULE_TYPES %}
+                            {% set moduleTypeId = moduleType.value %}
+                            <div id="npc_module_tab_{{ moduleTypeId }}" class="border_box module_selector npc-buildplan-tab"
+                                data-npc-buildplan-tab="{{ moduleTypeId }}"
+                                onclick="npcShowBuildplanModuleSelector({{ moduleTypeId }});">
+                                <img src="/assets/buttons/modul_screen_{{ moduleTypeId }}.png"
+                                    id="npc_tab_image_mod_{{ moduleTypeId }}" />
+                                <span>{{ moduleType.getDescription }}</span>
+                            </div>
+                            {% endfor %}
+                            <div id="npc_module_tab_9" class="border_box module_selector npc-buildplan-tab"
+                                data-npc-buildplan-tab="9" onclick="npcShowBuildplanModuleSelector(9);">
+                                <img src="/assets/buttons/modul_screen_9.png" id="npc_tab_image_mod_9" />
+                                <div>
+                                    {% for module in SPECIAL_MODULES %}
+                                    <span style="display: none;" id="npc_tab_image_special_mod_{{ module.getId }}">
+                                        <img src="/assets/commodities/{{ module.getCommodityId }}.png"
+                                            title="{{ module.getName }}" />
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                                <span>Spezial</span>
+                                <span id="npc_module_tab_info_9">0 / {{ SPECIAL_SLOTS }}</span>
+                            </div>
+                        </div>
+
+                        {% for moduleType in MODULE_TYPES %}
+                        {% set moduleTypeId = moduleType.value %}
+                        {% set availableModules = AVAILABLE_MODULES[moduleTypeId]|default([]) %}
+                        {% set isMandatory = MANDATORY_MODULES[moduleTypeId]|default(false) %}
+                        <div id="npc_selector_{{ moduleTypeId }}" class="npc-buildplan-selector" style="display: none;">
+                            <table class="tcal">
+                                <tr>
+                                    <th colspan="3">Modulbezeichnung</th>
+                                    <th>Level</th>
+                                    <th>benötigte Crew</th>
+                                    <th>Auswirkungen</th>
+                                </tr>
+                                {% if not isMandatory %}
+                                <tr>
+                                    <td style="width: 3px;"></td>
+                                    <td style="width: 50px;">
+                                        <input type="radio" name="mod[{{ moduleTypeId }}]" value="0" checked
+                                            data-npc-buildplan-normal="1" data-module-type="{{ moduleTypeId }}"
+                                            data-crew="0" data-module-id="0" />
+                                    </td>
+                                    <td>Keine Auswahl</td>
+                                    <td style="width: 30px; text-align: center;">-</td>
+                                    <td style="width: 30px; text-align: center;">0</td>
+                                    <td>-</td>
+                                </tr>
+                                {% endif %}
+                                {% for module in availableModules %}
+                                {% set moduleId = module.getId %}
+                                {% set crewValue = MODULE_CREW[moduleId]|default(0) %}
+                                <tr>
+                                    <td style="width: 3px;" class="{{ MODULE_LEVEL_CLASSES[moduleId]|default('') }}"></td>
+                                    <td style="width: 50px;">
+                                        <input type="radio" name="mod[{{ moduleTypeId }}]" value="{{ moduleId }}"
+                                            data-npc-buildplan-normal="1" data-module-type="{{ moduleTypeId }}"
+                                            data-crew="{{ crewValue }}" data-module-id="{{ moduleId }}"
+                                            data-commodity-id="{{ module.getCommodityId }}"
+                                            {% if isMandatory and loop.first %}checked{% endif %} />
+                                        <img src="/assets/commodities/{{ module.getCommodityId }}.png"
+                                            title="{{ module.getName }}" />
+                                    </td>
+                                    <td style="width: 300px;">{{ module.getName }}</td>
+                                    <td style="width: 30px; text-align: center;">{{ module.getLevel }}</td>
+                                    <td style="width: 30px; text-align: center;">{{ crewValue }}</td>
+                                    <td id="npc_{{ moduleId }}_content">
+                                        {% for effect in MODULE_EFFECTS[moduleId]|default([]) %}
+                                        <div class="npc-buildplan-effect">
+                                            <img src="/assets/buttons/modul_screen_{{ moduleTypeId }}.png"
+                                                title="{{ moduleType.getDescription }}" />
+                                            {{ effect }}
+                                        </div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        {% endfor %}
+
+                        <div id="npc_selector_9" class="npc-buildplan-selector" style="display: none;">
+                            <table class="tcal">
+                                <tr>
+                                    <th colspan="2">Modulbezeichnung</th>
+                                    <th>Level</th>
+                                    <th>benötigte Crew</th>
+                                    <th>Auswirkungen</th>
+                                </tr>
+                                {% for module in SPECIAL_MODULES %}
+                                {% set moduleId = module.getId %}
+                                {% set crewValue = MODULE_CREW[moduleId]|default(0) %}
+                                {% set isAllowed = SPECIAL_MODULE_ALLOWED[moduleId]|default(false) %}
+                                <tr>
+                                    <td style="width: 50px;">
+                                        <input type="checkbox" class="specialModuleRadio"
+                                            name="special_mod[{{ moduleId }}]" value="{{ moduleId }}"
+                                            data-npc-buildplan-special="1" data-crew="{{ crewValue }}"
+                                            data-module-id="{{ moduleId }}" />
+                                        <img src="/assets/commodities/{{ module.getCommodityId }}.png"
+                                            title="{{ module.getName }}" />
+                                    </td>
+                                    <td style="width: 300px;">
+                                        <span{% if not isAllowed %} class="npc-buildplan-special-incompatible"
+                                            title="Dieses Spezialmodul ist für diesen Rumpf nicht vorgesehen"{% endif %}>
+                                            {{ module.getName }}
+                                        </span>
+                                    </td>
+                                    <td style="width: 30px; text-align: center;">{{ module.getLevel }}</td>
+                                    <td style="width: 30px; text-align: center;">{{ crewValue }}</td>
+                                    <td id="npc_{{ moduleId }}_content">
+                                        {% for special in module.getSpecials %}
+                                        <div class="npc-buildplan-effect">
+                                            <img src="/assets/buttons/modul_special_{{ special.getSpecialId.value }}.png"
+                                                title="{{ special.getName }}" />
+                                            {{ special.getName }}
+                                        </div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </br>
-            {% endif %}
-            {% for module in AVAILABLE_MODULES[moduleType.value] %}
+
             <div>
-                <input type="radio" name="mod[{{ moduleType.value }}]" value="{{ module.getId }}" {% if
-                    MANDATORY_MODULES[moduleType.value] and loop.first %}checked{% endif %} />
-                {{ module.getName }}
+                <div class="box">
+                    <div class="box_title">{{ RUMP.getName }}</div>
+                    <div class="box_body">
+                        <div class="npc-buildplan-summary-image">
+                            <img src="/assets/ships/{{ RUMP.getId }}.png" alt="{{ RUMP.getName }}" />
+                        </div>
+
+                        <div class="npc-buildplan-stat">
+                            <span>Zielspieler</span>
+                            <span>{{ SELECTED_USER.getName|bbcode }} ({{ SELECTED_USER.getId }})</span>
+                        </div>
+                        <div class="npc-buildplan-stat">
+                            <span>Mindestcrew</span>
+                            <span>{{ MIN_CREW_COUNT }}</span>
+                        </div>
+                        <div class="npc-buildplan-stat">
+                            <span>Maximalcrew</span>
+                            <span>{{ MAX_CREW_COUNT }}</span>
+                        </div>
+                        <div class="npc-buildplan-stat">
+                            <span>Aktuelle Crew</span>
+                            <span id="npcBuildplanCrewCurrent">{{ MIN_CREW_COUNT }}</span>
+                        </div>
+                        <div id="npcBuildplanCrewWarning" class="npc-buildplan-warning">
+                            Crewbedarf liegt über der Maximalcrew.
+                        </div>
+                        <div class="npc-buildplan-stat">
+                            <span>Spezialmodule</span>
+                            <span><span id="npcBuildplanSpecialCount">0</span> / {{ SPECIAL_SLOTS }}</span>
+                        </div>
+                        <div id="npcBuildplanSpecialWarning" class="npc-buildplan-warning">
+                            Mehr Spezialmodule ausgewählt als Slots vorhanden.
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="box">
+                    <div class="box_title">Modulauswirkungen</div>
+                    <div class="box_body npc-buildplan-selected-effects">
+                        {% for moduleType in MODULE_TYPES %}
+                        <div id="npc_module_type_{{ moduleType.value }}" style="display: none;"></div>
+                        {% endfor %}
+                        <div id="npc_module_type_9" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="box">
+                    <div class="box_title">Bauplan</div>
+                    <div class="box_body">
+                        <div class="npc-buildplan-form-field">
+                            <label for="crew_input">Manuelle Crew</label>
+                            <input type="number" id="crew_input" name="crew_input" min="0">
+                            <div class="npc-buildplan-note">Leer lassen nutzt die errechnete Crew.</div>
+                        </div>
+                        <div class="npc-buildplan-form-field">
+                            <label for="buildplan_count">X mal baubar</label>
+                            <input type="number" id="buildplan_count" name="buildplan_count" min="1">
+                            <div class="npc-buildplan-note">Leer lassen bedeutet unlimitiert.</div>
+                        </div>
+                        <div class="npc-buildplan-form-field">
+                            <label for="reason">Grund</label>
+                            <input type="text" id="reason" name="reason" size="20">
+                        </div>
+                        <div class="npc-buildplan-form-field">
+                            <input type="submit" class="button" name="B_CREATE_BUILDPLAN" value="Bauplan erstellen" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% endfor %}
         </div>
-        </br>
-        {% endfor %}
-
-
-
-
-
-
-        <div class="special-modules">
-            <h3>Spezialmodule</h3>
-            {% for module in SPECIAL_MODULES %}
-            <div>
-                <input type="checkbox" name="special_mod[{{ module.getId }}]" value="{{ module.getId }}" />
-                {{ module.getName }}
-            </div>
-            {% endfor %}
-        </div>
-        <div style="margin: 10px 0;">
-            <label for="crew_input">Benötigte Crew:</label>
-            <input type="number" id="crew_input" name="crew_input" min="0"> <span>Info: Kein Eintrag bedeutet, dass der
-                Standardwert errechnet wird.</span>
-        </div>
-        <div style="margin: 10px 0;">
-            <label for="buildplan_count">X mal baubar:</label>
-            <input type="number" id="buildplan_count" name="buildplan_count" min="1"> <span>Info: Kein Eintrag bedeutet
-                unlimitiert baubar.</span>
-        </div>
-        <div style="margin: 10px 0;">
-            <label for="reason">Grund:</label>
-            <input type="text" id="reason" name="reason" size="20">
-        </div>
-
-        <input type="submit" name="B_CREATE_BUILDPLAN" value="Bauplan erstellen" />
     </form>
+
     {% endif %}
 </div>
 {% endblock %}

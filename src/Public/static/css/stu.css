@@ -1608,6 +1608,144 @@ div.module_selector_skipped {
   background-color: #ebc51e6b ! important;
 }
 
+.npc-buildplan-rump-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.npc-buildplan-rump {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: center;
+  background-color: #171616;
+}
+
+.npc-buildplan-rump img {
+  max-width: 140px;
+  max-height: 100px;
+}
+
+.npc-buildplan-grid {
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) 310px;
+  gap: 10px;
+  align-items: start;
+}
+
+.npc-buildplan-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 4px;
+}
+
+.npc-buildplan-tab {
+  min-height: 40px;
+  text-align: center;
+}
+
+.npc-buildplan-tab img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.npc-buildplan-selector {
+  margin-top: 8px;
+}
+
+.npc-buildplan-selector table {
+  width: 100%;
+}
+
+.npc-buildplan-selector input {
+  margin-right: 4px;
+}
+
+.npc-buildplan-special-incompatible {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.npc-buildplan-effect img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.npc-buildplan-summary-image {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.npc-buildplan-summary-image img {
+  max-width: 180px;
+  max-height: 130px;
+}
+
+.npc-buildplan-stat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid #262323;
+}
+
+.npc-buildplan-stat:last-child {
+  border-bottom: 0;
+}
+
+.npc-buildplan-selected-effects {
+  min-height: 35px;
+}
+
+.npc-buildplan-selected-effects > div {
+  margin-bottom: 5px;
+}
+
+.npc-buildplan-form-field {
+  margin-top: 9px;
+}
+
+.npc-buildplan-form-field label {
+  display: block;
+  margin-bottom: 3px;
+  color: #aaa;
+}
+
+.npc-buildplan-form-field input[type="number"],
+.npc-buildplan-form-field input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #111;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 4px;
+}
+
+.npc-buildplan-note {
+  color: #888;
+  font-size: 90%;
+  margin-top: 3px;
+}
+
+.npc-buildplan-warning {
+  display: none;
+  color: #ff6b6b;
+  margin-top: 5px;
+}
+
+.npc-buildplan-crew-exceeded #npcBuildplanCrewCurrent {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+@media (max-width: 900px) {
+  .npc-buildplan-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .highlight {
   animation: highlightFade 1s ease-out;
   background-color: yellow;
