@@ -267,6 +267,7 @@ final class CreateDeal implements ActionControllerInterface
         $entry->setText($text);
         $entry->setSourceUserId($userId);
         $entry->setDate(time());
+        $entry->setAdminView(false);
 
         $this->npcLogRepository->save($entry);
     }

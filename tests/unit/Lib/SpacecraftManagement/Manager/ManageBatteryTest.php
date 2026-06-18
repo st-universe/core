@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\User;
@@ -19,6 +20,7 @@ use Stu\StuTestCase;
 class ManageBatteryTest extends StuTestCase
 {
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger;
 
     private MockInterface&ShipWrapperInterface $wrapper;
 
@@ -41,13 +43,17 @@ class ManageBatteryTest extends StuTestCase
     protected function setUp(): void
     {
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
+        $this->npcLogTradeMessageLogger = $this->mock(NpcLogTradeMessageLoggerInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->epsSystemData = $this->mock(EpsSystemData::class);
         $this->ship = $this->mock(Ship::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
 
-        $this->subject = new ManageBattery($this->privateMessageSender, $this->playerRelationDeterminator);
+        $this->npcLogTradeMessageLogger->shouldReceive('logIfNpcInvolved')
+            ->zeroOrMoreTimes();
+
+        $this->subject = new ManageBattery($this->privateMessageSender, $this->playerRelationDeterminator, $this->npcLogTradeMessageLogger);
     }
 
     public function testManageExpectErrorWhenValuesNotPresent(): void

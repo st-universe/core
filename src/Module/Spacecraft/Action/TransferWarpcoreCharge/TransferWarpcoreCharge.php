@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -32,7 +33,8 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private InteractionCheckerInterface $interactionChecker,
         private ManageWarpcoreTransfer $manageWarpcoreTransfer,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -172,6 +174,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
                 $message,
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE
             );
+            $this->npcLogTradeMessageLogger->logIfNpcInvolved($sourceUser->getId(), $targetUserId, $message);
         }
     }
 

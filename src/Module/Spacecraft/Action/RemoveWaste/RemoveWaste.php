@@ -109,6 +109,7 @@ final class RemoveWaste implements ActionControllerInterface
         $entry->setText($text);
         $entry->setSourceUserId($UserId);
         $entry->setDate(time());
+        $entry->setAdminView(false);
 
         $this->npcLogRepository->save($entry);
     }

@@ -10,6 +10,7 @@ use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Orm\Entity\Spacecraft;
 
 //TODO create unit test
@@ -17,7 +18,8 @@ final class ReactorUtil implements ReactorUtilInterface
 {
     public function __construct(
         private StorageManagerInterface $storageManager,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -111,20 +113,25 @@ final class ReactorUtil implements ReactorUtilInterface
         $systemName = $reactor->get()->getSystemType()->getDescription();
 
         if ($managerProvider !== null) {
+            $senderId = $managerProvider->getUser()->getId();
+            $recipientId = $spacecraft->getUser()->getId();
+            $text = sprintf(
+                _('Die %s hat in Sektor %s den %s der %s um %d Einheiten aufgeladen'),
+                $managerProvider->getName(),
+                $spacecraft->getSectorString(),
+                $systemName,
+                $spacecraft->getName(),
+                $loadUnits
+            );
+
             $this->privateMessageSender->send(
-                $managerProvider->getUser()->getId(),
-                $spacecraft->getUser()->getId(),
-                sprintf(
-                    _('Die %s hat in Sektor %s den %s der %s um %d Einheiten aufgeladen'),
-                    $managerProvider->getName(),
-                    $spacecraft->getSectorString(),
-                    $systemName,
-                    $spacecraft->getName(),
-                    $loadUnits
-                ),
+                $senderId,
+                $recipientId,
+                $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
                 $spacecraft
             );
+            $this->npcLogTradeMessageLogger->logIfNpcInvolved($senderId, $recipientId, $text);
         }
 
         return sprintf(

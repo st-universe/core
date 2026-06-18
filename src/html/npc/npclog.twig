@@ -10,12 +10,15 @@
             <th>Anzahl</th>
             <th>Suchbegriff</th>
             <th>User-ID</th>
+            {% if NPC_LOG_CAN_SHOW_ADMIN_VIEW %}
+            <th>Admin-View</th>
+            {% endif %}
             <th></th>
         </tr>
         <tr>
             {% for data in NPC_LOG_TYPES %}
             <td style="width: 150px; vertical-align: middle; text-align: center;" class="{{ data.class }}">
-                <a href="?SHOW_NPC_LOG=1&nlogtype={{ data.value }}&nlogcount={{ NPC_LOG_COUNT }}&nlogsearch={{ NPC_LOG_SEARCH|url_encode }}&nloguserid={{ NPC_LOG_USER_ID }}"
+                <a href="?SHOW_NPC_LOG=1&nlogtype={{ data.value }}&nlogcount={{ NPC_LOG_COUNT }}&nlogsearch={{ NPC_LOG_SEARCH|url_encode }}&nloguserid={{ NPC_LOG_USER_ID }}&nlogadminview={{ NPC_LOG_ADMIN_VIEW ? 1 : 0 }}"
                     class="historybutton">
                     {{ data.name }} ({{ data.count }})
                 </a>
@@ -30,6 +33,11 @@
             <td>
                 <input type="text" size="6" name="nloguserid" value="{{ NPC_LOG_USER_ID }}" />
             </td>
+            {% if NPC_LOG_CAN_SHOW_ADMIN_VIEW %}
+            <td style="text-align: center;">
+                <input type="checkbox" name="nlogadminview" value="1" {% if NPC_LOG_ADMIN_VIEW %}checked="checked"{% endif %} />
+            </td>
+            {% endif %}
             <td>
                 <input type="submit" class="button" value="Aktualisieren" />
             </td>

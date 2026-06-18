@@ -23,6 +23,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
@@ -39,7 +40,8 @@ final class Transfer implements ActionControllerInterface
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
         private NPCLogRepositoryInterface $npcLogRepository,
         private MapRepositoryInterface $mapRepository,
-        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -134,13 +136,18 @@ final class Transfer implements ActionControllerInterface
 
 
 
+        $senderId = $transferInformation->getSourceWrapper()->getUser()->getId();
+        $recipientId = $transferInformation->getTargetWrapper()->getUser()->getId();
+        $text = $informations->getInformationsAsString();
+
         $this->privateMessageSender->send(
-            $transferInformation->getSourceWrapper()->getUser()->getId(),
-            $transferInformation->getTargetWrapper()->getUser()->getId(),
-            $informations->getInformationsAsString(),
+            $senderId,
+            $recipientId,
+            $text,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $target
         );
+        $this->npcLogTradeMessageLogger->logIfNpcInvolved($senderId, $recipientId, $text);
 
         if ($target->getUser()?->getId() === $source->getUser()?->getId()) {
             $game->getGameData()->targetLink = new TargetLink(
@@ -209,6 +216,7 @@ final class Transfer implements ActionControllerInterface
         $entry->setSourceUserId($sourceUserId);
         $entry->setDate(time());
         $entry->setFactionId($factionId);
+        $entry->setAdminView(false);
 
         $this->npcLogRepository->save($entry);
     }

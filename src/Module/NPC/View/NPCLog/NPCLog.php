@@ -39,11 +39,12 @@ final class NPCLog implements ViewControllerInterface
 
         $search = trim(request::indString('nlogsearch') ?: '');
         $sourceUserId = request::indInt('nloguserid');
+        $includeAdminView = $game->isAdmin() && request::indInt('nlogadminview') === 1;
         $type = request::indString('nlogtype') ?: self::TYPE_NORMAL;
         $factionId = $game->getUser()->getFactionId();
 
-        $normalLogCount = $this->npclogRepository->getAmountByFaction(null);
-        $factionLogCount = $factionId === null ? 0 : $this->npclogRepository->getAmountByFaction($factionId);
+        $normalLogCount = $this->npclogRepository->getAmountByFaction(null, $includeAdminView);
+        $factionLogCount = $this->npclogRepository->getAmountByFaction($factionId, $includeAdminView);
 
         if ($type !== self::TYPE_FACTION || $factionLogCount === 0) {
             $type = self::TYPE_NORMAL;
@@ -76,7 +77,8 @@ final class NPCLog implements ViewControllerInterface
             $type === self::TYPE_FACTION ? $factionId : null,
             $count,
             $search,
-            $sourceUserId
+            $sourceUserId,
+            $includeAdminView
         );
 
         $game->setTemplateFile('html/npc/npclog.twig');
@@ -88,6 +90,8 @@ final class NPCLog implements ViewControllerInterface
         $game->setTemplateVar('NPC_LOG_COUNT', $count);
         $game->setTemplateVar('NPC_LOG_SEARCH', $search);
         $game->setTemplateVar('NPC_LOG_USER_ID', $sourceUserId === 0 ? '' : $sourceUserId);
+        $game->setTemplateVar('NPC_LOG_ADMIN_VIEW', $includeAdminView);
+        $game->setTemplateVar('NPC_LOG_CAN_SHOW_ADMIN_VIEW', $game->isAdmin());
         $game->setTemplateVar('NPC_LOG_EMPTY_MESSAGE', $type === self::TYPE_FACTION ? _('Keine Fraktions-Logs vorhanden') : _('Keine NPC-Logs vorhanden'));
     }
 }

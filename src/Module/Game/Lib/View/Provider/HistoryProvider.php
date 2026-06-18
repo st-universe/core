@@ -40,7 +40,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
             $history_types[$key]['count'] = $this->historyRepository->getAmountByType($key);
         }
 
-        $availableCount = $history_types[$type->value]['count'] ?? 0;
+        $availableCount = $history_types[$type->value]['count'];
         if ($availableCount > 0 && $count > $availableCount) {
             $count = $availableCount;
         }

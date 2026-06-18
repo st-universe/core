@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260604155531 extends AbstractMigration
+final class Version20260618092351 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -317,7 +317,7 @@ final class Version20260604155531 extends AbstractMigration
         $this->addSql('CREATE INDEX news_date_idx ON stu_news (date)');
         $this->addSql('CREATE TABLE stu_notes (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, date INTEGER NOT NULL, title VARCHAR(255) NOT NULL, text CLOB NOT NULL, CONSTRAINT FK_838C60EBA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX note_user_idx ON stu_notes (user_id)');
-        $this->addSql('CREATE TABLE stu_npc_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL)');
+        $this->addSql('CREATE TABLE stu_npc_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL, admin_view BOOLEAN DEFAULT NULL)');
         $this->addSql('CREATE TABLE stu_npc_quest_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, quest_id INTEGER NOT NULL, user_id INTEGER NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, deleted INTEGER DEFAULT NULL, mode INTEGER NOT NULL, CONSTRAINT FK_58B6461D209E9EF4 FOREIGN KEY (quest_id) REFERENCES stu_npc_quests (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_58B6461DA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX npc_quest_log_quest_idx ON stu_npc_quest_log (quest_id)');
         $this->addSql('CREATE INDEX npc_quest_log_user_idx ON stu_npc_quest_log (user_id)');
