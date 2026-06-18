@@ -13,8 +13,6 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class HistoryProvider implements ViewComponentProviderInterface
 {
-    private const int MAX_LIMIT = 10000;
-
     private const int LIMIT = 50;
 
     public function __construct(
@@ -34,16 +32,17 @@ final class HistoryProvider implements ViewComponentProviderInterface
         }
         $search = request::indString('hsearch') ?: '';
 
-        if ($count < 1 || $count > self::MAX_LIMIT) {
-            $count = self::MAX_LIMIT;
-        }
-
         $history_types = [];
         foreach (HistoryTypeEnum::cases() as $enum) {
             $key = $enum->value;
             $history_types[$key]['type'] = $enum;
             $history_types[$key]['class'] = $enum == $type ? 'selected' : '';
             $history_types[$key]['count'] = $this->historyRepository->getAmountByType($key);
+        }
+
+        $availableCount = $history_types[$type->value]['count'] ?? 0;
+        if ($availableCount > 0 && $count > $availableCount) {
+            $count = $availableCount;
         }
 
         $game->setTemplateVar(

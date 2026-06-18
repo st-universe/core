@@ -138,30 +138,48 @@
 <br />
 
 <div id="result" style="display: none;">..</div>
-<div class="tcal" id="npcLogContainer"
-    data-normal-logs=""
-    data-faction-logs="">
-
-    <div style="margin-bottom: 15px;">
-        <a href="#" onclick="switchNpcLog('normal'); return false;" id="npcLogBtn" class="linkbutton"
-            style="background-color: #3c3c3c;">NPC Log</a>
-            </div>
-
-    <h3 id="logTitle">NPC Log</h3>
-
-    <table id="logTable" style="display: none;" >
-        <thead>
-            <tr>
-                <th>Text</th>
-                <th style="width:120px">Datum</th>
-            </tr>
-        </thead>
-        <tbody id="logTableBody">
-                    </tbody>
+<form method="post" action="/npc/?SHOW_NPC_LOG=1">
+    <input type="hidden" name="nlogtype" value="normal" />
+    <table class="use">
+        <tr>
+            <th colspan="1">Typ</th>
+            <th>Anzahl</th>
+            <th>Suchbegriff</th>
+            <th>User-ID</th>
+            <th></th>
+        </tr>
+        <tr>
+                        <td style="width: 150px; vertical-align: middle; text-align: center;" class="selected">
+                <a href="?SHOW_NPC_LOG=1&nlogtype=normal&nlogcount=100&nlogsearch=&nloguserid="
+                    class="historybutton">
+                    NPC Log (0)
+                </a>
+            </td>
+                        <td>
+                <input type="text" size="3" name="nlogcount" value="100" />
+            </td>
+            <td>
+                <input type="text" size="10" name="nlogsearch" value="" />
+            </td>
+            <td>
+                <input type="text" size="6" name="nloguserid" value="" />
+            </td>
+            <td>
+                <input type="submit" class="button" value="Aktualisieren" />
+            </td>
+        </tr>
     </table>
-
-    <p id="noLogsMessage" >Keine NPC-Logs vorhanden</p>
-</div>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Eintrag</th>
+            <th style="width:120px">Datum</th>
+        </tr>
+                <tr>
+            <td colspan="2">Keine NPC-Logs vorhanden</td>
+        </tr>
+            </table>
+</form>
             </div>
         </div>
     </div>

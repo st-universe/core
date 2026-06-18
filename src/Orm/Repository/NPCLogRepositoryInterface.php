@@ -18,6 +18,13 @@ interface NPCLogRepositoryInterface extends ObjectRepository
      */
     public function getRecent(): array;
 
+    /**
+     * @return array<NPCLog>
+     */
+    public function getByFactionAndSearch(?int $factionId, int $limit, string $search, int $sourceUserId): array;
+
+    public function getAmountByFaction(?int $factionId): int;
+
     public function prototype(): NPCLog;
 
     public function save(NPCLog $npclog): void;

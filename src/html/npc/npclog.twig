@@ -2,38 +2,57 @@
 
 {% block body %}
 {% include 'html/breadcrumb.twig' %}
-<div class="tcal" id="npcLogContainer"
-    data-normal-logs="{% for listEntry in NORMAL_LOGS %}<tr><td>{{ listEntry.getText()|bbcode|e('html_attr') }}</td><td>{{ listEntry.getDate()|stuDateTime }}</td></tr>{% endfor %}"
-    data-faction-logs="{% for listEntry in FACTION_LOGS %}<tr><td>{{ listEntry.getText()|bbcode|e('html_attr') }}</td><td>{{ listEntry.getDate()|stuDateTime }}</td></tr>{% endfor %}">
-
-    <div style="margin-bottom: 15px;">
-        <a href="#" onclick="switchNpcLog('normal'); return false;" id="npcLogBtn" class="linkbutton"
-            style="background-color: #3c3c3c;">NPC Log</a>
-        {% if FACTION_LOGS|length > 0 %}
-        <a href="#" onclick="switchNpcLog('faction'); return false;" id="factionLogBtn"
-            class="linkbutton">Fraktions-Log</a>
-        {% endif %}
-    </div>
-
-    <h3 id="logTitle">NPC Log</h3>
-
-    <table id="logTable" {% if NORMAL_LOGS|length==0 %}style="display: none;" {% endif %}>
-        <thead>
-            <tr>
-                <th>Text</th>
-                <th style="width:120px">Datum</th>
-            </tr>
-        </thead>
-        <tbody id="logTableBody">
-            {% for listEntry in NORMAL_LOGS %}
-            <tr>
-                <td>{{ listEntry.getText()|bbcode }}</td>
-                <td>{{ listEntry.getDate()|stuDateTime }}</td>
-            </tr>
+<form method="post" action="/npc/?SHOW_NPC_LOG=1">
+    <input type="hidden" name="nlogtype" value="{{ NPC_LOG_TYPE }}" />
+    <table class="use">
+        <tr>
+            <th colspan="{{ NPC_LOG_TYPE_COUNT }}">Typ</th>
+            <th>Anzahl</th>
+            <th>Suchbegriff</th>
+            <th>User-ID</th>
+            <th></th>
+        </tr>
+        <tr>
+            {% for data in NPC_LOG_TYPES %}
+            <td style="width: 150px; vertical-align: middle; text-align: center;" class="{{ data.class }}">
+                <a href="?SHOW_NPC_LOG=1&nlogtype={{ data.value }}&nlogcount={{ NPC_LOG_COUNT }}&nlogsearch={{ NPC_LOG_SEARCH|url_encode }}&nloguserid={{ NPC_LOG_USER_ID }}"
+                    class="historybutton">
+                    {{ data.name }} ({{ data.count }})
+                </a>
+            </td>
             {% endfor %}
-        </tbody>
+            <td>
+                <input type="text" size="3" name="nlogcount" value="{{ NPC_LOG_COUNT }}" />
+            </td>
+            <td>
+                <input type="text" size="10" name="nlogsearch" value="{{ NPC_LOG_SEARCH }}" />
+            </td>
+            <td>
+                <input type="text" size="6" name="nloguserid" value="{{ NPC_LOG_USER_ID }}" />
+            </td>
+            <td>
+                <input type="submit" class="button" value="Aktualisieren" />
+            </td>
+        </tr>
     </table>
-
-    <p id="noLogsMessage" {% if NORMAL_LOGS|length> 0 %}style="display: none;"{% endif %}>Keine NPC-Logs vorhanden</p>
-</div>
+    <br />
+    <table class="tcal">
+        <tr>
+            <th>Eintrag</th>
+            <th style="width:120px">Datum</th>
+        </tr>
+        {% if NPC_LOGS %}
+        {% for listEntry in NPC_LOGS %}
+        <tr class="row">
+            <td>{{ listEntry.getText()|bbcode }}</td>
+            <td>{{ listEntry.getDate()|stuDateTime }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="2">{{ NPC_LOG_EMPTY_MESSAGE }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</form>
 {% endblock %}
