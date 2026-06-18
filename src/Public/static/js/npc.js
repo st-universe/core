@@ -129,19 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateDealForm();
 });
 
-function toggleQuestCreator() {
-    const questCreator = document.getElementById('questCreator');
-    const header = questCreator.previousElementSibling;
-
-    if (questCreator.style.display === 'none') {
-        questCreator.style.display = 'block';
-        header.innerHTML = '▼ Neue Quest erstellen';
-    } else {
-        questCreator.style.display = 'none';
-        header.innerHTML = '▶ Neue Quest erstellen';
-    }
-}
-
 function addCommodityRewardRow() {
     const container = document.getElementById('commodityRewardContainer');
     const rows = container.querySelectorAll('.commodity-reward-row');
@@ -515,3 +502,167 @@ function updateDealForm() {
         giveCommodityAmount.disabled = false;
     }
 }
+
+(function () {
+    var currentNpcBuildplanSelector = null;
+
+    function toNumber(value) {
+        var parsed = parseInt(value || '0', 10);
+        return isNaN(parsed) ? 0 : parsed;
+    }
+
+    function getRoot() {
+        return document.getElementById('npcBuildplanCreator');
+    }
+
+    function updateCrewAndSpecialCount() {
+        var root = getRoot();
+        if (!root) {
+            return;
+        }
+
+        var baseCrew = toNumber(root.getAttribute('data-base-crew'));
+        var maxCrew = toNumber(root.getAttribute('data-max-crew'));
+        var specialSlots = toNumber(root.getAttribute('data-special-slots'));
+        var crew = baseCrew;
+        var selectedSpecials = 0;
+
+        root.querySelectorAll('[data-npc-buildplan-normal]:checked').forEach(function (input) {
+            crew += toNumber(input.getAttribute('data-crew'));
+        });
+
+        root.querySelectorAll('[data-npc-buildplan-special]').forEach(function (input) {
+            if (input.checked) {
+                selectedSpecials++;
+                crew += toNumber(input.getAttribute('data-crew'));
+            }
+        });
+
+        document.getElementById('npcBuildplanCrewCurrent').textContent = crew.toString();
+        document.getElementById('npcBuildplanSpecialCount').textContent = selectedSpecials.toString();
+        document.getElementById('npc_module_tab_info_9').textContent = selectedSpecials + ' / ' + specialSlots;
+
+        if (crew > maxCrew) {
+            root.classList.add('npc-buildplan-crew-exceeded');
+            document.getElementById('npcBuildplanCrewWarning').style.display = 'block';
+        } else {
+            root.classList.remove('npc-buildplan-crew-exceeded');
+            document.getElementById('npcBuildplanCrewWarning').style.display = 'none';
+        }
+
+        document.getElementById('npcBuildplanSpecialWarning').style.display =
+            selectedSpecials > specialSlots ? 'block' : 'none';
+    }
+
+    function updateNormalModule(type, input) {
+        var tab = document.getElementById('npc_module_tab_' + type);
+        var tabImage = document.getElementById('npc_tab_image_mod_' + type);
+        var effectTarget = document.getElementById('npc_module_type_' + type);
+        var moduleId = input.getAttribute('data-module-id');
+        var commodityId = input.getAttribute('data-commodity-id');
+
+        tab.classList.remove('module_selector_unselected');
+        tab.classList.remove('module_selector_skipped');
+
+        if (moduleId === '0') {
+            tabImage.src = '/assets/buttons/modul_screen_' + type + '.png';
+            tab.classList.add('module_selector_skipped');
+            effectTarget.innerHTML = '';
+            effectTarget.style.display = 'none';
+        } else {
+            tabImage.src = '/assets/commodities/' + commodityId + '.png';
+            effectTarget.innerHTML = document.getElementById('npc_' + moduleId + '_content').innerHTML;
+            effectTarget.style.display = 'block';
+        }
+
+        updateCrewAndSpecialCount();
+    }
+
+    function updateSpecialModules() {
+        var root = getRoot();
+        if (!root) {
+            return;
+        }
+
+        var selectedEffects = '';
+        var checkedCount = 0;
+
+        root.querySelectorAll('[data-npc-buildplan-special]').forEach(function (input) {
+            var moduleId = input.getAttribute('data-module-id');
+            var tabImage = document.getElementById('npc_tab_image_special_mod_' + moduleId);
+
+            if (input.checked) {
+                checkedCount++;
+                selectedEffects += document.getElementById('npc_' + moduleId + '_content').innerHTML;
+                tabImage.style.display = 'inline';
+            } else {
+                tabImage.style.display = 'none';
+            }
+        });
+
+        document.getElementById('npc_tab_image_mod_9').style.display = checkedCount > 0 ? 'none' : 'inline';
+        document.getElementById('npc_module_type_9').innerHTML = selectedEffects;
+        document.getElementById('npc_module_type_9').style.display = checkedCount > 0 ? 'block' : 'none';
+
+        updateCrewAndSpecialCount();
+    }
+
+    window.npcShowBuildplanModuleSelector = function (type) {
+        var root = getRoot();
+        if (!root) {
+            return;
+        }
+
+        var selector = document.getElementById('npc_selector_' + type);
+        var tab = document.getElementById('npc_module_tab_' + type);
+
+        root.querySelectorAll('[data-npc-buildplan-tab]').forEach(function (tabElement) {
+            tabElement.classList.remove('module_selector_current');
+        });
+
+        if (currentNpcBuildplanSelector) {
+            currentNpcBuildplanSelector.style.display = 'none';
+        }
+
+        selector.style.display = 'block';
+        tab.classList.add('module_selector_current');
+        currentNpcBuildplanSelector = selector;
+    };
+
+    function initNpcBuildplanCreator() {
+        var root = getRoot();
+        if (!root || root.getAttribute('data-js-initialized') === '1') {
+            return;
+        }
+
+        root.setAttribute('data-js-initialized', '1');
+
+        root.querySelectorAll('[data-npc-buildplan-normal]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                updateNormalModule(input.getAttribute('data-module-type'), input);
+            });
+
+            if (input.checked) {
+                updateNormalModule(input.getAttribute('data-module-type'), input);
+            }
+        });
+
+        root.querySelectorAll('[data-npc-buildplan-special]').forEach(function (input) {
+            input.addEventListener('change', updateSpecialModules);
+        });
+        updateSpecialModules();
+
+        var firstTab = root.querySelector('[data-npc-buildplan-tab]');
+        if (firstTab) {
+            window.npcShowBuildplanModuleSelector(firstTab.getAttribute('data-npc-buildplan-tab'));
+        }
+    }
+
+    window.initNpcBuildplanCreator = initNpcBuildplanCreator;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNpcBuildplanCreator);
+    } else {
+        initNpcBuildplanCreator();
+    }
+})();
