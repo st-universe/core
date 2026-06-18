@@ -23,7 +23,7 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
     }
 
     #[\Override]
-    public function getByFactionAndSearch(?int $factionId, int $limit, string $search, int $sourceUserId): array
+    public function getByFactionAndSearch(?int $factionId, int $limit, string $search, int $sourceUserId, bool $includeAdminView): array
     {
         $search = trim($search);
 
@@ -51,17 +51,40 @@ final class NPCLogRepository extends EntityRepository implements NPCLogRepositor
                 ->setParameter('sourceUserId', $sourceUserId);
         }
 
+        if (!$includeAdminView) {
+            $queryBuilder
+                ->andWhere('(nl.admin_view IS NULL OR nl.admin_view = :adminView)')
+                ->setParameter('adminView', false);
+        }
+
         return $queryBuilder
             ->getQuery()
             ->getResult();
     }
 
     #[\Override]
-    public function getAmountByFaction(?int $factionId): int
+    public function getAmountByFaction(?int $factionId, bool $includeAdminView): int
     {
-        return $this->count([
-            'faction_id' => $factionId
-        ]);
+        $queryBuilder = $this->createQueryBuilder('nl')
+            ->select('COUNT(nl.id)');
+
+        if ($factionId === null) {
+            $queryBuilder->where('nl.faction_id IS NULL');
+        } else {
+            $queryBuilder
+                ->where('nl.faction_id = :factionId')
+                ->setParameter('factionId', $factionId);
+        }
+
+        if (!$includeAdminView) {
+            $queryBuilder
+                ->andWhere('(nl.admin_view IS NULL OR nl.admin_view = :adminView)')
+                ->setParameter('adminView', false);
+        }
+
+        return (int) $queryBuilder
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     #[\Override]

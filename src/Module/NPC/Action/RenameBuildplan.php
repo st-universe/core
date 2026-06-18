@@ -80,6 +80,7 @@ final class RenameBuildplan implements ActionControllerInterface
         $entry->setText($logText);
         $entry->setSourceUserId($userId);
         $entry->setDate(time());
+        $entry->setAdminView(false);
 
         $this->npcLogRepository->save($entry);
     }

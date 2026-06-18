@@ -36,13 +36,13 @@ class NPCLogRepositoryTest extends IntegrationTestCase
         $entityManager->flush();
 
         try {
-            $result = $repository->getByFactionAndSearch(null, 10, '', 4242);
+            $result = $repository->getByFactionAndSearch(null, 10, '', 4242, false);
 
             static::assertContains($matchingLog, $result);
             static::assertContains($sameUserOtherTextLog, $result);
             static::assertNotContains($otherUserMatchingTextLog, $result);
 
-            $result = $repository->getByFactionAndSearch(null, 10, 'needle', 4242);
+            $result = $repository->getByFactionAndSearch(null, 10, 'needle', 4242, false);
 
             static::assertContains($matchingLog, $result);
             static::assertNotContains($sameUserOtherTextLog, $result);

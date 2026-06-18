@@ -25,6 +25,8 @@ use Stu\Module\NPC\Action\PrestigeCheat;
 use Stu\Module\NPC\Action\RejectQuestApplication\RejectQuestApplication;
 use Stu\Module\NPC\Action\RenameBuildplan;
 use Stu\Module\NPC\Action\SaveWelcomeMessage;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLogger;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\NPC\View\NPCLog\NPCLog;
 use Stu\Module\NPC\View\Overview\Overview;
 use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
@@ -39,6 +41,7 @@ use Stu\Module\NPC\View\ShowTools\ShowTools;
 use function DI\autowire;
 
 return [
+    NpcLogTradeMessageLoggerInterface::class => autowire(NpcLogTradeMessageLogger::class),
     'NPC_ACTIONS' => [
         CommodityCheat::ACTION_IDENTIFIER => autowire(CommodityCheat::class),
         PrestigeCheat::ACTION_IDENTIFIER => autowire(PrestigeCheat::class),

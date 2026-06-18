@@ -9,6 +9,7 @@ final class UserConstants
     //NPC IDs
     public const int USER_NOONE = 1;
     public const int USER_FOREIGN_BUILDPLANS = 4;
+    public const int USER_FIRST_NPC = 10;
     public const int USER_NPC_FEDERATION = 10;
     public const int USER_NPC_ROMULAN = 11;
     public const int USER_NPC_KLINGON = 12;

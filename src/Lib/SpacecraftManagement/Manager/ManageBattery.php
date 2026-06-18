@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 
@@ -17,7 +18,8 @@ class ManageBattery implements ManagerInterface
 {
     public function __construct(
         private PrivateMessageSenderInterface $privateMessageSender,
-        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -94,18 +96,23 @@ class ManageBattery implements ManagerInterface
 
     private function sendMessageToOwner(Spacecraft $spacecraft, ManagerProviderInterface $managerProvider, int $load): void
     {
+        $senderId = $managerProvider->getUser()->getId();
+        $recipientId = $spacecraft->getUser()->getId();
+        $text = sprintf(
+            _('Die %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
+            $managerProvider->getName(),
+            $managerProvider->getSectorString(),
+            $spacecraft->getName(),
+            $load
+        );
+
         $this->privateMessageSender->send(
-            $managerProvider->getUser()->getId(),
-            $spacecraft->getUser()->getId(),
-            sprintf(
-                _('Die %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
-                $managerProvider->getName(),
-                $managerProvider->getSectorString(),
-                $spacecraft->getName(),
-                $load
-            ),
+            $senderId,
+            $recipientId,
+            $text,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $spacecraft
         );
+        $this->npcLogTradeMessageLogger->logIfNpcInvolved($senderId, $recipientId, $text);
     }
 }

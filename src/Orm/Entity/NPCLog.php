@@ -34,6 +34,9 @@ class NPCLog
     #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $admin_view = false;
+
 
 
     public function getId(): int
@@ -85,6 +88,18 @@ class NPCLog
     public function setFactionId(?int $factionId): NPCLog
     {
         $this->faction_id = $factionId;
+
+        return $this;
+    }
+
+    public function getAdminView(): ?bool
+    {
+        return $this->admin_view;
+    }
+
+    public function setAdminView(?bool $adminView): NPCLog
+    {
+        $this->admin_view = $adminView;
 
         return $this;
     }

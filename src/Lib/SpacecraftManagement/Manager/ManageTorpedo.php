@@ -8,6 +8,7 @@ use RuntimeException;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -17,7 +18,8 @@ class ManageTorpedo implements ManagerInterface
 {
     public function __construct(
         private readonly ShipTorpedoManagerInterface $shipTorpedoManager,
-        private readonly PrivateMessageSenderInterface $privateMessageSender
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -190,19 +192,24 @@ class ManageTorpedo implements ManagerInterface
         ManagerProviderInterface $managerProvider,
         Spacecraft $spacecraft
     ): void {
+        $senderId = $managerProvider->getUser()->getId();
+        $recipientId = $spacecraft->getUser()->getId();
+        $text = sprintf(
+            _('Die %s hat in Sektor %s %d %s auf die %s transferiert'),
+            $managerProvider->getName(),
+            $spacecraft->getSectorString(),
+            $load,
+            $torpedoType->getName(),
+            $spacecraft->getName()
+        );
+
         $this->privateMessageSender->send(
-            $managerProvider->getUser()->getId(),
-            $spacecraft->getUser()->getId(),
-            sprintf(
-                _('Die %s hat in Sektor %s %d %s auf die %s transferiert'),
-                $managerProvider->getName(),
-                $spacecraft->getSectorString(),
-                $load,
-                $torpedoType->getName(),
-                $spacecraft->getName()
-            ),
+            $senderId,
+            $recipientId,
+            $text,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             $spacecraft
         );
+        $this->npcLogTradeMessageLogger->logIfNpcInvolved($senderId, $recipientId, $text);
     }
 }

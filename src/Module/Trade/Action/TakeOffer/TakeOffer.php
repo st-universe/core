@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -23,7 +24,7 @@ final class TakeOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_TAKE_OFFER';
 
-    public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository) {}
+    public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository, private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -147,19 +148,23 @@ final class TakeOffer implements ActionControllerInterface
         $game->setView(ModuleEnum::TRADE);
         $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
 
+        $recipientId = $selectedOffer->getUserId();
+        $text = sprintf(
+            'Am %s wurden insgesamt %d %s gegen %d %s getauscht',
+            $selectedOffer->getTradePost()->getName(),
+            $selectedOffer->getOfferedCommodityCount() * $amount,
+            $selectedOffer->getOfferedCommodity()->getName(),
+            $selectedOffer->getWantedCommodityCount() * $amount,
+            $selectedOffer->getWantedCommodity()->getName()
+        );
+
         $this->privateMessageSender->send(
             $userId,
-            $selectedOffer->getUserId(),
-            sprintf(
-                'Am %s wurden insgesamt %d %s gegen %d %s getauscht',
-                $selectedOffer->getTradePost()->getName(),
-                $selectedOffer->getOfferedCommodityCount() * $amount,
-                $selectedOffer->getOfferedCommodity()->getName(),
-                $selectedOffer->getWantedCommodityCount() * $amount,
-                $selectedOffer->getWantedCommodity()->getName()
-            ),
+            $recipientId,
+            $text,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
+        $this->npcLogTradeMessageLogger->logIfNpcInvolved($userId, $recipientId, $text);
     }
 
     #[\Override]

@@ -9,6 +9,7 @@ use RuntimeException;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Commodity;
@@ -22,6 +23,7 @@ class ManageTorpedoTest extends StuTestCase
 {
     private MockInterface&ShipTorpedoManagerInterface $shipTorpedoManager;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger;
 
     private MockInterface&ShipWrapperInterface $wrapper;
     private MockInterface&Ship $ship;
@@ -38,6 +40,7 @@ class ManageTorpedoTest extends StuTestCase
     {
         $this->shipTorpedoManager = $this->mock(ShipTorpedoManagerInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
+        $this->npcLogTradeMessageLogger = $this->mock(NpcLogTradeMessageLoggerInterface::class);
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(Ship::class);
@@ -48,10 +51,13 @@ class ManageTorpedoTest extends StuTestCase
         $this->user->shouldReceive('getId')
             ->withNoArgs()
             ->andReturn(1111);
+        $this->npcLogTradeMessageLogger->shouldReceive('logIfNpcInvolved')
+            ->zeroOrMoreTimes();
 
         $this->subject = new ManageTorpedo(
             $this->shipTorpedoManager,
-            $this->privateMessageSender
+            $this->privateMessageSender,
+            $this->npcLogTradeMessageLogger
         );
     }
 

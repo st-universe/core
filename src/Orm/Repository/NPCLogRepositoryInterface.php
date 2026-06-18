@@ -21,9 +21,9 @@ interface NPCLogRepositoryInterface extends ObjectRepository
     /**
      * @return array<NPCLog>
      */
-    public function getByFactionAndSearch(?int $factionId, int $limit, string $search, int $sourceUserId): array;
+    public function getByFactionAndSearch(?int $factionId, int $limit, string $search, int $sourceUserId, bool $includeAdminView): array;
 
-    public function getAmountByFaction(?int $factionId): int;
+    public function getAmountByFaction(?int $factionId, bool $includeAdminView): int;
 
     public function prototype(): NPCLog;
 

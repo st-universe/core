@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -23,7 +24,8 @@ final class EpsTransfer implements ActionControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
     #[\Override]
@@ -100,12 +102,16 @@ final class EpsTransfer implements ActionControllerInterface
         $eps->lowerEps($load * 3)->update();
         $targetEps->setBattery($targetEps->getBattery() + $load)->update();
 
+        $recipientId = $target->getUser()->getId();
+        $text = "Die " . $ship->getName() . " transferiert in Sektor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName();
+
         $this->privateMessageSender->send(
             $userId,
-            $target->getUser()->getId(),
-            "Die " . $ship->getName() . " transferiert in Sektor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
+            $recipientId,
+            $text,
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
+        $this->npcLogTradeMessageLogger->logIfNpcInvolved($userId, $recipientId, $text);
         $game->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
