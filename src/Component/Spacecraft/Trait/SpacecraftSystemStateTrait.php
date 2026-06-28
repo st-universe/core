@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Spacecraft\Trait;
 
+use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 
 trait SpacecraftSystemStateTrait
@@ -62,6 +63,17 @@ trait SpacecraftSystemStateTrait
     public function getRPGModuleState(): bool
     {
         return $this->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE);
+    }
+
+    public function isRpgModuleInvisible(): bool
+    {
+        if (!$this->hasSpacecraftSystem(SpacecraftSystemTypeEnum::RPG_MODULE)) {
+            return false;
+        }
+
+        return RpgModuleSystemData::isInvisibleData(
+            $this->getSpacecraftSystem(SpacecraftSystemTypeEnum::RPG_MODULE)->getData()
+        );
     }
 
     public function hasActiveWeapon(): bool

@@ -74,6 +74,30 @@ class FlightSignatureCreatorTest extends StuTestCase
         );
     }
 
+    public function testCreateSignaturesDoesNotCreateForInvisibleShip(): void
+    {
+        $ship = $this->mock(Ship::class);
+
+        $ship->shouldReceive('isRpgModuleInvisible')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->flightSignatureRepository->shouldReceive('prototype')
+            ->never();
+        $this->flightSignatureRepository->shouldReceive('save')
+            ->never();
+        $this->spacecraftMovementPublisher->shouldReceive('publishMovement')
+            ->never();
+
+        $this->subject->createSignatures(
+            $ship,
+            DirectionEnum::LEFT,
+            $this->mock(Map::class),
+            $this->mock(Map::class)
+        );
+    }
+
     public static function directionDataProvider(): array
     {
         return [
@@ -120,6 +144,10 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);
+        $ship->shouldReceive('isRpgModuleInvisible')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
@@ -234,6 +262,10 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($cloakState);
+        $ship->shouldReceive('isRpgModuleInvisible')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
         $ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()

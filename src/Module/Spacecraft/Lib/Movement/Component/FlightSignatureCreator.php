@@ -40,6 +40,10 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
             throw new InvalidArgumentException('wayopints have different type');
         }
 
+        if ($spacecraft->isRpgModuleInvisible()) {
+            return;
+        }
+
         $fromSignature = $this->createSignature($spacecraft);
         $fromSignature->setLocation($currentLocation);
 

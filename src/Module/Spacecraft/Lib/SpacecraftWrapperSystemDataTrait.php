@@ -11,6 +11,7 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\LssSystemData;
 use Stu\Component\Spacecraft\System\Data\ProjectileLauncherSystemData;
+use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\Data\ShieldSystemData;
 use Stu\Component\Spacecraft\System\Data\SubspaceSystemData;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
@@ -110,6 +111,14 @@ trait SpacecraftWrapperSystemDataTrait
         return $this->getThis()->getSpecificShipSystem(
             SpacecraftSystemTypeEnum::SUBSPACE_SCANNER,
             SubspaceSystemData::class
+        );
+    }
+
+    public function getRpgModuleSystemData(): ?RpgModuleSystemData
+    {
+        return $this->getThis()->getSpecificShipSystem(
+            SpacecraftSystemTypeEnum::RPG_MODULE,
+            RpgModuleSystemData::class
         );
     }
 }

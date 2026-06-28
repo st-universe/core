@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
+use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -121,14 +122,24 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                                         FROM stu_spacecraft_system ss
                                         WHERE b.id = ss.spacecraft_id
                                         AND ss.system_type = :cloakSystemId
-                                        AND ss.mode > 1)) AS spacecraftcount,
+                                        AND ss.mode > 1)
+                    AND NOT EXISTS (SELECT rpg.id
+                                        FROM stu_spacecraft_system rpg
+                                        WHERE b.id = rpg.spacecraft_id
+                                        AND rpg.system_type = :rpgModuleSystemId
+                                        AND rpg.data LIKE :rpgActiveInvisibility)) AS spacecraftcount,
                 (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     WHERE sm.id = c.location_id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_spacecraft_system ss2
                                         WHERE c.id = ss2.spacecraft_id
                                         AND ss2.system_type = :cloakSystemId
-                                        AND ss2.mode > 1)) AS cloakcount,
+                                        AND ss2.mode > 1)
+                    AND NOT EXISTS (SELECT rpg2.id
+                                        FROM stu_spacecraft_system rpg2
+                                        WHERE c.id = rpg2.spacecraft_id
+                                        AND rpg2.system_type = :rpgModuleSystemId
+                                        AND rpg2.data LIKE :rpgActiveInvisibility)) AS cloakcount,
                 (SELECT mft.effects FROM stu_map_ftypes mft
                 WHERE l.field_id = mft.id) as effects
             FROM stu_sys_map sm
@@ -145,7 +156,9 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 'yStart' => $boundaries->getMinY(),
                 'yEnd' => $boundaries->getMaxY(),
                 'systemId' => $boundaries->getParentId(),
-                'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value
+                'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value,
+                'rpgModuleSystemId' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
+                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
             ])
             ->getResult();
     }

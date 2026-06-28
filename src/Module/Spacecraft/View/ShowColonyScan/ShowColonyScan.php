@@ -98,12 +98,14 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $epsSystem->lowerEps(MatrixScannerShipSystem::SCAN_EPS_COST)->update();
 
-        $this->privateMessageSender->send(
-            UserConstants::USER_NOONE,
-            $colony->getUserId(),
-            sprintf(_('Der Spieler %s hat die Oberfläche deiner Kolonie %s gescannt.'), $game->getUser()->getName(), $colony->getName()),
-            PrivateMessageFolderTypeEnum::SPECIAL_COLONY
-        );
+        if (!$ship->isRpgModuleInvisible()) {
+            $this->privateMessageSender->send(
+                UserConstants::USER_NOONE,
+                $colony->getUserId(),
+                sprintf(_('Der Spieler %s hat die Oberfläche deiner Kolonie %s gescannt.'), $game->getUser()->getName(), $colony->getName()),
+                PrivateMessageFolderTypeEnum::SPECIAL_COLONY
+            );
+        }
 
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);
         $colonySurface->updateSurface();

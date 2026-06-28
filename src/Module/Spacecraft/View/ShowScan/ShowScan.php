@@ -64,7 +64,7 @@ final class ShowScan implements ViewControllerInterface
         }
 
         $target = $targetWrapper->get();
-        if ($target->isCloaked()) {
+        if ($target->isCloaked() || $target->isRpgModuleInvisible()) {
             return;
         }
 
@@ -86,20 +86,22 @@ final class ShowScan implements ViewControllerInterface
         $this->achievementManager->checkDatabaseItem($target->getDatabaseId(), $user);
         $this->achievementManager->checkDatabaseItem($target->getRump()->getDatabaseId(), $user);
 
-        $this->privateMessageSender->send(
-            $game->getUser()->getId(),
-            $target->getUser()->getId(),
-            sprintf(
-                _('Die %s von Spieler %s hat %s %s bei %s gescannt.'),
-                $ship->getName(),
-                $game->getUser()->getName(),
-                $target->isStation() ? 'deine Station' : 'dein Schiff',
-                $target->getName(),
-                $target->getSectorString()
-            ),
-            $target->getType()->getMessageFolderType(),
-            $target
-        );
+        if (!$ship->isRpgModuleInvisible()) {
+            $this->privateMessageSender->send(
+                $game->getUser()->getId(),
+                $target->getUser()->getId(),
+                sprintf(
+                    _('Die %s von Spieler %s hat %s %s bei %s gescannt.'),
+                    $ship->getName(),
+                    $game->getUser()->getName(),
+                    $target->isStation() ? 'deine Station' : 'dein Schiff',
+                    $target->getName(),
+                    $target->getSectorString()
+                ),
+                $target->getType()->getMessageFolderType(),
+                $target
+            );
+        }
 
         $this->pirateReaction->checkForPirateReaction(
             $target,
