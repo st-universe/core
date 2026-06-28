@@ -36,6 +36,10 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
         Location $currentLocation,
         Location $nextLocation
     ): void {
+        if ($spacecraft->isRpgModuleInvisible()) {
+            return;
+        }
+
         $currentMap = $this->normalizeMapLocation($currentLocation);
         $nextMap = $this->normalizeMapLocation($nextLocation);
 
@@ -124,6 +128,10 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
     #[\Override]
     public function publishState(Spacecraft $spacecraft): void
     {
+        if ($spacecraft->isRpgModuleInvisible()) {
+            return;
+        }
+
         $map = $this->normalizeMapLocation($spacecraft->getLocation());
         if ($map === null) {
             return;

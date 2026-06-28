@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
+use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -275,6 +276,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 ON s.user_id = u.id
                 WHERE s.location_id = :locationId
                 AND s.id != :ignoreId
+                AND COALESCE(ss5.data, \'\') NOT LIKE :rpgActiveInvisibility
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                     $showCloaked
@@ -295,6 +297,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
                 'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
                 'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
+                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
                 'false' => false
             ]);
 

@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -260,6 +261,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON sp.user_id = u.id
                 WHERE sp.location_id = :locationId
                 AND s.id != :ignoreId
+                AND COALESCE(ss5.data, \'\') NOT LIKE :rpgActiveInvisibility
                 %s
                 ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader = :true THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
                 $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
@@ -273,6 +275,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
+            'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
             'false' => false,
             'true' => true
         ]);

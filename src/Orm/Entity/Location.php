@@ -143,7 +143,7 @@ abstract class Location
     public function getSpacecraftsWithoutCloak(): Collection
     {
         return $this->spacecrafts
-            ->filter(fn (Spacecraft $spacecraft): bool => !$spacecraft->isCloaked());
+            ->filter(fn (Spacecraft $spacecraft): bool => !$spacecraft->isCloaked() && !$spacecraft->isRpgModuleInvisible());
     }
 
     /** @return Collection<int, Spacecraft> */

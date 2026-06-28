@@ -23,6 +23,26 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
     {% include 'html/spacecraft/system/system.twig' with {'name': 'TACHYON_SCANNER'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'UPLINK'} %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'RPG_MODULE'} %}
+    {% set rpgModuleWrapper = getSpacecraftSystemWrapper(SPACECRAFT, 'RPG_MODULE') %}
+    {% if isAdmin and rpgModuleWrapper %}
+    <tr>
+        <td colspan="3">
+            {% if SPACECRAFT.isRpgModuleInvisible %}
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_SET_RPG_INVISIBILITY', 'id={{ spacecraftId }}&state=0&sstr={{ SESSIONSTRING }}');"
+                onmouseover="cp('rpginvisibility','buttons/rpg2');"
+                onmouseout="cp('rpginvisibility','buttons/rpg1');">
+                <img src="/assets/buttons/rpg1.png" name="rpginvisibility" /> Unsichtbar deaktivieren</a>
+            {% else %}
+            <a href="javascript:void(0);"
+                onClick="actionToInnerContent('B_SET_RPG_INVISIBILITY', 'id={{ spacecraftId }}&state=1&sstr={{ SESSIONSTRING }}');"
+                onmouseover="cp('rpginvisibility','buttons/rpg1');"
+                onmouseout="cp('rpginvisibility','buttons/rpg2');">
+                <img src="/assets/buttons/rpg2.png" name="rpginvisibility" /> Unsichtbar aktivieren</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endif %}
     {% include 'html/spacecraft/system/system.twig' with {'name': 'WARPCORE_CHARGE_TRANSFER'} %}
     {% if SPACECRAFT.hasShuttleRamp and storedShuttleCount > 0 %}
     {% set storedShuttles = SPACECRAFT.getStoredShuttles %}
