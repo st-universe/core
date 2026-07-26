@@ -191,7 +191,7 @@ abstract class Spacecraft implements
     public function getId(): int
     {
         if ($this->id === null) {
-            throw new BadMethodCallException(sprintf('entity "%s" not yet persisted', $this->getName()));
+            return 0;
         }
 
         return $this->id;
