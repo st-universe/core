@@ -24,7 +24,7 @@ final class LogPlayerDetails implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = request::postIntFatal('userId');
+        $userId = request::postIntFatal('userid');
         $reason = request::postStringFatal('reason');
 
         if (!$game->isAdmin() && !$game->isNpc()) {
