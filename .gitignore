@@ -9,6 +9,7 @@ vendor
 config.json
 config.json.backup
 config.intttest.json
+patches.lock.json
 src/Public/assets
 src/Public/version_*
 src/Public/robots.txt
