@@ -73,7 +73,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
             return;
         }
 
-        $location = $x || $y ? $this->locationRepository->getByCoordinates($x, $y, $layer) : null;
+        $location = ($x >= 0 && $y >= 0) ? $this->locationRepository->getByCoordinates($x, $y, $layer) : null;
 
         $this->entryCreator->createEntry($historyType, $historyText, $user->getId(), $user->getId(), $location);
 
