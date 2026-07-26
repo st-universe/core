@@ -29,9 +29,6 @@ final class ImageCreation implements ImageCreationInterface
         }
         $img_data = ob_get_contents();
 
-        if ($img_data === false) {
-            throw new RuntimeException('Output buffering is not active');
-        }
         ob_end_clean();
 
         return '<img src="data:image/' . $format . ';base64,' . base64_encode($img_data) . '"/>';

@@ -93,7 +93,7 @@ class IonStormMapGenerationTest extends StuTestCase
             $gif->addImage($this->createImagickFrame($cx));
         }
 
-        $gif = $gif->coalesceImages()->optimizeImageLayers();
+        $gif->coalesceImages()->optimizeImageLayers();
         $gif->writeImages($gifPath, true);
     }
 
