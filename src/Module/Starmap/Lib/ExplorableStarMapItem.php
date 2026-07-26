@@ -14,6 +14,8 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 {
+    use ExplorableStarMapItemTitleTrait;
+
     private ?TradePost $tradepost = null;
 
     private ?string $borderCssValue = null;
@@ -67,7 +69,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         $result = '';
 
         if ($tradepost !== null) {
-            $result .= $this->getTradepostTitle($tradepost);
+            $result .= $this->getTradepostTitle($tradepost, $this->bbCodeParser);
         }
 
         $isSystemNameSet = false;
@@ -110,7 +112,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             $lines[] = 'Unpassierbar';
         }
 
-        $territoryOwnerTitle = $this->getTerritoryOwnerTitle();
+        $territoryOwnerTitle = $this->getTerritoryOwnerTitle($this->hide, $this->exploreableStarMap, $this->bbCodeParser);
         if ($territoryOwnerTitle !== null) {
             $lines[] = $territoryOwnerTitle;
         }
@@ -121,61 +123,6 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         }
 
         return implode("\n", array_unique($lines));
-    }
-
-    private function getTradepostTitle(TradePost $tradepost): string
-    {
-        $licenseInfo = $tradepost->getLatestLicenseInfo();
-
-        if ($licenseInfo === null) {
-            return $this->getStringWithoutBbCode($tradepost->getName());
-        }
-
-        return sprintf(
-            '%s (Lizenz für %d Tage: %d %s)',
-            $this->getStringWithoutBbCode($tradepost->getName()),
-            $licenseInfo->getDays(),
-            $licenseInfo->getAmount(),
-            $licenseInfo->getCommodity()->getName()
-        );
-    }
-
-    private function getStringWithoutBbCode(string $string): string
-    {
-        return $this->bbCodeParser->parse($string)->getAsText();
-    }
-
-    private function getTerritoryOwnerTitle(): ?string
-    {
-        if ($this->hide === true || $this->exploreableStarMap->getAdminRegion() !== null) {
-            return null;
-        }
-
-        $influenceArea = $this->exploreableStarMap->getInfluenceArea();
-        if ($influenceArea === null) {
-            return null;
-        }
-
-        $base = $influenceArea->getStation();
-        if ($base === null) {
-            return null;
-        }
-
-        $user = $base->getUser();
-        $userName = trim($this->getStringWithoutBbCode($user->getName()));
-        if ($userName === '') {
-            return null;
-        }
-
-        $alliance = $user->getAlliance();
-        if ($alliance !== null) {
-            $allianceName = trim($this->getStringWithoutBbCode($alliance->getName()));
-            if ($allianceName !== '') {
-                return sprintf('Gebiet: %s (%s)', $allianceName, $userName);
-            }
-        }
-
-        return sprintf('Gebiet: %s', $userName);
     }
 
     #[\Override]
