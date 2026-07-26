@@ -2,11 +2,11 @@
 
 namespace Stu\Component\Cache;
 
-use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
 use Redis;
 use Stu\Module\Config\StuConfigInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 final class CacheProvider implements CacheProviderInterface
 {
@@ -36,6 +36,6 @@ final class CacheProvider implements CacheProviderInterface
         }
         $redis->setOption(Redis::OPT_PREFIX, $this->config->getDbSettings()->getDatabase());
 
-        return new RedisCachePool($redis);
+        return new RedisAdapter($redis);
     }
 }
