@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -105,7 +104,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
             $cacheData[$field->getFieldType()] = $getter($field);
         }
 
-        $cacheItem = new CacheItem($cacheKey);
+        $cacheItem = $this->cache->getItem($cacheKey);
         $cacheItem->set($cacheData);
         $cacheItem->expiresAfter(self::CACHE_TTL);
 
