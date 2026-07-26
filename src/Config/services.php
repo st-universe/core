@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
@@ -33,6 +32,7 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Ubench;
 
 use function DI\autowire;
@@ -57,7 +57,7 @@ return [
 
             return $cacheProvider->getRedisCachePool();
         } else {
-            return new ArrayCachePool();
+            return new ArrayAdapter();
         }
     },
     SqlLogger::class => function (): SqlLogger {
