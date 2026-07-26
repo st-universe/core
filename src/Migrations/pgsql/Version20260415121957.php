@@ -20,12 +20,12 @@ final class Version20260415121957 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD finish_time INT NOT NULL');
-        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD stop_date INT NOT NULL');
-        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD is_stopped BOOLEAN NOT NULL');
-        $this->addSql('ALTER TABLE stu_station_shiprepair ADD finish_time INT NOT NULL');
-        $this->addSql('ALTER TABLE stu_station_shiprepair ADD stop_date INT NOT NULL');
-        $this->addSql('ALTER TABLE stu_station_shiprepair ADD is_stopped BOOLEAN NOT NULL');
+        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD finish_time INT NOT NULL DEFAULT 0');
+        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD stop_date INT NOT NULL DEFAULT 0');
+        $this->addSql('ALTER TABLE stu_colonies_shiprepair ADD is_stopped BOOLEAN NOT NULL DEFAULT false');
+        $this->addSql('ALTER TABLE stu_station_shiprepair ADD finish_time INT NOT NULL DEFAULT 0');
+        $this->addSql('ALTER TABLE stu_station_shiprepair ADD stop_date INT NOT NULL DEFAULT 0');
+        $this->addSql('ALTER TABLE stu_station_shiprepair ADD is_stopped BOOLEAN NOT NULL DEFAULT false');
     }
 
     public function down(Schema $schema): void
