@@ -78,10 +78,7 @@ class TransformToTrumfield implements SpacecraftDestructionHandlerInterface
             return;
         }
 
-        $influenceArea = $spacecraft->getInfluenceArea();
-        if ($influenceArea !== null) {
-            $influenceArea->unsetStation();
-        }
+        $spacecraft->clearInfluenceArea();
 
         $constructionProgress = $spacecraft->getConstructionProgress();
         if ($constructionProgress !== null) {

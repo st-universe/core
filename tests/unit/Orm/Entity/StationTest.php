@@ -72,4 +72,18 @@ class StationTest extends StuTestCase
 
         $this->assertEquals(1, $result);
     }
+
+    public function testClearInfluenceAreaUnsetsBothSidesOfTheRelationship(): void
+    {
+        $starSystem = $this->mock(StarSystem::class);
+        $this->subject->setInfluenceArea($starSystem);
+
+        $starSystem->shouldReceive('unsetStation')
+            ->withNoArgs()
+            ->once();
+
+        $this->subject->clearInfluenceArea();
+
+        $this->assertNull($this->subject->getInfluenceArea());
+    }
 }
