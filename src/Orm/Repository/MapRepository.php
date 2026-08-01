@@ -564,7 +564,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         FROM stu_spacecraft_system rpg
                                         WHERE b.id = rpg.spacecraft_id
                                         AND rpg.system_type = :rpgModuleSystemId
-                                        AND rpg.data LIKE :rpgActiveInvisibility)) AS spacecraftcount,
+                                        AND rpg.data = :invisibleData)) AS spacecraftcount,
                 (SELECT count(DISTINCT c.id) FROM stu_spacecraft c
                     JOIN stu_location l2
                     ON c.location_id = l2.id
@@ -580,7 +580,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         FROM stu_spacecraft_system rpg2
                                         WHERE c.id = rpg2.spacecraft_id
                                         AND rpg2.system_type = :rpgModuleSystemId
-                                        AND rpg2.data LIKE :rpgActiveInvisibility)) AS cloakcount
+                                        AND rpg2.data = :invisibleData)) AS cloakcount
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
@@ -599,7 +599,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'layerId' => $boundaries->getParentId(),
                 'cloakSystemId' => SpacecraftSystemTypeEnum::CLOAK->value,
                 'rpgModuleSystemId' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
             ])
             ->getResult();
     }
@@ -649,7 +649,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                     FROM stu_spacecraft_system rpg
                                     WHERE s.id = rpg.spacecraft_id
                                     AND rpg.system_type = :rpgModuleSystemId
-                                    AND rpg.data LIKE :rpgActiveInvisibility)) as spacecraftcount
+                                    AND rpg.data = :invisibleData)) as spacecraftcount
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
@@ -666,7 +666,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'layerId' => $boundaries->getParentId(),
                 'userId' => $userId,
                 'rpgModuleSystemId' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
             ])
             ->getResult();
     }
@@ -694,7 +694,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                         FROM stu_spacecraft_system rpg
                                         WHERE s.id = rpg.spacecraft_id
                                         AND rpg.system_type = :rpgModuleSystemId
-                                        AND rpg.data LIKE :rpgActiveInvisibility)) as spacecraftcount
+                                        AND rpg.data = :invisibleData)) as spacecraftcount
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
@@ -711,7 +711,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'layerId' => $boundaries->getParentId(),
                 'allyId' => $allianceId,
                 'rpgModuleSystemId' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
             ])
             ->getResult();
     }
@@ -737,7 +737,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                     FROM stu_spacecraft_system rpg
                                     WHERE s.id = rpg.spacecraft_id
                                     AND rpg.system_type = :rpgModuleSystemId
-                                    AND rpg.data LIKE :rpgActiveInvisibility)) as spacecraftcount
+                                    AND rpg.data = :invisibleData)) as spacecraftcount
             FROM stu_map m
             JOIN stu_location l
             ON m.id = l.id
@@ -754,7 +754,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'layerId' => $boundaries->getParentId(),
                 'spacecraftId' => $spacecraftId,
                 'rpgModuleSystemId' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
             ])
             ->getResult();
     }

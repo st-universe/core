@@ -276,7 +276,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 ON s.user_id = u.id
                 WHERE s.location_id = :locationId
                 AND s.id != :ignoreId
-                AND COALESCE(ss5.data, \'\') NOT LIKE :rpgActiveInvisibility
+                AND COALESCE(ss5.data, \'\') != :invisibleData
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                     $showCloaked
@@ -297,7 +297,7 @@ final class StationRepository extends EntityRepository implements StationReposit
                 'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
                 'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
                 'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA,
                 'false' => false
             ]);
 

@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 class RpgModuleSystemData extends AbstractSystemData
 {
     private const string INVISIBLE_KEY = 'invisible';
-    public const string ACTIVE_INVISIBILITY_CONFIG_FRAGMENT = '"' . self::INVISIBLE_KEY . '":true';
+    public const string INVISIBLE_DATA = '{"invisible":true}';
 
     public bool $invisible = false;
 
@@ -39,10 +39,5 @@ class RpgModuleSystemData extends AbstractSystemData
         $config = json_decode($data, true);
 
         return is_array($config) && ($config[self::INVISIBLE_KEY] ?? false) === true;
-    }
-
-    public static function getActiveInvisibilityConfigSearchValue(): string
-    {
-        return sprintf('%%%s%%', self::ACTIVE_INVISIBILITY_CONFIG_FRAGMENT);
     }
 }
