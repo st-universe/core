@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use RuntimeException;
+use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -15,7 +17,10 @@ use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class AstroEntryLib implements AstroEntryLibInterface
 {
-    public function __construct(private AstroEntryRepositoryInterface $astroEntryRepository) {}
+    public function __construct(
+        private AstroEntryRepositoryInterface $astroEntryRepository,
+        private CrewEnhancementInterface $crewEnhancement
+    ) {}
 
     #[\Override]
     public function cancelAstroFinalizing(SpacecraftWrapperInterface $wrapper): void
@@ -41,6 +46,8 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $entry->setState(AstronomicalMappingStateEnum::MEASURED);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
+
+        $this->crewEnhancement->addExpertise($ship, SkillEnhancementEnum::FINISH_ASTRO_MAPPING);
     }
 
     #[\Override]

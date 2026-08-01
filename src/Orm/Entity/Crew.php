@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\CrewRepository;
 
@@ -30,6 +34,9 @@ class Crew
 
     #[Column(type: 'smallint', enumType: CrewTypeEnum::class)]
     private CrewTypeEnum $type = CrewTypeEnum::CREWMAN;
+
+    #[Column(type: 'string', enumType: CrewSkillLevelEnum::class, options: ['default' => 'RECRUIT'])]
+    private CrewSkillLevelEnum $rank = CrewSkillLevelEnum::RECRUIT;
 
     #[Column(type: 'smallint')]
     private int $gender = 0;
@@ -51,6 +58,15 @@ class Crew
     #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;
 
+    /** @var Collection<int, CrewSkill> */
+    #[OneToMany(targetEntity: CrewSkill::class, mappedBy: 'crew', indexBy: 'position', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $skills;
+
+    public function __construct()
+    {
+        $this->skills = new ArrayCollection();
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -66,6 +82,34 @@ class Crew
         $this->type = $type;
 
         return $this;
+    }
+
+    public function getRank(): CrewSkillLevelEnum
+    {
+        return $this->rank;
+    }
+
+    public function setRank(CrewSkillLevelEnum $rank): Crew
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /** @return Collection<int, CrewSkill> */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function isSkilledAt(CrewTypeEnum $position): bool
+    {
+        return $this->skills->containsKey($position->value);
+    }
+
+    public function getSkillAt(CrewTypeEnum $position): ?CrewSkill
+    {
+        return $this->skills->get($position->value);
     }
 
     public function getGender(): int
