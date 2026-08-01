@@ -110,12 +110,18 @@ class ForeignCrewDumpingHandlerTest extends StuTestCase
             )
             ->once();
 
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
+            ->once()
+            ->ordered();
         $this->entityManager->shouldReceive('detach')
             ->with($foreignerCrewAssignment)
-            ->once();
+            ->once()
+            ->ordered();
         $this->entityManager->shouldReceive('detach')
             ->with($foreignerCrew)
-            ->once();
+            ->once()
+            ->ordered();
 
         $this->handler->delete($user);
     }
