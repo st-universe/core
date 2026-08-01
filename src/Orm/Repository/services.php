@@ -52,6 +52,7 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\CrewRace;
+use Stu\Orm\Entity\CrewSkill;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseCategoryAward;
@@ -144,6 +145,8 @@ use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\SkillEnhancement;
+use Stu\Orm\Entity\SkillEnhancementLog;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
@@ -219,6 +222,7 @@ return [
     ColonyScanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyScan::class),
     CrewRaceRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class),
     CrewRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Crew::class),
+    CrewSkillRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewSkill::class),
     CrewTrainingRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class),
     DatabaseCategoryRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class),
     DatabaseCategoryAwardRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategoryAward::class),
@@ -289,6 +293,8 @@ return [
     RpgPlotMemberArchivRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMemberArchiv::class),
     RpgPlotMemberRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class),
     SessionStringRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SessionString::class),
+    SkillEnhancementRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SkillEnhancement::class),
+    SkillEnhancementLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SkillEnhancementLog::class),
     SpacecraftBuildplanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftBuildplan::class),
     SpacecraftLogRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLog::class),
     SpacecraftLogScanRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftLogScan::class),
