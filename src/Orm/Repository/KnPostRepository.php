@@ -60,6 +60,15 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     }
 
     #[\Override]
+    public function getAllByUser(int $userId): array
+    {
+        return $this->findBy(
+            ['user_id' => $userId],
+            ['date' => 'desc']
+        );
+    }
+
+    #[\Override]
     public function getByPlot(RpgPlot $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(

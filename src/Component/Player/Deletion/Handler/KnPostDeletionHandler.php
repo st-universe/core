@@ -25,7 +25,7 @@ final class KnPostDeletionHandler implements PlayerDeletionHandlerInterface
     {
         $gameFallbackUser = $this->userRepository->getFallbackUser();
 
-        foreach ($this->knPostRepository->getByUser($user->getId()) as $knPost) {
+        foreach ($this->knPostRepository->getAllByUser($user->getId()) as $knPost) {
             $knPost->setUsername($user->getName());
             $knPost->setUser($gameFallbackUser);
 
