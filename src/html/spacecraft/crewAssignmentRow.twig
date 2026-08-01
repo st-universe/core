@@ -22,9 +22,9 @@
     </td>
     <td>
         {% if crew.getUser.getId == USER_ID %}
-        <a href="?SHOW_CREWMAN_DETAILS=1&id={{ crewId }}&sstr={{ SESSIONSTRING }}">{{ crew.getRank.getDescription }}</a>
+        <a href="?SHOW_CREWMAN_DETAILS=1&id={{ crewId }}&sstr={{ SESSIONSTRING }}">{{ crew.getRank.getDescription(crew.getUser.getFactionId) }}</a>
         {% else %}
-        <div>{{ crew.getRank.getDescription }}</div>
+        <div>{{ crew.getRank.getDescription(crew.getUser.getFactionId) }}</div>
         {% endif %}
     </td>
 </tr>

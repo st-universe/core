@@ -76,7 +76,7 @@ class ShipRumpCategoryRoleCrew
     {
         return match ($type) {
             CrewTypeEnum::COMMAND => $this->job_1_crew,
-            CrewTypeEnum::SECURITY => $this->job_2_crew,
+            CrewTypeEnum::TACTIC => $this->job_2_crew,
             CrewTypeEnum::SCIENCE => $this->job_3_crew,
             CrewTypeEnum::TECHNICAL => $this->job_4_crew,
             CrewTypeEnum::NAVIGATION => $this->job_5_crew,

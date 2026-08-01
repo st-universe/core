@@ -107,7 +107,7 @@ class CloseCombatUtilTest extends StuTestCase
             ->andReturn(CrewTypeEnum::NAVIGATION);
         $crew2->shouldReceive('getType')
             ->withNoArgs()
-            ->andReturn(CrewTypeEnum::SECURITY);
+            ->andReturn(CrewTypeEnum::TACTIC);
         $crew3->shouldReceive('getType')
             ->withNoArgs()
             ->andReturn(CrewTypeEnum::CAPTAIN);

@@ -21,7 +21,8 @@ final class CreateEnhancementLog
         string $spacecraftName,
         SkillEnhancement $enhancement,
         int $amount,
-        CrewSkillLevelEnum $oldRank
+        CrewSkillLevelEnum $oldRank,
+        CrewSkillLevelEnum $newRank
     ): void {
         $crew = $crewSkill->getCrew();
         $log = $this->skillEnhancementLogRepository->prototype()
@@ -32,16 +33,19 @@ final class CreateEnhancementLog
             ->setCrewId($crew->getId())
             ->setExpertise($amount)
             ->setExpertiseSum($crewSkill->getExpertise())
-            ->setPromotion($this->getPromotion($oldRank, $crewSkill->getRank()))
+            ->setPromotion($this->getPromotion($oldRank, $newRank, $crew->getUser()->getFactionId()))
             ->setTimestamp($this->stuTime->time());
 
         $this->skillEnhancementLogRepository->save($log);
     }
 
-    private function getPromotion(CrewSkillLevelEnum $oldRank, CrewSkillLevelEnum $newRank): ?string
-    {
+    private function getPromotion(
+        CrewSkillLevelEnum $oldRank,
+        CrewSkillLevelEnum $newRank,
+        int $factionId
+    ): ?string {
         return $oldRank === $newRank
             ? null
-            : sprintf('Befoerderung %s -> %s', $oldRank->getDescription(), $newRank->getDescription());
+            : sprintf('Befoerderung %s -> %s', $oldRank->getDescription($factionId), $newRank->getDescription($factionId));
     }
 }

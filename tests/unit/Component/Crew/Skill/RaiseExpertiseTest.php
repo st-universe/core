@@ -7,6 +7,7 @@ namespace Stu\Component\Crew\Skill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewSkill;
@@ -50,18 +51,18 @@ final class RaiseExpertiseTest extends StuTestCase
 
     public function testPromotesCrewWhenSkillReachesHigherRank(): void
     {
-        $crew = $this->createCrew(CrewSkillLevelEnum::RECRUIT);
+        $crew = $this->createCrew(CrewSkillLevelEnum::CADET);
         $skill = new CrewSkill()
             ->setCrew($crew)
             ->setPosition(CrewTypeEnum::SCIENCE);
         $crew->shouldReceive('getSkills')->andReturn(new ArrayCollection([
             CrewTypeEnum::SCIENCE->value => $skill
         ]));
-        $crew->shouldReceive('setRank')->with(CrewSkillLevelEnum::CADET)->once();
+        $crew->shouldReceive('setRank')->with(CrewSkillLevelEnum::CREWMAN)->once();
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->with($crew)->once();
-        $this->expectLog($skill, 100, CrewSkillLevelEnum::RECRUIT);
+        $this->expectLog($skill, 100, 100, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CREWMAN);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -72,7 +73,7 @@ final class RaiseExpertiseTest extends StuTestCase
         );
 
         static::assertSame(100, $skill->getExpertise());
-        static::assertSame(CrewSkillLevelEnum::CADET, $skill->getRank());
+        static::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
     }
 
     public function testDoesNotLowerCrewRankForLowerRankSkill(): void
@@ -89,7 +90,7 @@ final class RaiseExpertiseTest extends StuTestCase
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->never();
-        $this->expectLog($skill, 1, CrewSkillLevelEnum::RECRUIT);
+        $this->expectLog($skill, 1, 100, CrewSkillLevelEnum::COMMANDER, CrewSkillLevelEnum::COMMANDER);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -100,7 +101,71 @@ final class RaiseExpertiseTest extends StuTestCase
         );
 
         static::assertSame(100, $skill->getExpertise());
-        static::assertSame(CrewSkillLevelEnum::CADET, $skill->getRank());
+        static::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
+    }
+
+    public function testDoesNotAutomaticallyPromoteBeyondLieutenantCommander(): void
+    {
+        $crew = $this->createCrew(CrewSkillLevelEnum::LIEUTENANT_COMMANDER);
+        $skill = new CrewSkill()
+            ->setCrew($crew)
+            ->setPosition(CrewTypeEnum::SCIENCE);
+        $crew->shouldReceive('getSkills')->andReturn(new ArrayCollection([
+            CrewTypeEnum::SCIENCE->value => $skill
+        ]));
+        $crew->shouldReceive('setRank')->never();
+
+        $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
+        $this->crewRepository->shouldReceive('save')->never();
+        $this->expectLog(
+            $skill,
+            10_000,
+            10_000,
+            CrewSkillLevelEnum::LIEUTENANT_COMMANDER,
+            CrewSkillLevelEnum::LIEUTENANT_COMMANDER
+        );
+
+        $this->subject->raiseExpertise(
+            $crew,
+            $this->createSpacecraft(),
+            CrewTypeEnum::SCIENCE,
+            $this->createEnhancement(10_000),
+            100
+        );
+
+        static::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
+    }
+
+    public function testPromotesCrewToLieutenantCommanderWhenExperienceExceedsAutomaticRanks(): void
+    {
+        $crew = $this->createCrew(CrewSkillLevelEnum::CADET);
+        $skill = new CrewSkill()
+            ->setCrew($crew)
+            ->setPosition(CrewTypeEnum::SCIENCE);
+        $crew->shouldReceive('getSkills')->andReturn(new ArrayCollection([
+            CrewTypeEnum::SCIENCE->value => $skill
+        ]));
+        $crew->shouldReceive('setRank')->with(CrewSkillLevelEnum::LIEUTENANT_COMMANDER)->once();
+
+        $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
+        $this->crewRepository->shouldReceive('save')->with($crew)->once();
+        $this->expectLog(
+            $skill,
+            10_000,
+            10_000,
+            CrewSkillLevelEnum::CADET,
+            CrewSkillLevelEnum::LIEUTENANT_COMMANDER
+        );
+
+        $this->subject->raiseExpertise(
+            $crew,
+            $this->createSpacecraft(),
+            CrewTypeEnum::SCIENCE,
+            $this->createEnhancement(10_000),
+            100
+        );
+
+        static::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
     }
 
     /** @return MockInterface&Crew */
@@ -110,7 +175,9 @@ final class RaiseExpertiseTest extends StuTestCase
         $crew->shouldReceive('getRank')->andReturn($rank);
         $crew->shouldReceive('getId')->andReturn(42);
         $crew->shouldReceive('getName')->andReturn('Crew');
-        $crew->shouldReceive('getUser')->andReturn($this->mock(User::class));
+        $user = $this->mock(User::class);
+        $user->shouldReceive('getFactionId')->andReturn(FactionEnum::FACTION_FEDERATION->value);
+        $crew->shouldReceive('getUser')->andReturn($user);
 
         return $crew;
     }
@@ -131,8 +198,13 @@ final class RaiseExpertiseTest extends StuTestCase
         return $enhancement;
     }
 
-    private function expectLog(CrewSkill $skill, int $amount, CrewSkillLevelEnum $oldRank): void
-    {
+    private function expectLog(
+        CrewSkill $skill,
+        int $amount,
+        int $expertiseSum,
+        CrewSkillLevelEnum $oldRank,
+        CrewSkillLevelEnum $newRank
+    ): void {
         $log = $this->mock(SkillEnhancementLog::class);
         $this->logRepository->shouldReceive('prototype')->once()->andReturn($log);
         $this->logRepository->shouldReceive('save')->with($log)->once();
@@ -144,9 +216,13 @@ final class RaiseExpertiseTest extends StuTestCase
         $log->shouldReceive('setShipName')->once()->andReturnSelf();
         $log->shouldReceive('setCrewId')->once()->andReturnSelf();
         $log->shouldReceive('setExpertise')->with($amount)->once()->andReturnSelf();
-        $log->shouldReceive('setExpertiseSum')->with(100)->once()->andReturnSelf();
+        $log->shouldReceive('setExpertiseSum')->with($expertiseSum)->once()->andReturnSelf();
         $log->shouldReceive('setPromotion')
-            ->with($oldRank === CrewSkillLevelEnum::RECRUIT ? 'Befoerderung Rekrut -> Kadett' : null)
+            ->with(
+                $oldRank === $newRank
+                    ? null
+                    : sprintf('Befoerderung %s -> %s', $oldRank->getDescription(FactionEnum::FACTION_FEDERATION->value), $newRank->getDescription(FactionEnum::FACTION_FEDERATION->value))
+            )
             ->once()
             ->andReturnSelf();
         $log->shouldReceive('setTimestamp')->once()->andReturnSelf();

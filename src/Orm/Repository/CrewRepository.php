@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
@@ -66,6 +67,19 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
                 'user' => $user,
                 'categoryId' => $shipRumpCategory->value
             ])
+            ->getSingleScalarResult();
+    }
+
+    #[\Override]
+    public function getAmountByUserAndRank(User $user, CrewSkillLevelEnum $rank): int
+    {
+        return (int) $this->createQueryBuilder('crew')
+            ->select('COUNT(crew.id)')
+            ->where('crew.user = :user')
+            ->andWhere('crew.rank = :rank')
+            ->setParameter('user', $user)
+            ->setParameter('rank', $rank->value)
+            ->getQuery()
             ->getSingleScalarResult();
     }
 
