@@ -1,6 +1,6 @@
 {% set crewId = CREW.getId %}
 {% set crewName = CREW.getName %}
-{% if CREW.getUser.getId() == SHIP.getUser.getId %}
+{% if CREW.getUser.getId() == USER_ID %}
 <div id="rn_crew_{{ crewId }}">
     <div onclick="showRenameCrew(this,{{ crewId }});" class="action" style="font-weight: bold;">{{ crewName }}</div>
     <div id="rn_crew_{{ crewId }}_input" style="display: none;">

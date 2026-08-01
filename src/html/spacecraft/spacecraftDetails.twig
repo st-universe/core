@@ -101,34 +101,20 @@
                 <td class="darkbg"><strong>Rang</strong></td>
             </tr>
             {% for data in SHIP.getCrewAssignments %}
-            {% set crew = data.getCrew %}
-            {% set crewId = crew.getId %}
-            <tr>
-                <td>
-                    <img
-                        src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType.value }}.png" />
-                    {% if data.getCrew.getUser != SHIP.getUser %}
-                    <span style="vertical-align: top; color:red; cursor: default;"
-                        title="von {{ data.getCrew.getUser.getName|bbcode2txt }}">*</span>
-                    <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&crewid={{ crewId }}&sstr={{ SESSIONSTRING }}"
-                        onmouseover="cp('dump_{{ crewId }}','buttons/x2')"
-                        onmouseout="cp('dump_{{ crewId }}','buttons/x1')">
-                        <img src="/assets/buttons/x2.png" name="dump_{{ crewId }}" title="Crewman entfernen" />
-                    </a>
-                    {% endif %}
-                </td>
-                <td>
-                    <div>{{ data.getSlot.getDescription }}</div>
-                </td>
-                <td style="vertical-align: middle;">
-                    {% set CREW = crew %}
-                    {% include 'html/ship/crew/crewSlot.twig' %}
-                </td>
-                <td>
-                    <div>{{ data.getCrew.getType.getDescription }}</div>
-                </td>
-            </tr>
+            {% if data.getCrew.getUser.getId == SHIP.getUser.getId %}
+            {% include 'html/spacecraft/crewAssignmentRow.twig' with {'CREW_ASSIGNMENT': data} %}
+            {% endif %}
             {% endfor %}
+            {% if FOREIGNER_COUNT > 0 %}
+            <tr>
+                <th colspan="4">Gast-Crew</th>
+            </tr>
+            {% for data in SHIP.getCrewAssignments %}
+            {% if data.getCrew.getUser.getId != SHIP.getUser.getId %}
+            {% include 'html/spacecraft/crewAssignmentRow.twig' with {'CREW_ASSIGNMENT': data} %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
         </table>
     </div>
     <div>

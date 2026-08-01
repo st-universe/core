@@ -31,7 +31,8 @@ final class RenameCrew implements ActionControllerInterface
 
         $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         $game->setView(ShowRenameCrew::VIEW_IDENTIFIER);

@@ -68,7 +68,7 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
     }
 
     #[\Override]
-    public function dumpCrewman(CrewAssignment $crewAssignment, string $message): string
+    public function leaveSpacecraft(CrewAssignment $crewAssignment): string
     {
         $spacecraft = $crewAssignment->getSpacecraft();
         if ($spacecraft === null) {
@@ -94,6 +94,19 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
             $this->shipCrewRepository->save($crewAssignment);
             $survivalMessage = _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
         }
+
+        return $survivalMessage;
+    }
+
+    #[\Override]
+    public function dumpCrewman(CrewAssignment $crewAssignment, string $message): string
+    {
+        $spacecraft = $crewAssignment->getSpacecraft();
+        if ($spacecraft === null) {
+            throw new RuntimeException('can only dump crewman on ship');
+        }
+
+        $survivalMessage = $this->leaveSpacecraft($crewAssignment);
 
         $this->sendPmToOwner(
             $spacecraft->getUser(),

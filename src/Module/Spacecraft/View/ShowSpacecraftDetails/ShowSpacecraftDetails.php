@@ -48,7 +48,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
             $station = $this->stationLoader->getByIdAndUser(
                 request::indInt('id'),
                 $userId,
-                false,
+                true,
                 false
             );
 
@@ -59,6 +59,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         }
 
         $game->setTemplateVar('WRAPPER', $wrapper);
+        $game->setTemplateVar('USER_ID', $userId);
         $game->setTemplateVar('TRACTOR_PAYLOAD', $this->getTractorPayload($wrapper->get()));
 
         $game->setTemplateVar('FOREIGNER_COUNT', $this->troopTransferUtility->foreignerCount($wrapper->get()));

@@ -9,5 +9,7 @@ interface SpacecraftLeaverInterface
 {
     public function evacuate(SpacecraftWrapperInterface $wrapper): string;
 
+    public function leaveSpacecraft(CrewAssignment $crewAssignment): string;
+
     public function dumpCrewman(CrewAssignment $shipCrew, string $message): string;
 }
