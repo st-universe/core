@@ -45,6 +45,7 @@ final class SpacecraftDeletionHandler implements PlayerDeletionHandlerInterface
             }
 
             if ($spacecraft instanceof Station) {
+                $spacecraft->clearInfluenceArea();
                 $this->deleteConstructionProgress($spacecraft);
                 $this->undockAllDockedShips($spacecraft);
             }

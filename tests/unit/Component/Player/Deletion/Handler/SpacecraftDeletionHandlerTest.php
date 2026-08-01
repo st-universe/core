@@ -78,6 +78,12 @@ class SpacecraftDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(null);
+        $station->shouldReceive('clearInfluenceArea')
+            ->withNoArgs()
+            ->once();
+        $stationWithProgress->shouldReceive('clearInfluenceArea')
+            ->withNoArgs()
+            ->once();
         $tradepostStation->shouldReceive('getTradePost')
             ->withNoArgs()
             ->once()

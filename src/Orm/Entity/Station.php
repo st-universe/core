@@ -103,6 +103,14 @@ class Station extends Spacecraft
         return $this;
     }
 
+    public function clearInfluenceArea(): void
+    {
+        if ($this->influenceArea !== null) {
+            $this->influenceArea->unsetStation();
+            $this->influenceArea = null;
+        }
+    }
+
     public function getAlliance(): ?Alliance
     {
         return $this->alliance;
