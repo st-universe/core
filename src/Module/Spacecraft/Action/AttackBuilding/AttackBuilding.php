@@ -65,10 +65,16 @@ final class AttackBuilding implements ActionControllerInterface
         $fieldId = request::getIntFatal('field');
 
 
+        // Serialize colony attacks before reading the target, so a waiting request sees prior destruction.
+        $colony = $this->colonyRepository->findForUpdate($colonyId);
         $field = $this->planetFieldRepository->find($fieldId);
-        $colony = $this->colonyRepository->find($colonyId);
         if ($field === null || $colony === null) {
             $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            return;
+        }
+
+        if ($field->getBuilding() === null) {
+            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
             return;
         }
 
