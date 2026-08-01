@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\DumpForeignCrewman;
 
 use request;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -21,7 +23,8 @@ final class DumpForeignCrewman implements ActionControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private SpacecraftLeaverInterface $spacecraftLeaver
+        private SpacecraftLeaverInterface $spacecraftLeaver,
+        private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
     #[\Override]
@@ -29,11 +32,13 @@ final class DumpForeignCrewman implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         $crewId = request::getIntFatal('crewid');
@@ -46,17 +51,40 @@ final class DumpForeignCrewman implements ActionControllerInterface
             return;
         }
 
-        $name = $crewAssignment->getCrew()->getName();
+        $crew = $crewAssignment->getCrew();
+        $crewOwnerId = $crew->getUser()->getId();
+        $shipOwnerId = $ship->getUser()->getId();
 
-        $survivalMessage = $this->spacecraftLeaver->dumpCrewman(
-            $crewAssignment,
-            sprintf(
-                'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt.',
-                $name,
-                $ship->getName(),
-                $game->getUser()->getName(),
-            )
-        );
+        if ($shipOwnerId === $userId) {
+            if ($crewOwnerId === $userId) {
+                return;
+            }
+
+            $survivalMessage = $this->spacecraftLeaver->dumpCrewman(
+                $crewAssignment,
+                sprintf(
+                    'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt.',
+                    $crew->getName(),
+                    $ship->getName(),
+                    $user->getName(),
+                )
+            );
+        } elseif ($crewOwnerId === $userId) {
+            $survivalMessage = $this->spacecraftLeaver->leaveSpacecraft($crewAssignment);
+
+            $this->privateMessageSender->send(
+                $userId,
+                $shipOwnerId,
+                sprintf(
+                    'Spieler %s hat seinen Crewman %s von der Station %s entfernt.',
+                    $user->getName(),
+                    $crew->getName(),
+                    $ship->getName(),
+                )
+            );
+        } else {
+            throw new AccessViolationException();
+        }
 
         $game->getInfo()->addInformation($survivalMessage);
     }

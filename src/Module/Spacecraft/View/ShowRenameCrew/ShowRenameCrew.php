@@ -25,12 +25,13 @@ final class ShowRenameCrew implements ViewControllerInterface
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,
-            false,
+            true,
             false
         );
 
         $game->showMacro('html/ship/crew/crewSlot.twig');
 
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('USER_ID', $userId);
     }
 }

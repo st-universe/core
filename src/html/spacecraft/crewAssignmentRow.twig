@@ -1,0 +1,31 @@
+{% set crew = CREW_ASSIGNMENT.getCrew %}
+{% set crewId = crew.getId %}
+{% set isForeignCrew = crew.getUser.getId != SHIP.getUser.getId %}
+{% set canRemoveCrew = isForeignCrew and (SHIP.getUser.getId == USER_ID or crew.getUser.getId == USER_ID) %}
+<tr>
+    <td>
+        <img src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType.value }}.png" />
+        {% if canRemoveCrew %}
+        <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&crewid={{ crewId }}&sstr={{ SESSIONSTRING }}"
+            onmouseover="cp('dump_{{ crewId }}','buttons/x2')"
+            onmouseout="cp('dump_{{ crewId }}','buttons/x1')">
+            <img src="/assets/buttons/x2.png" name="dump_{{ crewId }}" title="Crewman entfernen" />
+        </a>
+        {% endif %}
+    </td>
+    <td>
+        <div>{{ CREW_ASSIGNMENT.getSlot.getDescription }}</div>
+    </td>
+    <td style="vertical-align: middle;">
+        {% set CREW = crew %}
+        {% include 'html/ship/crew/crewSlot.twig' %}
+    </td>
+    <td>
+        <div>{{ crew.getType.getDescription }}</div>
+    </td>
+</tr>
+{% if isForeignCrew %}
+<tr>
+    <td colspan="4" style="text-align: left;">{{ crew.getUser.getName|bbcode }}</td>
+</tr>
+{% endif %}
