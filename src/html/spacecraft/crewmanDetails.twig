@@ -1,0 +1,53 @@
+{% set crew = CREW_ASSIGNMENT.getCrew %}
+<div class="divhead">{{ crew.getName }}</div>
+<div class="divbody">
+    {% if crew.getSkills|length > 0 %}
+    <table class="tcal">
+        <tr>
+            <th>Position</th>
+            <th>Rang</th>
+            <th>Expertise</th>
+        </tr>
+        {% for skill in crew.getSkills %}
+        <tr>
+            <td>{{ skill.getPosition.getDescription }}</td>
+            <td>{{ skill.getRank.getDescription }}</td>
+            <td>{{ skill.getExpertise }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div>Keine Skills vorhanden</div>
+    {% endif %}
+</div>
+<br />
+<form method="post" action="spacecraft.php">
+    <input type="hidden" name="id" value="{{ crew.getId }}" />
+    <div class="divhead">Erfahrungsprotokoll</div>
+    <div class="divbody">
+        <input type="text" size="3" name="count" value="{{ COUNT }}" />
+        <input type="submit" name="SHOW_CREWMAN_DETAILS" class="button" value="Aktualisieren" />
+    </div>
+</form>
+<br />
+<table class="tcal">
+    <tr>
+        <th>Eintrag</th>
+        <th>Datum</th>
+    </tr>
+    {% for entry in LOGS %}
+    <tr>
+        <td>
+            {% if entry.getPromotion %}
+            <span style="color: rgb(88, 196, 0)">{{ entry.getPromotion }}</span><br />
+            {% endif %}
+            {{ entry.__toString|bbcode }}
+        </td>
+        <td>{{ entry.getTimestamp|stuDateTime }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="2">Keine Eintraege vorhanden</td>
+    </tr>
+    {% endfor %}
+</table>

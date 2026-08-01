@@ -139,17 +139,28 @@ final class CrewCreator implements CrewCreatorInterface
         CrewTypeEnum $crewType,
         EntityWithCrewAssignmentsInterface $crewProvider
     ): ?CrewAssignment {
+        $matchingAssignments = $crewProvider->getCrewAssignments()
+            ->filter(
+                static fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->isSkilledAt($crewType)
+            )
+            ->toArray();
 
-        foreach ($crewProvider->getCrewAssignments() as $crewAssignment) {
-            $crew = $crewAssignment->getCrew();
-            if ($crew->getType() === $crewType) {
-                $crewProvider->getCrewAssignments()->removeElement($crewAssignment);
-
-                return $crewAssignment;
-            }
+        if ($matchingAssignments === []) {
+            return null;
         }
 
-        return null;
+        usort(
+            $matchingAssignments,
+            static fn (CrewAssignment $a, CrewAssignment $b): int =>
+                ($b->getCrew()->getSkillAt($crewType)?->getExpertise() ?? 0)
+                <=> ($a->getCrew()->getSkillAt($crewType)?->getExpertise() ?? 0)
+        );
+
+        /** @var CrewAssignment $crewAssignment */
+        $crewAssignment = current($matchingAssignments);
+        $crewProvider->getCrewAssignments()->removeElement($crewAssignment);
+
+        return $crewAssignment;
     }
 
     private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider): ?CrewAssignment

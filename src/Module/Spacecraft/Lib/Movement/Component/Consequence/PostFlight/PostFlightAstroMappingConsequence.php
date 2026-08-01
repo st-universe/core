@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
+use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -24,7 +26,8 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
         private AstroEntryRepositoryInterface $astroEntryRepository,
         private AstroEntryLibInterface $astroEntryLib,
         private CreatePrestigeLogInterface $createPrestigeLog,
-        private MessageFactoryInterface $messageFactory
+        private MessageFactoryInterface $messageFactory,
+        private CrewEnhancementInterface $crewEnhancement
     ) {}
 
     #[\Override]
@@ -83,6 +86,7 @@ class PostFlightAstroMappingConsequence extends AbstractFlightConsequence implem
                 }
 
                 $this->createPrestigeLog($ship);
+                $this->crewEnhancement->addExpertise($ship, SkillEnhancementEnum::REACH_ASTRO_WAYPOINT);
             }
         }
 
