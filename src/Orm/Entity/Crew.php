@@ -35,8 +35,8 @@ class Crew
     #[Column(type: 'smallint', enumType: CrewTypeEnum::class)]
     private CrewTypeEnum $type = CrewTypeEnum::CREWMAN;
 
-    #[Column(type: 'string', enumType: CrewSkillLevelEnum::class, options: ['default' => 'RECRUIT'])]
-    private CrewSkillLevelEnum $rank = CrewSkillLevelEnum::RECRUIT;
+    #[Column(type: 'string', enumType: CrewSkillLevelEnum::class, options: ['default' => 'CADET'])]
+    private CrewSkillLevelEnum $rank = CrewSkillLevelEnum::CADET;
 
     #[Column(type: 'smallint')]
     private int $gender = 0;
@@ -110,6 +110,26 @@ class Crew
     public function getSkillAt(CrewTypeEnum $position): ?CrewSkill
     {
         return $this->skills->get($position->value);
+    }
+
+    public function getExpertiseSum(): int
+    {
+        $sum = 0;
+        foreach ($this->skills as $skill) {
+            $sum += $skill->getExpertise();
+        }
+
+        return $sum;
+    }
+
+    public function getHighestSkillExpertise(): int
+    {
+        $highestExpertise = 0;
+        foreach ($this->skills as $skill) {
+            $highestExpertise = max($highestExpertise, $skill->getExpertise());
+        }
+
+        return $highestExpertise;
     }
 
     public function getGender(): int

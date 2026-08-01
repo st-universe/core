@@ -1,36 +1,120 @@
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 {% set crew = CREW_ASSIGNMENT.getCrew %}
-<div class="divhead">{{ crew.getName }}</div>
+{% set spacecraft = CREW_ASSIGNMENT.getSpacecraft %}
+{% set colony = CREW_ASSIGNMENT.getColony %}
+{% set tradepost = CREW_ASSIGNMENT.getTradepost %}
+{% set nextRank = crew.getRank.getNextRank %}
+
+<div class="divhead" style="color: var(--color-55);">{{ crew.getName }}</div>
 <div class="divbody">
-    {% if crew.getSkills|length > 0 %}
-    <table class="tcal">
+    <table class="tcal" style="width: 100%;">
         <tr>
-            <th>Position</th>
-            <th>Rang</th>
-            <th>Expertise</th>
+            <td rowspan="4" style="width: 55px; text-align: center;">
+                <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType.value }}.png" />
+            </td>
+            <td>Rang</td>
+            <td>{{ crew.getRank.getDescription(crew.getUser.getFactionId) }}</td>
         </tr>
-        {% for skill in crew.getSkills %}
         <tr>
-            <td>{{ skill.getPosition.getDescription }}</td>
-            <td>{{ skill.getRank.getDescription }}</td>
-            <td>{{ skill.getExpertise }}</td>
+            <td>Gesamtexpertise</td>
+            <td>{{ crew.getExpertiseSum }}</td>
         </tr>
-        {% endfor %}
+        <tr>
+            <td>Name</td>
+            <td>
+                <form method="post" action="ship.php">
+                    <input type="hidden" name="id" value="{{ crew.getId }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                    <input type="text" size="20" name="name" value="{{ crew.getName }}" />
+                    <input type="submit" name="B_RENAME_CREWMAN" class="button" value="Umbenennen" />
+                </form>
+            </td>
+        </tr>
+        {% if nextRank %}
+        <tr>
+            <td>Beförderung</td>
+            <td>
+                <form method="post" action="ship.php">
+                    <input type="hidden" name="id" value="{{ crew.getId }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                    <input type="submit" name="B_PROMOTE_CREW" class="button"
+                        value="Zu {{ nextRank.getDescription(crew.getUser.getFactionId) }} befördern" />
+                </form>
+            </td>
+        </tr>
+        {% endif %}
     </table>
-    {% else %}
-    <div>Keine Skills vorhanden</div>
-    {% endif %}
 </div>
 <br />
-<form method="post" action="spacecraft.php">
+
+{% if spacecraft %}
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th colspan="2">{{ spacecraft.isStation ? 'Station' : 'Schiff' }}</th>
+    </tr>
+    <tr>
+        <td style="width: 80px; text-align: center;">{{ spacecraftImageWithoutWarp(spacecraft) }}</td>
+        <td>
+            <div>{{ spacecraft.getName|bbcode }}</div>
+            <div>Position: {{ CREW_ASSIGNMENT.getSlot ? CREW_ASSIGNMENT.getSlot.getDescription : 'Keine' }}</div>
+        </td>
+    </tr>
+</table>
+{% elseif colony %}
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th colspan="2">Kolonie</th>
+    </tr>
+    <tr>
+        <td style="width: 80px; text-align: center;">
+            <img src="/assets/planets/{{ colony.getColonyClass.getId }}.png" />
+        </td>
+        <td>{{ colony.getName|bbcode }}</td>
+    </tr>
+</table>
+{% elseif tradepost %}
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th>Handelsposten</th>
+    </tr>
+    <tr>
+        <td>{{ tradepost.getName|bbcode }}</td>
+    </tr>
+</table>
+{% endif %}
+<br />
+
+{% if crew.getSkills|length > 0 %}
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th>Position</th>
+        <th>Rang</th>
+        <th>Expertise</th>
+    </tr>
+    {% for skill in crew.getSkills %}
+    <tr>
+        <td>{{ skill.getPosition.getDescription }}</td>
+        <td>{{ skill.getRank.getDescription(crew.getUser.getFactionId) }}</td>
+        <td>{{ skill.getExpertise }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<div>Keine Skills vorhanden</div>
+{% endif %}
+<br />
+
+<form method="post" action="ship.php">
     <input type="hidden" name="id" value="{{ crew.getId }}" />
-    <div class="divhead">Erfahrungsprotokoll</div>
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <div class="divhead" style="color: var(--color-55);">Erfahrungsprotokoll</div>
     <div class="divbody">
         <input type="text" size="3" name="count" value="{{ COUNT }}" />
         <input type="submit" name="SHOW_CREWMAN_DETAILS" class="button" value="Aktualisieren" />
     </div>
 </form>
 <br />
-<table class="tcal">
+<table class="tcal" style="width: 100%;">
     <tr>
         <th>Eintrag</th>
         <th>Datum</th>

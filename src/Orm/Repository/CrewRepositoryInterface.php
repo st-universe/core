@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\User;
@@ -25,6 +26,8 @@ interface CrewRepositoryInterface extends ObjectRepository
         User $user,
         SpacecraftRumpCategoryEnum $shipRumpCategory
     ): int;
+
+    public function getAmountByUserAndRank(User $user, CrewSkillLevelEnum $rank): int;
 
     public function truncateByUser(int $userId): void;
 }

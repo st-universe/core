@@ -155,7 +155,7 @@ class SkillEnhancementLog
             $this->expertise_sum,
             $this->expertise,
             $this->promotion === null
-                ? sprintf(' (Rang %s)', CrewSkillLevelEnum::getForExpertise($this->expertise_sum)->getDescription())
+                ? sprintf(' (Rang %s)', CrewSkillLevelEnum::getForExpertise($this->expertise_sum)->getDescription($this->user->getFactionId()))
                 : '',
             $this->enhancement->getDescription()
         );

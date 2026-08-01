@@ -14,7 +14,7 @@ final class ShowCrewmanDetails implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_CREWMAN_DETAILS';
 
-    private const int DEFAULT_LIMIT = 50;
+    private const int DEFAULT_LIMIT = 5;
 
     public function __construct(
         private CrewAssignmentRepositoryInterface $crewAssignmentRepository,

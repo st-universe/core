@@ -90,6 +90,8 @@ class AllOtherActionsTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_START_SHUTTLE' => ['shid' => 20061],
             'SPACECRAFT_ACTIONS-B_DUMP_CREWMAN',
             'SPACECRAFT_ACTIONS-B_RENAME_CREW' => ['crewid' => 2],
+            'SPACECRAFT_ACTIONS-B_RENAME_CREWMAN' => ['id' => 2, 'name' => 'Crew renamed'],
+            'SPACECRAFT_ACTIONS-B_PROMOTE_CREW' => ['id' => 2],
             'SPACECRAFT_ACTIONS-B_LOAD_REACTOR' => ['id' => 43, 'reactorload' => 5],
             'SPACECRAFT_ACTIONS-B_MOVE' => ['posx' => 7, 'posy' => 7],
             'SPACECRAFT_ACTIONS-B_SEND_BROADCAST' => ['text' => 'BROADCAST TXT'],

@@ -34,14 +34,17 @@ final class RaiseExpertise
             $crew->getSkills()->set($position->value, $skill);
         }
 
-        $oldSkillRank = $skill->getRank();
+        $oldCrewRank = $crew->getRank();
         $amount = (int)ceil($enhancement->getExpertise() * max(0, $percentage) / 100);
         $skill->increaseExpertise($amount);
         $this->crewSkillRepository->save($skill);
 
-        if ($skill->getRank()->getNeededExpertise() > $crew->getRank()->getNeededExpertise()) {
-            $crew->setRank($skill->getRank());
+        $newCrewRank = $skill->getRank()->getAutomaticPromotionTarget();
+        if ($newCrewRank->getNeededExpertise() > $oldCrewRank->getNeededExpertise()) {
+            $crew->setRank($newCrewRank);
             $this->crewRepository->save($crew);
+        } else {
+            $newCrewRank = $oldCrewRank;
         }
 
         $this->createEnhancementLog->createEnhancementLog(
@@ -49,7 +52,8 @@ final class RaiseExpertise
             $spacecraft->getName(),
             $enhancement,
             $amount,
-            $oldSkillRank
+            $oldCrewRank,
+            $newCrewRank
         );
     }
 }

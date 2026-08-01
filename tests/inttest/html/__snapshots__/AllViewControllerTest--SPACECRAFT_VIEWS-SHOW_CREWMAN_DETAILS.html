@@ -1,28 +1,88 @@
 
-<html lang="de">
+<html>
 
 <head>
-  <script src="/static/js/default.js"></script>
+    <meta charset="utf-8" />
 </head>
 
-<body>
-  <div class="ajaxwin">
-        <table class="tcal">
-      <tr>
-        <th id="popup-drag"></th>
-        <th style="width: 18px;">
-          <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
-            onmouseout="cp('ajaxclose','buttons/x1');">
-            <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
-          </a>
-        </th>
-      </tr>
-    </table>
-        <div class="box">
-    <div class="box_body">Das Ziel wurde nicht gefunden</div>
+
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+            </div>
 </div>
-      </div>
-  
-</body>
+<br />
+
+<div id="result" style="display: none;">..</div>
+
+<div class="divhead" style="color: var(--color-55);">Crew</div>
+<div class="divbody">
+    <table class="tcal" style="width: 100%;">
+        <tr>
+            <td rowspan="4" style="width: 55px; text-align: center;">
+                <img src="/assets/crew/ANDORIAN/m/1_6.png" />
+            </td>
+            <td>Rang</td>
+            <td>Kadett</td>
+        </tr>
+        <tr>
+            <td>Gesamtexpertise</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                <form method="post" action="ship.php">
+                    <input type="hidden" name="id" value="2" />
+                    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+                    <input type="text" size="20" name="name" value="Crew" />
+                    <input type="submit" name="B_RENAME_CREWMAN" class="button" value="Umbenennen" />
+                </form>
+            </td>
+        </tr>
+            </table>
+</div>
+<br />
+
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th colspan="2">Schiff</th>
+    </tr>
+    <tr>
+        <td style="width: 80px; text-align: center;"><img src="/assets/ships/6501.png" title="Aerie" />
+</td>
+        <td>
+            <div>Aerie</div>
+            <div>Position: Keine</div>
+        </td>
+    </tr>
+</table>
+<br />
+
+<div>Keine Skills vorhanden</div>
+<br />
+
+<form method="post" action="ship.php">
+    <input type="hidden" name="id" value="2" />
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+    <div class="divhead" style="color: var(--color-55);">Erfahrungsprotokoll</div>
+    <div class="divbody">
+        <input type="text" size="3" name="count" value="5" />
+        <input type="submit" name="SHOW_CREWMAN_DETAILS" class="button" value="Aktualisieren" />
+    </div>
+</form>
+<br />
+<table class="tcal" style="width: 100%;">
+    <tr>
+        <th>Eintrag</th>
+        <th>Datum</th>
+    </tr>
+        <tr>
+        <td colspan="2">Keine Eintraege vorhanden</td>
+    </tr>
+    </table>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
 
 </html>

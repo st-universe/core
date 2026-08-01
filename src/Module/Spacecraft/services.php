@@ -44,10 +44,12 @@ use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRight;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipUp;
 use Stu\Module\Spacecraft\Action\OpenAdventDoor\OpenAdventDoor;
 use Stu\Module\Spacecraft\Action\OpenEasterEgg\OpenEasterEgg;
+use Stu\Module\Spacecraft\Action\PromoteCrew\PromoteCrew;
 use Stu\Module\Spacecraft\Action\RemoveWaste\RemoveWaste;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrew;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequest;
 use Stu\Module\Spacecraft\Action\RenameCrew\RenameCrewRequestInterface;
+use Stu\Module\Spacecraft\Action\RenameCrewman\RenameCrewman;
 use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\ClosestLocations;
 use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Spacecraft\Action\SalvageEmergencyPods\TransferToClosestLocation;
@@ -468,6 +470,8 @@ return [
         SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
         LoadReactor::ACTION_IDENTIFIER => autowire(LoadReactor::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
+        RenameCrewman::ACTION_IDENTIFIER => autowire(RenameCrewman::class),
+        PromoteCrew::ACTION_IDENTIFIER => autowire(PromoteCrew::class),
         EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
