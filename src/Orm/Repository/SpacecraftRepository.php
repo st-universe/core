@@ -203,34 +203,31 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         Spacecraft $spacecraft
     ): bool {
 
-        $result = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.location = :location
-                    AND EXISTS (SELECT ss.id
-                            FROM %s ss
-                            WHERE s = ss.spacecraft
-                            AND ss.system_type = %d
+        $result = $this->getEntityManager()->getConnection()->fetchOne(
+            'SELECT COUNT(s.id)
+                FROM stu_spacecraft s
+                WHERE s.location_id = :locationId
+                AND EXISTS (SELECT ss.id
+                            FROM stu_spacecraft_system ss
+                            WHERE s.id = ss.spacecraft_id
+                            AND ss.system_type = :cloakType
                             AND ss.mode > 1)
-                    AND NOT EXISTS (SELECT rpg.id
-                            FROM %s rpg
-                            WHERE s = rpg.spacecraft
-                            AND rpg.system_type = %d
-                            AND rpg.data LIKE :rpgActiveInvisibility)
-                    AND s.user != :ignoreUser',
-                Spacecraft::class,
-                SpacecraftSystem::class,
-                SpacecraftSystemTypeEnum::CLOAK->value,
-                SpacecraftSystem::class,
-                SpacecraftSystemTypeEnum::RPG_MODULE->value
-            )
-        )->setParameters([
-            'location' => $spacecraft->getLocation(),
-            'ignoreUser' => $spacecraft->getUser(),
-            'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
-        ])->getSingleScalarResult();
+                AND NOT EXISTS (SELECT rpg.id
+                                FROM stu_spacecraft_system rpg
+                                WHERE s.id = rpg.spacecraft_id
+                                AND rpg.system_type = :rpgModuleType
+                                AND rpg.data = :invisibleData)
+                AND s.user_id != :ignoreUserId',
+            [
+                'locationId' => $spacecraft->getLocation()->getId(),
+                'ignoreUserId' => $spacecraft->getUser()->getId(),
+                'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+                'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
+                'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
+            ]
+        );
 
-        return $result > 0;
+        return (int)$result > 0;
     }
 
     #[\Override]
@@ -291,7 +288,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 AND sp.id != :ignoreId
                 AND s.fleet_id IS NULL
                 AND sp.type != :stationType
-                AND COALESCE(ss5.data, \'\') NOT LIKE :rpgActiveInvisibility
+                AND COALESCE(ss5.data, \'\') != :invisibleData
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
                 $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
@@ -305,7 +302,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-            'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
+            'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA,
             'false' => false,
             'stationType' => SpacecraftTypeEnum::STATION->value
         ]);
@@ -525,7 +522,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
             'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value,
             'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-            'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue()
+            'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA
         ];
         if ($includeAlliance && $allianceId !== null) {
             $parameters['allianceId'] = $allianceId;
@@ -599,7 +596,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                         AND rpg_system.system_type = :rpgModuleType
                         WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
                         AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
-                        AND COALESCE(rpg_system.data, \'\') NOT LIKE :rpgActiveInvisibility
+                        AND COALESCE(rpg_system.data, \'\') != :invisibleData
                         AND %s
                     ) ship_map
                     %s
@@ -697,7 +694,6 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
                 'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value,
                 'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
                 'nooneUserId' => UserConstants::USER_NOONE
             ])
             ->getResult();
@@ -818,7 +814,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
             AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
             AND sp.type IN (:shipType, :contactStationType)
-            AND COALESCE(rpg_system.data, \'\') NOT LIKE :rpgActiveInvisibility
+            AND COALESCE(rpg_system.data, \'\') != :invisibleData
             AND sp.user_id != :nooneUserId';
     }
 
@@ -839,6 +835,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'tachyonMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'uplinkMode' => SpacecraftSystemModeEnum::MODE_ON->value,
+            'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA,
             'vacationThreshold' => time() - UserConstants::VACATION_DELAY_IN_SECONDS,
             'false' => false
         ];

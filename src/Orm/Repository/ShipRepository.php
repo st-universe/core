@@ -261,7 +261,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON sp.user_id = u.id
                 WHERE sp.location_id = :locationId
                 AND s.id != :ignoreId
-                AND COALESCE(ss5.data, \'\') NOT LIKE :rpgActiveInvisibility
+                AND COALESCE(ss5.data, \'\') != :invisibleData
                 %s
                 ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader = :true THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, sp.name ASC',
                 $showCloaked ? '' : sprintf(' AND (sp.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $spacecraft->getUser()->getId(), SpacecraftSystemModeEnum::MODE_ON->value)
@@ -275,7 +275,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'shieldType' => SpacecraftSystemTypeEnum::SHIELDS->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,
             'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-            'rpgActiveInvisibility' => RpgModuleSystemData::getActiveInvisibilityConfigSearchValue(),
+            'invisibleData' => RpgModuleSystemData::INVISIBLE_DATA,
             'false' => false,
             'true' => true
         ]);
