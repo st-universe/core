@@ -20,6 +20,8 @@ final class ForeignCrewDumpingHandler implements PlayerDeletionHandlerInterface
     #[\Override]
     public function delete(User $user): void
     {
+        $dumpedCrew = [];
+
         foreach ($this->stationRepository->getStationsByUser($user->getId()) as $station) {
 
             foreach ($station->getCrewAssignments() as $crewAssignment) {
@@ -39,9 +41,20 @@ final class ForeignCrewDumpingHandler implements PlayerDeletionHandlerInterface
                     )
                 );
 
-                $this->entityManager->detach($crewAssignment);
-                $this->entityManager->detach($crew);
+                $dumpedCrew[] = [$crewAssignment, $crew];
             }
+        }
+
+        if ($dumpedCrew === []) {
+            return;
+        }
+
+        // Persist the transfer before detaching objects that may be bulk-deleted later in this tick.
+        $this->entityManager->flush();
+
+        foreach ($dumpedCrew as [$crewAssignment, $crew]) {
+            $this->entityManager->detach($crewAssignment);
+            $this->entityManager->detach($crew);
         }
     }
 }
