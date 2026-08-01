@@ -35,11 +35,12 @@ class KnPostDeletionHandlerTest extends StuTestCase
         );
     }
 
-    public function testDeleteUpdatesKnItemUser(): void
+    public function testDeleteUpdatesAllKnItemUsers(): void
     {
         $user = $this->mock(User::class);
         $fallbackUser = $this->mock(User::class);
         $knPost = $this->mock(KnPost::class);
+        $deletedKnPost = $this->mock(KnPost::class);
 
         $userId = 666;
         $userName = 'sixsixsix';
@@ -49,18 +50,27 @@ class KnPostDeletionHandlerTest extends StuTestCase
             ->once()
             ->andReturn($fallbackUser);
 
-        $this->knPostRepository->shouldReceive('getByUser')
+        $this->knPostRepository->shouldReceive('getAllByUser')
             ->with($userId)
             ->once()
-            ->andReturn([$knPost]);
+            ->andReturn([$knPost, $deletedKnPost]);
         $this->knPostRepository->shouldReceive('save')
             ->with($knPost)
+            ->once();
+        $this->knPostRepository->shouldReceive('save')
+            ->with($deletedKnPost)
             ->once();
 
         $knPost->shouldReceive('setUser')
             ->with($fallbackUser)
             ->once();
         $knPost->shouldReceive('setUsername')
+            ->with($userName)
+            ->once();
+        $deletedKnPost->shouldReceive('setUser')
+            ->with($fallbackUser)
+            ->once();
+        $deletedKnPost->shouldReceive('setUsername')
             ->with($userName)
             ->once();
 
@@ -70,11 +80,14 @@ class KnPostDeletionHandlerTest extends StuTestCase
             ->andReturn($userId);
         $user->shouldReceive('getName')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($userName);
 
         $this->entityManager->shouldReceive('detach')
             ->with($knPost)
+            ->once();
+        $this->entityManager->shouldReceive('detach')
+            ->with($deletedKnPost)
             ->once();
 
         $this->subject->delete($user);

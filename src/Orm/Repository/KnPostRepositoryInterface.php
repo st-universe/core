@@ -34,6 +34,11 @@ interface KnPostRepositoryInterface extends ObjectRepository
     /**
      * @return array<KnPost>
      */
+    public function getAllByUser(int $userId): array;
+
+    /**
+     * @return array<KnPost>
+     */
     public function getByPlot(RpgPlot $plot, ?int $offset, ?int $limit): array;
 
     public function getAmount(): int;
