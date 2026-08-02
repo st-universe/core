@@ -8,6 +8,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,10 +22,15 @@ final class AddContact implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowContactMode::VIEW_IDENTIFIER);
+        $contactDiv = $this->addContactRequest->getContactDiv();
+        $isAjaxRequest = $contactDiv !== '';
 
-        $game->setTemplateVar('div', $this->addContactRequest->getContactDiv());
-        $game->setTemplateVar('contact', null);
+        $game->setView($isAjaxRequest ? ShowContactMode::VIEW_IDENTIFIER : ShowContactList::VIEW_IDENTIFIER);
+
+        if ($isAjaxRequest) {
+            $game->setTemplateVar('div', $contactDiv);
+            $game->setTemplateVar('contact', null);
+        }
 
         $userId = $game->getUser()->getId();
 
@@ -89,7 +95,9 @@ final class AddContact implements ActionControllerInterface
         }
         $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
 
-        $game->setTemplateVar('contact', $contact);
+        if ($isAjaxRequest) {
+            $game->setTemplateVar('contact', $contact);
+        }
     }
 
     #[\Override]
