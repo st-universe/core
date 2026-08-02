@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\Action;
 
 use request;
-use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,13 +23,13 @@ final class RenameBuildplan implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
+        if (!$game->isAdmin()) {
+            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
+        $user = $game->getUser();
+        $userId = $user->getId();
         $buildplanId = request::postIntFatal('planid');
         $newName = CleanTextUtils::clearEmojis(request::postStringFatal('newName'));
 
@@ -50,8 +49,9 @@ final class RenameBuildplan implements ActionControllerInterface
         }
 
         $plan = $this->spacecraftBuildplanRepository->find($buildplanId);
-        if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new AccessViolationException();
+        if ($plan === null) {
+            $game->getInfo()->addInformation(_('Der Bauplan existiert nicht'));
+            return;
         }
 
         $oldName = $plan->getName();
@@ -59,8 +59,8 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $this->spacecraftBuildplanRepository->save($plan);
 
-        if ($game->getUser()->isNpc()) {
-            $this->createLogEntry($oldName, $newName, $userId, $game->getUser()->getName(), $plan->getUser()->getName());
+        if ($user->isNpc()) {
+            $this->createLogEntry($oldName, $newName, $userId, $user->getName(), $plan->getUser()->getName());
         }
 
         $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
