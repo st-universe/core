@@ -7,11 +7,13 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
@@ -72,6 +74,56 @@ class AttackedBattlePartyTest extends StuTestCase
         $members = $this->subject->getActiveMembers();
 
         $this->assertEquals([456 => $this->wrapper], $members->toArray());
+    }
+
+    public function testGetActiveMembersIncludesDisabledOrphanedTradepostButPreventsItFromFiring(): void
+    {
+        $wrapper = $this->mock(StationWrapperInterface::class);
+        $station = $this->mock(Station::class);
+        $tradePost = $this->mock(TradePost::class);
+        $user = $this->mock(User::class);
+
+        $wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($station);
+        $wrapper->shouldReceive('getFleetWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $station->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+        $station->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(456);
+        $station->shouldReceive('isStation')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $station->shouldReceive('getTradePost')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($tradePost);
+        $tradePost->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(UserConstants::USER_NOONE);
+        $station->shouldReceive('getCondition->isDestroyed')
+            ->withNoArgs()
+            ->twice()
+            ->andReturnFalse();
+        $station->shouldReceive('getCondition->isDisabled')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $subject = new AttackedBattleParty($wrapper, $this->stuRandom);
+
+        $this->assertEquals([456 => $wrapper], $subject->getActiveMembers()->toArray());
+        $this->assertTrue($subject->getActiveMembers(true)->isEmpty());
     }
 
     public function testGetActiveMembersExpectSingleWhenDockedToNpc(): void
