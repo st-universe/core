@@ -49,6 +49,7 @@
                     title="{{ module.getModule.getName }}" style="margin: 2px;" />
                 {% endfor %}
             </div>
+            {% if IS_ADMIN %}
             <form action="/npc/index.php" method="post">
                 <input type="hidden" name="planid" value="{{ buildplan.getId }}">
                 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
@@ -56,6 +57,7 @@
                 <input type="submit" name="B_CHANGE_BUILDPLAN_NAME" value="Speichern"
                     style="background-color: #4CAF50; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">
             </form>
+            {% endif %}
         </div>
         {% endfor %}
 
