@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -17,13 +19,21 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
 {
     public function __construct(
         private AstroEntryLibInterface $astroEntryLib,
-        private TrackerDeviceManagerInterface $trackerDeviceManager
+        private TrackerDeviceManagerInterface $trackerDeviceManager,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {
         return SpacecraftSystemTypeEnum::LSS;
+    }
+
+    #[\Override]
+    public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
+    {
+        parent::activate($wrapper, $manager);
+        $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
     }
 
     #[\Override]
@@ -45,6 +55,7 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
     {
         $spacecraft = $wrapper->get();
         $spacecraft->getSpacecraftSystem($this->getSystemType())->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $this->spacecraftMovementPublisher->publishCoverageChanged($spacecraft);
 
         //other consequences
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {

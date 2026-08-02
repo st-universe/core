@@ -693,8 +693,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 'epsType' => SpacecraftSystemTypeEnum::EPS->value,
                 'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
                 'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value,
-                'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value,
-                'nooneUserId' => UserConstants::USER_NOONE
+                'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value
             ])
             ->getResult();
     }
@@ -734,6 +733,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             AND CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE source_location.layer_id END = :layerId
             AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
             AND lss_system.status > 0
+            AND lss_system.mode >= :lssMode
             AND (source_owner.vac_active = :false OR source_owner.vac_request_date > :vacationThreshold)
             AND (
                 (src.user_id = :userId AND source_rump.role_id IN (:baseRole, :outpostRole, :sensorRole))
@@ -814,8 +814,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             WHERE CASE WHEN system_field.id IS NOT NULL THEN parent_location.layer_id ELSE location.layer_id END = :layerId
             AND (map_field.id IS NOT NULL OR parent_map.id IS NOT NULL)
             AND sp.type IN (:shipType, :contactStationType)
-            AND COALESCE(rpg_system.data, \'\') != :invisibleData
-            AND sp.user_id != :nooneUserId';
+            AND COALESCE(rpg_system.data, \'\') != :invisibleData';
     }
 
     /**
@@ -831,6 +830,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'outpostRole' => SpacecraftRumpRoleEnum::OUTPOST->value,
             'sensorRole' => SpacecraftRumpRoleEnum::SENSOR->value,
             'lssType' => SpacecraftSystemTypeEnum::LSS->value,
+            'lssMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'tachyonType' => SpacecraftSystemTypeEnum::TACHYON_SCANNER->value,
             'tachyonMode' => SpacecraftSystemModeEnum::MODE_ON->value,
             'uplinkType' => SpacecraftSystemTypeEnum::UPLINK->value,

@@ -141,6 +141,7 @@
 			realtimeSocket: null,
 			realtimeReconnectTimer: 0,
 			realtimeTokenTimer: 0,
+			realtimeCoverageRefreshTimer: 0,
 			realtimeConnecting: false,
 			realtimeBackoff: 1500,
 			loadingLabel: "Lade Karte",
@@ -760,6 +761,11 @@
 			return;
 		}
 
+		if (message.type === "coverageChanged" && shouldKeepRealtimeConnection(state)) {
+			scheduleRealtimeCoverageRefresh(state);
+			return;
+		}
+
 		if (message.type === "spacecraftState" && shouldKeepRealtimeConnection(state) && message.spacecraft) {
 			const spacecraftId = Number(message.spacecraft.id);
 			if (!Number.isFinite(spacecraftId)) {
@@ -804,11 +810,10 @@
 			return;
 		}
 
-		const previousSpacecraft = getKnownSpacecraft(state, spacecraftId);
 		const fromPoint = getMovementPoint(message.from);
 		const toPoint = getMovementPoint(message.to);
-		const canAnimateFrom = previousSpacecraft !== null || message.fromVisible || message.staticVisible;
-		const canAnimateTo = message.visible || message.staticVisible;
+		const isSensorMovement = state.showSensorContacts
+			&& (Boolean(message.fromCovered) || Boolean(message.toCovered));
 
 		removeSensorSpacecraft(state, spacecraftId);
 		if (message.spacecraft.x != null && message.spacecraft.y != null) {
@@ -821,12 +826,18 @@
 		}
 
 		const updatedSpacecraft = getKnownSpacecraft(state, spacecraftId);
-		if (updatedSpacecraft && fromPoint && toPoint && canAnimateFrom && canAnimateTo) {
+		const isStaticMovement = Boolean(message.staticVisible)
+			&& updatedSpacecraft !== null
+			&& isStaticSpacecraftFilterEnabled(state, updatedSpacecraft);
+		if (updatedSpacecraft && fromPoint && toPoint && (isSensorMovement || isStaticMovement)) {
+			const animationPoints = isSensorMovement && !isStaticMovement
+				? getSensorAnimationPoints(fromPoint, toPoint, Boolean(message.fromCovered), Boolean(message.toCovered))
+				: { from: fromPoint, to: toPoint };
 			startContactAnimation(
 				state,
 				spacecraftId,
-				previousSpacecraft ? { x: previousSpacecraft.x, y: previousSpacecraft.y } : fromPoint,
-				toPoint,
+				animationPoints.from,
+				animationPoints.to,
 				updatedSpacecraft
 			);
 		}
@@ -870,6 +881,23 @@
 			window.clearTimeout(state.realtimeTokenTimer);
 			state.realtimeTokenTimer = 0;
 		}
+		if (state.realtimeCoverageRefreshTimer !== 0) {
+			window.clearTimeout(state.realtimeCoverageRefreshTimer);
+			state.realtimeCoverageRefreshTimer = 0;
+		}
+	}
+
+	function scheduleRealtimeCoverageRefresh(state) {
+		if (state.realtimeCoverageRefreshTimer !== 0) {
+			return;
+		}
+
+		state.realtimeCoverageRefreshTimer = window.setTimeout(function () {
+			state.realtimeCoverageRefreshTimer = 0;
+			if (shouldKeepRealtimeConnection(state)) {
+				enableRealtimeContacts(state);
+			}
+		}, 100);
 	}
 
 	function closeRealtimeSocket(state) {
@@ -908,6 +936,26 @@
 		}
 
 		return { x, y };
+	}
+
+	function getSensorAnimationPoints(fromPoint, toPoint, fromCovered, toCovered) {
+		const boundaryPoint = {
+			x: (fromPoint.x + toPoint.x) / 2,
+			y: (fromPoint.y + toPoint.y) / 2
+		};
+
+		return {
+			from: fromCovered ? fromPoint : boundaryPoint,
+			to: toCovered ? toPoint : boundaryPoint
+		};
+	}
+
+	function isStaticSpacecraftFilterEnabled(state, spacecraft) {
+		if (spacecraft.isOwn) {
+			return spacecraft.type === "STATION" ? state.showOwnStations : state.showOwnShips;
+		}
+
+		return spacecraft.type === "STATION" ? state.showAllianceStations : state.showAllianceShips;
 	}
 
 	function startContactAnimation(state, spacecraftId, fromPoint, toPoint, spacecraft) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\AbstractFlightConsequence;
@@ -16,7 +17,8 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
 {
     public function __construct(
         private readonly FlightSignatureCreatorInterface $flightSignatureCreator,
-        private readonly UpdateFlightDirectionInterface $updateFlightDirection
+        private readonly UpdateFlightDirectionInterface $updateFlightDirection,
+        private readonly SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
@@ -44,10 +46,14 @@ class PostFlightDirectionConsequence extends AbstractFlightConsequence implement
             );
 
             //create flight signatures
-            if (
-                ! $wrapper instanceof ShipWrapperInterface
-                || !$wrapper->get()->isTractored()
-            ) {
+            if ($wrapper instanceof ShipWrapperInterface && $wrapper->get()->isTractored()) {
+                $this->spacecraftMovementPublisher->publishMovement(
+                    $wrapper->get(),
+                    $flightDirection,
+                    $oldWaypoint,
+                    $waypoint
+                );
+            } else {
                 $this->flightSignatureCreator->createSignatures(
                     $wrapper->get(),
                     $flightDirection,

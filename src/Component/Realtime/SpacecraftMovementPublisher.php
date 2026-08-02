@@ -166,6 +166,38 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
         }
     }
 
+    #[\Override]
+    public function publishCoverageChanged(Spacecraft $spacecraft): void
+    {
+        $map = $this->normalizeMapLocation($spacecraft->getLocation());
+        if ($map === null) {
+            return;
+        }
+
+        try {
+            $payload = json_encode([
+                'type' => 'coverageChanged',
+                'generatedAt' => time(),
+                'layerId' => $map['layerId']
+            ], self::JSON_FLAGS);
+
+            $redis = $this->redisFactory->create();
+            if ($redis === null) {
+                return;
+            }
+
+            $redis->xAdd(
+                RealtimeChannels::STARMAP_SPACECRAFT_STREAM,
+                '*',
+                ['payload' => $payload],
+                10000,
+                true
+            );
+        } catch (Throwable) {
+            return;
+        }
+    }
+
     /**
      * @return null|array{layerId: int, x: int, y: int}
      */
