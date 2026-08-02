@@ -146,6 +146,11 @@ function dispatchPayload(rawPayload) {
 		return;
 	}
 
+	if (payload.type === "coverageChanged") {
+		dispatchCoverageChangedPayload(payload);
+		return;
+	}
+
 	if (payload.type !== "spacecraftMovement" || !payload.spacecraft || !payload.from || !payload.to) {
 		return;
 	}
@@ -158,6 +163,8 @@ function dispatchPayload(rawPayload) {
 		refreshCoverageIfNeeded(client).then(function () {
 			const fromVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.from);
 			const toVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.to);
+			const fromCovered = isSpacecraftSensorCoveredAtPoint(client, payload.spacecraft, payload.from);
+			const toCovered = isSpacecraftSensorCoveredAtPoint(client, payload.spacecraft, payload.to);
 			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
 			if (!fromVisible && !toVisible && !staticVisible) {
 				return;
@@ -176,12 +183,29 @@ function dispatchPayload(rawPayload) {
 				to: payload.to,
 				fromVisible,
 				toVisible,
+				fromCovered,
+				toCovered,
 				visible: toVisible,
 				staticVisible,
 				spacecraft
 			});
 		}).catch(function (error) {
 			console.error("Coverage refresh failed:", error.message);
+		});
+	}
+}
+
+function dispatchCoverageChangedPayload(payload) {
+	for (const client of clients) {
+		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+			continue;
+		}
+
+		client.coverageLoadedAt = 0;
+		sendJson(client.ws, {
+			type: "coverageChanged",
+			generatedAt: payload.generatedAt,
+			layerId: payload.layerId
 		});
 	}
 }
@@ -361,19 +385,28 @@ function isSpacecraftVisibleAtPoint(client, spacecraft, point) {
 	return isPointCovered(client.coverage, point);
 }
 
+function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
+	return spacecraft.isCloaked
+		? isPointTachyonCovered(client.coverage, point)
+		: isPointCovered(client.coverage, point);
+}
+
 function isSpacecraftStaticallyVisible(client, spacecraft) {
 	if (!spacecraft) {
 		return false;
 	}
 
-	if (Number(spacecraft.userId) === client.userId) {
+	const relationship = getSpacecraftRelationship(client, spacecraft);
+	if (relationship.isOwn) {
 		return true;
 	}
 
-	return client.canSeeAllianceShips
-		&& client.allianceId !== null
-		&& spacecraft.allianceId !== null
-		&& Number(spacecraft.allianceId) === client.allianceId;
+	const spacecraftAllianceId = spacecraft.allianceId == null ? null : Number(spacecraft.allianceId);
+	if (client.allianceId !== null && spacecraftAllianceId === client.allianceId) {
+		return client.canSeeAllianceShips;
+	}
+
+	return relationship.isFriendly;
 }
 
 function sanitizeSpacecraftForClient(client, spacecraft) {

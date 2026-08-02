@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery\MockInterface;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\FlightConsequenceInterface;
@@ -22,6 +23,8 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
     private MockInterface&UpdateFlightDirectionInterface $updateFlightDirection;
 
+    private MockInterface&SpacecraftMovementPublisherInterface $spacecraftMovementPublisher;
+
     private FlightConsequenceInterface $subject;
 
     private MockInterface&Ship $ship;
@@ -35,6 +38,7 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
     {
         $this->flightSignatureCreator = $this->mock(FlightSignatureCreatorInterface::class);
         $this->updateFlightDirection = $this->mock(UpdateFlightDirectionInterface::class);
+        $this->spacecraftMovementPublisher = $this->mock(SpacecraftMovementPublisherInterface::class);
 
         $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -46,7 +50,8 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
 
         $this->subject = new PostFlightDirectionConsequence(
             $this->flightSignatureCreator,
-            $this->updateFlightDirection
+            $this->updateFlightDirection,
+            $this->spacecraftMovementPublisher
         );
     }
 
@@ -118,6 +123,10 @@ class PostFlightDirectionConsequenceTest extends StuTestCase
             ->with($oldWaypoint, $newWaypoint, $this->wrapper)
             ->once()
             ->andReturn(DirectionEnum::TOP);
+
+        $this->spacecraftMovementPublisher->shouldReceive('publishMovement')
+            ->with($this->ship, DirectionEnum::TOP, $oldWaypoint, $newWaypoint)
+            ->once();
 
         $this->subject->trigger(
             $this->wrapper,

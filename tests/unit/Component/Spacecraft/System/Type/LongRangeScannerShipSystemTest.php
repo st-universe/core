@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -35,6 +36,9 @@ class LongRangeScannerShipSystemTest extends StuTestCase
      */
     private $trackerDeviceManager;
 
+    /** @var SpacecraftMovementPublisherInterface|MockInterface */
+    private $spacecraftMovementPublisher;
+
     private Ship $ship;
     private ShipWrapperInterface $wrapper;
 
@@ -45,10 +49,12 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
         $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
+        $this->spacecraftMovementPublisher = Mockery::mock(SpacecraftMovementPublisherInterface::class);
 
         $this->system = new LongRangeScannerShipSystem(
             $this->astroEntryLib,
-            $this->trackerDeviceManager
+            $this->trackerDeviceManager,
+            $this->spacecraftMovementPublisher
         );
     }
 
@@ -72,10 +78,13 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(SpacecraftSystemModeEnum::MODE_ON)
             ->once();
+        $this->spacecraftMovementPublisher->shouldReceive('publishCoverageChanged')
+            ->with($this->ship)
+            ->once();
         //wrapper
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($this->ship);
 
         $this->system->activate($this->wrapper, $managerMock);
@@ -92,6 +101,9 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->andReturn($systemNbs);
         $systemNbs->shouldReceive('setMode')
             ->with(SpacecraftSystemModeEnum::MODE_OFF)
+            ->once();
+        $this->spacecraftMovementPublisher->shouldReceive('publishCoverageChanged')
+            ->with($this->ship)
             ->once();
 
         //ASTRO STUFF

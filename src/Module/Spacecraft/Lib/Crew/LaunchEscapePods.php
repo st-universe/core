@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Crew;
 
 use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -26,7 +27,8 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         private readonly StarSystemMapRepositoryInterface $starSystemMapRepository,
         private readonly MapRepositoryInterface $mapRepository,
         private readonly SpacecraftFactoryInterface $spacecraftFactory,
-        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
@@ -52,6 +54,7 @@ final class LaunchEscapePods implements LaunchEscapePodsInterface
         $this->returnToSafety($pods, $spacecraft);
 
         $this->spacecraftRepository->save($pods);
+        $this->spacecraftMovementPublisher->publishState($pods);
 
         return $pods;
     }
