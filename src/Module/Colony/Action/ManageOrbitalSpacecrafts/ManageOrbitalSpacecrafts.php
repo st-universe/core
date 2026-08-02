@@ -58,6 +58,8 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
             'reactor' => request::postArray('reactor'),
             'torp' => request::postArray('torp'),
             'torp_type' => request::postArray('torp_type'),
+            'torp_ready' => request::postArray('torp_ready'),
+            'torp_reserve' => request::postArray('torp_reserve'),
         ];
 
         foreach ($spacecraftIds as $spacecraftId) {

@@ -21,13 +21,13 @@ class SpacecraftStorageTorpedoLogic
         return true;
     }
 
-    public function canStoreTorpedoType(Spacecraft $spacecraft, TorpedoType $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(Spacecraft $spacecraft, TorpedoType $torpedoType, ?InformationInterface $information = null): bool
     {
         if (
             !$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             && $spacecraft->getRump()->getTorpedoLevel() !== $torpedoType->getLevel()
         ) {
-            $information->addInformationf('Die %s kann den Torpedotyp nicht ausrüsten', $spacecraft->getName());
+            $information?->addInformationf('Die %s kann den Torpedotyp nicht ausrüsten', $spacecraft->getName());
             return false;
         }
 
@@ -35,15 +35,7 @@ class SpacecraftStorageTorpedoLogic
             !$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             && $torpedoType->getLevel() > $spacecraft->getRump()->getTorpedoLevel()
         ) {
-            $information->addInformationf("Die %s kann den Torpedotyp nicht ausrüsten", $spacecraft->getName());
-            return false;
-        }
-
-        if (
-            $spacecraft->getTorpedo() !== null
-            && $spacecraft->getTorpedo() !== $torpedoType
-        ) {
-            $information->addInformation("Es ist bereits ein anderer Torpedotyp geladen");
+            $information?->addInformationf("Die %s kann den Torpedotyp nicht ausrüsten", $spacecraft->getName());
             return false;
         }
 

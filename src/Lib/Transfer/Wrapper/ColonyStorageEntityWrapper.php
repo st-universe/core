@@ -14,6 +14,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\User;
 
@@ -182,6 +183,19 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
         return 0;
     }
 
+    /** @return array<TorpedoStorage> */
+    #[\Override]
+    public function getTorpedoStorages(): array
+    {
+        return [];
+    }
+
+    #[\Override]
+    public function getTotalTorpedoCount(): int
+    {
+        return 0;
+    }
+
     #[\Override]
     public function getMaxTorpedos(): int
     {
@@ -195,7 +209,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[\Override]
-    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, ?InformationInterface $information = null): bool
     {
         return true;
     }

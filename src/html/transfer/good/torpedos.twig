@@ -1,9 +1,14 @@
-<input type="range" name="tcount" id="torpedo_transfer_slider" min="0" max="{{ MAXIMUM }}" value="0"
-    oninput="torpedoTransferCount.innerText = this.value;">
-<span style="display: inline-block; min-width: 30px;" id="torpedoTransferCount">0</span>
-{% if COMMODITY_ID %}
-<img src="/assets/commodities/{{ COMMODITY_ID }}.png" title="Torpedokapazität"/>
-
+{% for transfer in TORPEDO_TRANSFERS %}
+{% set torpedo = transfer.torpedo %}
+<div class="torpedoTransferRow">
+    <img src="/assets/commodities/{{ torpedo.getCommodityId }}.png" title="{{ torpedo.getName }}" />
+    {{ torpedo.getName }}
+    <input class="torpedoTransferSlider" type="range" name="tcount[{{ torpedo.getId }}]"
+        min="0" max="{{ transfer.maximum }}" value="0"
+        {% if transfer.maximum == 0 %}disabled="disabled"{% endif %}
+        oninput="document.getElementById('torpedoTransferCount-{{ torpedo.getId }}').innerText = this.value;" />
+    <span class="torpedoTransferCount" id="torpedoTransferCount-{{ torpedo.getId }}">0</span>
+</div>
 {% else %}
---
-{% endif %}
+---
+{% endfor %}

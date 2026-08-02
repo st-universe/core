@@ -1,10 +1,33 @@
 <td>
-    {% set torpedo = SPACECRAFT.getTorpedo %}
-    {% set torpedoCount = SPACECRAFT.getTorpedoCount %}
-    {% if torpedo %}
-    <img src="/assets/commodities/{{ torpedo.getCommodityId }}.png" />
-    {{ torpedo.getName }}: {{ torpedoCount }}
-    {% else %}
-    <img src="/assets/buttons/torp.png" /> Torpedos: {{ torpedoCount }}
+    {% set hasFireableTorpedos = false %}
+    {% for torpedoStorage in SPACECRAFT.getTorpedoStorages %}
+    {% set storedTorpedo = torpedoStorage.getTorpedo %}
+    {% if storedTorpedo.getLevel == SPACECRAFT.getRump.getTorpedoLevel and torpedoStorage.getStorage.getAmount > 0 %}
+    {% if hasFireableTorpedos %}<br />{% endif %}
+    <label class="torpedoSelectionLabel">
+        <input class="torpedoSelection" type="radio" name="selected-torpedo-{{ SPACECRAFT.getId }}"
+            {% if torpedoStorage.isActive %}checked="checked"{% endif %}
+            onclick="actionToInnerContent('B_SELECT_TORPEDO', 'id={{ SPACECRAFT.getId }}&torpedo_type={{ storedTorpedo.getId }}&sstr={{ SESSIONSTRING }}');" />
+        <img src="/assets/commodities/{{ storedTorpedo.getCommodityId }}.png" />
+        {{ storedTorpedo.getName }}: {{ torpedoStorage.getStorage.getAmount }}
+    </label>
+    {% set hasFireableTorpedos = true %}
     {% endif %}
+    {% endfor %}
+    {% if not hasFireableTorpedos %}
+    <img src="/assets/buttons/torp.png" /> keine Torpedos geladen
+    {% endif %}
+    {% set hasTransportTorpedos = false %}
+    {% for torpedoStorage in SPACECRAFT.getTorpedoStorages %}
+    {% set storedTorpedo = torpedoStorage.getTorpedo %}
+    {% if storedTorpedo.getLevel != SPACECRAFT.getRump.getTorpedoLevel %}
+    {% if not hasTransportTorpedos %}
+    <br />Im Transport:<br />
+    {% endif %}
+    <img src="/assets/commodities/{{ storedTorpedo.getCommodityId }}.png" />
+    {{ storedTorpedo.getName }}: {{ torpedoStorage.getStorage.getAmount }}
+    <br />
+    {% set hasTransportTorpedos = true %}
+    {% endif %}
+    {% endfor %}
 </td>

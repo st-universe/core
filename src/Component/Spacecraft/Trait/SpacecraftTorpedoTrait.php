@@ -4,6 +4,7 @@ namespace Stu\Component\Spacecraft\Trait;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TorpedoStorageShipSystem;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 
 trait SpacecraftTorpedoTrait
@@ -29,6 +30,15 @@ trait SpacecraftTorpedoTrait
         }
 
         return $torpedoStorage->getTorpedo();
+    }
+
+    public function getTotalTorpedoCount(): int
+    {
+        return array_reduce(
+            $this->getThis()->getTorpedoStorages()->toArray(),
+            fn (int $count, TorpedoStorage $torpedoStorage): int => $count + $torpedoStorage->getStorage()->getAmount(),
+            0
+        );
     }
 
     public function getMaxTorpedos(): int

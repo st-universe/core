@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
@@ -71,20 +72,29 @@ class ShipTorpedoManagerTest extends StuTestCase
         $storage = $this->mock(Storage::class);
         $user = $this->mock(User::class);
         $commodity = $this->mock(Commodity::class);
+        $rump = $this->mock(SpacecraftRump::class);
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
-            ->withNoArgs()
+        $this->ship->shouldReceive('getTorpedoStorageForType')
+            ->with($this->torpedoType)
             ->once()
             ->andReturn(null);
         $this->ship->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $this->ship->shouldReceive('setTorpedoStorage')
+        $this->ship->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rump);
+        $this->ship->shouldReceive('getTorpedoStorage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+        $this->ship->shouldReceive('addTorpedoStorage')
             ->with($torpedoStorage)
             ->once();
 
@@ -92,6 +102,14 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($commodity);
+        $this->torpedoType->shouldReceive('getLevel')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(4);
+        $rump->shouldReceive('getTorpedoLevel')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(4);
 
         $this->torpedoStorageRepository->shouldReceive('prototype')
             ->withNoArgs()
@@ -105,6 +123,9 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->once();
         $torpedoStorage->shouldReceive('setTorpedo')
             ->with($this->torpedoType)
+            ->once();
+        $torpedoStorage->shouldReceive('setActive')
+            ->with(true)
             ->once();
         $torpedoStorage->shouldReceive('setStorage')
             ->with($storage)
@@ -141,8 +162,8 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
-            ->withNoArgs()
+        $this->ship->shouldReceive('getTorpedoStorageForType')
+            ->with($this->torpedoType)
             ->once()
             ->andReturn($torpedoStorage);
 
@@ -152,7 +173,7 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->andReturn(42);
 
         $this->clearTorpedo->shouldReceive('clearTorpedoStorage')
-            ->with($this->wrapper)
+            ->with($this->wrapper, $torpedoStorage)
             ->once();
 
         $this->subject->changeTorpedo($this->wrapper, -42, $this->torpedoType);
@@ -167,8 +188,8 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
-            ->withNoArgs()
+        $this->ship->shouldReceive('getTorpedoStorageForType')
+            ->with($this->torpedoType)
             ->once()
             ->andReturn($torpedoStorage);
 

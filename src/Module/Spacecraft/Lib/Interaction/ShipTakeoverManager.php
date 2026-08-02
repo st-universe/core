@@ -320,8 +320,7 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         }
 
         // change torpedo storage owner
-        $torpedoStorage = $ship->getTorpedoStorage();
-        if ($torpedoStorage !== null) {
+        foreach ($ship->getTorpedoStorages() as $torpedoStorage) {
             $torpedoStorage->getStorage()->setUser($user);
             $this->storageRepository->save($torpedoStorage->getStorage());
         }

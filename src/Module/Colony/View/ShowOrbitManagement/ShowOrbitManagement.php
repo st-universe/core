@@ -58,6 +58,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $game->setViewTemplate('html/colony/menu/orbitalmanagement.twig');
 
         $game->setTemplateVar('MANAGER_ID', $colony->getId());
+        $game->setTemplateVar('MANAGER_STORAGE', $colony->getStorage());
         $game->setTemplateVar('SPACECRAFT_GROUPS', $spacecraftGroups);
     }
 }

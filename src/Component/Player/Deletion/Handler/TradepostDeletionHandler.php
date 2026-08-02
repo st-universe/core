@@ -66,8 +66,8 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $station->getCondition()->setDisabled(true);
 
             //change torpedo owner
-            if ($station->getTorpedoStorage() !== null) {
-                $storage = $station->getTorpedoStorage()->getStorage();
+            foreach ($station->getTorpedoStorages() as $torpedoStorage) {
+                $storage = $torpedoStorage->getStorage();
                 $storage->setUser($fallbackUser);
                 $this->storageRepository->save($storage);
             }

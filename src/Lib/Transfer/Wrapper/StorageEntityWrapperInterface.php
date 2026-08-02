@@ -7,6 +7,7 @@ namespace Stu\Lib\Transfer\Wrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\User;
 
@@ -37,8 +38,11 @@ interface StorageEntityWrapperInterface
     // TORPEDOS
     public function getTorpedo(): ?TorpedoType;
     public function getTorpedoCount(): int;
+    /** @return array<TorpedoStorage> */
+    public function getTorpedoStorages(): array;
+    public function getTotalTorpedoCount(): int;
     public function getMaxTorpedos(): int;
     public function canTransferTorpedos(InformationInterface $information): bool;
-    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool;
+    public function canStoreTorpedoType(TorpedoType $torpedoType, ?InformationInterface $information = null): bool;
     public function changeTorpedo(int $changeAmount, TorpedoType $type): void;
 }

@@ -60,6 +60,7 @@ use Stu\Module\Spacecraft\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Spacecraft\Action\SetLSSMode\SetLSSMode;
 use Stu\Module\Spacecraft\Action\SetLSSModeBorder\SetLSSModeBorder;
 use Stu\Module\Spacecraft\Action\SetRpgModuleInvisibility\SetRpgModuleInvisibility;
+use Stu\Module\Spacecraft\Action\SelectTorpedo\SelectTorpedo;
 use Stu\Module\Spacecraft\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Spacecraft\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Spacecraft\Action\SplitReactorOutput\SplitReactorOutput;
@@ -442,6 +443,7 @@ return [
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         SetRpgModuleInvisibility::ACTION_IDENTIFIER => autowire(SetRpgModuleInvisibility::class),
+        SelectTorpedo::ACTION_IDENTIFIER => autowire(SelectTorpedo::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
         SetLSSMode::ACTION_IDENTIFIER => autowire(SetLSSMode::class),
         AddWormholeRestriction::ACTION_IDENTIFIER => autowire(AddWormholeRestriction::class),

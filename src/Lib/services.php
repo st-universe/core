@@ -54,6 +54,7 @@ use Stu\Lib\SpacecraftManagement\Manager\ManageBattery;
 use Stu\Lib\SpacecraftManagement\Manager\ManageCrew;
 use Stu\Lib\SpacecraftManagement\Manager\ManageReactor;
 use Stu\Lib\SpacecraftManagement\Manager\ManageTorpedo;
+use Stu\Lib\SpacecraftManagement\Manager\ManageTorpedoReserves;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\Transfer\CommodityTransfer;
@@ -112,6 +113,7 @@ return [
             autowire(ManageCrew::class),
             autowire(ManageReactor::class),
             autowire(ManageTorpedo::class),
+            autowire(ManageTorpedoReserves::class),
         ]
     ),
     BorderDataProviderFactoryInterface::class => autowire(BorderDataProviderFactory::class),
