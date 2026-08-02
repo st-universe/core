@@ -18,6 +18,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 
 final class StoreShuttle implements ActionControllerInterface
@@ -81,6 +82,13 @@ final class StoreShuttle implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
             ->check($game->getInfo())) {
+            return;
+        }
+
+        if ($shuttle instanceof Ship && $shuttle->isTractored()) {
+            $game->getInfo()->addInformation(
+                _('Das Shuttle kann nicht eingesammelt werden, solange es von einem Traktorstrahl festgehalten wird')
+            );
             return;
         }
 
