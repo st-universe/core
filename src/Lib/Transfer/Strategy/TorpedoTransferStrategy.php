@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Strategy;
 
 use request;
-use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoType;
 
 class TorpedoTransferStrategy implements TransferStrategyInterface
 {
@@ -21,23 +21,46 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         GameControllerInterface $game
     ): void {
 
-        if ($target instanceof Colony) {
-            throw new RuntimeException('this should not happen');
+        $torpedoSource = $isUnload ? $source : $target;
+        $torpedoDestination = $isUnload ? $target : $source;
+        $freeCapacity = max(0, $torpedoDestination->getMaxTorpedos() - $torpedoDestination->getTotalTorpedoCount());
+
+        $transfers = [];
+        foreach ($torpedoSource->getTorpedoStorages() as $torpedoStorage) {
+            $torpedo = $torpedoStorage->getTorpedo();
+            $amount = $torpedoStorage->getStorage()->getAmount();
+            $maximum = min($amount, $freeCapacity);
+
+            if (
+                $amount < 1
+                || !$this->canDisplayTorpedoType($torpedoDestination, $torpedo)
+            ) {
+                continue;
+            }
+
+            $transfers[] = [
+                'torpedo' => $torpedo,
+                'maximum' => $maximum
+            ];
         }
 
-        if ($isUnload) {
-            $max = min(
-                $target->getMaxTorpedos(),
-                $source->getTorpedoCount()
-            );
-            $commodityId = $source->getTorpedo() === null ? null : $source->getTorpedo()->getCommodityId();
-        } else {
-            $max = $target->getTorpedoCount();
-            $commodityId = $target->getTorpedo() === null ? null : $target->getTorpedo()->getCommodityId();
+        $game->setTemplateVar('TORPEDO_TRANSFERS', $transfers);
+    }
+
+    private function canDisplayTorpedoType(
+        StorageEntityWrapperInterface $destination,
+        TorpedoType $torpedoType
+    ): bool {
+        $spacecraft = $destination->get();
+        if (
+            $spacecraft instanceof Spacecraft
+            && !$spacecraft->isTorpedoStorageHealthy()
+            && $spacecraft->getRump()->getTorpedoLevel() !== $torpedoType->getLevel()
+        ) {
+            return false;
         }
 
-        $game->setTemplateVar('MAXIMUM', $max);
-        $game->setTemplateVar('COMMODITY_ID', $commodityId);
+        return $destination->canStoreTorpedoType($torpedoType);
     }
 
     #[\Override]
@@ -48,46 +71,58 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         InformationInterface $information
     ): void {
 
-        $torpedoType = $isUnload ? $source->getTorpedo() : $target->getTorpedo();
-        if ($torpedoType === null) {
-            throw new RuntimeException('this should not happen');
-        }
-
         if (!$source->canTransferTorpedos($information)) {
             return;
         }
 
         $destination = $isUnload ? $target : $source;
-        if (!$destination->canStoreTorpedoType($torpedoType, $information)) {
-            return;
+        $torpedoSource = $isUnload ? $source : $target;
+        $storagesByTorpedoType = [];
+        foreach ($torpedoSource->getTorpedoStorages() as $torpedoStorage) {
+            $storagesByTorpedoType[$torpedoStorage->getTorpedo()->getId()] = $torpedoStorage;
         }
 
-        //TODO use energy to transfer
-        $requestedTransferCount = request::postInt('tcount');
+        $wasTransferred = false;
+        foreach (request::postArray('tcount') as $torpedoTypeId => $requestedTransferCount) {
+            $torpedoStorage = $storagesByTorpedoType[(int) $torpedoTypeId] ?? null;
+            if ($torpedoStorage === null) {
+                continue;
+            }
 
-        $amount = min(
-            $requestedTransferCount,
-            $isUnload ? $source->getTorpedoCount() : $target->getTorpedoCount(),
-            $isUnload ? $target->getMaxTorpedos() - $target->getTorpedoCount() : $source->getMaxTorpedos() - $source->getTorpedoCount()
-        );
+            $torpedoType = $torpedoStorage->getTorpedo();
+            if (!$destination->canStoreTorpedoType($torpedoType, $information)) {
+                continue;
+            }
 
-        if ($amount < 1) {
+            $amount = min(
+                max(0, (int) $requestedTransferCount),
+                $torpedoStorage->getStorage()->getAmount(),
+                $destination->getMaxTorpedos() - $destination->getTotalTorpedoCount()
+            );
+            if ($amount < 1) {
+                continue;
+            }
+
+            //TODO use energy to transfer
+            $target->changeTorpedo($isUnload ? $amount : -$amount, $torpedoType);
+            $source->changeTorpedo($isUnload ? -$amount : $amount, $torpedoType);
+
+            $information->addInformation(
+                sprintf(
+                    'Die %s hat in Sektor %s %d %s %s %s transferiert',
+                    $source->getName(),
+                    $source->getLocation()->getSectorString(),
+                    $amount,
+                    $torpedoType->getName(),
+                    $isUnload ? 'zur' : 'von der',
+                    $target->getName()
+                ),
+            );
+            $wasTransferred = true;
+        }
+
+        if (!$wasTransferred) {
             $information->addInformation('Es konnten keine Torpedos transferiert werden');
-            return;
         }
-
-        $target->changeTorpedo($isUnload ? $amount : -$amount, $torpedoType);
-        $source->changeTorpedo($isUnload ? -$amount : $amount, $torpedoType);
-
-        $information->addInformation(
-            sprintf(
-                'Die %s hat in Sektor %s %d Torpedos %s %s transferiert',
-                $source->getName(),
-                $source->getLocation()->getSectorString(),
-                $amount,
-                $isUnload ? 'zur' : 'von der',
-                $target->getName()
-            ),
-        );
     }
 }

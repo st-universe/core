@@ -24,11 +24,17 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
     {
         $spacecraft = $wrapper->get();
 
-        $torpedoStorage = $spacecraft->getTorpedoStorage();
+        $torpedoStorage = $type === null
+            ? $spacecraft->getTorpedoStorage()
+            : $spacecraft->getTorpedoStorageForType($type);
         if ($torpedoStorage === null) {
             $this->setupNewTorpedo($spacecraft, $changeAmount, $type);
-        } elseif ($torpedoStorage->getStorage()->getAmount() + $changeAmount === 0) {
-            $this->clearTorpedo->clearTorpedoStorage($wrapper);
+            return;
+        }
+
+        $type ??= $torpedoStorage->getTorpedo();
+        if ($torpedoStorage->getStorage()->getAmount() + $changeAmount === 0) {
+            $this->clearTorpedo->clearTorpedoStorage($wrapper, $torpedoStorage);
         } else {
             $storage = $torpedoStorage->getStorage();
             $storage->setAmount($storage->getAmount() + $changeAmount);
@@ -50,6 +56,10 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $torpedoStorage = $this->torpedoStorageRepository->prototype();
         $torpedoStorage->setSpacecraft($spacecraft);
         $torpedoStorage->setTorpedo($type);
+        $torpedoStorage->setActive(
+            $type->getLevel() === $spacecraft->getRump()->getTorpedoLevel()
+            && $spacecraft->getTorpedoStorage() === null
+        );
         $this->torpedoStorageRepository->save($torpedoStorage);
 
         $storage = $this->storageRepository->prototype();
@@ -61,6 +71,6 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
         $torpedoStorage->setStorage($storage);
 
-        $spacecraft->setTorpedoStorage($torpedoStorage);
+        $spacecraft->addTorpedoStorage($torpedoStorage);
     }
 }

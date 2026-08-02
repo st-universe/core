@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Torpedo;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -53,10 +54,10 @@ class ClearTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
+        $this->ship->shouldReceive('getTorpedoStorages')
             ->withNoArgs()
             ->once()
-            ->andReturn(null);
+            ->andReturn(new ArrayCollection());
 
         $this->subject->clearTorpedoStorage($this->wrapper);
     }
@@ -70,14 +71,19 @@ class ClearTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
+        $this->ship->shouldReceive('getTorpedoStorages')
             ->withNoArgs()
             ->once()
-            ->andReturn($torpedoStorage);
-        $this->ship->shouldReceive('setTorpedoStorage')
-            ->with(null)
+            ->andReturn(new ArrayCollection([$torpedoStorage]));
+        $this->ship->shouldReceive('removeTorpedoStorage')
+            ->with($torpedoStorage)
             ->once();
         $this->ship->shouldReceive('getTorpedoState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $torpedoStorage->shouldReceive('isActive')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -106,22 +112,34 @@ class ClearTorpedoTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getTorpedoStorage')
+        $this->ship->shouldReceive('getTorpedoStorages')
             ->withNoArgs()
             ->once()
-            ->andReturn($torpedoStorage);
-        $this->ship->shouldReceive('setTorpedoStorage')
-            ->with(null)
+            ->andReturn(new ArrayCollection([$torpedoStorage]));
+        $this->ship->shouldReceive('removeTorpedoStorage')
+            ->with($torpedoStorage)
             ->once();
         $this->ship->shouldReceive('getTorpedoState')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
+        $this->ship->shouldReceive('getFireableTorpedoStorages')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+        $this->ship->shouldReceive('getTorpedoCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
 
         $torpedoStorage->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
+        $torpedoStorage->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $this->storageRepository->shouldReceive('delete')
             ->with($storage)
@@ -135,5 +153,52 @@ class ClearTorpedoTest extends StuTestCase
             ->once();
 
         $this->subject->clearTorpedoStorage($this->wrapper);
+    }
+
+    public function testClearingActiveTorpedoSelectsAnotherFireableType(): void
+    {
+        $activeStorage = $this->mock(TorpedoStorage::class);
+        $replacementStorage = $this->mock(TorpedoStorage::class);
+        $storage = $this->mock(Storage::class);
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->ship->shouldReceive('removeTorpedoStorage')
+            ->with($activeStorage)
+            ->once();
+        $this->ship->shouldReceive('getFireableTorpedoStorages')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([$replacementStorage]);
+        $this->ship->shouldReceive('getTorpedoState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $activeStorage->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $activeStorage->shouldReceive('getStorage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($storage);
+        $replacementStorage->shouldReceive('setActive')
+            ->with(true)
+            ->once();
+
+        $this->storageRepository->shouldReceive('delete')
+            ->with($storage)
+            ->once();
+        $this->torpedoStorageRepository->shouldReceive('delete')
+            ->with($activeStorage)
+            ->once();
+        $this->torpedoStorageRepository->shouldReceive('save')
+            ->with($replacementStorage)
+            ->once();
+
+        $this->subject->clearTorpedoStorage($this->wrapper, $activeStorage);
     }
 }

@@ -10,6 +10,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\User;
 
@@ -125,6 +126,19 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
         return $this->spacecraft->getTorpedoCount();
     }
 
+    /** @return array<TorpedoStorage> */
+    #[\Override]
+    public function getTorpedoStorages(): array
+    {
+        return $this->spacecraft->getTorpedoStorages()->toArray();
+    }
+
+    #[\Override]
+    public function getTotalTorpedoCount(): int
+    {
+        return $this->spacecraft->getTotalTorpedoCount();
+    }
+
     #[\Override]
     public function getMaxTorpedos(): int
     {
@@ -138,7 +152,7 @@ class SpacecraftStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[\Override]
-    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, ?InformationInterface $information = null): bool
     {
         return $this->torpedoLogic->canStoreTorpedoType($this->spacecraft, $torpedoType, $information);
     }

@@ -100,9 +100,8 @@ final class LandShip implements ActionControllerInterface
     private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, Colony $colony, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
-        $torpedoStorage = $ship->getTorpedoStorage();
-
-        if ($torpedoStorage === null) {
+        $torpedoStorages = $ship->getTorpedoStorages();
+        if ($torpedoStorages->isEmpty()) {
             return;
         }
 
@@ -113,21 +112,27 @@ final class LandShip implements ActionControllerInterface
             return;
         }
 
-        $amount = $torpedoStorage->getStorage()->getAmount();
-        if ($maxStorage - $colony->getStorageSum() < $amount) {
-            $amount = $maxStorage - $colony->getStorageSum();
+        foreach ($torpedoStorages as $torpedoStorage) {
+            $amount = $torpedoStorage->getStorage()->getAmount();
+            if ($maxStorage - $colony->getStorageSum() < $amount) {
+                $amount = $maxStorage - $colony->getStorageSum();
+            }
+
+            if ($amount < 1) {
+                break;
+            }
+
+            $commodity = $torpedoStorage->getStorage()->getCommodity();
+            $this->storageManager->upperStorage(
+                $colony,
+                $commodity,
+                $amount
+            );
+
+            $game->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
         }
 
-        $commodity = $torpedoStorage->getStorage()->getCommodity();
-        $this->storageManager->upperStorage(
-            $colony,
-            $commodity,
-            $amount
-        );
-
         $this->clearTorpedo->clearTorpedoStorage($wrapper);
-
-        $game->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
     #[\Override]

@@ -65,6 +65,7 @@ final class ShowShipManagement implements ViewControllerInterface
         $game->setViewTemplate('html/station/shipManagement.twig');
 
         $game->setTemplateVar('MANAGER_ID', $station->getId());
+        $game->setTemplateVar('MANAGER_STORAGE', $station->getStorage());
         $game->setTemplateVar('SPACECRAFT_GROUPS', $groups);
     }
 }

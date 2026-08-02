@@ -53,6 +53,9 @@ class ManageTorpedoTest extends StuTestCase
             ->andReturn(1111);
         $this->npcLogTradeMessageLogger->shouldReceive('logIfNpcInvolved')
             ->zeroOrMoreTimes();
+        $this->ship->shouldReceive('getTotalTorpedoCount')
+            ->zeroOrMoreTimes()
+            ->andReturn(0);
 
         $this->subject = new ManageTorpedo(
             $this->shipTorpedoManager,
@@ -443,7 +446,7 @@ class ManageTorpedoTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getMaxTorpedos')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(42);
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
@@ -533,7 +536,7 @@ class ManageTorpedoTest extends StuTestCase
             ->andReturn($this->shipId);
         $this->ship->shouldReceive('getMaxTorpedos')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(42);
         $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()

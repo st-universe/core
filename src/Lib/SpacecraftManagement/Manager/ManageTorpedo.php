@@ -160,6 +160,15 @@ class ManageTorpedo implements ManagerInterface
             $load = $storageElement->getAmount();
         }
 
+        $load = min(
+            $load,
+            $ship->getMaxTorpedos() - $ship->getTotalTorpedoCount()
+        );
+
+        if ($load < 1) {
+            return [];
+        }
+
         $managerProvider->lowerStorage(
             $torpedoType->getCommodity(),
             $load

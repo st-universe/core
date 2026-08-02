@@ -591,9 +591,9 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->target->shouldReceive('getStorage')
             ->withNoArgs()
             ->andReturn(new ArrayCollection([$storage, $boundStorage]));
-        $this->target->shouldReceive('getTorpedoStorage')
+        $this->target->shouldReceive('getTorpedoStorages')
             ->withNoArgs()
-            ->andReturn($torpedoStorage);
+            ->andReturn(new ArrayCollection([$torpedoStorage]));
         $this->target->shouldReceive('setUser')
             ->with($user)
             ->once();

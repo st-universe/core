@@ -62,9 +62,9 @@ class TransferInformation
         return $this->source instanceof Spacecraft
             && $this->target instanceof Spacecraft
             && $this->source->isTorpedoStorageHealthy()
-            && (!$this->isUnload() || $this->source->getTorpedoCount() > 0)
+            && (!$this->isUnload() || $this->source->getTotalTorpedoCount() > 0)
             && ($this->target->hasTorpedo() || $this->target->isTorpedoStorageHealthy())
-            && ($this->isUnload() || $this->target->getTorpedoCount() > 0);
+            && ($this->isUnload() || $this->target->getTotalTorpedoCount() > 0);
     }
 
     public function isFriend(): bool

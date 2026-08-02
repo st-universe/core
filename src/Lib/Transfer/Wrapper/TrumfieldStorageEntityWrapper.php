@@ -8,6 +8,7 @@ use BadMethodCallException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Orm\Entity\Location;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\Trumfield;
 use Stu\Orm\Entity\User;
@@ -112,6 +113,19 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
         return $this->getMaxTorpedos();
     }
 
+    /** @return array<TorpedoStorage> */
+    #[\Override]
+    public function getTorpedoStorages(): array
+    {
+        return [];
+    }
+
+    #[\Override]
+    public function getTotalTorpedoCount(): int
+    {
+        return $this->getTorpedoCount();
+    }
+
     #[\Override]
     public function getMaxTorpedos(): int
     {
@@ -125,7 +139,7 @@ class TrumfieldStorageEntityWrapper implements StorageEntityWrapperInterface
     }
 
     #[\Override]
-    public function canStoreTorpedoType(TorpedoType $torpedoType, InformationInterface $information): bool
+    public function canStoreTorpedoType(TorpedoType $torpedoType, ?InformationInterface $information = null): bool
     {
         return false;
     }

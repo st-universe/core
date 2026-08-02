@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Torpedo;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 
@@ -19,23 +20,34 @@ final class ClearTorpedo implements ClearTorpedoInterface
     ) {}
 
     #[\Override]
-    public function clearTorpedoStorage(SpacecraftWrapperInterface $wrapper): void
+    public function clearTorpedoStorage(SpacecraftWrapperInterface $wrapper, ?TorpedoStorage $torpedoStorage = null): void
     {
         $ship = $wrapper->get();
-        $torpedoStorage = $ship->getTorpedoStorage();
+        $torpedoStorages = $torpedoStorage === null
+            ? $ship->getTorpedoStorages()->toArray()
+            : [$torpedoStorage];
 
-        if ($torpedoStorage === null) {
+        if ($torpedoStorages === []) {
             return;
         }
 
-        $storage = $torpedoStorage->getStorage();
+        $replaceActiveTorpedo = false;
+        foreach ($torpedoStorages as $storageToClear) {
+            $replaceActiveTorpedo = $replaceActiveTorpedo || $storageToClear->isActive();
+            $ship->removeTorpedoStorage($storageToClear);
+            $this->storageRepository->delete($storageToClear->getStorage());
+            $this->torpedoStorageRepository->delete($storageToClear);
+        }
 
-        $ship->setTorpedoStorage(null);
+        if ($replaceActiveTorpedo) {
+            $replacement = $ship->getFireableTorpedoStorages()[0] ?? null;
+            if ($replacement !== null) {
+                $replacement->setActive(true);
+                $this->torpedoStorageRepository->save($replacement);
+            }
+        }
 
-        $this->storageRepository->delete($storage);
-        $this->torpedoStorageRepository->delete($torpedoStorage);
-
-        if ($ship->getTorpedoState()) {
+        if ($ship->getTorpedoState() && $ship->getTorpedoCount() === 0) {
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::TORPEDO, true);
         }
     }

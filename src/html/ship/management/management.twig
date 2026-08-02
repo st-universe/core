@@ -75,30 +75,40 @@
     <td>
       {% if ship.getMaxTorpedos > 0 %}
       <div>
-        {% if ship.getTorpedoCount %}
-        <img class="center" src="assets/commodities/{{ ship.getTorpedo.getCommodityId }}.png"
-          title="{{ ship.getTorpedo.getName }}" />
-        {% else %}
-        <img class="center" onclick="this.up('div').down('input').value={{ ship.getMaxTorpedos }}"
-          src="assets/buttons/torp.png" title="Torpedos" />
-        {% endif %}
-        {% if wrapper.isSelectable %}
-        <input type="text" size="3" name="torp[{{ shipId }}]" value="{{ ship.getTorpedoCount }}" />
-        <span>Max.</span> {{ ship.getMaxTorpedos }}
-        {% else %}
-        <input type="text" size="3" name="torp[{{ shipId }}]" />
-        {% endif %}
-        {% if not ship.getTorpedoCount %}
+        <span>Geladen:</span> {{ ship.getTotalTorpedoCount }} / Max. {{ ship.getMaxTorpedos }}
+      </div>
+      <div>
+        <span>Ladbar:</span>
         {% for data in wrapper.getPossibleTorpedoTypes %}
+        {% if data.getLevel == ship.getRump.getTorpedoLevel %}
+        {% set torpedoStorage = ship.getTorpedoStorageForType(data) %}
+        <div>
         <img class="center" src="assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getName }}" />
-        {% if loop.first %}
-        <input type="radio" name="torp_type[{{ shipId }}]" checked="true" value="{{ data.getId }}" />
-        {% else %}
-        <input type="radio" name="torp_type[{{ shipId }}]" value="{{ data.getId }}" />
+        <input type="text" size="3" name="torp_ready[{{ shipId }}][{{ data.getId }}]"
+          value="{{ torpedoStorage ? torpedoStorage.getStorage.getAmount : 0 }}" />
+        </div>
         {% endif %}
         {% endfor %}
-        {% endif %}
       </div>
+      {% if ship.isTorpedoStorageHealthy %}
+      <div>
+        <span>Transportierbar:</span>
+        {% for data in wrapper.getPossibleTorpedoTypes %}
+        {% set torpedoStorage = ship.getTorpedoStorageForType(data) %}
+        {% set providerStorage = MANAGER_STORAGE.get(data.getCommodityId) %}
+        {% if data.getLevel != ship.getRump.getTorpedoLevel and (torpedoStorage or (providerStorage and providerStorage.getAmount > 0)) %}
+        <div>
+          <img class="center" src="assets/commodities/{{ data.getCommodityId }}.png" title="{{ data.getName }}" />
+          <input type="text" size="3" name="torp_reserve[{{ shipId }}][{{ data.getId }}]"
+            value="{{ torpedoStorage ? torpedoStorage.getStorage.getAmount : 0 }}" />
+          {% if providerStorage and providerStorage.getAmount > 0 %}
+          <span>({{ providerStorage.getAmount }} im Lager)</span>
+          {% endif %}
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
       {% endif %}
     </td>
     <td>

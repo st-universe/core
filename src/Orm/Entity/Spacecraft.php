@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use BadMethodCallException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -141,8 +140,11 @@ abstract class Spacecraft implements
     #[OrderBy(['crew' => 'ASC'])]
     private Collection $crew;
 
-    #[OneToOne(targetEntity: TorpedoStorage::class, mappedBy: 'spacecraft')]
-    private ?TorpedoStorage $torpedoStorage = null;
+    /**
+     * @var ArrayCollection<int, TorpedoStorage>
+     */
+    #[OneToMany(targetEntity: TorpedoStorage::class, mappedBy: 'spacecraft', indexBy: 'id')]
+    private Collection $torpedoStorages;
 
     /**
      * @var ArrayCollection<int, SpacecraftSystem>
@@ -181,6 +183,7 @@ abstract class Spacecraft implements
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
+        $this->torpedoStorages = new ArrayCollection();
     }
 
     abstract public function getType(): SpacecraftTypeEnum;
@@ -301,12 +304,58 @@ abstract class Spacecraft implements
 
     public function getTorpedoStorage(): ?TorpedoStorage
     {
-        return $this->torpedoStorage;
+        foreach ($this->torpedoStorages as $torpedoStorage) {
+            if (
+                $torpedoStorage->isActive()
+                && $torpedoStorage->getTorpedo()->getLevel() === $this->rump->getTorpedoLevel()
+            ) {
+                return $torpedoStorage;
+            }
+        }
+
+        return null;
     }
 
-    public function setTorpedoStorage(?TorpedoStorage $torpedoStorage): Spacecraft
+    /** @return Collection<int, TorpedoStorage> */
+    public function getTorpedoStorages(): Collection
     {
-        $this->torpedoStorage = $torpedoStorage;
+        return $this->torpedoStorages;
+    }
+
+    /** @return array<TorpedoStorage> */
+    public function getFireableTorpedoStorages(): array
+    {
+        return $this->torpedoStorages
+            ->filter(
+                fn (TorpedoStorage $torpedoStorage): bool =>
+                $torpedoStorage->getTorpedo()->getLevel() === $this->rump->getTorpedoLevel()
+                && $torpedoStorage->getStorage()->getAmount() > 0
+            )
+            ->toArray();
+    }
+
+    public function getTorpedoStorageForType(TorpedoType $torpedoType): ?TorpedoStorage
+    {
+        foreach ($this->torpedoStorages as $torpedoStorage) {
+            if ($torpedoStorage->getTorpedo() === $torpedoType) {
+                return $torpedoStorage;
+            }
+        }
+
+        return null;
+    }
+
+    public function addTorpedoStorage(TorpedoStorage $torpedoStorage): Spacecraft
+    {
+        $this->torpedoStorages->add($torpedoStorage);
+
+        return $this;
+    }
+
+    public function removeTorpedoStorage(TorpedoStorage $torpedoStorage): Spacecraft
+    {
+        $this->torpedoStorages->removeElement($torpedoStorage);
+
         return $this;
     }
 

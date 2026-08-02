@@ -13,12 +13,14 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use LogicException;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\TorpedoStorageRepository;
 
 #[Table(name: 'stu_torpedo_storage')]
 #[Index(name: 'torpedo_storage_spacecraft_idx', columns: ['spacecraft_id'])]
+#[UniqueConstraint(name: 'torpedo_storage_type_unique_idx', columns: ['spacecraft_id', 'torpedo_type'])]
 #[Entity(repositoryClass: TorpedoStorageRepository::class)]
 #[TruncateOnGameReset]
 class TorpedoStorage
@@ -34,7 +36,10 @@ class TorpedoStorage
     #[Column(type: 'integer', length: 3)]
     private int $torpedo_type;
 
-    #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorage')]
+    #[Column(type: 'boolean')]
+    private bool $is_active = false;
+
+    #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorages')]
     #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
@@ -69,6 +74,18 @@ class TorpedoStorage
     public function setTorpedo(TorpedoType $torpedoType): TorpedoStorage
     {
         $this->torpedo = $torpedoType;
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->is_active;
+    }
+
+    public function setActive(bool $isActive): TorpedoStorage
+    {
+        $this->is_active = $isActive;
+
         return $this;
     }
 
