@@ -4,11 +4,26 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Station;
 
 class AttackedBattleParty extends AbstractBattleParty
 {
+    #[\Override]
+    public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
+    {
+        $target = $this->leader->get();
+        $isOrphanedTradepost = $target instanceof Station
+            && $target->getTradePost()?->getUserId() === UserConstants::USER_NOONE;
+
+        return parent::getActiveMembers(
+            $canFire,
+            $filterDisabled && ($canFire || !$isOrphanedTradepost)
+        );
+    }
+
     #[\Override]
     protected function initMembers(): Collection
     {
