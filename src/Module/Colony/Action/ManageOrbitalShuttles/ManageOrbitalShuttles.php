@@ -67,10 +67,6 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
         $shuttlecount = request::postArrayFatal('shuttlecount');
 
-        if (array_sum($shuttlecount) > $ship->getRump()->getShuttleSlots()) {
-            return;
-        }
-
         $shuttles = [];
 
         foreach ($ship->getStorage() as $stor) {
@@ -96,35 +92,46 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
         }
 
-        $informations = new InformationWrapper();
-
+        $requestedCounts = [];
         foreach ($commodities as $commodityId) {
             if (!is_numeric($commodityId)) {
                 return;
             }
 
-            $commodity = $this->commodityRepository->find((int)$commodityId);
-            if ($commodity === null) {
+            $commodityId = (int) $commodityId;
+            if (array_key_exists($commodityId, $requestedCounts) || !isset($shuttles[$commodityId])) {
                 return;
             }
 
-            $commodityId = $commodity->getId();
-
-            if (!$commodity->isShuttle()) {
+            $wantedCount = filter_var($shuttlecount[$commodityId] ?? null, FILTER_VALIDATE_INT);
+            if ($wantedCount === false || $wantedCount < 0 || $wantedCount > $shuttles[$commodityId]->getMaxUnits()) {
                 return;
             }
 
-            $wantedCount = (int)$shuttlecount[$commodityId];
+            if ($isForeignShip && $shuttles[$commodityId]->getCurrentLoad() > $wantedCount) {
+                return;
+            }
+
+            $requestedCounts[$commodityId] = $wantedCount;
+        }
+
+        if (array_sum($requestedCounts) > $ship->getRump()->getShuttleSlots()) {
+            $game->getInfo()->addInformationf(
+                _('Es können maximal %d Shuttles geladen werden'),
+                $ship->getRump()->getShuttleSlots()
+            );
+            return;
+        }
+
+        $informations = new InformationWrapper();
+
+        foreach ($requestedCounts as $commodityId => $wantedCount) {
+            $commodity = $this->commodityRepository->find($commodityId);
+            if ($commodity === null || !$commodity->isShuttle()) {
+                return;
+            }
 
             $smi = $shuttles[$commodityId];
-
-            if ($wantedCount > $smi->getMaxUnits()) {
-                continue;
-            }
-
-            if ($isForeignShip && $smi->getCurrentLoad() > $wantedCount) {
-                continue;
-            }
 
             if ($smi->getCurrentLoad() !== $wantedCount) {
                 $this->transferShuttles(
