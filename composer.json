@@ -39,7 +39,6 @@
     "ext-xsl": "*",
     "adhocore/cli": "^1",
     "amenadiel/jpgraph": "^4",
-    "crell/tukio": "^2",
     "crunzphp/crunz": "^3.4",
     "cweagans/composer-patches": "^2.0",
     "devster/ubench": "^2",
@@ -62,6 +61,7 @@
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/cache": "^7.2",
+    "symfony/event-dispatcher": "^8.0",
     "symfony/mailer": "^8.0.0",
     "twig/twig": "^3.6"
   },

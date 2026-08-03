@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
-use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -19,7 +20,7 @@ final class AstroEntryLib implements AstroEntryLibInterface
 {
     public function __construct(
         private AstroEntryRepositoryInterface $astroEntryRepository,
-        private CrewEnhancementInterface $crewEnhancement
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -47,7 +48,10 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
 
-        $this->crewEnhancement->addExpertise($ship, SkillEnhancementEnum::FINISH_ASTRO_MAPPING);
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $ship,
+            SkillEnhancementEnum::FINISH_ASTRO_MAPPING
+        ));
     }
 
     #[\Override]

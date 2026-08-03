@@ -6,7 +6,8 @@ namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -33,7 +34,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
     private MockInterface&AstroEntryLibInterface $astroEntryLib;
     private MockInterface&CreatePrestigeLogInterface $createPrestigeLog;
     private MockInterface&MessageFactoryInterface $messageFactory;
-    private MockInterface&CrewEnhancementInterface $crewEnhancement;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private FlightConsequenceInterface $subject;
 
@@ -52,7 +53,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
         $this->createPrestigeLog = $this->mock(CreatePrestigeLogInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
-        $this->crewEnhancement = $this->mock(CrewEnhancementInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
 
         $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -67,7 +68,7 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             $this->astroEntryLib,
             $this->createPrestigeLog,
             $this->messageFactory,
-            $this->crewEnhancement
+            $this->eventDispatcher
         );
     }
 
@@ -251,8 +252,13 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             )
             ->once();
 
-        $this->crewEnhancement->shouldReceive('addExpertise')
-            ->with($this->ship, SkillEnhancementEnum::REACH_ASTRO_WAYPOINT)
+        /** @var CrewExperienceEvent|null */
+        $event = null;
+        $this->eventDispatcher->shouldReceive('dispatch')
+            ->with(Mockery::on(function ($arg) use (&$event): bool {
+                $event = $arg;
+                return $arg instanceof CrewExperienceEvent;
+            }))
             ->once();
 
         $messages->shouldReceive('add')
@@ -274,6 +280,11 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
+
+        $this->assertInstanceOf(CrewExperienceEvent::class, $event);
+        $this->assertSame($this->ship, $event->getSpacecraft());
+        $this->assertSame(SkillEnhancementEnum::REACH_ASTRO_WAYPOINT, $event->getTrigger());
+        $this->assertSame(100, $event->getPercentage());
     }
 
     public function testTriggerExpectMeasured(): void
@@ -364,8 +375,13 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             )
             ->once();
 
-        $this->crewEnhancement->shouldReceive('addExpertise')
-            ->with($this->ship, SkillEnhancementEnum::REACH_ASTRO_WAYPOINT)
+        /** @var CrewExperienceEvent|null */
+        $event = null;
+        $this->eventDispatcher->shouldReceive('dispatch')
+            ->with(Mockery::on(function ($arg) use (&$event): bool {
+                $event = $arg;
+                return $arg instanceof CrewExperienceEvent;
+            }))
             ->once();
 
 
@@ -388,6 +404,11 @@ class PostFlightAstroMappingConsequenceTest extends StuTestCase
             $this->flightRoute,
             $messages
         );
+
+        $this->assertInstanceOf(CrewExperienceEvent::class, $event);
+        $this->assertSame($this->ship, $event->getSpacecraft());
+        $this->assertSame(SkillEnhancementEnum::REACH_ASTRO_WAYPOINT, $event->getTrigger());
+        $this->assertSame(100, $event->getPercentage());
     }
 
     public function testTriggerExpectCancelOfFinalizing(): void

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
-use Stu\Component\Crew\Skill\CrewEnhancementInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\SpacecraftAttacker;
@@ -14,7 +15,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 final class EnhanceDestroyingCrew implements SpacecraftDestructionHandlerInterface
 {
-    public function __construct(private CrewEnhancementInterface $crewEnhancement) {}
+    public function __construct(private EventDispatcherInterface $eventDispatcher) {}
 
     #[\Override]
     public function handleSpacecraftDestruction(
@@ -34,10 +35,10 @@ final class EnhanceDestroyingCrew implements SpacecraftDestructionHandlerInterfa
             return;
         }
 
-        $this->crewEnhancement->addExpertise(
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
             $attackingSpacecraft,
             SkillEnhancementEnum::SPACECRAFT_DESTRUCTION,
             min(200, (int)ceil($destroyedPrestige * 100 / $attackerPrestige))
-        );
+        ));
     }
 }
