@@ -1,10 +1,11 @@
 {% set crew = CREW_ASSIGNMENT.getCrew %}
 {% set crewId = crew.getId %}
+{% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
 {% set isForeignCrew = crew.getUser.getId != SHIP.getUser.getId %}
 {% set canRemoveCrew = isForeignCrew and (SHIP.getUser.getId == USER_ID or crew.getUser.getId == USER_ID) %}
 <tr>
     <td>
-        <img src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crew.getType.value }}.png" />
+        <img src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
         {% if canRemoveCrew %}
         <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&crewid={{ crewId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('dump_{{ crewId }}','buttons/x2')"

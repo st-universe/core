@@ -131,6 +131,175 @@ function closeStorage() {
 function showSpacecraftDetails(element, id) {
   updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
 }
+var crewAssignmentScrollTop = 0;
+var crewAssignmentPointerDrag = null;
+
+function showCrewAssignmentManagement(id) {
+  var width = Math.min(900, Math.max(280, window.innerWidth - 12));
+  updatePopup("?SHOW_CREW_ASSIGNMENT_MANAGEMENT=1&id=" + id, width, null, null, true, false);
+}
+
+function showSpacecraftDetailsFromCrewManagement(id) {
+  updatePopup("?SHOW_SPACECRAFTDETAILS=1&id=" + id, null, null, null, true, false);
+}
+
+function initializeCrewAssignmentManagement() {
+  var root = document.getElementById("crewAssignmentManagement");
+  if (!root) {
+    return;
+  }
+
+  var scrollContainer = root.querySelector(".crew-assignment-management-scroll");
+  if (scrollContainer && crewAssignmentScrollTop > 0) {
+    scrollContainer.scrollTop = crewAssignmentScrollTop;
+    crewAssignmentScrollTop = 0;
+  }
+}
+
+function startCrewAssignmentDrag(event, element) {
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("text/plain", element.dataset.crewId);
+}
+
+function allowCrewAssignmentDrop(event) {
+  event.preventDefault();
+  event.currentTarget.classList.add("crew-assignment-drop-active");
+  scrollCrewAssignmentManagement(event);
+}
+
+function leaveCrewAssignmentDrop(event) {
+  if (!event.currentTarget.contains(event.relatedTarget)) {
+    event.currentTarget.classList.remove("crew-assignment-drop-active");
+  }
+}
+
+function dropCrewAssignment(event, element) {
+  event.preventDefault();
+  element.classList.remove("crew-assignment-drop-active");
+
+  var crewId = event.dataTransfer.getData("text/plain");
+  if (crewId && canAssignCrewToSlot(crewId, element)) {
+    saveCrewAssignment(crewId, element.dataset.crewSlot);
+  }
+}
+
+function startCrewAssignmentPointerDrag(event, element) {
+  if (event.pointerType === "mouse") {
+    return;
+  }
+
+  event.preventDefault();
+  element.setPointerCapture(event.pointerId);
+  crewAssignmentPointerDrag = {
+    crewId: element.dataset.crewId,
+    root: element.closest(".crew-assignment-management"),
+    target: null
+  };
+  crewAssignmentPointerDrag.root.classList.add("crew-assignment-dragging");
+  updateCrewAssignmentPointerTarget(event);
+}
+
+function moveCrewAssignmentPointerDrag(event) {
+  if (crewAssignmentPointerDrag === null) {
+    return;
+  }
+
+  event.preventDefault();
+  updateCrewAssignmentPointerTarget(event);
+}
+
+function endCrewAssignmentPointerDrag(event) {
+  if (crewAssignmentPointerDrag === null) {
+    return;
+  }
+
+  event.preventDefault();
+  var target = crewAssignmentPointerDrag.target;
+  var crewId = crewAssignmentPointerDrag.crewId;
+  clearCrewAssignmentPointerDrag();
+
+  if (target !== null) {
+    saveCrewAssignment(crewId, target.dataset.crewSlot);
+  }
+}
+
+function updateCrewAssignmentPointerTarget(event) {
+  var element = document.elementFromPoint(event.clientX, event.clientY);
+  var target = element === null ? null : element.closest(".crew-assignment-dropzone");
+  if (target !== null && !canAssignCrewToSlot(crewAssignmentPointerDrag.crewId, target)) {
+    target = null;
+  }
+
+  if (crewAssignmentPointerDrag.target !== target) {
+    if (crewAssignmentPointerDrag.target !== null) {
+      crewAssignmentPointerDrag.target.classList.remove("crew-assignment-drop-active");
+    }
+    if (target !== null) {
+      target.classList.add("crew-assignment-drop-active");
+    }
+    crewAssignmentPointerDrag.target = target;
+  }
+
+  scrollCrewAssignmentManagement(event);
+}
+
+function canAssignCrewToSlot(crewId, target) {
+  if (!target.dataset.capacity) {
+    return true;
+  }
+
+  var card = document.querySelector('.crew-assignment-card[data-crew-id="' + crewId + '"]');
+  if (card !== null && card.parentElement === target) {
+    return true;
+  }
+
+  return target.querySelectorAll(".crew-assignment-card").length < Number(target.dataset.capacity);
+}
+
+function clearCrewAssignmentPointerDrag() {
+  if (crewAssignmentPointerDrag.target !== null) {
+    crewAssignmentPointerDrag.target.classList.remove("crew-assignment-drop-active");
+  }
+  crewAssignmentPointerDrag.root.classList.remove("crew-assignment-dragging");
+  crewAssignmentPointerDrag = null;
+}
+
+function scrollCrewAssignmentManagement(event) {
+  var root = document.getElementById("crewAssignmentManagement");
+  if (root === null) {
+    return;
+  }
+
+  var scrollContainer = root.querySelector(".crew-assignment-management-scroll");
+  var bounds = scrollContainer.getBoundingClientRect();
+  if (event.clientY < bounds.top + 50) {
+    scrollContainer.scrollTop -= 20;
+  } else if (event.clientY > bounds.bottom - 50) {
+    scrollContainer.scrollTop += 20;
+  }
+}
+
+function saveCrewAssignment(crewId, slot) {
+  var root = document.getElementById("crewAssignmentManagement");
+  if (root === null) {
+    return;
+  }
+
+  var scrollContainer = root.querySelector(".crew-assignment-management-scroll");
+  crewAssignmentScrollTop = scrollContainer.scrollTop;
+
+  new Ajax.Updater("popupContent", "ship.php", {
+    method: "post",
+    parameters: "B_ASSIGN_CREW_SLOT=1&id=" + encodeURIComponent(root.dataset.spacecraftId)
+      + "&crewid=" + encodeURIComponent(crewId)
+      + "&slot=" + encodeURIComponent(slot)
+      + "&sstr=" + encodeURIComponent(root.dataset.sessionString),
+    evalScripts: true,
+    onComplete: function () {
+      enablePopupDrag();
+    }
+  });
+}
 function showEpsUsage(element, id) {
   updatePopupAtElement(element, "?SHOW_EPS_USAGE=1&id=" + id);
 }

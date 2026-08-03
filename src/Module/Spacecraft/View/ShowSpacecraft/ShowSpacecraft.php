@@ -166,13 +166,9 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             $game->setTemplateVar('IS_MAP_BUTTON_VISIBLE', true);
         }
 
-        $crewObj = $this->shipCrewCalculator->getCrewObj($rump);
-
         $game->setTemplateVar(
             'MAX_CREW_COUNT',
-            $crewObj === null
-                ? null
-                : $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft)
+            $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft)
         );
 
         $game->addExecuteJS(sprintf("setSpacecraftIdAndSstr(%d, '%s');", $spacecraft->getId(), $game->getSessionString()));

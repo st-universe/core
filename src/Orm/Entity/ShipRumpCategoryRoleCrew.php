@@ -50,9 +50,6 @@ class ShipRumpCategoryRoleCrew
     #[Column(type: 'smallint')]
     private int $job_6_crew = 0;
 
-    #[Column(type: 'smallint')]
-    private int $job_7_crew = 0;
-
     #[ManyToOne(targetEntity: ShipRumpRole::class)]
     #[JoinColumn(name: 'rump_role_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ShipRumpRole $shiprumpRole;
@@ -75,23 +72,13 @@ class ShipRumpCategoryRoleCrew
     public function getCrewForPosition(CrewTypeEnum $type): int
     {
         return match ($type) {
-            CrewTypeEnum::COMMAND => $this->job_1_crew,
-            CrewTypeEnum::TACTIC => $this->job_2_crew,
-            CrewTypeEnum::SCIENCE => $this->job_3_crew,
-            CrewTypeEnum::TECHNICAL => $this->job_4_crew,
-            CrewTypeEnum::NAVIGATION => $this->job_5_crew,
-            CrewTypeEnum::CREWMAN => $this->job_6_crew,
-            CrewTypeEnum::CAPTAIN => $this->job_7_crew
+            CrewTypeEnum::CAPTAIN => $this->job_1_crew,
+            CrewTypeEnum::COMMAND => $this->job_2_crew,
+            CrewTypeEnum::TACTIC => $this->job_3_crew,
+            CrewTypeEnum::SCIENCE => $this->job_4_crew,
+            CrewTypeEnum::TECHNICAL => $this->job_5_crew,
+            CrewTypeEnum::NAVIGATION => $this->job_6_crew,
+            CrewTypeEnum::CREWMAN => 0
         };
-    }
-
-    public function getCrewSumForPositionsExceptCrewman(): int
-    {
-        return $this->job_1_crew
-            + $this->job_2_crew
-            + $this->job_3_crew
-            + $this->job_4_crew
-            + $this->job_5_crew
-            + $this->job_7_crew;
     }
 }

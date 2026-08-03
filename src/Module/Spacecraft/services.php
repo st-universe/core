@@ -15,6 +15,7 @@ use Stu\Module\Spacecraft\Action\AddShipLog\AddShipLog;
 use Stu\Module\Spacecraft\Action\AddWormholeRestriction\AddWormholeRestriction;
 use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
+use Stu\Module\Spacecraft\Action\AssignCrewSlot\AssignCrewSlot;
 use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
@@ -255,6 +256,7 @@ use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Spacecraft\View\ShowBroadcastResponse\ShowBroadcastResponse;
 use Stu\Module\Spacecraft\View\ShowColonyMessage\ShowColonyMessage;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
+use Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement\ShowCrewAssignmentManagement;
 use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Module\Spacecraft\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Spacecraft\View\ShowEpsUsage\ShowEpsUsage;
@@ -471,6 +473,7 @@ return [
         SetYellowAlert::ACTION_IDENTIFIER => autowire(SetYellowAlert::class),
         SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
         LoadReactor::ACTION_IDENTIFIER => autowire(LoadReactor::class),
+        AssignCrewSlot::ACTION_IDENTIFIER => autowire(AssignCrewSlot::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
         RenameCrewman::ACTION_IDENTIFIER => autowire(RenameCrewman::class),
         PromoteCrew::ACTION_IDENTIFIER => autowire(PromoteCrew::class),
@@ -515,6 +518,7 @@ return [
         ShowBroadcastResponse::VIEW_IDENTIFIER => autowire(ShowBroadcastResponse::class),
         ShowColonyMessage::VIEW_IDENTIFIER => autowire(ShowColonyMessage::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
+        ShowCrewAssignmentManagement::VIEW_IDENTIFIER => autowire(ShowCrewAssignmentManagement::class),
         ShowCrewmanDetails::VIEW_IDENTIFIER => autowire(ShowCrewmanDetails::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowEpsUsage::VIEW_IDENTIFIER => autowire(ShowEpsUsage::class),
