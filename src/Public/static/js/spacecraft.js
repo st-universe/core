@@ -129,8 +129,7 @@ function closeStorage() {
   }
 }
 function showSpacecraftDetails(element, id) {
-  var width = Math.min(1200, Math.max(320, window.innerWidth - 12));
-  updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id, width);
+  updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
 }
 var crewAssignmentScrollTop = 0;
 var crewAssignmentPointerDrag = null;
