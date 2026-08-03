@@ -3487,7 +3487,7 @@ label.linkbutton:hover {
 .spacecraft-details-columns {
   display: grid;
   gap: 10px;
-  grid-template-columns: minmax(600px, 62fr) minmax(400px, 38fr);
+  grid-template-columns: max-content max-content;
 }
 
 .spacecraft-details-columns > div {
