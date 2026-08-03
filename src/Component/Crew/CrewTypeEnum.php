@@ -6,13 +6,13 @@ namespace Stu\Component\Crew;
 
 enum CrewTypeEnum: int
 {
-    case COMMAND = 1;
-    case TACTIC = 2;
-    case SCIENCE = 3;
-    case TECHNICAL = 4;
-    case NAVIGATION = 5;
-    case CREWMAN = 6;
-    case CAPTAIN = 7;
+    case CAPTAIN = 1;
+    case COMMAND = 2;
+    case TACTIC = 3;
+    case SCIENCE = 4;
+    case TECHNICAL = 5;
+    case NAVIGATION = 6;
+    case CREWMAN = 7;
 
     /**
      * @return array<CrewTypeEnum>

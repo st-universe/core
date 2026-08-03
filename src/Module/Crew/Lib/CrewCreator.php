@@ -94,23 +94,36 @@ final class CrewCreator implements CrewCreatorInterface
             throw new SanityCheckException(sprintf('rumpId %d does not have rump role', $spacecraft->getRump()->getId()));
         }
 
-        foreach (CrewTypeEnum::getOrder() as $crewType) {
-            $createdcount = 1;
-            $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
-                $spacecraft->getRump()->getShipRumpCategory()->getId(),
-                $shipRumpRole->getId()
-            );
-            if ($config === null) {
-                throw new InvalidArgumentException(sprintf(
-                    'no rump category role crew for rumpCategoryId: %d, rumpRoleId: %d',
-                    $spacecraft->getRump()->getShipRumpCategory()->getId()->value,
-                    $shipRumpRole->getId()->value
-                ));
-            }
+        $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
+            $spacecraft->getRump()->getShipRumpCategory()->getId(),
+            $shipRumpRole->getId()
+        );
+        if ($config === null) {
+            throw new InvalidArgumentException(sprintf(
+                'no rump category role crew for rumpCategoryId: %d, rumpRoleId: %d',
+                $spacecraft->getRump()->getShipRumpCategory()->getId()->value,
+                $shipRumpRole->getId()->value
+            ));
+        }
 
-            while ($crewToSetup > 0 && ($crewType == CrewTypeEnum::CREWMAN || $createdcount <= $config->getCrewForPosition($crewType))) {
-                $createdcount++;
+        $assignedCrewCount = [];
+        foreach ($spacecraft->getCrewAssignments() as $crewAssignment) {
+            $slot = $crewAssignment->getSlot();
+            if ($slot !== null) {
+                $assignedCrewCount[$slot->value] = ($assignedCrewCount[$slot->value] ?? 0) + 1;
+            }
+        }
+
+        foreach (CrewTypeEnum::getOrder() as $crewType) {
+            $freeSlots = $crewType === CrewTypeEnum::CREWMAN
+                ? PHP_INT_MAX
+                : max(0, $config->getCrewForPosition($crewType) - ($assignedCrewCount[$crewType->value] ?? 0));
+
+            while ($crewToSetup > 0 && ($crewType === CrewTypeEnum::CREWMAN || $freeSlots > 0)) {
                 $crewToSetup--;
+                if ($crewType !== CrewTypeEnum::CREWMAN) {
+                    $freeSlots--;
+                }
 
                 $crewAssignment = $this->getCrewByType($crewType, $crewProvider);
                 if ($crewAssignment === null) {

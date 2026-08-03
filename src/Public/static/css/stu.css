@@ -3479,3 +3479,127 @@ label.linkbutton:hover {
   color: #a6a6a6;
   font-style: italic;
 }
+
+.crew-management-open-button {
+  float: right;
+}
+
+.crew-assignment-management {
+  width: 100%;
+}
+
+.crew-assignment-management-toolbar {
+  background: var(--color-13);
+  border: 1px solid var(--color-21);
+  margin: 5px 0;
+  padding: 4px;
+}
+
+.crew-assignment-management-toolbar span {
+  color: var(--color-6);
+  font-size: 85%;
+  margin-left: 8px;
+}
+
+.crew-assignment-management-scroll {
+  background: #000000;
+  border: 1px solid var(--color-21);
+  max-height: min(66vh, 620px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  touch-action: pan-y;
+}
+
+.crew-assignment-positions {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.crew-assignment-position {
+  background: var(--color-13);
+  border: 1px solid var(--color-21);
+}
+
+.crew-assignment-position-head {
+  background: var(--color-11);
+  color: var(--color-12);
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.crew-assignment-dropzone {
+  background: #000000;
+  min-height: 58px;
+  padding: 3px;
+}
+
+.crew-assignment-drop-active {
+  background: var(--color-28);
+  outline: 1px dashed var(--color-9);
+}
+
+.crew-assignment-card {
+  background: var(--color-7);
+  border: 1px solid var(--color-21);
+  margin-bottom: 3px;
+  padding: 3px;
+}
+
+.crew-assignment-card-main {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.crew-assignment-card-main img {
+  height: 28px;
+  object-fit: contain;
+  width: 28px;
+}
+
+.crew-assignment-drag-handle {
+  background: var(--color-13);
+  border: 1px solid var(--color-21);
+  cursor: move;
+  font-weight: bold;
+  padding: 2px 5px;
+  touch-action: none;
+  user-select: none;
+}
+
+.crew-assignment-name {
+  color: var(--color-9);
+  font-weight: bold;
+}
+
+.crew-assignment-skills,
+.crew-assignment-no-skills,
+.crew-assignment-empty {
+  color: var(--color-6);
+  font-size: 82%;
+  padding: 2px 0 0 18px;
+}
+
+.crew-assignment-skills span {
+  display: block;
+}
+
+.crew-assignment-no-skills,
+.crew-assignment-empty {
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .crew-assignment-positions {
+    grid-template-columns: 1fr;
+  }
+
+  .crew-assignment-management-toolbar span {
+    display: block;
+    margin: 4px 0 0;
+  }
+}

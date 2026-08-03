@@ -33,6 +33,9 @@ class SpacecraftRumpBaseValues
     private int $base_crew = 0;
 
     #[column(type: 'smallint')]
+    private int $max_crew = 0;
+
+    #[column(type: 'smallint')]
     private int $base_eps = 0;
 
     #[column(type: 'smallint')]
@@ -74,6 +77,11 @@ class SpacecraftRumpBaseValues
     public function getBaseCrew(): int
     {
         return $this->base_crew;
+    }
+
+    public function getMaxCrew(): int
+    {
+        return $this->max_crew;
     }
 
     public function getBaseEps(): int

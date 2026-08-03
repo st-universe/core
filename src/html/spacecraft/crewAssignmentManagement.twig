@@ -1,0 +1,64 @@
+<div id="crewAssignmentManagement" class="crew-assignment-management"
+    data-spacecraft-id="{{ SPACECRAFT.getId }}" data-session-string="{{ SESSIONSTRING }}">
+    <div class="crew-assignment-management-toolbar">
+        <input type="button" class="button" value="Zur Schiffsinformation"
+            onclick="showSpacecraftDetailsFromCrewManagement({{ SPACECRAFT.getId }}); return false;" />
+        <span>Eigene Crew kann über den Griff auf einen freien Posten gezogen werden.</span>
+    </div>
+
+    <div class="crew-assignment-management-scroll" ondragover="scrollCrewAssignmentManagement(event);">
+        <div class="crew-assignment-positions">
+            {% for data in POSITIONS %}
+            {% set position = data.position %}
+            <section class="crew-assignment-position">
+                <div class="crew-assignment-position-head">
+                    <strong>{{ position.getDescription }}</strong>
+                    {% if data.capacity is null %}
+                    <span>{{ data.crewAssignments|length }} zugewiesen</span>
+                    {% else %}
+                    <span>{{ data.crewAssignments|length }} / {{ data.capacity }}</span>
+                    {% endif %}
+                </div>
+                <div class="crew-assignment-dropzone" data-crew-slot="{{ position.value }}"
+                    {% if data.capacity is not null %}data-capacity="{{ data.capacity }}"{% endif %}
+                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                    ondrop="dropCrewAssignment(event, this);">
+                    {% for assignment in data.crewAssignments %}
+                    {% set crew = assignment.getCrew %}
+                    {% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+                    <div class="crew-assignment-card" data-crew-id="{{ crew.getId }}">
+                        <div class="crew-assignment-card-main">
+                            <span class="crew-assignment-drag-handle" draggable="true" data-crew-id="{{ crew.getId }}"
+                                ondragstart="startCrewAssignmentDrag(event, this);"
+                                onpointerdown="startCrewAssignmentPointerDrag(event, this);"
+                                onpointermove="moveCrewAssignmentPointerDrag(event);"
+                                onpointerup="endCrewAssignmentPointerDrag(event);"
+                                onpointercancel="endCrewAssignmentPointerDrag(event);">=</span>
+                            <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
+                            <div>
+                                <div class="crew-assignment-name">{{ crew.getName|bbcode }}</div>
+                                <div>{{ crew.getRank.getDescription(crew.getUser.getFactionId) }}</div>
+                            </div>
+                        </div>
+                        {% if crew.getSkills|length > 0 %}
+                        <div class="crew-assignment-skills">
+                            {% for skill in crew.getSkills %}
+                            <span>{{ skill.getPosition.getDescription }}: {{ skill.getExpertise }} XP</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="crew-assignment-no-skills">Noch keine Erfahrung</div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="crew-assignment-empty">Freier Posten</div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    initializeCrewAssignmentManagement();
+</script>
