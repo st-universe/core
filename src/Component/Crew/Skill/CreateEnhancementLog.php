@@ -7,6 +7,7 @@ namespace Stu\Component\Crew\Skill;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\CrewSkill;
 use Stu\Orm\Entity\SkillEnhancement;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
 
 final class CreateEnhancementLog
@@ -33,7 +34,7 @@ final class CreateEnhancementLog
             ->setCrewId($crew->getId())
             ->setExpertise($amount)
             ->setExpertiseSum($crewSkill->getExpertise())
-            ->setPromotion($this->getPromotion($oldRank, $newRank, $crew->getUser()->getFactionId()))
+            ->setPromotion($this->getPromotion($oldRank, $newRank, $crew->getUser()))
             ->setTimestamp($this->stuTime->time());
 
         $this->skillEnhancementLogRepository->save($log);
@@ -42,10 +43,10 @@ final class CreateEnhancementLog
     private function getPromotion(
         CrewSkillLevelEnum $oldRank,
         CrewSkillLevelEnum $newRank,
-        int $factionId
+        User $user
     ): ?string {
         return $oldRank === $newRank
             ? null
-            : sprintf('Befoerderung %s -> %s', $oldRank->getDescription($factionId), $newRank->getDescription($factionId));
+            : sprintf('Befoerderung %s -> %s', $user->getCrewRankName($oldRank), $user->getCrewRankName($newRank));
     }
 }

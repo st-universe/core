@@ -7,7 +7,6 @@ namespace Stu\Component\Crew\Skill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Crew\CrewTypeEnum;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewSkill;
@@ -176,7 +175,9 @@ final class RaiseExpertiseTest extends StuTestCase
         $crew->shouldReceive('getId')->andReturn(42);
         $crew->shouldReceive('getName')->andReturn('Crew');
         $user = $this->mock(User::class);
-        $user->shouldReceive('getFactionId')->andReturn(FactionEnum::FACTION_FEDERATION->value);
+        $user->shouldReceive('getCrewRankName')->andReturnUsing(
+            fn (CrewSkillLevelEnum $rank): string => $rank->getDescription(1)
+        );
         $crew->shouldReceive('getUser')->andReturn($user);
 
         return $crew;
@@ -221,7 +222,7 @@ final class RaiseExpertiseTest extends StuTestCase
             ->with(
                 $oldRank === $newRank
                     ? null
-                    : sprintf('Befoerderung %s -> %s', $oldRank->getDescription(FactionEnum::FACTION_FEDERATION->value), $newRank->getDescription(FactionEnum::FACTION_FEDERATION->value))
+                    : sprintf('Befoerderung %s -> %s', $oldRank->getDescription(1), $newRank->getDescription(1))
             )
             ->once()
             ->andReturnSelf();

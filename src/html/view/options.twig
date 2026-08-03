@@ -95,6 +95,37 @@
         </table>
     </form>
     <br />
+    {% set rankColumnCount = SHOW_FACTION_CREW_RANKS ? 3 : 2 %}
+    <form action="options.php" method="post">
+        <table class="tcal">
+            <tr>
+                <th colspan="{{ rankColumnCount }}">Crew Ränge</th>
+            </tr>
+            <tr>
+                <td colspan="{{ rankColumnCount }}">Leere Felder verwenden weiterhin den Standardnamen deiner Fraktion. Eigene Rangnamen werden bei deiner Crew angezeigt</td>
+            </tr>
+            <tr>
+                <td><strong>Föderation</strong></td>
+                {% if SHOW_FACTION_CREW_RANKS %}
+                <td><strong>{{ REAL_USER.getFaction.getName }}</strong></td>
+                {% endif %}
+                <td><strong>Eigener Rangname</strong></td>
+            </tr>
+            {% for rank in CREW_RANKS %}
+            <tr>
+                <td>{{ rank.getDescription(FEDERATION_ID) }}</td>
+                {% if SHOW_FACTION_CREW_RANKS %}
+                <td>{{ rank.getDescription(REAL_USER.getFactionId) }}</td>
+                {% endif %}
+                <td><input type="text" name="crew_rank_names[{{ rank.value }}]" value="{{ REAL_USER.getCustomCrewRankName(rank) }}" maxlength="64" class="text" /></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="{{ rankColumnCount }}"><input type="submit" name="B_CHANGE_CREW_RANK_NAMES" value="Crew-Ränge speichern" class="button" /></td>
+            </tr>
+        </table>
+    </form>
+    <br />
     <form action="options.php" method="post">
         <table class="tcal">
             <th colspan="2">Accounteinstellungen</th>

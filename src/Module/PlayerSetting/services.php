@@ -11,6 +11,7 @@ use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequest;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequestInterface;
+use Stu\Module\PlayerSetting\Action\ChangeCrewRankNames\ChangeCrewRankNames;
 use Stu\Module\PlayerSetting\Action\ChangeEmail\ChangeEmail;
 use Stu\Module\PlayerSetting\Action\ChangeEmail\ChangeEmailRequest;
 use Stu\Module\PlayerSetting\Action\ChangeEmail\ChangeEmailRequestInterface;
@@ -43,6 +44,7 @@ return [
         ChangeRgbCode::ACTION_IDENTIFIER => autowire(ChangeRgbCode::class),
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
+        ChangeCrewRankNames::ACTION_IDENTIFIER => autowire(ChangeCrewRankNames::class),
         ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
         ActivateVacation::ACTION_IDENTIFIER => autowire(ActivateVacation::class),
         CreateTutorials::ACTION_IDENTIFIER => autowire(CreateTutorials::class),

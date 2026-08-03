@@ -587,6 +587,8 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6AAFACE0A76ED395 ON stu_user_setting (user_id)');
+        $this->addSql('CREATE TABLE stu_user_crew_rank (rank VARCHAR(255) NOT NULL, name VARCHAR(64) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, rank), CONSTRAINT FK_USER_CREW_RANK_USER FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX user_crew_rank_user_idx ON stu_user_crew_rank (user_id)');
         $this->addSql('CREATE TABLE stu_user_tutorial (user_id INTEGER NOT NULL, tutorial_step_id INTEGER NOT NULL, PRIMARY KEY (user_id, tutorial_step_id), CONSTRAINT FK_9840DDF3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9840DDF3D356979 FOREIGN KEY (tutorial_step_id) REFERENCES stu_tutorial_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9840DDF3A76ED395 ON stu_user_tutorial (user_id)');
         $this->addSql('CREATE INDEX IDX_9840DDF3D356979 ON stu_user_tutorial (tutorial_step_id)');
@@ -785,6 +787,7 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user_referer');
         $this->addSql('DROP TABLE stu_user_registration');
         $this->addSql('DROP TABLE stu_user_setting');
+        $this->addSql('DROP TABLE stu_user_crew_rank');
         $this->addSql('DROP TABLE stu_user_tutorial');
         $this->addSql('DROP TABLE stu_weapon_shield');
         $this->addSql('DROP TABLE stu_weapons');

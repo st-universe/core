@@ -3484,6 +3484,16 @@ label.linkbutton:hover {
   float: right;
 }
 
+.spacecraft-details-columns {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(600px, 62fr) minmax(400px, 38fr);
+}
+
+.spacecraft-details-columns > div {
+  min-width: 0;
+}
+
 .crew-assignment-management {
   width: 100%;
 }
@@ -3545,8 +3555,11 @@ label.linkbutton:hover {
 .crew-assignment-card {
   background: var(--color-7);
   border: 1px solid var(--color-21);
+  cursor: grab;
   margin-bottom: 3px;
   padding: 3px;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .crew-assignment-card-main {
@@ -3561,14 +3574,15 @@ label.linkbutton:hover {
   width: 28px;
 }
 
-.crew-assignment-drag-handle {
-  background: var(--color-13);
-  border: 1px solid var(--color-21);
-  cursor: move;
-  font-weight: bold;
-  padding: 2px 5px;
-  touch-action: none;
-  user-select: none;
+.crew-assignment-card:active {
+  background: var(--color-28);
+  cursor: grabbing;
+  outline: 1px dashed var(--color-9);
+}
+
+.crew-assignment-card-dragging {
+  background: var(--color-28);
+  outline: 1px dashed var(--color-9);
 }
 
 .crew-assignment-name {
@@ -3601,5 +3615,11 @@ label.linkbutton:hover {
   .crew-assignment-management-toolbar span {
     display: block;
     margin: 4px 0 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  .spacecraft-details-columns {
+    grid-template-columns: 1fr;
   }
 }

@@ -89,6 +89,11 @@ class Crew
         return $this->rank;
     }
 
+    public function getRankName(): string
+    {
+        return $this->user->getCrewRankName($this->rank);
+    }
+
     public function setRank(CrewSkillLevelEnum $rank): Crew
     {
         $this->rank = $rank;
