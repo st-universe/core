@@ -129,10 +129,12 @@ function closeStorage() {
   }
 }
 function showSpacecraftDetails(element, id) {
-  updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
+  var width = Math.min(1200, Math.max(320, window.innerWidth - 12));
+  updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id, width);
 }
 var crewAssignmentScrollTop = 0;
 var crewAssignmentPointerDrag = null;
+var crewAssignmentPointerPreparation = null;
 
 function showCrewAssignmentManagement(id) {
   var width = Math.min(900, Math.max(280, window.innerWidth - 12));
@@ -159,6 +161,11 @@ function initializeCrewAssignmentManagement() {
 function startCrewAssignmentDrag(event, element) {
   event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.setData("text/plain", element.dataset.crewId);
+  element.classList.add("crew-assignment-card-dragging");
+}
+
+function endCrewAssignmentDrag(element) {
+  element.classList.remove("crew-assignment-card-dragging");
 }
 
 function allowCrewAssignmentDrop(event) {
@@ -188,19 +195,46 @@ function startCrewAssignmentPointerDrag(event, element) {
     return;
   }
 
-  event.preventDefault();
-  element.setPointerCapture(event.pointerId);
-  crewAssignmentPointerDrag = {
+  crewAssignmentPointerPreparation = {
     crewId: element.dataset.crewId,
     root: element.closest(".crew-assignment-management"),
-    target: null
+    source: element,
+    pointerId: event.pointerId,
+    clientX: event.clientX,
+    clientY: event.clientY,
+    timeout: null
   };
-  crewAssignmentPointerDrag.root.classList.add("crew-assignment-dragging");
-  updateCrewAssignmentPointerTarget(event);
+  crewAssignmentPointerPreparation.timeout = setTimeout(function () {
+    if (crewAssignmentPointerPreparation === null) {
+      return;
+    }
+
+    var preparation = crewAssignmentPointerPreparation;
+    preparation.source.setPointerCapture(preparation.pointerId);
+    crewAssignmentPointerDrag = {
+      crewId: preparation.crewId,
+      root: preparation.root,
+      source: preparation.source,
+      target: null
+    };
+    crewAssignmentPointerDrag.source.classList.add("crew-assignment-card-dragging");
+    crewAssignmentPointerDrag.root.classList.add("crew-assignment-dragging");
+    crewAssignmentPointerPreparation = null;
+    updateCrewAssignmentPointerTarget(preparation);
+  }, 300);
 }
 
 function moveCrewAssignmentPointerDrag(event) {
   if (crewAssignmentPointerDrag === null) {
+    if (
+      crewAssignmentPointerPreparation !== null
+      && (
+        Math.abs(event.clientX - crewAssignmentPointerPreparation.clientX) > 8
+        || Math.abs(event.clientY - crewAssignmentPointerPreparation.clientY) > 8
+      )
+    ) {
+      clearCrewAssignmentPointerPreparation();
+    }
     return;
   }
 
@@ -210,6 +244,7 @@ function moveCrewAssignmentPointerDrag(event) {
 
 function endCrewAssignmentPointerDrag(event) {
   if (crewAssignmentPointerDrag === null) {
+    clearCrewAssignmentPointerPreparation();
     return;
   }
 
@@ -220,6 +255,14 @@ function endCrewAssignmentPointerDrag(event) {
 
   if (target !== null) {
     saveCrewAssignment(crewId, target.dataset.crewSlot);
+  }
+}
+
+function cancelCrewAssignmentPointerDrag() {
+  clearCrewAssignmentPointerPreparation();
+
+  if (crewAssignmentPointerDrag !== null) {
+    clearCrewAssignmentPointerDrag();
   }
 }
 
@@ -260,8 +303,18 @@ function clearCrewAssignmentPointerDrag() {
   if (crewAssignmentPointerDrag.target !== null) {
     crewAssignmentPointerDrag.target.classList.remove("crew-assignment-drop-active");
   }
+  crewAssignmentPointerDrag.source.classList.remove("crew-assignment-card-dragging");
   crewAssignmentPointerDrag.root.classList.remove("crew-assignment-dragging");
   crewAssignmentPointerDrag = null;
+}
+
+function clearCrewAssignmentPointerPreparation() {
+  if (crewAssignmentPointerPreparation === null) {
+    return;
+  }
+
+  clearTimeout(crewAssignmentPointerPreparation.timeout);
+  crewAssignmentPointerPreparation = null;
 }
 
 function scrollCrewAssignmentManagement(event) {

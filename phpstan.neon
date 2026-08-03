@@ -10,6 +10,8 @@ parameters:
     - src/Orm
   ignoreErrors:
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
+    - '#Property Stu\\Orm\\Entity\\User::\$crewRankNames type mapping mismatch#'
+    - '#Property Stu\\Orm\\Entity\\User::\$crewRankNames with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types#'
   parallel:
     jobSize: 20
     maximumNumberOfProcesses: 8

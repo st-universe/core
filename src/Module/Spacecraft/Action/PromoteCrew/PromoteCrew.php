@@ -39,7 +39,7 @@ final class PromoteCrew implements ActionControllerInterface
                 '%s benötigt mindestens %d Expertise in einer Fähigkeit für die Beförderung zum %s',
                 $crew->getName(),
                 $nextRank->getNeededExpertise(),
-                $nextRank->getDescription($user->getFactionId())
+                $user->getCrewRankName($nextRank)
             );
             return;
         }
@@ -49,7 +49,7 @@ final class PromoteCrew implements ActionControllerInterface
             $game->getInfo()->addInformationf(
                 'Es können gleichzeitig maximal %d Crewman im Rang %s geführt werden',
                 $promotionLimit,
-                $nextRank->getDescription($user->getFactionId())
+                $user->getCrewRankName($nextRank)
             );
             return;
         }
@@ -60,7 +60,7 @@ final class PromoteCrew implements ActionControllerInterface
         $game->getInfo()->addInformationf(
             '%s wurde zum %s befördert',
             $crew->getName(),
-            $nextRank->getDescription($user->getFactionId())
+            $user->getCrewRankName($nextRank)
         );
     }
 

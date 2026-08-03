@@ -8,7 +8,6 @@ use Mockery\MockInterface;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\User;
@@ -97,7 +96,7 @@ final class PromoteCrewTest extends ActionControllerTestCase
     {
         $user = $this->mock(User::class);
         $user->shouldReceive('getId')->andReturn(101);
-        $user->shouldReceive('getFactionId')->andReturn(FactionEnum::FACTION_FEDERATION->value);
+        $user->shouldReceive('getCrewRankName')->andReturn('Commander');
 
         return $user;
     }

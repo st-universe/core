@@ -14,7 +14,7 @@
                 <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
             </td>
             <td>Rang</td>
-            <td>{{ crew.getRank.getDescription(crew.getUser.getFactionId) }}</td>
+            <td>{{ crew.getRankName }}</td>
         </tr>
         <tr>
             <td>Gesamtexpertise</td>
@@ -39,7 +39,7 @@
                     <input type="hidden" name="id" value="{{ crew.getId }}" />
                     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <input type="submit" name="B_PROMOTE_CREW" class="button"
-                        value="Zu {{ nextRank.getDescription(crew.getUser.getFactionId) }} befördern" />
+                        value="Zu {{ crew.getUser.getCrewRankName(nextRank) }} befördern" />
                 </form>
             </td>
         </tr>
@@ -95,7 +95,7 @@
     {% for skill in crew.getSkills %}
     <tr>
         <td>{{ skill.getPosition.getDescription }}</td>
-        <td>{{ skill.getRank.getDescription(crew.getUser.getFactionId) }}</td>
+        <td>{{ crew.getUser.getCrewRankName(skill.getRank) }}</td>
         <td>{{ skill.getExpertise }}</td>
     </tr>
     {% endfor %}

@@ -29,6 +29,7 @@ use Stu\Component\Player\Deletion\Handler\SpacecraftBuildplanDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\SpacecraftDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\TradepostDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\UserCrewRankDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserMapDeletionHandler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
@@ -76,6 +77,7 @@ return [
             autowire(RefererDeletionHandler::class),
             autowire(DockingPrivilegeDeletionHandler::class),
             autowire(UserMapDeletionHandler::class),
+            autowire(UserCrewRankDeletionHandler::class),
             autowire(UserDeletionHandler::class)
         ]
     ),
