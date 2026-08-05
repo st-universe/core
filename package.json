@@ -6,7 +6,7 @@
     "realtime:starmap": "node realtime/starmap-server.js"
   },
   "dependencies": {
-    "redis": "^4.7.0",
+    "redis": "^6.0.0",
     "ws": "^8.18.0"
   }
 }
