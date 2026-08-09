@@ -88,6 +88,7 @@ class AllOtherActionsTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_ACTIVATE_SYSTEM',
             'SPACECRAFT_ACTIONS-B_DEACTIVATE_SYSTEM' => ['type' => SpacecraftSystemTypeEnum::NBS->name],
             'SPACECRAFT_ACTIONS-B_START_SHUTTLE' => ['shid' => 20061],
+            'SPACECRAFT_ACTIONS-B_ASSIGN_CREW_SLOT' => ['crewid' => 2, 'slot' => 7],
             'SPACECRAFT_ACTIONS-B_DUMP_CREWMAN',
             'SPACECRAFT_ACTIONS-B_RENAME_CREW' => ['crewid' => 2],
             'SPACECRAFT_ACTIONS-B_RENAME_CREWMAN' => ['id' => 2, 'name' => 'Crew renamed'],

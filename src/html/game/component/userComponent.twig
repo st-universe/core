@@ -1,3 +1,4 @@
+{% set isNewUser = "now"|date('U') - USER.getRegistration.getCreationDate < 604800 %}
 <div class="header_box header_box_user border_box action" onclick="goToUrl('/maindesk.php'); return false;">
     <div style="margin: 5px">
         <div class="user_box_grid">
@@ -28,4 +29,8 @@
             </div>
         </div>
     </div>
+{% if isNewUser -%}
+    <span class="user_box_maindesk user_box_maindesk_desktop">Zum Maindesk</span>
+    <span class="user_box_maindesk user_box_maindesk_mobile">Maindesk</span>
+{%- endif -%}
 </div>

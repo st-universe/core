@@ -17,7 +17,7 @@ final class VersionTestCrewAssign extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('INSERT INTO stu_crew_assign (spacecraft_id, crew_id, slot, user_id, repair_task_id, colony_id, tradepost_id)
-                VALUES (42, 2, NULL, 101, NULL, NULL, NULL),
+                VALUES (42, 2, 7, 101, NULL, NULL, NULL),
                        (42, 3, NULL, 101, NULL, NULL, NULL),
                        (42, 4, NULL, 101, NULL, NULL, NULL),
                        (42, 5, NULL, 101, NULL, NULL, NULL),

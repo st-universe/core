@@ -88,11 +88,15 @@
 </div>
 <br style="clear: both;" />
 <br />
-<div style="display: grid; grid-template-columns: 49% 49%; grid-column-gap: 2%">
+<div class="spacecraft-details-columns">
     <div>
         <table class="tcal">
             <tr>
-                <th colspan="4">Crew</th>
+                <th colspan="4">
+                    Crew
+                    <input type="button" class="button crew-management-open-button" value="Crewposten verwalten"
+                        onclick="showCrewAssignmentManagement(42); return false;" />
+                </th>
             </tr>
             <tr>
                 <td colspan="3" class="darkbg">Minimal-Crew</td>
@@ -111,7 +115,7 @@
         <img src="assets/crew/ANDORIAN/m/1_6.png" />
             </td>
     <td>
-        <div></div>
+        <div>Crewman</div>
     </td>
     <td style="vertical-align: middle;">
                 <div id="rn_crew_2">
