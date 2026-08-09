@@ -12,9 +12,17 @@ use Stu\Module\Control\GameControllerInterface;
  */
 final class UserProfileComponent implements ComponentInterface
 {
+    private const int NEW_USER_DURATION = 7 * 24 * 60 * 60;
+
     #[\Override]
     public function setTemplateVariables(GameControllerInterface $game): void
     {
-        $game->setTemplateVar('PRESTIGE', $game->getUser()->getPrestige());
+        $user = $game->getUser();
+
+        $game->setTemplateVar('PRESTIGE', $user->getPrestige());
+        $game->setTemplateVar(
+            'IS_NEW_USER',
+            $user->getRegistration()->getCreationDate() > time() - self::NEW_USER_DURATION
+        );
     }
 }
