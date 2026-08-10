@@ -32,7 +32,7 @@ class SubspaceSystemData extends AbstractSystemData
 
     public function getSpacecraftId(): ?int
     {
-        return $this->spacecraftId ?? null;
+        return $this->spacecraftId;
     }
 
     public function setSpacecraftId(?int $spacecraftId): SubspaceSystemData
@@ -43,7 +43,7 @@ class SubspaceSystemData extends AbstractSystemData
 
     public function getAnalyzeTime(): ?int
     {
-        return $this->analyzeTime ?? null;
+        return $this->analyzeTime;
     }
 
     public function setAnalyzeTime(?int $analyzeTime): SubspaceSystemData
@@ -54,7 +54,7 @@ class SubspaceSystemData extends AbstractSystemData
 
     public function getFlightSigId(): ?int
     {
-        return $this->flightSigId ?? null;
+        return $this->flightSigId;
     }
 
     public function setFlightSigId(?int $flightSigId): SubspaceSystemData
