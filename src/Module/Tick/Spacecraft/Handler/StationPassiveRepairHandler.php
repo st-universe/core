@@ -2,6 +2,9 @@
 
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -20,7 +23,8 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
         private StationUtilityInterface $stationUtility,
         private RepairUtilInterface $repairUtil,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -95,6 +99,11 @@ class StationPassiveRepairHandler implements SpacecraftTickHandlerInterface
         if (!$wrapper->canBeRepaired()) {
             $condition->setHull($station->getMaxHull());
             $condition->setState(SpacecraftStateEnum::NONE);
+
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $station,
+                SkillEnhancementEnum::REPAIR_COMPLETED
+            ));
 
             $shipOwnerMessage = sprintf(
                 "Die Reparatur der %s wurde in Sektor %s fertiggestellt",

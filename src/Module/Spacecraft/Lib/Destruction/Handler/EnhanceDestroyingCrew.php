@@ -30,15 +30,14 @@ final class EnhanceDestroyingCrew implements SpacecraftDestructionHandlerInterfa
 
         $destroyedPrestige = $destroyedSpacecraftWrapper->get()->getRump()->getPrestige();
         $attackingSpacecraft = $destroyer->getSpacecraft();
-        $attackerPrestige = $attackingSpacecraft->getRump()->getPrestige();
-        if ($destroyedPrestige <= 0 || $attackerPrestige <= 0) {
+        if ($destroyedPrestige === 0) {
             return;
         }
 
         $this->eventDispatcher->dispatch(new CrewExperienceEvent(
             $attackingSpacecraft,
             SkillEnhancementEnum::SPACECRAFT_DESTRUCTION,
-            min(200, (int)ceil($destroyedPrestige * 100 / $attackerPrestige))
+            $destroyedPrestige * 100
         ));
     }
 }

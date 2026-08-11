@@ -68,6 +68,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $evadeChance = $this->getEvadeChance($targetWrapper);
             if ($hitchance * (100 - $evadeChance) < random_int(1, 10000)) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
+                $this->awardEvasionExperience($target);
                 continue;
             }
 

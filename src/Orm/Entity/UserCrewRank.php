@@ -7,6 +7,7 @@ namespace Stu\Orm\Entity;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -14,6 +15,7 @@ use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Orm\Repository\UserCrewRankRepository;
 
 #[Table(name: 'stu_user_crew_rank')]
+#[Index(name: 'user_crew_rank_user_idx', columns: ['user_id'])]
 #[Entity(repositoryClass: UserCrewRankRepository::class)]
 class UserCrewRank
 {

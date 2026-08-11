@@ -108,4 +108,27 @@ final class CrewSkillLevelEnumTest extends TestCase
         static::assertSame($nextRank, $rank->getNextRank());
         static::assertSame($promotionLimit, $nextRank?->getPromotionLimit());
     }
+
+    /** @return array<string, array{CrewSkillLevelEnum, null|CrewSkillLevelEnum}> */
+    public static function nextSkillRankProvider(): array
+    {
+        return [
+            'cadet' => [CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CREWMAN],
+            'crewman' => [CrewSkillLevelEnum::CREWMAN, CrewSkillLevelEnum::ENSIGN],
+            'ensign' => [CrewSkillLevelEnum::ENSIGN, CrewSkillLevelEnum::JUNIOR_LIEUTENANT],
+            'junior lieutenant' => [CrewSkillLevelEnum::JUNIOR_LIEUTENANT, CrewSkillLevelEnum::LIEUTENANT],
+            'lieutenant' => [CrewSkillLevelEnum::LIEUTENANT, CrewSkillLevelEnum::LIEUTENANT_COMMANDER],
+            'lieutenant commander' => [CrewSkillLevelEnum::LIEUTENANT_COMMANDER, CrewSkillLevelEnum::COMMANDER],
+            'commander' => [CrewSkillLevelEnum::COMMANDER, CrewSkillLevelEnum::CAPTAIN],
+            'captain' => [CrewSkillLevelEnum::CAPTAIN, CrewSkillLevelEnum::COMMODORE],
+            'commodore' => [CrewSkillLevelEnum::COMMODORE, CrewSkillLevelEnum::ADMIRAL],
+            'admiral' => [CrewSkillLevelEnum::ADMIRAL, null]
+        ];
+    }
+
+    #[DataProvider('nextSkillRankProvider')]
+    public function testGetNextSkillRank(CrewSkillLevelEnum $rank, ?CrewSkillLevelEnum $nextRank): void
+    {
+        static::assertSame($nextRank, $rank->getNextSkillRank());
+    }
 }

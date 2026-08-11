@@ -73,6 +73,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $hitChance * (100 - $evadeChance) < $this->stuRandom->rand(1, 10000)
             ) {
                 $message->add("Die " . $target->getName() . " wurde verfehlt");
+                $this->awardEvasionExperience($target);
                 continue;
             }
             $isCritical = $this->isCritical($weapon, $target->isCloaked());

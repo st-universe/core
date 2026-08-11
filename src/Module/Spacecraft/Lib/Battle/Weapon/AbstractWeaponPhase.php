@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
@@ -39,7 +42,8 @@ abstract class AbstractWeaponPhase
         protected StuRandom $stuRandom,
         protected MessageFactoryInterface $messageFactory,
         private SpacecraftDestructionInterface $spacecraftDestruction,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        private EventDispatcherInterface $eventDispatcher
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -103,6 +107,14 @@ abstract class AbstractWeaponPhase
         }
 
         return $modules->first();
+    }
+
+    protected function awardEvasionExperience(Spacecraft $spacecraft): void
+    {
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $spacecraft,
+            SkillEnhancementEnum::EVADE_ATTACK
+        ));
     }
 
     protected function getUser(int $userId): User

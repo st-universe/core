@@ -46,8 +46,8 @@ enum CrewTypeEnum: int
     public function getDescription(): string
     {
         return match ($this) {
-            self::CAPTAIN => _("Captain"),
-            self::COMMAND => _("Commander"),
+            self::CAPTAIN => _("Kommandierender Offizier"),
+            self::COMMAND => _("1. Offizier"),
             self::TACTIC => _("Taktik"),
             self::SCIENCE => _("Wissenschaftler"),
             self::TECHNICAL => _("Ingenieur"),

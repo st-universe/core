@@ -36,7 +36,7 @@ class TorpedoStorage
     #[Column(type: 'integer', length: 3)]
     private int $torpedo_type;
 
-    #[Column(type: 'boolean')]
+    #[Column(type: 'boolean', options: ['default' => false])]
     private bool $is_active = false;
 
     #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorages')]

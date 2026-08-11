@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\Repair\RepairUtil;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -36,7 +39,8 @@ final class FinishPassiveShipRepairJobs implements ProcessTickHandlerInterface
         private readonly StationUtilityInterface $stationUtility,
         private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
         private readonly RepairUtilInterface $repairUtil,
-        private readonly PrivateMessageSenderInterface $privateMessageSender
+        private readonly PrivateMessageSenderInterface $privateMessageSender,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -167,6 +171,11 @@ final class FinishPassiveShipRepairJobs implements ProcessTickHandlerInterface
                 $ship = $wrapper->get();
                 $ship->getCondition()->setHull($ship->getMaxHull());
                 $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
+
+                $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                    $ship,
+                    SkillEnhancementEnum::REPAIR_COMPLETED
+                ));
 
                 if ($job instanceof ColonyShipRepair) {
                     $this->colonyShipRepairRepository->delete($job);

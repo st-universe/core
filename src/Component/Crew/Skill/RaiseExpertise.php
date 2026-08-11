@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Crew\Skill;
 
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\SkillEnhancement;
 use Stu\Orm\Entity\Spacecraft;
@@ -35,8 +36,14 @@ final class RaiseExpertise
         }
 
         $oldCrewRank = $crew->getRank();
-        $amount = (int)ceil($enhancement->getExpertise() * max(0, $percentage) / 100);
+        $amount = (int)ceil($enhancement->getExpertise() * $percentage / 100);
+        if ($amount > 0 && $crew->getUser()->getFactionId() === FactionEnum::FACTION_KLINGON->value) {
+            $amount = (int)ceil($amount * 1.5);
+        }
+
+        $oldExpertise = $skill->getExpertise();
         $skill->increaseExpertise($amount);
+        $amount = $skill->getExpertise() - $oldExpertise;
         $this->crewSkillRepository->save($skill);
 
         $newCrewRank = $skill->getRank()->getAutomaticPromotionTarget();

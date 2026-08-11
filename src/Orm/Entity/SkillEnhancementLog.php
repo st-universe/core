@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -15,6 +16,7 @@ use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Orm\Repository\SkillEnhancementLogRepository;
 
 #[Table(name: 'stu_skill_enhancement_log')]
+#[Index(name: 'skill_enhancement_log_crew_date_idx', columns: ['crew_id', 'date'])]
 #[Entity(repositoryClass: SkillEnhancementLogRepository::class)]
 class SkillEnhancementLog
 {
@@ -153,9 +155,8 @@ class SkillEnhancementLog
     public function getDescription(string $rankName): string
     {
         return sprintf(
-            '%s (%s) von der %s steigt auf %d (+%d) Expertise%s fuer %s',
+            '%s von der %s hat nun %d (%+d) Expertise%s für %s',
             $this->crew_name,
-            $this->enhancement->getPosition()->getDescription(),
             $this->ship_name,
             $this->expertise_sum,
             $this->expertise,

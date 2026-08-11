@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -15,7 +18,8 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
     public function __construct(
         private RepairTaskRepositoryInterface $repairTaskRepository,
         private RepairUtilInterface $repairUtil,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -46,6 +50,11 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
             $isSuccess = $this->repairUtil->selfRepair($spacecraft, $repairTask);
 
             if ($isSuccess) {
+                $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                    $spacecraft,
+                    SkillEnhancementEnum::REPAIR_COMPLETED
+                ));
+
                 $msg = sprintf(
                     _('Die Crew der %s hat das System %s auf %d %% reparieren können'),
                     $spacecraft->getName(),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\SkillEnhancementLog;
 
@@ -19,4 +20,6 @@ interface SkillEnhancementLogRepositoryInterface extends ObjectRepository
 
     /** @return array<SkillEnhancementLog> */
     public function getForCrewman(Crew $crew): array;
+
+    public function hasCrewExperienceSince(Crew $crew, SkillEnhancementEnum $trigger, int $timestamp): bool;
 }

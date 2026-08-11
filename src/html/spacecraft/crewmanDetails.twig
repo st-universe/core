@@ -5,20 +5,17 @@
 {% set colony = CREW_ASSIGNMENT.getColony %}
 {% set tradepost = CREW_ASSIGNMENT.getTradepost %}
 {% set nextRank = crew.getRank.getNextRank %}
+{% set detailRowCount = nextRank ? 3 : 2 %}
 
 <div class="divhead" style="color: var(--color-55);">{{ crew.getName }}</div>
 <div class="divbody">
     <table class="tcal" style="width: 100%;">
         <tr>
-            <td rowspan="4" style="width: 55px; text-align: center;">
+            <td rowspan="{{ detailRowCount }}" style="width: 55px; text-align: center;">
                 <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
             </td>
             <td>Rang</td>
             <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>
-        </tr>
-        <tr>
-            <td>Gesamtexpertise</td>
-            <td>{{ crew.getExpertiseSum }}</td>
         </tr>
         <tr>
             <td>Name</td>
@@ -86,22 +83,40 @@
 <br />
 
 {% if crew.getSkills|length > 0 %}
+{% set highestSkillExpertise = crew.getHighestSkillExpertise %}
 <table class="tcal" style="width: 100%;">
+    <tr>
+        <th colspan="3">Positionsexpertise</th>
+    </tr>
     <tr>
         <th>Position</th>
         <th>Rang</th>
         <th>Expertise</th>
     </tr>
     {% for skill in crew.getSkills %}
+    {% set nextSkillRank = skill.getRank.getNextSkillRank %}
     <tr>
-        <td>{{ skill.getPosition.getDescription }}</td>
+        <td>
+            {% if crew.getSkills|length > 1 and highestSkillExpertise > 0 and skill.getExpertise == highestSkillExpertise %}
+            <strong>{{ skill.getPosition.getDescription }}</strong>
+            {% else %}
+            {{ skill.getPosition.getDescription }}
+            {% endif %}
+        </td>
         <td>{{ CREW_RANK_NAMES[skill.getRank.value] }}</td>
-        <td>{{ skill.getExpertise }}</td>
+        <td>
+            {{ skill.getExpertise }}
+            {% if nextSkillRank %}
+            <br /><small>Noch {{ nextSkillRank.getNeededExpertise - skill.getExpertise }} XP bis {{ CREW_RANK_NAMES[nextSkillRank.value] }}</small>
+            {% else %}
+            <br /><small>Maximalrang erreicht</small>
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>
 {% else %}
-<div>Keine Skills vorhanden</div>
+<div>Keine Positionsexpertise vorhanden</div>
 {% endif %}
 <br />
 
@@ -115,24 +130,28 @@
     </div>
 </form>
 <br />
-<table class="tcal" style="width: 100%;">
+<table class="tcal" style="width: 100%; table-layout: auto;">
     <tr>
+        <th style="width: 10px; white-space: nowrap;">Position</th>
         <th>Eintrag</th>
-        <th>Datum</th>
+        <th style="width: 10px; white-space: nowrap;">Datum</th>
     </tr>
     {% for entry in LOGS %}
     <tr>
-        <td>
+        <td style="width: 10px; white-space: nowrap;">
+            {{ entry.getEnhancement.getPosition.getDescription }}
+        </td>
+        <td style="width: auto; overflow-wrap: break-word;">
             {% if entry.getPromotion %}
             <span style="color: rgb(88, 196, 0)">{{ entry.getPromotion }}</span><br />
             {% endif %}
             {{ entry.getDescription(CREW_RANK_NAMES[entry.getRank.value])|bbcode }}
         </td>
-        <td>{{ entry.getTimestamp|stuDateTime }}</td>
+        <td style="width: 10px; white-space: nowrap;">{{ entry.getTimestamp|stuDateTime }}</td>
     </tr>
     {% else %}
     <tr>
-        <td colspan="2">Keine Eintraege vorhanden</td>
+        <td colspan="3">Keine Einträge vorhanden</td>
     </tr>
     {% endfor %}
 </table>

@@ -6,12 +6,16 @@ namespace Stu\Component\Crew\Skill;
 
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
 
 final class CrewEnhancement implements CrewEnhancementInterface
 {
+    private const int SCIENCE_SCAN_COOLDOWN_IN_SECONDS = 10 * 60 * 60;
+
     public function __construct(
         private SkillEnhancementCacheInterface $skillEnhancementCache,
-        private RaiseExpertise $raiseExpertise
+        private RaiseExpertise $raiseExpertise,
+        private SkillEnhancementLogRepositoryInterface $skillEnhancementLogRepository
     ) {}
 
     #[\Override]
@@ -33,8 +37,20 @@ final class CrewEnhancement implements CrewEnhancementInterface
                 continue;
             }
 
+            $crew = $crewAssignment->getCrew();
+            if (
+                $trigger === SkillEnhancementEnum::FOREIGN_SPACECRAFT_SCAN
+                && $this->skillEnhancementLogRepository->hasCrewExperienceSince(
+                    $crew,
+                    $trigger,
+                    time() - self::SCIENCE_SCAN_COOLDOWN_IN_SECONDS
+                )
+            ) {
+                continue;
+            }
+
             $this->raiseExpertise->raiseExpertise(
-                $crewAssignment->getCrew(),
+                $crew,
                 $spacecraft,
                 $position,
                 $enhancements[$position->value],

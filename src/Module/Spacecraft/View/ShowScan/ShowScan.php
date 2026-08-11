@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowScan;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Database\AchievementManagerInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -41,7 +45,9 @@ final class ShowScan implements ViewControllerInterface
         private readonly SpacecraftLogRepositoryInterface $spacecraftLogRepository,
         private readonly SpacecraftLogScanRepositoryInterface $spacecraftLogScanRepository,
         private readonly ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
-        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository
+        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository,
+        private readonly PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -88,6 +94,16 @@ final class ShowScan implements ViewControllerInterface
         }
 
         $epsSystem->lowerEps(1)->update();
+
+        if (
+            $target instanceof Ship
+            && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $target->getUser())
+        ) {
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $ship,
+                SkillEnhancementEnum::FOREIGN_SPACECRAFT_SCAN
+            ));
+        }
 
         $this->achievementManager->checkDatabaseItem($target->getDatabaseId(), $user);
         $this->achievementManager->checkDatabaseItem($target->getRump()->getDatabaseId(), $user);

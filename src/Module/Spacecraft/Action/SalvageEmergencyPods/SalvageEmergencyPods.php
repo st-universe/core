@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\SalvageEmergencyPods;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
@@ -41,7 +44,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         private CancelRetrofitInterface $cancelRetrofit,
         private SpacecraftRemoverInterface $spacecraftRemover,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -114,6 +118,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         //remove entity if crew was on escape pods
         if ($target->getRump()->isEscapePods()) {
             $this->spacecraftRemover->remove($target);
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $spacecraft,
+                SkillEnhancementEnum::SALVAGE_EMERGENCY_PODS
+            ));
         }
 
         $epsSystem->lowerEps(1)->update();
