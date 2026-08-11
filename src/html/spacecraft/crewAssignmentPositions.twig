@@ -1,7 +1,7 @@
 <div class="crew-assignment-positions">
     {% for data in POSITIONS %}
     {% set position = data.position %}
-    {% set isReadOnly = CREW_ASSIGNMENT_READONLY|default(false) %}
+    {% set isReadOnly = CREW_ASSIGNMENT_READONLY is defined ? CREW_ASSIGNMENT_READONLY : false %}
     <section class="crew-assignment-position{% if position.value == 7 %} crew-assignment-position-wide{% endif %}">
         <div class="crew-assignment-position-head">
             <strong>{{ position.getDescription }}</strong>

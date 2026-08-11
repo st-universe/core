@@ -1,8 +1,8 @@
 {% set crew = assignment.getCrew %}
 {% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
-{% set isReadOnly = CREW_ASSIGNMENT_READONLY|default(false) %}
-{% set showSkills = SHOW_CREW_SKILLS|default(true) %}
-{% set showOwnerInfo = SHOW_CREW_OWNER_INFO|default(false) and crew.getUser.getId != SPACECRAFT.getUser.getId %}
+{% set isReadOnly = CREW_ASSIGNMENT_READONLY is defined ? CREW_ASSIGNMENT_READONLY : false %}
+{% set showSkills = SHOW_CREW_SKILLS is defined ? SHOW_CREW_SKILLS : true %}
+{% set showOwnerInfo = (SHOW_CREW_OWNER_INFO is defined ? SHOW_CREW_OWNER_INFO : false) and crew.getUser.getId != SPACECRAFT.getUser.getId %}
 {% set rankName = CREW_RANK_NAMES[crew.getId]|default(CREW_RANK_NAMES[crew.getRank.value]|default('')) %}
 <div class="crew-assignment-card{% if isReadOnly %} crew-assignment-card-readonly{% endif %}"
     {% if not isReadOnly %}

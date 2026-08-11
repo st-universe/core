@@ -3635,6 +3635,8 @@ label.linkbutton:hover {
 
 .crew-assignment-card-readonly {
   cursor: default;
+  touch-action: auto;
+  user-select: text;
 }
 
 .crew-assignment-card-readonly:active {
