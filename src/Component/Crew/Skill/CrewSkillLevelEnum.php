@@ -69,6 +69,22 @@ enum CrewSkillLevelEnum: string
         };
     }
 
+    public function getNextSkillRank(): ?CrewSkillLevelEnum
+    {
+        return match ($this) {
+            self::CADET => self::CREWMAN,
+            self::CREWMAN => self::ENSIGN,
+            self::ENSIGN => self::JUNIOR_LIEUTENANT,
+            self::JUNIOR_LIEUTENANT => self::LIEUTENANT,
+            self::LIEUTENANT => self::LIEUTENANT_COMMANDER,
+            self::LIEUTENANT_COMMANDER => self::COMMANDER,
+            self::COMMANDER => self::CAPTAIN,
+            self::CAPTAIN => self::COMMODORE,
+            self::COMMODORE => self::ADMIRAL,
+            self::ADMIRAL => null
+        };
+    }
+
     public function getPromotionLimit(): ?int
     {
         return match ($this) {

@@ -50,7 +50,7 @@ final class CreateEnhancementLog
         return $oldRank === $newRank
             ? null
             : sprintf(
-                'Befoerderung %s -> %s',
+                'Beförderung %s -> %s',
                 $this->userCrewRankRepository->getRankName($user, $oldRank),
                 $this->userCrewRankRepository->getRankName($user, $newRank)
             );

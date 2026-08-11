@@ -56,7 +56,7 @@ class CrewSkill
 
     public function increaseExpertise(int $amount): void
     {
-        $this->expertise += $amount;
+        $this->expertise = max(0, $this->expertise + $amount);
     }
 
     public function getExpertise(): int

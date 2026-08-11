@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260801205207 extends AbstractMigration
+final class Version20260811201826 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -442,6 +442,7 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_skill_enhancement_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, crew_id INTEGER NOT NULL, crew_name VARCHAR(255) NOT NULL, promotion VARCHAR(255) DEFAULT NULL, ship_name VARCHAR(255) NOT NULL, expertise INTEGER NOT NULL, expertise_sum INTEGER NOT NULL, date INTEGER NOT NULL, user_id INTEGER NOT NULL, enhancement_id INTEGER NOT NULL, CONSTRAINT FK_73B42DBBA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_73B42DBB49186B17 FOREIGN KEY (enhancement_id) REFERENCES stu_skill_enhancement (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_73B42DBBA76ED395 ON stu_skill_enhancement_log (user_id)');
         $this->addSql('CREATE INDEX IDX_73B42DBB49186B17 ON stu_skill_enhancement_log (enhancement_id)');
+        $this->addSql('CREATE INDEX skill_enhancement_log_crew_date_idx ON stu_skill_enhancement_log (crew_id, date)');
         $this->addSql('CREATE TABLE stu_spacecraft (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, plan_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, max_hull INTEGER NOT NULL, max_shield INTEGER NOT NULL, tractored_ship_id INTEGER DEFAULT NULL, holding_web_id INTEGER DEFAULT NULL, database_id INTEGER DEFAULT NULL, location_id INTEGER NOT NULL, type VARCHAR(255) NOT NULL, CONSTRAINT FK_4BD20E2EEE54A42E FOREIGN KEY (tractored_ship_id) REFERENCES stu_ship (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E73D3801E FOREIGN KEY (holding_web_id) REFERENCES stu_tholian_web (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2EA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2EE899029B FOREIGN KEY (plan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E64D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_4BD20E2EEE54A42E ON stu_spacecraft (tractored_ship_id)');
         $this->addSql('CREATE INDEX IDX_4BD20E2E73D3801E ON stu_spacecraft (holding_web_id)');
@@ -508,10 +509,10 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_torpedo_hull (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, module_id INTEGER NOT NULL, torpedo_type INTEGER NOT NULL, modificator INTEGER NOT NULL, CONSTRAINT FK_B58BDD2B942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_B58BDD2BAFC2B591 FOREIGN KEY (module_id) REFERENCES stu_modules (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX torpedo_hull_module_idx ON stu_torpedo_hull (module_id)');
         $this->addSql('CREATE INDEX torpedo_hull_torpedo_idx ON stu_torpedo_hull (torpedo_type)');
-        $this->addSql('CREATE TABLE stu_torpedo_storage (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, torpedo_type INTEGER NOT NULL, is_active BOOLEAN NOT NULL, CONSTRAINT FK_823719111C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_82371911942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE UNIQUE INDEX torpedo_storage_type_unique_idx ON stu_torpedo_storage (spacecraft_id, torpedo_type)');
+        $this->addSql('CREATE TABLE stu_torpedo_storage (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, torpedo_type INTEGER NOT NULL, is_active BOOLEAN DEFAULT 0 NOT NULL, CONSTRAINT FK_823719111C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_82371911942323E3 FOREIGN KEY (torpedo_type) REFERENCES stu_torpedo_types (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_82371911942323E3 ON stu_torpedo_storage (torpedo_type)');
         $this->addSql('CREATE INDEX torpedo_storage_spacecraft_idx ON stu_torpedo_storage (spacecraft_id)');
+        $this->addSql('CREATE UNIQUE INDEX torpedo_storage_type_unique_idx ON stu_torpedo_storage (spacecraft_id, torpedo_type)');
         $this->addSql('CREATE TABLE stu_torpedo_types (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, base_damage INTEGER NOT NULL, critical_chance INTEGER NOT NULL, hit_factor INTEGER NOT NULL, hull_damage_factor INTEGER NOT NULL, shield_damage_factor INTEGER NOT NULL, variance INTEGER NOT NULL, commodity_id INTEGER NOT NULL, level INTEGER NOT NULL, research_id INTEGER NOT NULL, ecost INTEGER NOT NULL, amount INTEGER NOT NULL, CONSTRAINT FK_9C3F99F0B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9C3F99F0B4ACC212 ON stu_torpedo_types (commodity_id)');
         $this->addSql('CREATE INDEX torpedo_type_research_idx ON stu_torpedo_types (research_id)');
@@ -558,6 +559,8 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E1449B843D5282CF ON stu_user_award (award_id)');
         $this->addSql('CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6E46626CA76ED395 ON stu_user_character (user_id)');
+        $this->addSql('CREATE TABLE stu_user_crew_rank (rank VARCHAR(255) NOT NULL, name VARCHAR(64) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, rank), CONSTRAINT FK_4C79DCA2A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX user_crew_rank_user_idx ON stu_user_crew_rank (user_id)');
         $this->addSql('CREATE TABLE stu_user_invitations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, invited_user_id INTEGER DEFAULT NULL, date DATETIME NOT NULL, token VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE INDEX user_invitation_user_idx ON stu_user_invitations (user_id)');
         $this->addSql('CREATE INDEX user_invitation_token_idx ON stu_user_invitations (token)');
@@ -587,8 +590,6 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6AAFACE0A76ED395 ON stu_user_setting (user_id)');
-        $this->addSql('CREATE TABLE stu_user_crew_rank (rank VARCHAR(255) NOT NULL, name VARCHAR(64) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, rank), CONSTRAINT FK_USER_CREW_RANK_USER FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX user_crew_rank_user_idx ON stu_user_crew_rank (user_id)');
         $this->addSql('CREATE TABLE stu_user_tutorial (user_id INTEGER NOT NULL, tutorial_step_id INTEGER NOT NULL, PRIMARY KEY (user_id, tutorial_step_id), CONSTRAINT FK_9840DDF3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9840DDF3D356979 FOREIGN KEY (tutorial_step_id) REFERENCES stu_tutorial_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9840DDF3A76ED395 ON stu_user_tutorial (user_id)');
         $this->addSql('CREATE INDEX IDX_9840DDF3D356979 ON stu_user_tutorial (tutorial_step_id)');
@@ -777,6 +778,7 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user');
         $this->addSql('DROP TABLE stu_user_award');
         $this->addSql('DROP TABLE stu_user_character');
+        $this->addSql('DROP TABLE stu_user_crew_rank');
         $this->addSql('DROP TABLE stu_user_invitations');
         $this->addSql('DROP TABLE stu_user_iptable');
         $this->addSql('DROP TABLE stu_user_layer');
@@ -787,7 +789,6 @@ final class Version20260801205207 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user_referer');
         $this->addSql('DROP TABLE stu_user_registration');
         $this->addSql('DROP TABLE stu_user_setting');
-        $this->addSql('DROP TABLE stu_user_crew_rank');
         $this->addSql('DROP TABLE stu_user_tutorial');
         $this->addSql('DROP TABLE stu_weapon_shield');
         $this->addSql('DROP TABLE stu_weapons');

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -36,6 +37,7 @@ class ShipTakeoverManagerTest extends StuTestCase
     private MockInterface&EntryCreatorInterface $entryCreator;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&GameControllerInterface $game;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private MockInterface&Ship $ship;
     private MockInterface&Ship $target;
@@ -53,6 +55,7 @@ class ShipTakeoverManagerTest extends StuTestCase
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
 
         //params
         $this->ship = $this->mock(Ship::class);
@@ -65,7 +68,8 @@ class ShipTakeoverManagerTest extends StuTestCase
             $this->leaveFleet,
             $this->entryCreator,
             $this->privateMessageSender,
-            $this->game
+            $this->game,
+            $this->eventDispatcher
         );
     }
 
@@ -672,6 +676,10 @@ class ShipTakeoverManagerTest extends StuTestCase
                 666,
                 $this->target
             )
+            ->once();
+
+        $this->eventDispatcher->shouldReceive('dispatch')
+            ->with(Mockery::type(\Stu\Component\Crew\Skill\Event\CrewExperienceEvent::class))
             ->once();
 
         $this->subject->finishTakeover($takeover);

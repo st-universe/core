@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
 use Mockery;
 use Mockery\MockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
@@ -47,6 +48,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
     private MockInterface&SpacecraftDestructionInterface $spacecraftDestruction;
     private MockInterface&StuRandom $stuRandom;
     private MockInterface&MessageFactoryInterface $messageFactory;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private EnergyWeaponPhaseInterface $subject;
 
@@ -62,6 +64,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
         $this->spacecraftDestruction = $this->mock(SpacecraftDestructionInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
 
         $this->subject = new EnergyWeaponPhase(
             $this->userRepository,
@@ -72,7 +75,8 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->stuRandom,
             $this->messageFactory,
             $this->spacecraftDestruction,
-            $this->initLoggerUtil()
+            $this->initLoggerUtil(),
+            $this->eventDispatcher
         );
     }
 

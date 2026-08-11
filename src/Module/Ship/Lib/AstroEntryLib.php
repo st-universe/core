@@ -47,11 +47,6 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $entry->setState(AstronomicalMappingStateEnum::MEASURED);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
-
-        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
-            $ship,
-            SkillEnhancementEnum::FINISH_ASTRO_MAPPING
-        ));
     }
 
     #[\Override]
@@ -75,6 +70,11 @@ final class AstroEntryLib implements AstroEntryLibInterface
         $entry->setState(AstronomicalMappingStateEnum::DONE);
         $entry->setAstroStartTurn(null);
         $this->astroEntryRepository->save($entry);
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $ship,
+            SkillEnhancementEnum::FINISH_ASTRO_MAPPING
+        ));
     }
 
     #[\Override]

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Interaction;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -29,7 +32,8 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         private LeaveFleetInterface $leaveFleet,
         private EntryCreatorInterface $entryCreator,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private GameControllerInterface $game
+        private GameControllerInterface $game,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -299,6 +303,11 @@ final class ShipTakeoverManager implements ShipTakeoverManagerInterface
         );
 
         $this->changeShipOwner($targetShip, $sourceUser);
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $takeover->getSourceSpacecraft(),
+            SkillEnhancementEnum::SPACECRAFT_TAKEOVER
+        ));
 
         $this->removeTakeover($takeover);
     }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EscapeTractorBeam;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Damage\DamageWrapper;
@@ -38,7 +41,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftDestructionInterface $spacecraftDestruction,
         private AlertReactionFacadeInterface $alertReactionFacade,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -128,6 +132,11 @@ final class EscapeTractorBeam implements ActionControllerInterface
         );
 
         $game->getInfo()->addInformation(_('Der Fluchtversuch ist gelungen'));
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $ship,
+            SkillEnhancementEnum::ESCAPE_TRACTOR_BEAM
+        ));
 
         //Alarm-Rot check
         if ($isTractoringShipWarped) {
