@@ -1,0 +1,37 @@
+{% set crew = assignment.getCrew %}
+{% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+{% set isReadOnly = CREW_ASSIGNMENT_READONLY|default(false) %}
+{% set showSkills = SHOW_CREW_SKILLS|default(true) %}
+{% set showOwnerInfo = SHOW_CREW_OWNER_INFO|default(false) and crew.getUser.getId != SPACECRAFT.getUser.getId %}
+{% set rankName = CREW_RANK_NAMES[crew.getId]|default(CREW_RANK_NAMES[crew.getRank.value]|default('')) %}
+<div class="crew-assignment-card{% if isReadOnly %} crew-assignment-card-readonly{% endif %}"
+    {% if not isReadOnly %}
+    draggable="true" data-crew-id="{{ crew.getId }}"
+    ondragstart="startCrewAssignmentDrag(event, this);"
+    ondragend="endCrewAssignmentDrag(this);"
+    onpointerdown="startCrewAssignmentPointerDrag(event, this);"
+    onpointermove="moveCrewAssignmentPointerDrag(event);"
+    onpointerup="endCrewAssignmentPointerDrag(event);"
+    onpointercancel="cancelCrewAssignmentPointerDrag(event);"
+    {% endif %}>
+    <div class="crew-assignment-card-main">
+        <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
+        <div>
+            <div class="crew-assignment-name">{{ crew.getName|bbcode }}</div>
+            <div>{{ rankName }}</div>
+        </div>
+    </div>
+    {% if showOwnerInfo %}
+    <div class="crew-assignment-owner">{{ crew.getUser.getName|bbcode }} ({{ crew.getUser.getId }})</div>
+    {% elseif showSkills %}
+    {% if crew.getSkills|length > 0 %}
+    <div class="crew-assignment-skills">
+        {% for skill in crew.getSkills %}
+        <span>{{ skill.getPosition.getDescription }}: {{ skill.getExpertise }} XP</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="crew-assignment-no-skills">Noch keine Erfahrung</div>
+    {% endif %}
+    {% endif %}
+</div>

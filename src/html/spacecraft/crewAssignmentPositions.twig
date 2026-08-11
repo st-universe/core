@@ -1,0 +1,29 @@
+<div class="crew-assignment-positions">
+    {% for data in POSITIONS %}
+    {% set position = data.position %}
+    {% set isReadOnly = CREW_ASSIGNMENT_READONLY|default(false) %}
+    <section class="crew-assignment-position{% if position.value == 7 %} crew-assignment-position-wide{% endif %}">
+        <div class="crew-assignment-position-head">
+            <strong>{{ position.getDescription }}</strong>
+            {% if data.capacity is null %}
+            <span>{{ data.crewAssignments|length }} zugewiesen</span>
+            {% else %}
+            <span>{{ data.crewAssignments|length }} / {{ data.capacity }}</span>
+            {% endif %}
+        </div>
+        <div class="crew-assignment-dropzone{% if isReadOnly %} crew-assignment-dropzone-readonly{% endif %}"
+            data-crew-slot="{{ position.value }}"
+            {% if data.capacity is not null %}data-capacity="{{ data.capacity }}"{% endif %}
+            {% if not isReadOnly %}
+            ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            {% endif %}>
+            {% for assignment in data.crewAssignments %}
+            {% include 'html/spacecraft/crewAssignmentCard.twig' %}
+            {% else %}
+            <div class="crew-assignment-empty">Freier Posten</div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+</div>

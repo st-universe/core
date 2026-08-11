@@ -3566,6 +3566,10 @@ label.linkbutton:hover {
   border: 1px solid var(--color-21);
 }
 
+.crew-assignment-position-wide {
+  grid-column: 1 / -1;
+}
+
 .crew-assignment-position-head {
   background: var(--color-11);
   color: var(--color-12);
@@ -3595,6 +3599,17 @@ label.linkbutton:hover {
   user-select: none;
 }
 
+.crew-assignment-position-wide .crew-assignment-dropzone {
+  align-content: start;
+  display: grid;
+  gap: 3px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.crew-assignment-position-wide .crew-assignment-card {
+  margin-bottom: 0;
+}
+
 .crew-assignment-card-main {
   align-items: center;
   display: flex;
@@ -3618,6 +3633,16 @@ label.linkbutton:hover {
   outline: 1px dashed var(--color-9);
 }
 
+.crew-assignment-card-readonly {
+  cursor: default;
+}
+
+.crew-assignment-card-readonly:active {
+  background: var(--color-7);
+  cursor: default;
+  outline: none;
+}
+
 .crew-assignment-name {
   color: var(--color-9);
   font-weight: bold;
@@ -3625,6 +3650,7 @@ label.linkbutton:hover {
 
 .crew-assignment-skills,
 .crew-assignment-no-skills,
+.crew-assignment-owner,
 .crew-assignment-empty {
   color: var(--color-6);
   font-size: 82%;
@@ -3636,12 +3662,17 @@ label.linkbutton:hover {
 }
 
 .crew-assignment-no-skills,
+.crew-assignment-owner,
 .crew-assignment-empty {
   font-style: italic;
 }
 
 @media (max-width: 600px) {
   .crew-assignment-positions {
+    grid-template-columns: 1fr;
+  }
+
+  .crew-assignment-position-wide .crew-assignment-dropzone {
     grid-template-columns: 1fr;
   }
 

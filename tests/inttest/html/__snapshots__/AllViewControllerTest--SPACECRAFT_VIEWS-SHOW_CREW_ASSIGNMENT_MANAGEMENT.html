@@ -28,99 +28,115 @@
 
     <div class="crew-assignment-management-scroll" ondragover="scrollCrewAssignmentManagement(event);">
         <div class="crew-assignment-positions">
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Captain</strong>
-                                        <span>0 / 1</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="1"
-                    data-capacity="1"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Commander</strong>
-                                        <span>0 / 0</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="2"
-                    data-capacity="0"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Taktik</strong>
-                                        <span>0 / 0</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="3"
-                    data-capacity="0"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Wissenschaftler</strong>
-                                        <span>0 / 0</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="4"
-                    data-capacity="0"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Ingenieur</strong>
-                                        <span>0 / 1</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="5"
-                    data-capacity="1"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Navigator</strong>
-                                        <span>0 / 1</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="6"
-                    data-capacity="1"                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                        <div class="crew-assignment-empty">Freier Posten</div>
-                                    </div>
-            </section>
-                                    <section class="crew-assignment-position">
-                <div class="crew-assignment-position-head">
-                    <strong>Crewman</strong>
-                                        <span>1 zugewiesen</span>
-                                    </div>
-                <div class="crew-assignment-dropzone" data-crew-slot="7"
-                                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
-                    ondrop="dropCrewAssignment(event, this);">
-                                                                                <div class="crew-assignment-card" draggable="true" data-crew-id="2"
-                        ondragstart="startCrewAssignmentDrag(event, this);"
-                        ondragend="endCrewAssignmentDrag(this);"
-                        onpointerdown="startCrewAssignmentPointerDrag(event, this);"
-                        onpointermove="moveCrewAssignmentPointerDrag(event);"
-                        onpointerup="endCrewAssignmentPointerDrag(event);"
-                        onpointercancel="cancelCrewAssignmentPointerDrag(event);">
-                        <div class="crew-assignment-card-main">
-                            <img src="/assets/crew/ANDORIAN/m/1_6.png" />
-                            <div>
-                                <div class="crew-assignment-name">Crew</div>
-                                <div>Kadett</div>
-                            </div>
-                        </div>
-                                                <div class="crew-assignment-no-skills">Noch keine Erfahrung</div>
-                                            </div>
-                                    </div>
-            </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Captain</strong>
+                        <span>0 / 1</span>
                     </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="1"
+            data-capacity="1"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Commander</strong>
+                        <span>0 / 0</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="2"
+            data-capacity="0"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Taktik</strong>
+                        <span>0 / 0</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="3"
+            data-capacity="0"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Wissenschaftler</strong>
+                        <span>0 / 0</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="4"
+            data-capacity="0"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Ingenieur</strong>
+                        <span>0 / 1</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="5"
+            data-capacity="1"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position">
+        <div class="crew-assignment-position-head">
+            <strong>Navigator</strong>
+                        <span>0 / 1</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="6"
+            data-capacity="1"                        ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-empty">Freier Posten</div>
+                    </div>
+    </section>
+                <section class="crew-assignment-position crew-assignment-position-wide">
+        <div class="crew-assignment-position-head">
+            <strong>Crewman</strong>
+                        <span>1 zugewiesen</span>
+                    </div>
+        <div class="crew-assignment-dropzone"
+            data-crew-slot="7"
+                                    ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+            ondrop="dropCrewAssignment(event, this);"
+            >
+                        <div class="crew-assignment-card"
+        draggable="true" data-crew-id="2"
+    ondragstart="startCrewAssignmentDrag(event, this);"
+    ondragend="endCrewAssignmentDrag(this);"
+    onpointerdown="startCrewAssignmentPointerDrag(event, this);"
+    onpointermove="moveCrewAssignmentPointerDrag(event);"
+    onpointerup="endCrewAssignmentPointerDrag(event);"
+    onpointercancel="cancelCrewAssignmentPointerDrag(event);"
+    >
+    <div class="crew-assignment-card-main">
+        <img src="/assets/crew/ANDORIAN/m/1_6.png" />
+        <div>
+            <div class="crew-assignment-name">Crew</div>
+            <div>Kadett</div>
+        </div>
+    </div>
+            <div class="crew-assignment-no-skills">Noch keine Erfahrung</div>
+        </div>
+                    </div>
+    </section>
+    </div>
     </div>
 </div>
 <script>

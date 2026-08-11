@@ -4,11 +4,14 @@
   <div class="box_body">
     <table class="tcal">
       <tr>
-        <td style="width: 50%" class="selected" id="menuScanDetails">
+        <td style="width: 33%" class="selected" id="menuScanDetails">
           <a style="display: block;" href="javascript:void(0);" onclick="switchScanToDetails();">Details</a>
         </td>
-        <td style="width: 50%" id="menuScanLogbook">
+        <td style="width: 33%" id="menuScanLogbook">
           <a style="display: block;" href="javascript:void(0);" onclick="switchScanToLogbook();">Logbuch</a>
+        </td>
+        <td style="width: 34%" id="menuScanCrew">
+          <a style="display: block;" href="javascript:void(0);" onclick="switchScanToCrew();">Crew</a>
         </td>
       </tr>
     </table>
@@ -129,6 +132,22 @@
     </table>
     {% endif %}
   </form>
+</div>
+<div class="box" id="scancrew" style="width: 760px; display: none;">
+  <div class="box_title">Crew</div>
+  <div class="box_body">
+    {% set SPACECRAFT = TARGETSHIP %}
+    {% set POSITIONS = SCAN_CREW_POSITIONS %}
+    {% set CREW_RANK_NAMES = SCAN_CREW_RANK_NAMES %}
+    {% set CREW_ASSIGNMENT_READONLY = true %}
+    {% set SHOW_CREW_SKILLS = false %}
+    {% set SHOW_CREW_OWNER_INFO = true %}
+    <div class="crew-assignment-management">
+      <div class="crew-assignment-management-scroll">
+        {% include 'html/spacecraft/crewAssignmentPositions.twig' %}
+      </div>
+    </div>
+  </div>
 </div>
 <div class="box" id="scanlogbook" style="width: 500px; display: none;">
   <div class="box_title">Logbuch</div>
