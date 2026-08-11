@@ -39,7 +39,7 @@ final class SpacecraftCrewCalculator implements SpacecraftCrewCalculatorInterfac
                 $crewCount += TroopQuartersShipSystem::QUARTER_COUNT;
             }
         }
-        return $crewCount;
+        return max($crewCount, $spacecraft->getNeededCrewCount());
     }
 
     #[\Override]

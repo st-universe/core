@@ -53,6 +53,10 @@ class SpacecraftCrewCalculatorTest extends StuTestCase
             ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             ->once()
             ->andReturn(true);
+        $spacecraft->shouldReceive('getNeededCrewCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(13);
         $rump->shouldReceive('getBaseValues')
             ->withNoArgs()
             ->once()
@@ -67,5 +71,35 @@ class SpacecraftCrewCalculatorTest extends StuTestCase
             ->andReturn(42);
 
         $this->assertSame(42 + TroopQuartersShipSystem::QUARTER_COUNT_BASE, $this->subject->getMaxCrewCountByShip($spacecraft));
+    }
+
+    public function testGetMaxCrewCountByShipReturnsNeededCrewCountWhenItIsHigherThanMaximum(): void
+    {
+        $spacecraft = $this->mock(Spacecraft::class);
+        $rump = $this->mock(SpacecraftRump::class);
+        $baseValues = $this->mock(SpacecraftRumpBaseValues::class);
+
+        $spacecraft->shouldReceive('getRump')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($rump);
+        $spacecraft->shouldReceive('isSystemHealthy')
+            ->with(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
+            ->once()
+            ->andReturn(false);
+        $spacecraft->shouldReceive('getNeededCrewCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(24);
+        $rump->shouldReceive('getBaseValues')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($baseValues);
+        $baseValues->shouldReceive('getMaxCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(12);
+
+        $this->assertSame(24, $this->subject->getMaxCrewCountByShip($spacecraft));
     }
 }
