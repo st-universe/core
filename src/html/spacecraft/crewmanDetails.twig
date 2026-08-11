@@ -14,7 +14,7 @@
                 <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
             </td>
             <td>Rang</td>
-            <td>{{ crew.getRankName }}</td>
+            <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>
         </tr>
         <tr>
             <td>Gesamtexpertise</td>
@@ -39,7 +39,7 @@
                     <input type="hidden" name="id" value="{{ crew.getId }}" />
                     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <input type="submit" name="B_PROMOTE_CREW" class="button"
-                        value="Zu {{ crew.getUser.getCrewRankName(nextRank) }} befördern" />
+                        value="Zu {{ CREW_RANK_NAMES[nextRank.value] }} befördern" />
                 </form>
             </td>
         </tr>
@@ -95,7 +95,7 @@
     {% for skill in crew.getSkills %}
     <tr>
         <td>{{ skill.getPosition.getDescription }}</td>
-        <td>{{ crew.getUser.getCrewRankName(skill.getRank) }}</td>
+        <td>{{ CREW_RANK_NAMES[skill.getRank.value] }}</td>
         <td>{{ skill.getExpertise }}</td>
     </tr>
     {% endfor %}
@@ -126,7 +126,7 @@
             {% if entry.getPromotion %}
             <span style="color: rgb(88, 196, 0)">{{ entry.getPromotion }}</span><br />
             {% endif %}
-            {{ entry.__toString|bbcode }}
+            {{ entry.getDescription(CREW_RANK_NAMES[entry.getRank.value])|bbcode }}
         </td>
         <td>{{ entry.getTimestamp|stuDateTime }}</td>
     </tr>

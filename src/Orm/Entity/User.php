@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
-use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -120,9 +119,6 @@ class User
     #[OneToMany(targetEntity: UserSetting::class, mappedBy: 'user', indexBy: 'setting')]
     private Collection $settings;
 
-    #[OneToMany(targetEntity: UserCrewRank::class, mappedBy: 'user', indexBy: 'rank')]
-    private Collection $crewRankNames;
-
     /**
      * @var ArrayCollection<int, UserCharacter>
      */
@@ -157,7 +153,6 @@ class User
         $this->colonies = new ArrayCollection();
         $this->userLayers = new ArrayCollection();
         $this->settings = new ArrayCollection();
-        $this->crewRankNames = new ArrayCollection();
         $this->characters = new ArrayCollection();
         $this->buoys = new ArrayCollection();
         $this->colonyScans = new ArrayCollection();
@@ -211,35 +206,6 @@ class User
     public function getFaction(): Faction
     {
         return $this->faction;
-    }
-
-    public function getCrewRankName(CrewSkillLevelEnum $rank): string
-    {
-        $rankEntry = $this->getCrewRankNameEntry($rank);
-
-        return $rankEntry?->getName() ?: $rank->getDescription($this->getFactionId());
-    }
-
-    public function getCustomCrewRankName(CrewSkillLevelEnum $rank): string
-    {
-        return $this->getCrewRankNameEntry($rank)?->getName() ?? '';
-    }
-
-    public function getCrewRankNameEntry(CrewSkillLevelEnum $rank): ?UserCrewRank
-    {
-        $rankEntry = $this->crewRankNames->get($rank->value);
-
-        return $rankEntry instanceof UserCrewRank ? $rankEntry : null;
-    }
-
-    public function addCrewRankName(UserCrewRank $rankEntry): void
-    {
-        $this->crewRankNames->set($rankEntry->getRank()->value, $rankEntry);
-    }
-
-    public function removeCrewRankName(CrewSkillLevelEnum $rank): void
-    {
-        $this->crewRankNames->remove($rank->value);
     }
 
     /**

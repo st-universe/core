@@ -145,7 +145,12 @@ class SkillEnhancementLog
         return $this;
     }
 
-    public function __toString(): string
+    public function getRank(): CrewSkillLevelEnum
+    {
+        return CrewSkillLevelEnum::getForExpertise($this->expertise_sum);
+    }
+
+    public function getDescription(string $rankName): string
     {
         return sprintf(
             '%s (%s) von der %s steigt auf %d (+%d) Expertise%s fuer %s',
@@ -155,7 +160,7 @@ class SkillEnhancementLog
             $this->expertise_sum,
             $this->expertise,
             $this->promotion === null
-                ? sprintf(' (Rang %s)', $this->user->getCrewRankName(CrewSkillLevelEnum::getForExpertise($this->expertise_sum)))
+                ? sprintf(' (Rang %s)', $rankName)
                 : '',
             $this->enhancement->getDescription()
         );

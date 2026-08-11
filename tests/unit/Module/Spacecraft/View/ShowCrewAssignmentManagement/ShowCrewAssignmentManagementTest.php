@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Mockery;
 use Mockery\Matcher\Closure;
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
@@ -22,12 +23,14 @@ use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 use Stu\StuTestCase;
 
 final class ShowCrewAssignmentManagementTest extends StuTestCase
 {
     private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
     private MockInterface&ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository;
+    private MockInterface&UserCrewRankRepositoryInterface $userCrewRankRepository;
 
     private ShowCrewAssignmentManagement $subject;
 
@@ -36,9 +39,11 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
     {
         $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);
         $this->shipRumpCategoryRoleCrewRepository = $this->mock(ShipRumpCategoryRoleCrewRepositoryInterface::class);
+        $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
         $this->subject = new ShowCrewAssignmentManagement(
             $this->spacecraftLoader,
-            $this->shipRumpCategoryRoleCrewRepository
+            $this->shipRumpCategoryRoleCrewRepository,
+            $this->userCrewRankRepository
         );
     }
 
@@ -76,6 +81,7 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
                 return true;
             }))
             ->once();
+        $game->shouldReceive('setTemplateVar')->with('CREW_RANK_NAMES', Mockery::type('array'))->once();
         $user->shouldReceive('getId')->andReturn(101);
         $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
         $spacecraft->shouldReceive('getRump')->andReturn($rump);
@@ -91,6 +97,7 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
         $this->shipRumpCategoryRoleCrewRepository->shouldReceive('getByShipRumpCategoryAndRole')
             ->with(SpacecraftRumpCategoryEnum::FRIGATE, SpacecraftRumpRoleEnum::PHASER_SHIP)
             ->andReturn($config);
+        $this->userCrewRankRepository->shouldReceive('getRankName')->with($user, Mockery::type(\Stu\Component\Crew\Skill\CrewSkillLevelEnum::class))->andReturn('');
         $config->shouldReceive('getCrewForPosition')->andReturnUsing(
             static fn (CrewTypeEnum $position): int => $position === CrewTypeEnum::CAPTAIN ? 1 : 0
         );

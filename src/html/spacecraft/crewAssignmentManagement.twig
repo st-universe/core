@@ -37,7 +37,7 @@
                             <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
                             <div>
                                 <div class="crew-assignment-name">{{ crew.getName|bbcode }}</div>
-                                <div>{{ crew.getRankName }}</div>
+                                <div>{{ CREW_RANK_NAMES[crew.getRank.value] }}</div>
                             </div>
                         </div>
                         {% if crew.getSkills|length > 0 %}

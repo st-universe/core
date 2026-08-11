@@ -32,11 +32,10 @@ final class ChangeCrewRankNames implements ActionControllerInterface
         $user = $game->getUser();
         foreach (CrewSkillLevelEnum::cases() as $rank) {
             $name = (string) ($rankNames[$rank->value] ?? '');
-            $rankEntry = $user->getCrewRankNameEntry($rank);
+            $rankEntry = $this->userCrewRankRepository->getByUserAndRank($user, $rank);
             if ($name === '') {
                 if ($rankEntry !== null) {
                     $this->userCrewRankRepository->delete($rankEntry);
-                    $user->removeCrewRankName($rank);
                 }
                 continue;
             }
@@ -45,7 +44,6 @@ final class ChangeCrewRankNames implements ActionControllerInterface
                 $rankEntry = $this->userCrewRankRepository->prototype()
                     ->setUser($user)
                     ->setRank($rank);
-                $user->addCrewRankName($rankEntry);
             }
 
             $rankEntry->setName($name);

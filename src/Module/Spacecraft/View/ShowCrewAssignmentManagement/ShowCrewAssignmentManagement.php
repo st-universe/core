@@ -6,11 +6,13 @@ namespace Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement;
 
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ShowCrewAssignmentManagement implements ViewControllerInterface
 {
@@ -19,7 +21,8 @@ final class ShowCrewAssignmentManagement implements ViewControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository
+        private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
+        private UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
     #[\Override]
@@ -69,5 +72,10 @@ final class ShowCrewAssignmentManagement implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/spacecraft/crewAssignmentManagement.twig');
         $game->setTemplateVar('SPACECRAFT', $spacecraft);
         $game->setTemplateVar('POSITIONS', $positions);
+        $crewRankNames = [];
+        foreach (CrewSkillLevelEnum::cases() as $rank) {
+            $crewRankNames[$rank->value] = $this->userCrewRankRepository->getRankName($user, $rank);
+        }
+        $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
     }
 }
