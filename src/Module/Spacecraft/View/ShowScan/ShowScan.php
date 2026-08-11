@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowScan;
 
 use request;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
@@ -14,13 +15,16 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogScanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ShowScan implements ViewControllerInterface
 {
@@ -35,7 +39,9 @@ final class ShowScan implements ViewControllerInterface
         private readonly AchievementManagerInterface $achievementManager,
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly SpacecraftLogRepositoryInterface $spacecraftLogRepository,
-        private readonly SpacecraftLogScanRepositoryInterface $spacecraftLogScanRepository
+        private readonly SpacecraftLogScanRepositoryInterface $spacecraftLogScanRepository,
+        private readonly ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
+        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
     #[\Override]
@@ -125,6 +131,8 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('IS_TARGET_HELD_BY_THOLIAN_WEB', $target->getHoldingWeb() !== null);
         $game->setTemplateVar('CAN_SALVAGE_ESCAPE_PODS', $this->canSalvageEscapePods($target, $user->getId()));
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('SCAN_CREW_POSITIONS', $this->getCrewPositions($target));
+        $game->setTemplateVar('SCAN_CREW_RANK_NAMES', $this->getCrewRankNames($target));
 
         $tradePostCrewCount = null;
         $targetTradePost = $target instanceof Station ? $target->getTradePost() : null;
@@ -133,6 +141,59 @@ final class ShowScan implements ViewControllerInterface
             $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
         }
         $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
+    }
+
+    /**
+     * @return array<int, array{position: CrewTypeEnum, capacity: int|null, crewAssignments: array<int, CrewAssignment>}>
+     */
+    private function getCrewPositions(Spacecraft $spacecraft): array
+    {
+        $rump = $spacecraft->getRump();
+        $rumpRole = $rump->getShipRumpRole();
+        $config = $rumpRole === null
+            ? null
+            : $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
+                $rump->getShipRumpCategory()->getId(),
+                $rumpRole->getId()
+            );
+
+        /** @var array<int, array<int, CrewAssignment>> $crewBySlot */
+        $crewBySlot = [];
+        foreach ($spacecraft->getCrewAssignments() as $crewAssignment) {
+            $slot = $crewAssignment->getSlot();
+            if ($slot === null) {
+                continue;
+            }
+
+            $crewBySlot[$slot->value][] = $crewAssignment;
+        }
+
+        $positions = [];
+        foreach (CrewTypeEnum::getOrder() as $position) {
+            $positions[] = [
+                'position' => $position,
+                'capacity' => $position === CrewTypeEnum::CREWMAN
+                    ? null
+                    : $config?->getCrewForPosition($position) ?? 0,
+                'crewAssignments' => $crewBySlot[$position->value] ?? []
+            ];
+        }
+
+        return $positions;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function getCrewRankNames(Spacecraft $spacecraft): array
+    {
+        $crewRankNames = [];
+        foreach ($spacecraft->getCrewAssignments() as $crewAssignment) {
+            $crew = $crewAssignment->getCrew();
+            $crewRankNames[$crew->getId()] = $this->userCrewRankRepository->getRankName($crew->getUser(), $crew->getRank());
+        }
+
+        return $crewRankNames;
     }
 
     private function saveSpacecraftLogScan(User $user, Spacecraft $target, int $scanDate, bool $hasLogbook): void

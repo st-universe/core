@@ -672,17 +672,30 @@ function switchMenuToEmergency() {
 }
 function switchScanToDetails() {
   $("menuScanLogbook").removeClassName("selected");
+  $("menuScanCrew").removeClassName("selected");
   $("menuScanDetails").addClassName("selected");
 
   document.getElementById("scandetails").style.display = "";
   document.getElementById("scanlogbook").style.display = "none";
+  document.getElementById("scancrew").style.display = "none";
 }
 function switchScanToLogbook() {
   $("menuScanDetails").removeClassName("selected");
+  $("menuScanCrew").removeClassName("selected");
   $("menuScanLogbook").addClassName("selected");
 
   document.getElementById("scanlogbook").style.display = "";
   document.getElementById("scandetails").style.display = "none";
+  document.getElementById("scancrew").style.display = "none";
+}
+function switchScanToCrew() {
+  $("menuScanDetails").removeClassName("selected");
+  $("menuScanLogbook").removeClassName("selected");
+  $("menuScanCrew").addClassName("selected");
+
+  document.getElementById("scancrew").style.display = "";
+  document.getElementById("scandetails").style.display = "none";
+  document.getElementById("scanlogbook").style.display = "none";
 }
 function showRegionInfo(element, region) {
   updatePopupAtElement(element,
