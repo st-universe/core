@@ -12,10 +12,13 @@ use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class PromoteCrewTest extends ActionControllerTestCase
 {
     private MockInterface&CrewRepositoryInterface $crewRepository;
+
+    private MockInterface&UserCrewRankRepositoryInterface $userCrewRankRepository;
 
     private PromoteCrew $subject;
 
@@ -25,7 +28,8 @@ final class PromoteCrewTest extends ActionControllerTestCase
         parent::setUp();
 
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
-        $this->subject = new PromoteCrew($this->crewRepository);
+        $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
+        $this->subject = new PromoteCrew($this->crewRepository, $this->userCrewRankRepository);
     }
 
     public function testPromotesCrewWithEnoughExpertiseBelowRankLimit(): void
@@ -96,8 +100,7 @@ final class PromoteCrewTest extends ActionControllerTestCase
     {
         $user = $this->mock(User::class);
         $user->shouldReceive('getId')->andReturn(101);
-        $user->shouldReceive('getCrewRankName')->andReturn('Commander');
-
+        $this->userCrewRankRepository->shouldReceive('getRankName')->andReturn('Commander');
         return $user;
     }
 

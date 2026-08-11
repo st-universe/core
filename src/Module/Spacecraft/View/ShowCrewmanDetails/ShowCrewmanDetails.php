@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 
 use request;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ShowCrewmanDetails implements ViewControllerInterface
 {
@@ -18,7 +20,8 @@ final class ShowCrewmanDetails implements ViewControllerInterface
 
     public function __construct(
         private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private SkillEnhancementLogRepositoryInterface $skillEnhancementLogRepository
+        private SkillEnhancementLogRepositoryInterface $skillEnhancementLogRepository,
+        private UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
     #[\Override]
@@ -32,7 +35,8 @@ final class ShowCrewmanDetails implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/entityNotAvailable.twig');
 
         $crewAssignment = $this->crewAssignmentRepository->find(request::indInt('id'));
-        if ($crewAssignment === null || $crewAssignment->getCrew()->getUserId() !== $game->getUser()->getId()) {
+        $user = $game->getUser();
+        if ($crewAssignment === null || $crewAssignment->getCrew()->getUserId() !== $user->getId()) {
             return;
         }
 
@@ -40,6 +44,11 @@ final class ShowCrewmanDetails implements ViewControllerInterface
         $game->setViewTemplate('html/spacecraft/crewmanDetails.twig');
         $game->setTemplateVar('CREW_ASSIGNMENT', $crewAssignment);
         $game->setTemplateVar('COUNT', $count);
+        $crewRankNames = [];
+        foreach (CrewSkillLevelEnum::cases() as $rank) {
+            $crewRankNames[$rank->value] = $this->userCrewRankRepository->getRankName($user, $rank);
+        }
+        $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
         $game->setTemplateVar(
             'LOGS',
             array_slice($this->skillEnhancementLogRepository->getForCrewman($crewAssignment->getCrew()), 0, $count)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeCrewRankNames;
 
 use Mockery\MockInterface;
+use Mockery;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
@@ -57,8 +58,7 @@ final class ChangeCrewRankNamesTest extends ActionControllerTestCase
         $this->game->shouldReceive('getInfo->addInformation')
             ->with('Die Crew-Ränge wurden aktualisiert')
             ->once();
-        $user->shouldReceive('getCrewRankNameEntry')->andReturn(null);
-        $user->shouldReceive('addCrewRankName')->with($rankEntry)->once();
+        $this->userCrewRankRepository->shouldReceive('getByUserAndRank')->with($user, Mockery::type(CrewSkillLevelEnum::class))->andReturn(null);
         $rankEntry->shouldReceive('setUser')->with($user)->once()->andReturnSelf();
         $rankEntry->shouldReceive('setRank')->with(CrewSkillLevelEnum::CADET)->once()->andReturnSelf();
         $rankEntry->shouldReceive('setName')->with("O'Brian")->once();

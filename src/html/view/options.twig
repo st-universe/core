@@ -117,7 +117,7 @@
                 {% if SHOW_FACTION_CREW_RANKS %}
                 <td>{{ rank.getDescription(REAL_USER.getFactionId) }}</td>
                 {% endif %}
-                <td><input type="text" name="crew_rank_names[{{ rank.value }}]" value="{{ REAL_USER.getCustomCrewRankName(rank) }}" maxlength="64" class="text" /></td>
+                <td><input type="text" name="crew_rank_names[{{ rank.value }}]" value="{{ CUSTOM_CREW_RANK_NAMES[rank.value]|default('') }}" maxlength="64" class="text" /></td>
             </tr>
             {% endfor %}
             <tr>

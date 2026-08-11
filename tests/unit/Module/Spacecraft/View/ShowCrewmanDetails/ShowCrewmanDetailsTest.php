@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 
 use Mockery\MockInterface;
+use Mockery;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Crew;
@@ -13,6 +14,7 @@ use Stu\Orm\Entity\SkillEnhancementLog;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 use Stu\StuTestCase;
 
 final class ShowCrewmanDetailsTest extends StuTestCase
@@ -21,6 +23,8 @@ final class ShowCrewmanDetailsTest extends StuTestCase
 
     private MockInterface&SkillEnhancementLogRepositoryInterface $skillEnhancementLogRepository;
 
+    private MockInterface&UserCrewRankRepositoryInterface $userCrewRankRepository;
+
     private ShowCrewmanDetails $subject;
 
     #[\Override]
@@ -28,7 +32,8 @@ final class ShowCrewmanDetailsTest extends StuTestCase
     {
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->skillEnhancementLogRepository = $this->mock(SkillEnhancementLogRepositoryInterface::class);
-        $this->subject = new ShowCrewmanDetails($this->crewAssignmentRepository, $this->skillEnhancementLogRepository);
+        $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
+        $this->subject = new ShowCrewmanDetails($this->crewAssignmentRepository, $this->skillEnhancementLogRepository, $this->userCrewRankRepository);
     }
 
     public function testUsesFiveLogEntriesByDefault(): void
@@ -46,12 +51,14 @@ final class ShowCrewmanDetailsTest extends StuTestCase
         $game->shouldReceive('setViewTemplate')->with('html/spacecraft/crewmanDetails.twig')->once();
         $game->shouldReceive('setTemplateVar')->with('CREW_ASSIGNMENT', $crewAssignment)->once();
         $game->shouldReceive('setTemplateVar')->with('COUNT', 5)->once();
+        $game->shouldReceive('setTemplateVar')->with('CREW_RANK_NAMES', Mockery::type('array'))->once();
         $game->shouldReceive('setTemplateVar')->with('LOGS', $logs)->once();
         $user->shouldReceive('getId')->andReturn(101);
         $crew->shouldReceive('getUserId')->andReturn(101);
         $crewAssignment->shouldReceive('getCrew')->andReturn($crew);
         $this->crewAssignmentRepository->shouldReceive('find')->with(42)->andReturn($crewAssignment)->once();
         $this->skillEnhancementLogRepository->shouldReceive('getForCrewman')->with($crew)->andReturn($logs)->once();
+        $this->userCrewRankRepository->shouldReceive('getRankName')->with($user, Mockery::type(\Stu\Component\Crew\Skill\CrewSkillLevelEnum::class))->andReturn('');
 
         $this->subject->handle($game);
     }

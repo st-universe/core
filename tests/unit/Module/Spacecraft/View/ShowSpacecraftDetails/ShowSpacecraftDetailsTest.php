@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
 use Mockery\MockInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,6 +17,7 @@ use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShowSpacecraftDetailsTest extends StuTestCase
@@ -23,6 +25,7 @@ class ShowSpacecraftDetailsTest extends StuTestCase
     private MockInterface&SpacecraftLoaderInterface $spacecraftLoader;
     private MockInterface&StationLoaderInterface $stationLoader;
     private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
+    private MockInterface&UserCrewRankRepositoryInterface $userCrewRankRepository;
 
     private ShowSpacecraftDetails $subject;
 
@@ -32,11 +35,13 @@ class ShowSpacecraftDetailsTest extends StuTestCase
         $this->spacecraftLoader = $this->mock(SpacecraftLoaderInterface::class);
         $this->stationLoader = $this->mock(StationLoaderInterface::class);
         $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
+        $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
 
         $this->subject = new ShowSpacecraftDetails(
             $this->spacecraftLoader,
             $this->stationLoader,
-            $this->troopTransferUtility
+            $this->troopTransferUtility,
+            $this->userCrewRankRepository
         );
     }
 
@@ -74,6 +79,9 @@ class ShowSpacecraftDetailsTest extends StuTestCase
             ->with('USER_ID', $userId)
             ->once();
         $game->shouldReceive('setTemplateVar')
+            ->with('CREW_RANK_NAMES', [])
+            ->once();
+        $game->shouldReceive('setTemplateVar')
             ->with('TRACTOR_PAYLOAD', 0)
             ->once();
         $game->shouldReceive('setTemplateVar')
@@ -98,7 +106,7 @@ class ShowSpacecraftDetailsTest extends StuTestCase
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
-            ->times(3)
+            ->times(4)
             ->andReturn($station);
 
         $station->shouldReceive('isStation')
@@ -113,6 +121,10 @@ class ShowSpacecraftDetailsTest extends StuTestCase
             ->with(SpacecraftSystemTypeEnum::TRACTOR_BEAM)
             ->once()
             ->andReturn(false);
+        $station->shouldReceive('getCrewAssignments')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection());
         $rump->shouldReceive('getShipRumpRole')
             ->withNoArgs()
             ->once()

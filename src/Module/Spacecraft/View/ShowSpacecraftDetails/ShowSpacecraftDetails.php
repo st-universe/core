@@ -14,6 +14,7 @@ use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ShowSpacecraftDetails implements ViewControllerInterface
 {
@@ -25,7 +26,8 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
         private StationLoaderInterface $stationLoader,
-        private TroopTransferUtilityInterface $troopTransferUtility
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
     #[\Override]
@@ -60,6 +62,12 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
 
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('USER_ID', $userId);
+        $crewRankNames = [];
+        foreach ($wrapper->get()->getCrewAssignments() as $crewAssignment) {
+            $crew = $crewAssignment->getCrew();
+            $crewRankNames[$crew->getId()] = $this->userCrewRankRepository->getRankName($crew->getUser(), $crew->getRank());
+        }
+        $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
         $game->setTemplateVar('TRACTOR_PAYLOAD', $this->getTractorPayload($wrapper->get()));
 
         $game->setTemplateVar('FOREIGNER_COUNT', $this->troopTransferUtility->foreignerCount($wrapper->get()));

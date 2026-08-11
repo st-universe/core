@@ -17,6 +17,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewSkillRepositoryInterface;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 use Stu\StuTestCase;
 
 final class RaiseExpertiseTest extends StuTestCase
@@ -26,6 +27,8 @@ final class RaiseExpertiseTest extends StuTestCase
     private MockInterface&CrewRepositoryInterface $crewRepository;
 
     private MockInterface&SkillEnhancementLogRepositoryInterface $logRepository;
+
+    private MockInterface&UserCrewRankRepositoryInterface $userCrewRankRepository;
 
     private MockInterface&StuTime $stuTime;
 
@@ -39,12 +42,13 @@ final class RaiseExpertiseTest extends StuTestCase
         $this->crewSkillRepository = $this->mock(CrewSkillRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->logRepository = $this->mock(SkillEnhancementLogRepositoryInterface::class);
+        $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
 
         $this->subject = new RaiseExpertise(
             $this->crewSkillRepository,
             $this->crewRepository,
-            new CreateEnhancementLog($this->logRepository, $this->stuTime)
+            new CreateEnhancementLog($this->logRepository, $this->stuTime, $this->userCrewRankRepository)
         );
     }
 
@@ -175,8 +179,8 @@ final class RaiseExpertiseTest extends StuTestCase
         $crew->shouldReceive('getId')->andReturn(42);
         $crew->shouldReceive('getName')->andReturn('Crew');
         $user = $this->mock(User::class);
-        $user->shouldReceive('getCrewRankName')->andReturnUsing(
-            fn (CrewSkillLevelEnum $rank): string => $rank->getDescription(1)
+        $this->userCrewRankRepository->shouldReceive('getRankName')->andReturnUsing(
+            fn (User $user, CrewSkillLevelEnum $rank): string => $rank->getDescription(1)
         );
         $crew->shouldReceive('getUser')->andReturn($user);
 

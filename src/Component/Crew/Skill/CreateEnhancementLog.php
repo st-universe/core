@@ -9,12 +9,14 @@ use Stu\Orm\Entity\CrewSkill;
 use Stu\Orm\Entity\SkillEnhancement;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class CreateEnhancementLog
 {
     public function __construct(
         private SkillEnhancementLogRepositoryInterface $skillEnhancementLogRepository,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
     public function createEnhancementLog(
@@ -47,6 +49,10 @@ final class CreateEnhancementLog
     ): ?string {
         return $oldRank === $newRank
             ? null
-            : sprintf('Befoerderung %s -> %s', $user->getCrewRankName($oldRank), $user->getCrewRankName($newRank));
+            : sprintf(
+                'Befoerderung %s -> %s',
+                $this->userCrewRankRepository->getRankName($user, $oldRank),
+                $this->userCrewRankRepository->getRankName($user, $newRank)
+            );
     }
 }
