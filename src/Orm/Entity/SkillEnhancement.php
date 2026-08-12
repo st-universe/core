@@ -33,6 +33,9 @@ class SkillEnhancement
     #[Column(type: 'integer')]
     private int $expertise;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $cooldown = null;
+
     #[Column(type: 'string')]
     private string $description;
 
@@ -73,6 +76,18 @@ class SkillEnhancement
     public function setExpertise(int $expertise): SkillEnhancement
     {
         $this->expertise = $expertise;
+
+        return $this;
+    }
+
+    public function getCooldown(): ?int
+    {
+        return $this->cooldown;
+    }
+
+    public function setCooldown(?int $cooldown): SkillEnhancement
+    {
+        $this->cooldown = $cooldown;
 
         return $this;
     }

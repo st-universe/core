@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\SkillEnhancement;
 use Stu\Orm\Entity\SkillEnhancementLog;
 
 /**
@@ -38,15 +38,14 @@ final class SkillEnhancementLogRepository extends EntityRepository implements Sk
     }
 
     #[\Override]
-    public function hasCrewExperienceSince(Crew $crew, SkillEnhancementEnum $trigger, int $timestamp): bool
+    public function hasCrewExperienceSince(Crew $crew, SkillEnhancement $enhancement, int $timestamp): bool
     {
         return $this->createQueryBuilder('log')
-            ->join('log.enhancement', 'enhancement')
             ->where('log.crew_id = :crewId')
-            ->andWhere('enhancement.type = :trigger')
+            ->andWhere('log.enhancement = :enhancement')
             ->andWhere('log.date > :timestamp')
             ->setParameter('crewId', $crew->getId())
-            ->setParameter('trigger', $trigger->value)
+            ->setParameter('enhancement', $enhancement)
             ->setParameter('timestamp', $timestamp)
             ->setMaxResults(1)
             ->getQuery()

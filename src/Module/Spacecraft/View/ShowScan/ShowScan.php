@@ -95,10 +95,7 @@ final class ShowScan implements ViewControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        if (
-            $target instanceof Ship
-            && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $target->getUser())
-        ) {
+        if (!$target->getUser()->isNpc() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $target->getUser())) {
             $this->eventDispatcher->dispatch(new CrewExperienceEvent(
                 $ship,
                 SkillEnhancementEnum::FOREIGN_SPACECRAFT_SCAN

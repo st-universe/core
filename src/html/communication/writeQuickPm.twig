@@ -1,6 +1,10 @@
   {% if RECIPIENT %}
     <form id="quickpm">
       <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+      <input type="hidden" name="quickPmSourceId" value="{{ QUICK_PM_SOURCE_ID }}" />
+      <input type="hidden" name="quickPmSourceType" value="{{ QUICK_PM_SOURCE_TYPE }}" />
+      <input type="hidden" name="quickPmTargetId" value="{{ QUICK_PM_TARGET_ID }}" />
+      <input type="hidden" name="quickPmTargetType" value="{{ QUICK_PM_TARGET_TYPE }}" />
       <table class="tcal" id="quickpm_compose">
         <tr>
           <td>

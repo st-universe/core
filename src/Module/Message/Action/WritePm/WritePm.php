@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\QuickPmCrewExperienceInterface;
 use Stu\Module\Message\View\ShowWriteQuickPmResponse\ShowWriteQuickPmResponse;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -22,7 +23,8 @@ final class WritePm implements ActionControllerInterface
         private WritePmRequestInterface $writePmRequest,
         private IgnoreListRepositoryInterface $ignoreListRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private QuickPmCrewExperienceInterface $quickPmCrewExperience
     ) {}
 
     #[\Override]
@@ -30,7 +32,8 @@ final class WritePm implements ActionControllerInterface
     {
         $text = $this->writePmRequest->getText();
         $recipientId = $this->writePmRequest->getRecipientId();
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $recipient = $this->userRepository->find($recipientId);
         if ($recipient === null) {
@@ -52,6 +55,17 @@ final class WritePm implements ActionControllerInterface
         }
 
         $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderTypeEnum::SPECIAL_MAIN);
+
+        if ($this->isQuickPm()) {
+            $this->quickPmCrewExperience->awardExperience(
+                $user,
+                $recipient->getId(),
+                $this->writePmRequest->getQuickPmSourceId(),
+                $this->writePmRequest->getQuickPmSourceType(),
+                $this->writePmRequest->getQuickPmTargetId(),
+                $this->writePmRequest->getQuickPmTargetType()
+            );
+        }
 
         $this->finish($game, true, _('Die Nachricht wurde abgeschickt'));
     }

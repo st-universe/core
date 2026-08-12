@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260811201826 extends AbstractMigration
+final class Version20260812095112 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -437,12 +437,12 @@ final class Version20260811201826 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7C6FFB4221BDB235 ON stu_shipyard_shipqueue (station_id)');
         $this->addSql('CREATE INDEX shipyard_shipqueue_user_idx ON stu_shipyard_shipqueue (user_id)');
         $this->addSql('CREATE INDEX shipyard_shipqueue_finish_date_idx ON stu_shipyard_shipqueue (finish_date)');
-        $this->addSql('CREATE TABLE stu_skill_enhancement (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, position SMALLINT NOT NULL, expertise INTEGER NOT NULL, description VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE stu_skill_enhancement (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, position SMALLINT NOT NULL, expertise INTEGER NOT NULL, cooldown INTEGER DEFAULT NULL, description VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX skill_enhancement_unique_idx ON stu_skill_enhancement (type, position)');
         $this->addSql('CREATE TABLE stu_skill_enhancement_log (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, crew_id INTEGER NOT NULL, crew_name VARCHAR(255) NOT NULL, promotion VARCHAR(255) DEFAULT NULL, ship_name VARCHAR(255) NOT NULL, expertise INTEGER NOT NULL, expertise_sum INTEGER NOT NULL, date INTEGER NOT NULL, user_id INTEGER NOT NULL, enhancement_id INTEGER NOT NULL, CONSTRAINT FK_73B42DBBA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_73B42DBB49186B17 FOREIGN KEY (enhancement_id) REFERENCES stu_skill_enhancement (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_73B42DBBA76ED395 ON stu_skill_enhancement_log (user_id)');
         $this->addSql('CREATE INDEX IDX_73B42DBB49186B17 ON stu_skill_enhancement_log (enhancement_id)');
-        $this->addSql('CREATE INDEX skill_enhancement_log_crew_date_idx ON stu_skill_enhancement_log (crew_id, date)');
+        $this->addSql('CREATE INDEX skill_enhancement_log_crew_date_idx ON stu_skill_enhancement_log (crew_id, enhancement_id, date)');
         $this->addSql('CREATE TABLE stu_spacecraft (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, rump_id INTEGER NOT NULL, plan_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, max_hull INTEGER NOT NULL, max_shield INTEGER NOT NULL, tractored_ship_id INTEGER DEFAULT NULL, holding_web_id INTEGER DEFAULT NULL, database_id INTEGER DEFAULT NULL, location_id INTEGER NOT NULL, type VARCHAR(255) NOT NULL, CONSTRAINT FK_4BD20E2EEE54A42E FOREIGN KEY (tractored_ship_id) REFERENCES stu_ship (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E73D3801E FOREIGN KEY (holding_web_id) REFERENCES stu_tholian_web (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2EA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2EE899029B FOREIGN KEY (plan_id) REFERENCES stu_buildplan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4BD20E2E64D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_4BD20E2EEE54A42E ON stu_spacecraft (tractored_ship_id)');
         $this->addSql('CREATE INDEX IDX_4BD20E2E73D3801E ON stu_spacecraft (holding_web_id)');

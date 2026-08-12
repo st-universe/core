@@ -10,8 +10,6 @@ use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
 
 final class CrewEnhancement implements CrewEnhancementInterface
 {
-    private const int SCIENCE_SCAN_COOLDOWN_IN_SECONDS = 10 * 60 * 60;
-
     public function __construct(
         private SkillEnhancementCacheInterface $skillEnhancementCache,
         private RaiseExpertise $raiseExpertise,
@@ -38,12 +36,15 @@ final class CrewEnhancement implements CrewEnhancementInterface
             }
 
             $crew = $crewAssignment->getCrew();
+            $enhancement = $enhancements[$position->value];
+            $cooldown = $enhancement->getCooldown();
             if (
-                $trigger === SkillEnhancementEnum::FOREIGN_SPACECRAFT_SCAN
+                $cooldown !== null
+                && $cooldown > 0
                 && $this->skillEnhancementLogRepository->hasCrewExperienceSince(
                     $crew,
-                    $trigger,
-                    time() - self::SCIENCE_SCAN_COOLDOWN_IN_SECONDS
+                    $enhancement,
+                    time() - $cooldown
                 )
             ) {
                 continue;
@@ -53,7 +54,7 @@ final class CrewEnhancement implements CrewEnhancementInterface
                 $crew,
                 $spacecraft,
                 $position,
-                $enhancements[$position->value],
+                $enhancement,
                 $percentage
             );
         }
