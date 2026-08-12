@@ -61,6 +61,8 @@ use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageUiFactory;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
+use Stu\Module\Message\Lib\QuickPmCrewExperience;
+use Stu\Module\Message\Lib\QuickPmCrewExperienceInterface;
 use Stu\Module\Message\Lib\SendWelcomeMessage;
 use Stu\Module\Message\Lib\SendWelcomeMessageInterface;
 use Stu\Module\Message\View\Noop\Noop;
@@ -88,6 +90,7 @@ return [
     DistributedMessageSenderInterface::class => autowire(DistributedMessageSender::class),
     EmailNotificationSenderInterface::class => autowire(EmailNotificationSender::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
+    QuickPmCrewExperienceInterface::class => autowire(QuickPmCrewExperience::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),

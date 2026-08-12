@@ -7,4 +7,12 @@ interface WritePmRequestInterface
     public function getRecipientId(): int;
 
     public function getText(): string;
+
+    public function getQuickPmSourceId(): int;
+
+    public function getQuickPmSourceType(): int;
+
+    public function getQuickPmTargetId(): int;
+
+    public function getQuickPmTargetType(): int;
 }

@@ -16,7 +16,7 @@ use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Orm\Repository\SkillEnhancementLogRepository;
 
 #[Table(name: 'stu_skill_enhancement_log')]
-#[Index(name: 'skill_enhancement_log_crew_date_idx', columns: ['crew_id', 'date'])]
+#[Index(name: 'skill_enhancement_log_crew_date_idx', columns: ['crew_id', 'enhancement_id', 'date'])]
 #[Entity(repositoryClass: SkillEnhancementLogRepository::class)]
 class SkillEnhancementLog
 {

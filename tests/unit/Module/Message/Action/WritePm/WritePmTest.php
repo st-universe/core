@@ -11,6 +11,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\QuickPmCrewExperienceInterface;
 use Stu\Module\Message\View\ShowWriteQuickPmResponse\ShowWriteQuickPmResponse;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
@@ -22,6 +23,7 @@ class WritePmTest extends ActionControllerTestCase
     private MockInterface&IgnoreListRepositoryInterface $ignoreListRepository;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
     private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&QuickPmCrewExperienceInterface $quickPmCrewExperience;
 
     private WritePm $subject;
 
@@ -34,12 +36,14 @@ class WritePmTest extends ActionControllerTestCase
         $this->ignoreListRepository = $this->mock(IgnoreListRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->quickPmCrewExperience = $this->mock(QuickPmCrewExperienceInterface::class);
 
         $this->subject = new WritePm(
             $this->writePmRequest,
             $this->ignoreListRepository,
             $this->privateMessageSender,
-            $this->userRepository
+            $this->userRepository,
+            $this->quickPmCrewExperience
         );
     }
 
@@ -61,6 +65,22 @@ class WritePmTest extends ActionControllerTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(3);
+        $this->writePmRequest->shouldReceive('getQuickPmSourceId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->writePmRequest->shouldReceive('getQuickPmSourceType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+        $this->writePmRequest->shouldReceive('getQuickPmTargetId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(43);
+        $this->writePmRequest->shouldReceive('getQuickPmTargetType')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(4);
 
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
@@ -86,7 +106,7 @@ class WritePmTest extends ActionControllerTestCase
             ->andReturn(2);
         $recipient->shouldReceive('getId')
             ->withNoArgs()
-            ->times(3)
+            ->times(4)
             ->andReturn(3);
 
         $this->userRepository->shouldReceive('find')
@@ -99,6 +119,9 @@ class WritePmTest extends ActionControllerTestCase
             ->andReturn(false);
         $this->privateMessageSender->shouldReceive('send')
             ->with(2, 3, 'Hello recipient', PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
+            ->once();
+        $this->quickPmCrewExperience->shouldReceive('awardExperience')
+            ->with($sender, 3, 42, 2, 43, 4)
             ->once();
 
         $info->shouldReceive('addInformation')
@@ -156,6 +179,8 @@ class WritePmTest extends ActionControllerTestCase
         $this->ignoreListRepository->shouldReceive('exists')
             ->never();
         $this->privateMessageSender->shouldReceive('send')
+            ->never();
+        $this->quickPmCrewExperience->shouldReceive('awardExperience')
             ->never();
 
         $info->shouldReceive('addInformation')
@@ -216,6 +241,8 @@ class WritePmTest extends ActionControllerTestCase
         $this->privateMessageSender->shouldReceive('send')
             ->with(2, 3, 'Hello recipient', PrivateMessageFolderTypeEnum::SPECIAL_MAIN)
             ->once();
+        $this->quickPmCrewExperience->shouldReceive('awardExperience')
+            ->never();
 
         $info->shouldReceive('addInformation')
             ->with('Die Nachricht wurde abgeschickt')

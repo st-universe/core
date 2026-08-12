@@ -15,4 +15,5 @@ enum SkillEnhancementEnum: int
     case FOREIGN_SPACECRAFT_SCAN = 7;
     case EVADE_ATTACK = 8;
     case ESCAPE_TRACTOR_BEAM = 9;
+    case FOREIGN_CONTACT_MESSAGE = 10;
 }

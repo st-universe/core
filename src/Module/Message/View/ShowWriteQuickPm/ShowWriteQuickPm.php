@@ -59,6 +59,10 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
         $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar('TEMPLATETEXT', $conversationInfo->getTemplateText($this->bbCodeParser));
+        $game->setTemplateVar('QUICK_PM_SOURCE_ID', $fromId);
+        $game->setTemplateVar('QUICK_PM_SOURCE_TYPE', $fromType);
+        $game->setTemplateVar('QUICK_PM_TARGET_ID', $toId);
+        $game->setTemplateVar('QUICK_PM_TARGET_TYPE', $toType);
     }
 
     private function determineFrom(int $fromId, int $fromType, User $user): ?ConversationInfo
