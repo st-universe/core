@@ -6,13 +6,17 @@
 {% set rankName = CREW_RANK_NAMES[crew.getId]|default(CREW_RANK_NAMES[crew.getRank.value]|default('')) %}
 <div class="crew-assignment-card{% if isReadOnly %} crew-assignment-card-readonly{% endif %}"
     {% if not isReadOnly %}
-    draggable="true" data-crew-id="{{ crew.getId }}"
+    draggable="true" data-crew-id="{{ crew.getId }}" data-crew-slot="{{ assignment.getSlot.value }}"
     ondragstart="startCrewAssignmentDrag(event, this);"
     ondragend="endCrewAssignmentDrag(this);"
+    ondragover="allowCrewAssignmentSwap(event, this);"
+    ondragleave="leaveCrewAssignmentSwap(event, this);"
+    ondrop="dropCrewAssignmentOnCard(event, this);"
     onpointerdown="startCrewAssignmentPointerDrag(event, this);"
     onpointermove="moveCrewAssignmentPointerDrag(event);"
     onpointerup="endCrewAssignmentPointerDrag(event);"
     onpointercancel="cancelCrewAssignmentPointerDrag(event);"
+    onclick="selectCrewAssignmentForTouch(event, this);"
     {% endif %}>
     <div class="crew-assignment-card-main">
         <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />

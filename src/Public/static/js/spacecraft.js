@@ -134,6 +134,10 @@ function showSpacecraftDetails(element, id) {
 var crewAssignmentScrollTop = 0;
 var crewAssignmentPointerDrag = null;
 var crewAssignmentPointerPreparation = null;
+var crewAssignmentMobileSelection = null;
+var crewAssignmentAutoScrollFrame = null;
+var crewAssignmentIgnoreClickUntil = 0;
+var crewAssignmentSaving = false;
 
 function showCrewAssignmentManagement(id) {
   var width = Math.min(900, Math.max(280, window.innerWidth - 12));
@@ -141,6 +145,7 @@ function showCrewAssignmentManagement(id) {
 }
 
 function showSpacecraftDetailsFromCrewManagement(id) {
+  cancelCrewAssignmentInteraction();
   updatePopup("?SHOW_SPACECRAFTDETAILS=1&id=" + id, null, null, null, true, false);
 }
 
@@ -155,20 +160,32 @@ function initializeCrewAssignmentManagement() {
     scrollContainer.scrollTop = crewAssignmentScrollTop;
     crewAssignmentScrollTop = 0;
   }
+
+  closeAjaxCallbacks.push(cancelCrewAssignmentInteraction);
 }
 
 function startCrewAssignmentDrag(event, element) {
   event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.setData("text/plain", element.dataset.crewId);
   element.classList.add("crew-assignment-card-dragging");
+  var root = element.closest(".crew-assignment-management");
+  if (root !== null) {
+    root.classList.add("crew-assignment-dragging");
+  }
 }
 
 function endCrewAssignmentDrag(element) {
   element.classList.remove("crew-assignment-card-dragging");
+  var root = element.closest(".crew-assignment-management");
+  if (root !== null) {
+    root.classList.remove("crew-assignment-dragging");
+    clearCrewAssignmentDropTargets(root);
+  }
 }
 
 function allowCrewAssignmentDrop(event) {
   event.preventDefault();
+  event.stopPropagation();
   event.currentTarget.classList.add("crew-assignment-drop-active");
   scrollCrewAssignmentManagement(event);
 }
@@ -181,6 +198,7 @@ function leaveCrewAssignmentDrop(event) {
 
 function dropCrewAssignment(event, element) {
   event.preventDefault();
+  event.stopPropagation();
   element.classList.remove("crew-assignment-drop-active");
 
   var crewId = event.dataTransfer.getData("text/plain");
@@ -189,12 +207,43 @@ function dropCrewAssignment(event, element) {
   }
 }
 
+function allowCrewAssignmentSwap(event, element) {
+  event.preventDefault();
+  event.stopPropagation();
+  element.classList.add("crew-assignment-swap-active");
+  scrollCrewAssignmentManagement(event);
+}
+
+function leaveCrewAssignmentSwap(event, element) {
+  if (!element.contains(event.relatedTarget)) {
+    element.classList.remove("crew-assignment-swap-active");
+  }
+}
+
+function dropCrewAssignmentOnCard(event, element) {
+  event.preventDefault();
+  event.stopPropagation();
+  element.classList.remove("crew-assignment-swap-active");
+
+  var crewId = event.dataTransfer.getData("text/plain");
+  if (crewId && crewId !== element.dataset.crewId) {
+    saveCrewAssignment(crewId, element.dataset.crewSlot, element.dataset.crewId);
+  }
+}
+
 function startCrewAssignmentPointerDrag(event, element) {
-  if (event.pointerType === "mouse") {
+  setCrewAssignmentPointerType(element, event.pointerType);
+
+  if (
+    event.pointerType === "mouse"
+    || event.isPrimary === false
+    || crewAssignmentPointerDrag !== null
+    || crewAssignmentPointerPreparation !== null
+  ) {
     return;
   }
 
-  crewAssignmentPointerPreparation = {
+  var preparation = {
     crewId: element.dataset.crewId,
     root: element.closest(".crew-assignment-management"),
     source: element,
@@ -203,37 +252,50 @@ function startCrewAssignmentPointerDrag(event, element) {
     clientY: event.clientY,
     timeout: null
   };
-  crewAssignmentPointerPreparation.timeout = setTimeout(function () {
-    if (crewAssignmentPointerPreparation === null) {
+  crewAssignmentPointerPreparation = preparation;
+  preparation.timeout = setTimeout(function () {
+    if (
+      crewAssignmentPointerPreparation !== preparation
+      || preparation.root === null
+      || !preparation.source.isConnected
+    ) {
       return;
     }
 
-    var preparation = crewAssignmentPointerPreparation;
     preparation.source.setPointerCapture(preparation.pointerId);
+    clearCrewAssignmentMobileSelection();
     crewAssignmentPointerDrag = {
       crewId: preparation.crewId,
       root: preparation.root,
       source: preparation.source,
-      target: null
+      pointerId: preparation.pointerId,
+      target: null,
+      lastClientX: preparation.clientX,
+      lastClientY: preparation.clientY
     };
     crewAssignmentPointerDrag.source.classList.add("crew-assignment-card-dragging");
     crewAssignmentPointerDrag.root.classList.add("crew-assignment-dragging");
     crewAssignmentPointerPreparation = null;
     updateCrewAssignmentPointerTarget(preparation);
-  }, 300);
+  }, 250);
 }
 
 function moveCrewAssignmentPointerDrag(event) {
   if (crewAssignmentPointerDrag === null) {
     if (
       crewAssignmentPointerPreparation !== null
+      && event.pointerId === crewAssignmentPointerPreparation.pointerId
       && (
-        Math.abs(event.clientX - crewAssignmentPointerPreparation.clientX) > 8
-        || Math.abs(event.clientY - crewAssignmentPointerPreparation.clientY) > 8
+        Math.abs(event.clientX - crewAssignmentPointerPreparation.clientX) > 12
+        || Math.abs(event.clientY - crewAssignmentPointerPreparation.clientY) > 12
       )
     ) {
       clearCrewAssignmentPointerPreparation();
     }
+    return;
+  }
+
+  if (event.pointerId !== crewAssignmentPointerDrag.pointerId) {
     return;
   }
 
@@ -243,7 +305,16 @@ function moveCrewAssignmentPointerDrag(event) {
 
 function endCrewAssignmentPointerDrag(event) {
   if (crewAssignmentPointerDrag === null) {
-    clearCrewAssignmentPointerPreparation();
+    if (
+      crewAssignmentPointerPreparation !== null
+      && event.pointerId === crewAssignmentPointerPreparation.pointerId
+    ) {
+      clearCrewAssignmentPointerPreparation();
+    }
+    return;
+  }
+
+  if (event.pointerId !== crewAssignmentPointerDrag.pointerId) {
     return;
   }
 
@@ -251,56 +322,118 @@ function endCrewAssignmentPointerDrag(event) {
   var target = crewAssignmentPointerDrag.target;
   var crewId = crewAssignmentPointerDrag.crewId;
   clearCrewAssignmentPointerDrag();
+  crewAssignmentIgnoreClickUntil = Date.now() + 400;
 
   if (target !== null) {
-    saveCrewAssignment(crewId, target.dataset.crewSlot);
+    if (target.type === "swap") {
+      saveCrewAssignment(crewId, target.element.dataset.crewSlot, target.element.dataset.crewId);
+    } else {
+      saveCrewAssignment(crewId, target.element.dataset.crewSlot);
+    }
   }
 }
 
-function cancelCrewAssignmentPointerDrag() {
-  clearCrewAssignmentPointerPreparation();
+function cancelCrewAssignmentPointerDrag(event) {
+  if (
+    crewAssignmentPointerPreparation !== null
+    && (event === undefined || event.pointerId === crewAssignmentPointerPreparation.pointerId)
+  ) {
+    clearCrewAssignmentPointerPreparation();
+  }
 
-  if (crewAssignmentPointerDrag !== null) {
+  if (
+    crewAssignmentPointerDrag !== null
+    && (event === undefined || event.pointerId === crewAssignmentPointerDrag.pointerId)
+  ) {
     clearCrewAssignmentPointerDrag();
   }
 }
 
 function updateCrewAssignmentPointerTarget(event) {
-  var element = document.elementFromPoint(event.clientX, event.clientY);
-  var target = element === null ? null : element.closest(".crew-assignment-dropzone");
-  if (target !== null && !canAssignCrewToSlot(crewAssignmentPointerDrag.crewId, target)) {
-    target = null;
+  crewAssignmentPointerDrag.lastClientX = event.clientX;
+  crewAssignmentPointerDrag.lastClientY = event.clientY;
+  updateCrewAssignmentPointerTargetAt(event.clientX, event.clientY);
+  startCrewAssignmentAutoScroll();
+}
+
+function updateCrewAssignmentPointerTargetAt(clientX, clientY) {
+  if (crewAssignmentPointerDrag === null) {
+    return;
   }
 
-  if (crewAssignmentPointerDrag.target !== target) {
+  var element = document.elementFromPoint(clientX, clientY);
+  var target = null;
+
+  if (element !== null) {
+    var card = element.closest(".crew-assignment-card");
+    if (card !== null) {
+      if (card !== crewAssignmentPointerDrag.source) {
+        target = { element: card, type: "swap" };
+      }
+    } else {
+      var insertZone = element.closest(".crew-assignment-insert-zone");
+      var dropzone = insertZone === null
+        ? element.closest(".crew-assignment-dropzone")
+        : insertZone;
+
+      if (dropzone !== null && canAssignCrewToSlot(crewAssignmentPointerDrag.crewId, dropzone)) {
+        target = { element: dropzone, type: "slot" };
+      }
+    }
+  }
+
+  if (!isSameCrewAssignmentPointerTarget(crewAssignmentPointerDrag.target, target)) {
     if (crewAssignmentPointerDrag.target !== null) {
-      crewAssignmentPointerDrag.target.classList.remove("crew-assignment-drop-active");
+      removeCrewAssignmentPointerTargetClass(crewAssignmentPointerDrag.target);
     }
     if (target !== null) {
-      target.classList.add("crew-assignment-drop-active");
+      addCrewAssignmentPointerTargetClass(target);
     }
     crewAssignmentPointerDrag.target = target;
   }
+}
 
-  scrollCrewAssignmentManagement(event);
+function isSameCrewAssignmentPointerTarget(first, second) {
+  return first === second
+    || (first !== null && second !== null && first.element === second.element && first.type === second.type);
+}
+
+function addCrewAssignmentPointerTargetClass(target) {
+  target.element.classList.add(
+    target.type === "swap" ? "crew-assignment-swap-active" : "crew-assignment-drop-active"
+  );
+}
+
+function removeCrewAssignmentPointerTargetClass(target) {
+  target.element.classList.remove(
+    target.type === "swap" ? "crew-assignment-swap-active" : "crew-assignment-drop-active"
+  );
 }
 
 function canAssignCrewToSlot(crewId, target) {
-  if (!target.dataset.capacity) {
+  var dropzone = target.closest(".crew-assignment-dropzone");
+  if (dropzone === null || !dropzone.dataset.capacity) {
     return true;
   }
 
-  var card = document.querySelector('.crew-assignment-card[data-crew-id="' + crewId + '"]');
-  if (card !== null && card.parentElement === target) {
+  var root = dropzone.closest(".crew-assignment-management");
+  var card = root === null
+    ? null
+    : root.querySelector('.crew-assignment-card[data-crew-id="' + crewId + '"]');
+  if (card !== null && card.parentElement === dropzone) {
     return true;
   }
 
-  return target.querySelectorAll(".crew-assignment-card").length < Number(target.dataset.capacity);
+  return dropzone.querySelectorAll(".crew-assignment-card").length < Number(dropzone.dataset.capacity);
 }
 
 function clearCrewAssignmentPointerDrag() {
+  stopCrewAssignmentAutoScroll();
   if (crewAssignmentPointerDrag.target !== null) {
-    crewAssignmentPointerDrag.target.classList.remove("crew-assignment-drop-active");
+    removeCrewAssignmentPointerTargetClass(crewAssignmentPointerDrag.target);
+  }
+  if (crewAssignmentPointerDrag.source.hasPointerCapture(crewAssignmentPointerDrag.pointerId)) {
+    crewAssignmentPointerDrag.source.releasePointerCapture(crewAssignmentPointerDrag.pointerId);
   }
   crewAssignmentPointerDrag.source.classList.remove("crew-assignment-card-dragging");
   crewAssignmentPointerDrag.root.classList.remove("crew-assignment-dragging");
@@ -314,6 +447,63 @@ function clearCrewAssignmentPointerPreparation() {
 
   clearTimeout(crewAssignmentPointerPreparation.timeout);
   crewAssignmentPointerPreparation = null;
+}
+
+function startCrewAssignmentAutoScroll() {
+  if (crewAssignmentAutoScrollFrame !== null || crewAssignmentPointerDrag === null) {
+    return;
+  }
+
+  crewAssignmentAutoScrollFrame = requestAnimationFrame(scrollCrewAssignmentDuringPointerDrag);
+}
+
+function scrollCrewAssignmentDuringPointerDrag() {
+  crewAssignmentAutoScrollFrame = null;
+  if (crewAssignmentPointerDrag === null) {
+    return;
+  }
+
+  var scrollContainer = crewAssignmentPointerDrag.root.querySelector(".crew-assignment-management-scroll");
+  var bounds = scrollContainer.getBoundingClientRect();
+  var scrollAmount = getCrewAssignmentAutoScrollAmount(crewAssignmentPointerDrag.lastClientY, bounds);
+  if (scrollAmount === 0) {
+    return;
+  }
+
+  var previousScrollTop = scrollContainer.scrollTop;
+  scrollContainer.scrollTop += scrollAmount;
+  if (scrollContainer.scrollTop === previousScrollTop) {
+    return;
+  }
+
+  updateCrewAssignmentPointerTargetAt(
+    crewAssignmentPointerDrag.lastClientX,
+    crewAssignmentPointerDrag.lastClientY
+  );
+  startCrewAssignmentAutoScroll();
+}
+
+function getCrewAssignmentAutoScrollAmount(clientY, bounds) {
+  var edgeSize = Math.min(80, bounds.height / 3);
+  if (clientY < bounds.top + edgeSize) {
+    var topDistance = Math.min(edgeSize, bounds.top + edgeSize - clientY);
+    return -Math.ceil(4 + 20 * topDistance / edgeSize);
+  }
+  if (clientY > bounds.bottom - edgeSize) {
+    var bottomDistance = Math.min(edgeSize, clientY - (bounds.bottom - edgeSize));
+    return Math.ceil(4 + 20 * bottomDistance / edgeSize);
+  }
+
+  return 0;
+}
+
+function stopCrewAssignmentAutoScroll() {
+  if (crewAssignmentAutoScrollFrame === null) {
+    return;
+  }
+
+  cancelAnimationFrame(crewAssignmentAutoScrollFrame);
+  crewAssignmentAutoScrollFrame = null;
 }
 
 function scrollCrewAssignmentManagement(event) {
@@ -331,23 +521,151 @@ function scrollCrewAssignmentManagement(event) {
   }
 }
 
-function saveCrewAssignment(crewId, slot) {
-  var root = document.getElementById("crewAssignmentManagement");
+function setCrewAssignmentPointerType(element, pointerType) {
+  var root = element.closest(".crew-assignment-management");
   if (root === null) {
+    return;
+  }
+
+  root.dataset.crewAssignmentPointerType = pointerType;
+  root.classList.toggle(
+    "crew-assignment-touch-input",
+    pointerType === "touch" || pointerType === "pen"
+  );
+}
+
+function isCrewAssignmentTouchInput(root) {
+  return root !== null
+    && (root.dataset.crewAssignmentPointerType === "touch" || root.dataset.crewAssignmentPointerType === "pen");
+}
+
+function selectCrewAssignmentForTouch(event, element) {
+  var root = element.closest(".crew-assignment-management");
+  if (
+    !isCrewAssignmentTouchInput(root)
+    || crewAssignmentSaving
+    || crewAssignmentPointerDrag !== null
+    || crewAssignmentPointerPreparation !== null
+    || Date.now() < crewAssignmentIgnoreClickUntil
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (crewAssignmentMobileSelection === null) {
+    setCrewAssignmentMobileSelection(element);
+    return;
+  }
+
+  if (crewAssignmentMobileSelection.source === element) {
+    clearCrewAssignmentMobileSelection();
+    return;
+  }
+
+  var crewId = crewAssignmentMobileSelection.crewId;
+  clearCrewAssignmentMobileSelection();
+  saveCrewAssignment(crewId, element.dataset.crewSlot, element.dataset.crewId);
+}
+
+function setCrewAssignmentMobileSelection(element) {
+  var root = element.closest(".crew-assignment-management");
+  if (root === null) {
+    return;
+  }
+
+  crewAssignmentMobileSelection = {
+    crewId: element.dataset.crewId,
+    source: element,
+    root: root
+  };
+  element.classList.add("crew-assignment-card-selected");
+  root.classList.add("crew-assignment-selecting");
+
+  root.querySelectorAll(".crew-assignment-insert-zone").forEach(function (target) {
+    if (canAssignCrewToSlot(crewAssignmentMobileSelection.crewId, target)) {
+      target.classList.add("crew-assignment-insert-zone-active");
+    }
+  });
+  root.querySelectorAll(".crew-assignment-card").forEach(function (target) {
+    if (target !== element) {
+      target.classList.add("crew-assignment-swap-target");
+    }
+  });
+}
+
+function clearCrewAssignmentMobileSelection() {
+  if (crewAssignmentMobileSelection === null) {
+    return;
+  }
+
+  var selection = crewAssignmentMobileSelection;
+  selection.source.classList.remove("crew-assignment-card-selected");
+  selection.root.classList.remove("crew-assignment-selecting");
+  selection.root.querySelectorAll(".crew-assignment-insert-zone-active").forEach(function (target) {
+    target.classList.remove("crew-assignment-insert-zone-active");
+  });
+  selection.root.querySelectorAll(".crew-assignment-swap-target").forEach(function (target) {
+    target.classList.remove("crew-assignment-swap-target");
+  });
+  crewAssignmentMobileSelection = null;
+}
+
+function assignSelectedCrewToSlot(event, element) {
+  var root = element.closest(".crew-assignment-management");
+  if (!isCrewAssignmentTouchInput(root) || crewAssignmentMobileSelection === null || crewAssignmentSaving) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  var crewId = crewAssignmentMobileSelection.crewId;
+  if (!canAssignCrewToSlot(crewId, element)) {
+    return;
+  }
+
+  clearCrewAssignmentMobileSelection();
+  saveCrewAssignment(crewId, element.dataset.crewSlot);
+}
+
+function clearCrewAssignmentDropTargets(root) {
+  root.querySelectorAll(".crew-assignment-drop-active, .crew-assignment-swap-active").forEach(function (target) {
+    target.classList.remove("crew-assignment-drop-active", "crew-assignment-swap-active");
+  });
+}
+
+function cancelCrewAssignmentInteraction() {
+  cancelCrewAssignmentPointerDrag();
+  clearCrewAssignmentMobileSelection();
+  stopCrewAssignmentAutoScroll();
+}
+
+function saveCrewAssignment(crewId, slot, swapCrewId) {
+  var root = document.getElementById("crewAssignmentManagement");
+  if (root === null || crewAssignmentSaving) {
     return;
   }
 
   var scrollContainer = root.querySelector(".crew-assignment-management-scroll");
   crewAssignmentScrollTop = scrollContainer.scrollTop;
+  crewAssignmentSaving = true;
+
+  var parameters = "B_ASSIGN_CREW_SLOT=1&id=" + encodeURIComponent(root.dataset.spacecraftId)
+    + "&crewid=" + encodeURIComponent(crewId)
+    + "&slot=" + encodeURIComponent(slot)
+    + "&sstr=" + encodeURIComponent(root.dataset.sessionString);
+  if (swapCrewId !== undefined) {
+    parameters += "&swapcrewid=" + encodeURIComponent(swapCrewId);
+  }
 
   new Ajax.Updater("popupContent", "ship.php", {
     method: "post",
-    parameters: "B_ASSIGN_CREW_SLOT=1&id=" + encodeURIComponent(root.dataset.spacecraftId)
-      + "&crewid=" + encodeURIComponent(crewId)
-      + "&slot=" + encodeURIComponent(slot)
-      + "&sstr=" + encodeURIComponent(root.dataset.sessionString),
+    parameters: parameters,
     evalScripts: true,
     onComplete: function () {
+      crewAssignmentSaving = false;
       enablePopupDrag();
     }
   });

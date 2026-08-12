@@ -3544,6 +3544,18 @@ label.linkbutton:hover {
   margin-left: 8px;
 }
 
+.crew-assignment-management-hint-mobile {
+  display: none;
+}
+
+.crew-assignment-management.crew-assignment-touch-input .crew-assignment-management-hint {
+  display: none;
+}
+
+.crew-assignment-management.crew-assignment-touch-input .crew-assignment-management-hint-mobile {
+  display: inline;
+}
+
 .crew-assignment-management-scroll {
   background: #000000;
   border: 1px solid var(--color-21);
@@ -3589,6 +3601,31 @@ label.linkbutton:hover {
   outline: 1px dashed var(--color-9);
 }
 
+.crew-assignment-insert-zone {
+  align-items: center;
+  border: 1px dashed var(--color-21);
+  color: var(--color-6);
+  display: none;
+  font-size: 82%;
+  font-style: italic;
+  justify-content: center;
+  margin-top: 3px;
+  min-height: 38px;
+  padding: 3px;
+}
+
+.crew-assignment-dragging .crew-assignment-insert-zone,
+.crew-assignment-selecting .crew-assignment-insert-zone {
+  display: flex;
+}
+
+.crew-assignment-insert-zone-active,
+.crew-assignment-insert-zone.crew-assignment-drop-active {
+  background: var(--color-28);
+  border-color: var(--color-9);
+  color: var(--color-9);
+}
+
 .crew-assignment-card {
   background: var(--color-7);
   border: 1px solid var(--color-21);
@@ -3608,6 +3645,11 @@ label.linkbutton:hover {
 
 .crew-assignment-position-wide .crew-assignment-card {
   margin-bottom: 0;
+}
+
+.crew-assignment-position-wide .crew-assignment-insert-zone {
+  grid-column: 1 / -1;
+  order: -1;
 }
 
 .crew-assignment-card-main {
@@ -3631,6 +3673,20 @@ label.linkbutton:hover {
 .crew-assignment-card-dragging {
   background: var(--color-28);
   outline: 1px dashed var(--color-9);
+}
+
+.crew-assignment-card-selected {
+  background: var(--color-28);
+  outline: 2px solid var(--color-9);
+}
+
+.crew-assignment-swap-active,
+.crew-assignment-swap-target {
+  outline: 1px dashed var(--color-9);
+}
+
+.crew-assignment-swap-active {
+  background: var(--color-28);
 }
 
 .crew-assignment-card-readonly {
@@ -3681,6 +3737,18 @@ label.linkbutton:hover {
   .crew-assignment-management-toolbar span {
     display: block;
     margin: 4px 0 0;
+  }
+
+  .crew-assignment-management-toolbar .crew-assignment-management-hint-mobile {
+    display: none;
+  }
+
+  .crew-assignment-management.crew-assignment-touch-input .crew-assignment-management-hint-mobile {
+    display: block;
+  }
+
+  .crew-assignment-insert-zone {
+    min-height: 44px;
   }
 }
 

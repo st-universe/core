@@ -23,7 +23,8 @@
     <div class="crew-assignment-management-toolbar">
         <input type="button" class="button" value="Zur Schiffsinformation"
             onclick="showSpacecraftDetailsFromCrewManagement(42); return false;" />
-        <span>Crew kann per Drag and Drop auf einen freien Posten verschoben werden</span>
+        <span class="crew-assignment-management-hint">Crew kann per Drag and Drop auf einen freien Posten verschoben oder mit einem anderen Crewman getauscht werden.</span>
+        <span class="crew-assignment-management-hint-mobile">Mobil: Crewman antippen, dann einen freien Posten oder anderen Crewman antippen.</span>
     </div>
 
     <div class="crew-assignment-management-scroll" ondragover="scrollCrewAssignmentManagement(event);">
@@ -39,6 +40,12 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
+                                    <div class="crew-assignment-insert-zone" data-crew-slot="1"
+                ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                ondrop="dropCrewAssignment(event, this);"
+                onclick="assignSelectedCrewToSlot(event, this);">
+                Crew hier zuweisen
+            </div>
                     </div>
     </section>
                 <section class="crew-assignment-position">
@@ -52,7 +59,7 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
-                    </div>
+                                </div>
     </section>
                 <section class="crew-assignment-position">
         <div class="crew-assignment-position-head">
@@ -65,7 +72,7 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
-                    </div>
+                                </div>
     </section>
                 <section class="crew-assignment-position">
         <div class="crew-assignment-position-head">
@@ -78,7 +85,7 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
-                    </div>
+                                </div>
     </section>
                 <section class="crew-assignment-position">
         <div class="crew-assignment-position-head">
@@ -91,6 +98,12 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
+                                    <div class="crew-assignment-insert-zone" data-crew-slot="5"
+                ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                ondrop="dropCrewAssignment(event, this);"
+                onclick="assignSelectedCrewToSlot(event, this);">
+                Crew hier zuweisen
+            </div>
                     </div>
     </section>
                 <section class="crew-assignment-position">
@@ -104,6 +117,12 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-empty">Freier Posten</div>
+                                    <div class="crew-assignment-insert-zone" data-crew-slot="6"
+                ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                ondrop="dropCrewAssignment(event, this);"
+                onclick="assignSelectedCrewToSlot(event, this);">
+                Crew hier zuweisen
+            </div>
                     </div>
     </section>
                 <section class="crew-assignment-position crew-assignment-position-wide">
@@ -117,13 +136,17 @@
             ondrop="dropCrewAssignment(event, this);"
             >
                         <div class="crew-assignment-card"
-        draggable="true" data-crew-id="2"
+        draggable="true" data-crew-id="2" data-crew-slot="7"
     ondragstart="startCrewAssignmentDrag(event, this);"
     ondragend="endCrewAssignmentDrag(this);"
+    ondragover="allowCrewAssignmentSwap(event, this);"
+    ondragleave="leaveCrewAssignmentSwap(event, this);"
+    ondrop="dropCrewAssignmentOnCard(event, this);"
     onpointerdown="startCrewAssignmentPointerDrag(event, this);"
     onpointermove="moveCrewAssignmentPointerDrag(event);"
     onpointerup="endCrewAssignmentPointerDrag(event);"
     onpointercancel="cancelCrewAssignmentPointerDrag(event);"
+    onclick="selectCrewAssignmentForTouch(event, this);"
     >
     <div class="crew-assignment-card-main">
         <img src="/assets/crew/ANDORIAN/m/1_6.png" />
@@ -134,6 +157,12 @@
     </div>
             <div class="crew-assignment-no-skills">Noch keine Erfahrung</div>
         </div>
+                                    <div class="crew-assignment-insert-zone" data-crew-slot="7"
+                ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                ondrop="dropCrewAssignment(event, this);"
+                onclick="assignSelectedCrewToSlot(event, this);">
+                Crew hier zuweisen
+            </div>
                     </div>
     </section>
     </div>
