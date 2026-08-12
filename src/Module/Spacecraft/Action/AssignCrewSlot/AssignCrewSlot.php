@@ -39,6 +39,7 @@ final class AssignCrewSlot implements ActionControllerInterface
         );
         $crewAssignment = $this->crewAssignmentRepository->find(request::postIntFatal('crewid'));
         $slot = CrewTypeEnum::tryFrom(request::postIntFatal('slot'));
+        $swapCrewId = request::postInt('swapcrewid');
 
         if (
             $crewAssignment === null
@@ -48,6 +49,27 @@ final class AssignCrewSlot implements ActionControllerInterface
             || $crewAssignment->getSlot() === null
         ) {
             throw new AccessViolationException();
+        }
+
+        if ($swapCrewId > 0) {
+            $swapCrewAssignment = $this->crewAssignmentRepository->find($swapCrewId);
+            if (
+                $swapCrewAssignment === null
+                || $swapCrewAssignment === $crewAssignment
+                || $swapCrewAssignment->getCrew()->getUserId() !== $user->getId()
+                || $swapCrewAssignment->getSpacecraft()?->getId() !== $spacecraft->getId()
+                || $swapCrewAssignment->getSlot() === null
+            ) {
+                throw new AccessViolationException();
+            }
+
+            $sourceSlot = $crewAssignment->getSlot();
+            $crewAssignment->setSlot($swapCrewAssignment->getSlot());
+            $swapCrewAssignment->setSlot($sourceSlot);
+            $this->crewAssignmentRepository->save($crewAssignment);
+            $this->crewAssignmentRepository->save($swapCrewAssignment);
+
+            return;
         }
 
         if ($slot !== CrewTypeEnum::CREWMAN) {

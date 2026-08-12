@@ -3,7 +3,8 @@
     <div class="crew-assignment-management-toolbar">
         <input type="button" class="button" value="Zur Schiffsinformation"
             onclick="showSpacecraftDetailsFromCrewManagement({{ SPACECRAFT.getId }}); return false;" />
-        <span>Crew kann per Drag and Drop auf einen freien Posten verschoben werden</span>
+        <span class="crew-assignment-management-hint">Crew kann per Drag and Drop auf einen freien Posten verschoben oder mit einem anderen Crewman getauscht werden.</span>
+        <span class="crew-assignment-management-hint-mobile">Mobil: Crewman antippen, dann einen freien Posten oder anderen Crewman antippen.</span>
     </div>
 
     <div class="crew-assignment-management-scroll" ondragover="scrollCrewAssignmentManagement(event);">

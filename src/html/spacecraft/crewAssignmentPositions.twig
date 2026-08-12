@@ -23,6 +23,14 @@
             {% else %}
             <div class="crew-assignment-empty">Freier Posten</div>
             {% endfor %}
+            {% if not isReadOnly and (data.capacity is null or data.crewAssignments|length < data.capacity) %}
+            <div class="crew-assignment-insert-zone" data-crew-slot="{{ position.value }}"
+                ondragover="allowCrewAssignmentDrop(event);" ondragleave="leaveCrewAssignmentDrop(event);"
+                ondrop="dropCrewAssignment(event, this);"
+                onclick="assignSelectedCrewToSlot(event, this);">
+                Crew hier zuweisen
+            </div>
+            {% endif %}
         </div>
     </section>
     {% endfor %}
