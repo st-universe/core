@@ -24,8 +24,8 @@
 							Loginname
 						</label>
 						<div class="d-flex align-items-center">
-							<input type="text" class="form-control me-2" name="loginname" id="loginname"
-								maxlength="20" onblur="checkLogin(this, this.value)" />
+							<input type="text" class="form-control me-2" name="loginname" id="loginname" maxlength="20"
+								onblur="checkLogin(this, this.value)" />
 						</div>
 						<div id="logindup" class="text-warning" style="display: none;">
 							Dieser Loginname ist bereits registriert
@@ -40,8 +40,8 @@
 							E-Mail Adresse
 						</label>
 						<div class="d-flex align-items-center">
-							<input type="email" class="form-control me-2" name="email" id="email"
-								maxlength="200" onblur="checkEmail(this, this.value);" />
+							<input type="email" class="form-control me-2" name="email" id="email" maxlength="200"
+								onblur="checkEmail(this, this.value);" />
 						</div>
 						<div id="emaildup" class="text-warning" style="display: none;">
 							Diese E-Mailadresse ist bereits registriert
@@ -133,6 +133,11 @@
 						<div id="mobileblk" class="text-warning" style="display: none;">Diese Mobilfunknummer ist
 							blockiert</div>
 						<small class="form-text">Deine Nummer: <span id="combinedMobileValue"></span></small>
+						<small class="form-text">Warum fragen wir nach deiner Mobilfunknummer?
+							Um eine Hürde für Multi-Spieler zu schaffen, fragen wir die Mobilfunknummer ab. Nach der
+							Aktivierung deines Accounts, wird deine Nummer bei uns gehasht. Also nicht bei uns als klare
+							Nummer gespeichert. Wir verschicken nur während des Aktivierungsprozesses eine SMS.
+						</small>
 					</div>
 					{% endif %}
 
