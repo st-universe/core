@@ -132,6 +132,7 @@ function showSpacecraftDetails(element, id) {
   updatePopupAtElement(element, "?SHOW_SPACECRAFTDETAILS=1&id=" + id);
 }
 var crewAssignmentScrollTop = 0;
+var crewAssignmentDraggedCrewId = null;
 var crewAssignmentPointerDrag = null;
 var crewAssignmentPointerPreparation = null;
 var crewAssignmentMobileSelection = null;
@@ -165,8 +166,14 @@ function initializeCrewAssignmentManagement() {
 }
 
 function startCrewAssignmentDrag(event, element) {
-  event.dataTransfer.effectAllowed = "move";
-  event.dataTransfer.setData("text/plain", element.dataset.crewId);
+  crewAssignmentDraggedCrewId = element.dataset.crewId;
+  if (event.dataTransfer) {
+    try {
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", crewAssignmentDraggedCrewId);
+    } catch (error) {
+    }
+  }
   element.classList.add("crew-assignment-card-dragging");
   var root = element.closest(".crew-assignment-management");
   if (root !== null) {
@@ -175,6 +182,7 @@ function startCrewAssignmentDrag(event, element) {
 }
 
 function endCrewAssignmentDrag(element) {
+  crewAssignmentDraggedCrewId = null;
   element.classList.remove("crew-assignment-card-dragging");
   var root = element.closest(".crew-assignment-management");
   if (root !== null) {
@@ -201,7 +209,7 @@ function dropCrewAssignment(event, element) {
   event.stopPropagation();
   element.classList.remove("crew-assignment-drop-active");
 
-  var crewId = event.dataTransfer.getData("text/plain");
+  var crewId = getCrewAssignmentDraggedCrewId();
   if (crewId && canAssignCrewToSlot(crewId, element)) {
     saveCrewAssignment(crewId, element.dataset.crewSlot);
   }
@@ -225,10 +233,14 @@ function dropCrewAssignmentOnCard(event, element) {
   event.stopPropagation();
   element.classList.remove("crew-assignment-swap-active");
 
-  var crewId = event.dataTransfer.getData("text/plain");
+  var crewId = getCrewAssignmentDraggedCrewId();
   if (crewId && crewId !== element.dataset.crewId) {
     saveCrewAssignment(crewId, element.dataset.crewSlot, element.dataset.crewId);
   }
+}
+
+function getCrewAssignmentDraggedCrewId() {
+  return crewAssignmentDraggedCrewId;
 }
 
 function startCrewAssignmentPointerDrag(event, element) {
