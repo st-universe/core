@@ -142,10 +142,7 @@
     ondragover="allowCrewAssignmentSwap(event, this);"
     ondragleave="leaveCrewAssignmentSwap(event, this);"
     ondrop="dropCrewAssignmentOnCard(event, this);"
-    onpointerdown="startCrewAssignmentPointerDrag(event, this);"
-    onpointermove="moveCrewAssignmentPointerDrag(event);"
-    onpointerup="endCrewAssignmentPointerDrag(event);"
-    onpointercancel="cancelCrewAssignmentPointerDrag(event);"
+    onpointerdown="setCrewAssignmentPointerType(this, event.pointerType);"
     onclick="selectCrewAssignmentForTouch(event, this);"
     >
     <div class="crew-assignment-card-main">
