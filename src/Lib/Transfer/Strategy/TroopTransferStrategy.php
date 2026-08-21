@@ -9,6 +9,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
@@ -19,6 +20,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
     public function __construct(
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private TroopTransferUtilityInterface $troopTransferUtility,
+        private CrewCreatorInterface $crewCreator
     ) {}
 
     #[\Override]
@@ -89,12 +91,18 @@ class TroopTransferStrategy implements TransferStrategyInterface
         }
 
         $destination = $isUnload ? $target : $source;
-        $crewAssignments = $isUnload ? $source->get()->getCrewAssignments() : $target->get()->getCrewAssignments();
+        $crewProvider = $isUnload ? $source->get() : $target->get();
+        $crewAssignments = $crewProvider->getCrewAssignments();
         $filteredByUser = $crewAssignments->filter(fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser()->getId() === $source->getUser()->getId())->toArray();
         $slice = array_slice($filteredByUser, 0, $amount);
 
-        foreach ($slice as $crewAssignment) {
-            $this->troopTransferUtility->assignCrew($crewAssignment, $destination->get());
+        $destinationEntity = $destination->get();
+        if ($destinationEntity instanceof Ship && $destinationEntity->getUser()->getId() === $user->getId()) {
+            $this->crewCreator->createCrewAssignments($destinationEntity, $crewProvider, count($slice), $user);
+        } else {
+            foreach ($slice as $crewAssignment) {
+                $this->troopTransferUtility->assignCrew($crewAssignment, $destinationEntity);
+            }
         }
 
         $information->addInformationf(

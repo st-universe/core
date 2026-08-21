@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Crew;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\Colony;
@@ -224,7 +225,7 @@ class TroopTransferUtilityTest extends StuTestCase
             ->once()
             ->andReturnSelf();
         $shipCrew->shouldReceive('setSlot')
-            ->with(null)
+            ->with(CrewTypeEnum::CREWMAN)
             ->once();
 
         $target->shouldReceive('getTakeoverPassive')

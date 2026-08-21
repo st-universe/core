@@ -10,10 +10,12 @@ use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -28,7 +30,8 @@ final class CrewCreator implements CrewCreatorInterface
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private CrewRepositoryInterface $crewRepository,
         private UserRepositoryInterface $userRepository,
-        private StuRandom $stuRandom
+        private StuRandom $stuRandom,
+        private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
 
     #[\Override]
@@ -86,7 +89,8 @@ final class CrewCreator implements CrewCreatorInterface
     public function createCrewAssignments(
         Spacecraft $spacecraft,
         EntityWithCrewAssignmentsInterface $crewProvider,
-        ?int $amount = null
+        ?int $amount = null,
+        ?User $crewUser = null
     ): void {
         $crewToSetup = $amount ?? $spacecraft->getBuildPlan()?->getCrew() ?? 0;
         $shipRumpRole = $spacecraft->getRump()->getShipRumpRole();
@@ -125,36 +129,31 @@ final class CrewCreator implements CrewCreatorInterface
                     $freeSlots--;
                 }
 
-                $crewAssignment = $this->getCrewByType($crewType, $crewProvider);
+                $crewAssignment = $this->getCrewByType($crewType, $crewProvider, $crewUser);
                 if ($crewAssignment === null) {
-                    $crewAssignment = $this->getCrew($crewProvider);
+                    $crewAssignment = $this->getCrew($crewProvider, $crewUser);
                 }
 
                 if ($crewAssignment === null) {
                     throw new CrewOriginException('no assignable crew found');
                 }
 
-                $crewAssignment->setSpacecraft($spacecraft);
-                $crewAssignment->setColony(null);
-                $crewAssignment->setTradepost(null);
-                //TODO set both ship and crew user
                 $crewAssignment->setUser($spacecraft->getUser());
-                $crewAssignment->setSlot($crewType);
-
-                $spacecraft->getCrewAssignments()->add($crewAssignment);
-
-                $this->shipCrewRepository->save($crewAssignment);
+                $this->troopTransferUtility->assignCrew($crewAssignment, $spacecraft, $crewType);
             }
         }
     }
 
     private function getCrewByType(
         CrewTypeEnum $crewType,
-        EntityWithCrewAssignmentsInterface $crewProvider
+        EntityWithCrewAssignmentsInterface $crewProvider,
+        ?User $crewUser
     ): ?CrewAssignment {
         $matchingAssignments = $crewProvider->getCrewAssignments()
             ->filter(
-                static fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->isSkilledAt($crewType)
+                static fn (CrewAssignment $crewAssignment): bool =>
+                    ($crewUser === null || $crewAssignment->getCrew()->getUser()->getId() === $crewUser->getId())
+                    && $crewAssignment->getCrew()->isSkilledAt($crewType)
             )
             ->toArray();
 
@@ -176,9 +175,12 @@ final class CrewCreator implements CrewCreatorInterface
         return $crewAssignment;
     }
 
-    private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider): ?CrewAssignment
+    private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider, ?User $crewUser): ?CrewAssignment
     {
-        $crewAssignments = $crewProvider->getCrewAssignments();
+        $crewAssignments = $crewProvider->getCrewAssignments()->filter(
+            static fn (CrewAssignment $crewAssignment): bool =>
+                $crewUser === null || $crewAssignment->getCrew()->getUser()->getId() === $crewUser->getId()
+        );
 
         if ($crewAssignments->isEmpty()) {
             return null;
@@ -187,7 +189,7 @@ final class CrewCreator implements CrewCreatorInterface
         /** @var CrewAssignment $random */
         $random = $crewAssignments->get($this->stuRandom->array_rand($crewAssignments->toArray()));
 
-        $crewAssignments->removeElement($random);
+        $crewProvider->getCrewAssignments()->removeElement($random);
 
         return $random;
     }
