@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\ActivateTractorBeam;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\Exception\SystemNotDeactivatableException;
@@ -42,7 +45,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
         private ThreatReactionInterface $threatReaction,
         private TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
-        private PirateReactionInterface $pirateReaction
+        private PirateReactionInterface $pirateReaction,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -169,6 +173,11 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $ship,
+            SkillEnhancementEnum::ACTIVATE_TRACTOR_BEAM
+        ));
 
         $this->privateMessageSender->send(
             $userId,

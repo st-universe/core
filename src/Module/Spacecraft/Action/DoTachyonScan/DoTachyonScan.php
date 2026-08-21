@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DoTachyonScan;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\TachyonScannerShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,7 +26,9 @@ final class DoTachyonScan implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private TachyonScanRepositoryInterface $tachyonScanRepository
+        private TachyonScanRepositoryInterface $tachyonScanRepository,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -71,6 +77,23 @@ final class DoTachyonScan implements ActionControllerInterface
         $this->tachyonScanRepository->save($tachyonScan);
 
         $epsSystem->lowerEps(TachyonScannerShipSystem::SCAN_EPS_COST)->update();
+
+        foreach ($ship->getLocation()->getSpacecrafts() as $target) {
+            if (
+                !$target->isCloaked()
+                || $target->isRpgModuleInvisible()
+                || $target->getUser()->isNpc()
+                || $this->playerRelationDeterminator->isFriend($ship->getUser(), $target->getUser())
+            ) {
+                continue;
+            }
+
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $ship,
+                SkillEnhancementEnum::DECLOAK_FOREIGN_SPACECRAFT
+            ));
+            break;
+        }
 
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $game->setViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED, true);

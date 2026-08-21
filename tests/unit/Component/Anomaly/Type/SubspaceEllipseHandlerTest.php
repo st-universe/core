@@ -6,6 +6,7 @@ namespace Stu\Component\Anomaly\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -39,6 +40,7 @@ class SubspaceEllipseHandlerTest extends StuTestCase
     private MockInterface&DistributedMessageSenderInterface $distributedMessageSender;
     private MockInterface&StuRandom $stuRandom;
     private MockInterface&MessageFactoryInterface $messageFactory;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private MockInterface&Anomaly $anomaly;
 
@@ -57,6 +59,8 @@ class SubspaceEllipseHandlerTest extends StuTestCase
         $this->distributedMessageSender = $this->mock(DistributedMessageSenderInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
+        $this->eventDispatcher->shouldReceive('dispatch')->zeroOrMoreTimes();
 
         $this->anomaly = $this->mock(Anomaly::class);
 
@@ -68,7 +72,8 @@ class SubspaceEllipseHandlerTest extends StuTestCase
             $this->privateMessageSender,
             $this->distributedMessageSender,
             $this->stuRandom,
-            $this->messageFactory
+            $this->messageFactory,
+            $this->eventDispatcher
         );
     }
 

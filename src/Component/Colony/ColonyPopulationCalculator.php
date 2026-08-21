@@ -6,6 +6,7 @@ namespace Stu\Component\Colony;
 
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Colony;
 
@@ -117,7 +118,10 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
         }
 
         // TBD: depends on social things. return dummy for now
-        $im = ceil((($changeable->getMaxBev() - $host->getPopulation()) / 3) / 100 * $host->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50);
+        $growth = (($changeable->getMaxBev() - $host->getPopulation()) / 3) / 100 * $host->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 50;
+        $im = $host->getUser()->getFactionId() === FactionEnum::FACTION_KLINGON->value
+            ? ($growth < 1 ? 0 : ceil($growth * 1.5))
+            : ceil($growth);
         if ($host->getPopulation() + $im > $changeable->getMaxBev()) {
             $im = $changeable->getMaxBev() - $host->getPopulation();
         }

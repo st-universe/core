@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowColonyScan;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\MatrixScannerShipSystem;
 use Stu\Exception\SanityCheckException;
@@ -32,7 +36,9 @@ final class ShowColonyScan implements ViewControllerInterface
         private ColonyLibFactoryInterface $colonyLibFactory,
         private ColonyScanRepositoryInterface $colonyScanRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -109,6 +115,13 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);
         $colonySurface->updateSurface();
+
+        if (!$colony->getUser()->isNpc() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $colony->getUser())) {
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $ship,
+                SkillEnhancementEnum::FOREIGN_COLONY_SCAN
+            ));
+        }
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);

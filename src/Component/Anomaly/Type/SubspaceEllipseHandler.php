@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\AnomalyException;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
@@ -33,7 +36,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         private readonly PrivateMessageSenderInterface $privateMessageSender,
         private readonly DistributedMessageSenderInterface $distributedMessageSender,
         private readonly StuRandom $stuRandom,
-        private readonly MessageFactoryInterface $messageFactory
+        private readonly MessageFactoryInterface $messageFactory,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -70,6 +74,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         $messagesForBases = $this->messageFactory->createMessageCollection();
 
         foreach ($location->getSpacecraftsWithoutVacation() as $spacecraft) {
+
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $spacecraft,
+                SkillEnhancementEnum::SUBSPACE_ELLIPSE_TICK
+            ));
 
             if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
                 continue;

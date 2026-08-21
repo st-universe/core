@@ -6,7 +6,10 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use BadMethodCallException;
 use InvalidArgumentException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
@@ -60,7 +63,8 @@ final class BuildConstruction implements ActionControllerInterface
         private readonly CommodityRepositoryInterface $commodityRepository,
         private readonly DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
         private readonly SpacecraftFactoryInterface $spacecraftFactory,
-        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -232,6 +236,11 @@ final class BuildConstruction implements ActionControllerInterface
             $workbee->setDockedTo($construction);
             $this->shipRepository->save($workbee);
         }
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $ship,
+            SkillEnhancementEnum::CONSTRUCTION_CREATED
+        ));
 
         $game->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich errichtet'), $construction->getName()));
         $game->getInfo()->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');

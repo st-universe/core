@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Crew;
 
 use Mockery\MockInterface;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\User;
@@ -173,9 +174,51 @@ class CrewCountRetrieverTest extends StuTestCase
             ->with($user)
             ->once()
             ->andReturn(130);
+        $user->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(FactionEnum::FACTION_FEDERATION->value);
 
         static::assertSame(
             13,
+            $this->subject->getTrainableCount($user)
+        );
+    }
+
+    public function testGetTrainableCountAppliesKlingonBonus(): void
+    {
+        $user = $this->mock(User::class);
+
+        $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
+            ->with($user)
+            ->once()
+            ->andReturn(130);
+        $user->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(FactionEnum::FACTION_KLINGON->value);
+
+        static::assertSame(
+            20,
+            $this->subject->getTrainableCount($user)
+        );
+    }
+
+    public function testGetTrainableCountDoesNotExceedGlobalCrewLimit(): void
+    {
+        $user = $this->mock(User::class);
+
+        $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
+            ->with($user)
+            ->once()
+            ->andReturn(1);
+        $user->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(FactionEnum::FACTION_KLINGON->value);
+
+        static::assertSame(
+            1,
             $this->subject->getTrainableCount($user)
         );
     }

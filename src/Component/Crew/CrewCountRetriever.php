@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
+use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\User;
@@ -65,6 +66,13 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
     #[\Override]
     public function getTrainableCount(User $user): int
     {
-        return (int) ceil($this->crewLimitCalculator->getGlobalCrewLimit($user) / 10);
+        $globalCrewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($user);
+        $trainableCount = (int) ceil($globalCrewLimit / 10);
+
+        if ($user->getFactionId() === FactionEnum::FACTION_KLINGON->value) {
+            $trainableCount = (int) ceil($trainableCount * 1.5);
+        }
+
+        return min($globalCrewLimit, $trainableCount);
     }
 }
