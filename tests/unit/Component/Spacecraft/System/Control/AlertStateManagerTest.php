@@ -6,6 +6,9 @@ namespace Stu\Component\Spacecraft\System\Control;
 
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
@@ -27,6 +30,8 @@ class AlertStateManagerTest extends StuTestCase
 
     private MockInterface&GameControllerInterface $game;
 
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
+
     private MockInterface&SpacecraftWrapperInterface $target;
 
     private AlertStateManagerInterface $subject;
@@ -41,6 +46,7 @@ class AlertStateManagerTest extends StuTestCase
         $this->systemActivation = $this->mock(SystemActivation::class);
         $this->systemDeactivation = $this->mock(SystemDeactivation::class);
         $this->game = $this->mock(GameControllerInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
 
         $this->target = $this->mock(SpacecraftWrapperInterface::class);
 
@@ -49,6 +55,7 @@ class AlertStateManagerTest extends StuTestCase
             $this->systemActivation,
             $this->systemDeactivation,
             $this->game,
+            $this->eventDispatcher
         );
     }
 
@@ -110,6 +117,10 @@ class AlertStateManagerTest extends StuTestCase
         $this->target->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($spacecraft);
+        $this->target->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
         $this->target->shouldReceive('setAlertState')
             ->with($alertState)
             ->once()
@@ -151,6 +162,18 @@ class AlertStateManagerTest extends StuTestCase
             ->with($expectedInfo)
             ->once();
 
+        if ($alertState === SpacecraftAlertStateEnum::ALERT_GREEN) {
+            $this->eventDispatcher->shouldNotReceive('dispatch');
+        } else {
+            $this->eventDispatcher->shouldReceive('dispatch')
+                ->with(\Mockery::on(
+                    fn (CrewExperienceEvent $event): bool =>
+                    $event->getSpacecraft() === $spacecraft
+                    && $event->getTrigger() === SkillEnhancementEnum::SET_ALERT_YELLOW_OR_RED
+                ))
+                ->once();
+        }
+
         $this->subject->setAlertState(
             $this->target,
             $alertState
@@ -181,6 +204,10 @@ class AlertStateManagerTest extends StuTestCase
         $this->target->shouldReceive('get')
             ->withNoArgs()
             ->andReturn($spacecraft);
+        $this->target->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(SpacecraftAlertStateEnum::ALERT_GREEN);
         $this->target->shouldReceive('setAlertState')
             ->with(SpacecraftAlertStateEnum::ALERT_RED)
             ->once()
@@ -213,6 +240,14 @@ class AlertStateManagerTest extends StuTestCase
                 ->with($this->target, $expectedActivation, \Mockery::type(InformationWrapper::class), false)
                 ->once();
         }
+
+        $this->eventDispatcher->shouldReceive('dispatch')
+            ->with(\Mockery::on(
+                fn (CrewExperienceEvent $event): bool =>
+                $event->getSpacecraft() === $spacecraft
+                && $event->getTrigger() === SkillEnhancementEnum::SET_ALERT_YELLOW_OR_RED
+            ))
+            ->once();
 
         $this->subject->setAlertState(
             $this->target,

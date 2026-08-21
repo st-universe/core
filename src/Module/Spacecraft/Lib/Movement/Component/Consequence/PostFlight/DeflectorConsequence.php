@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -14,7 +17,10 @@ use Stu\Orm\Entity\MapFieldType;
 
 class DeflectorConsequence extends AbstractFlightConsequence implements PostFlightConsequenceInterface
 {
-    public function __construct(private ApplyFieldDamageInterface $applyFieldDamage) {}
+    public function __construct(
+        private ApplyFieldDamageInterface $applyFieldDamage,
+        private EventDispatcherInterface $eventDispatcher
+    ) {}
 
     #[\Override]
     protected function skipWhenTractored(): bool
@@ -84,6 +90,13 @@ class DeflectorConsequence extends AbstractFlightConsequence implements PostFlig
                 'Nicht genug Energie für den Deflektor.',
                 $messages
             );
+
+            if ($ship->isWarped()) {
+                $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                    $ship,
+                    SkillEnhancementEnum::WARP_FLIGHT_WITHOUT_DEFLECTOR_ENERGY
+                ));
+            }
         }
     }
 

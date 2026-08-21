@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use JsonMapper\JsonMapperInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\AnomalyException;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -59,7 +62,8 @@ final class IonStormHandler implements AnomalyHandlerInterface
         private JsonMapperInterface $jsonMapper,
         private InformationFactoryInterface $informationFactory,
         private StuRandom $stuRandom,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -201,6 +205,11 @@ final class IonStormHandler implements AnomalyHandlerInterface
             [sprintf("In Sektor %s befindet sich ein gefährlicher Ionensturm.\n", $wrapper->get()->getSectorString())]
         );
         $messages->add($message);
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $wrapper->get(),
+            SkillEnhancementEnum::ION_STORM_FLIGHT
+        ));
 
         $this->deactivateDrive($wrapper, $message);
         $this->damageSpacecraft($wrapper, $anomaly, $message, 20);

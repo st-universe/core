@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Wrapper;
 
 use Doctrine\Common\Collections\Collection;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Pirate\PirateReactionInterface;
@@ -21,7 +24,8 @@ class SpacecraftStorageCommodityLogic
 {
     public function __construct(
         private PirateReactionInterface $pirateReaction,
-        private CommodityTransferInterface $commodityTransfer
+        private CommodityTransferInterface $commodityTransfer,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     public function transfer(
@@ -32,6 +36,7 @@ class SpacecraftStorageCommodityLogic
     ): void {
 
         $hasTransfered = false;
+        $targetEntity = $target->get();
 
         // check for fleet option
         $fleetWrapper = $wrapper->getFleetWrapper();
@@ -44,14 +49,17 @@ class SpacecraftStorageCommodityLogic
                     $information
                 )) {
                     $hasTransfered = true;
+                    $this->awardBeamExperience($wrapper, $targetEntity);
                 }
             }
         } else {
             $hasTransfered =  $this->transferPerSpacecraft($isUnload, $wrapper, $target, $information);
+            if ($hasTransfered) {
+                $this->awardBeamExperience($wrapper, $targetEntity);
+            }
         }
 
         $spacecraft = $wrapper->get();
-        $targetEntity = $target->get();
         if (
             !$isUnload
             && $hasTransfered
@@ -64,6 +72,21 @@ class SpacecraftStorageCommodityLogic
                 $spacecraft
             );
         }
+    }
+
+    private function awardBeamExperience(
+        SpacecraftWrapperInterface $wrapper,
+        EntityWithStorageInterface $target
+    ): void {
+        $spacecraft = $wrapper->get();
+        if ($this->commodityTransfer->isDockTransfer($spacecraft, $target)) {
+            return;
+        }
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $spacecraft,
+            SkillEnhancementEnum::BEAM_COMMODITIES
+        ));
     }
 
     private function transferPerSpacecraft(

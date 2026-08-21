@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\AttackBuilding;
 
 use Mockery\MockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -59,7 +61,9 @@ final class AttackBuildingTest extends ActionControllerTestCase
             $this->mock(ColonyFunctionManagerInterface::class),
             $this->mock(AttackerProviderFactoryInterface::class),
             $this->mock(BattlePartyFactoryInterface::class),
-            $this->mock(MessageFactoryInterface::class)
+            $this->mock(MessageFactoryInterface::class),
+            $this->mock(PlayerRelationDeterminatorInterface::class),
+            $this->mock(EventDispatcherInterface::class)
         );
     }
 

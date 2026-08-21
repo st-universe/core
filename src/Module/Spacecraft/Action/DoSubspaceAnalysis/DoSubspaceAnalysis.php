@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\DoSubspaceAnalysis;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DoSubspaceAnalysis implements ActionControllerInterface
 {
@@ -19,7 +25,11 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
-        private SpacecraftLoaderInterface $spacecraftLoader
+        private SpacecraftLoaderInterface $spacecraftLoader,
+        private FlightSignatureRepositoryInterface $flightSignatureRepository,
+        private UserRepositoryInterface $userRepository,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
 
@@ -72,6 +82,19 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
         $subspaceSystem->setSpacecraftId($analyzedshipId)->update();
         $subspaceSystem->setAnalyzeTime(time() - (180 - $time))->update();
         $subspaceSystem->setFlightSigId($flightSigId)->update();
+
+        $flightSignature = $this->flightSignatureRepository->find($flightSigId);
+        $targetUser = $flightSignature === null ? null : $this->userRepository->find($flightSignature->getUserId());
+        if (
+            $targetUser !== null
+            && !$targetUser->isNpc()
+            && !$this->playerRelationDeterminator->isFriend($spacecraft->getUser(), $targetUser)
+        ) {
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $spacecraft,
+                SkillEnhancementEnum::START_FOREIGN_SUBSPACE_ANALYSIS
+            ));
+        }
 
         $game->getInfo()->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
 

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Control;
 
 use BadMethodCallException;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\Exception\InsufficientEnergyException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -23,7 +26,8 @@ final class AlertStateManager implements AlertStateManagerInterface
         private readonly SpacecraftLoaderInterface $spacecraftLoader,
         private readonly SystemActivation $systemActivation,
         private readonly SystemDeactivation $systemDeactivation,
-        private readonly GameControllerInterface $game
+        private readonly GameControllerInterface $game,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -99,8 +103,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         SpacecraftWrapperInterface $wrapper,
         SpacecraftAlertStateEnum $alertState,
         InformationInterface $information
-    ): bool
-    {
+    ): bool {
         $ship = $wrapper->get();
 
         // station constructions can't change alert state
@@ -119,6 +122,8 @@ final class AlertStateManager implements AlertStateManagerInterface
             $information->addInformationf('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]', $ship->getName());
             return false;
         }
+
+        $hasAlertStateChanged = $wrapper->getAlertState() !== $alertState;
 
         try {
             $alertMsg = $wrapper->setAlertState($alertState);
@@ -139,6 +144,16 @@ final class AlertStateManager implements AlertStateManagerInterface
             SpacecraftAlertStateEnum::ALERT_GREEN =>
             $this->setAlertGreen($wrapper, $information)
         };
+
+        if (
+            $hasAlertStateChanged
+            && ($alertState === SpacecraftAlertStateEnum::ALERT_YELLOW || $alertState === SpacecraftAlertStateEnum::ALERT_RED)
+        ) {
+            $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+                $ship,
+                SkillEnhancementEnum::SET_ALERT_YELLOW_OR_RED
+            ));
+        }
 
         return true;
     }

@@ -7,6 +7,7 @@ namespace Stu\Component\Anomaly\Type\IonStorm;
 use Doctrine\Common\Collections\ArrayCollection;
 use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationFactoryInterface;
@@ -42,12 +43,15 @@ class IonStormHandlerTest extends StuTestCase
     private MockInterface&InformationFactoryInterface $informationFactory;
     private MockInterface&StuRandom $stuRandom;
     private MockInterface&StuTime $stuTime;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private IonStormHandler $subject;
 
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->anomalyRepository = $this->mock(AnomalyRepositoryInterface::class);
         $this->locationRepository = $this->mock(LocationRepositoryInterface::class);
         $this->layerRepository = $this->mock(LayerRepositoryInterface::class);
@@ -65,6 +69,8 @@ class IonStormHandlerTest extends StuTestCase
         $this->informationFactory = $this->mock(InformationFactoryInterface::class);
         $this->stuRandom = $this->mock(StuRandom::class);
         $this->stuTime = $this->mock(StuTime::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
+        $this->eventDispatcher->shouldReceive('dispatch')->zeroOrMoreTimes();
 
         $this->subject = new IonStormHandler(
             $this->anomalyRepository,
@@ -83,7 +89,8 @@ class IonStormHandlerTest extends StuTestCase
             $this->jsonMapper,
             $this->informationFactory,
             $this->stuRandom,
-            $this->stuTime
+            $this->stuTime,
+            $this->eventDispatcher
         );
     }
 

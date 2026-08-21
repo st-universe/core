@@ -71,6 +71,11 @@ class FlightSignature
         return $this;
     }
 
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
     public function getShipId(): int
     {
         return $this->ship_id;

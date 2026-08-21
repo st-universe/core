@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Movement\Component\Consequence\PostFlight;
 
 use Mockery\MockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -20,6 +21,7 @@ use Stu\StuTestCase;
 class DeflectorConsequenceTest extends StuTestCase
 {
     private MockInterface&ApplyFieldDamageInterface $applyFieldDamage;
+    private MockInterface&EventDispatcherInterface $eventDispatcher;
 
     private FlightConsequenceInterface $subject;
 
@@ -32,7 +34,11 @@ class DeflectorConsequenceTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->applyFieldDamage = $this->mock(ApplyFieldDamageInterface::class);
+        $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
+        $this->eventDispatcher->shouldReceive('dispatch')->zeroOrMoreTimes();
 
         $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
@@ -41,9 +47,13 @@ class DeflectorConsequenceTest extends StuTestCase
         $this->wrapper->shouldReceive('get')
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
+        $this->ship->shouldReceive('isWarped')
+            ->zeroOrMoreTimes()
+            ->andReturnFalse();
 
         $this->subject = new DeflectorConsequence(
-            $this->applyFieldDamage
+            $this->applyFieldDamage,
+            $this->eventDispatcher
         );
     }
 

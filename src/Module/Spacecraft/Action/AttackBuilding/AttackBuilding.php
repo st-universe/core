@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\AttackBuilding;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
+use Stu\Component\Crew\Skill\SkillEnhancementEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,6 +30,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -47,7 +52,9 @@ final class AttackBuilding implements ActionControllerInterface
         private ColonyFunctionManagerInterface $colonyFunctionManager,
         private AttackerProviderFactoryInterface $attackerProviderFactory,
         private BattlePartyFactoryInterface $battlePartyFactory,
-        private MessageFactoryInterface $messageFactory
+        private MessageFactoryInterface $messageFactory,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        private EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[\Override]
@@ -187,15 +194,19 @@ final class AttackBuilding implements ActionControllerInterface
         /** @var ShipWrapperInterface $attackerWrapper*/
         foreach ($incomingBattleParty->getActiveMembers(true, true) as $attackerWrapper) {
             $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker($attackerWrapper);
+            $epsBeforeAttack = $attackerWrapper->getEpsSystemData()?->getEps();
 
             if ($isOrbitField) {
                 $informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($spacecraftAttacker, $field, $isOrbitField));
 
                 if ($field->getIntegrity() === 0) {
+                    $this->awardExperienceForForeignColonyAttack($attackerWrapper, $colony, $epsBeforeAttack);
                     break;
                 }
             }
             $informations->addInformationWrapper($this->projectileWeaponPhase->fireAtBuilding($spacecraftAttacker, $field, $isOrbitField, $count));
+
+            $this->awardExperienceForForeignColonyAttack($attackerWrapper, $colony, $epsBeforeAttack);
 
             if ($field->getIntegrity() === 0) {
                 break;
@@ -229,6 +240,30 @@ final class AttackBuilding implements ActionControllerInterface
         } else {
             $game->getInfo()->addInformationWrapper($informations);
         }
+    }
+
+    private function awardExperienceForForeignColonyAttack(
+        ShipWrapperInterface $attackerWrapper,
+        Colony $colony,
+        ?int $epsBeforeAttack
+    ): void {
+        $attacker = $attackerWrapper->get();
+        $epsSystem = $attackerWrapper->getEpsSystemData();
+
+        if (
+            $epsBeforeAttack === null
+            || $epsSystem === null
+            || $epsSystem->getEps() >= $epsBeforeAttack
+            || $colony->getUser()->isNpc()
+            || $this->playerRelationDeterminator->isFriend($attacker->getUser(), $colony->getUser())
+        ) {
+            return;
+        }
+
+        $this->eventDispatcher->dispatch(new CrewExperienceEvent(
+            $attacker,
+            SkillEnhancementEnum::ATTACK_FOREIGN_COLONY
+        ));
     }
 
     #[\Override]
