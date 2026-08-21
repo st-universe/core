@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\ShipRumpCategory;
@@ -35,13 +36,15 @@ final class CrewCreatorTest extends StuTestCase
         $crewRepository = $this->mock(CrewRepositoryInterface::class);
         $userRepository = $this->mock(UserRepositoryInterface::class);
         $random = $this->mock(StuRandom::class);
+        $troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $subject = new CrewCreator(
             $crewRaceRepository,
             $positionRepository,
             $assignmentRepository,
             $crewRepository,
             $userRepository,
-            $random
+            $random,
+            $troopTransferUtility
         );
 
         $spacecraft = $this->mock(Spacecraft::class);
@@ -62,7 +65,7 @@ final class CrewCreatorTest extends StuTestCase
             ->andReturn($user);
         $spacecraft->shouldReceive('getCrewAssignments')
             ->withNoArgs()
-            ->times(4)
+            ->once()
             ->andReturn($spacecraftAssignments);
         $rump->shouldReceive('getShipRumpRole')
             ->withNoArgs()
@@ -115,26 +118,16 @@ final class CrewCreatorTest extends StuTestCase
                 ->withNoArgs()
                 ->zeroOrMoreTimes()
                 ->andReturn($crew);
-            $assignment->shouldReceive('setSpacecraft')
-                ->with($spacecraft)
-                ->once()
-                ->andReturnSelf();
-            $assignment->shouldReceive('setColony')
-                ->with(null)
-                ->once()
-                ->andReturnSelf();
-            $assignment->shouldReceive('setTradepost')
-                ->with(null)
-                ->once()
-                ->andReturnSelf();
             $assignment->shouldReceive('setUser')
                 ->with($user)
                 ->once()
                 ->andReturnSelf();
-            $assignment->shouldReceive('setSlot')
-                ->with($position)
+            $troopTransferUtility->shouldReceive('assignCrew')
+                ->with($assignment, $spacecraft, $position)
                 ->once()
-                ->andReturnSelf();
+                ->andReturnUsing(function (CrewAssignment $assignment) use ($spacecraftAssignments): void {
+                    $spacecraftAssignments->add($assignment);
+                });
             $crewAssignments->set($index, $assignment);
         }
 
@@ -147,10 +140,6 @@ final class CrewCreatorTest extends StuTestCase
             ->withAnyArgs()
             ->times(3)
             ->andReturnUsing(static fn (array $assignments): int => array_key_first($assignments));
-        $assignmentRepository->shouldReceive('save')
-            ->withAnyArgs()
-            ->times(3);
-
         $subject->createCrewAssignments($spacecraft, $provider, 3);
 
         $this->assertCount(4, $spacecraftAssignments);

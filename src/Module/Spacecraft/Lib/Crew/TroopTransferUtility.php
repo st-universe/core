@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Orm\Entity\Crew;
@@ -68,12 +69,11 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
     }
 
     #[\Override]
-    public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target): void
+    public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target, ?CrewTypeEnum $slot = null): void
     {
-        // TODO create CrewSlotAssignment
         $crewAssignment->clearAssignment()
             ->assign($target)
-            ->setSlot(null);
+            ->setSlot($slot ?? ($target instanceof Spacecraft ? CrewTypeEnum::CREWMAN : null));
 
         $target->getCrewAssignments()->add($crewAssignment);
 

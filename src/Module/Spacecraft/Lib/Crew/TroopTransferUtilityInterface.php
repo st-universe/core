@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
@@ -16,5 +17,5 @@ interface TroopTransferUtilityInterface
 
     public function foreignerCount(Spacecraft $spacecraft): int;
 
-    public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target): void;
+    public function assignCrew(CrewAssignment $crewAssignment, EntityWithCrewAssignmentsInterface $target, ?CrewTypeEnum $slot = null): void;
 }
