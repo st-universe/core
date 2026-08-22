@@ -130,10 +130,11 @@ function initializeCrewManagement() {
 	const foreignStationInput = management.querySelector('[data-crew-filter-foreign-station]');
 	const count = management.querySelector('[data-crew-count]');
 	const reset = management.querySelector('[data-crew-filter-reset]');
+	const apply = management.querySelector('[data-crew-filter-apply]');
 	const dismissMode = management.querySelector('[data-crew-dismiss-mode]');
 	const dismissConfirm = management.querySelector('[data-crew-dismiss-confirm]');
 
-	if (!list || !nameInput || !shipInput || !colonyInput || !sortInput || !escapePodInput || !foreignStationInactiveInput || !foreignStationInput || !count || !reset || !dismissMode || !dismissConfirm) {
+	if (!list || !nameInput || !shipInput || !colonyInput || !sortInput || !escapePodInput || !foreignStationInactiveInput || !foreignStationInput || !count || !reset || !apply || !dismissMode || !dismissConfirm) {
 		return;
 	}
 
@@ -206,19 +207,8 @@ function initializeCrewManagement() {
 		count.textContent = visibleCount + ' von ' + cards.length + ' Crewmitgliedern';
 	};
 
-	nameInput.addEventListener('input', applyFilters);
-	shipInput.addEventListener('input', applyFilters);
-	colonyInput.addEventListener('input', applyFilters);
-	sortInput.addEventListener('change', applyFilters);
-	rankInputs.forEach(function (input) {
-		input.addEventListener('change', applyFilters);
-	});
-	positionInputs.forEach(function (input) {
-		input.addEventListener('change', applyFilters);
-	});
-	[escapePodInput, foreignStationInactiveInput, foreignStationInput].forEach(function (input) {
-		input.addEventListener('change', applyFilters);
-	});
+	sortInput.addEventListener('change', sortCards);
+	apply.addEventListener('click', applyFilters);
 	reset.addEventListener('click', function () {
 		nameInput.value = '';
 		shipInput.value = '';
