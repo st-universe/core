@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Mockery;
 use request;
@@ -30,6 +31,8 @@ final class ShowCrewmanDetailsTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->skillEnhancementLogRepository = $this->mock(SkillEnhancementLogRepositoryInterface::class);
         $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
@@ -52,9 +55,11 @@ final class ShowCrewmanDetailsTest extends StuTestCase
         $game->shouldReceive('setTemplateVar')->with('CREW_ASSIGNMENT', $crewAssignment)->once();
         $game->shouldReceive('setTemplateVar')->with('COUNT', 5)->once();
         $game->shouldReceive('setTemplateVar')->with('CREW_RANK_NAMES', Mockery::type('array'))->once();
+        $game->shouldReceive('setTemplateVar')->with('CREW_SKILL_RADAR', Mockery::type('array'))->once();
         $game->shouldReceive('setTemplateVar')->with('LOGS', $logs)->once();
         $user->shouldReceive('getId')->andReturn(101);
         $crew->shouldReceive('getUserId')->andReturn(101);
+        $crew->shouldReceive('getSkills')->andReturn(new ArrayCollection())->once();
         $crewAssignment->shouldReceive('getCrew')->andReturn($crew);
         $this->crewAssignmentRepository->shouldReceive('find')->with(42)->andReturn($crewAssignment)->once();
         $this->skillEnhancementLogRepository->shouldReceive('getForCrewman')->with($crew)->andReturn($logs)->once();

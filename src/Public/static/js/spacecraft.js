@@ -1882,3 +1882,150 @@ if (document.readyState === 'loading') {
 
 window.Ship3DViewer = Ship3DViewer;
 window.init3DShipViewers = init3DShipViewers;
+
+function initializeCrewSkillRadar() {
+  const charts = document.querySelectorAll('[data-crew-skill-radar]:not([data-initialized])');
+
+  charts.forEach(function (chart) {
+    let data;
+    try {
+      data = JSON.parse(chart.dataset.radarData);
+    } catch (error) {
+      return;
+    }
+
+    if (!Array.isArray(data.skills) || data.skills.length !== 6 || !Array.isArray(data.ranks) || data.ranks.length < 2) {
+      return;
+    }
+
+    const ranks = data.ranks.slice().sort(function (left, right) {
+      return Number(left.expertise) - Number(right.expertise);
+    });
+    const svgNamespace = 'http://www.w3.org/2000/svg';
+    const size = 420;
+    const center = size / 2;
+    const radius = 132;
+    const getPoint = function (distance, index) {
+      const angle = -Math.PI / 2 + index * (2 * Math.PI / data.skills.length);
+      return {
+        x: center + Math.cos(angle) * distance,
+        y: center + Math.sin(angle) * distance
+      };
+    };
+    const createElement = function (name) {
+      return document.createElementNS(svgNamespace, name);
+    };
+    const getPoints = function (distance) {
+      return data.skills.map(function (skill, index) {
+        const point = getPoint(distance, index);
+        return point.x.toFixed(2) + ',' + point.y.toFixed(2);
+      }).join(' ');
+    };
+    const getProgress = function (expertise) {
+      const value = Math.max(0, Number(expertise) || 0);
+      const maxIndex = ranks.length - 1;
+
+      if (value >= Number(ranks[maxIndex].expertise)) {
+        return 1;
+      }
+
+      for (let index = 1; index <= maxIndex; index++) {
+        const previous = Number(ranks[index - 1].expertise);
+        const current = Number(ranks[index].expertise);
+        if (value <= current) {
+          const intervalProgress = current === previous ? 0 : (value - previous) / (current - previous);
+          return ((index - 1) + intervalProgress) / maxIndex;
+        }
+      }
+
+      return 0;
+    };
+    const getRankName = function (expertise) {
+      let rank = ranks[0];
+      const value = Number(expertise) || 0;
+
+      ranks.forEach(function (currentRank) {
+        if (value >= Number(currentRank.expertise)) {
+          rank = currentRank;
+        }
+      });
+
+      return rank.name;
+    };
+    const svg = createElement('svg');
+    svg.setAttribute('class', 'crew-skill-radar-svg');
+    svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', 'Fähigkeitsprofil der Positionsexpertisen');
+
+    const title = createElement('title');
+    title.textContent = data.skills.map(function (skill) {
+      return skill.name + ': ' + skill.expertise + ' XP (' + getRankName(skill.expertise) + ')';
+    }).join(', ');
+    svg.appendChild(title);
+
+    for (let index = 1; index < ranks.length; index++) {
+      const grid = createElement('polygon');
+      grid.setAttribute('class', 'crew-skill-radar-grid' + (index === ranks.length - 1 ? ' crew-skill-radar-grid-outer' : ''));
+      grid.setAttribute('points', getPoints(radius * index / (ranks.length - 1)));
+      svg.appendChild(grid);
+    }
+
+    data.skills.forEach(function (skill, index) {
+      const axisEnd = getPoint(radius, index);
+      const axis = createElement('line');
+      axis.setAttribute('class', 'crew-skill-radar-axis');
+      axis.setAttribute('x1', center);
+      axis.setAttribute('y1', center);
+      axis.setAttribute('x2', axisEnd.x);
+      axis.setAttribute('y2', axisEnd.y);
+      svg.appendChild(axis);
+    });
+
+    const skillPoints = data.skills.map(function (skill, index) {
+      return getPoint(radius * getProgress(skill.expertise), index);
+    });
+    const skillPolygon = createElement('polygon');
+    skillPolygon.setAttribute('class', 'crew-skill-radar-value');
+    skillPolygon.setAttribute('points', skillPoints.map(function (point) {
+      return point.x.toFixed(2) + ',' + point.y.toFixed(2);
+    }).join(' '));
+    svg.appendChild(skillPolygon);
+
+    skillPoints.forEach(function (point) {
+      const marker = createElement('circle');
+      marker.setAttribute('class', 'crew-skill-radar-marker');
+      marker.setAttribute('cx', point.x);
+      marker.setAttribute('cy', point.y);
+      marker.setAttribute('r', 3);
+      svg.appendChild(marker);
+    });
+
+    data.skills.forEach(function (skill, index) {
+      const labelPoint = getPoint(radius + 35, index);
+      const text = createElement('text');
+      const words = String(skill.name).split(' ');
+      const lines = words.length > 1
+        ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')]
+        : words;
+
+      text.setAttribute('class', 'crew-skill-radar-label');
+      text.setAttribute('x', labelPoint.x);
+      text.setAttribute('y', labelPoint.y - (lines.length - 1) * 6);
+      text.setAttribute('text-anchor', labelPoint.x < center - 10 ? 'end' : (labelPoint.x > center + 10 ? 'start' : 'middle'));
+
+      lines.forEach(function (line, lineIndex) {
+        const span = createElement('tspan');
+        span.setAttribute('x', labelPoint.x);
+        span.setAttribute('dy', lineIndex === 0 ? 0 : 13);
+        span.textContent = line;
+        text.appendChild(span);
+      });
+
+      svg.appendChild(text);
+    });
+
+    chart.replaceChildren(svg);
+    chart.dataset.initialized = '1';
+  });
+}

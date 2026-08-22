@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 
 use request;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -49,6 +50,33 @@ final class ShowCrewmanDetails implements ViewControllerInterface
             $crewRankNames[$rank->value] = $this->userCrewRankRepository->getRankName($user, $rank);
         }
         $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
+        $skillData = [];
+        foreach (CrewTypeEnum::getOrder() as $position) {
+            if ($position === CrewTypeEnum::CREWMAN) {
+                continue;
+            }
+
+            $skillData[$position->value] = [
+                'name' => $position->getDescription(),
+                'expertise' => 0
+            ];
+        }
+        foreach ($crewAssignment->getCrew()->getSkills() as $skill) {
+            $position = $skill->getPosition();
+            if (isset($skillData[$position->value])) {
+                $skillData[$position->value]['expertise'] = $skill->getExpertise();
+            }
+        }
+        $game->setTemplateVar('CREW_SKILL_RADAR', [
+            'skills' => array_values($skillData),
+            'ranks' => array_map(
+                static fn (CrewSkillLevelEnum $rank): array => [
+                    'name' => $crewRankNames[$rank->value],
+                    'expertise' => $rank->getNeededExpertise()
+                ],
+                array_reverse(CrewSkillLevelEnum::cases())
+            )
+        ]);
         $game->setTemplateVar(
             'LOGS',
             array_slice($this->skillEnhancementLogRepository->getForCrewman($crewAssignment->getCrew()), 0, $count)
