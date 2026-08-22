@@ -22,6 +22,18 @@ function openStatistics(period) {
 	switchInnerContent('SHOW_STATISTICS', 'Statistiken', params);
 }
 
+function normalizeCrewManagementSearchText(value) {
+	return String(value)
+		.replace(/\[((?:\\.|[^\]])*)\]\([^)]*\)/g, '$1')
+		.replace(/\[url(?:=[^\]]*)?\]([\s\S]*?)\[\/url\]/gi, '$1')
+		.replace(/\[\/?(?:b|i|u|s|color|img|quote|code|size|font|align|list|li|table|tr|td|th)(?:=[^\]]*)?\]/gi, ' ')
+		.replace(/<[^>]*>/g, ' ')
+		.replace(/[\\*_`]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.toLocaleLowerCase('de-DE');
+}
+
 let crewManagementDragSelectionActive = false;
 let crewManagementDragSelectionValue = false;
 
@@ -138,6 +150,12 @@ function initializeCrewManagement() {
 		return;
 	}
 
+	cards.forEach(function (card) {
+		card.dataset.crewNameSearch = normalizeCrewManagementSearchText(card.dataset.crewName);
+		card.dataset.crewShipSearch = normalizeCrewManagementSearchText(card.dataset.crewShip);
+		card.dataset.crewColonySearch = normalizeCrewManagementSearchText(card.dataset.crewColony);
+	});
+
 	const getSelectedValues = function (inputs) {
 		return new Set(inputs.filter(function (input) {
 			return input.checked;
@@ -180,9 +198,9 @@ function initializeCrewManagement() {
 	};
 
 	const applyFilters = function () {
-		const name = nameInput.value.trim().toLocaleLowerCase('de-DE');
-		const ship = shipInput.value.trim().toLocaleLowerCase('de-DE');
-		const colony = colonyInput.value.trim().toLocaleLowerCase('de-DE');
+		const name = normalizeCrewManagementSearchText(nameInput.value);
+		const ship = normalizeCrewManagementSearchText(shipInput.value);
+		const colony = normalizeCrewManagementSearchText(colonyInput.value);
 		const ranks = getSelectedValues(rankInputs);
 		const positions = getSelectedValues(positionInputs);
 		const escapePodOnly = escapePodInput.checked;
@@ -190,9 +208,9 @@ function initializeCrewManagement() {
 
 		cards.forEach(function (card) {
 			const isVisible =
-				(!name || card.dataset.crewName.includes(name)) &&
-				(escapePodOnly || (!ship || card.dataset.crewShip.includes(ship))) &&
-				(escapePodOnly || (!colony || card.dataset.crewColony.includes(colony))) &&
+				(!name || card.dataset.crewNameSearch.includes(name)) &&
+				(escapePodOnly || (!ship || card.dataset.crewShipSearch.includes(ship))) &&
+				(escapePodOnly || (!colony || card.dataset.crewColonySearch.includes(colony))) &&
 				(!escapePodOnly || card.dataset.crewEscapePod === '1') &&
 				(!ranks.size || ranks.has(card.dataset.crewRank)) &&
 				(!positions.size || positions.has(card.dataset.crewPosition)) &&
@@ -312,6 +330,7 @@ function renameCrewManagement(event, crewId) {
 		onSuccess: function () {
 			name.textContent = crewName;
 			card.dataset.crewName = crewName.toLocaleLowerCase('de-DE');
+			card.dataset.crewNameSearch = normalizeCrewManagementSearchText(crewName);
 			inputContainer.style.display = 'none';
 			name.style.display = '';
 		}

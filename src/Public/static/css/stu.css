@@ -3767,6 +3767,17 @@ label.linkbutton:hover {
   font-weight: bold;
 }
 
+.crew-management-filter-text-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crew-management-filter-text-fields label span {
+  color: var(--color-9);
+  font-weight: bold;
+}
+
 .crew-management-filter-field input,
 .crew-management-filter-field select {
   box-sizing: border-box;
