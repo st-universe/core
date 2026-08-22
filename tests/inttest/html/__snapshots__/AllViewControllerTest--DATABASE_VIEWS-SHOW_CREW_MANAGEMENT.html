@@ -29,8 +29,12 @@
                 <input type="text" data-crew-filter-name />
             </label>
             <label class="crew-management-filter-field">
-                <span>Schiffsname</span>
+                <span>Station/Schiffsname</span>
                 <input type="text" data-crew-filter-ship />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Kolonie</span>
+                <input type="text" data-crew-filter-colony />
             </label>
             <label class="crew-management-filter-field">
                 <span>Sortierung</span>
@@ -69,22 +73,40 @@
                                         <label><input type="checkbox" value="7" data-crew-filter-position />Crewman</label>
                                     </div>
             </div>
+            <div class="crew-management-filter-group">
+                <span>Einsatzort</span>
+                <div class="crew-management-filter-options">
+                    <label><input type="checkbox" data-crew-filter-escape-pod />Nur Rettungskapseln</label>
+                    <label><input type="checkbox" data-crew-filter-foreign-station-inactive />Auf fremden Stationen nicht im Einsatz</label>
+                    <label><input type="checkbox" data-crew-filter-foreign-station />Auf fremden Stationen</label>
+                </div>
+            </div>
             <div class="crew-management-filter-actions">
                 <span data-crew-count></span>
                 <input type="button" class="button" value="Filter leeren" data-crew-filter-reset />
+                <input type="button" class="button" value="Aktualisieren" data-crew-filter-apply />
+                <input type="button" class="button" value="Entlassen" data-crew-dismiss-mode />
+                <input type="button" class="button" value="Bestätigen" style="display: none;" data-crew-dismiss-confirm />
             </div>
         </div>
 
         <div class="crew-management-list" data-crew-list>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(2);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(2); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 2);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 2); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="2"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position="7"
                 data-crew-position-name="crewman"
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
@@ -114,15 +136,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(3);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(3); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 3);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 3); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="3"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
@@ -143,7 +172,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -152,15 +181,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(4);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(4); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 4);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 4); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="4"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
@@ -181,7 +217,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -190,15 +226,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(5);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(5); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 5);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 5); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="5"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/w/1_6.png" />
@@ -219,7 +262,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -228,15 +271,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(6);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(6); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 6);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 6); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="6"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/BOLIAN/m/1_6.png" />
@@ -257,7 +307,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -266,15 +316,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(7);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(7); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 7);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 7); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="7"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
@@ -295,7 +352,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -304,15 +361,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(8);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(8); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 8);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 8); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="8"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
@@ -333,7 +397,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -342,15 +406,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(9);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(9); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 9);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 9); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="9"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/w/1_6.png" />
@@ -371,7 +442,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -380,15 +451,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(10);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(10); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 10);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 10); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="10"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
@@ -409,7 +487,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -418,15 +496,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(11);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(11); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 11);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 11); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="11"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
@@ -447,7 +532,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -456,15 +541,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(12);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(12); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 12);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 12); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="12"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -485,7 +577,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -494,15 +586,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(13);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(13); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 13);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 13); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="13"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="mighty ap"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -523,7 +622,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/10053.png" title="Außenposten" />
                     <div>
                         <div class="crew-management-ship-name">Mighty AP</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -532,15 +631,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(14);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(14); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 14);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 14); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="14"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
-                data-crew-ship=""
+                data-crew-ship="mighty ap goldene kugel"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -557,22 +663,35 @@
                     </div>
                 </div>
 
-                                <div class="crew-management-no-assignment">Keinem Schiff zugeteilt</div>
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/10053.png" title="Außenposten" />
+                    <div>
+                        <div class="crew-management-location-label">Am Handelsposten stationiert</div>
+                        <div class="crew-management-ship-name">Goldene Kugel</div>
+                    </div>
+                </div>
                 
                 <div class="crew-management-skills">
                     <div class="crew-management-skills-title">Positionsexpertisen</div>
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(15);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(15); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 15);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 15); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="15"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -593,7 +712,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -602,15 +721,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(16);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(16); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 16);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 16); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="16"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -631,7 +757,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -640,15 +766,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(17);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(17); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 17);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 17); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="17"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -669,7 +802,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -678,15 +811,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(18);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(18); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 18);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 18); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="18"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -707,7 +847,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -716,15 +856,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(19);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(19); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 19);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 19); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="19"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -745,7 +892,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -754,15 +901,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(20);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(20); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 20);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 20); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="20"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -783,7 +937,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -792,15 +946,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(21);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(21); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 21);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 21); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="21"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -821,7 +982,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -830,15 +991,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(22);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(22); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 22);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 22); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="22"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -859,7 +1027,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -868,15 +1036,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(23);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(23); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 23);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 23); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="23"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -897,7 +1072,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -906,15 +1081,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(24);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(24); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 24);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 24); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="24"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -935,7 +1117,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -944,15 +1126,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(25);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(25); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 25);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 25); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="25"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie mit bussard"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -973,7 +1162,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie mit Bussard</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -982,15 +1171,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(26);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(26); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 26);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 26); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="26"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1011,7 +1207,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1020,15 +1216,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(27);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(27); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 27);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 27); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="27"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1049,7 +1252,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1058,15 +1261,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(28);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(28); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 28);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 28); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="28"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1087,7 +1297,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1096,15 +1306,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(29);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(29); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 29);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 29); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="29"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1125,7 +1342,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1134,15 +1351,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(30);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(30); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 30);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 30); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="30"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1163,7 +1387,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1172,15 +1396,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(31);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(31); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 31);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 31); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="31"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1201,7 +1432,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1210,15 +1441,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(32);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(32); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 32);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 32); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="32"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1239,7 +1477,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1248,15 +1486,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(33);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(33); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 33);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 33); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="33"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1277,7 +1522,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1286,15 +1531,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(34);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(34); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 34);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 34); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="34"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1315,7 +1567,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1324,15 +1576,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(35);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(35); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 35);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 35); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="35"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1353,7 +1612,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 
@@ -1362,15 +1621,22 @@
                                         <div class="crew-management-no-skills">Noch keine Erfahrung</div>
                                     </div>
             </div>
-                                                            <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement(36);"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(36); event.preventDefault(); }"
+                                                                                                                        <div class="crew-management-card" role="link" tabindex="0"
+                onclick="handleCrewManagementCardClick(event, 36);"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, 36); event.preventDefault(); }"
                 data-crew-name="crew"
+                data-crew-id="36"
                 data-crew-rank="CADET"
                 data-crew-rank-expertise="0"
                 data-crew-ship="aerie zwo"
+                data-crew-colony=""
                 data-crew-position=""
                 data-crew-position-name=""
+                data-crew-escape-pod="0"
+                data-crew-foreign-station="0"
+                data-crew-foreign-station-inactive="0"
                 data-crew-expertise="0">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
@@ -1391,7 +1657,7 @@
                     <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
                     <div>
                         <div class="crew-management-ship-name">Aerie Zwo</div>
-                        <div>Dient als Crewman</div>
+                        <div>Ohne Position im Dienst</div>
                     </div>
                 </div>
                 

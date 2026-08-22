@@ -172,9 +172,11 @@ function initializeCrewManagement() {
 			return compareText(left.dataset.crewName, right.dataset.crewName);
 		});
 
+		const fragment = document.createDocumentFragment();
 		cards.forEach(function (card) {
-			list.appendChild(card);
+			fragment.appendChild(card);
 		});
+		list.appendChild(fragment);
 	};
 
 	const applyFilters = function () {
