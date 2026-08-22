@@ -3819,6 +3819,10 @@ label.linkbutton:hover {
   text-decoration: none;
 }
 
+.crew-management-card[hidden] {
+  display: none;
+}
+
 .crew-management-card:hover,
 .crew-management-card:focus-visible {
   background: var(--color-28);
