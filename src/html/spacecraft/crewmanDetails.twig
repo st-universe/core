@@ -82,6 +82,13 @@
 {% endif %}
 <br />
 
+<div class="divhead" style="color: var(--color-55);">Fähigkeitsprofil</div>
+<div class="divbody">
+    <div class="crew-skill-radar" data-crew-skill-radar data-radar-data="{{ CREW_SKILL_RADAR|json_encode|e('html_attr') }}"></div>
+    <div class="crew-skill-radar-scale">Zentrum: {{ CREW_SKILL_RADAR.ranks[0].name }} · Außenrand: {{ (CREW_SKILL_RADAR.ranks|last).name }}</div>
+</div>
+<br />
+
 {% if crew.getSkills|length > 0 %}
 {% set highestSkillExpertise = crew.getHighestSkillExpertise %}
 <table class="tcal" style="width: 100%;">
@@ -118,6 +125,9 @@
 {% else %}
 <div>Keine Positionsexpertise vorhanden</div>
 {% endif %}
+<script>
+    initializeCrewSkillRadar();
+</script>
 <br />
 
 <form method="post" action="ship.php">
