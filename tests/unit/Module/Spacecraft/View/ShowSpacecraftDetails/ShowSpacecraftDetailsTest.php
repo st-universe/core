@@ -79,6 +79,12 @@ class ShowSpacecraftDetailsTest extends StuTestCase
             ->with('USER_ID', $userId)
             ->once();
         $game->shouldReceive('setTemplateVar')
+            ->with('OWN_CREW_ASSIGNMENTS', [])
+            ->once();
+        $game->shouldReceive('setTemplateVar')
+            ->with('FOREIGN_CREW_ASSIGNMENTS', [])
+            ->once();
+        $game->shouldReceive('setTemplateVar')
             ->with('CREW_RANK_NAMES', [])
             ->once();
         $game->shouldReceive('setTemplateVar')

@@ -1,0 +1,1414 @@
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+</head>
+
+
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="database.php">
+            Datenbank
+        </a>
+                <span> / </span>
+                        <a href="database.php?SHOW_CREW_MANAGEMENT=1">
+            Crew
+        </a>
+                    </div>
+</div>
+<br />
+
+<div id="result" style="display: none;">..</div>
+<div id="crewManagement" class="crew-management" data-session-string="MOCKED_SESSIONSTRING">
+    <div class="divhead">Meine Crew</div>
+    <div class="divbody">
+        <div class="crew-management-filters">
+            <label class="crew-management-filter-field">
+                <span>Name</span>
+                <input type="text" data-crew-filter-name />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Schiffsname</span>
+                <input type="text" data-crew-filter-ship />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Sortierung</span>
+                <select data-crew-sort>
+                    <option value="expertise">Höchste Expertise</option>
+                    <option value="name">Name</option>
+                    <option value="rank">Rang</option>
+                    <option value="ship">Schiffsname</option>
+                    <option value="position">Aktueller Posten</option>
+                </select>
+            </label>
+            <div class="crew-management-filter-group">
+                <span>Ränge</span>
+                <div class="crew-management-filter-options">
+                                        <label><input type="checkbox" value="ADMIRAL" data-crew-filter-rank />Admiral</label>
+                                        <label><input type="checkbox" value="COMMODORE" data-crew-filter-rank />Commodore</label>
+                                        <label><input type="checkbox" value="CAPTAIN" data-crew-filter-rank />Captain</label>
+                                        <label><input type="checkbox" value="COMMANDER" data-crew-filter-rank />Commander</label>
+                                        <label><input type="checkbox" value="LIEUTENANT_COMMANDER" data-crew-filter-rank />Lieutenant Commander</label>
+                                        <label><input type="checkbox" value="LIEUTENANT" data-crew-filter-rank />Lieutenant</label>
+                                        <label><input type="checkbox" value="JUNIOR_LIEUTENANT" data-crew-filter-rank />Lieutenant Junior Grade</label>
+                                        <label><input type="checkbox" value="ENSIGN" data-crew-filter-rank />Ensign</label>
+                                        <label><input type="checkbox" value="CREWMAN" data-crew-filter-rank />Crewman</label>
+                                        <label><input type="checkbox" value="CADET" data-crew-filter-rank />Kadett</label>
+                                    </div>
+            </div>
+            <div class="crew-management-filter-group">
+                <span>Aktueller Posten</span>
+                <div class="crew-management-filter-options">
+                                        <label><input type="checkbox" value="1" data-crew-filter-position />Kommandierender Offizier</label>
+                                        <label><input type="checkbox" value="2" data-crew-filter-position />1. Offizier</label>
+                                        <label><input type="checkbox" value="3" data-crew-filter-position />Taktik</label>
+                                        <label><input type="checkbox" value="4" data-crew-filter-position />Wissenschaftler</label>
+                                        <label><input type="checkbox" value="5" data-crew-filter-position />Ingenieur</label>
+                                        <label><input type="checkbox" value="6" data-crew-filter-position />Navigator</label>
+                                        <label><input type="checkbox" value="7" data-crew-filter-position />Crewman</label>
+                                    </div>
+            </div>
+            <div class="crew-management-filter-actions">
+                <span data-crew-count></span>
+                <input type="button" class="button" value="Filter leeren" data-crew-filter-reset />
+            </div>
+        </div>
+
+        <div class="crew-management-list" data-crew-list>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(2);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(2); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position="7"
+                data-crew-position-name="crewman"
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-2" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 2);">Crew</div>
+                            <div id="crew-management-name-input-2" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-2" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 2);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(3);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(3); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-3" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 3);">Crew</div>
+                            <div id="crew-management-name-input-3" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-3" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 3);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(4);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(4); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-4" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 4);">Crew</div>
+                            <div id="crew-management-name-input-4" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-4" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 4);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(5);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(5); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-5" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 5);">Crew</div>
+                            <div id="crew-management-name-input-5" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-5" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 5);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(6);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(6); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/BOLIAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-6" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 6);">Crew</div>
+                            <div id="crew-management-name-input-6" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-6" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 6);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(7);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(7); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-7" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 7);">Crew</div>
+                            <div id="crew-management-name-input-7" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-7" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 7);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(8);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(8); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-8" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 8);">Crew</div>
+                            <div id="crew-management-name-input-8" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-8" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 8);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(9);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(9); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-9" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 9);">Crew</div>
+                            <div id="crew-management-name-input-9" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-9" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 9);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(10);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(10); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/VULCAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-10" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 10);">Crew</div>
+                            <div id="crew-management-name-input-10" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-10" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 10);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(11);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(11); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/ANDORIAN/m/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-11" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 11);">Crew</div>
+                            <div id="crew-management-name-input-11" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-11" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 11);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(12);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(12); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-12" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 12);">Crew</div>
+                            <div id="crew-management-name-input-12" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-12" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 12);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(13);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(13); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="mighty ap"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-13" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 13);">Crew</div>
+                            <div id="crew-management-name-input-13" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-13" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 13);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/10053.png" title="Außenposten" />
+                    <div>
+                        <div class="crew-management-ship-name">Mighty AP</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(14);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(14); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship=""
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-14" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 14);">Crew</div>
+                            <div id="crew-management-name-input-14" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-14" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 14);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-no-assignment">Keinem Schiff zugeteilt</div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(15);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(15); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-15" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 15);">Crew</div>
+                            <div id="crew-management-name-input-15" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-15" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 15);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(16);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(16); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-16" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 16);">Crew</div>
+                            <div id="crew-management-name-input-16" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-16" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 16);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(17);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(17); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-17" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 17);">Crew</div>
+                            <div id="crew-management-name-input-17" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-17" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 17);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(18);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(18); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-18" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 18);">Crew</div>
+                            <div id="crew-management-name-input-18" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-18" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 18);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(19);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(19); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-19" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 19);">Crew</div>
+                            <div id="crew-management-name-input-19" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-19" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 19);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(20);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(20); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-20" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 20);">Crew</div>
+                            <div id="crew-management-name-input-20" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-20" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 20);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(21);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(21); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-21" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 21);">Crew</div>
+                            <div id="crew-management-name-input-21" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-21" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 21);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(22);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(22); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-22" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 22);">Crew</div>
+                            <div id="crew-management-name-input-22" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-22" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 22);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(23);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(23); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-23" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 23);">Crew</div>
+                            <div id="crew-management-name-input-23" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-23" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 23);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(24);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(24); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-24" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 24);">Crew</div>
+                            <div id="crew-management-name-input-24" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-24" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 24);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(25);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(25); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie mit bussard"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-25" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 25);">Crew</div>
+                            <div id="crew-management-name-input-25" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-25" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 25);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie mit Bussard</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(26);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(26); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-26" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 26);">Crew</div>
+                            <div id="crew-management-name-input-26" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-26" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 26);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(27);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(27); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-27" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 27);">Crew</div>
+                            <div id="crew-management-name-input-27" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-27" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 27);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(28);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(28); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-28" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 28);">Crew</div>
+                            <div id="crew-management-name-input-28" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-28" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 28);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(29);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(29); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-29" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 29);">Crew</div>
+                            <div id="crew-management-name-input-29" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-29" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 29);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(30);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(30); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-30" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 30);">Crew</div>
+                            <div id="crew-management-name-input-30" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-30" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 30);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(31);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(31); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-31" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 31);">Crew</div>
+                            <div id="crew-management-name-input-31" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-31" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 31);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(32);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(32); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-32" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 32);">Crew</div>
+                            <div id="crew-management-name-input-32" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-32" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 32);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(33);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(33); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-33" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 33);">Crew</div>
+                            <div id="crew-management-name-input-33" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-33" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 33);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(34);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(34); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-34" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 34);">Crew</div>
+                            <div id="crew-management-name-input-34" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-34" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 34);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(35);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(35); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-35" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 35);">Crew</div>
+                            <div id="crew-management-name-input-35" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-35" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 35);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                                                            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement(36);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement(36); event.preventDefault(); }"
+                data-crew-name="crew"
+                data-crew-rank="CADET"
+                data-crew-rank-expertise="0"
+                data-crew-ship="aerie zwo"
+                data-crew-position=""
+                data-crew-position-name=""
+                data-crew-expertise="0">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/HUMAN/w/1_6.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-36" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, 36);">Crew</div>
+                            <div id="crew-management-name-input-36" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="Crew" id="crew-management-name-value-36" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, 36);" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">Kadett</div>
+                    </div>
+                </div>
+
+                                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/6501.png" title="Aerie" />
+                    <div>
+                        <div class="crew-management-ship-name">Aerie Zwo</div>
+                        <div>Dient als Crewman</div>
+                    </div>
+                </div>
+                
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                                        <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                                    </div>
+            </div>
+                    </div>
+    </div>
+</div>
+<script>
+    initializeCrewManagement();
+</script>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+
+</html>
