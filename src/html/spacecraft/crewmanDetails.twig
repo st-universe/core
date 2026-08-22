@@ -82,23 +82,17 @@
 {% endif %}
 <br />
 
-<div class="divhead" style="color: var(--color-55);">Fähigkeitsprofil</div>
-<div class="divbody">
-    <div class="crew-skill-radar" data-crew-skill-radar data-radar-data="{{ CREW_SKILL_RADAR|json_encode|e('html_attr') }}"></div>
-    <div class="crew-skill-radar-scale">Zentrum: {{ CREW_SKILL_RADAR.ranks[0].name }} · Außenrand: {{ (CREW_SKILL_RADAR.ranks|last).name }}</div>
-</div>
-<br />
-
 {% if crew.getSkills|length > 0 %}
 {% set highestSkillExpertise = crew.getHighestSkillExpertise %}
 <table class="tcal" style="width: 100%;">
     <tr>
-        <th colspan="3">Positionsexpertise</th>
+        <th colspan="4">Positionsexpertise</th>
     </tr>
     <tr>
         <th>Position</th>
         <th>Rang</th>
         <th>Expertise</th>
+        <th>Fähigkeitsprofil</th>
     </tr>
     {% for skill in crew.getSkills %}
     {% set nextSkillRank = skill.getRank.getNextSkillRank %}
@@ -119,6 +113,11 @@
             <br /><small>Maximalrang erreicht</small>
             {% endif %}
         </td>
+        {% if loop.first %}
+        <td rowspan="{{ crew.getSkills|length }}" class="crew-skill-radar-cell">
+            <div class="crew-skill-radar" data-crew-skill-radar data-radar-data="{{ CREW_SKILL_RADAR|json_encode|e('html_attr') }}"></div>
+        </td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
