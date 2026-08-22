@@ -555,6 +555,7 @@ div.arrow:hover {
 
 .starmapSectionControls input[type="checkbox"],
 .regionMapControls input[type="checkbox"],
+.crew-management-filters input[type="checkbox"],
 input[type="radio"].torpedoSelection {
   appearance: none;
   -webkit-appearance: none;
@@ -574,6 +575,7 @@ input[type="radio"].torpedoSelection {
 
 .starmapSectionControls input[type="checkbox"]:hover,
 .regionMapControls input[type="checkbox"]:hover,
+.crew-management-filters input[type="checkbox"]:hover,
 input[type="radio"].torpedoSelection:hover {
   border-color: var(--color-35);
   background: var(--color-31);
@@ -581,6 +583,7 @@ input[type="radio"].torpedoSelection:hover {
 
 .starmapSectionControls input[type="checkbox"]:checked,
 .regionMapControls input[type="checkbox"]:checked,
+.crew-management-filters input[type="checkbox"]:checked,
 input[type="radio"].torpedoSelection:checked {
   border-color: var(--color-35);
   background:
@@ -592,6 +595,7 @@ input[type="radio"].torpedoSelection:checked {
 
 .starmapSectionControls input[type="checkbox"]:checked::after,
 .regionMapControls input[type="checkbox"]:checked::after,
+.crew-management-filters input[type="checkbox"]:checked::after,
 input[type="radio"].torpedoSelection:checked::after {
   content: "";
   width: 8px;
@@ -603,6 +607,7 @@ input[type="radio"].torpedoSelection:checked::after {
 
 .starmapSectionControls input[type="checkbox"]:focus-visible,
 .regionMapControls input[type="checkbox"]:focus-visible,
+.crew-management-filters input[type="checkbox"]:focus-visible,
 input[type="radio"].torpedoSelection:focus-visible {
   outline: 1px solid var(--color-56);
   outline-offset: 2px;
@@ -3517,6 +3522,14 @@ label.linkbutton:hover {
   float: right;
 }
 
+.crew-assignment-detail-link {
+  cursor: pointer;
+}
+
+.crew-assignment-detail-link:hover {
+  background: var(--color-28);
+}
+
 .spacecraft-details-columns {
   display: grid;
   gap: 10px;
@@ -3722,6 +3735,195 @@ label.linkbutton:hover {
 .crew-assignment-no-skills,
 .crew-assignment-owner,
 .crew-assignment-empty {
+  font-style: italic;
+}
+
+.crew-management-filters {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  margin-bottom: 10px;
+}
+
+.crew-management-filter-field,
+.crew-management-filter-group,
+.crew-management-filter-actions {
+  background: var(--color-13);
+  border: 1px solid var(--color-21);
+  min-width: 0;
+  padding: 5px;
+}
+
+.crew-management-filter-field,
+.crew-management-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crew-management-filter-field > span,
+.crew-management-filter-group > span {
+  color: var(--color-9);
+  font-weight: bold;
+}
+
+.crew-management-filter-field input,
+.crew-management-filter-field select {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.crew-management-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+}
+
+.crew-management-filter-options label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+}
+
+.crew-management-filter-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.crew-management-filter-actions span {
+  color: var(--color-6);
+}
+
+.crew-management-list {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.crew-management-card {
+  background: var(--color-7);
+  border: 1px solid var(--color-21);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 205px;
+  padding: 8px;
+  text-decoration: none;
+}
+
+.crew-management-card:hover,
+.crew-management-card:focus-visible {
+  background: var(--color-28);
+  border-color: var(--color-9);
+  outline: none;
+}
+
+.crew-management-card-header,
+.crew-management-assignment {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.crew-management-crew-image {
+  height: 48px;
+  object-fit: contain;
+  width: 48px;
+}
+
+.crew-management-name {
+  color: var(--color-9);
+  cursor: pointer;
+  font-size: 115%;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.crew-management-name-input {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.crew-management-name-input input[type="text"] {
+  min-width: 0;
+  width: 100%;
+}
+
+.crew-management-rank,
+.crew-management-assignment,
+.crew-management-no-assignment,
+.crew-management-no-skills {
+  color: var(--color-6);
+}
+
+.crew-management-assignment {
+  background: var(--color-13);
+  border: 1px solid var(--color-21);
+  font-size: 90%;
+  min-height: 42px;
+  padding: 4px;
+}
+
+.crew-management-ship-image {
+  height: 36px;
+  object-fit: contain;
+  width: 52px;
+}
+
+.crew-management-ship-name {
+  color: var(--color-12);
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.crew-management-no-assignment,
+.crew-management-no-skills {
+  font-size: 90%;
+  font-style: italic;
+}
+
+.crew-management-skills {
+  margin-top: auto;
+}
+
+.crew-management-skills-title {
+  color: var(--color-9);
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.crew-management-skill {
+  border-top: 1px solid var(--color-21);
+  display: grid;
+  gap: 4px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding: 2px 0;
+}
+
+.crew-management-skill span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.crew-management-skill span:nth-child(2) {
+  color: var(--color-6);
+  font-size: 85%;
+}
+
+.crew-management-skill strong {
+  color: var(--color-12);
+  white-space: nowrap;
+}
+
+.crew-management-empty {
+  color: var(--color-6);
   font-style: italic;
 }
 

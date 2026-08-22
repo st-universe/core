@@ -100,23 +100,19 @@
             {% endif %}
             <tr>
                 <td class="darkbg"></td>
-                <td class="darkbg"><strong>Position</strong></td>
-                <td class="darkbg"><strong>Name</strong></td>
                 <td class="darkbg"><strong>Rang</strong></td>
+                <td class="darkbg"><strong>Name</strong></td>
+                <td class="darkbg"><strong>Position</strong></td>
             </tr>
-            {% for data in SHIP.getCrewAssignments %}
-            {% if data.getCrew.getUser.getId == SHIP.getUser.getId %}
+            {% for data in OWN_CREW_ASSIGNMENTS %}
             {% include 'html/spacecraft/crewAssignmentRow.twig' with {'CREW_ASSIGNMENT': data} %}
-            {% endif %}
             {% endfor %}
             {% if FOREIGNER_COUNT > 0 %}
             <tr>
                 <th colspan="4">Gast-Crew</th>
             </tr>
-            {% for data in SHIP.getCrewAssignments %}
-            {% if data.getCrew.getUser.getId != SHIP.getUser.getId %}
+            {% for data in FOREIGN_CREW_ASSIGNMENTS %}
             {% include 'html/spacecraft/crewAssignmentRow.twig' with {'CREW_ASSIGNMENT': data} %}
-            {% endif %}
             {% endfor %}
             {% endif %}
         </table>

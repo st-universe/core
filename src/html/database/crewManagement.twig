@@ -1,0 +1,108 @@
+<div id="crewManagement" class="crew-management" data-session-string="{{ SESSIONSTRING }}">
+    <div class="divhead">Meine Crew</div>
+    <div class="divbody">
+        <div class="crew-management-filters">
+            <label class="crew-management-filter-field">
+                <span>Name</span>
+                <input type="text" data-crew-filter-name />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Schiffsname</span>
+                <input type="text" data-crew-filter-ship />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Sortierung</span>
+                <select data-crew-sort>
+                    <option value="expertise">Höchste Expertise</option>
+                    <option value="name">Name</option>
+                    <option value="rank">Rang</option>
+                    <option value="ship">Schiffsname</option>
+                    <option value="position">Aktueller Posten</option>
+                </select>
+            </label>
+            <div class="crew-management-filter-group">
+                <span>Ränge</span>
+                <div class="crew-management-filter-options">
+                    {% for rank in CREW_RANKS %}
+                    <label><input type="checkbox" value="{{ rank.value }}" data-crew-filter-rank />{{ CREW_RANK_NAMES[rank.value] }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="crew-management-filter-group">
+                <span>Aktueller Posten</span>
+                <div class="crew-management-filter-options">
+                    {% for position in POSITIONS %}
+                    <label><input type="checkbox" value="{{ position.value }}" data-crew-filter-position />{{ position.getDescription }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="crew-management-filter-actions">
+                <span data-crew-count></span>
+                <input type="button" class="button" value="Filter leeren" data-crew-filter-reset />
+            </div>
+        </div>
+
+        <div class="crew-management-list" data-crew-list>
+            {% for assignment in CREW_ASSIGNMENTS %}
+            {% set crew = assignment.getCrew %}
+            {% set spacecraft = assignment.getSpacecraft %}
+            {% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+            <div class="crew-management-card" role="link" tabindex="0"
+                onclick="showCrewmanDetailsFromCrewManagement({{ crew.getId }});"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement({{ crew.getId }}); event.preventDefault(); }"
+                data-crew-name="{{ crew.getName|bbcode2txt|lower }}"
+                data-crew-rank="{{ crew.getRank.value }}"
+                data-crew-rank-expertise="{{ CREW_RANK_EXPERTISES[crew.getRank.value] }}"
+                data-crew-ship="{{ spacecraft ? spacecraft.getName|bbcode2txt|lower : '' }}"
+                data-crew-position="{{ spacecraft and assignment.getSlot ? assignment.getSlot.value : '' }}"
+                data-crew-position-name="{{ spacecraft and assignment.getSlot ? assignment.getSlot.getDescription|lower : '' }}"
+                data-crew-expertise="{{ crew.getHighestSkillExpertise }}">
+                <div class="crew-management-card-header">
+                    <img class="crew-management-crew-image" src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
+                    <div>
+                        <div class="crew-management-name-container" onclick="event.stopPropagation();">
+                            <div id="crew-management-name-{{ crew.getId }}" class="crew-management-name"
+                                onclick="showCrewManagementRename(event, {{ crew.getId }});">{{ crew.getName }}</div>
+                            <div id="crew-management-name-input-{{ crew.getId }}" class="crew-management-name-input" style="display: none;">
+                                <input type="text" value="{{ crew.getName }}" id="crew-management-name-value-{{ crew.getId }}" />
+                                <input type="button" class="button" value="Ok" onclick="renameCrewManagement(event, {{ crew.getId }});" />
+                            </div>
+                        </div>
+                        <div class="crew-management-rank">{{ CREW_RANK_NAMES[crew.getRank.value] }}</div>
+                    </div>
+                </div>
+
+                {% if spacecraft %}
+                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
+                    <div>
+                        <div class="crew-management-ship-name">{{ spacecraft.getName|bbcode }}</div>
+                        <div>Dient als {{ assignment.getSlot ? assignment.getSlot.getDescription : 'Crewman' }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="crew-management-no-assignment">Keinem Schiff zugeteilt</div>
+                {% endif %}
+
+                <div class="crew-management-skills">
+                    <div class="crew-management-skills-title">Positionsexpertisen</div>
+                    {% for skill in crew.getSkills %}
+                    <div class="crew-management-skill">
+                        <span>{{ skill.getPosition.getDescription }}</span>
+                        <span>{{ CREW_RANK_NAMES[skill.getRank.value] }}</span>
+                        <strong>{{ skill.getExpertise }} XP</strong>
+                    </div>
+                    {% else %}
+                    <div class="crew-management-no-skills">Noch keine Erfahrung</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <div class="crew-management-empty">Keine Crew vorhanden</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    initializeCrewManagement();
+</script>

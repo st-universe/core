@@ -22,6 +22,163 @@ function openStatistics(period) {
 	switchInnerContent('SHOW_STATISTICS', 'Statistiken', params);
 }
 
+function initializeCrewManagement() {
+	const management = document.getElementById('crewManagement');
+	if (!management || management.dataset.initialized === '1') {
+		return;
+	}
+
+	management.dataset.initialized = '1';
+
+	const list = management.querySelector('[data-crew-list]');
+	const cards = Array.from(management.querySelectorAll('.crew-management-card'));
+	const nameInput = management.querySelector('[data-crew-filter-name]');
+	const shipInput = management.querySelector('[data-crew-filter-ship]');
+	const sortInput = management.querySelector('[data-crew-sort]');
+	const rankInputs = Array.from(management.querySelectorAll('[data-crew-filter-rank]'));
+	const positionInputs = Array.from(management.querySelectorAll('[data-crew-filter-position]'));
+	const count = management.querySelector('[data-crew-count]');
+	const reset = management.querySelector('[data-crew-filter-reset]');
+
+	if (!list || !nameInput || !shipInput || !sortInput || !count || !reset) {
+		return;
+	}
+
+	const getSelectedValues = function (inputs) {
+		return new Set(inputs.filter(function (input) {
+			return input.checked;
+		}).map(function (input) {
+			return input.value;
+		}));
+	};
+
+	const compareText = function (left, right) {
+		return left.localeCompare(right, 'de');
+	};
+
+	const sortCards = function () {
+		const sortBy = sortInput.value;
+
+		cards.sort(function (left, right) {
+			if (sortBy === 'expertise') {
+				const difference = Number(right.dataset.crewExpertise) - Number(left.dataset.crewExpertise);
+				return difference || compareText(left.dataset.crewName, right.dataset.crewName);
+			}
+			if (sortBy === 'rank') {
+				const difference = Number(right.dataset.crewRankExpertise) - Number(left.dataset.crewRankExpertise);
+				return difference || compareText(left.dataset.crewName, right.dataset.crewName);
+			}
+			if (sortBy === 'ship') {
+				return compareText(left.dataset.crewShip, right.dataset.crewShip) || compareText(left.dataset.crewName, right.dataset.crewName);
+			}
+			if (sortBy === 'position') {
+				return compareText(left.dataset.crewPositionName, right.dataset.crewPositionName) || compareText(left.dataset.crewName, right.dataset.crewName);
+			}
+
+			return compareText(left.dataset.crewName, right.dataset.crewName);
+		});
+
+		cards.forEach(function (card) {
+			list.appendChild(card);
+		});
+	};
+
+	const applyFilters = function () {
+		const name = nameInput.value.trim().toLocaleLowerCase('de-DE');
+		const ship = shipInput.value.trim().toLocaleLowerCase('de-DE');
+		const ranks = getSelectedValues(rankInputs);
+		const positions = getSelectedValues(positionInputs);
+		let visibleCount = 0;
+
+		cards.forEach(function (card) {
+			const isVisible =
+				(!name || card.dataset.crewName.includes(name)) &&
+				(!ship || card.dataset.crewShip.includes(ship)) &&
+				(!ranks.size || ranks.has(card.dataset.crewRank)) &&
+				(!positions.size || positions.has(card.dataset.crewPosition));
+
+			card.hidden = !isVisible;
+			if (isVisible) {
+				visibleCount++;
+			}
+		});
+
+		sortCards();
+		count.textContent = visibleCount + ' von ' + cards.length + ' Crewmitgliedern';
+	};
+
+	nameInput.addEventListener('input', applyFilters);
+	shipInput.addEventListener('input', applyFilters);
+	sortInput.addEventListener('change', applyFilters);
+	rankInputs.forEach(function (input) {
+		input.addEventListener('change', applyFilters);
+	});
+	positionInputs.forEach(function (input) {
+		input.addEventListener('change', applyFilters);
+	});
+	reset.addEventListener('click', function () {
+		nameInput.value = '';
+		shipInput.value = '';
+		sortInput.value = 'expertise';
+		rankInputs.concat(positionInputs).forEach(function (input) {
+			input.checked = false;
+		});
+		applyFilters();
+	});
+
+	applyFilters();
+}
+
+function showCrewmanDetailsFromCrewManagement(crewId) {
+	switchInnerContent('SHOW_CREWMAN_DETAILS', 'Crewman Details', 'id=' + crewId, '/ship.php');
+}
+
+function showCrewManagementRename(event, crewId) {
+	event.stopPropagation();
+
+	const name = document.getElementById('crew-management-name-' + crewId);
+	const inputContainer = document.getElementById('crew-management-name-input-' + crewId);
+	const input = document.getElementById('crew-management-name-value-' + crewId);
+
+	if (!name || !inputContainer || !input) {
+		return;
+	}
+
+	name.style.display = 'none';
+	inputContainer.style.display = 'flex';
+	input.focus();
+	input.select();
+}
+
+function renameCrewManagement(event, crewId) {
+	event.stopPropagation();
+
+	const management = document.getElementById('crewManagement');
+	const name = document.getElementById('crew-management-name-' + crewId);
+	const inputContainer = document.getElementById('crew-management-name-input-' + crewId);
+	const input = document.getElementById('crew-management-name-value-' + crewId);
+	const card = input ? input.closest('.crew-management-card') : null;
+	const crewName = input ? input.value.trim() : '';
+
+	if (!management || !name || !inputContainer || !input || !card || !crewName) {
+		return;
+	}
+
+	new Ajax.Request('/ship.php?B_RENAME_CREWMAN=1&id=' + crewId, {
+		method: 'post',
+		parameters: {
+			name: crewName,
+			sstr: management.dataset.sessionString
+		},
+		onSuccess: function () {
+			name.textContent = crewName;
+			card.dataset.crewName = crewName.toLocaleLowerCase('de-DE');
+			inputContainer.style.display = 'none';
+			name.style.display = '';
+		}
+	});
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	const pieChart = document.getElementById('pieChart');
 	const progressBar = document.getElementById('progressBar');

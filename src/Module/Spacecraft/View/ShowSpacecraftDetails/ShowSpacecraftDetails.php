@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
 use request;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Spacecraft\System\Type\UplinkShipSystem;
 use Stu\Lib\Trait\SpacecraftTractorPayloadTrait;
@@ -14,6 +15,7 @@ use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ShowSpacecraftDetails implements ViewControllerInterface
@@ -62,11 +64,48 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
 
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('USER_ID', $userId);
+
+        $crewAssignments = $wrapper->get()->getCrewAssignments()->toArray();
+        $positionOrder = [];
+        foreach (CrewTypeEnum::getOrder() as $order => $position) {
+            $positionOrder[$position->value] = $order;
+        }
+
+        $crewAssignmentComparator = static function (CrewAssignment $left, CrewAssignment $right) use ($positionOrder): int {
+            $leftSlot = $left->getSlot();
+            $rightSlot = $right->getSlot();
+            $leftPositionOrder = $leftSlot === null ? count($positionOrder) : $positionOrder[$leftSlot->value];
+            $rightPositionOrder = $rightSlot === null ? count($positionOrder) : $positionOrder[$rightSlot->value];
+
+            if ($leftPositionOrder !== $rightPositionOrder) {
+                return $leftPositionOrder <=> $rightPositionOrder;
+            }
+
+            $leftExpertise = $leftSlot === null ? 0 : $left->getCrew()->getSkillAt($leftSlot)?->getExpertise() ?? 0;
+            $rightExpertise = $rightSlot === null ? 0 : $right->getCrew()->getSkillAt($rightSlot)?->getExpertise() ?? 0;
+
+            return $rightExpertise <=> $leftExpertise
+                ?: strcasecmp($left->getCrew()->getName(), $right->getCrew()->getName());
+        };
+
+        $ownCrewAssignments = [];
+        $foreignCrewAssignments = [];
         $crewRankNames = [];
-        foreach ($wrapper->get()->getCrewAssignments() as $crewAssignment) {
+        foreach ($crewAssignments as $crewAssignment) {
             $crew = $crewAssignment->getCrew();
             $crewRankNames[$crew->getId()] = $this->userCrewRankRepository->getRankName($crew->getUser(), $crew->getRank());
+
+            if ($crew->getUserId() === $userId) {
+                $ownCrewAssignments[] = $crewAssignment;
+            } else {
+                $foreignCrewAssignments[] = $crewAssignment;
+            }
         }
+        usort($ownCrewAssignments, $crewAssignmentComparator);
+        usort($foreignCrewAssignments, $crewAssignmentComparator);
+
+        $game->setTemplateVar('OWN_CREW_ASSIGNMENTS', $ownCrewAssignments);
+        $game->setTemplateVar('FOREIGN_CREW_ASSIGNMENTS', $foreignCrewAssignments);
         $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
         $game->setTemplateVar('TRACTOR_PAYLOAD', $this->getTractorPayload($wrapper->get()));
 
