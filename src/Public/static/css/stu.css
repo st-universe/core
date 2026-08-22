@@ -3958,7 +3958,12 @@ label.linkbutton:hover {
 
 .crew-skill-radar {
   margin: 0 auto;
-  max-width: 420px;
+  max-width: 360px;
+}
+
+.crew-skill-radar-cell {
+  vertical-align: middle;
+  width: 360px;
 }
 
 .crew-skill-radar-svg {
@@ -3967,39 +3972,42 @@ label.linkbutton:hover {
   width: 100%;
 }
 
-.crew-skill-radar-grid,
-.crew-skill-radar-axis {
+.crew-skill-radar-grid {
   fill: none;
-  stroke: var(--color-21);
+  stroke: var(--color-35);
+  stroke-opacity: 0.45;
   stroke-width: 1;
 }
 
 .crew-skill-radar-grid-outer {
-  stroke: var(--color-35);
-}
-
-.crew-skill-radar-value {
-  fill: rgb(88 196 0 / 30%);
-  stroke: var(--color-12);
+  stroke-opacity: 1;
   stroke-width: 2;
 }
 
-.crew-skill-radar-marker {
-  fill: var(--color-12);
-  stroke: var(--color-7);
+.crew-skill-radar-axis {
+  stroke: var(--color-9);
+  stroke-opacity: 0.65;
   stroke-width: 1;
+}
+
+.crew-skill-radar-value {
+  fill: var(--color-35);
+  fill-opacity: 0.28;
+  stroke: var(--color-35);
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.crew-skill-radar-marker {
+  fill: var(--color-35);
+  stroke: var(--color-7);
+  stroke-width: 2;
 }
 
 .crew-skill-radar-label {
   fill: var(--color-9);
   font-size: 12px;
   font-weight: bold;
-}
-
-.crew-skill-radar-scale {
-  color: var(--color-6);
-  font-size: 90%;
-  text-align: center;
 }
 
 @media (max-width: 600px) {

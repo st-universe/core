@@ -1985,14 +1985,46 @@ function initializeCrewSkillRadar() {
     const skillPoints = data.skills.map(function (skill, index) {
       return getPoint(radius * getProgress(skill.expertise), index);
     });
-    const skillPolygon = createElement('polygon');
-    skillPolygon.setAttribute('class', 'crew-skill-radar-value');
-    skillPolygon.setAttribute('points', skillPoints.map(function (point) {
-      return point.x.toFixed(2) + ',' + point.y.toFixed(2);
-    }).join(' '));
-    svg.appendChild(skillPolygon);
+    const activeSkillPoints = skillPoints.reduce(function (points, point, index) {
+      if (Number(data.skills[index].expertise) > 0) {
+        points.push({
+          index: index,
+          point: point
+        });
+      }
+      return points;
+    }, []);
+    const getBaseRadius = function (point) {
+      return Math.min(Math.hypot(point.x - center, point.y - center) * 0.6, radius * 0.36);
+    };
+    let radarPoints = activeSkillPoints.map(function (skillPoint) {
+      return skillPoint.point;
+    });
 
-    skillPoints.forEach(function (point) {
+    if (activeSkillPoints.length === 1) {
+      const skillPoint = activeSkillPoints[0];
+      const baseRadius = getBaseRadius(skillPoint.point);
+      radarPoints = [
+        getPoint(baseRadius, skillPoint.index - 0.5),
+        skillPoint.point,
+        getPoint(baseRadius, skillPoint.index + 0.5)
+      ];
+    } else if (activeSkillPoints.length === 2) {
+      const baseRadius = Math.min(getBaseRadius(activeSkillPoints[0].point), getBaseRadius(activeSkillPoints[1].point));
+      radarPoints.push(getPoint(baseRadius, (activeSkillPoints[0].index + activeSkillPoints[1].index) / 2));
+    }
+
+    if (radarPoints.length >= 3) {
+      const skillPolygon = createElement('polygon');
+      skillPolygon.setAttribute('class', 'crew-skill-radar-value');
+      skillPolygon.setAttribute('points', radarPoints.map(function (point) {
+        return point.x.toFixed(2) + ',' + point.y.toFixed(2);
+      }).join(' '));
+      svg.appendChild(skillPolygon);
+    }
+
+    activeSkillPoints.forEach(function (skillPoint) {
+      const point = skillPoint.point;
       const marker = createElement('circle');
       marker.setAttribute('class', 'crew-skill-radar-marker');
       marker.setAttribute('cx', point.x);
