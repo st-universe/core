@@ -7,8 +7,12 @@
                 <input type="text" data-crew-filter-name />
             </label>
             <label class="crew-management-filter-field">
-                <span>Schiffsname</span>
+                <span>Station/Schiffsname</span>
                 <input type="text" data-crew-filter-ship />
+            </label>
+            <label class="crew-management-filter-field">
+                <span>Kolonie</span>
+                <input type="text" data-crew-filter-colony />
             </label>
             <label class="crew-management-filter-field">
                 <span>Sortierung</span>
@@ -36,9 +40,19 @@
                     {% endfor %}
                 </div>
             </div>
+            <div class="crew-management-filter-group">
+                <span>Einsatzort</span>
+                <div class="crew-management-filter-options">
+                    <label><input type="checkbox" data-crew-filter-escape-pod />Nur Rettungskapseln</label>
+                    <label><input type="checkbox" data-crew-filter-foreign-station-inactive />Auf fremden Stationen nicht im Einsatz</label>
+                    <label><input type="checkbox" data-crew-filter-foreign-station />Auf fremden Stationen</label>
+                </div>
+            </div>
             <div class="crew-management-filter-actions">
                 <span data-crew-count></span>
                 <input type="button" class="button" value="Filter leeren" data-crew-filter-reset />
+                <input type="button" class="button" value="Entlassen" data-crew-dismiss-mode />
+                <input type="button" class="button" value="Bestätigen" style="display: none;" data-crew-dismiss-confirm />
             </div>
         </div>
 
@@ -46,16 +60,28 @@
             {% for assignment in CREW_ASSIGNMENTS %}
             {% set crew = assignment.getCrew %}
             {% set spacecraft = assignment.getSpacecraft %}
+            {% set colony = assignment.getColony %}
+            {% set tradepost = assignment.getTradepost %}
+            {% set isEscapePod = spacecraft and spacecraft.getRump.isEscapePods %}
+            {% set foreignStation = (spacecraft and spacecraft.getRump.isStation and spacecraft.getUser.getId != USER_ID) or (tradepost and tradepost.getStation.getUser.getId != USER_ID) %}
+            {% set foreignStationInactive = foreignStation and (tradepost or not assignment.getSlot) %}
             {% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
             <div class="crew-management-card" role="link" tabindex="0"
-                onclick="showCrewmanDetailsFromCrewManagement({{ crew.getId }});"
-                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { showCrewmanDetailsFromCrewManagement({{ crew.getId }}); event.preventDefault(); }"
+                onclick="handleCrewManagementCardClick(event, {{ crew.getId }});"
+                onpointerdown="startCrewManagementSelection(event, this);"
+                onpointerenter="continueCrewManagementSelection(this);"
+                onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { handleCrewManagementCardClick(event, {{ crew.getId }}); event.preventDefault(); }"
                 data-crew-name="{{ crew.getName|bbcode2txt|lower }}"
+                data-crew-id="{{ crew.getId }}"
                 data-crew-rank="{{ crew.getRank.value }}"
                 data-crew-rank-expertise="{{ CREW_RANK_EXPERTISES[crew.getRank.value] }}"
-                data-crew-ship="{{ spacecraft ? spacecraft.getName|bbcode2txt|lower : '' }}"
-                data-crew-position="{{ spacecraft and assignment.getSlot ? assignment.getSlot.value : '' }}"
-                data-crew-position-name="{{ spacecraft and assignment.getSlot ? assignment.getSlot.getDescription|lower : '' }}"
+                data-crew-ship="{{ spacecraft ? spacecraft.getName|bbcode2txt|lower : (tradepost ? (tradepost.getStation.getName ~ ' ' ~ tradepost.getName)|bbcode2txt|lower : '') }}"
+                data-crew-colony="{{ colony ? colony.getName|bbcode2txt|lower : '' }}"
+                data-crew-position="{{ spacecraft and not isEscapePod and assignment.getSlot ? assignment.getSlot.value : '' }}"
+                data-crew-position-name="{{ spacecraft and not isEscapePod and assignment.getSlot ? assignment.getSlot.getDescription|lower : '' }}"
+                data-crew-escape-pod="{{ isEscapePod ? '1' : '0' }}"
+                data-crew-foreign-station="{{ foreignStation ? '1' : '0' }}"
+                data-crew-foreign-station-inactive="{{ foreignStationInactive ? '1' : '0' }}"
                 data-crew-expertise="{{ crew.getHighestSkillExpertise }}">
                 <div class="crew-management-card-header">
                     <img class="crew-management-crew-image" src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
@@ -72,12 +98,36 @@
                     </div>
                 </div>
 
-                {% if spacecraft %}
+                {% if colony %}
+                <div class="crew-management-assignment">
+                    <img class="crew-management-colony-image" src="/assets/planets/{{ colony.getColonyClass.getId }}.png" />
+                    <div>
+                        <div class="crew-management-location-label">Auf der Kolonie stationiert</div>
+                        <div class="crew-management-ship-name">{{ colony.getName|bbcode }}</div>
+                    </div>
+                </div>
+                {% elseif isEscapePod %}
+                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
+                    <div>
+                        <div class="crew-management-location-label">In Rettungskapsel</div>
+                        <div class="crew-management-ship-name">{{ spacecraft.getLocation.getSectorString }}</div>
+                    </div>
+                </div>
+                {% elseif tradepost %}
+                <div class="crew-management-assignment">
+                    <img class="crew-management-ship-image" src="/assets/ships/{{ tradepost.getStation.getRumpId }}.png" title="{{ tradepost.getStation.getRumpName }}" />
+                    <div>
+                        <div class="crew-management-location-label">Am Handelsposten stationiert</div>
+                        <div class="crew-management-ship-name">{{ tradepost.getName|bbcode }}</div>
+                    </div>
+                </div>
+                {% elseif spacecraft %}
                 <div class="crew-management-assignment">
                     <img class="crew-management-ship-image" src="/assets/ships/{{ spacecraft.getRumpId }}.png" title="{{ spacecraft.getRumpName }}" />
                     <div>
                         <div class="crew-management-ship-name">{{ spacecraft.getName|bbcode }}</div>
-                        <div>Dient als {{ assignment.getSlot ? assignment.getSlot.getDescription : 'Crewman' }}</div>
+                        <div>{{ assignment.getSlot ? 'Dient als ' ~ assignment.getSlot.getDescription : 'Ohne Position im Dienst' }}</div>
                     </div>
                 </div>
                 {% else %}

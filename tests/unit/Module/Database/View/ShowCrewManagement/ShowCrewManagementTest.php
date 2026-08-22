@@ -25,6 +25,8 @@ final class ShowCrewManagementTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
         $this->subject = new ShowCrewManagement(
@@ -49,6 +51,7 @@ final class ShowCrewManagementTest extends StuTestCase
             ->once();
         $game->shouldReceive('setPageTitle')->with('/ Datenbank / Crew')->once();
         $game->shouldReceive('setViewTemplate')->with('html/database/crewManagement.twig')->once();
+        $game->shouldReceive('setTemplateVar')->with('USER_ID', Mockery::type('int'))->once();
         $game->shouldReceive('setTemplateVar')
             ->with('CREW_ASSIGNMENTS', new Closure(function (array $assignments) use ($highAssignment, $lowAssignment): bool {
                 $this->assertSame([$highAssignment, $lowAssignment], $assignments);
@@ -65,6 +68,7 @@ final class ShowCrewManagementTest extends StuTestCase
             ->with(['user' => $user])
             ->once()
             ->andReturn([$lowAssignment, $highAssignment]);
+        $user->shouldReceive('getId')->once()->andReturn(42);
         $this->userCrewRankRepository->shouldReceive('getRankName')
             ->with($user, Mockery::type(CrewSkillLevelEnum::class))
             ->andReturn('Rang');

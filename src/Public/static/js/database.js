@@ -22,6 +22,93 @@ function openStatistics(period) {
 	switchInnerContent('SHOW_STATISTICS', 'Statistiken', params);
 }
 
+let crewManagementDragSelectionActive = false;
+let crewManagementDragSelectionValue = false;
+
+document.addEventListener('pointerup', function () {
+	crewManagementDragSelectionActive = false;
+});
+
+document.addEventListener('pointercancel', function () {
+	crewManagementDragSelectionActive = false;
+});
+
+function updateCrewManagementDismissSelection(management) {
+	const selectedCount = management.querySelectorAll('.crew-management-card-selected').length;
+	const confirm = management.querySelector('[data-crew-dismiss-confirm]');
+
+	if (!confirm) {
+		return;
+	}
+
+	confirm.style.display = selectedCount > 0 ? '' : 'none';
+	confirm.value = 'Bestätigen' + (selectedCount > 0 ? ' (' + selectedCount + ')' : '');
+}
+
+function setCrewManagementCardSelection(card, selected) {
+	const management = card.closest('#crewManagement');
+	if (!management) {
+		return;
+	}
+
+	card.classList.toggle('crew-management-card-selected', selected);
+	card.setAttribute('aria-selected', selected ? 'true' : 'false');
+	updateCrewManagementDismissSelection(management);
+}
+
+function handleCrewManagementCardClick(event, crewId) {
+	const card = event.currentTarget && event.currentTarget.classList.contains('crew-management-card')
+		? event.currentTarget
+		: event.target.closest('.crew-management-card');
+	const management = card ? card.closest('#crewManagement') : null;
+
+	if (!card || !management) {
+		return;
+	}
+
+	if (!management.classList.contains('crew-management-dismiss-mode')) {
+		showCrewmanDetailsFromCrewManagement(crewId);
+		return;
+	}
+
+	event.preventDefault();
+	if (card.dataset.crewSelectionHandled === '1') {
+		delete card.dataset.crewSelectionHandled;
+		return;
+	}
+
+	setCrewManagementCardSelection(card, !card.classList.contains('crew-management-card-selected'));
+}
+
+function startCrewManagementSelection(event, card) {
+	const management = card.closest('#crewManagement');
+	if (!management || !management.classList.contains('crew-management-dismiss-mode')) {
+		return;
+	}
+
+	if (event.target.closest('input, button')) {
+		return;
+	}
+
+	event.preventDefault();
+	crewManagementDragSelectionActive = true;
+	crewManagementDragSelectionValue = !card.classList.contains('crew-management-card-selected');
+	setCrewManagementCardSelection(card, crewManagementDragSelectionValue);
+
+	if (!event.target.closest('.crew-management-name-container')) {
+		card.dataset.crewSelectionHandled = '1';
+	}
+}
+
+function continueCrewManagementSelection(card) {
+	const management = card.closest('#crewManagement');
+	if (!crewManagementDragSelectionActive || !management || !management.classList.contains('crew-management-dismiss-mode')) {
+		return;
+	}
+
+	setCrewManagementCardSelection(card, crewManagementDragSelectionValue);
+}
+
 function initializeCrewManagement() {
 	const management = document.getElementById('crewManagement');
 	if (!management || management.dataset.initialized === '1') {
@@ -34,13 +121,19 @@ function initializeCrewManagement() {
 	const cards = Array.from(management.querySelectorAll('.crew-management-card'));
 	const nameInput = management.querySelector('[data-crew-filter-name]');
 	const shipInput = management.querySelector('[data-crew-filter-ship]');
+	const colonyInput = management.querySelector('[data-crew-filter-colony]');
 	const sortInput = management.querySelector('[data-crew-sort]');
 	const rankInputs = Array.from(management.querySelectorAll('[data-crew-filter-rank]'));
 	const positionInputs = Array.from(management.querySelectorAll('[data-crew-filter-position]'));
+	const escapePodInput = management.querySelector('[data-crew-filter-escape-pod]');
+	const foreignStationInactiveInput = management.querySelector('[data-crew-filter-foreign-station-inactive]');
+	const foreignStationInput = management.querySelector('[data-crew-filter-foreign-station]');
 	const count = management.querySelector('[data-crew-count]');
 	const reset = management.querySelector('[data-crew-filter-reset]');
+	const dismissMode = management.querySelector('[data-crew-dismiss-mode]');
+	const dismissConfirm = management.querySelector('[data-crew-dismiss-confirm]');
 
-	if (!list || !nameInput || !shipInput || !sortInput || !count || !reset) {
+	if (!list || !nameInput || !shipInput || !colonyInput || !sortInput || !escapePodInput || !foreignStationInactiveInput || !foreignStationInput || !count || !reset || !dismissMode || !dismissConfirm) {
 		return;
 	}
 
@@ -86,16 +179,22 @@ function initializeCrewManagement() {
 	const applyFilters = function () {
 		const name = nameInput.value.trim().toLocaleLowerCase('de-DE');
 		const ship = shipInput.value.trim().toLocaleLowerCase('de-DE');
+		const colony = colonyInput.value.trim().toLocaleLowerCase('de-DE');
 		const ranks = getSelectedValues(rankInputs);
 		const positions = getSelectedValues(positionInputs);
+		const escapePodOnly = escapePodInput.checked;
 		let visibleCount = 0;
 
 		cards.forEach(function (card) {
 			const isVisible =
 				(!name || card.dataset.crewName.includes(name)) &&
-				(!ship || card.dataset.crewShip.includes(ship)) &&
+				(escapePodOnly || (!ship || card.dataset.crewShip.includes(ship))) &&
+				(escapePodOnly || (!colony || card.dataset.crewColony.includes(colony))) &&
+				(!escapePodOnly || card.dataset.crewEscapePod === '1') &&
 				(!ranks.size || ranks.has(card.dataset.crewRank)) &&
-				(!positions.size || positions.has(card.dataset.crewPosition));
+				(!positions.size || positions.has(card.dataset.crewPosition)) &&
+				(!foreignStationInactiveInput.checked || card.dataset.crewForeignStationInactive === '1') &&
+				(!foreignStationInput.checked || card.dataset.crewForeignStation === '1');
 
 			card.hidden = !isVisible;
 			if (isVisible) {
@@ -109,6 +208,7 @@ function initializeCrewManagement() {
 
 	nameInput.addEventListener('input', applyFilters);
 	shipInput.addEventListener('input', applyFilters);
+	colonyInput.addEventListener('input', applyFilters);
 	sortInput.addEventListener('change', applyFilters);
 	rankInputs.forEach(function (input) {
 		input.addEventListener('change', applyFilters);
@@ -116,14 +216,57 @@ function initializeCrewManagement() {
 	positionInputs.forEach(function (input) {
 		input.addEventListener('change', applyFilters);
 	});
+	[escapePodInput, foreignStationInactiveInput, foreignStationInput].forEach(function (input) {
+		input.addEventListener('change', applyFilters);
+	});
 	reset.addEventListener('click', function () {
 		nameInput.value = '';
 		shipInput.value = '';
+		colonyInput.value = '';
 		sortInput.value = 'expertise';
-		rankInputs.concat(positionInputs).forEach(function (input) {
+		rankInputs.concat(positionInputs, [escapePodInput, foreignStationInactiveInput, foreignStationInput]).forEach(function (input) {
 			input.checked = false;
 		});
 		applyFilters();
+	});
+	dismissMode.addEventListener('click', function () {
+		const isActive = management.classList.toggle('crew-management-dismiss-mode');
+		dismissMode.value = isActive ? 'Abbrechen' : 'Entlassen';
+		if (!isActive) {
+			cards.forEach(function (card) {
+				setCrewManagementCardSelection(card, false);
+			});
+		}
+		updateCrewManagementDismissSelection(management);
+	});
+	dismissConfirm.addEventListener('click', function () {
+		const crewIds = cards
+			.filter(function (card) {
+				return card.classList.contains('crew-management-card-selected');
+			})
+			.map(function (card) {
+				return card.dataset.crewId;
+			});
+
+		if (crewIds.length === 0) {
+			return;
+		}
+
+		dismissConfirm.disabled = true;
+		const parameters = crewIds.map(function (crewId) {
+			return 'crew_ids[]=' + encodeURIComponent(crewId);
+		}).join('&') + '&sstr=' + encodeURIComponent(management.dataset.sessionString);
+
+		new Ajax.Request('/database.php?B_DISMISS_CREW=1', {
+			method: 'post',
+			parameters: parameters,
+			onSuccess: function () {
+				switchInnerContent('SHOW_CREW_MANAGEMENT', 'Crew', null, '/database.php');
+			},
+			onFailure: function () {
+				dismissConfirm.disabled = false;
+			}
+		});
 	});
 
 	applyFilters();
@@ -135,6 +278,10 @@ function showCrewmanDetailsFromCrewManagement(crewId) {
 
 function showCrewManagementRename(event, crewId) {
 	event.stopPropagation();
+	const management = document.getElementById('crewManagement');
+	if (management && management.classList.contains('crew-management-dismiss-mode')) {
+		return;
+	}
 
 	const name = document.getElementById('crew-management-name-' + crewId);
 	const inputContainer = document.getElementById('crew-management-name-input-' + crewId);

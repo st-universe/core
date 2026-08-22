@@ -48,6 +48,7 @@ final class ShowCrewManagement implements ViewControllerInterface
         );
         $game->setPageTitle(_('/ Datenbank / Crew'));
         $game->setViewTemplate('html/database/crewManagement.twig');
+        $game->setTemplateVar('USER_ID', $user->getId());
         $game->setTemplateVar('CREW_ASSIGNMENTS', $crewAssignments);
         $game->setTemplateVar('CREW_RANKS', CrewSkillLevelEnum::cases());
         $game->setTemplateVar('CREW_RANK_NAMES', $crewRankNames);
