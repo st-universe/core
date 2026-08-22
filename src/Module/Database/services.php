@@ -6,6 +6,7 @@ namespace Stu\Module\Database;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Database\Action\DeleteColonyScan;
+use Stu\Module\Database\Action\DismissCrew\DismissCrew;
 use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactory;
@@ -60,7 +61,8 @@ return [
     UserListRequestInterface::class => autowire(UserListRequest::class),
     NPCListRequestInterface::class => autowire(NPCListRequest::class),
     'DATABASE_ACTIONS' => [
-        DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class)
+        DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class),
+        DismissCrew::ACTION_IDENTIFIER => autowire(DismissCrew::class)
     ],
     'DATABASE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
