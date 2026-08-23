@@ -111,7 +111,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         $costs = $licenseInfo->getAmount();
 
         /** @var ?Storage */
-        $stor = $storageManager->getStorage()->get($commodityId) ?? null;
+        $stor = $storageManager->getStorage()->get($commodityId);
         if ($stor === null) {
             throw new CommodityMissingException('storage not existent');
         }
