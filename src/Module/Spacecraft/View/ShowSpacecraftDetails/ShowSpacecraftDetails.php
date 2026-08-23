@@ -66,6 +66,7 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         $game->setTemplateVar('USER_ID', $userId);
 
         $crewAssignments = $wrapper->get()->getCrewAssignments()->toArray();
+        /** @var array<int, int> $positionOrder */
         $positionOrder = [];
         foreach (CrewTypeEnum::getOrder() as $order => $position) {
             $positionOrder[$position->value] = $order;

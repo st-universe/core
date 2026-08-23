@@ -73,7 +73,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $storage = $this->getStorage();
 
         /** @var ?Storage */
-        $stor = $storage->get($commodityId) ?? null;
+        $stor = $storage->get($commodityId);
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
             $stor->setUser($this->user);
@@ -96,7 +96,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $storage = $this->getStorage();
 
         /** @var ?Storage */
-        $stor = $storage->get($commodityId) ?? null;
+        $stor = $storage->get($commodityId);
         if ($stor === null) {
             return;
         }
