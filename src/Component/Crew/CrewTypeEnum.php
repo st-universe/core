@@ -15,7 +15,7 @@ enum CrewTypeEnum: int
     case CREWMAN = 7;
 
     /**
-     * @return array<CrewTypeEnum>
+     * @return array<int, CrewTypeEnum>
      */
     public static function getOrder(): array
     {

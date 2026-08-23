@@ -270,7 +270,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         $boundaries = new PanelBoundaries($minX, $maxX, $minY, $maxY, $layer);
         $keys = [];
         foreach ($this->mapRepository->getLssBlockadeLocations($boundaries) as $entry) {
-            $effects = $entry['effects'] ?? null;
+            $effects = $entry['effects'];
             if (!is_string($effects) || !str_contains($effects, FieldTypeEffectEnum::LSS_BLOCKADE->value)) {
                 continue;
             }
