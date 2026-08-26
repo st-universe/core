@@ -1,6 +1,6 @@
 {% set crew = CREW_ASSIGNMENT.getCrew %}
 {% set crewId = crew.getId %}
-{% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+{% set crewImageType = CREW_ASSIGNMENT.getCrewImageType %}
 {% set isForeignCrew = crew.getUser.getId != SHIP.getUser.getId %}
 {% set canRemoveCrew = isForeignCrew and (SHIP.getUser.getId == USER_ID or crew.getUser.getId == USER_ID) %}
 <tr>

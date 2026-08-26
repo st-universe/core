@@ -59,6 +59,18 @@ class CrewAssignment
         return $this;
     }
 
+    public function getCrewImageType(): int
+    {
+        return match ($this->slot) {
+            CrewTypeEnum::CAPTAIN, CrewTypeEnum::COMMAND => 1,
+            CrewTypeEnum::TACTIC => 2,
+            CrewTypeEnum::SCIENCE => 3,
+            CrewTypeEnum::TECHNICAL => 4,
+            CrewTypeEnum::NAVIGATION => 5,
+            default => 6
+        };
+    }
+
     public function getUser(): User
     {
         return $this->user;
