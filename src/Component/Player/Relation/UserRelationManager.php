@@ -288,7 +288,7 @@ final class UserRelationManager implements UserRelationManagerInterface
             return $recipient->getAlliance() === null;
         }
 
-        if ($source instanceof User && $recipient instanceof Alliance) {
+        if ($source instanceof User) {
             return $source->getAlliance() === null;
         }
 
