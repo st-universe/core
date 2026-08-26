@@ -12,7 +12,7 @@
     <table class="tcal" style="width: 100%;">
         <tr>
             <td rowspan="{{ detailRowCount }}" style="width: 55px; text-align: center;">
-                <img src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
+                <img src="{{ crew.getRace.getImagePath(crew.getGenderShort, crewImageType) }}" />
             </td>
             <td>Rang</td>
             <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>

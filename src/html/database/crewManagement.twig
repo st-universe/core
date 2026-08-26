@@ -87,7 +87,7 @@
                 data-crew-foreign-station-inactive="{{ foreignStationInactive ? '1' : '0' }}"
                 data-crew-expertise="{{ crew.getHighestSkillExpertise }}">
                 <div class="crew-management-card-header">
-                    <img class="crew-management-crew-image" src="/assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
+                    <img class="crew-management-crew-image" src="{{ crew.getRace.getImagePath(crew.getGenderShort, crewImageType) }}" />
                     <div>
                         <div class="crew-management-name-container" onclick="event.stopPropagation();">
                             <div id="crew-management-name-{{ crew.getId }}" class="crew-management-name"

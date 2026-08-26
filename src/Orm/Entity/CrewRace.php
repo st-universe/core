@@ -8,8 +8,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\CrewRaceRepository;
 
@@ -22,8 +20,9 @@ class CrewRace
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[Column(type: 'integer')]
-    private int $faction_id = 0;
+    /** @var list<int>|null */
+    #[Column(name: 'faction_id', type: 'json', nullable: true)]
+    private ?array $faction_ids = null;
 
     #[Column(type: 'string')]
     private string $description = '';
@@ -37,25 +36,40 @@ class CrewRace
     #[Column(type: 'string')]
     private string $define = '';
 
-    #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private Faction $faction;
+    #[Column(name: 'user_id', type: 'integer', nullable: true)]
+    private ?int $creator_user_id = null;
+
+    #[Column(type: 'boolean', options: ['default' => false])]
+    private bool $shared = false;
+
+    #[Column(type: 'boolean', options: ['default' => false])]
+    private bool $accepted = false;
+
+    #[Column(name: 'accepted_user_id', type: 'integer', nullable: true)]
+    private ?int $accepted_user_id = null;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getFactionId(): int
+    /** @return list<int> */
+    public function getFactionIds(): array
     {
-        return $this->faction_id;
+        return array_values(array_unique(array_map('intval', $this->faction_ids ?? [])));
     }
 
-    public function setFactionId(int $factionId): CrewRace
+    /** @param list<int> $factionIds */
+    public function setFactionIds(array $factionIds): CrewRace
     {
-        $this->faction_id = $factionId;
+        $this->faction_ids = array_values(array_unique(array_map('intval', $factionIds)));
 
         return $this;
+    }
+
+    public function hasFactionId(int $factionId): bool
+    {
+        return in_array($factionId, $this->getFactionIds(), true);
     }
 
     public function getDescription(): string
@@ -106,15 +120,82 @@ class CrewRace
         return $this;
     }
 
-    public function getFaction(): Faction
+    public function getCreatorUserId(): ?int
     {
-        return $this->faction;
+        return $this->creator_user_id;
     }
 
-    public function setFaction(Faction $faction): CrewRace
+    public function setCreatorUserId(?int $creatorUserId): CrewRace
     {
-        $this->faction = $faction;
+        $this->creator_user_id = $creatorUserId;
 
         return $this;
+    }
+
+    public function isShared(): bool
+    {
+        return $this->shared;
+    }
+
+    public function setShared(bool $shared): CrewRace
+    {
+        $this->shared = $shared;
+
+        return $this;
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->accepted;
+    }
+
+    public function setAccepted(bool $accepted): CrewRace
+    {
+        $this->accepted = $accepted;
+
+        return $this;
+    }
+
+    public function getAcceptedUserId(): ?int
+    {
+        return $this->accepted_user_id;
+    }
+
+    public function setAcceptedUserId(?int $acceptedUserId): CrewRace
+    {
+        $this->accepted_user_id = $acceptedUserId;
+
+        return $this;
+    }
+
+    public function isCustom(): bool
+    {
+        return $this->creator_user_id !== null;
+    }
+
+    public function isRejected(): bool
+    {
+        return !$this->accepted && $this->accepted_user_id !== null;
+    }
+
+    public function getImagePath(string $gender, int $imageType): string
+    {
+        $basePath = $this->isCustom() ? '/avatare/user/crew' : '/assets/crew';
+
+        return sprintf('%s/%s/%s/1_%d.png', $basePath, $this->define, $gender, $imageType);
+    }
+
+    public function getStatus(): string
+    {
+        if ($this->accepted) {
+            return 'Akzeptiert';
+        }
+
+        return $this->isRejected() ? 'Abgelehnt' : 'Wartet auf Freigabe';
+    }
+
+    public function canEditDistribution(): bool
+    {
+        return $this->isCustom() && $this->accepted;
     }
 }

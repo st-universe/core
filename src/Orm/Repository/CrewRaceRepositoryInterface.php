@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
+use Stu\Component\Crew\CrewRaceUsageEnum;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewRace;
 
@@ -12,8 +13,36 @@ use Stu\Orm\Entity\CrewRace;
  */
 interface CrewRaceRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): CrewRace;
+
+    public function save(CrewRace $crewRace): void;
+
     /**
      * @return list<CrewRace>
      */
     public function getByFaction(int $factionId): array;
+
+    /**
+     * @return list<CrewRace>
+     */
+    public function getForUser(int $userId, int $factionId, CrewRaceUsageEnum $usage): array;
+
+    /**
+     * @return list<CrewRace>
+     */
+    public function getByCreatorUserId(int $userId): array;
+
+    /**
+     * @return list<CrewRace>
+     */
+    public function getPendingCustomRaces(): array;
+
+    /**
+     * @return list<CrewRace>
+     */
+    public function getAcceptedCustomRaces(): array;
+
+    public function getByDescription(string $description): ?CrewRace;
+
+    public function getByGfxPath(string $gfxPath): ?CrewRace;
 }
