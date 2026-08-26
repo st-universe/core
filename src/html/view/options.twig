@@ -33,9 +33,10 @@
         <tr>
             <td>
                 {% if UNLOCKED_CREW_RACES|length > 0 %}
-                Freigeschaltet: {% for userCrewRace in UNLOCKED_CREW_RACES %}{{ userCrewRace.getCrewRace.getDescription }}{% if not loop.last %}, {% endif %}{% endfor %}
+                Freigeschaltet: {% for userCrewRace in UNLOCKED_CREW_RACES %}{{ userCrewRace.getCrewRace.getDescription
+                }}{% if not loop.last %}, {% endif %}{% endfor %}
                 {% else %}
-                Noch keine benutzererstellte Crew-Rasse freigeschaltet.
+                Noch keine benutzererstellte Crew-Rasse freigeschaltet
                 {% endif %}
             </td>
         </tr>
@@ -80,7 +81,8 @@
                         value="ändern" class="button" /></td>
             </tr>
             <tr>
-                <td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf-E-Mailadressen. Nachrichten und Löschbestätigungen können Dir sonst
+                <td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf-E-Mailadressen. Nachrichten
+                    und Löschbestätigungen können Dir sonst
                     unter Umständen nicht zugestellt werden.</td>
             </tr>
         </table>
@@ -120,7 +122,8 @@
                 <th colspan="{{ rankColumnCount }}">Crew Ränge</th>
             </tr>
             <tr>
-                <td colspan="{{ rankColumnCount }}">Leere Felder verwenden weiterhin den Standardnamen deiner Fraktion. Eigene Rangnamen werden bei deiner Crew angezeigt</td>
+                <td colspan="{{ rankColumnCount }}">Leere Felder verwenden weiterhin den Standardnamen deiner Fraktion.
+                    Eigene Rangnamen werden bei deiner Crew angezeigt</td>
             </tr>
             <tr>
                 <td><strong>Föderation</strong></td>
@@ -135,11 +138,13 @@
                 {% if SHOW_FACTION_CREW_RANKS %}
                 <td>{{ rank.getDescription(REAL_USER.getFactionId) }}</td>
                 {% endif %}
-                <td><input type="text" name="crew_rank_names[{{ rank.value }}]" value="{{ CUSTOM_CREW_RANK_NAMES[rank.value]|default('') }}" maxlength="64" class="text" /></td>
+                <td><input type="text" name="crew_rank_names[{{ rank.value }}]"
+                        value="{{ CUSTOM_CREW_RANK_NAMES[rank.value]|default('') }}" maxlength="64" class="text" /></td>
             </tr>
             {% endfor %}
             <tr>
-                <td colspan="{{ rankColumnCount }}"><input type="submit" name="B_CHANGE_CREW_RANK_NAMES" value="Crew-Ränge speichern" class="button" /></td>
+                <td colspan="{{ rankColumnCount }}"><input type="submit" name="B_CHANGE_CREW_RANK_NAMES"
+                        value="Crew-Ränge speichern" class="button" /></td>
             </tr>
         </table>
     </form>

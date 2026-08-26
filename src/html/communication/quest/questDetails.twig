@@ -78,7 +78,8 @@
 
                 {% if QUEST.getAward %}
                 {% set award = QUEST.getAward %}
-                {% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : '/assets/awards/' ~ award.getId ~ '.png' %}
+                {% set awardImagePath = award.getIsNpc ? '/npcawards/' ~ award.getId ~ '.png' : '/assets/awards/' ~
+                award.getId ~ '.png' %}
                 <img src="{{ awardImagePath }}"
                     title="{{ award.getPrestige }} Prestige - {{ award.getDescription|e('html_attr') }}"
                     style="width: 40px; height: 40px; vertical-align: middle;" />
@@ -193,7 +194,7 @@
             </div>
             {% else %}
             <div style="margin-top: 10px; padding: 10px; text-align: center; color: #666;">
-                Noch keine Einträge im Quest-Ticker vorhanden.
+                Noch keine Einträge im Quest-Ticker vorhanden
             </div>
             {% endif %}
         </div>

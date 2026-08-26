@@ -2,7 +2,7 @@
     <div class="divhead">Offene Crew-Rassen</div>
     <div class="divbody">
         {% if PENDING_CREW_RACES|length == 0 %}
-        Keine offenen Einreichungen vorhanden.
+        Keine offenen Einreichungen vorhanden
         {% else %}
         {% for entry in PENDING_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
@@ -10,54 +10,73 @@
             <tr>
                 <th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th>
             </tr>
-            <tr><td>Definition</td><td>{{ crewRace.getGfxPath }}</td></tr>
-            <tr><td>Männeranteil</td><td>{{ crewRace.getMaleRatio }} %</td></tr>
-            <tr><td>Freigabe</td><td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td></tr>
-            <tr><td>Fraktionen</td><td>{{ entry.getFactionNames }}</td></tr>
+            <tr>
+                <td>Definition</td>
+                <td>{{ crewRace.getGfxPath }}</td>
+            </tr>
+            <tr>
+                <td>Männeranteil</td>
+                <td>{{ crewRace.getMaleRatio }} %</td>
+            </tr>
+            <tr>
+                <td>Freigabe</td>
+                <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
+            </tr>
+            <tr>
+                <td>Fraktionen</td>
+                <td>{{ entry.getFactionNames }}</td>
+            </tr>
             <tr>
                 <td>Grafiken</td>
                 <td>
                     {% if crewRace.getMaleRatio > 0 %}
-                    <div>Männlich: {% for imageType in 1..6 %}<img src="{{ crewRace.getImagePath('m', imageType) }}" />{% endfor %}</div>
+                    <div>Männlich: {% for imageType in 1..6 %}<img
+                            src="{{ crewRace.getImagePath('m', imageType) }}" />{% endfor %}</div>
                     {% endif %}
-                    {% if crewRace.getMaleRatio < 100 %}
-                    <div>Weiblich: {% for imageType in 1..6 %}<img src="{{ crewRace.getImagePath('w', imageType) }}" />{% endfor %}</div>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <form action="database.php" method="post">
-                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                        <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
-                        <input type="hidden" name="B_MODERATE_CREW_RACE" value="1" />
-                        <button class="button" type="submit" name="decision" value="accept">Akzeptieren</button>
-                        <button class="button" type="submit" name="decision" value="reject">Ablehnen</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
+                    {% if crewRace.getMaleRatio < 100 %} <div>Weiblich: {% for imageType in 1..6 %}<img
+                            src="{{ crewRace.getImagePath('w', imageType) }}" />{% endfor %}
+    </div>
+    {% endif %}
+    </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <form action="database.php" method="post">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
+                <input type="hidden" name="B_MODERATE_CREW_RACE" value="1" />
+                <button class="button" type="submit" name="decision" value="accept">Akzeptieren</button>
+                <button class="button" type="submit" name="decision" value="reject">Ablehnen</button>
+            </form>
+        </td>
+    </tr>
+    </table>
+    {% endfor %}
+    {% endif %}
+</div>
+<br />
+<div class="divhead">Akzeptierte Crew-Rassen</div>
+<div class="divbody">
+    {% if ACCEPTED_CREW_RACES|length == 0 %}
+    Keine akzeptierten benutzererstellten Crew-Rassen vorhanden
+    {% else %}
+    <table class="tcal">
+        <tr>
+            <th>Spieler</th>
+            <th>Crew-Rasse</th>
+            <th>Freigabe</th>
+            <th>Fraktionen</th>
+        </tr>
+        {% for entry in ACCEPTED_CREW_RACES %}
+        {% set crewRace = entry.getCrewRace %}
+        <tr>
+            <td>{{ entry.getCreatorName }}</td>
+            <td>{{ crewRace.getDescription }}</td>
+            <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
+            <td>{{ entry.getFactionNames }}</td>
+        </tr>
         {% endfor %}
-        {% endif %}
-    </div>
-    <br />
-    <div class="divhead">Akzeptierte Crew-Rassen</div>
-    <div class="divbody">
-        {% if ACCEPTED_CREW_RACES|length == 0 %}
-        Keine akzeptierten benutzererstellten Crew-Rassen vorhanden.
-        {% else %}
-        <table class="tcal">
-            <tr><th>Spieler</th><th>Crew-Rasse</th><th>Freigabe</th><th>Fraktionen</th></tr>
-            {% for entry in ACCEPTED_CREW_RACES %}
-            {% set crewRace = entry.getCrewRace %}
-            <tr>
-                <td>{{ entry.getCreatorName }}</td>
-                <td>{{ crewRace.getDescription }}</td>
-                <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
-                <td>{{ entry.getFactionNames }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-    </div>
+    </table>
+    {% endif %}
+</div>
 </div>
