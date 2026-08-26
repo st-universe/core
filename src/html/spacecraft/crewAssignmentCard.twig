@@ -1,5 +1,5 @@
 {% set crew = assignment.getCrew %}
-{% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+{% set crewImageType = assignment.getCrewImageType %}
 {% set isReadOnly = CREW_ASSIGNMENT_READONLY is defined ? CREW_ASSIGNMENT_READONLY : false %}
 {% set showSkills = SHOW_CREW_SKILLS is defined ? SHOW_CREW_SKILLS : true %}
 {% set showOwnerInfo = (SHOW_CREW_OWNER_INFO is defined ? SHOW_CREW_OWNER_INFO : false) and crew.getUser.getId != SPACECRAFT.getUser.getId %}

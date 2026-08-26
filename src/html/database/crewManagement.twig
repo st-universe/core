@@ -68,7 +68,7 @@
             {% set isEscapePod = spacecraft and spacecraft.getRump.isEscapePods %}
             {% set foreignStation = (spacecraft and spacecraft.getRump.isStation and spacecraft.getUser.getId != USER_ID) or (tradepost and tradepost.getStation.getUser.getId != USER_ID) %}
             {% set foreignStationInactive = foreignStation and (tradepost or not assignment.getSlot) %}
-            {% set crewImageType = crew.getType.value == 7 ? 6 : crew.getType.value %}
+            {% set crewImageType = assignment.getCrewImageType %}
             <div class="crew-management-card" role="link" tabindex="0"
                 onclick="handleCrewManagementCardClick(event, {{ crew.getId }});"
                 onpointerdown="startCrewManagementSelection(event, this);"
