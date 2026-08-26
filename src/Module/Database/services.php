@@ -7,6 +7,7 @@ namespace Stu\Module\Database;
 use Stu\Module\Control\GameController;
 use Stu\Module\Database\Action\DeleteColonyScan;
 use Stu\Module\Database\Action\DismissCrew\DismissCrew;
+use Stu\Module\Database\Action\ModerateCrewRace\ModerateCrewRace;
 use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactory;
@@ -21,6 +22,7 @@ use Stu\Module\Database\View\ColonyWorthRanking\ColonyWorthRanking;
 use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
 use Stu\Module\Database\View\CrewRanking\CrewRanking;
 use Stu\Module\Database\View\ShowCrewManagement\ShowCrewManagement;
+use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequest;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\ShowDatabaseEntry;
@@ -62,13 +64,15 @@ return [
     NPCListRequestInterface::class => autowire(NPCListRequest::class),
     'DATABASE_ACTIONS' => [
         DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class),
-        DismissCrew::ACTION_IDENTIFIER => autowire(DismissCrew::class)
+        DismissCrew::ACTION_IDENTIFIER => autowire(DismissCrew::class),
+        ModerateCrewRace::ACTION_IDENTIFIER => autowire(ModerateCrewRace::class)
     ],
     'DATABASE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         CrewRanking::VIEW_IDENTIFIER => autowire(CrewRanking::class),
         ShowCrewManagement::VIEW_IDENTIFIER => autowire(ShowCrewManagement::class),
+        ShowCrewRaceModeration::VIEW_IDENTIFIER => autowire(ShowCrewRaceModeration::class),
         ShowDatabaseEntry::VIEW_IDENTIFIER => autowire(ShowDatabaseEntry::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),

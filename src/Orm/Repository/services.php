@@ -166,6 +166,7 @@ use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
 use Stu\Orm\Entity\UserCharacter;
+use Stu\Orm\Entity\UserCrewRace;
 use Stu\Orm\Entity\UserCrewRank;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserRelation;
@@ -342,6 +343,7 @@ return [
     TutorialStepRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(TutorialStep::class),
     UserAwardRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserAward::class),
     UserCharacterRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCharacter::class),
+    UserCrewRaceRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCrewRace::class),
     UserCrewRankRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserCrewRank::class),
     UserLayerRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class),
     UserLockRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLock::class),

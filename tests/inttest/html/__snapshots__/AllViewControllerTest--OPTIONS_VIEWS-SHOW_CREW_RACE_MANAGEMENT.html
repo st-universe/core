@@ -1,0 +1,112 @@
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+</head>
+
+
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="options.php">
+            Optionen
+        </a>
+                <span> / </span>
+                        <a href="?SHOW_CREW_RACE_MANAGEMENT=1">
+            Crew-Rassen
+        </a>
+                    </div>
+</div>
+<br />
+
+<div id="result" style="display: none;">..</div>
+<div class="crew-race-management">
+    <table class="tcal">
+        <tr>
+            <th colspan="5">Meine Crew-Rassen</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Männeranteil</th>
+            <th>Freigabe</th>
+            <th>Fraktionen</th>
+        </tr>
+                <tr>
+            <td colspan="5">Du hast noch keine Crew-Rasse eingereicht.</td>
+        </tr>
+            </table>
+    <br />
+
+        <form action="options.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Neue Crew-Rasse einreichen</th>
+            </tr>
+                        <tr>
+                <td colspan="2">Du kannst noch 3 eigene Crew-Rassen einreichen.</td>
+            </tr>
+                        <tr>
+                <td>Name</td>
+                <td><input class="text" type="text" name="crew_race_name" maxlength="255" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Männeranteil</td>
+                <td><input class="text" type="number" name="crew_race_male_ratio" min="0" max="100" value="50" required="required" /> %</td>
+            </tr>
+            <tr>
+                <td>Mit anderen teilen</td>
+                <td class="crew-race-choice">
+                    <label><input type="radio" name="crew_race_shared" value="0" checked="checked" />Nein</label>
+                    <label><input type="radio" name="crew_race_shared" value="1" />Ja</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Fraktionen</td>
+                <td class="crew-race-factions">
+                                        <label><input type="checkbox" name="crew_race_factions[]" value="1" checked="checked" disabled="disabled" />Vereinte Föderation der Planeten</label>
+                                        <label><input type="checkbox" name="crew_race_factions[]" value="2" />Romulanisches Imperium</label>
+                                        <label><input type="checkbox" name="crew_race_factions[]" value="3" />Klingonisches Imperium</label>
+                                        <label><input type="checkbox" name="crew_race_factions[]" value="4" />Cardassianische Union</label>
+                                        <label><input type="checkbox" name="crew_race_factions[]" value="5" />Ferengi Allianz</label>
+                                        <div>Weitere Fraktionen werden nur berücksichtigt, wenn die Crew-Rasse geteilt wird.</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Grafiken</td>
+                <td>
+                    <div>Nur PNG-Dateien mit exakt 51x52 Pixeln und höchstens 5 KB pro Grafik. Bei Fehlern müssen Dateien erneut ausgewählt werden.</div>
+                    <div>Der Hintergrund sollte transparent sein. Verwende positionsspezifische Rahmen: Rot für Navigation und die Kommandoposten, Grau für Crewman, Gelb für Taktik und Technik sowie Blau für Wissenschaft. Die Gestaltung soll neutral, einfach grafisch und an den bestehenden Crew-Grafiken orientiert sein. Fotorealistische oder unpassende Motive können abgelehnt werden.</div>
+                                        <fieldset class="crew-race-graphics">
+                        <legend>Männlich (bei Männeranteil 0 % nicht erforderlich)</legend>
+                                                <label>Kommandoposten <input type="file" name="crew_graphics[m][1]" accept="image/png" /></label><br />
+                                                <label>Taktik <input type="file" name="crew_graphics[m][2]" accept="image/png" /></label><br />
+                                                <label>Wissenschaft <input type="file" name="crew_graphics[m][3]" accept="image/png" /></label><br />
+                                                <label>Technik <input type="file" name="crew_graphics[m][4]" accept="image/png" /></label><br />
+                                                <label>Navigation <input type="file" name="crew_graphics[m][5]" accept="image/png" /></label><br />
+                                                <label>Crewman <input type="file" name="crew_graphics[m][6]" accept="image/png" /></label><br />
+                                            </fieldset>
+                                        <fieldset class="crew-race-graphics">
+                        <legend>Weiblich (bei Männeranteil 100 % nicht erforderlich)</legend>
+                                                <label>Kommandoposten <input type="file" name="crew_graphics[w][1]" accept="image/png" /></label><br />
+                                                <label>Taktik <input type="file" name="crew_graphics[w][2]" accept="image/png" /></label><br />
+                                                <label>Wissenschaft <input type="file" name="crew_graphics[w][3]" accept="image/png" /></label><br />
+                                                <label>Technik <input type="file" name="crew_graphics[w][4]" accept="image/png" /></label><br />
+                                                <label>Navigation <input type="file" name="crew_graphics[w][5]" accept="image/png" /></label><br />
+                                                <label>Crewman <input type="file" name="crew_graphics[w][6]" accept="image/png" /></label><br />
+                                            </fieldset>
+                                    </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" class="button" name="B_CREATE_CREW_RACE" value="Crew-Rasse einreichen" /></td>
+            </tr>
+        </table>
+    </form>
+    </div>
+<div class="footer">
+    Rendered in 4.203s - Memory usage: 42.77Mb
+</div>
+
+
+</html>

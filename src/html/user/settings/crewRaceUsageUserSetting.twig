@@ -1,0 +1,6 @@
+{% set currentValue = setting.getCurrentValue %}
+<div class="crew-race-choice">
+    <label><input type="radio" name="{{ setting.getParameterName }}" value="standard"{% if currentValue.value == 'standard' %} checked="checked"{% endif %} />Nur Standard-Crew</label>
+    <label><input type="radio" name="{{ setting.getParameterName }}" value="standard_and_foreign"{% if currentValue.value == 'standard_and_foreign' %} checked="checked"{% endif %}{% if not CAN_USE_CUSTOM_CREW %} disabled="disabled"{% endif %} />Standard- und freigeschaltete Crew</label>
+    <label><input type="radio" name="{{ setting.getParameterName }}" value="foreign_only"{% if currentValue.value == 'foreign_only' %} checked="checked"{% endif %}{% if not CAN_USE_CUSTOM_CREW %} disabled="disabled"{% endif %} />Nur freigeschaltete Crew</label>
+</div>

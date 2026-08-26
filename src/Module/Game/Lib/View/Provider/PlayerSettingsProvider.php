@@ -11,12 +11,14 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingWrapper;
 use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
 
 final class PlayerSettingsProvider implements ViewComponentProviderInterface
 {
     public function __construct(
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository
+        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository,
+        private readonly UserCrewRaceRepositoryInterface $userCrewRaceRepository
     ) {}
 
     #[\Override]
@@ -41,5 +43,7 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('CUSTOM_CREW_RANK_NAMES', $customCrewRankNames);
         $game->setTemplateVar('FEDERATION_ID', FactionEnum::FACTION_FEDERATION->value);
         $game->setTemplateVar('SHOW_FACTION_CREW_RANKS', $user->getFactionId() !== FactionEnum::FACTION_FEDERATION->value);
+        $game->setTemplateVar('CAN_USE_CUSTOM_CREW', $this->userCrewRaceRepository->hasAnyForUserId($user->getId()));
+        $game->setTemplateVar('UNLOCKED_CREW_RACES', $this->userCrewRaceRepository->getByUserId($user->getId()));
     }
 }

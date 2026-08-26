@@ -7,6 +7,7 @@ namespace Stu\Module\Crew\Lib;
 use InvalidArgumentException;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
@@ -30,6 +31,7 @@ final class CrewCreator implements CrewCreatorInterface
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private CrewRepositoryInterface $crewRepository,
         private UserRepositoryInterface $userRepository,
+        private UserSettingsProviderInterface $userSettingsProvider,
         private StuRandom $stuRandom,
         private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
@@ -44,7 +46,14 @@ final class CrewCreator implements CrewCreatorInterface
         }
 
         $arr = [];
-        $raceList = $this->crewRaceRepository->getByFaction($user->getFactionId());
+        $raceList = $this->crewRaceRepository->getForUser(
+            $user->getId(),
+            $user->getFactionId(),
+            $this->userSettingsProvider->getCrewRaceUsage($user)
+        );
+        if ($raceList === []) {
+            $raceList = $this->crewRaceRepository->getByFaction($user->getFactionId());
+        }
         foreach ($raceList as $obj) {
             $min = key($arr) + 1;
             $amount = range($min, $min + $obj->getChance());

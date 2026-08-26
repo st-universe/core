@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Settings;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Crew\CrewRaceUsageEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
@@ -45,6 +46,17 @@ class UserSettingsProvider implements UserSettingsProviderInterface
         }
 
         return '';
+    }
+
+    #[\Override]
+    public function getCrewRaceUsage(User $user): CrewRaceUsageEnum
+    {
+        $setting = $this->getSettings($user)->get(UserSettingEnum::CREW_RACE_USAGE->value);
+        if ($setting !== null) {
+            return CrewRaceUsageEnum::tryFrom($setting->getValue()) ?? CrewRaceUsageEnum::STANDARD;
+        }
+
+        return CrewRaceUsageEnum::STANDARD;
     }
 
     #[\Override]
