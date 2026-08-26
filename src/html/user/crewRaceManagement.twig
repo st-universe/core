@@ -1,0 +1,110 @@
+<div class="crew-race-management">
+    <table class="tcal">
+        <tr>
+            <th colspan="5">Meine Crew-Rassen</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Männeranteil</th>
+            <th>Freigabe</th>
+            <th>Fraktionen</th>
+        </tr>
+        {% for crewRace in OWN_CREW_RACES %}
+        <tr>
+            <td>{{ crewRace.getDescription }}</td>
+            <td>{{ crewRace.getStatus }}</td>
+            <td>{{ crewRace.getMaleRatio }} %</td>
+            <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
+            <td>
+                {% for faction in PLAYABLE_FACTIONS %}
+                {% if faction.getId in crewRace.getFactionIds %}{{ faction.getName }}{% if not loop.last %}, {% endif %}{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% if crewRace.canEditDistribution %}
+        <tr>
+            <td colspan="5">
+                <form action="options.php" method="post">
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                    <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
+                    <div class="crew-race-choice">
+                        <label><input type="radio" name="crew_race_shared" value="0"{% if not crewRace.isShared %} checked="checked"{% else %} disabled="disabled"{% endif %} />Nicht teilen</label>
+                        <label><input type="radio" name="crew_race_shared" value="1"{% if crewRace.isShared %} checked="checked"{% endif %} />Mit anderen Spielern teilen</label>
+                    </div>
+                    <div class="crew-race-factions">
+                        {% for faction in PLAYABLE_FACTIONS %}
+                        <label><input type="checkbox" name="crew_race_factions[]" value="{{ faction.getId }}"{% if faction.getId in crewRace.getFactionIds %} checked="checked" disabled="disabled"{% endif %} />{{ faction.getName }}</label>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="button" name="B_UPDATE_CREW_RACE_DISTRIBUTION" value="Freigaben speichern" />
+                </form>
+            </td>
+        </tr>
+        {% endif %}
+        {% else %}
+        <tr>
+            <td colspan="5">Du hast noch keine Crew-Rasse eingereicht.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br />
+
+    {% if CAN_CREATE_CREW_RACE %}
+    <form action="options.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <table class="tcal">
+            <tr>
+                <th colspan="2">Neue Crew-Rasse einreichen</th>
+            </tr>
+            {% if CREW_RACE_CREATION_REMAINING is not null %}
+            <tr>
+                <td colspan="2">Du kannst noch {{ CREW_RACE_CREATION_REMAINING }} eigene Crew-Rasse{% if CREW_RACE_CREATION_REMAINING != 1 %}n{% endif %} einreichen.</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>Name</td>
+                <td><input class="text" type="text" name="crew_race_name" maxlength="255" value="{{ FORM_CREW_RACE_NAME }}" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Männeranteil</td>
+                <td><input class="text" type="number" name="crew_race_male_ratio" min="0" max="100" value="{{ FORM_CREW_RACE_MALE_RATIO }}" required="required" /> %</td>
+            </tr>
+            <tr>
+                <td>Mit anderen teilen</td>
+                <td class="crew-race-choice">
+                    <label><input type="radio" name="crew_race_shared" value="0"{% if not FORM_CREW_RACE_SHARED %} checked="checked"{% endif %} />Nein</label>
+                    <label><input type="radio" name="crew_race_shared" value="1"{% if FORM_CREW_RACE_SHARED %} checked="checked"{% endif %} />Ja</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Fraktionen</td>
+                <td class="crew-race-factions">
+                    {% for faction in PLAYABLE_FACTIONS %}
+                    <label><input type="checkbox" name="crew_race_factions[]" value="{{ faction.getId }}"{% if faction.getId == OWN_FACTION_ID %} checked="checked" disabled="disabled"{% elseif faction.getId in FORM_CREW_RACE_FACTION_IDS %} checked="checked"{% endif %} />{{ faction.getName }}</label>
+                    {% endfor %}
+                    <div>Weitere Fraktionen werden nur berücksichtigt, wenn die Crew-Rasse geteilt wird.</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Grafiken</td>
+                <td>
+                    <div>Nur PNG-Dateien mit exakt 51x52 Pixeln und höchstens 5 KB pro Grafik. Bei Fehlern müssen Dateien erneut ausgewählt werden.</div>
+                    <div>Der Hintergrund sollte transparent sein. Verwende positionsspezifische Rahmen: Rot für Navigation und die Kommandoposten, Grau für Crewman, Gelb für Taktik und Technik sowie Blau für Wissenschaft. Die Gestaltung soll neutral, einfach grafisch und an den bestehenden Crew-Grafiken orientiert sein. Fotorealistische oder unpassende Motive können abgelehnt werden.</div>
+                    {% for gender, label in {'m': 'Männlich', 'w': 'Weiblich'} %}
+                    <fieldset class="crew-race-graphics">
+                        <legend>{{ label }}{% if gender == 'm' %} (bei Männeranteil 0 % nicht erforderlich){% else %} (bei Männeranteil 100 % nicht erforderlich){% endif %}</legend>
+                        {% for imageType, position in {1: 'Kommandoposten', 2: 'Taktik', 3: 'Wissenschaft', 4: 'Technik', 5: 'Navigation', 6: 'Crewman'} %}
+                        <label>{{ position }} <input type="file" name="crew_graphics[{{ gender }}][{{ imageType }}]" accept="image/png" /></label><br />
+                        {% endfor %}
+                    </fieldset>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" class="button" name="B_CREATE_CREW_RACE" value="Crew-Rasse einreichen" /></td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+</div>

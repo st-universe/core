@@ -26,8 +26,11 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterfac
 use Stu\Module\PlayerSetting\Action\CreateTutorials\CreateTutorials;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
 use Stu\Module\PlayerSetting\Action\DeleteTutorials\DeleteTutorials;
+use Stu\Module\PlayerSetting\Action\CreateCrewRace\CreateCrewRace;
+use Stu\Module\PlayerSetting\Action\UpdateCrewRaceDistribution\UpdateCrewRaceDistribution;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
+use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 
 use function DI\autowire;
 
@@ -50,8 +53,11 @@ return [
         CreateTutorials::ACTION_IDENTIFIER => autowire(CreateTutorials::class),
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),
         DeleteTutorials::ACTION_IDENTIFIER => autowire(DeleteTutorials::class),
+        CreateCrewRace::ACTION_IDENTIFIER => autowire(CreateCrewRace::class),
+        UpdateCrewRaceDistribution::ACTION_IDENTIFIER => autowire(UpdateCrewRaceDistribution::class),
     ],
     'OPTIONS_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowCrewRaceManagement::VIEW_IDENTIFIER => autowire(ShowCrewRaceManagement::class),
     ]
 ];

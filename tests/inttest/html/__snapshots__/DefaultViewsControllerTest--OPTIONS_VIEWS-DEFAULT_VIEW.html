@@ -41,6 +41,20 @@
         </table>
     </form>
     <br />
+    <table class="tcal">
+        <tr>
+            <th>Eigene Crew-Rassen</th>
+        </tr>
+        <tr>
+            <td><a class="button" href="?SHOW_CREW_RACE_MANAGEMENT=1">Crew-Rassen verwalten</a></td>
+        </tr>
+        <tr>
+            <td>
+                                Noch keine benutzererstellte Crew-Rasse freigeschaltet.
+                            </td>
+        </tr>
+    </table>
+    <br />
     <form action="options.php" method="post">
         <table class="tcal">
             <tr>
@@ -256,6 +270,15 @@
                 <td><input type="checkbox" name="show_3d_model" value="1" />
 </td>
                 <td>Zeigt 3D Modelle im Spiel an (nur für Beta Tester)</td>
+            </tr>
+                        <tr>
+                <td><div class="crew-race-choice">
+    <label><input type="radio" name="crew_race_usage" value="standard" checked="checked" />Nur Standard-Crew</label>
+    <label><input type="radio" name="crew_race_usage" value="standard_and_foreign" disabled="disabled" />Standard- und freigeschaltete Crew</label>
+    <label><input type="radio" name="crew_race_usage" value="foreign_only" disabled="disabled" />Nur freigeschaltete Crew</label>
+</div>
+</td>
+                <td>Legt fest, ob bei der Crew-Erzeugung nur Standard-Crew oder auch deine freigeschalteten Crew-Rassen verwendet werden.</td>
             </tr>
                         <tr>
                 <td><select name="default_view">
