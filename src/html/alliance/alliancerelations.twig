@@ -19,6 +19,24 @@
 </div>
 <br />
 {% endif %}
+{% if CAN_CREATE_USER_RELATIONS %}
+<br />
+<div class="divhead">Abkommen mit Siedler erstellen</div>
+<div class="divbody">
+    <form action="alliance.php" method="post">
+        <input type="hidden" name="SHOW_RELATIONS" value="1" />
+        <input type="hidden" name="ura" value="create" />
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        Siedler-ID <input type="text" style="width: 50px;" name="uid" />
+        <select name="type">
+            {% for type in POSSIBLE_RELATION_TYPES %}
+            <option value="{{ type.value }}">{{ type.getDescription }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Erstellen" name="B_MANAGE_USER_RELATION" />
+    </form>
+</div>
+{% endif %}
 <table class="tcal">
     <tr>
         <th colspan="5">Beziehungen</th>
@@ -113,6 +131,51 @@
                 {% endif %}
             </td>
         </form>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="4">Abkommen mit Siedlern</th>
+    </tr>
+    <tr>
+        <td class="darkbg">Siedler</td>
+        <td class="darkbg">Abkommen</td>
+        <td class="darkbg">Zeitpunkt</td>
+        <td class="darkbg">Aktionen</td>
+    </tr>
+    {% if not USER_RELATIONS %}
+    <tr>
+        <td colspan="4">Keine Abkommen vorhanden</td>
+    </tr>
+    {% else %}
+    {% for relation in USER_RELATIONS %}
+    <tr class="row{{ loop.index0 % 2 }}">
+        <td>{{ relation.getCounterpartName(USER_RELATION_ACTOR)|bbcode }}</td>
+        <td>{{ relation.getType.getDescription }}</td>
+        <td>{% if not relation.isPending %}{{ relation.getDate|stuDateTime }}{% endif %}</td>
+        <td>
+            {% if relation.isPending %}
+                {% if relation.isSourceParty(USER_RELATION_ACTOR) and CAN_MANAGE_USER_RELATIONS %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=cancel&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Zurückziehen</a>
+                {% elseif CAN_MANAGE_USER_RELATIONS %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=accept&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Annehmen</a>
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=decline&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Ablehnen</a>
+                {% else %}
+                Keine Aktionen verfügbar
+                {% endif %}
+            {% elseif CAN_MANAGE_USER_RELATIONS %}
+                {% if relation.isWar %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=peace&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden vorschlagen</a>
+                {% else %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=cancel&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Vertrag lösen</a>
+                {% endif %}
+            {% else %}
+            Keine Aktionen verfügbar
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
     {% endif %}

@@ -79,6 +79,9 @@ use Stu\Module\Alliance\Action\Signup\SignupRequestInterface;
 use Stu\Module\Alliance\Action\SuggestPeace\SuggestPeace;
 use Stu\Module\Alliance\Action\SuggestPeace\SuggestPeaceRequest;
 use Stu\Module\Alliance\Action\SuggestPeace\SuggestPeaceRequestInterface;
+use Stu\Module\Alliance\Action\UserRelation\ManageUserRelation;
+use Stu\Module\Alliance\Action\UserRelation\ManageUserRelationRequest;
+use Stu\Module\Alliance\Action\UserRelation\ManageUserRelationRequestInterface;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicSticky;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequest;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequestInterface;
@@ -154,6 +157,7 @@ return [
     EditDetailsRequestInterface::class => autowire(EditDetailsRequest::class),
     SaveJobsRequestInterface::class => autowire(SaveJobsRequest::class),
     CreateRelationRequestInterface::class => autowire(CreateRelationRequest::class),
+    ManageUserRelationRequestInterface::class => autowire(ManageUserRelationRequest::class),
     SuggestPeaceRequestInterface::class => autowire(SuggestPeaceRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     AcceptOfferRequestInterface::class => autowire(AcceptOfferRequest::class),
@@ -183,6 +187,7 @@ return [
         CreateAlliance::ACTION_IDENTIFIER => autowire(CreateAlliance::class),
         EditDetails::ACTION_IDENTIFIER => autowire(EditDetails::class),
         CreateRelation::ACTION_IDENTIFIER => autowire(CreateRelation::class),
+        ManageUserRelation::ACTION_IDENTIFIER => autowire(ManageUserRelation::class),
         SuggestPeace::ACTION_IDENTIFIER => autowire(SuggestPeace::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AcceptOffer::ACTION_IDENTIFIER => autowire(AcceptOffer::class),

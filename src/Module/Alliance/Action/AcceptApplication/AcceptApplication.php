@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -25,7 +26,8 @@ final class AcceptApplication implements ActionControllerInterface
         private AllianceJobManagerInterface $allianceJobManager,
         private PrivateMessageSenderInterface $privateMessageSender,
         private UserRepositoryInterface $userRepository,
-        private AllianceApplicationRepositoryInterface $allianceApplicationRepository
+        private AllianceApplicationRepositoryInterface $allianceApplicationRepository,
+        private UserRelationManagerInterface $userRelationManager
     ) {}
 
     #[\Override]
@@ -55,6 +57,7 @@ final class AcceptApplication implements ActionControllerInterface
         }
 
         $applicant = $application->getUser();
+        $this->userRelationManager->removeRelationsForAllianceEntry($applicant, $alliance);
         $applicant->setAlliance($alliance);
         $applicationsOfUser = $this->allianceApplicationRepository->getByUser($applicant->getId());
 

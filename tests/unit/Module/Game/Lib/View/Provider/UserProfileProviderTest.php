@@ -22,6 +22,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
+use Stu\Orm\Repository\UserRelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -34,6 +35,8 @@ class UserProfileProviderTest extends StuTestCase
     private MockInterface&UserRepositoryInterface $userRepository;
 
     private MockInterface&SpacecraftLogRepositoryInterface $spacecraftLogRepository;
+
+    private MockInterface&UserRelationRepositoryInterface $userRelationRepository;
 
     private MockInterface&ParserWithImageInterface $parserWithImage;
 
@@ -50,6 +53,7 @@ class UserProfileProviderTest extends StuTestCase
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->spacecraftLogRepository = $this->mock(SpacecraftLogRepositoryInterface::class);
+        $this->userRelationRepository = $this->mock(UserRelationRepositoryInterface::class);
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
         $this->profileVisitorRegistration = $this->mock(ProfileVisitorRegistrationInterface::class);
 
@@ -58,6 +62,7 @@ class UserProfileProviderTest extends StuTestCase
             $this->contactRepository,
             $this->userRepository,
             $this->spacecraftLogRepository,
+            $this->userRelationRepository,
             $this->parserWithImage,
             $this->profileVisitorRegistration
         );
@@ -137,6 +142,9 @@ class UserProfileProviderTest extends StuTestCase
             ->with('FRIENDS', [$friend])
             ->once();
         $game->shouldReceive('setTemplateVar')
+            ->with('USER_RELATIONS', [])
+            ->once();
+        $game->shouldReceive('setTemplateVar')
             ->with('CONTACT_LIST_MODES', ContactListModeEnum::cases())
             ->once();
         $game->shouldReceive('setTemplateVar')
@@ -161,7 +169,7 @@ class UserProfileProviderTest extends StuTestCase
             ->andReturn($description);
         $player->shouldReceive('getAlliance')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturnNull();
         $player->shouldReceive('getId')
             ->withNoArgs()
@@ -199,6 +207,11 @@ class UserProfileProviderTest extends StuTestCase
 
         $this->spacecraftLogRepository->shouldReceive('getGroupedLogbooksForProfile')
             ->with($player, $visitor)
+            ->once()
+            ->andReturn([]);
+
+        $this->userRelationRepository->shouldReceive('getByUserAndAlliance')
+            ->with($player, null)
             ->once()
             ->andReturn([]);
 

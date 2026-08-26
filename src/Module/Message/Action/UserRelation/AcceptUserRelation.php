@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Message\Action\UserRelation;
+
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\View\ShowContactList\ShowContactList;
+use Stu\Orm\Repository\UserRelationRepositoryInterface;
+
+final class AcceptUserRelation implements ActionControllerInterface
+{
+    public const string ACTION_IDENTIFIER = 'B_ACCEPT_USER_RELATION';
+
+    public function __construct(
+        private readonly UserRelationRequestInterface $userRelationRequest,
+        private readonly UserRelationRepositoryInterface $userRelationRepository,
+        private readonly UserRelationManagerInterface $userRelationManager
+    ) {}
+
+    #[\Override]
+    public function handle(GameControllerInterface $game): void
+    {
+        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
+
+        if ($relation === null || !$this->userRelationManager->accept($game->getUser(), $relation)) {
+            $game->getInfo()->addInformation('Das Angebot kann nicht angenommen werden');
+            return;
+        }
+
+        $game->getInfo()->addInformation('Das Angebot wurde angenommen');
+    }
+
+    #[\Override]
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+}
