@@ -9,6 +9,9 @@ use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Message\Action\AddContact\AddContact;
 use Stu\Module\Message\Action\AddContact\AddContactRequest;
 use Stu\Module\Message\Action\AddContact\AddContactRequestInterface;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelation;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequest;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequestInterface;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategory;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategoryRequest;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategoryRequestInterface;
@@ -50,6 +53,12 @@ use Stu\Module\Message\Action\SortPmCategories\SortPmCategoriesRequestInterface;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactMode;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequest;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequestInterface;
+use Stu\Module\Message\Action\UserRelation\AcceptUserRelation;
+use Stu\Module\Message\Action\UserRelation\CancelUserRelation;
+use Stu\Module\Message\Action\UserRelation\DeclineUserRelation;
+use Stu\Module\Message\Action\UserRelation\SuggestUserRelationPeace;
+use Stu\Module\Message\Action\UserRelation\UserRelationRequest;
+use Stu\Module\Message\Action\UserRelation\UserRelationRequestInterface;
 use Stu\Module\Message\Action\WritePm\WritePm;
 use Stu\Module\Message\Action\WritePm\WritePmRequest;
 use Stu\Module\Message\Action\WritePm\WritePmRequestInterface;
@@ -96,6 +105,8 @@ return [
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),
     SwitchContactModeRequestInterface::class => autowire(SwitchContactModeRequest::class),
     AddContactRequestInterface::class => autowire(AddContactRequest::class),
+    CreateUserRelationRequestInterface::class => autowire(CreateUserRelationRequest::class),
+    UserRelationRequestInterface::class => autowire(UserRelationRequest::class),
     DeleteContactsRequestInterface::class => autowire(DeleteContactsRequest::class),
     IgnoreUserRequestInterface::class => autowire(IgnoreUserRequest::class),
     DeleteIgnoresRequestInterface::class => autowire(DeleteIgnoresRequest::class),
@@ -113,6 +124,11 @@ return [
     'PM_ACTIONS' => [
         SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
         AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
+        CreateUserRelation::ACTION_IDENTIFIER => autowire(CreateUserRelation::class),
+        AcceptUserRelation::ACTION_IDENTIFIER => autowire(AcceptUserRelation::class),
+        CancelUserRelation::ACTION_IDENTIFIER => autowire(CancelUserRelation::class),
+        DeclineUserRelation::ACTION_IDENTIFIER => autowire(DeclineUserRelation::class),
+        SuggestUserRelationPeace::ACTION_IDENTIFIER => autowire(SuggestUserRelationPeace::class),
         DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
         DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
         IgnoreUser::ACTION_IDENTIFIER => autowire(IgnoreUser::class),

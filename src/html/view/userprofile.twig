@@ -55,6 +55,18 @@
 				</a>
 			</div>
 			{% endif %}
+			{% if USER_RELATIONS %}
+			<br />
+			<div class="divhead">Diplomatische Abkommen</div>
+			<table class="tcal" style="width: 350px;">
+				{% for relation in USER_RELATIONS %}
+				<tr class="row{{ loop.index0 % 2 }}">
+					<td>{{ relation.getCounterpartName(PROFILE)|bbcode }}</td>
+					<td>{{ relation.getType.getDescription }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+			{% endif %}
 			<br />
 			<div class="divhead">Siedler seit</div>
 			<div class="divbody">{{ PROFILE.getRegistration.getCreationDate|stuDateTime }}</div>

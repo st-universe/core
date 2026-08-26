@@ -16,6 +16,7 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
+use Stu\Orm\Repository\UserRelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
@@ -28,7 +29,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         private UserRepositoryInterface $userRepository,
         private ConfigInterface $config,
         private AllianceJobManagerInterface $allianceJobManager,
-        private StationRepositoryInterface $stationRepository
+        private StationRepositoryInterface $stationRepository,
+        private UserRelationRepositoryInterface $userRelationRepository
     ) {}
 
     #[\Override]
@@ -40,6 +42,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     #[\Override]
     public function delete(Alliance $alliance, bool $sendMesage = true): void
     {
+        $this->userRelationRepository->truncateByAlliance($alliance);
         $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DockTypeEnum::ALLIANCE, $alliance->getId());
 
         foreach ($alliance->getStations() as $station) {

@@ -8,10 +8,15 @@ use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\UserRelationRepositoryInterface;
 
 class EnemyDeterminator
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private ContactRepositoryInterface $contactRepository) {}
+    public function __construct(
+        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private ContactRepositoryInterface $contactRepository,
+        private ?UserRelationRepositoryInterface $userRelationRepository = null
+    ) {}
 
     public function isEnemy(User $user, User $otherUser): PlayerRelationTypeEnum
     {
@@ -31,6 +36,28 @@ class EnemyDeterminator
                 $otherUserAlliance->getId(),
                 $alliance->getId()
             );
+
+            if ($result !== null) {
+                return PlayerRelationTypeEnum::ALLY;
+            }
+        } elseif ($this->userRelationRepository !== null) {
+            $result = $alliance !== null
+                ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
+                    [AllianceRelationTypeEnum::WAR->value],
+                    $alliance->getId(),
+                    $otherUser->getId()
+                )
+                : ($otherUserAlliance !== null
+                    ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
+                        [AllianceRelationTypeEnum::WAR->value],
+                        $otherUserAlliance->getId(),
+                        $user->getId()
+                    )
+                    : $this->userRelationRepository->getActiveByUserPair(
+                        [AllianceRelationTypeEnum::WAR->value],
+                        $user->getId(),
+                        $otherUser->getId()
+                    ));
 
             if ($result !== null) {
                 return PlayerRelationTypeEnum::ALLY;

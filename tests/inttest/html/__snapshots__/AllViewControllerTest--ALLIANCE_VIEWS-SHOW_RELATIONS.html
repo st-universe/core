@@ -38,6 +38,24 @@
     </form>
 </div>
 <br />
+<br />
+<div class="divhead">Abkommen mit Siedler erstellen</div>
+<div class="divbody">
+    <form action="alliance.php" method="post">
+        <input type="hidden" name="SHOW_RELATIONS" value="1" />
+        <input type="hidden" name="ura" value="create" />
+        <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+        Siedler-ID <input type="text" style="width: 50px;" name="uid" />
+        <select name="type">
+                        <option value="1">Krieg</option>
+                        <option value="3">Freundschaftabkommen</option>
+                        <option value="4">Bündnis</option>
+                        <option value="5">Handelsabkommen</option>
+                        <option value="6">Vasall</option>
+                    </select>
+        <input type="submit" value="Erstellen" name="B_MANAGE_USER_RELATION" />
+    </form>
+</div>
 <table class="tcal">
     <tr>
         <th colspan="5">Beziehungen</th>
@@ -51,6 +69,21 @@
     </tr>
         <tr>
         <td colspan="5">Keine Beziehungen vorhanden</td>
+    </tr>
+    </table>
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="4">Abkommen mit Siedlern</th>
+    </tr>
+    <tr>
+        <td class="darkbg">Siedler</td>
+        <td class="darkbg">Abkommen</td>
+        <td class="darkbg">Zeitpunkt</td>
+        <td class="darkbg">Aktionen</td>
+    </tr>
+        <tr>
+        <td colspan="4">Keine Abkommen vorhanden</td>
     </tr>
     </table>
 <div class="footer">

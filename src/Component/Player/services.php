@@ -31,6 +31,7 @@ use Stu\Component\Player\Deletion\Handler\TradepostDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserCrewRankDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserMapDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\UserRelationDeletionHandler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Component\Player\Register\LocalPlayerCreator;
@@ -48,6 +49,8 @@ use Stu\Component\Player\Relation\EnemyDeterminator;
 use Stu\Component\Player\Relation\FriendDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminator;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Player\Relation\UserRelationManager;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Component\Player\Settings\UserSettingsProvider;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 
@@ -61,6 +64,7 @@ return [
         'deletionHandlers',
         [
             autowire(PirateWrathDeletionHandler::class),
+            autowire(UserRelationDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),
@@ -96,6 +100,7 @@ return [
             'enemyDeterminator',
             autowire(EnemyDeterminator::class)
         ),
+    UserRelationManagerInterface::class => autowire(UserRelationManager::class),
     CrewLimitCalculatorInterface::class => autowire(CrewLimitCalculator::class),
     UserSettingsProviderInterface::class => autowire(UserSettingsProvider::class)
 ];

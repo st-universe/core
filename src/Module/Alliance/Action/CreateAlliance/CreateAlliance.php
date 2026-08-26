@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,6 +27,7 @@ final class CreateAlliance implements ActionControllerInterface
         private AllianceRepositoryInterface $allianceRepository,
         private UserRepositoryInterface $userRepository,
         private AllianceJobManagerInterface $allianceJobManager,
+        private UserRelationManagerInterface $userRelationManager,
         private EntityManagerInterface $entityManager
     ) {}
 
@@ -54,6 +56,8 @@ final class CreateAlliance implements ActionControllerInterface
 
         $this->allianceRepository->save($alliance);
         $this->entityManager->flush();
+
+        $this->userRelationManager->removeRelationsForAllianceEntry($user, $alliance, true);
 
         $founderJob = new AllianceJob();
         $founderJob->setAlliance($alliance);

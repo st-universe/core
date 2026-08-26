@@ -13,9 +13,11 @@ use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\ColonyScan;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserRelation;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
+use Stu\Orm\Repository\UserRelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
@@ -25,6 +27,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         private ContactRepositoryInterface $contactRepository,
         private UserRepositoryInterface $userRepository,
         private SpacecraftLogRepositoryInterface $spacecraftLogRepository,
+        private UserRelationRepositoryInterface $userRelationRepository,
         private ParserWithImageInterface $parserWithImage,
         private ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {}
@@ -76,6 +79,15 @@ final class UserProfileProvider implements ViewComponentProviderInterface
                 $user,
                 $user->getAlliance()
             )
+        );
+        $game->setTemplateVar(
+            'USER_RELATIONS',
+            $user->getAlliance() === null
+                ? array_values(array_filter(
+                    $this->userRelationRepository->getByUserAndAlliance($user, null),
+                    static fn (UserRelation $relation): bool => !$relation->isPending()
+                ))
+                : []
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
         $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
