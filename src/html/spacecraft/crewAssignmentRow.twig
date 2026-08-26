@@ -6,7 +6,7 @@
 <tr>
     <td{% if crew.getUser.getId == USER_ID %} class="crew-assignment-detail-link"
         onclick="switchInnerContent('SHOW_CREWMAN_DETAILS', 'Crewman Details', 'id={{ crewId }}&sstr={{ SESSIONSTRING }}', '/ship.php');"{% endif %}>
-        <img src="{{ crew.getRace.getImagePath(crew.getGenderShort, crewImageType) }}" />
+        <img src="assets/crew/{{ crew.getRace.getGfxPath }}/{{ crew.getGenderShort }}/1_{{ crewImageType }}.png" />
         {% if canRemoveCrew %}
         <a href="?B_DUMP_CREWMAN=1&id={{ SHIP.getId }}&crewid={{ crewId }}&sstr={{ SESSIONSTRING }}"
             onclick="event.stopPropagation();"

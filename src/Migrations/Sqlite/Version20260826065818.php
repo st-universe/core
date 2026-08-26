@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260826190225 extends AbstractMigration
+final class Version20260826065818 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -181,7 +181,8 @@ final class Version20260826190225 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4793ED248B935ABD ON stu_crew_assign (tradepost_id)');
         $this->addSql('CREATE INDEX IDX_4793ED24A76ED395 ON stu_crew_assign (user_id)');
         $this->addSql('CREATE INDEX IDX_4793ED24130D5415 ON stu_crew_assign (repair_task_id)');
-        $this->addSql('CREATE TABLE stu_crew_race (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id CLOB DEFAULT NULL, description VARCHAR(255) NOT NULL, chance SMALLINT NOT NULL, maleratio SMALLINT NOT NULL, define VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, shared BOOLEAN DEFAULT 0 NOT NULL, accepted BOOLEAN DEFAULT 0 NOT NULL, accepted_user_id INTEGER DEFAULT NULL)');
+        $this->addSql('CREATE TABLE stu_crew_race (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER NOT NULL, description VARCHAR(255) NOT NULL, chance SMALLINT NOT NULL, maleratio SMALLINT NOT NULL, define VARCHAR(255) NOT NULL, CONSTRAINT FK_ED3686294448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_ED3686294448F8DA ON stu_crew_race (faction_id)');
         $this->addSql('CREATE TABLE stu_crew_skill (position SMALLINT NOT NULL, expertise INTEGER NOT NULL, crew_id INTEGER NOT NULL, PRIMARY KEY (crew_id, position), CONSTRAINT FK_5AD19B5F5FE259F6 FOREIGN KEY (crew_id) REFERENCES stu_crew (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_5AD19B5F5FE259F6 ON stu_crew_skill (crew_id)');
         $this->addSql('CREATE TABLE stu_crew_training (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, colony_id INTEGER NOT NULL, CONSTRAINT FK_E25756B996ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E25756B9A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -558,8 +559,6 @@ final class Version20260826190225 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E1449B843D5282CF ON stu_user_award (award_id)');
         $this->addSql('CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6E46626CA76ED395 ON stu_user_character (user_id)');
-        $this->addSql('CREATE TABLE stu_user_crew_race (user_id INTEGER NOT NULL, crew_race_id INTEGER NOT NULL, PRIMARY KEY (crew_race_id, user_id), CONSTRAINT FK_1E6F8FE85E681894 FOREIGN KEY (crew_race_id) REFERENCES stu_crew_race (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_1E6F8FE85E681894 ON stu_user_crew_race (crew_race_id)');
         $this->addSql('CREATE TABLE stu_user_crew_rank (rank VARCHAR(255) NOT NULL, name VARCHAR(64) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, rank), CONSTRAINT FK_4C79DCA2A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX user_crew_rank_user_idx ON stu_user_crew_rank (user_id)');
         $this->addSql('CREATE TABLE stu_user_invitations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, invited_user_id INTEGER DEFAULT NULL, date DATETIME NOT NULL, token VARCHAR(255) NOT NULL)');
@@ -784,7 +783,6 @@ final class Version20260826190225 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user');
         $this->addSql('DROP TABLE stu_user_award');
         $this->addSql('DROP TABLE stu_user_character');
-        $this->addSql('DROP TABLE stu_user_crew_race');
         $this->addSql('DROP TABLE stu_user_crew_rank');
         $this->addSql('DROP TABLE stu_user_invitations');
         $this->addSql('DROP TABLE stu_user_iptable');

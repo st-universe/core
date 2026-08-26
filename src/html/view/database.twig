@@ -60,8 +60,6 @@
 		<a href="?SHOW_NPCLIST=1">NPCs & Administrator</a><br />
 		<a href="javascript:void(0);" onclick="openStatistics();">Statistiken</a><br />
 		<a href="?SHOW_COMMODITIES_OVERVIEW=1">Warenübersicht</a>
-		{% if isFeatureGranted(USER.getId, 'CREW_RACE_MODERATION') %}<br />
-		<a href="?SHOW_CREW_RACE_MODERATION=1">Crew Moderation</a>{% endif %}
 	</div>
 </div>
 {% if HISTORY_EVENT_MAP %}

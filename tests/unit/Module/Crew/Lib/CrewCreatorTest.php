@@ -6,7 +6,6 @@ namespace Stu\Module\Crew\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Component\Crew\CrewTypeEnum;
-use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\StuRandom;
@@ -36,7 +35,6 @@ final class CrewCreatorTest extends StuTestCase
         $assignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $crewRepository = $this->mock(CrewRepositoryInterface::class);
         $userRepository = $this->mock(UserRepositoryInterface::class);
-        $userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
         $random = $this->mock(StuRandom::class);
         $troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $subject = new CrewCreator(
@@ -45,7 +43,6 @@ final class CrewCreatorTest extends StuTestCase
             $assignmentRepository,
             $crewRepository,
             $userRepository,
-            $userSettingsProvider,
             $random,
             $troopTransferUtility
         );
