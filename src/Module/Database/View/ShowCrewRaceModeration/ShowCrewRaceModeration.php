@@ -33,8 +33,9 @@ final class ShowCrewRaceModeration implements ViewControllerInterface, AccessChe
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
+        $playableFactions = $this->factionRepository->getByChooseable(true);
         $factionNames = [];
-        foreach ($this->factionRepository->getByChooseable(true) as $faction) {
+        foreach ($playableFactions as $faction) {
             $factionNames[$faction->getId()] = $faction->getName();
         }
 
@@ -44,6 +45,9 @@ final class ShowCrewRaceModeration implements ViewControllerInterface, AccessChe
         $game->appendNavigationPart('?SHOW_CREW_RACE_MODERATION=1', _('Crew Moderation'));
         $game->setTemplateVar('PENDING_CREW_RACES', $this->createEntries($this->crewRaceRepository->getPendingCustomRaces(), $factionNames));
         $game->setTemplateVar('ACCEPTED_CREW_RACES', $this->createEntries($this->crewRaceRepository->getAcceptedCustomRaces(), $factionNames));
+        $game->setTemplateVar('REJECTED_CREW_RACES', $this->createEntries($this->crewRaceRepository->getRejectedCustomRaces(), $factionNames));
+        $game->setTemplateVar('PLAYABLE_FACTIONS', $playableFactions);
+        $game->setTemplateVar('IS_ADMIN', $game->isAdmin());
     }
 
     /**

@@ -42,7 +42,10 @@ interface CrewRaceRepositoryInterface extends ObjectRepository
      */
     public function getAcceptedCustomRaces(): array;
 
-    public function getByDescription(string $description): ?CrewRace;
+    /**
+     * @return list<CrewRace>
+     */
+    public function getRejectedCustomRaces(): array;
 
     public function getByGfxPath(string $gfxPath): ?CrewRace;
 }

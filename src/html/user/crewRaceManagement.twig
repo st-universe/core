@@ -44,7 +44,7 @@
         {% endif %}
         {% else %}
         <tr>
-            <td colspan="5">Du hast noch keine Crew-Rasse eingereicht.</td>
+            <td colspan="5">Du hast noch keine Crew-Rasse eingereicht</td>
         </tr>
         {% endfor %}
     </table>
@@ -59,16 +59,27 @@
             </tr>
             {% if CREW_RACE_CREATION_REMAINING is not null %}
             <tr>
-                <td colspan="2">Du kannst noch {{ CREW_RACE_CREATION_REMAINING }} eigene Crew-Rasse{% if CREW_RACE_CREATION_REMAINING != 1 %}n{% endif %} einreichen.</td>
+                <td colspan="2">Du kannst noch {{ CREW_RACE_CREATION_REMAINING }} eigene Crew-Rasse{% if CREW_RACE_CREATION_REMAINING != 1 %}n{% endif %} einreichen</td>
             </tr>
             {% endif %}
             <tr>
                 <td>Name</td>
-                <td><input class="text" type="text" name="crew_race_name" maxlength="255" value="{{ FORM_CREW_RACE_NAME }}" required="required" /></td>
+                <td><input class="text" type="text" id="crew-race-name" name="crew_race_name" maxlength="255" value="{{ FORM_CREW_RACE_NAME }}" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Grafikdefinition</td>
+                <td>
+                    <input class="text" type="text" id="crew-race-define" name="crew_race_define" maxlength="255" value="{{ FORM_CREW_RACE_DEFINE }}" required="required" />
+                    <div>Technischer Ordnername für die Grafiken, nur Großbuchstaben und einzelne Unterstriche</div>
+                </td>
             </tr>
             <tr>
                 <td>Männeranteil</td>
                 <td><input class="text" type="number" name="crew_race_male_ratio" min="0" max="100" value="{{ FORM_CREW_RACE_MALE_RATIO }}" required="required" /> %</td>
+            </tr>
+            <tr>
+                <td>Zufallsrate</td>
+                <td><input class="text" type="number" name="crew_race_chance" min="1" max="100" value="{{ FORM_CREW_RACE_CHANCE }}" required="required" /><div>Legt fest, wie häufig diese Crew-Rasse im Verhältnis zu anderen Crew-Rassen erzeugt wird</div></td>
             </tr>
             <tr>
                 <td>Mit anderen teilen</td>
@@ -83,14 +94,14 @@
                     {% for faction in PLAYABLE_FACTIONS %}
                     <label><input type="checkbox" name="crew_race_factions[]" value="{{ faction.getId }}"{% if faction.getId == OWN_FACTION_ID %} checked="checked" disabled="disabled"{% elseif faction.getId in FORM_CREW_RACE_FACTION_IDS %} checked="checked"{% endif %} />{{ faction.getName }}</label>
                     {% endfor %}
-                    <div>Weitere Fraktionen werden nur berücksichtigt, wenn die Crew-Rasse geteilt wird.</div>
+                    <div>Weitere Fraktionen werden nur berücksichtigt, wenn die Crew-Rasse geteilt wird</div>
                 </td>
             </tr>
             <tr>
                 <td>Grafiken</td>
                 <td>
-                    <div>Nur PNG-Dateien mit exakt 51x52 Pixeln und höchstens 5 KB pro Grafik. Bei Fehlern müssen Dateien erneut ausgewählt werden.</div>
-                    <div>Der Hintergrund sollte transparent sein. Verwende positionsspezifische Rahmen: Rot für Navigation und die Kommandoposten, Grau für Crewman, Gelb für Taktik und Technik sowie Blau für Wissenschaft. Die Gestaltung soll neutral, einfach grafisch und an den bestehenden Crew-Grafiken orientiert sein. Fotorealistische oder unpassende Motive können abgelehnt werden.</div>
+                    <div>Nur PNG-Dateien mit exakt 51x52 Pixeln und höchstens 5 KB pro Grafik. Bei Fehlern müssen Dateien erneut ausgewählt werden</div>
+                    <div>Der Hintergrund sollte transparent sein. Verwende positionsspezifische Rahmen: Rot für Navigation und die Kommandoposten, Grau für Crewman, Gelb für Taktik und Technik sowie Blau für Wissenschaft. Die Gestaltung soll neutral, einfach grafisch und an den bestehenden Crew-Grafiken orientiert sein. Fotorealistische oder unpassende Motive können abgelehnt werden</div>
                     {% for gender, label in {'m': 'Männlich', 'w': 'Weiblich'} %}
                     <fieldset class="crew-race-graphics">
                         <legend>{{ label }}{% if gender == 'm' %} (bei Männeranteil 0 % nicht erforderlich){% else %} (bei Männeranteil 100 % nicht erforderlich){% endif %}</legend>
@@ -105,6 +116,35 @@
                 <td colspan="2"><input type="submit" class="button" name="B_CREATE_CREW_RACE" value="Crew-Rasse einreichen" /></td>
             </tr>
         </table>
+        <script>
+            (() => {
+                const name = document.getElementById('crew-race-name');
+                const define = document.getElementById('crew-race-define');
+                const normalizeDefine = (value) => value
+                    .replaceAll('Ä', 'AE')
+                    .replaceAll('Ö', 'OE')
+                    .replaceAll('Ü', 'UE')
+                    .replaceAll('ä', 'AE')
+                    .replaceAll('ö', 'OE')
+                    .replaceAll('ü', 'UE')
+                    .replaceAll('ß', 'SS')
+                    .replace(/\s+/g, '_')
+                    .toUpperCase()
+                    .replace(/[^A-Z_]/g, '')
+                    .replace(/_+/g, '_')
+                    .replace(/^_+|_+$/g, '');
+
+                name.addEventListener('input', () => {
+                    if (define.dataset.edited !== '1') {
+                        define.value = normalizeDefine(name.value);
+                    }
+                });
+                define.addEventListener('input', () => {
+                    define.dataset.edited = '1';
+                    define.value = normalizeDefine(define.value);
+                });
+            })();
+        </script>
     </form>
     {% endif %}
 </div>

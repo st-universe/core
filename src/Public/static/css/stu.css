@@ -662,6 +662,16 @@ input[type="radio"].torpedoSelection:focus-visible {
   margin: 8px 0;
 }
 
+.crew-race-graphic-preview {
+  display: inline-block;
+  margin: 1px;
+  background: #ff00a8;
+}
+
+.crew-race-graphic-preview img {
+  display: block;
+}
+
 .starmapSectionInfo .starmapInner {
   cursor: auto !important;
   touch-action: manipulation;

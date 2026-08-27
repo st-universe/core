@@ -1,3 +1,39 @@
+{% macro raceInfo(crewRace, entry) %}
+<tr><td>Definition</td><td>{{ crewRace.getGfxPath }}</td></tr>
+<tr><td>Zufallsrate</td><td>{{ crewRace.getChance }}</td></tr>
+<tr><td>Männeranteil</td><td>{{ crewRace.getMaleRatio }} %</td></tr>
+<tr><td>Zivil</td><td>{{ crewRace.isCivil ? 'Ja' : 'Nein' }}</td></tr>
+<tr><td>Freigabe</td><td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td></tr>
+<tr><td>Fraktionen</td><td>{{ entry.getFactionNames }}</td></tr>
+{% endmacro %}
+{% macro graphics(crewRace) %}
+{% if crewRace.getMaleRatio > 0 %}
+<div>Männlich: {% for imageType in 1..6 %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('m', imageType) }}" /></span>{% endfor %}</div>
+{% endif %}
+{% if crewRace.getMaleRatio < 100 %}
+<div>Weiblich: {% for imageType in 1..6 %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('w', imageType) }}" /></span>{% endfor %}</div>
+{% endif %}
+{% endmacro %}
+{% macro editor(crewRace, factions, isAdmin, session) %}
+<form action="database.php" method="post">
+    <input type="hidden" name="sstr" value="{{ session }}" />
+    <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
+    <table>
+        <tr><td>Rassenname</td><td><input class="text" type="text" name="crew_race_name" maxlength="255" value="{{ crewRace.getDescription }}" required="required" /></td></tr>
+        <tr><td>Grafikdefinition</td><td><input class="text" type="text" name="crew_race_define" maxlength="255" value="{{ crewRace.getGfxPath }}" required="required" /><div>Technischer Ordnername für die Grafiken, nur Großbuchstaben und einzelne Unterstriche</div></td></tr>
+        {% if isAdmin %}
+        <tr><td>Zufallsrate</td><td><input class="text" type="number" name="crew_race_chance" min="1" max="100" value="{{ crewRace.getChance }}" required="required" /></td></tr>
+        <tr><td>Männeranteil</td><td><input class="text" type="number" name="crew_race_male_ratio" min="0" max="100" value="{{ crewRace.getMaleRatio }}" required="required" /> %</td></tr>
+        <tr><td>Zivil</td><td><label><input type="checkbox" name="crew_race_civil" value="1"{% if crewRace.isCivil %} checked="checked"{% endif %} />Zivil</label></td></tr>
+        <tr><td>Mit anderen teilen</td><td class="crew-race-choice"><label><input type="radio" name="crew_race_shared" value="0"{% if not crewRace.isShared %} checked="checked"{% endif %} />Nein</label><label><input type="radio" name="crew_race_shared" value="1"{% if crewRace.isShared %} checked="checked"{% endif %} />Ja</label></td></tr>
+        <tr><td>Fraktionen</td><td class="crew-race-factions">{% for faction in factions %}<label><input type="checkbox" name="crew_race_factions[]" value="{{ faction.getId }}"{% if faction.getId in crewRace.getFactionIds %} checked="checked"{% endif %} />{{ faction.getName }}</label>{% endfor %}</td></tr>
+        {% endif %}
+        <tr><td colspan="2"><input type="submit" class="button" name="B_UPDATE_CREW_RACE_MODERATION" value="Änderungen speichern" /></td></tr>
+    </table>
+</form>
+{% endmacro %}
+{% import _self as crewRaceMacros %}
+
 <div class="crew-race-moderation">
     <div class="divhead">Offene Crew-Rassen</div>
     <div class="divbody">
@@ -7,76 +43,61 @@
         {% for entry in PENDING_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
         <table class="tcal" style="margin-bottom: 12px;">
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            {{ crewRaceMacros.raceInfo(crewRace, entry) }}
+            <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
+            <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, IS_ADMIN, SESSIONSTRING) }}</td></tr>
             <tr>
-                <th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th>
+                <td colspan="2">
+                    <form action="database.php" method="post">
+                        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                        <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
+                        <input type="hidden" name="B_MODERATE_CREW_RACE" value="1" />
+                        <button class="button" type="submit" name="decision" value="accept">Akzeptieren</button>
+                        <button class="button" type="submit" name="decision" value="reject">Ablehnen</button>
+                    </form>
+                </td>
             </tr>
-            <tr>
-                <td>Definition</td>
-                <td>{{ crewRace.getGfxPath }}</td>
-            </tr>
-            <tr>
-                <td>Männeranteil</td>
-                <td>{{ crewRace.getMaleRatio }} %</td>
-            </tr>
-            <tr>
-                <td>Freigabe</td>
-                <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
-            </tr>
-            <tr>
-                <td>Fraktionen</td>
-                <td>{{ entry.getFactionNames }}</td>
-            </tr>
-            <tr>
-                <td>Grafiken</td>
-                <td>
-                    {% if crewRace.getMaleRatio > 0 %}
-                    <div>Männlich: {% for imageType in 1..6 %}<img
-                            src="{{ crewRace.getImagePath('m', imageType) }}" />{% endfor %}</div>
-                    {% endif %}
-                    {% if crewRace.getMaleRatio < 100 %} <div>Weiblich: {% for imageType in 1..6 %}<img
-                            src="{{ crewRace.getImagePath('w', imageType) }}" />{% endfor %}
+        </table>
+        {% endfor %}
+        {% endif %}
     </div>
-    {% endif %}
-    </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <form action="database.php" method="post">
-                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
-                <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
-                <input type="hidden" name="B_MODERATE_CREW_RACE" value="1" />
-                <button class="button" type="submit" name="decision" value="accept">Akzeptieren</button>
-                <button class="button" type="submit" name="decision" value="reject">Ablehnen</button>
-            </form>
-        </td>
-    </tr>
-    </table>
-    {% endfor %}
-    {% endif %}
-</div>
-<br />
-<div class="divhead">Akzeptierte Crew-Rassen</div>
-<div class="divbody">
-    {% if ACCEPTED_CREW_RACES|length == 0 %}
-    Keine akzeptierten benutzererstellten Crew-Rassen vorhanden
-    {% else %}
-    <table class="tcal">
-        <tr>
-            <th>Spieler</th>
-            <th>Crew-Rasse</th>
-            <th>Freigabe</th>
-            <th>Fraktionen</th>
-        </tr>
+    <br />
+    <div class="divhead">Akzeptierte Crew-Rassen</div>
+    <div class="divbody">
+        {% if ACCEPTED_CREW_RACES|length == 0 %}
+        Keine akzeptierten benutzererstellten Crew-Rassen vorhanden
+        {% else %}
         {% for entry in ACCEPTED_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
-        <tr>
-            <td>{{ entry.getCreatorName }}</td>
-            <td>{{ crewRace.getDescription }}</td>
-            <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
-            <td>{{ entry.getFactionNames }}</td>
-        </tr>
+        <table class="tcal" style="margin-bottom: 12px;">
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            {{ crewRaceMacros.raceInfo(crewRace, entry) }}
+            <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
+            {% if IS_ADMIN %}
+            <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, true, SESSIONSTRING) }}</td></tr>
+            {% endif %}
+        </table>
         {% endfor %}
-    </table>
+        {% endif %}
+    </div>
+    {% if IS_ADMIN %}
+    <br />
+    <div class="divhead">Abgelehnte Crew-Rassen</div>
+    <div class="divbody">
+        {% if REJECTED_CREW_RACES|length == 0 %}
+        Keine abgelehnten benutzererstellten Crew-Rassen vorhanden
+        {% else %}
+        {% for entry in REJECTED_CREW_RACES %}
+        {% set crewRace = entry.getCrewRace %}
+        <table class="tcal" style="margin-bottom: 12px;">
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            {{ crewRaceMacros.raceInfo(crewRace, entry) }}
+            <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
+            <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, true, SESSIONSTRING) }}</td></tr>
+        </table>
+        {% endfor %}
+        {% endif %}
+    </div>
     {% endif %}
-</div>
 </div>

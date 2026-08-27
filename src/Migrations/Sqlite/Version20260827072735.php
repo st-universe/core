@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260826190225 extends AbstractMigration
+final class Version20260827072735 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -181,7 +181,7 @@ final class Version20260826190225 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4793ED248B935ABD ON stu_crew_assign (tradepost_id)');
         $this->addSql('CREATE INDEX IDX_4793ED24A76ED395 ON stu_crew_assign (user_id)');
         $this->addSql('CREATE INDEX IDX_4793ED24130D5415 ON stu_crew_assign (repair_task_id)');
-        $this->addSql('CREATE TABLE stu_crew_race (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id CLOB DEFAULT NULL, description VARCHAR(255) NOT NULL, chance SMALLINT NOT NULL, maleratio SMALLINT NOT NULL, define VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, shared BOOLEAN DEFAULT 0 NOT NULL, accepted BOOLEAN DEFAULT 0 NOT NULL, accepted_user_id INTEGER DEFAULT NULL)');
+        $this->addSql('CREATE TABLE stu_crew_race (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id CLOB DEFAULT NULL, description VARCHAR(255) NOT NULL, chance SMALLINT NOT NULL, maleratio SMALLINT NOT NULL, define VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, shared BOOLEAN DEFAULT 0 NOT NULL, accepted BOOLEAN DEFAULT 0 NOT NULL, accepted_user_id INTEGER DEFAULT NULL, civil BOOLEAN DEFAULT 1 NOT NULL)');
         $this->addSql('CREATE TABLE stu_crew_skill (position SMALLINT NOT NULL, expertise INTEGER NOT NULL, crew_id INTEGER NOT NULL, PRIMARY KEY (crew_id, position), CONSTRAINT FK_5AD19B5F5FE259F6 FOREIGN KEY (crew_id) REFERENCES stu_crew (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_5AD19B5F5FE259F6 ON stu_crew_skill (crew_id)');
         $this->addSql('CREATE TABLE stu_crew_training (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, colony_id INTEGER NOT NULL, CONSTRAINT FK_E25756B996ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E25756B9A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');

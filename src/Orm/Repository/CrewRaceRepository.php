@@ -113,14 +113,18 @@ final class CrewRaceRepository extends EntityRepository implements CrewRaceRepos
     }
 
     #[\Override]
-    public function getByDescription(string $description): ?CrewRace
+    public function getRejectedCustomRaces(): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT cr FROM %s cr WHERE LOWER(cr.description) = LOWER(:description)',
+                'SELECT cr FROM %s cr
+                WHERE cr.creator_user_id IS NOT NULL
+                AND cr.accepted = :accepted
+                AND cr.accepted_user_id IS NOT NULL
+                ORDER BY cr.creator_user_id ASC, cr.description ASC',
                 CrewRace::class
             )
-        )->setParameter('description', $description)->getOneOrNullResult();
+        )->setParameter('accepted', false)->getResult();
     }
 
     #[\Override]
