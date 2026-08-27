@@ -72,7 +72,7 @@ enum UserSettingEnum: string
             self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt Einträge in der History an, die durch Interaktion mit dem Piraten-NPC entstanden sind',
             self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert',
             self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)',
-            self::CREW_RACE_USAGE => 'Legt fest, ob bei der Crew-Erzeugung nur Standard-Crew oder auch deine freigeschalteten Crew-Rassen verwendet werden.'
+            self::CREW_RACE_USAGE => 'Legt fest, ob bei der Crew-Erzeugung nur Standard-Crew oder auch deine freigeschalteten Crew-Rassen verwendet werden'
         };
     }
 

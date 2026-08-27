@@ -8,6 +8,7 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Database\Action\DeleteColonyScan;
 use Stu\Module\Database\Action\DismissCrew\DismissCrew;
 use Stu\Module\Database\Action\ModerateCrewRace\ModerateCrewRace;
+use Stu\Module\Database\Action\UpdateCrewRaceModeration\UpdateCrewRaceModeration;
 use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactory;
@@ -65,7 +66,8 @@ return [
     'DATABASE_ACTIONS' => [
         DeleteColonyScan::ACTION_IDENTIFIER => autowire(DeleteColonyScan::class),
         DismissCrew::ACTION_IDENTIFIER => autowire(DismissCrew::class),
-        ModerateCrewRace::ACTION_IDENTIFIER => autowire(ModerateCrewRace::class)
+        ModerateCrewRace::ACTION_IDENTIFIER => autowire(ModerateCrewRace::class),
+        UpdateCrewRaceModeration::ACTION_IDENTIFIER => autowire(UpdateCrewRaceModeration::class)
     ],
     'DATABASE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

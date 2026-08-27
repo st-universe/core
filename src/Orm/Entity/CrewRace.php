@@ -48,6 +48,9 @@ class CrewRace
     #[Column(name: 'accepted_user_id', type: 'integer', nullable: true)]
     private ?int $accepted_user_id = null;
 
+    #[Column(type: 'boolean', options: ['default' => true])]
+    private bool $civil = true;
+
     public function getId(): int
     {
         return $this->id;
@@ -164,6 +167,18 @@ class CrewRace
     public function setAcceptedUserId(?int $acceptedUserId): CrewRace
     {
         $this->accepted_user_id = $acceptedUserId;
+
+        return $this;
+    }
+
+    public function isCivil(): bool
+    {
+        return $this->civil;
+    }
+
+    public function setCivil(bool $civil): CrewRace
+    {
+        $this->civil = $civil;
 
         return $this;
     }

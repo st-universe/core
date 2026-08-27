@@ -71,8 +71,8 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
                 UserConstants::USER_NOONE,
                 $creatorUserId,
                 $accepted
-                    ? sprintf(_('Deine Crew-Rasse %s wurde akzeptiert.'), $crewRace->getDescription())
-                    : sprintf(_('Deine Crew-Rasse %s wurde abgelehnt.'), $crewRace->getDescription())
+                    ? sprintf(_('Deine Crew-Rasse %s wurde akzeptiert'), $crewRace->getDescription())
+                    : sprintf(_('Deine Crew-Rasse %s wurde abgelehnt'), $crewRace->getDescription())
             );
         }
 

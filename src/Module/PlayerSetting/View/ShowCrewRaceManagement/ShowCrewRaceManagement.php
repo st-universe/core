@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\View\ShowCrewRaceManagement;
 
 use request;
+use Stu\Component\Crew\CrewRaceInput;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -35,8 +36,11 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
         $game->setTemplateVar('OWN_FACTION_ID', $ownFactionId);
         $game->setTemplateVar('CAN_CREATE_CREW_RACE', $game->isAdmin() || count($ownCrewRaces) < 3);
         $game->setTemplateVar('CREW_RACE_CREATION_REMAINING', $game->isAdmin() ? null : max(0, 3 - count($ownCrewRaces)));
-        $game->setTemplateVar('FORM_CREW_RACE_NAME', request::postString('crew_race_name') ?: '');
+        $formName = request::postString('crew_race_name') ?: '';
+        $game->setTemplateVar('FORM_CREW_RACE_NAME', $formName);
+        $game->setTemplateVar('FORM_CREW_RACE_DEFINE', request::postString('crew_race_define') ?: CrewRaceInput::normalizeDefine($formName));
         $game->setTemplateVar('FORM_CREW_RACE_MALE_RATIO', request::postString('crew_race_male_ratio') ?: '50');
+        $game->setTemplateVar('FORM_CREW_RACE_CHANCE', request::postString('crew_race_chance') ?: '25');
         $game->setTemplateVar('FORM_CREW_RACE_SHARED', request::postString('crew_race_shared') === '1');
         $game->setTemplateVar('FORM_CREW_RACE_FACTION_IDS', array_map('intval', request::postArray('crew_race_factions')));
     }

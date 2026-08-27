@@ -42,4 +42,12 @@ final class CrewRaceTest extends TestCase
         static::assertTrue($subject->isRejected());
         static::assertSame('Abgelehnt', $subject->getStatus());
     }
+
+    public function testIsCivilByDefault(): void
+    {
+        $subject = new CrewRace();
+
+        static::assertTrue($subject->isCivil());
+        static::assertFalse($subject->setCivil(false)->isCivil());
+    }
 }

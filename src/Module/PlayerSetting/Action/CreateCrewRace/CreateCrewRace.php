@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\CreateCrewRace;
 use finfo;
 use Noodlehaus\ConfigInterface;
 use request;
+use Stu\Component\Crew\CrewRaceInput;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
@@ -41,24 +42,29 @@ final class CreateCrewRace implements ActionControllerInterface
         }
 
         $description = trim((string)request::postString('crew_race_name'));
-        if (!$this->isValidDescription($description)) {
+        if (!CrewRaceInput::isValidDescription($description)) {
             $game->getInfo()->addInformation(_('Der Name muss mit einem Großbuchstaben beginnen und darf nur Buchstaben, einzelne Leerzeichen sowie einzelne Apostrophe oder Backticks enthalten'));
             return;
         }
-        if ($this->crewRaceRepository->getByDescription($description) !== null) {
-            $game->getInfo()->addInformation(_('Eine Crew-Rasse mit diesem Namen existiert bereits'));
-            return;
-        }
-
         $maleRatio = filter_var(request::postString('crew_race_male_ratio'), FILTER_VALIDATE_INT);
         if ($maleRatio === false || $maleRatio < 0 || $maleRatio > 100) {
             $game->getInfo()->addInformation(_('Das Männerverhältnis muss eine Zahl zwischen 0 und 100 sein'));
             return;
         }
 
-        $gfxPath = $this->createGfxPath($description);
+        $gfxPath = CrewRaceInput::normalizeDefine((string)(request::postString('crew_race_define') ?: $description));
+        if (!CrewRaceInput::isValidDefine($gfxPath)) {
+            $game->getInfo()->addInformation(_('Die Grafikdefinition darf nur Großbuchstaben und einzelne Unterstriche enthalten'));
+            return;
+        }
         if ($this->crewRaceRepository->getByGfxPath($gfxPath) !== null) {
             $game->getInfo()->addInformation(_('Eine Crew-Rasse mit dieser Grafikdefinition existiert bereits'));
+            return;
+        }
+
+        $chance = filter_var(request::postString('crew_race_chance'), FILTER_VALIDATE_INT);
+        if ($chance === false || $chance < 1 || $chance > 100) {
+            $game->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
             return;
         }
 
@@ -73,9 +79,10 @@ final class CreateCrewRace implements ActionControllerInterface
             ->setDescription($description)
             ->setGfxPath($gfxPath)
             ->setMaleRatio((int)$maleRatio)
-            ->setChance(25)
+            ->setChance((int)$chance)
             ->setCreatorUserId($user->getId())
             ->setShared($shared)
+            ->setCivil(true)
             ->setFactionIds($this->getFactionIds($user->getFactionId(), $shared));
 
         if (!$this->storeGraphics($crewRace, $graphics, $game)) {
@@ -84,29 +91,6 @@ final class CreateCrewRace implements ActionControllerInterface
 
         $this->crewRaceRepository->save($crewRace);
         $game->getInfo()->addInformation(_('Die Crew-Rasse wurde zur Freigabe eingereicht'));
-    }
-
-    private function isValidDescription(string $description): bool
-    {
-        return mb_strlen($description) <= 255
-            && preg_match("/^\\p{Lu}[\\p{L}'`]*(?: [\\p{L}'`]+)*$/u", $description) === 1
-            && preg_match("/['`]{2}/", $description) !== 1;
-    }
-
-    private function createGfxPath(string $description): string
-    {
-        $path = strtr($description, [
-            'Ä' => 'AE',
-            'Ö' => 'OE',
-            'Ü' => 'UE',
-            'ä' => 'AE',
-            'ö' => 'OE',
-            'ü' => 'UE',
-            'ß' => 'SS'
-        ]);
-        $path = str_replace(["'", '`'], '', $path);
-
-        return str_replace(' ', '_', mb_strtoupper($path));
     }
 
     /** @return list<int> */
