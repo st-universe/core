@@ -20,7 +20,7 @@ final class CreateCrewRace implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_CREW_RACE';
 
-    private const int MAX_IMAGE_SIZE = 5120;
+    private const int MAX_IMAGE_SIZE = 10240;
     private const int IMAGE_WIDTH = 51;
     private const int IMAGE_HEIGHT = 52;
 
@@ -135,7 +135,7 @@ final class CreateCrewRace implements ActionControllerInterface
                     return null;
                 }
                 if (!$this->isValidGraphic($file)) {
-                    $game->getInfo()->addInformationf(_('Grafik %d für %s muss eine PNG-Datei mit 51x52 Pixeln und höchstens 5 KB sein'), $imageType, $gender === 'm' ? _('Männer') : _('Frauen'));
+                    $game->getInfo()->addInformationf(_('Grafik %d für %s muss eine PNG-Datei mit 51x52 Pixeln und höchstens 10 KB sein'), $imageType, $gender === 'm' ? _('Männer') : _('Frauen'));
                     return null;
                 }
                 $graphics[$gender][$imageType] = $file;

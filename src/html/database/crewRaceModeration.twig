@@ -7,11 +7,19 @@
 <tr><td>Fraktionen</td><td>{{ entry.getFactionNames }}</td></tr>
 {% endmacro %}
 {% macro graphics(crewRace) %}
+{% set positionNames = {
+    1: 'Kommandoposten (Kommandierender Offizier und 1. Offizier)',
+    2: 'Taktik',
+    3: 'Wissenschaft',
+    4: 'Technik',
+    5: 'Navigation',
+    6: 'Crewman'
+} %}
 {% if crewRace.getMaleRatio > 0 %}
-<div>Männlich: {% for imageType in 1..6 %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('m', imageType) }}" /></span>{% endfor %}</div>
+<div>Männlich: {% for imageType, positionName in positionNames %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('m', imageType) }}" title="{{ positionName }}" alt="{{ positionName }}" /></span>{% endfor %}</div>
 {% endif %}
 {% if crewRace.getMaleRatio < 100 %}
-<div>Weiblich: {% for imageType in 1..6 %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('w', imageType) }}" /></span>{% endfor %}</div>
+<div>Weiblich: {% for imageType, positionName in positionNames %}<span class="crew-race-graphic-preview"><img src="{{ crewRace.getImagePath('w', imageType) }}" title="{{ positionName }}" alt="{{ positionName }}" /></span>{% endfor %}</div>
 {% endif %}
 {% endmacro %}
 {% macro editor(crewRace, factions, isAdmin, session) %}
@@ -43,7 +51,7 @@
         {% for entry in PENDING_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
         <table class="tcal" style="margin-bottom: 12px;">
-            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName|bbcode }}</th></tr>
             {{ crewRaceMacros.raceInfo(crewRace, entry) }}
             <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
             <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, IS_ADMIN, SESSIONSTRING) }}</td></tr>
@@ -71,11 +79,18 @@
         {% for entry in ACCEPTED_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
         <table class="tcal" style="margin-bottom: 12px;">
-            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName|bbcode }}</th></tr>
+            <tr><td colspan="2">{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
             {{ crewRaceMacros.raceInfo(crewRace, entry) }}
-            <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
             {% if IS_ADMIN %}
-            <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, true, SESSIONSTRING) }}</td></tr>
+            <tr>
+                <td colspan="2">
+                    <details class="crew-race-moderation-settings">
+                        <summary>Einstellungen bearbeiten</summary>
+                        {{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, true, SESSIONSTRING) }}
+                    </details>
+                </td>
+            </tr>
             {% endif %}
         </table>
         {% endfor %}
@@ -91,7 +106,7 @@
         {% for entry in REJECTED_CREW_RACES %}
         {% set crewRace = entry.getCrewRace %}
         <table class="tcal" style="margin-bottom: 12px;">
-            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName }}</th></tr>
+            <tr><th colspan="2">{{ crewRace.getDescription }} von {{ entry.getCreatorName|bbcode }}</th></tr>
             {{ crewRaceMacros.raceInfo(crewRace, entry) }}
             <tr><td>Grafiken</td><td>{{ crewRaceMacros.graphics(crewRace) }}</td></tr>
             <tr><td colspan="2">{{ crewRaceMacros.editor(crewRace, PLAYABLE_FACTIONS, true, SESSIONSTRING) }}</td></tr>

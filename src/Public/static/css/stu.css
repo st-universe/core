@@ -672,6 +672,14 @@ input[type="radio"].torpedoSelection:focus-visible {
   display: block;
 }
 
+.crew-race-moderation-settings > summary {
+  cursor: pointer;
+}
+
+.crew-race-moderation-settings table {
+  margin-top: 6px;
+}
+
 .starmapSectionInfo .starmapInner {
   cursor: auto !important;
   touch-action: manipulation;
