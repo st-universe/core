@@ -110,12 +110,12 @@ final class AttackBuildingTest extends ActionControllerTestCase
             ->with(33)
             ->once()
             ->andReturn($field);
-        $field->shouldReceive('getFieldId')
+        $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
-            ->andReturn(80);
+            ->andReturnNull();
         $information->shouldReceive('addInformation')
-            ->with('Der Untergrund kann nicht attackiert werden')
+            ->with('Gebäude nicht vorhanden')
             ->once();
         $this->privateMessageSender->shouldReceive('send')
             ->never();
