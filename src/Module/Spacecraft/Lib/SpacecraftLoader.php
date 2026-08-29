@@ -46,6 +46,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             $spacecraftId,
             $userId,
             null,
+            null,
             $allowUplink,
             $checkForEntityLock
         )->getSource()->get();
@@ -63,6 +64,26 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             $spacecraftId,
             $userId,
             null,
+            null,
+            $allowUplink,
+            $checkForEntityLock
+        )->getSource();
+    }
+
+    #[\Override]
+    public function getWrapperByIdAndUserAndTargetUser(
+        int $spacecraftId,
+        int $userId,
+        int $targetUserId,
+        bool $allowUplink = false,
+        bool $checkForEntityLock = true
+    ): SpacecraftWrapperInterface {
+
+        return $this->getByIdAndUserAndTargetIntern(
+            $spacecraftId,
+            $userId,
+            null,
+            $targetUserId,
             $allowUplink,
             $checkForEntityLock
         )->getSource();
@@ -81,6 +102,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             $spacecraftId,
             $userId,
             $targetId,
+            null,
             $allowUplink,
             $checkForEntityLock
         );
@@ -93,6 +115,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         int $spacecraftId,
         int $userId,
         ?int $targetId,
+        ?int $targetUserId,
         bool $allowUplink,
         bool $checkForEntityLock
     ): SourceAndTargetWrappersInterface {
@@ -107,7 +130,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
         $this->checkviolations($spacecraft, $userId, $allowUplink);
 
-        return $this->acquireSemaphores($spacecraft, $targetId);
+        return $this->acquireSemaphores($spacecraft, $targetId, $targetUserId);
     }
 
     private function checkForEntityLock(int $spacecraftId): void
@@ -148,21 +171,30 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             return null;
         }
 
-        return $this->acquireSemaphores($spacecraft, null)->getSource();
+        return $this->acquireSemaphores($spacecraft, null, null)->getSource();
     }
 
     /**
      * @return SourceAndTargetWrappersInterface<SpacecraftWrapperInterface>
      */
-    private function acquireSemaphores(Spacecraft $spacecraft, ?int $targetId): SourceAndTargetWrappersInterface
+    private function acquireSemaphores(
+        Spacecraft $spacecraft,
+        ?int $targetId,
+        ?int $targetUserId
+    ): SourceAndTargetWrappersInterface
     {
-        if ($targetId === null && $this->semaphoreUtil->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())) {
+        if (
+            $targetId === null
+            && $targetUserId === null
+            && $this->semaphoreUtil->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())
+        ) {
             return new SourceAndTargetWrappers($this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
         }
 
         $target = $targetId === null ? null : $this->spacecraftRepository->find($targetId);
         $this->acquireSemaphoresForSpacecrafts(
-            $target === null ? [$spacecraft] : [$spacecraft, $target]
+            $target === null ? [$spacecraft] : [$spacecraft, $target],
+            $targetUserId
         );
 
         $wrapper = $this->createFreshWrapper($spacecraft);
@@ -182,24 +214,26 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
     /**
      * @param array<int, Spacecraft> $spacecrafts
      */
-    private function acquireSemaphoresForSpacecrafts(array $spacecrafts): void
+    private function acquireSemaphoresForSpacecrafts(array $spacecrafts, ?int $targetUserId = null): void
     {
         /** @var array<int, Spacecraft> $spacecraftsBySemaphoreKey */
         $spacecraftsBySemaphoreKey = [];
         foreach ($spacecrafts as $spacecraft) {
             $spacecraftsBySemaphoreKey[$spacecraft->getUser()->getId()] ??= $spacecraft;
         }
+        if ($targetUserId !== null) {
+            $spacecraftsBySemaphoreKey[$targetUserId] ??= $spacecrafts[0];
+        }
 
         ksort($spacecraftsBySemaphoreKey);
 
-        foreach ($spacecraftsBySemaphoreKey as $spacecraft) {
-            $this->acquireSemaphoreForSpacecraft($spacecraft);
+        foreach ($spacecraftsBySemaphoreKey as $key => $spacecraft) {
+            $this->acquireSemaphoreForSpacecraft($key, $spacecraft);
         }
     }
 
-    private function acquireSemaphoreForSpacecraft(Spacecraft $spacecraft): void
+    private function acquireSemaphoreForSpacecraft(int $key, Spacecraft $spacecraft): void
     {
-        $key = $spacecraft->getUser()->getId();
         if ($this->semaphoreUtil->isSemaphoreAlreadyAcquired($key)) {
             StuLogger::log(sprintf(
                 'Spacecraft semaphore already acquired for user %d and spacecraft %d',

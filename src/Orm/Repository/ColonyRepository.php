@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -41,16 +40,6 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $colony->setChangeable($changeable);
 
         return $colony;
-    }
-
-    #[\Override]
-    public function findForUpdate(int $colonyId): ?Colony
-    {
-        if (!$this->getEntityManager()->getConnection()->isTransactionActive()) {
-            return $this->find($colonyId);
-        }
-
-        return $this->find($colonyId, LockMode::PESSIMISTIC_WRITE);
     }
 
     #[\Override]

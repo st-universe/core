@@ -63,25 +63,24 @@ final class AttackBuilding implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
-
         $colonyId = request::getIntFatal('colonyid');
         $fieldId = request::getIntFatal('field');
 
-
-        // Serialize colony attacks before reading the target, so a waiting request sees prior destruction.
-        $colony = $this->colonyRepository->findForUpdate($colonyId);
-        $field = $this->planetFieldRepository->find($fieldId);
-        if ($field === null || $colony === null) {
+        $colony = $this->colonyRepository->find($colonyId);
+        if ($colony === null) {
             $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
-        if ($field->getBuilding() === null) {
-            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
+        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUserAndTargetUser(
+            request::indInt('id'),
+            $userId,
+            $colony->getUserId()
+        );
+
+        $field = $this->planetFieldRepository->find($fieldId);
+        if ($field === null) {
+            $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
