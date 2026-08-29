@@ -23,6 +23,14 @@ interface SpacecraftLoaderInterface
         bool $checkForEntityLock = true
     ): SpacecraftWrapperInterface;
 
+    public function getWrapperByIdAndUserAndTargetUser(
+        int $spacecraftId,
+        int $userId,
+        int $targetUserId,
+        bool $allowUplink = false,
+        bool $checkForEntityLock = true
+    ): SpacecraftWrapperInterface;
+
     /**
      * @return SourceAndTargetWrappersInterface<T>
      */

@@ -19,8 +19,6 @@ interface ColonyRepositoryInterface extends ObjectRepository
 {
     public function prototype(): Colony;
 
-    public function findForUpdate(int $colonyId): ?Colony;
-
     public function save(Colony $colony): void;
 
     public function delete(Colony $colony): void;

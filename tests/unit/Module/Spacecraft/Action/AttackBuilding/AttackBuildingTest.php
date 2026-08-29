@@ -67,7 +67,7 @@ final class AttackBuildingTest extends ActionControllerTestCase
         );
     }
 
-    public function testHandleStopsWhenTheLockedColonyHasNoTargetBuilding(): void
+    public function testHandleAcquiresSemaphoreForTargetColonyOwner(): void
     {
         request::setMockVars([
             'id' => 11,
@@ -94,24 +94,28 @@ final class AttackBuildingTest extends ActionControllerTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(44);
-        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUser')
-            ->with(11, 44)
-            ->once()
-            ->andReturn($wrapper);
-        $this->colonyRepository->shouldReceive('findForUpdate')
+        $this->colonyRepository->shouldReceive('find')
             ->with(22)
             ->once()
             ->andReturn($colony);
+        $colony->shouldReceive('getUserId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(55);
+        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUserAndTargetUser')
+            ->with(11, 44, 55)
+            ->once()
+            ->andReturn($wrapper);
         $this->planetFieldRepository->shouldReceive('find')
             ->with(33)
             ->once()
             ->andReturn($field);
-        $field->shouldReceive('getBuilding')
+        $field->shouldReceive('getFieldId')
             ->withNoArgs()
             ->once()
-            ->andReturnNull();
+            ->andReturn(80);
         $information->shouldReceive('addInformation')
-            ->with('Gebäude nicht vorhanden')
+            ->with('Der Untergrund kann nicht attackiert werden')
             ->once();
         $this->privateMessageSender->shouldReceive('send')
             ->never();

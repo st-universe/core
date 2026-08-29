@@ -276,6 +276,47 @@ class SpacecraftLoaderTest extends StuTestCase
         $this->assertEquals($this->wrapper, $result);
     }
 
+    public function testGetWrapperByIdAndUserAndTargetUserAcquiresSemaphoresInOrder(): void
+    {
+        $acquiredKeys = [];
+
+        $this->lockManager->shouldReceive('isLocked')
+            ->with($this->spacecraftId, LockTypeEnum::SHIP_GROUP)
+            ->once()
+            ->andReturn(false);
+
+        $this->spacecraftRepository->shouldReceive('find')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
+        $this->semaphoreUtil->shouldReceive('isSemaphoreAlreadyAcquired')
+            ->twice()
+            ->andReturn(false);
+        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
+            ->twice()
+            ->andReturnUsing(function (int $key, ?float $timeoutSeconds = null) use (&$acquiredKeys): null {
+                $acquiredKeys[] = $key;
+                return null;
+            });
+        $this->spacecraftRepository->shouldReceive('findFresh')
+            ->with($this->spacecraftId)
+            ->once()
+            ->andReturn($this->spacecraft);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
+            ->with($this->spacecraft)
+            ->once()
+            ->andReturn($this->wrapper);
+
+        $result = $this->subject->getWrapperByIdAndUserAndTargetUser(
+            $this->spacecraftId,
+            $this->userId,
+            12
+        );
+
+        $this->assertEquals($this->wrapper, $result);
+        $this->assertSame([12, $this->userId], $acquiredKeys);
+    }
+
     public function testgetWrappersBySourceAndUserAndTargetAwaitTargetNull(): void
     {
         $userSema = 123456;
