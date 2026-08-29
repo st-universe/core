@@ -84,6 +84,11 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
+        if ($field->getBuilding() === null) {
+            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
+            return;
+        }
+
         if ($field->getFieldId() >= 80) {
             $game->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
