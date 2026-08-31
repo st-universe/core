@@ -67,15 +67,27 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $spacecraftIds = array_values(array_unique($spacecraftIds));
         sort($spacecraftIds, SORT_NUMERIC);
 
-        $result = $this->getEntityManager()
+        $resultingUserIds = $this->getEntityManager()
             ->createQuery(sprintf(
-                'SELECT DISTINCT s.user_id
-                FROM %s s
-                WHERE s.id IN (:spacecraftIds)',
-                Spacecraft::class
+            'SELECT DISTINCT sp.user_id
+                FROM %s sp
+                WHERE sp.id IN (:spacecraftIds)',
+            Spacecraft::class
             ))
             ->setParameter('spacecraftIds', $spacecraftIds)
             ->getResult();
+        $resultingDockedStationUserIds = $this->getEntityManager()
+            ->createQuery(sprintf(
+                'SELECT DISTINCT st.user_id
+                FROM %s sh
+                JOIN sh.dockedTo st
+                WHERE sh.id IN (:spacecraftIds)',
+                Ship::class
+            ))
+            ->setParameter('spacecraftIds', $spacecraftIds)
+            ->getResult();
+
+        $result = array_merge($resultingUserIds, $resultingDockedStationUserIds);
 
         $userIds = array_map(fn(array $row): int => (int) $row['user_id'], $result);
 
