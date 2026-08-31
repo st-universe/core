@@ -11,6 +11,7 @@ use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
@@ -66,17 +67,17 @@ final class AttackBuilding implements ActionControllerInterface
         $colonyId = request::getIntFatal('colonyid');
         $fieldId = request::getIntFatal('field');
 
+        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUserAndTargetUser(
+            request::indInt('id'),
+            $userId,
+            $this->colonyRepository->getUserIdOfColony($colonyId)
+        );
+
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
             $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
-
-        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUserAndTargetUser(
-            request::indInt('id'),
-            $userId,
-            $colony->getUserId()
-        );
 
         $field = $this->planetFieldRepository->find($fieldId);
         if ($field === null) {
@@ -84,13 +85,15 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($field->getBuilding() === null) {
-            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
+        if ($field->getFieldId() >= 80) {
+            $game->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
         }
 
-        if ($field->getFieldId() >= 80) {
-            $game->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
+        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+
+        if ($field->getBuilding() === null) {
+            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
             return;
         }
 
@@ -233,6 +236,7 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->getCondition()->isDestroyed()) {
+            $game->setView(ModuleEnum::SHIP);
             $game->getInfo()->addInformationWrapper($informations);
             return;
         }

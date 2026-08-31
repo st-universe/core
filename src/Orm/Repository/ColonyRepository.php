@@ -458,4 +458,17 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             return null;
         }
     }
+
+    public function getUserIdOfColony(int $colonyId): int
+    {
+        return  (int) $this->getEntityManager()
+            ->createQuery(sprintf(
+                'SELECT c.user_id
+                FROM %s c
+                WHERE c.id = :colonyId',
+                Colony::class
+            ))
+            ->setParameter('colonyId', $colonyId)
+            ->getSingleScalarResult();
+    }
 }
