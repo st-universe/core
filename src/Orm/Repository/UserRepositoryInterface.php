@@ -16,6 +16,11 @@ interface UserRepositoryInterface extends ObjectRepository
 {
     public function prototype(): User;
 
+    /**
+     * @param array<int> $userIds
+     */
+    public function lockUsersForUpdate(array $userIds): void;
+
     public function save(User $post): void;
 
     public function delete(User $post): void;
