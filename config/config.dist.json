@@ -101,6 +101,7 @@
       "doPirateTick": true
     },
     "useSemaphores": false,
+    "useUserConcurrencyBoundary": false,
     "imprint": {
       "name": "Max Mustermann",
       "address": "123 Fake street",

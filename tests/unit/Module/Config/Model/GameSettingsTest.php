@@ -48,6 +48,17 @@ class GameSettingsTest extends StuTestCase
         $this->assertTrue($result);
     }
 
+    public function testUseUserConcurrencyBoundary(): void
+    {
+        $this->settingsCore->shouldReceive('getBooleanConfigValue')
+            ->with('useUserConcurrencyBoundary', false)
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->useUserConcurrencyBoundary();
+
+        $this->assertTrue($result);
+    }
 
     public function testGetTempDir(): void
     {
