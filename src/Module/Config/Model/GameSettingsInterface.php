@@ -11,6 +11,8 @@ interface GameSettingsInterface
 
     public function useSemaphores(): bool;
 
+    public function useUserConcurrencyBoundary(): bool;
+
     public function getVersion(): string|int;
 
     public function getWebroot(): string;

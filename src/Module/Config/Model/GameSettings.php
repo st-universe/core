@@ -10,6 +10,7 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     private const string SETTING_GRANTED_FEATURES = 'grantedFeatures';
     private const string SETTING_TEMP_DIR = 'temp_dir';
     private const string SETTING_USE_SEMAPHORES = 'useSemaphores';
+    private const string SETTING_USE_USER_CONCURRENCY_BOUNDARY = 'useUserConcurrencyBoundary';
     private const string SETTING_VERSION = 'version';
     private const string SETTING_WEBROOT = 'webroot';
 
@@ -65,6 +66,12 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function useSemaphores(): bool
     {
         return $this->settingsCore->getBooleanConfigValue(self::SETTING_USE_SEMAPHORES, false);
+    }
+
+    #[\Override]
+    public function useUserConcurrencyBoundary(): bool
+    {
+        return $this->settingsCore->getBooleanConfigValue(self::SETTING_USE_USER_CONCURRENCY_BOUNDARY, false);
     }
 
     #[\Override]
