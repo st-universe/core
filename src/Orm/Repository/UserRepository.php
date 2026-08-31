@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\FallbackUserDoesNotExistException;
@@ -30,6 +31,28 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $user->setRegistration(new UserRegistration($user));
 
         return $user;
+    }
+
+    #[\Override]
+    public function lockUsersForUpdate(array $userIds): void
+    {
+        if ($userIds === []) {
+            return;
+        }
+
+        $userIds = array_values(array_unique(array_map('intval', $userIds)));
+        sort($userIds, SORT_NUMERIC);
+
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id IN (:userIds) ORDER BY u.id ASC',
+                User::class
+            )
+        );
+
+        $query->setParameter('userIds', $userIds);
+        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
+        $query->getResult();
     }
 
     #[\Override]

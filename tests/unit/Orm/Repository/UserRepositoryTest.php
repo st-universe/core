@@ -48,4 +48,30 @@ class UserRepositoryTest extends StuTestCase
             $this->subject->getFallbackUser()
         );
     }
+
+    public function testLockUsersForUpdateSortsAndDeduplicatesUserIds(): void
+    {
+        $query = $this->mock(\Doctrine\ORM\Query::class);
+
+        $this->entityManager->shouldReceive('createQuery')
+            ->with('SELECT u FROM Stu\\Orm\\Entity\\User u WHERE u.id IN (:userIds) ORDER BY u.id ASC')
+            ->once()
+            ->andReturn($query);
+
+        $query->shouldReceive('setParameter')
+            ->with('userIds', [7, 12, 42])
+            ->once()
+            ->andReturnSelf();
+
+        $query->shouldReceive('setLockMode')
+            ->with(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)
+            ->once()
+            ->andReturnSelf();
+
+        $query->shouldReceive('getResult')
+            ->once()
+            ->andReturn([]);
+
+        $this->subject->lockUsersForUpdate([42, 7, 42, 12]);
+    }
 }

@@ -21,6 +21,13 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
 {
     public function findFresh(int $spacecraftId): ?Spacecraft;
 
+    /**
+     * @param array<int> $spacecraftIds
+     *
+     * @return array<int>
+     */
+    public function getUserIdsForSpacecrafts(array $spacecraftIds): array;
+
     public function save(Spacecraft $spacecraft): void;
 
     public function delete(Spacecraft $spacecraft): void;

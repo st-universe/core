@@ -58,6 +58,27 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
     }
 
     #[\Override]
+    public function getUserIdsForSpacecrafts(array $spacecraftIds): array
+    {
+        if ($spacecraftIds === []) {
+            return [];
+        }
+
+        $spacecraftIds = array_values(array_unique($spacecraftIds));
+        sort($spacecraftIds, SORT_NUMERIC);
+
+        $userIds = $this->getEntityManager()->getConnection()->fetchFirstColumn(
+            'SELECT DISTINCT user_id FROM stu_spacecraft WHERE id IN (:spacecraftIds) ORDER BY user_id',
+            ['spacecraftIds' => $spacecraftIds]
+        );
+
+        $userIds = array_map('intval', $userIds);
+        sort($userIds, SORT_NUMERIC);
+
+        return array_values(array_unique($userIds));
+    }
+
+    #[\Override]
     public function save(Spacecraft $spacecraft): void
     {
         $em = $this->getEntityManager();
