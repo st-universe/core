@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
 use Stu\StuTestCase;
 
 class ShipTest extends StuTestCase
 {
-    private Ship $subject;
+    private Ship|MockInterface $subject;
 
     #[\Override]
     public function setUp(): void
@@ -20,6 +21,10 @@ class ShipTest extends StuTestCase
     public function testsetLocationWhenMap(): void
     {
         $map = $this->mock(Map::class);
+        $map->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->subject->setLocation($map);
 
@@ -61,6 +66,11 @@ class ShipTest extends StuTestCase
         $map = $this->mock(Map::class);
         $systemMap = $this->mock(StarSystemMap::class);
 
+        $systemMap->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
         $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
             ->once()
@@ -76,6 +86,15 @@ class ShipTest extends StuTestCase
     {
         $map = $this->mock(Map::class);
         $systemMap = $this->mock(StarSystemMap::class);
+
+        $map->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $systemMap->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $systemMap->shouldReceive('getSystem->getMap')
             ->withNoArgs()
