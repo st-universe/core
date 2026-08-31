@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use RuntimeException;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
+use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Spacecraft;
@@ -149,6 +149,7 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         sort($userIds, SORT_NUMERIC);
 
         $this->userRepository->lockUsersForUpdate($userIds);
+        StuLogger::logf('Locked users for spacecraft access: %s', implode(', ', $userIds));
 
         $sourceSpacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($sourceSpacecraft === null) {
