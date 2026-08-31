@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Orm\Repository;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
@@ -14,9 +13,9 @@ use Stu\StuTestCase;
 
 class SpacecraftRepositoryTest extends StuTestCase
 {
-    private EntityManagerInterface&MockInterface $entityManager;
+    private EntityManagerInterface|MockInterface $entityManager;
 
-    private MockInterface&ClassMetadata $classMetaData;
+    private MockInterface|ClassMetadata $classMetaData;
 
     private SpacecraftRepository $subject;
 
@@ -36,19 +35,28 @@ class SpacecraftRepositoryTest extends StuTestCase
 
     public function testGetUserIdsForSpacecraftsReturnsSortedDistinctUserIds(): void
     {
-        $connection = $this->mock(Connection::class);
+        $query = $this->mock(\Doctrine\ORM\Query::class);
 
-        $this->entityManager->shouldReceive('getConnection')
+        $this->entityManager->shouldReceive('createQuery')
+            ->with("SELECT DISTINCT s.user_id
+                FROM Stu\\Orm\\Entity\\Spacecraft s
+                WHERE s.id IN (:spacecraftIds)")
             ->once()
-            ->andReturn($connection);
+            ->andReturn($query);
 
-        $connection->shouldReceive('fetchFirstColumn')
-            ->with(
-                'SELECT DISTINCT user_id FROM stu_spacecraft WHERE id IN (:spacecraftIds) ORDER BY user_id',
-                ['spacecraftIds' => [13, 42, 99]]
-            )
+        $query->shouldReceive('setParameter')
+            ->with('spacecraftIds', [13, 42, 99])
             ->once()
-            ->andReturn(['42', '13', '42', '99']);
+            ->andReturnSelf();
+
+        $query->shouldReceive('getResult')
+            ->once()
+            ->andReturn([
+                ['user_id' => '42'],
+                ['user_id' => '13'],
+                ['user_id' => '42'],
+                ['user_id' => '99'],
+            ]);
 
         static::assertSame(
             [13, 42, 99],
