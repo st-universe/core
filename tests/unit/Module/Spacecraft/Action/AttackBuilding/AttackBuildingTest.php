@@ -22,6 +22,7 @@ use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\User;
@@ -85,6 +86,9 @@ final class AttackBuildingTest extends ActionControllerTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
+        $this->game->shouldReceive('setView')
+            ->with(ShowSpacecraft::VIEW_IDENTIFIER)
+            ->once();
         $this->game->shouldReceive('getInfo')
             ->withNoArgs()
             ->once()
@@ -98,8 +102,8 @@ final class AttackBuildingTest extends ActionControllerTestCase
             ->with(22)
             ->once()
             ->andReturn($colony);
-        $colony->shouldReceive('getUserId')
-            ->withNoArgs()
+        $this->colonyRepository->shouldReceive('getUserIdOfColony')
+            ->with(22)
             ->once()
             ->andReturn(55);
         $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUserAndTargetUser')
@@ -110,6 +114,10 @@ final class AttackBuildingTest extends ActionControllerTestCase
             ->with(33)
             ->once()
             ->andReturn($field);
+        $field->shouldReceive('getFieldId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(66);
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
             ->once()
