@@ -34,28 +34,6 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[\Override]
-    public function lockUsersForUpdate(array $userIds): void
-    {
-        if ($userIds === []) {
-            return;
-        }
-
-        $userIds = array_values(array_unique(array_map('intval', $userIds)));
-        sort($userIds, SORT_NUMERIC);
-
-        $query = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT u FROM %s u WHERE u.id IN (:userIds) ORDER BY u.id ASC',
-                User::class
-            )
-        );
-
-        $query->setParameter('userIds', $userIds);
-        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
-        $query->getResult();
-    }
-
-    #[\Override]
     public function save(User $post): void
     {
         $em = $this->getEntityManager();
@@ -471,5 +449,45 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         }
 
         return $qb->getResult();
+    }
+
+
+    #[\Override]
+    public function lockUsersForUpdate(array $userIds): void
+    {
+        if ($userIds === []) {
+            return;
+        }
+
+        $userIds = array_values(array_unique(array_map('intval', $userIds)));
+        sort($userIds, SORT_NUMERIC);
+
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id IN (:userIds) ORDER BY u.id ASC',
+                User::class
+            )
+        );
+
+        $query->setParameter('userIds', $userIds);
+        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
+        $query->getResult();
+    }
+
+    #[\Override]
+    public function lockAllUsersForUpdate(): void
+    {
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u.id FROM %s u
+                WHERE u.id >= :firstNpcUserId
+                ORDER BY u.id ASC',
+                User::class
+            )
+        );
+
+        $query->setParameter('firstNpcUserId', UserConstants::USER_FIRST_NPC);
+        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
+        $query->getResult();
     }
 }

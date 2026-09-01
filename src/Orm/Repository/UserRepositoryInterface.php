@@ -16,11 +16,6 @@ interface UserRepositoryInterface extends ObjectRepository
 {
     public function prototype(): User;
 
-    /**
-     * @param array<int> $userIds
-     */
-    public function lockUsersForUpdate(array $userIds): void;
-
     public function save(User $post): void;
 
     public function delete(User $post): void;
@@ -120,4 +115,11 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return array<User>
      */
     public function getUsersWithActiveLicense(int $tradePostId, int $currentTime, ?int $factionId = null): array;
+
+    /**
+     * @param array<int> $userIds
+     */
+    public function lockUsersForUpdate(array $userIds): void;
+
+    public function lockAllUsersForUpdate(): void;
 }
