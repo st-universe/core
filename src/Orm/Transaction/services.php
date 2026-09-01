@@ -12,7 +12,6 @@ use Doctrine\ORM\ORMSetup;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 
 use function DI\autowire;
@@ -44,7 +43,6 @@ return [
         return new ReopeningEntityManager(
             $c->get(EntityManagerFactoryInterface::class),
             $c->get(Configuration::class),
-            $c->get(SemaphoreUtilInterface::class),
             $c->get(LoggerUtilFactoryInterface::class)
         );
     }

@@ -68,7 +68,7 @@ final class AttackBuildingTest extends ActionControllerTestCase
         );
     }
 
-    public function testHandleAcquiresSemaphoreForTargetColonyOwner(): void
+    public function testHandlesShowsInfoIfBuildingDoesNotExist(): void
     {
         request::setMockVars([
             'id' => 11,

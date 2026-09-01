@@ -251,7 +251,6 @@ use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\Lib\Ui\PanelLayerConfiguration;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactory;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
-use Stu\Module\Spacecraft\Lib\UserBoundedSpacecraftLoader;
 use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Module\Spacecraft\View\ShowAlertLevel\ShowAlertLevel;
@@ -397,15 +396,7 @@ return [
     MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
-    SpacecraftLoaderInterface::class => function (ContainerInterface $c): SpacecraftLoaderInterface {
-        $useUserConcurrencyBoundary = $c->get(StuConfigInterface::class)
-            ->getGameSettings()
-            ->useUserConcurrencyBoundary();
-
-        return $useUserConcurrencyBoundary
-            ? $c->get(UserBoundedSpacecraftLoader::class)
-            : $c->get(SpacecraftLoader::class);
-    },
+    SpacecraftLoaderInterface::class => autowire(SpacecraftLoader::class),
     SpacecraftFactoryInterface::class => autowire(SpacecraftFactory::class),
     SpacecraftConfiguratorFactoryInterface::class => autowire(SpacecraftConfiguratorFactory::class),
     SpacecraftSystemCreationInterface::class => autowire(SpacecraftSystemCreation::class),
