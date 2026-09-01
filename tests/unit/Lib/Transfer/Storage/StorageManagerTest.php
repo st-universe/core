@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Storage;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,6 +24,7 @@ use Stu\StuTestCase;
 class StorageManagerTest extends StuTestCase
 {
     private StorageRepositoryInterface&MockInterface $storageRepository;
+    private EntityManagerInterface&MockInterface $entityManager;
     private Colony&MockInterface $colony;
     private Commodity&MockInterface $commodity;
 
@@ -34,11 +36,13 @@ class StorageManagerTest extends StuTestCase
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->colony = $this->mock(Colony::class);
         $this->commodity = $this->mock(Commodity::class);
 
         $this->manager = new StorageManager(
-            $this->storageRepository
+            $this->storageRepository,
+            $this->entityManager
         );
     }
 
@@ -172,7 +176,6 @@ class StorageManagerTest extends StuTestCase
         $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
-
         $this->manager->lowerStorage($this->colony, $this->commodity, $amount);
 
         $this->assertTrue(
@@ -227,6 +230,10 @@ class StorageManagerTest extends StuTestCase
         $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
+        $this->entityManager->shouldReceive('getReference')
+            ->with(Commodity::class, $this->commodityId)
+            ->once()
+            ->andReturn($this->commodity);
 
         $storageItem->shouldReceive('setUser')
             ->with($user)

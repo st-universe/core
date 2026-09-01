@@ -21,6 +21,8 @@ interface UserRepositoryInterface extends ObjectRepository
      */
     public function lockUsersForUpdate(array $userIds): void;
 
+    public function lockAllUsersForUpdate(): void;
+
     public function save(User $post): void;
 
     public function delete(User $post): void;

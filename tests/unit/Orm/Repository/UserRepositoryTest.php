@@ -74,4 +74,27 @@ class UserRepositoryTest extends StuTestCase
 
         $this->subject->lockUsersForUpdate([42, 7, 42, 12]);
     }
+
+    public function testLockAllUsersForUpdateLocksUsersInOrder(): void
+    {
+        $query = $this->mock(\Doctrine\ORM\Query::class);
+
+        $this->entityManager->shouldReceive('createQuery')
+            ->with("SELECT u.id FROM Stu\\Orm\\Entity\\User u\n                WHERE u.id >= :firstNpcUserId\n                ORDER BY u.id ASC")
+            ->once()
+            ->andReturn($query);
+        $query->shouldReceive('setParameter')
+            ->with('firstNpcUserId', UserConstants::USER_FIRST_NPC)
+            ->once()
+            ->andReturnSelf();
+        $query->shouldReceive('setLockMode')
+            ->with(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE)
+            ->once()
+            ->andReturnSelf();
+        $query->shouldReceive('getResult')
+            ->once()
+            ->andReturn([]);
+
+        $this->subject->lockAllUsersForUpdate();
+    }
 }

@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Spacecraft;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Game\SemaphoreConstants;
-use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\ManagerComponentInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 class SpacecraftTickManager implements SpacecraftTickManagerInterface
 {
     /** @param array<ManagerComponentInterface> $components */
     public function __construct(
-        private SemaphoreUtilInterface $semaphoreUtil,
+        private UserRepositoryInterface $userRepository,
         private LockManagerInterface $lockManager,
+        private StuConfigInterface $config,
         private EntityManagerInterface $entityManager,
         private array $components
     ) {}
@@ -48,13 +49,10 @@ class SpacecraftTickManager implements SpacecraftTickManagerInterface
 
     private function setLock(int $batchGroupId): void
     {
-        //main ship sema on
-        $mainSema = $this->semaphoreUtil->acquireSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
-
         $this->lockManager->setLock($batchGroupId, LockTypeEnum::SHIP_GROUP);
-
-        //main ship sema off
-        $this->semaphoreUtil->releaseSemaphore($mainSema);
+        if (!$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockAllUsersForUpdate();
+        }
     }
 
     private function clearLock(int $batchGroupId): void

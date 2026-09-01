@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Storage;
 
+use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
@@ -16,7 +17,8 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 final class StorageManager implements StorageManagerInterface
 {
     public function __construct(
-        private readonly StorageRepositoryInterface $storageRepository
+        private readonly StorageRepositoryInterface $storageRepository,
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     #[\Override]
@@ -69,9 +71,14 @@ final class StorageManager implements StorageManagerInterface
             if ($user === null) {
                 throw new RuntimeException('this should not happen');
             }
+            $managedCommodity = $this->entityManager->getReference(Commodity::class, $commodityId);
+            if (!$managedCommodity instanceof Commodity) {
+                throw new RuntimeException(sprintf('commodity with id %d could not be referenced', $commodityId));
+            }
+
             $storage = $this->storageRepository->prototype()
                 ->setUser($user)
-                ->setCommodity($commodity);
+                ->setCommodity($managedCommodity);
 
             $this->setOwner($storage, $entity);
 
