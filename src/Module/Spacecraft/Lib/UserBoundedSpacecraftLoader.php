@@ -8,6 +8,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
+use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
@@ -19,8 +20,14 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 /**
  * @implements SpacecraftLoaderInterface<SpacecraftWrapperInterface>
  */
+//TODO rename to SpacecraftLoader
 final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
 {
+    /**
+     * this cache is used to avoid multiple queries for the same spacecraft in one request
+     * @var array<int, SpacecraftWrapperInterface> */
+    private array $cache = [];
+
     public function __construct(
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
         private readonly UserRepositoryInterface $userRepository,
@@ -135,6 +142,23 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
             $this->checkForEntityLock($spacecraftId);
         }
 
+        if (array_key_exists($spacecraftId, $this->cache)) {
+            $resultFromCache = new SourceAndTargetWrappers($this->cache[$spacecraftId]);
+            if ($targetId !== null && array_key_exists($targetId, $this->cache)) {
+                $resultFromCache->setTarget($this->cache[$targetId]);
+            }
+
+            return $resultFromCache;
+        }
+
+        StuLogger::log(sprintf(
+            'user %3d - Loading Spacecraft %6d (target: %6s, targetUser: %4s)',
+            $userId,
+            $spacecraftId,
+            $targetId ?? 'null',
+            $targetUserId ?? 'null'
+        ), LogTypeEnum::USER_LOCK);
+
         $spacecraftIds = [$spacecraftId];
         if ($targetId !== null) {
             $spacecraftIds[] = $targetId;
@@ -145,11 +169,25 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
             $userIds[] = $targetUserId;
         }
 
+        StuLogger::log(sprintf(
+            'user %3d - Found following userIds to lock: %s',
+            $userId,
+            implode(', ', $userIds)
+        ), LogTypeEnum::USER_LOCK);
+
         $userIds = array_values(array_unique(array_map('intval', $userIds)));
         sort($userIds, SORT_NUMERIC);
 
+        $startTime = microtime(true);
+
         $this->userRepository->lockUsersForUpdate($userIds);
-        StuLogger::logf('Locked users for spacecraft access: %s', implode(', ', $userIds));
+
+        StuLogger::log(sprintf(
+            'user %3d - Locking took %F seconds for users: %s',
+            $userId,
+            microtime(true) - $startTime,
+            implode(', ', $userIds)
+        ), LogTypeEnum::USER_LOCK);
 
         $sourceSpacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($sourceSpacecraft === null) {
@@ -161,14 +199,17 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
 
         $result = new SourceAndTargetWrappers($wrapper);
+        $this->cache[$spacecraftId] = $wrapper;
 
         if ($targetId !== null) {
             $targetSpacecraft = $this->spacecraftRepository->find($targetId);
             if ($targetSpacecraft !== null && in_array($targetSpacecraft->getUser()->getId(), $userIds, true)) {
                 $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
                 $result->setTarget($targetWrapper);
+                $this->cache[$targetId] = $targetWrapper;
             }
         }
+
 
         return $result;
     }
