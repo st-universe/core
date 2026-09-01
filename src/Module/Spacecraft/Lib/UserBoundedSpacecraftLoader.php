@@ -8,6 +8,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -33,6 +34,7 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         private readonly UserRepositoryInterface $userRepository,
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly StuConfigInterface $config,
         private readonly LockManagerInterface $lockManager
     ) {}
 
@@ -114,7 +116,9 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts([$spacecraftId]);
-        $this->userRepository->lockUsersForUpdate($userIds);
+        if (!$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockUsersForUpdate($userIds);
+        }
 
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($spacecraft === null) {
@@ -180,7 +184,9 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
 
         $startTime = microtime(true);
 
-        $this->userRepository->lockUsersForUpdate($userIds);
+        if (!$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockUsersForUpdate($userIds);
+        }
 
         StuLogger::log(sprintf(
             'user %3d - Locking took %F seconds for users: %s',

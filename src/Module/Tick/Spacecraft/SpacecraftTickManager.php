@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Spacecraft;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -18,6 +19,7 @@ class SpacecraftTickManager implements SpacecraftTickManagerInterface
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private LockManagerInterface $lockManager,
+        private StuConfigInterface $config,
         private EntityManagerInterface $entityManager,
         private array $components
     ) {}
@@ -48,7 +50,9 @@ class SpacecraftTickManager implements SpacecraftTickManagerInterface
     private function setLock(int $batchGroupId): void
     {
         $this->lockManager->setLock($batchGroupId, LockTypeEnum::SHIP_GROUP);
-        $this->userRepository->lockAllUsersForUpdate();
+        if (!$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockAllUsersForUpdate();
+        }
     }
 
     private function clearLock(int $batchGroupId): void
