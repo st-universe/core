@@ -36,18 +36,6 @@ class GameSettingsTest extends StuTestCase
         $this->assertEquals([5, 42], $admins);
     }
 
-    public function testUseSemaphores(): void
-    {
-        $this->settingsCore->shouldReceive('getBooleanConfigValue')
-            ->with('useSemaphores', false)
-            ->once()
-            ->andReturn(true);
-
-        $result = $this->subject->useSemaphores();
-
-        $this->assertTrue($result);
-    }
-
     public function testUseUserConcurrencyBoundary(): void
     {
         $this->settingsCore->shouldReceive('getBooleanConfigValue')

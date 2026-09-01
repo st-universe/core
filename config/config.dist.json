@@ -100,7 +100,6 @@
     "pirates": {
       "doPirateTick": true
     },
-    "useSemaphores": false,
     "useUserConcurrencyBoundary": false,
     "imprint": {
       "name": "Max Mustermann",

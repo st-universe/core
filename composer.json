@@ -35,7 +35,6 @@
     "ext-pdo_sqlite": "*",
     "ext-redis": "*",
     "ext-sockets": "*",
-    "ext-sysvsem": "*",
     "ext-xsl": "*",
     "adhocore/cli": "^1",
     "amenadiel/jpgraph": "^4",
