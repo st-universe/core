@@ -21,7 +21,9 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 /**
  * @implements SpacecraftLoaderInterface<SpacecraftWrapperInterface>
+ *
  */
+//TODO REMOVE
 final class SpacecraftLoader implements SpacecraftLoaderInterface
 {
     private const int SPACECRAFT_SEMAPHORE_TIMEOUT_SECONDS = 5;

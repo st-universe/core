@@ -183,4 +183,47 @@ class UserBoundedSpacecraftLoaderTest extends StuTestCase
 
         $this->subject->getByIdAndUser(5, 99);
     }
+
+    public function testGetByIdAndUserUsesCacheOnSecondCall(): void
+    {
+        $this->lockManager->shouldReceive('isLocked')
+            ->with(5, LockTypeEnum::SHIP_GROUP)
+            ->twice()
+            ->andReturn(false);
+
+        $this->spacecraftRepository->shouldReceive('getUserIdsForSpacecrafts')
+            ->with([5])
+            ->once()
+            ->andReturn([42]);
+
+        $this->userRepository->shouldReceive('lockUsersForUpdate')
+            ->with([42])
+            ->once();
+
+        $this->spacecraftRepository->shouldReceive('find')
+            ->with(5)
+            ->once()
+            ->andReturn($this->spacecraft);
+
+        $this->spacecraft->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
+            ->with($this->spacecraft)
+            ->once()
+            ->andReturn($this->wrapper);
+
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($this->spacecraft);
+
+        // first call populates cache
+        static::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+
+        // second call should use cache: repository/find/wrap called only once, wrapper->get() still returns spacecraft
+        static::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+    }
 }
