@@ -113,14 +113,14 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
             $this->checkForEntityLock($spacecraftId);
         }
 
-        $userId = $this->spacecraftRepository->getUserIdsForSpacecrafts([$spacecraftId])[0] ?? null;
-        if ($userId === null) {
-            return null;
-        }
-        $this->userRepository->lockUsersForUpdate([$userId]);
+        $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts([$spacecraftId]);
+        $this->userRepository->lockUsersForUpdate($userIds);
 
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
-        if ($spacecraft === null || $spacecraft->getUser()->getId() !== $userId) {
+        if ($spacecraft === null) {
+            return null;
+        }
+        if (!in_array($spacecraft->getUser()->getId(), $userIds)) {
             return null;
         }
 
