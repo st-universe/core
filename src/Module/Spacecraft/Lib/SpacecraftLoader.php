@@ -4,35 +4,37 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
-use RuntimeException;
-use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
-use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @implements SpacecraftLoaderInterface<SpacecraftWrapperInterface>
- *
  */
-//TODO REMOVE
 final class SpacecraftLoader implements SpacecraftLoaderInterface
 {
-    private const int SPACECRAFT_SEMAPHORE_TIMEOUT_SECONDS = 5;
+    /**
+     * this cache is used to avoid multiple queries for the same spacecraft in one request
+     * @var array<int, SpacecraftWrapperInterface> */
+    private static array $cache = [];
 
     public function __construct(
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
+        private readonly UserRepositoryInterface $userRepository,
         private readonly CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private readonly SemaphoreUtilInterface $semaphoreUtil,
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly StuConfigInterface $config,
         private readonly LockManagerInterface $lockManager
     ) {}
 
@@ -43,7 +45,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): Spacecraft {
-
         return $this->getByIdAndUserAndTargetIntern(
             $spacecraftId,
             $userId,
@@ -61,7 +62,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): SpacecraftWrapperInterface {
-
         return $this->getByIdAndUserAndTargetIntern(
             $spacecraftId,
             $userId,
@@ -80,7 +80,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): SpacecraftWrapperInterface {
-
         return $this->getByIdAndUserAndTargetIntern(
             $spacecraftId,
             $userId,
@@ -99,7 +98,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         bool $allowUplink = false,
         bool $checkForEntityLock = true
     ): SourceAndTargetWrappersInterface {
-
         return $this->getByIdAndUserAndTargetIntern(
             $spacecraftId,
             $userId,
@@ -108,6 +106,29 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             $allowUplink,
             $checkForEntityLock
         );
+    }
+
+    #[\Override]
+    public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface
+    {
+        if ($checkForEntityLock) {
+            $this->checkForGlobalEntityLock($spacecraftId);
+        }
+
+        $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts([$spacecraftId]);
+        if ($checkForEntityLock && !$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockUsersForUpdate($userIds);
+        }
+
+        $spacecraft = $this->spacecraftRepository->find($spacecraftId);
+        if ($spacecraft === null) {
+            return null;
+        }
+        if (!in_array($spacecraft->getUser()->getId(), $userIds)) {
+            return null;
+        }
+
+        return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
     }
 
     /**
@@ -121,35 +142,115 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         bool $allowUplink,
         bool $checkForEntityLock
     ): SourceAndTargetWrappersInterface {
-
         if ($checkForEntityLock) {
-            $this->checkForEntityLock($spacecraftId);
+            $this->checkForGlobalEntityLock($spacecraftId);
         }
 
-        $spacecraft = $this->spacecraftRepository->find($spacecraftId);
-        if ($spacecraft === null) {
+        if (array_key_exists($spacecraftId, self::$cache)) {
+            $resultFromCache = new SourceAndTargetWrappers(self::$cache[$spacecraftId]);
+            if ($targetId !== null && array_key_exists($targetId, self::$cache)) {
+                $resultFromCache->setTarget(self::$cache[$targetId]);
+            }
+
+            return $resultFromCache;
+        }
+
+        StuLogger::log(sprintf(
+            'user %3d - Loading Spacecraft %6d (target: %6s, targetUser: %4s)',
+            $userId,
+            $spacecraftId,
+            $targetId ?? 'null',
+            $targetUserId ?? 'null'
+        ), LogTypeEnum::USER_LOCK);
+
+        $spacecraftIds = [$spacecraftId];
+        if ($targetId !== null) {
+            $spacecraftIds[] = $targetId;
+        }
+
+        $userIds = $this->getUserIds($userId, $spacecraftIds, $targetUserId, $checkForEntityLock);
+        
+        $startTime = microtime(true);
+
+        if ($checkForEntityLock && !$this->config->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockUsersForUpdate($userIds);
+            StuLogger::log(sprintf(
+                'user %3d - Locking took %F seconds for users: %s',
+                $userId,
+                microtime(true) - $startTime,
+                implode(', ', $userIds)
+            ), LogTypeEnum::USER_LOCK);
+        }
+
+        $sourceSpacecraft = $this->spacecraftRepository->find($spacecraftId);
+        if ($sourceSpacecraft === null) {
             throw new SpacecraftDoesNotExistException('Raumfahrzeug existiert nicht!');
         }
-        $this->checkviolations($spacecraft, $userId, $allowUplink);
 
-        return $this->acquireSemaphores($spacecraft, $targetId, $targetUserId);
+        $this->checkViolations($sourceSpacecraft, $userId, $allowUplink);
+
+        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
+
+        $result = new SourceAndTargetWrappers($wrapper);
+        self::$cache[$spacecraftId] = $wrapper;
+
+        if ($targetId !== null) {
+            $targetSpacecraft = $this->spacecraftRepository->find($targetId);
+            if ($targetSpacecraft !== null && $targetSpacecraft->getUser()->getId() != UserConstants::USER_NOONE) {
+                $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
+                $result->setTarget($targetWrapper);
+                self::$cache[$targetId] = $targetWrapper;
+            }
+        }
+
+
+        return $result;
     }
 
-    private function checkForEntityLock(int $spacecraftId): void
+    /**
+     * @param array<int> $spacecraftIds
+     * @param int|null $targetUserId
+     *
+     * @return array<int>
+     */
+    private function getUserIds(int $userId, array $spacecraftIds, ?int $targetUserId, bool $checkForEntityLock): array
+    {
+        if (!$checkForEntityLock) {
+            return [$userId];
+        }
+        $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts($spacecraftIds);
+
+        if ($targetUserId !== null) {
+            $userIds[] = $targetUserId;
+        }
+
+        StuLogger::log(sprintf(
+            'user %3d - Found following userIds to lock: %s',
+            $userId,
+            implode(', ', $userIds)
+            ), LogTypeEnum::USER_LOCK);
+
+        $userIds = array_values(array_unique(array_map('intval', $userIds)));
+        sort($userIds, SORT_NUMERIC);
+
+        return $userIds;
+    }
+
+    private function checkForGlobalEntityLock(int $spacecraftId): void
     {
         if ($this->lockManager->isLocked($spacecraftId, LockTypeEnum::SHIP_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
         }
     }
 
-    private function checkviolations(Spacecraft $spacecraft, int $userId, bool $allowUplink): void
+    private function checkViolations(Spacecraft $spacecraft, int $userId, bool $allowUplink): void
     {
         if ($spacecraft->getUser()->getId() !== $userId) {
             if ($this->crewAssignmentRepository->hasCrewmanOfUser($spacecraft, $userId)) {
                 if (!$allowUplink) {
                     throw new UnallowedUplinkOperationException(_('This Operation is not allowed via uplink!'));
                 }
-                if (!$spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
+                if (!$spacecraft->getSystemState(\Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum::UPLINK)) {
                     throw new UnallowedUplinkOperationException(_('Uplink is not activated!'));
                 }
                 if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
@@ -161,119 +262,8 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
     }
 
-    #[\Override]
-    public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface
+    public static function clearCache(): void
     {
-        if ($checkForEntityLock) {
-            $this->checkForEntityLock($spacecraftId);
-        }
-
-        $spacecraft = $this->spacecraftRepository->find($spacecraftId);
-        if ($spacecraft === null) {
-            return null;
-        }
-
-        return $this->acquireSemaphores($spacecraft, null, null)->getSource();
-    }
-
-    /**
-     * @return SourceAndTargetWrappersInterface<SpacecraftWrapperInterface>
-     */
-    private function acquireSemaphores(
-        Spacecraft $spacecraft,
-        ?int $targetId,
-        ?int $targetUserId
-    ): SourceAndTargetWrappersInterface
-    {
-        if (
-            $targetId === null
-            && $targetUserId === null
-            && $this->semaphoreUtil->isSemaphoreAlreadyAcquired($spacecraft->getUser()->getId())
-        ) {
-            return new SourceAndTargetWrappers($this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft));
-        }
-
-        $target = $targetId === null ? null : $this->spacecraftRepository->find($targetId);
-        $this->acquireSemaphoresForSpacecrafts(
-            $target === null ? [$spacecraft] : [$spacecraft, $target],
-            $targetUserId
-        );
-
-        $wrapper = $this->createFreshWrapper($spacecraft);
-        if ($wrapper === null) {
-            throw new RuntimeException('wrapper should not be null here');
-        }
-
-        $result = new SourceAndTargetWrappers($wrapper);
-
-        if ($target !== null) {
-            $result->setTarget($this->createFreshWrapper($target));
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param array<int, Spacecraft> $spacecrafts
-     */
-    private function acquireSemaphoresForSpacecrafts(array $spacecrafts, ?int $targetUserId = null): void
-    {
-        /** @var array<int, Spacecraft> $spacecraftsBySemaphoreKey */
-        $spacecraftsBySemaphoreKey = [];
-        foreach ($spacecrafts as $spacecraft) {
-            $spacecraftsBySemaphoreKey[$spacecraft->getUser()->getId()] ??= $spacecraft;
-        }
-        if ($targetUserId !== null) {
-            $spacecraftsBySemaphoreKey[$targetUserId] ??= $spacecrafts[0];
-        }
-
-        ksort($spacecraftsBySemaphoreKey);
-
-        foreach ($spacecraftsBySemaphoreKey as $key => $spacecraft) {
-            $this->acquireSemaphoreForSpacecraft($key, $spacecraft);
-        }
-    }
-
-    private function acquireSemaphoreForSpacecraft(int $key, Spacecraft $spacecraft): void
-    {
-        if ($this->semaphoreUtil->isSemaphoreAlreadyAcquired($key)) {
-            StuLogger::log(sprintf(
-                'Spacecraft semaphore already acquired for user %d and spacecraft %d',
-                $key,
-                $spacecraft->getId()
-            ), LogTypeEnum::SEMAPHORE);
-            return;
-        }
-
-        StuLogger::log(sprintf(
-            'Acquiring spacecraft semaphore for user %d and spacecraft %d',
-            $key,
-            $spacecraft->getId()
-        ), LogTypeEnum::SEMAPHORE);
-        StuLogger::log(sprintf(
-            'spacecraft %d with key %d',
-            $spacecraft->getId(),
-            $key
-        ), LogTypeEnum::SEMAPHORE);
-
-        $startTime = microtime(true);
-        $this->semaphoreUtil->acquireSemaphore($key, self::SPACECRAFT_SEMAPHORE_TIMEOUT_SECONDS);
-
-        StuLogger::log(sprintf(
-            'Spacecraft semaphore acquired for user %d and spacecraft %d, waited %F seconds',
-            $key,
-            $spacecraft->getId(),
-            microtime(true) - $startTime
-        ), LogTypeEnum::SEMAPHORE);
-    }
-
-    private function createFreshWrapper(Spacecraft $spacecraft): ?SpacecraftWrapperInterface
-    {
-        $spacecraft = $this->spacecraftRepository->findFresh($spacecraft->getId());
-        if ($spacecraft === null) {
-            return null;
-        }
-
-        return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
+        self::$cache = [];
     }
 }

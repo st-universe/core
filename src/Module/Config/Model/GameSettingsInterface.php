@@ -9,8 +9,6 @@ interface GameSettingsInterface
 
     public function getTempDir(): string;
 
-    public function useSemaphores(): bool;
-
     public function useUserConcurrencyBoundary(): bool;
 
     public function getVersion(): string|int;

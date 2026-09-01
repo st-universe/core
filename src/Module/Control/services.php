@@ -42,7 +42,6 @@ return [
     ControllerDiscoveryInterface::class => autowire(ControllerDiscovery::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
     JavascriptExecutionInterface::class => autowire(JavascriptExecution::class),
-    SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
     StuTime::class => autowire(StuTime::class),
     StuHashInterface::class => autowire(StuHash::class),
     StuRandom::class => autowire(StuRandom::class),
