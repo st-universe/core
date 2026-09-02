@@ -32,7 +32,7 @@
       <div class="userBoxDetailAddendum">
         <div>
           <img title="Zuletzt online" src="/assets/buttons/time.png" />
-          {{ user.getLastAction|stuDateTime }}
+          {{ user.getLastAction.getTimestamp|stuDateTime }}
         </div>
         <div>STATUS:
           <span style="color: {{ listEntry.getUserStateColor }};">{{ listEntry.getUserStateDescription }}</span>

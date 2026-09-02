@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\SessionStringRepository;
 
@@ -35,10 +33,6 @@ class SessionString
     #[Column(type: 'datetime')]
     private DateTimeInterface $date;
 
-    #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?User $user = null;
-
     public function getId(): int
     {
         return $this->id;
@@ -49,9 +43,9 @@ class SessionString
         return $this->user_id;
     }
 
-    public function setUser(User $user): SessionString
+    public function setUserId(User $user): SessionString
     {
-        $this->user = $user;
+        $this->user_id = $user->getId();
         return $this;
     }
 

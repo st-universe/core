@@ -22,7 +22,7 @@ class SessionStringFactory implements SessionStringFactoryInterface
 
         $sessionString = $this->sessionStringRepository
             ->prototype()
-            ->setUser($user)
+            ->setUserId($user)
             ->setDate($this->stuTime->dateTime())
             ->setSessionString($string);
 

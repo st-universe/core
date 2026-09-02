@@ -27,7 +27,7 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
     /**
      * this cache is used to avoid multiple queries for the same spacecraft in one request
      * @var array<int, SpacecraftWrapperInterface> */
-    private array $cache = [];
+    private static array $cache = [];
 
     public function __construct(
         private readonly SpacecraftRepositoryInterface $spacecraftRepository,
@@ -112,11 +112,11 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
     public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface
     {
         if ($checkForEntityLock) {
-            $this->checkForEntityLock($spacecraftId);
+            $this->checkForGlobalEntityLock($spacecraftId);
         }
 
         $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts([$spacecraftId]);
-        if (!$this->config->getDbSettings()->useSqlite()) {
+        if ($checkForEntityLock && !$this->config->getDbSettings()->useSqlite()) {
             $this->userRepository->lockUsersForUpdate($userIds);
         }
 
@@ -143,13 +143,13 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         bool $checkForEntityLock
     ): SourceAndTargetWrappersInterface {
         if ($checkForEntityLock) {
-            $this->checkForEntityLock($spacecraftId);
+            $this->checkForGlobalEntityLock($spacecraftId);
         }
 
-        if (array_key_exists($spacecraftId, $this->cache)) {
-            $resultFromCache = new SourceAndTargetWrappers($this->cache[$spacecraftId]);
-            if ($targetId !== null && array_key_exists($targetId, $this->cache)) {
-                $resultFromCache->setTarget($this->cache[$targetId]);
+        if (array_key_exists($spacecraftId, self::$cache)) {
+            $resultFromCache = new SourceAndTargetWrappers(self::$cache[$spacecraftId]);
+            if ($targetId !== null && array_key_exists($targetId, self::$cache)) {
+                $resultFromCache->setTarget(self::$cache[$targetId]);
             }
 
             return $resultFromCache;
@@ -173,27 +173,28 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
             $userIds[] = $targetUserId;
         }
 
-        StuLogger::log(sprintf(
-            'user %3d - Found following userIds to lock: %s',
-            $userId,
-            implode(', ', $userIds)
-        ), LogTypeEnum::USER_LOCK);
+        if ($checkForEntityLock) {
+            StuLogger::log(sprintf(
+                'user %3d - Found following userIds to lock: %s',
+                $userId,
+                implode(', ', $userIds)
+            ), LogTypeEnum::USER_LOCK);
+        }
 
         $userIds = array_values(array_unique(array_map('intval', $userIds)));
         sort($userIds, SORT_NUMERIC);
 
         $startTime = microtime(true);
 
-        if (!$this->config->getDbSettings()->useSqlite()) {
+        if ($checkForEntityLock && !$this->config->getDbSettings()->useSqlite()) {
             $this->userRepository->lockUsersForUpdate($userIds);
+            StuLogger::log(sprintf(
+                'user %3d - Locking took %F seconds for users: %s',
+                $userId,
+                microtime(true) - $startTime,
+                implode(', ', $userIds)
+            ), LogTypeEnum::USER_LOCK);
         }
-
-        StuLogger::log(sprintf(
-            'user %3d - Locking took %F seconds for users: %s',
-            $userId,
-            microtime(true) - $startTime,
-            implode(', ', $userIds)
-        ), LogTypeEnum::USER_LOCK);
 
         $sourceSpacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($sourceSpacecraft === null) {
@@ -205,14 +206,14 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
 
         $result = new SourceAndTargetWrappers($wrapper);
-        $this->cache[$spacecraftId] = $wrapper;
+        self::$cache[$spacecraftId] = $wrapper;
 
         if ($targetId !== null) {
             $targetSpacecraft = $this->spacecraftRepository->find($targetId);
             if ($targetSpacecraft !== null && in_array($targetSpacecraft->getUser()->getId(), $userIds, true)) {
                 $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
                 $result->setTarget($targetWrapper);
-                $this->cache[$targetId] = $targetWrapper;
+                self::$cache[$targetId] = $targetWrapper;
             }
         }
 
@@ -220,7 +221,7 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
         return $result;
     }
 
-    private function checkForEntityLock(int $spacecraftId): void
+    private function checkForGlobalEntityLock(int $spacecraftId): void
     {
         if ($this->lockManager->isLocked($spacecraftId, LockTypeEnum::SHIP_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Schiff ist daher blockiert');
@@ -244,5 +245,10 @@ final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
                 throw new AccessViolationException(sprintf("Spacecraft owned by another user (%d)! Fool: %d", $spacecraft->getUser()->getId(), $userId));
             }
         }
+    }
+
+    public static function clearCache(): void
+    {
+        self::$cache = [];
     }
 }

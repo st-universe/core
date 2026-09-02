@@ -190,14 +190,14 @@ final class IdleUserWarning implements MaintenanceHandlerInterface
             $time = 0;
 
             if ($player->isVacationMode()) {
-                $idleTime = time() - $player->getLastaction();
+                $idleTime = time() - $player->getLastAction()->getTimestamp();
                 if ($idleTime > self::USER_IDLE_TIME_VACATION - self::USER_IDLE_TWO_DAYS && $idleTime <= self::USER_IDLE_TIME_VACATION - self::USER_IDLE_ONE_DAY) {
                     $time = 48;
                 } elseif ($idleTime > self::USER_IDLE_TIME_VACATION - self::USER_IDLE_ONE_DAY && $idleTime <= self::USER_IDLE_TIME_VACATION) {
                     $time = 24;
                 }
             } else {
-                $idleTime = time() - $player->getLastaction();
+                $idleTime = time() - $player->getLastAction()->getTimestamp();
                 if ($idleTime > self::USER_IDLE_TIME - self::USER_IDLE_TWO_DAYS && $idleTime <= self::USER_IDLE_TIME - self::USER_IDLE_ONE_DAY) {
                     $time = 48;
                 } elseif ($idleTime > self::USER_IDLE_TIME - self::USER_IDLE_ONE_DAY && $idleTime <= self::USER_IDLE_TIME) {

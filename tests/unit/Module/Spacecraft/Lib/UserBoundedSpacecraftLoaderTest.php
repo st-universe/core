@@ -33,6 +33,7 @@ class UserBoundedSpacecraftLoaderTest extends StuTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        UserBoundedSpacecraftLoader::clearCache();
 
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);

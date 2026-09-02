@@ -47,9 +47,6 @@ class User
     private UserStateEnum $state = UserStateEnum::NEW;
 
     #[Column(type: 'integer')]
-    private int $lastaction = 0;
-
-    #[Column(type: 'integer')]
     private int $kn_lez = 0;
 
     #[Column(type: 'boolean')]
@@ -75,6 +72,9 @@ class User
 
     #[OneToOne(targetEntity: UserRegistration::class, mappedBy: 'user', cascade: ['all'])]
     private ?UserRegistration $registration;
+
+    #[OneToOne(targetEntity: UserLastAction::class, mappedBy: 'user', cascade: ['all'])]
+    private ?UserLastAction $lastAction = null;
 
     #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'members')]
     #[JoinColumn(name: 'allys_id', referencedColumnName: 'id')]
@@ -177,6 +177,18 @@ class User
         return $this;
     }
 
+    public function getLastAction(): UserLastAction
+    {
+        return $this->lastAction ?? throw new LogicException('User has no last action');
+    }
+
+    public function setLastAction(UserLastAction $lastAction): User
+    {
+        $this->lastAction = $lastAction;
+
+        return $this;
+    }
+
     public function getName(): string
     {
         //if UMODE active, add info to user name
@@ -242,17 +254,6 @@ class User
     public function setState(UserStateEnum $state): User
     {
         $this->state = $state;
-        return $this;
-    }
-
-    public function getLastaction(): int
-    {
-        return $this->lastaction;
-    }
-
-    public function setLastaction(int $lastaction): User
-    {
-        $this->lastaction = $lastaction;
         return $this;
     }
 
@@ -368,7 +369,7 @@ class User
 
     public function isOnline(): bool
     {
-        return $this->getLastAction() + GameEnum::USER_ONLINE_PERIOD >= time();
+        return $this->getLastAction()->getTimestamp() + GameEnum::USER_ONLINE_PERIOD >= time();
     }
 
     public function getAlliance(): ?Alliance

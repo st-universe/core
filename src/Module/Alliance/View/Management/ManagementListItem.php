@@ -42,7 +42,7 @@ final class ManagementListItem
 
     public function getLastActionDate(): int
     {
-        return $this->user->getLastAction();
+        return $this->user->getLastAction()->getTimestamp();
     }
 
     public function getCrewOnShips(): int

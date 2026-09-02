@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260827072735 extends AbstractMigration
+final class Version20260902160316 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -418,8 +418,7 @@ final class Version20260827072735 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_rumps_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_1E7BBE13A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_1E7BBE13A76ED395 ON stu_rumps_user (user_id)');
         $this->addSql('CREATE INDEX rump_user_idx ON stu_rumps_user (rump_id, user_id)');
-        $this->addSql('CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME NOT NULL, CONSTRAINT FK_6468CB57A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_6468CB57A76ED395 ON stu_session_strings (user_id)');
+        $this->addSql('CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME NOT NULL)');
         $this->addSql('CREATE INDEX session_string_user_idx ON stu_session_strings (sess_string, user_id)');
         $this->addSql('CREATE INDEX session_string_date_idx ON stu_session_strings (date)');
         $this->addSql('CREATE TABLE stu_ship (fleet_id INTEGER DEFAULT NULL, is_fleet_leader BOOLEAN NOT NULL, docked_to_id INTEGER DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_65024D724B061DF9 FOREIGN KEY (fleet_id) REFERENCES stu_fleets (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_65024D729B76929F FOREIGN KEY (docked_to_id) REFERENCES stu_station (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_65024D72BF396750 FOREIGN KEY (id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -550,7 +549,7 @@ final class Version20260827072735 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_tutorial_step (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, module VARCHAR(50) NOT NULL, "view" VARCHAR(100) NOT NULL, next_step_id INTEGER DEFAULT NULL, title CLOB DEFAULT NULL, text CLOB DEFAULT NULL, element_ids CLOB DEFAULT NULL, inner_update CLOB DEFAULT NULL, fallback_index INTEGER DEFAULT NULL, CONSTRAINT FK_82D9BF6BB13C343E FOREIGN KEY (next_step_id) REFERENCES stu_tutorial_step (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_82D9BF6BB13C343E ON stu_tutorial_step (next_step_id)');
         $this->addSql('CREATE INDEX tutorial_view_idx ON stu_tutorial_step (module, "view")');
-        $this->addSql('CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, faction_id INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701F4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, faction_id INTEGER NOT NULL, state SMALLINT NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701F4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_12A1701F4448F8DA ON stu_user (faction_id)');
         $this->addSql('CREATE INDEX user_alliance_idx ON stu_user (allys_id)');
         $this->addSql('CREATE TABLE stu_user_award (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, award_id INTEGER NOT NULL, count INTEGER DEFAULT NULL, CONSTRAINT FK_E1449B84A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E1449B843D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -571,6 +570,7 @@ final class Version20260827072735 extends AbstractMigration
         $this->addSql('CREATE INDEX iptable_start_idx ON stu_user_iptable (start_date)');
         $this->addSql('CREATE INDEX iptable_end_idx ON stu_user_iptable (end_date)');
         $this->addSql('CREATE INDEX iptable_ip_idx ON stu_user_iptable (ip)');
+        $this->addSql('CREATE TABLE stu_user_last_action (timestamp INTEGER NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_D77497D0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_user_layer (map_type SMALLINT NOT NULL, user_id INTEGER NOT NULL, layer_id INTEGER NOT NULL, PRIMARY KEY (user_id, layer_id), CONSTRAINT FK_8FC49479A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8FC49479EA6EFDCD FOREIGN KEY (layer_id) REFERENCES stu_layer (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8FC49479A76ED395 ON stu_user_layer (user_id)');
         $this->addSql('CREATE INDEX IDX_8FC49479EA6EFDCD ON stu_user_layer (layer_id)');
@@ -788,6 +788,7 @@ final class Version20260827072735 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user_crew_rank');
         $this->addSql('DROP TABLE stu_user_invitations');
         $this->addSql('DROP TABLE stu_user_iptable');
+        $this->addSql('DROP TABLE stu_user_last_action');
         $this->addSql('DROP TABLE stu_user_layer');
         $this->addSql('DROP TABLE stu_user_lock');
         $this->addSql('DROP TABLE stu_user_map');
