@@ -21,7 +21,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 /**
  * @implements SpacecraftLoaderInterface<SpacecraftWrapperInterface>
  */
-//TODO rename to SpacecraftLoader
+//TODO rename to SpacecraftLoader 
 final class UserBoundedSpacecraftLoader implements SpacecraftLoaderInterface
 {
     /**
