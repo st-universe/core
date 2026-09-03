@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260903063036 extends AbstractMigration
+final class Version20260903064151 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -418,8 +418,7 @@ final class Version20260903063036 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_rumps_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_1E7BBE13A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_1E7BBE13A76ED395 ON stu_rumps_user (user_id)');
         $this->addSql('CREATE INDEX rump_user_idx ON stu_rumps_user (rump_id, user_id)');
-        $this->addSql('CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME NOT NULL, CONSTRAINT FK_6468CB57A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_6468CB57A76ED395 ON stu_session_strings (user_id)');
+        $this->addSql('CREATE TABLE stu_session_strings (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, sess_string VARCHAR(255) NOT NULL, date DATETIME NOT NULL)');
         $this->addSql('CREATE INDEX session_string_user_idx ON stu_session_strings (sess_string, user_id)');
         $this->addSql('CREATE INDEX session_string_date_idx ON stu_session_strings (date)');
         $this->addSql('CREATE TABLE stu_ship (fleet_id INTEGER DEFAULT NULL, is_fleet_leader BOOLEAN NOT NULL, docked_to_id INTEGER DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_65024D724B061DF9 FOREIGN KEY (fleet_id) REFERENCES stu_fleets (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_65024D729B76929F FOREIGN KEY (docked_to_id) REFERENCES stu_station (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_65024D72BF396750 FOREIGN KEY (id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');

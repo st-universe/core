@@ -36,12 +36,12 @@ final class SessionStringRepository extends EntityRepository implements SessionS
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'delete from %s t where t.user_id = :user OR t.date < :date',
+                'delete from %s t where t.user_id = :userId OR t.date < :date',
                 SessionString::class,
             )
         );
         $q->setParameters([
-            'user' => $user,
+            'userId' => $user->getId(),
             'date' => new DateTime()->sub(new DateInterval('PT1H'))->format('Y-m-d H:i:s'),
         ]);
         $q->execute();
