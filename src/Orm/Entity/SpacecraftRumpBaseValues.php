@@ -20,43 +20,43 @@ class SpacecraftRumpBaseValues
     #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
     private SpacecraftRump $rump;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $evade_chance = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $hit_chance = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $module_level = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_crew = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $max_crew = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_eps = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_reactor = 0;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $base_hull = 0;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $base_shield = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_damage = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_sensor_range = 0;
 
     #[Column(type: 'integer')]
     private int $base_warpdrive = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $special_slots = 0;
 
     public function getEvadeChance(): int

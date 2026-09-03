@@ -38,28 +38,28 @@ class SpacecraftRump
     #[OneToOne(targetEntity: SpacecraftRump3DModel::class, mappedBy: 'rump', cascade: ['all'])]
     private ?SpacecraftRump3DModel $model3d = null;
 
-    #[column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
+    #[Column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
     private SpacecraftRumpCategoryEnum $category_id;
 
-    #[column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    #[Column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
     private ?SpacecraftRumpRoleEnum $role_id = null;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $phaser_volleys = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $phaser_hull_damage_factor = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $phaser_shield_damage_factor = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $torpedo_level = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $torpedo_volleys = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $base_torpedo_storage = 0;
 
     #[Column(type: 'string')]
@@ -71,46 +71,46 @@ class SpacecraftRump
     #[Column(type: 'boolean')]
     private bool $is_npc;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $eps_cost = 0;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $storage = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $slots = 0;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $buildtime = 0;
 
-    #[column(type: 'smallint', nullable: true)]
+    #[Column(type: 'smallint', nullable: true)]
     private ?int $needed_workbees = null;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $sort = 0;
 
-    #[column(type: 'integer', nullable: true)]
+    #[Column(type: 'integer', nullable: true)]
     private ?int $database_id = 0;
 
-    #[column(type: 'integer', nullable: true)]
+    #[Column(type: 'integer', nullable: true)]
     private ?int $commodity_id = 0;
 
-    #[column(type: 'integer', nullable: true)]
+    #[Column(type: 'integer', nullable: true)]
     private ?int $faction_id = null;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $flight_ecost = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $beam_factor = 0;
 
-    #[column(type: 'smallint')]
+    #[Column(type: 'smallint')]
     private int $shuttle_slots = 0;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $tractor_mass = 1;
 
-    #[column(type: 'integer')]
+    #[Column(type: 'integer')]
     private int $tractor_payload = 100;
 
     #[Column(type: 'integer')]
