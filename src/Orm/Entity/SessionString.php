@@ -15,7 +15,7 @@ use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\SessionStringRepository;
 
 #[Table(name: 'stu_session_strings')]
-#[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]
+#[Index(name: 'session_string_user_idx', columns: ['user_id', 'sess_string'])]
 #[Index(name: 'session_string_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: SessionStringRepository::class)]
 #[TruncateOnGameReset]
