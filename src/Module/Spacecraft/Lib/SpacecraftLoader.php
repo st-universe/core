@@ -196,7 +196,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 
         if ($targetId !== null) {
             $targetSpacecraft = $this->spacecraftRepository->find($targetId);
-            if ($targetSpacecraft !== null && $targetSpacecraft->getUser()->getId() != UserConstants::USER_NOONE) {
+            if ($targetSpacecraft !== null) {
                 $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
                 $result->setTarget($targetWrapper);
                 self::$cache[$targetId] = $targetWrapper;
