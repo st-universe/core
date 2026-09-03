@@ -7,48 +7,44 @@ namespace Stu\Module\Tick\Spacecraft;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Component\Game\SemaphoreConstants;
 use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\ManagerComponentInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class SpacecraftTickManagerTest extends StuTestCase
 {
-    private SemaphoreUtilInterface&MockInterface $semaphoreUtil;
     private UserRepositoryInterface&MockInterface $userRepository;
     private LockManagerInterface&MockInterface $lockManager;
     private StuConfigInterface&MockInterface $config;
+    private ManagerComponentInterface&MockInterface $managerComponent;
+
     private SpacecraftTickManager $subject;
 
     #[\Override]
     protected function setUp(): void
     {
-        $this->semaphoreUtil = $this->mock(SemaphoreUtilInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
+        $this->managerComponent = $this->mock(ManagerComponentInterface::class);
 
         $this->subject = new SpacecraftTickManager(
-            $this->semaphoreUtil,
             $this->userRepository,
             $this->lockManager,
             $this->config,
             $this->mock(EntityManagerInterface::class),
-            []
+            [$this->managerComponent]
         );
     }
 
-    public function testWorkAcquiresMainSemaphoreAndLocksAllUsersOnNonSqliteDatabase(): void
+    public function testWorkLocksAllUsersOnNonSqliteDatabase(): void
     {
         $dbSettings = $this->mock(DbSettingsInterface::class);
 
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY)
-            ->once();
         $this->lockManager->shouldReceive('setLock')
             ->with(1, LockTypeEnum::SHIP_GROUP)
             ->once();
@@ -64,24 +60,19 @@ class SpacecraftTickManagerTest extends StuTestCase
             ->once()
             ->andReturn(false);
         $this->userRepository->shouldReceive('lockAllUsersForUpdate')
+            ->withNoArgs()
+            ->once();
+        $this->managerComponent->shouldReceive('work')
             ->withNoArgs()
             ->once();
 
         $this->subject->work();
     }
 
-    public function testWorkReleasesSemaphoreAndClearsLockWhenUserLockingFails(): void
+    public function testWorkClearsLockOnError(): void
     {
-        $semaphore = 42;
         $dbSettings = $this->mock(DbSettingsInterface::class);
 
-        $this->semaphoreUtil->shouldReceive('acquireSemaphore')
-            ->with(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY)
-            ->once()
-            ->andReturn($semaphore);
-        $this->semaphoreUtil->shouldReceive('releaseSemaphore')
-            ->with($semaphore)
-            ->once();
         $this->lockManager->shouldReceive('setLock')
             ->with(1, LockTypeEnum::SHIP_GROUP)
             ->once();
@@ -95,14 +86,14 @@ class SpacecraftTickManagerTest extends StuTestCase
         $dbSettings->shouldReceive('useSqlite')
             ->withNoArgs()
             ->once()
-            ->andReturn(false);
-        $this->userRepository->shouldReceive('lockAllUsersForUpdate')
+            ->andReturn(true);
+        $this->managerComponent->shouldReceive('work')
             ->withNoArgs()
             ->once()
-            ->andThrow(new RuntimeException('database lock failed'));
+            ->andThrow(new RuntimeException('component failed'));
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('database lock failed');
+        $this->expectExceptionMessage('component failed');
 
         $this->subject->work();
     }

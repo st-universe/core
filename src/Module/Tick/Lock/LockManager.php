@@ -19,8 +19,8 @@ final class LockManager implements LockManagerInterface
         if ($result === false) {
             throw new RuntimeException(sprintf(
                 'lock with batchGroupId "%d" of type "%d" could not be created',
-                $type->value,
-                $batchGroupId
+                $batchGroupId,
+                $type->value
             ));
         }
     }

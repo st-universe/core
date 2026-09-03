@@ -6,6 +6,7 @@ use DateTime;
 use Stu\Exception\SessionInvalidException;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
+use Stu\Orm\Repository\UserLastActionRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Session implements SessionInterface
@@ -15,6 +16,7 @@ final class Session implements SessionInterface
     public function __construct(
         private readonly UserIpTableRepositoryInterface $userIpTableRepository,
         private readonly UserRepositoryInterface $userRepository,
+        private readonly UserLastActionRepositoryInterface $userLastActionRepository,
         private readonly SessionDestructionInterface $sessionDestruction
     ) {}
 
@@ -77,9 +79,10 @@ final class Session implements SessionInterface
             $this->logout();
             return;
         }
-        $user->setLastActionTimestamp(time());
 
-        $this->userRepository->save($user);
+        $lastAction = $user->getLastAction();
+        $lastAction->setTimestamp(time());
+        $this->userLastActionRepository->save($lastAction);
 
         $sessionId = session_id();
         if (!$sessionId) {

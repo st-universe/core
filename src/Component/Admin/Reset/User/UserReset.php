@@ -39,7 +39,7 @@ final class UserReset implements UserResetInterface
         $time = time();
 
         foreach ($this->userRepository->getNpcList() as $npc) {
-            $npc->setLastActionTimestamp($time);
+            $npc->getLastaction()->setTimestamp($time);
             $npc->setKnMark(0);
             $npc->setDescription('');
             $npc->setPrestige(0);

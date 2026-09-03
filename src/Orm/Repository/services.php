@@ -171,6 +171,7 @@ use Stu\Orm\Entity\UserCrewRank;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserRelation;
 use Stu\Orm\Entity\UserIpTable;
+use Stu\Orm\Entity\UserLastAction;
 use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserMap;
@@ -348,6 +349,7 @@ return [
     UserLayerRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class),
     UserLockRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLock::class),
     UserRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(User::class),
+    UserLastActionRepositoryInterface::class => fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLastAction::class),
     UserRelationRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserRelation::class),
     UserIpTableRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class),
     UserInvitationRepositoryInterface::class => fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserInvitation::class),
