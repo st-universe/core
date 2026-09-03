@@ -94,8 +94,8 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
         $maxLastAction = 0;
 
         foreach ($users as $user) {
-            if ($user->getLastaction() > $maxLastAction) {
-                $maxLastAction = $user->getLastaction();
+            if ($user->getLastActionTimestamp() > $maxLastAction) {
+                $maxLastAction = $user->getLastActionTimestamp();
                 $lastOnlineUser = $user;
             }
         }

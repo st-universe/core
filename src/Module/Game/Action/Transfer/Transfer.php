@@ -118,8 +118,8 @@ final class Transfer implements ActionControllerInterface
                 $sourceUser = $source->getUser();
                 if ($targetUser !== null && $sourceUser !== null && $this->mapRepository->isAdminRegionUserRegion($target->getLocation()->getId(), $targetUser->getFactionId())) {
                     $userstring = $sourceUser->getName() . '(' . $sourceUser->getId() . ') -> ' . $targetUser->getName() . '(' . $targetUser->getId() . ')';
-                    if ($targetUser->getLastaction() < time() - self::INACTIV_TIME) {
-                        $lastactivestring = ' | Lastaction: ' . date('d.m.Y H:i:s', $targetUser->getLastaction());
+                    if ($targetUser->getLastActionTimestamp() < time() - self::INACTIV_TIME) {
+                        $lastactivestring = ' | Lastaction: ' . date('d.m.Y H:i:s', $targetUser->getLastActionTimestamp());
                     } else {
                         $lastactivestring = '';
                     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260827072735 extends AbstractMigration
+final class Version20260903063036 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -550,7 +550,7 @@ final class Version20260827072735 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_tutorial_step (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, module VARCHAR(50) NOT NULL, "view" VARCHAR(100) NOT NULL, next_step_id INTEGER DEFAULT NULL, title CLOB DEFAULT NULL, text CLOB DEFAULT NULL, element_ids CLOB DEFAULT NULL, inner_update CLOB DEFAULT NULL, fallback_index INTEGER DEFAULT NULL, CONSTRAINT FK_82D9BF6BB13C343E FOREIGN KEY (next_step_id) REFERENCES stu_tutorial_step (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_82D9BF6BB13C343E ON stu_tutorial_step (next_step_id)');
         $this->addSql('CREATE INDEX tutorial_view_idx ON stu_tutorial_step (module, "view")');
-        $this->addSql('CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, faction_id INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701F4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(255) NOT NULL, allys_id INTEGER DEFAULT NULL, faction_id INTEGER NOT NULL, state SMALLINT NOT NULL, lastaction_timestamp INTEGER NOT NULL, kn_lez INTEGER NOT NULL, vac_active BOOLEAN NOT NULL, vac_request_date INTEGER NOT NULL, description CLOB NOT NULL, sessiondata CLOB NOT NULL, prestige INTEGER NOT NULL, deals BOOLEAN NOT NULL, last_boarding INTEGER DEFAULT NULL, CONSTRAINT FK_12A1701F5E0B0712 FOREIGN KEY (allys_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_12A1701F4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_12A1701F4448F8DA ON stu_user (faction_id)');
         $this->addSql('CREATE INDEX user_alliance_idx ON stu_user (allys_id)');
         $this->addSql('CREATE TABLE stu_user_award (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, award_id INTEGER NOT NULL, count INTEGER DEFAULT NULL, CONSTRAINT FK_E1449B84A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E1449B843D5282CF FOREIGN KEY (award_id) REFERENCES stu_award (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');

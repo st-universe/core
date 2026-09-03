@@ -80,7 +80,7 @@ class UserRepositoryTest extends StuTestCase
         $query = $this->mock(\Doctrine\ORM\Query::class);
 
         $this->entityManager->shouldReceive('createQuery')
-            ->with("SELECT u.id FROM Stu\\Orm\\Entity\\User u\n                WHERE u.id >= :firstNpcUserId\n                ORDER BY u.id ASC")
+            ->with("SELECT u.id FROM Stu\\Orm\\Entity\\User u WHERE u.id >= :firstNpcUserId ORDER BY u.id ASC")
             ->once()
             ->andReturn($query);
         $query->shouldReceive('setParameter')

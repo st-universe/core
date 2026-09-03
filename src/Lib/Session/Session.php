@@ -77,7 +77,7 @@ final class Session implements SessionInterface
             $this->logout();
             return;
         }
-        $user->setLastaction(time());
+        $user->setLastActionTimestamp(time());
 
         $this->userRepository->save($user);
 

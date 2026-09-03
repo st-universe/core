@@ -27,9 +27,9 @@ class AllianceDeletionHandlerTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->allianceActionManager = Mockery::mock(AllianceActionManagerInterface::class);
-        $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
-        $this->allianceJobManager = Mockery::mock(AllianceJobManagerInterface::class);
+        $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->handler = new AllianceDeletionHandler(
             $this->allianceActionManager,
@@ -40,8 +40,8 @@ class AllianceDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDoesNotTouchAllianceIfNotFounder(): void
     {
-        $user = Mockery::mock(User::class);
-        $alliance = Mockery::mock(Alliance::class);
+        $user = $this->mock(User::class);
+        $alliance = $this->mock(Alliance::class);
 
         $user->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -62,9 +62,9 @@ class AllianceDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesAllianceIfNoSuccessor(): void
     {
-        $user = Mockery::mock(User::class);
-        $alliance = Mockery::mock(Alliance::class);
-        $members = Mockery::mock(Collection::class);
+        $user = $this->mock(User::class);
+        $alliance = $this->mock(Alliance::class);
+        $members = $this->mock(Collection::class);
 
         $user->shouldReceive('getAlliance')
             ->withNoArgs()
@@ -155,7 +155,7 @@ class AllianceDeletionHandlerTest extends StuTestCase
             ->once()
             ->andReturn([$successorUser]);
 
-        $successorUser->shouldReceive('getLastaction')
+        $successorUser->shouldReceive('getLastActionTimestamp')
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(123456);

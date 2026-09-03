@@ -47,7 +47,7 @@ class User
     private UserStateEnum $state = UserStateEnum::NEW;
 
     #[Column(type: 'integer')]
-    private int $lastaction = 0;
+    private int $lastaction_timestamp = 0;
 
     #[Column(type: 'integer')]
     private int $kn_lez = 0;
@@ -245,14 +245,14 @@ class User
         return $this;
     }
 
-    public function getLastaction(): int
+    public function getLastActionTimestamp(): int
     {
-        return $this->lastaction;
+        return $this->lastaction_timestamp;
     }
 
-    public function setLastaction(int $lastaction): User
+    public function setLastActionTimestamp(int $timestamp): User
     {
-        $this->lastaction = $lastaction;
+        $this->lastaction_timestamp = $timestamp;
         return $this;
     }
 
@@ -368,7 +368,7 @@ class User
 
     public function isOnline(): bool
     {
-        return $this->getLastAction() + GameEnum::USER_ONLINE_PERIOD >= time();
+        return $this->getLastActionTimestamp() + GameEnum::USER_ONLINE_PERIOD >= time();
     }
 
     public function getAlliance(): ?Alliance
