@@ -9,7 +9,6 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     private const string SETTING_ADMINS = 'admins';
     private const string SETTING_GRANTED_FEATURES = 'grantedFeatures';
     private const string SETTING_TEMP_DIR = 'temp_dir';
-    private const string SETTING_USE_USER_CONCURRENCY_BOUNDARY = 'useUserConcurrencyBoundary';
     private const string SETTING_VERSION = 'version';
     private const string SETTING_WEBROOT = 'webroot';
 
@@ -59,12 +58,6 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getTempDir(): string
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_TEMP_DIR);
-    }
-
-    #[\Override]
-    public function useUserConcurrencyBoundary(): bool
-    {
-        return $this->settingsCore->getBooleanConfigValue(self::SETTING_USE_USER_CONCURRENCY_BOUNDARY, false);
     }
 
     #[\Override]
