@@ -60,9 +60,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         $query = $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u.id FROM %s u
-                WHERE u.id >= :firstNpcUserId
-                ORDER BY u.id ASC',
+                'SELECT u.id FROM %s u WHERE u.id >= :firstNpcUserId ORDER BY u.id ASC',
                 User::class
             )
         );
@@ -121,8 +119,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                  AND u.id NOT IN (:ignoreIds)
                  AND ur.delmark != :deletionForbidden
                  AND (ur.delmark = :deletionMark
-                        OR (u.vac_active = :false AND u.lastaction > 0 AND u.lastaction < :idleTimeThreshold)
-                        OR (u.vac_active = :true AND u.lastaction > 0 AND u.lastaction < :idleTimeVacationThreshold)
+                        OR (u.vac_active = :false AND u.lastaction_timestamp > 0 AND u.lastaction_timestamp < :idleTimeThreshold)
+                        OR (u.vac_active = :true AND u.lastaction_timestamp > 0 AND u.lastaction_timestamp < :idleTimeVacationThreshold)
                     )
                  ORDER BY u.id ASC',
                 User::class,
@@ -314,7 +312,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                     OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
-                ) AND u.lastaction > :lastActionThreshold',
+                ) AND u.lastaction_timestamp > :lastActionThreshold',
                 User::class,
                 UserSetting::class,
                 Contact::class
@@ -349,7 +347,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u
                 WHERE u.id >= :firstUserId
-                AND u.lastaction < :threshold',
+                AND u.lastaction_timestamp < :threshold',
                 User::class
             )
         )->setParameters([
@@ -383,7 +381,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId AND u.lastaction > :threshold',
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId AND u.lastaction_timestamp > :threshold',
                 User::class
             )
         )->setParameters([
