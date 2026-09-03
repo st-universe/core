@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib;
 use Mockery\MockInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SpacecraftDoesNotExistException;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Spacecraft;
@@ -21,6 +22,7 @@ class UserBoundedSpacecraftLoaderTest extends StuTestCase
     private MockInterface&UserRepositoryInterface $userRepository;
     private MockInterface&CrewAssignmentRepositoryInterface $crewAssignmentRepository;
     private MockInterface&SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory;
+    private MockInterface&StuConfigInterface $stuConfig;
     private MockInterface&LockManagerInterface $lockManager;
     private MockInterface&Spacecraft $spacecraft;
     private MockInterface&SpacecraftWrapperInterface $wrapper;
@@ -31,11 +33,13 @@ class UserBoundedSpacecraftLoaderTest extends StuTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        UserBoundedSpacecraftLoader::clearCache();
 
         $this->spacecraftRepository = $this->mock(SpacecraftRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->crewAssignmentRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
         $this->spacecraftWrapperFactory = $this->mock(SpacecraftWrapperFactoryInterface::class);
+        $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
         $this->spacecraft = $this->mock(Spacecraft::class);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -45,8 +49,14 @@ class UserBoundedSpacecraftLoaderTest extends StuTestCase
             $this->userRepository,
             $this->crewAssignmentRepository,
             $this->spacecraftWrapperFactory,
+            $this->stuConfig,
             $this->lockManager
         );
+
+        $this->stuConfig->shouldReceive('getDbSettings->useSqlite')
+            ->withNoArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
     }
 
     public function testGetByIdAndUserLocksAffectedUsersInOrderAndReloads(): void

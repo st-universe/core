@@ -16,6 +16,7 @@ use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserLastAction;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Entity\UserSetting;
 
@@ -29,53 +30,17 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         $user = new User();
         $user->setRegistration(new UserRegistration($user));
+        $user->setLastAction(new UserLastAction($user));
 
         return $user;
     }
 
     #[\Override]
-    public function lockUsersForUpdate(array $userIds): void
-    {
-        if ($userIds === []) {
-            return;
-        }
-
-        $userIds = array_values(array_unique(array_map('intval', $userIds)));
-        sort($userIds, SORT_NUMERIC);
-
-        $query = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT u FROM %s u WHERE u.id IN (:userIds) ORDER BY u.id ASC',
-                User::class
-            )
-        );
-
-        $query->setParameter('userIds', $userIds);
-        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
-        $query->getResult();
-    }
-
-    #[\Override]
-    public function lockAllUsersForUpdate(): void
-    {
-        $query = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT u.id FROM %s u WHERE u.id >= :firstNpcUserId ORDER BY u.id ASC',
-                User::class
-            )
-        );
-
-        $query->setParameter('firstNpcUserId', UserConstants::USER_FIRST_NPC);
-        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
-        $query->getResult();
-    }
-
-    #[\Override]
-    public function save(User $post): void
+    public function save(User $user): void
     {
         $em = $this->getEntityManager();
 
-        $em->persist($post);
+        $em->persist($user);
     }
 
     #[\Override]
@@ -113,18 +78,17 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u INDEX BY u.id
-                JOIN %s ur
-                WITH u = ur.user
+                 JOIN u.registration ur
+                 JOIN u.lastAction la
                  WHERE u.id > :firstUserId
                  AND u.id NOT IN (:ignoreIds)
                  AND ur.delmark != :deletionForbidden
                  AND (ur.delmark = :deletionMark
-                        OR (u.vac_active = :false AND u.lastaction_timestamp > 0 AND u.lastaction_timestamp < :idleTimeThreshold)
-                        OR (u.vac_active = :true AND u.lastaction_timestamp > 0 AND u.lastaction_timestamp < :idleTimeVacationThreshold)
+                        OR (u.vac_active = :false AND la.timestamp > 0 AND la.timestamp < :idleTimeThreshold)
+                        OR (u.vac_active = :true AND la.timestamp > 0 AND la.timestamp < :idleTimeVacationThreshold)
                     )
                  ORDER BY u.id ASC',
-                User::class,
-                UserRegistration::class
+                User::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
@@ -145,12 +109,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u INDEX BY u.id
-                JOIN %s ur
+                JOIN u.registration ur
                 WITH u = ur.user
                  WHERE (u.state = :newUser OR u.state = :accountVerification)
                  AND ur.creation < :idleTimeThreshold',
-                User::class,
-                UserRegistration::class
+                User::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
@@ -165,12 +128,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT u FROM %s u
-                    JOIN %s ur
+                'SELECT u FROM %s u
+                    JOIN u.registration ur
                     WITH u = ur.user
                     WHERE ur.email = :email',
-                    User::class,
-                    UserRegistration::class
+                User::class
                 )
             )
             ->setParameter('email', $email)
@@ -183,12 +145,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u
-                    JOIN %s ur
+                    JOIN u.registration ur
                     WITH u = ur.user
                     WHERE ur.mobile = :mobile
                     OR ur.mobile = :mobileHash',
-                User::class,
-                UserRegistration::class
+                User::class
             )
         )->setParameters([
             'mobile' => $mobile,
@@ -202,12 +163,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT u FROM %s u
-                        JOIN %s ur
+                'SELECT u FROM %s u
+                        JOIN u.registration ur
                         WITH u = ur.user
                         WHERE ur.login = :login',
-                    User::class,
-                    UserRegistration::class
+                User::class
                 )
             )
             ->setParameter('login', $loginName)
@@ -302,6 +262,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u
+                JOIN u.lastAction la
                 WHERE u.id != :ignoreUserId
                 AND u.id > :firstUserId
                 AND (EXISTS (SELECT us
@@ -312,7 +273,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                     OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
-                ) AND u.lastaction_timestamp > :lastActionThreshold',
+                ) AND la.timestamp > :lastActionThreshold',
                 User::class,
                 UserSetting::class,
                 Contact::class
@@ -345,9 +306,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u
+                'SELECT COUNT(u.id)
+                FROM %s u
+                JOIN u.lastAction la
                 WHERE u.id >= :firstUserId
-                AND u.lastaction_timestamp < :threshold',
+                AND la.timestamp < :threshold',
                 User::class
             )
         )->setParameters([
@@ -381,7 +344,9 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId AND u.lastaction_timestamp > :threshold',
+                'SELECT COUNT(u.id) FROM %s u
+                JOIN u.lastAction la
+                WHERE u.id >= :firstUserId AND la.timestamp > :threshold',
                 User::class
             )
         )->setParameters([
@@ -486,5 +451,43 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         }
 
         return $qb->getResult();
+    }
+
+
+    #[\Override]
+    public function lockUsersForUpdate(array $userIds): void
+    {
+        if ($userIds === []) {
+            return;
+        }
+
+        $userIds = array_values(array_unique(array_map('intval', $userIds)));
+        sort($userIds, SORT_NUMERIC);
+
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id IN (:userIds) ORDER BY u.id ASC',
+                User::class
+            )
+        );
+
+        $query->setParameter('userIds', $userIds);
+        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
+        $query->getResult();
+    }
+
+    #[\Override]
+    public function lockAllUsersForUpdate(): void
+    {
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u.id FROM %s u WHERE u.id >= :firstNpcUserId ORDER BY u.id ASC',
+                User::class
+            )
+        );
+
+        $query->setParameter('firstNpcUserId', UserConstants::USER_FIRST_NPC);
+        $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
+        $query->getResult();
     }
 }

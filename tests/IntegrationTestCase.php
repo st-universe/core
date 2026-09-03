@@ -25,6 +25,7 @@ use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Spacecraft\Lib\UserBoundedSpacecraftLoader;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Transaction\ReopeningEntityManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,6 +56,7 @@ abstract class IntegrationTestCase extends StuTestCase
         $dic->get(GameControllerInterface::class)->resetGameData();
         $dic->get(ComponentRegistrationInterface::class)->resetComponents();
         AchievementManager::reset();
+        UserBoundedSpacecraftLoader::clearCache();
     }
 
     public static function tearDownAfterClass(): void
