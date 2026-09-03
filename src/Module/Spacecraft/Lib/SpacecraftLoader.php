@@ -209,7 +209,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
 
     /**
      * @param array<int> $spacecraftIds
-     * @param int|null $targetUserId
      *
      * @return array<int>
      */

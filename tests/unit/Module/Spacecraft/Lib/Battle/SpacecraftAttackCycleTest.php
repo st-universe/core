@@ -134,12 +134,10 @@ class SpacecraftAttackCycleTest extends StuTestCase
         $attacker = $this->mock(ShipWrapperInterface::class);
         $attackerLeader = $this->mock(ShipWrapperInterface::class);
         $attackerLeaderShip = $this->mock(Ship::class);
-        $attackerUser = $this->mock(User::class);
         $attackers = $this->mock(BattlePartyInterface::class);
         $roundBasedAttackers = $this->mock(RoundBasedBattleParty::class);
         $defenderLeader = $this->mock(ShipWrapperInterface::class);
         $defenderLeaderShip = $this->mock(Ship::class);
-        $defenderUser = $this->mock(User::class);
         $defenders = $this->mock(BattlePartyInterface::class);
         $roundBasedDefenders = $this->mock(RoundBasedBattleParty::class);
         $matchup = $this->mock(Matchup::class);

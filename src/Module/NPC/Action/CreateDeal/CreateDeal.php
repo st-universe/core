@@ -38,22 +38,22 @@ final class CreateDeal implements ActionControllerInterface
             return;
         }
 
-        $dealType = (int)request::postInt('deal_type');
+        $dealType = request::postInt('deal_type');
         $dealCount = request::postInt('deal_count');
-        $factionId = (int)request::postInt('faction_restriction');
+        $factionId = request::postInt('faction_restriction');
         $reason = request::postString('reason');
         $startDate = request::postString('start_date');
         $startTime = request::postString('start_time');
         $endDate = request::postString('end_date');
         $endTime = request::postString('end_time');
-        $wantCommodityId = (int)request::postInt('want_commodity_id');
+        $wantCommodityId = request::postInt('want_commodity_id');
         $wantCommodityAmount = request::postInt('want_commodity_amount');
         $wantPrestige = request::postInt('want_prestige');
 
-        $giveCommodityId = (int)request::postInt('give_commodity_id');
+        $giveCommodityId = request::postInt('give_commodity_id');
         $giveCommodityAmount = request::postInt('give_commodity_amount');
-        $giveBuildplanId = (int)request::postInt('give_buildplan_id');
-        $giveType = (int)request::postInt('give_type');
+        $giveBuildplanId = request::postInt('give_buildplan_id');
+        $giveType = request::postInt('give_type');
 
         if ($game->isNPC() && $reason === '') {
             $game->getInfo()->addInformation("Grund fehlt");

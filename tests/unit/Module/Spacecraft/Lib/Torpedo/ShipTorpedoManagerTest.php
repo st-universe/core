@@ -63,7 +63,7 @@ class ShipTorpedoManagerTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->subject->changeTorpedo($this->wrapper, 42, null);
+        $this->subject->changeTorpedo($this->wrapper, 42);
     }
 
     public function testChangeTorpedoExpectCreationOfNewStorageWhenShipIsEmptyAndTypeIsSpecified(): void

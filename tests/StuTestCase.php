@@ -40,8 +40,7 @@ abstract class StuTestCase extends MockeryTestCase
     protected function getMethod($subject, string $methodName)
     {
         $class = new ReflectionClass($subject);
-        $method = $class->getMethod($methodName);
-        return $method;
+        return $class->getMethod($methodName);
     }
 
     protected function initLoggerUtil(): LoggerUtilFactoryInterface

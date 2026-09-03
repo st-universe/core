@@ -63,8 +63,8 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
                     $rump->getRoleId() === SpacecraftRumpRoleEnum::SENSOR
                     || $rump->getRoleId() === SpacecraftRumpRoleEnum::BASE
                 ) {
-                    $spacecraftX = $this->getRelevantXCoordinate($currentSpacecraft, $data);
-                    $spacecraftY = $this->getRelevantYCoordinate($currentSpacecraft, $data);
+                    $spacecraftX = $this->getRelevantXCoordinate($currentSpacecraft);
+                    $spacecraftY = $this->getRelevantYCoordinate($currentSpacecraft);
                     $dataX = $this->getRelevantDataXCoordinate($data);
                     $dataY = $this->getRelevantDataYCoordinate($data);
 
@@ -92,7 +92,7 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
         return $spacecraft->isStation() ? 7 : 3;
     }
 
-    private function getRelevantXCoordinate(Spacecraft $spacecraft, SpacecraftCountData $data): int
+    private function getRelevantXCoordinate(Spacecraft $spacecraft): int
     {
         $spacecraftSystemMap = $spacecraft->getStarsystemMap();
 
@@ -103,7 +103,7 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
         return $spacecraft->getPosX();
     }
 
-    private function getRelevantYCoordinate(Spacecraft $spacecraft, SpacecraftCountData $data): int
+    private function getRelevantYCoordinate(Spacecraft $spacecraft): int
     {
         $spacecraftSystemMap = $spacecraft->getStarsystemMap();
 
@@ -128,9 +128,7 @@ final class SpacecraftCountLayerRenderer implements LayerRendererInterface
             }
         }
 
-        $posX = $data->getPosX();
-
-        return $posX;
+        return $data->getPosX();
     }
     private function getRelevantDataYCoordinate(SpacecraftCountData $data): int
     {

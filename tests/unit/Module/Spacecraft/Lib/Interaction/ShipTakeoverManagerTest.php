@@ -321,7 +321,7 @@ class ShipTakeoverManagerTest extends StuTestCase
     {
         $this->shipTakeoverRepository->shouldNotHaveBeenCalled();
 
-        $this->subject->cancelTakeover(null, null);
+        $this->subject->cancelTakeover(null);
     }
 
     public function testCancelTakeoverExpectNothingWhenTargetIsTractoredBySource(): void
@@ -341,7 +341,7 @@ class ShipTakeoverManagerTest extends StuTestCase
 
         $this->shipTakeoverRepository->shouldNotHaveBeenCalled();
 
-        $this->subject->cancelTakeover(null, null);
+        $this->subject->cancelTakeover(null);
     }
 
     public function testCancelTakeoverExpectCancelWhenTargetTractoredByOtherShip(): void

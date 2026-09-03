@@ -44,19 +44,18 @@ final class SaveWelcomeMessage implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $oldMessage = $faction->getWelcomeMessage() ?? '';
         $faction->setWelcomeMessage($welcomeMessage);
 
         $this->factionRepository->save($faction);
 
         if ($game->getUser()->isNpc()) {
-            $this->createLogEntry($oldMessage, $welcomeMessage, $userId, $game->getUser()->getName(), $faction->getName());
+            $this->createLogEntry($userId, $game->getUser()->getName(), $faction->getName());
         }
 
         $game->getInfo()->addInformation(_('Die Willkommensnachricht wurde gespeichert'));
     }
 
-    private function createLogEntry(string $oldMessage, string $newMessage, int $userId, string $userName, string $factionName): void
+    private function createLogEntry(int $userId, string $userName, string $factionName): void
     {
         $logText = sprintf(
             '%s hat die Willkommensnachricht der Fraktion %s geändert.',

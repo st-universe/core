@@ -12,8 +12,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
 class WarpCoreTransferShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
-    public function __construct() {}
-
     #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {

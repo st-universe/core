@@ -60,7 +60,7 @@ final class AddQuestLogEntry implements ActionControllerInterface
 
         $this->npcQuestLogRepository->save($logEntry);
 
-        $this->notifyQuestMembers($quest, $logEntry);
+        $this->notifyQuestMembers($quest);
     }
 
     #[Override]
@@ -69,7 +69,7 @@ final class AddQuestLogEntry implements ActionControllerInterface
         return false;
     }
 
-    private function notifyQuestMembers(NPCQuest $quest, NPCQuestLog $logEntry): void
+    private function notifyQuestMembers(NPCQuest $quest): void
     {
         $activeMembers = $quest->getQuestUsers()->filter(
             fn ($questUser) => $questUser->getMode()->value === 1

@@ -107,8 +107,6 @@ class LssBlockadeGridTest extends StuTestCase
         $g->setBlocked(57, 75);
         $g->setBlocked(56, 75);
 
-        $startTime = microtime(true);
-
         for ($x = 40; $x < 72; $x++) {
             for ($y = 60; $y < 92; $y++) {
 
@@ -119,7 +117,6 @@ class LssBlockadeGridTest extends StuTestCase
             }
         }
 
-        $endTime = microtime(true);
         //@hux Runtime sollte höchstens 0.01s sein mittels
         //echo sprintf("\tresearch, seconds: %F", $endTime - $startTime);
     }

@@ -30,8 +30,6 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $user = $game->getUser();
-
         $memberId = request::getIntFatal('userid');
         $rumpId = request::getIntFatal('rumpid');
 

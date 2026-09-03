@@ -10,13 +10,6 @@ use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class WarpcoreChargeTransferSystemData extends AbstractSystemData
 {
-    public function __construct(
-        SpacecraftSystemRepositoryInterface $shipSystemRepository,
-        StatusBarFactoryInterface $statusBarFactory
-    ) {
-        parent::__construct($shipSystemRepository, $statusBarFactory);
-    }
-
     #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum
     {

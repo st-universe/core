@@ -99,7 +99,7 @@ final class RejectQuestInvitation implements ActionControllerInterface
                 $quest->getTitle()
             ),
             PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-            sprintf('/npc/?SHOW_NPC_QUESTS=1')
+            '/npc/?SHOW_NPC_QUESTS=1'
         );
 
         $game->getInfo()->addInformation('Du hast die Einladung an der Quest abgelehnt');

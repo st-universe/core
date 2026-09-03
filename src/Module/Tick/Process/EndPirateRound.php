@@ -332,10 +332,6 @@ final class EndPirateRound implements ProcessTickHandlerInterface
             return 'hat';
         }
 
-        if (count($textParts) === 1 && $textParts[0] === 'Siedler deiner Allianz') {
-            return 'haben';
-        }
-
         return 'haben';
     }
 

@@ -30,7 +30,6 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
     {
         StuLogger::log("    starting IonStormMapGeneration", LogTypeEnum::TICK);
 
-        $mapGraphicBasePath = $this->getMapGraphicBasePath();
         $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';
 
         // create history folder if not exists
@@ -137,12 +136,5 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
         ob_start();
         imagegif($img);
         return ob_get_clean();
-    }
-
-    private function getMapGraphicBasePath(): string
-    {
-        $webrootWithoutPublic = str_replace("/Public", "", $this->config->getGameSettings()->getWebroot());
-
-        return $webrootWithoutPublic . '/../../assets/map/';
     }
 }

@@ -52,7 +52,7 @@ final class CreateCrewRace implements ActionControllerInterface
             return;
         }
 
-        $gfxPath = CrewRaceInput::normalizeDefine((string)(request::postString('crew_race_define') ?: $description));
+        $gfxPath = CrewRaceInput::normalizeDefine(request::postString('crew_race_define') ?: $description);
         if (!CrewRaceInput::isValidDefine($gfxPath)) {
             $game->getInfo()->addInformation(_('Die Grafikdefinition darf nur Großbuchstaben und einzelne Unterstriche enthalten'));
             return;
