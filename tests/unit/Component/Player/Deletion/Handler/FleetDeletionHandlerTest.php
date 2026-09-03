@@ -4,25 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\StuTestCase;
 
-class FleetDeletionHandlerTest extends MockeryTestCase
+class FleetDeletionHandlerTest extends StuTestCase
 {
-    /**
-     * @var null|FleetRepositoryInterface|MockInterface
-     */
-    private $fleetRepository;
+    private null|FleetRepositoryInterface|MockInterface $fleetRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
     #[\Override]
     public function setUp(): void
     {
-        $this->fleetRepository = Mockery::mock(FleetRepositoryInterface::class);
+        $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
 
         $this->handler = new FleetDeletionHandler(
             $this->fleetRepository
@@ -31,7 +27,7 @@ class FleetDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteDeletesFleets(): void
     {
-        $user = Mockery::mock(User::class);
+        $user = $this->mock(User::class);
 
         $this->fleetRepository->shouldReceive('truncateByUser')
             ->with($user)

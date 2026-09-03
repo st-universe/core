@@ -229,7 +229,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
      */
     private function getTopThreeUsers(array $userPirateRounds): array
     {
-        usort($userPirateRounds, fn ($a, $b) => $b->getPrestige() <=> $a->getPrestige());
+        usort($userPirateRounds, fn ($a, $b): int => $b->getPrestige() <=> $a->getPrestige());
 
         return array_slice($userPirateRounds, 0, 3);
     }

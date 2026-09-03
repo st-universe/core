@@ -36,7 +36,7 @@ class CrewDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesCrewAssignmentsAndCrew(): void
     {
-        $user = Mockery::mock(User::class);
+        $user = $this->mock(User::class);
 
         $user->shouldReceive('getId')
             ->withNoArgs()

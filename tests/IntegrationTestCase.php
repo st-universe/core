@@ -96,7 +96,7 @@ abstract class IntegrationTestCase extends StuTestCase
             ->andReturn('MOCKED_UNIQUEID');
         $stuRandomMock->shouldReceive('array_rand')
             ->zeroOrMoreTimes()
-            ->andReturnUsing(function (array $array) {
+            ->andReturnUsing(function (array $array): int|string {
                 $keys = array_keys($array);
                 return $keys[0];
             });

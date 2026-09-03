@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftSystem;
 
 final class PassiveRepairProgressWrapper
@@ -21,7 +21,7 @@ final class PassiveRepairProgressWrapper
         private readonly ?int $fieldId = null
     ) {}
 
-    public function get(): Spacecraft
+    public function get(): Ship
     {
         return $this->wrapper->get();
     }

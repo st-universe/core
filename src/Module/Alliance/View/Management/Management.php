@@ -103,7 +103,7 @@ final class Management implements ViewControllerInterface
             }
         }
 
-        usort($availableJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($availableJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
 
         $game->setViewTemplate('html/alliance/alliancemanagement.twig');
         $game->setTemplateVar('ALLIANCE', $alliance);

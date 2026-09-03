@@ -135,9 +135,9 @@ final class AllianceProvider implements ViewComponentProviderInterface
             }
         }
 
-        usort($successorJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
-        usort($diplomaticJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
-        usort($otherJobs, fn ($a, $b) => $a->getSort() <=> $b->getSort());
+        usort($successorJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($diplomaticJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($otherJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
 
         $leadershipJobs = array_merge($founderJobs, $successorJobs, $diplomaticJobs, $otherJobs);
 

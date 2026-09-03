@@ -106,7 +106,7 @@ final class ShowQuest implements ViewControllerInterface
                         $canApply = true;
                     } else {
                         $activeMembersCount = count($quest->getQuestUsers()->filter(
-                            fn ($questUser) => $questUser->getMode()->value === 1
+                            fn ($questUser): bool => $questUser->getMode()->value === 1
                         ));
                         if ($activeMembersCount < $quest->getApplicantMax()) {
                             $canApply = true;

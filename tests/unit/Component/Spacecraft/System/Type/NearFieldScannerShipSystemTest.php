@@ -27,8 +27,7 @@ use Stu\StuTestCase;
 class NearFieldScannerShipSystemTest extends StuTestCase
 {
     private AstroEntryLibInterface&MockInterface $astroEntryLib;
-    /** @var TrackerDeviceManagerInterface|MockInterface */
-    private $trackerDeviceManager;
+    private TrackerDeviceManagerInterface&MockInterface $trackerDeviceManager;
 
     private Ship&MockInterface $ship;
     private ShipWrapperInterface&MockInterface $wrapper;
@@ -46,8 +45,8 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($this->ship);
 
-        $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
-        $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
+        $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
+        $this->trackerDeviceManager = $this->mock(TrackerDeviceManagerInterface::class);
 
         $this->system = new NearFieldScannerShipSystem(
             $this->astroEntryLib,

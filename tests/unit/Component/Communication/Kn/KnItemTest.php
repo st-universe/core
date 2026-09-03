@@ -20,8 +20,7 @@ class KnItemTest extends StuTestCase
     private MockInterface&KnCommentRepositoryInterface $knCommentRepository;
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
     private MockInterface&KnPost $post;
-    /** @var null|MockInterface|User */
-    private $currentUser;
+    private null|MockInterface|User $currentUser;
 
     private KnItemInterface $item;
 

@@ -20,8 +20,7 @@ class SpacecraftDestructionTest extends StuTestCase
 
     private MockInterface&SpacecraftDestructionHandlerInterface $deletionHandler2;
 
-    /** @var SpacecraftDestructionInterface */
-    private $subject;
+    private SpacecraftDestructionInterface $subject;
 
     #[\Override]
     public function setUp(): void

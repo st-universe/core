@@ -13,8 +13,7 @@ use Stu\StuTestCase;
 
 class PrivateMessageDeletionHandlerTest extends StuTestCase
 {
-    /** @var EntityManagerInterface&MockInterface */
-    private $entityManager;
+    private EntityManagerInterface&MockInterface $entityManager;
 
     private PrivateMessageDeletionHandler $subject;
 

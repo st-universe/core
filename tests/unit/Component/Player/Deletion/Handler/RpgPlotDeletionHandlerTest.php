@@ -6,8 +6,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
@@ -15,8 +13,9 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\StuTestCase;
 
-class RpgPlotDeletionHandlerTest extends MockeryTestCase
+class RpgPlotDeletionHandlerTest extends StuTestCase
 {
     private MockInterface&RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
     private MockInterface&RpgPlotRepositoryInterface $rpgPlotRepository;
@@ -28,10 +27,10 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->rpgPlotMemberRepository = Mockery::mock(RpgPlotMemberRepositoryInterface::class);
-        $this->rpgPlotRepository = Mockery::mock(RpgPlotRepositoryInterface::class);
-        $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
-        $this->entityManager = Mockery::mock(EntityManagerInterface::class);
+        $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);
+        $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->handler = new RpgPlotDeletionHandler(
             $this->rpgPlotMemberRepository,
@@ -43,12 +42,12 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteSetsAnotherRpgPlotMemberInCharge(): void
     {
-        $user = Mockery::mock(User::class);
-        $newUser = Mockery::mock(User::class);
-        $gameFallbackUser = Mockery::mock(User::class);
-        $rpgPlot = Mockery::mock(RpgPlot::class);
-        $rpgPlotMemberUser = Mockery::mock(RpgPlotMember::class);
-        $newRpgPlotMemberUser = Mockery::mock(RpgPlotMember::class);
+        $user = $this->mock(User::class);
+        $newUser = $this->mock(User::class);
+        $gameFallbackUser = $this->mock(User::class);
+        $rpgPlot = $this->mock(RpgPlot::class);
+        $rpgPlotMemberUser = $this->mock(RpgPlotMember::class);
+        $newRpgPlotMemberUser = $this->mock(RpgPlotMember::class);
 
         $members = new ArrayCollection([666 => $rpgPlotMemberUser, $newRpgPlotMemberUser]);
 
@@ -108,9 +107,9 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
 
     public function testDeleteSetsSystemUser(): void
     {
-        $user = Mockery::mock(User::class);
-        $gameFallbackUser = Mockery::mock(User::class);
-        $rpgPlot = Mockery::mock(RpgPlot::class);
+        $user = $this->mock(User::class);
+        $gameFallbackUser = $this->mock(User::class);
+        $rpgPlot = $this->mock(RpgPlot::class);
 
         $members = new ArrayCollection([]);
 

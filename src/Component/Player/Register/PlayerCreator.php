@@ -74,7 +74,7 @@ class PlayerCreator implements PlayerCreatorInterface
         ) {
             throw new RegistrationException(ErrorCodeEnum::EMAIL_ADDRESS_INVALID);
         }
-        if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
+        if ($this->userRepository->getByLogin($loginName) !== null || $this->userRepository->getByEmail($emailAddress) !== null) {
             throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
         if (
@@ -87,7 +87,7 @@ class PlayerCreator implements PlayerCreatorInterface
         ) {
             throw new RegistrationException(ErrorCodeEnum::SMS_VERIFICATION_CODE_INVALID);
         }
-        if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile))) {
+        if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile)) instanceof \Stu\Orm\Entity\User) {
             throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
     }

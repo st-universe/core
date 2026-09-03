@@ -17,10 +17,7 @@ class EpsSystemDataTest extends StuTestCase
     private MockInterface&SpacecraftSystemRepositoryInterface $shipSystemRepository;
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
 
-    /**
-     * @var MockInterface&Ship
-     */
-    private $ship;
+    private MockInterface&Ship $ship;
 
     private EpsSystemData $subject;
 

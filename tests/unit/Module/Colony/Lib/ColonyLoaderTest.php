@@ -40,8 +40,8 @@ class ColonyLoaderTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);
-        $this->lockManager = Mockery::mock(LockManagerInterface::class);
+        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
+        $this->lockManager = $this->mock(LockManagerInterface::class);
 
         $this->colony = $this->mock(Colony::class);
 

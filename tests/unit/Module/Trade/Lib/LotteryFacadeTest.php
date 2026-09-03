@@ -14,20 +14,11 @@ use Stu\StuTestCase;
 
 class LotteryFacadeTest extends StuTestCase
 {
-    /**
-     * @var LotteryTicketRepositoryInterface|MockInterface
-     */
-    private $lotteryTicketRepository;
+    private LotteryTicketRepositoryInterface|MockInterface $lotteryTicketRepository;
 
-    /**
-     * @var PrivateMessageSenderInterface|MockInterface
-     */
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface|MockInterface $privateMessageSender;
 
-    /**
-     * @var StuTime|MockInterface
-     */
-    private $stuTime;
+    private StuTime|MockInterface $stuTime;
 
     private LotteryFacadeInterface $lotteryFacade;
 

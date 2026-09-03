@@ -59,13 +59,12 @@ final class EmailManagement implements
 
         if ($newEmail === $currentEmail) {
             $this->resendActivationEmail($user);
-            return;
         }
 
         $this->updateEmailAndSend($user, $newEmail);
     }
 
-    private function resendActivationEmail(User $user): void
+    private function resendActivationEmail(User $user): never
     {
         $registration = $user->getRegistration();
         $randomEmailHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);

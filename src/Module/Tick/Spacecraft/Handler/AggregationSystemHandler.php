@@ -67,11 +67,11 @@ class AggregationSystemHandler implements SpacecraftTickHandlerInterface
                     'commodity' => $usedCommodity,
                     'spacecraft' => $station
                 ]);
-                if (!$storage && $usedCommodity) {
+                if (!$storage && $usedCommodity !== null) {
                     $information->addInformationf('Es ist kein %s vorhanden!', $usedCommodity->getName());
                 }
 
-                if ($storage && $producedCommodity && $usedCommodity) {
+                if ($storage && $producedCommodity !== null && $usedCommodity !== null) {
                     if ($storage->getAmount() >= $usedAmount) {
                         $this->storageManager->lowerStorage(
                             $station,

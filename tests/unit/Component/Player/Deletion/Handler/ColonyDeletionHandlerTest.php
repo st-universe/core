@@ -5,25 +5,16 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\Collection;
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuTestCase;
 
 class ColonyDeletionHandlerTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|ColonyResetterInterface
-     */
-    private $colonyResetter;
+    private null|MockInterface|ColonyResetterInterface $colonyResetter;
 
-    /**
-     * @var null|MockInterface|ColonyRepositoryInterface
-     */
-    private $colonyRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -31,19 +22,17 @@ class ColonyDeletionHandlerTest extends StuTestCase
     public function setUp(): void
     {
         $this->colonyResetter = $this->mock(ColonyResetterInterface::class);
-        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
 
         $this->handler = new ColonyDeletionHandler(
-            $this->colonyResetter,
-            $this->colonyRepository
+            $this->colonyResetter
         );
     }
 
     public function testDeleteDeletesUser(): void
     {
-        $colony = Mockery::mock(Colony::class);
-        $user = Mockery::mock(User::class);
-        $colonyList = Mockery::mock(Collection::class);
+        $colony = $this->mock(Colony::class);
+        $user = $this->mock(User::class);
+        $colonyList = $this->mock(Collection::class);
 
         $user->shouldReceive('getColonies')
             ->withNoArgs()

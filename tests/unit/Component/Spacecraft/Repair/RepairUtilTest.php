@@ -23,29 +23,21 @@ use Stu\StuTestCase;
 
 class RepairUtilTest extends StuTestCase
 {
-    /** @var SpacecraftSystemRepositoryInterface|MockInterface */
-    private $shipSystemRepository;
+    private SpacecraftSystemRepositoryInterface|MockInterface $shipSystemRepository;
 
-    /** @var RepairTaskRepositoryInterface|MockInterface */
-    private $repairTaskRepository;
+    private RepairTaskRepositoryInterface|MockInterface $repairTaskRepository;
 
-    /** @var ColonyShipRepairRepositoryInterface|MockInterface */
-    private $colonyShipRepairRepository;
+    private ColonyShipRepairRepositoryInterface|MockInterface $colonyShipRepairRepository;
 
-    /** @var StorageManagerInterface|MockInterface */
-    private $storageManager;
+    private StorageManagerInterface|MockInterface $storageManager;
 
-    /** @var ColonyFunctionManagerInterface|MockInterface */
-    private $colonyFunctionManager;
+    private ColonyFunctionManagerInterface|MockInterface $colonyFunctionManager;
 
-    /** @var PrivateMessageSenderInterface|MockInterface */
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface|MockInterface $privateMessageSender;
 
-    /** @var ShipWrapperInterface|MockInterface */
-    private $wrapper;
+    private ShipWrapperInterface|MockInterface $wrapper;
 
-    /** @var Ship|MockInterface */
-    private $ship;
+    private Ship|MockInterface $ship;
 
     private RepairUtilInterface $subject;
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -23,8 +22,9 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
+use Stu\StuTestCase;
 
-class PlayerDefaultsCreatorTest extends MockeryTestCase
+class PlayerDefaultsCreatorTest extends StuTestCase
 {
     private MockInterface&PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
@@ -43,12 +43,12 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->privateMessageFolderRepository = Mockery::mock(PrivateMessageFolderRepositoryInterface::class);
-        $this->researchedRepository = Mockery::mock(ResearchedRepositoryInterface::class);
-        $this->layerRepository = Mockery::mock(LayerRepositoryInterface::class);
-        $this->userLayerRepository = Mockery::mock(UserLayerRepositoryInterface::class);
-        $this->tutorialStepRepository = Mockery::mock(TutorialStepRepositoryInterface::class);
-        $this->userTutorialRepository = Mockery::mock(UserTutorialRepositoryInterface::class);
+        $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
+        $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
+        $this->layerRepository = $this->mock(LayerRepositoryInterface::class);
+        $this->userLayerRepository = $this->mock(UserLayerRepositoryInterface::class);
+        $this->tutorialStepRepository = $this->mock(TutorialStepRepositoryInterface::class);
+        $this->userTutorialRepository = $this->mock(UserTutorialRepositoryInterface::class);
 
         $this->defaultsCreator = new PlayerDefaultsCreator(
             $this->privateMessageFolderRepository,
@@ -62,15 +62,15 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
 
     public function testCreateDefaultCreatesDefaults(): void
     {
-        $user = Mockery::mock(User::class)->shouldAllowMockingProtectedMethods();
+        $user = $this->mock(User::class)->shouldAllowMockingProtectedMethods();
         /** @var User&MockInterface $user */
-        $pmFolder = Mockery::mock(PrivateMessageFolder::class);
-        $startResearch = Mockery::mock(Research::class);
-        $researchEntry = Mockery::mock(Researched::class);
-        $layer = Mockery::mock(Layer::class);
-        $userLayer = Mockery::mock(UserLayer::class);
-        $tutorialStep = Mockery::mock(TutorialStep::class);
-        $userTutorial = Mockery::mock(UserTutorial::class);
+        $pmFolder = $this->mock(PrivateMessageFolder::class);
+        $startResearch = $this->mock(Research::class);
+        $researchEntry = $this->mock(Researched::class);
+        $layer = $this->mock(Layer::class);
+        $userLayer = $this->mock(UserLayer::class);
+        $tutorialStep = $this->mock(TutorialStep::class);
+        $userTutorial = $this->mock(UserTutorial::class);
 
         $defaultCategoryCount = count(array_filter(
             PrivateMessageFolderTypeEnum::cases(),
