@@ -71,7 +71,7 @@ class ApplyDamageTest extends StuTestCase
 
         $this->subject->damage($damageWrapper, $wrapper, $informations);
 
-        static::assertSame(
+        self::assertSame(
             [
                 '- Kritischer Hüllen-Treffer',
                 '- Hüllenschaden: 100',
@@ -79,7 +79,7 @@ class ApplyDamageTest extends StuTestCase
             ],
             $informations->getInformations()
         );
-        static::assertTrue($condition->isDestroyed());
+        self::assertTrue($condition->isDestroyed());
     }
 
     public function testDamageStopsHullProcessingWhenCriticalSystemDamageDestroysSpacecraft(): void
@@ -123,20 +123,20 @@ class ApplyDamageTest extends StuTestCase
 
         $information = $informations->getInformations();
 
-        static::assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             '/^- Kritischer Hüllen-Treffer verursacht ([3-5][0-9]|60)% Systemschaden$/',
             $information[0]
         );
-        static::assertSame(
+        self::assertSame(
             [
                 '- Der Schaden zerstört folgendes System: Torpedolager',
                 '-- Das Schiff wurde zerstört!'
             ],
             array_slice($information, 1)
         );
-        static::assertTrue($condition->isDestroyed());
-        static::assertSame(600, $condition->getHull());
-        static::assertSame(0, $torpedoStorageSystem->getStatus());
-        static::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $torpedoStorageSystem->getMode());
+        self::assertTrue($condition->isDestroyed());
+        self::assertSame(600, $condition->getHull());
+        self::assertSame(0, $torpedoStorageSystem->getStatus());
+        self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $torpedoStorageSystem->getMode());
     }
 }

@@ -34,11 +34,11 @@ class BuildingUpgradeCost
     private int $amount;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     #[ManyToOne(targetEntity: BuildingUpgrade::class)]
-    #[JoinColumn(name: 'buildings_upgrades_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildings_upgrades_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private BuildingUpgrade $upgrade;
 
     public function getId(): int

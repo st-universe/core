@@ -206,7 +206,7 @@ abstract class IntegrationTestCase extends StuTestCase
         $application->setAutoExit(false);
         $exitCode = $application->run(new StringInput($input));
 
-        if ($exitCode != 0) {
+        if ($exitCode !== 0) {
             throw new TestExecutionException(sprintf('Could not execute %s!', $input));
         }
     }
@@ -230,7 +230,7 @@ abstract class IntegrationTestCase extends StuTestCase
             );
 
             $application->setAutoExit(false);
-            if ($application->run($input) != 0) {
+            if ($application->run($input) !== 0) {
                 throw new TestExecutionException(sprintf('Could not execute %s!', $command));
             }
         });

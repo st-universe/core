@@ -93,7 +93,7 @@ final class NPCList implements ViewControllerInterface
     private function getNPCListNavigation(): array
     {
         $mark = $this->npcListRequest->getPagination();
-        if ($mark % self::LIST_LIMIT != 0 || $mark < 0) {
+        if ($mark % self::LIST_LIMIT !== 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = 10;

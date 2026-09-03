@@ -34,7 +34,7 @@ class DockingPrivilege
     private DockModeEnum $privilege_mode = DockModeEnum::ALLOW;
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockingPrivileges')]
-    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Station $station;
 
     public function getId(): int

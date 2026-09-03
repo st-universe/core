@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Lib\Transfer\Storage;
 
 use Stu\Lib\Transfer\EntityWithStorageInterface;

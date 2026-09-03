@@ -17,10 +17,10 @@ class ColonyScanRepositoryTest extends IntegrationTestCase
         $fieldWithStorage = $this->getFieldByFieldId($surface, 23);
         $fieldWithHeadquarter = $this->getFieldByFieldId($surface, 24);
 
-        static::assertArrayHasKey('buildings_id', $fieldWithStorage);
-        static::assertArrayNotHasKey('id', $fieldWithStorage);
-        static::assertSame(12345, $fieldWithStorage['buildings_id']);
-        static::assertSame(82010100, $fieldWithHeadquarter['buildings_id']);
+        self::assertArrayHasKey('buildings_id', $fieldWithStorage);
+        self::assertArrayNotHasKey('id', $fieldWithStorage);
+        self::assertSame(12345, $fieldWithStorage['buildings_id']);
+        self::assertSame(82010100, $fieldWithHeadquarter['buildings_id']);
     }
 
     /**
@@ -36,6 +36,6 @@ class ColonyScanRepositoryTest extends IntegrationTestCase
             }
         }
 
-        static::fail(sprintf('field with field_id %d not found', $fieldId));
+        self::fail(sprintf('field with field_id %d not found', $fieldId));
     }
 }

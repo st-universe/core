@@ -41,9 +41,8 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         }
         if ($module->getSystemType() == SpacecraftSystemTypeEnum::FUSION_REACTOR) {
             return $this->getValue($module) * ReactorWrapperInterface::FUSIONCORE_CAPACITY_MULTIPLIER;
-        } else {
-            return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
         }
+        return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
     }
 
     #[\Override]

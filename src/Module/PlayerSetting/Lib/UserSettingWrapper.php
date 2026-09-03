@@ -64,7 +64,7 @@ class UserSettingWrapper
             if ($case === ModuleEnum::ADMIN && !$isAdmin) {
                 return false;
             }
-            return !($case === ModuleEnum::NPC && !$user->isNpc());
+            return $case !== ModuleEnum::NPC || $user->isNpc();
         });
     }
 }

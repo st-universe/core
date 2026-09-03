@@ -47,38 +47,36 @@ final class BorderLayerRenderer implements LayerRendererInterface
         if ($lss !== null && $lss->getMode()->isBorderMode()) {
             if ($lss->getMode() === SpacecraftLssModeEnum::BORDER) {
                 $factionColor = $data->getFactionColor();
-                if ($factionColor !== null && $factionColor !== '' && $factionColor !== '0') {
+                if (!in_array($factionColor, [null, '', '0'], true)) {
                     return $factionColor;
                 }
 
                 $allyColor = $data->getAllyColor();
-                if ($allyColor !== null && $allyColor !== '' && $allyColor !== '0') {
+                if (!in_array($allyColor, [null, '', '0'], true)) {
                     return $allyColor;
                 }
 
                 $userColor = $data->getUserColor();
-                if ($userColor !== null && $userColor !== '' && $userColor !== '0') {
+                if (!in_array($userColor, [null, '', '0'], true)) {
                     return $userColor;
                 }
             }
             if ($lss->getMode() === SpacecraftLssModeEnum::IMPASSABLE) {
                 $impassablecolor = $data->getImpassable();
                 if ($impassablecolor != true) {
-                    if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {
+                    if (!in_array($data->getComplementaryColor(), [null, '', '0'], true)) {
                         return $data->getComplementaryColor();
-                    } else {
-                        return '#730505';
                     }
+                    return '#730505';
                 }
             }
             if ($lss->getMode() === SpacecraftLssModeEnum::CARTOGRAPHING) {
                 $cartographingcolor = $data->getCartographing();
                 if ($cartographingcolor != false) {
-                    if ($data->getComplementaryColor() !== null && $data->getComplementaryColor() !== '' && $data->getComplementaryColor() !== '0') {
+                    if (!in_array($data->getComplementaryColor(), [null, '', '0'], true)) {
                         return $data->getComplementaryColor();
-                    } else {
-                        return '#730505';
                     }
+                    return '#730505';
                 }
             }
         }

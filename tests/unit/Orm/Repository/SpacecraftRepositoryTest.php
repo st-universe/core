@@ -76,7 +76,7 @@ class SpacecraftRepositoryTest extends StuTestCase
                 ['user_id' => '17']
             ]);
 
-        static::assertSame(
+        self::assertSame(
             [13, 17, 42, 99],
             $this->subject->getUserIdsForSpacecrafts([99, 13, 42])
         );

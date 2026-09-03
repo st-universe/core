@@ -18,7 +18,7 @@ class StatusBarFactoryTest extends StuTestCase
 
     public function testCreateStatusBarReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             StatusBar::class,
             $this->subject->createStatusBar()
         );

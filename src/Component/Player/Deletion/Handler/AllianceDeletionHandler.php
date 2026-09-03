@@ -65,7 +65,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
         $successorJob = $alliance->getSuccessor();
         if ($successorJob !== null) {
             $successors = $successorJob->getUsers();
-            if (!empty($successors)) {
+            if ($successors !== []) {
                 return $this->getLastOnlineUser($successors);
             }
         }
@@ -73,7 +73,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
         $diplomaticJob = $alliance->getDiplomatic();
         if ($diplomaticJob !== null) {
             $diplomats = $diplomaticJob->getUsers();
-            if (!empty($diplomats)) {
+            if ($diplomats !== []) {
                 return $this->getLastOnlineUser($diplomats);
             }
         }
@@ -86,7 +86,7 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
      */
     private function getLastOnlineUser(array $users): ?User
     {
-        if (empty($users)) {
+        if ($users === []) {
             return null;
         }
 

@@ -54,17 +54,12 @@ class ColonySandbox implements PlanetFieldHostInterface
     /**
      * @var ArrayCollection<int, PlanetField>
      */
-    #[OneToMany(
-        targetEntity: PlanetField::class,
-        mappedBy: 'sandbox',
-        indexBy: 'field_id',
-        fetch: 'EXTRA_LAZY'
-    )]
+    #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'sandbox', fetch: 'EXTRA_LAZY', indexBy: 'field_id')]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false)]
     private Colony $colony;
 
     public function __construct()

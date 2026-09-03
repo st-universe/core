@@ -74,7 +74,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $game->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
-        if (count($commodities) == 0 || count($gcount) == 0) {
+        if (count($commodities) === 0 || count($gcount) === 0) {
             $game->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }

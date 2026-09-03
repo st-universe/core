@@ -32,11 +32,11 @@ class KnPostToPlotApplication
     private int $time = 0;
 
     #[ManyToOne(targetEntity: KnPost::class)]
-    #[JoinColumn(name: 'post_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'post_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private KnPost $knPost;
 
     #[ManyToOne(targetEntity: RpgPlot::class)]
-    #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private RpgPlot $rpgPlot;
 
     public function getId(): int

@@ -29,11 +29,11 @@ class ConstructionProgressModule
     private int $module_id = 0;
 
     #[ManyToOne(targetEntity: ConstructionProgress::class)]
-    #[JoinColumn(name: 'progress_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'progress_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ConstructionProgress $progress;
 
     #[ManyToOne(targetEntity: Module::class)]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Module $module;
 
     public function getId(): int

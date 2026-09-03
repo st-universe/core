@@ -28,7 +28,7 @@ class AllianceJob
     private int $id;
 
     #[ManyToOne(targetEntity: Alliance::class, inversedBy: 'jobs')]
-    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Alliance $alliance;
 
     #[Column(type: 'string', nullable: true)]

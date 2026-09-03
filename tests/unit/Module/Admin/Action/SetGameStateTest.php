@@ -117,11 +117,11 @@ class SetGameStateTest extends StuTestCase
 
         $this->subject->handle($this->game);
 
-        static::assertSame(GameStateEnum::RELOCATION->value, $gameConfig->getValue());
+        self::assertSame(GameStateEnum::RELOCATION->value, $gameConfig->getValue());
     }
 
     public function testPerformSessionCheckReturnsTrue(): void
     {
-        static::assertTrue($this->subject->performSessionCheck());
+        self::assertTrue($this->subject->performSessionCheck());
     }
 }

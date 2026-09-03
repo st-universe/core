@@ -296,7 +296,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     ->getRepository(Spacecraft::class)
                     ->find($shipId);
 
-                if ($spacecraft) {
+                if ($spacecraft instanceof \Stu\Orm\Entity\Spacecraft) {
                     $latestPerShipAndRump[$key] = [$flightSignature, $spacecraft];
                 }
             }

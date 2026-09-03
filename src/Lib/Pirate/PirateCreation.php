@@ -186,12 +186,12 @@ class PirateCreation implements PirateCreationInterface
     {
         if ($consumedRatio <= 0.2) {
             return 0.1 + (0.9 * ($consumedRatio / 0.2));
-        } elseif ($consumedRatio <= 0.7) {
-            return 1.0;
-        } else {
-            $remainingRatio = (1.0 - $consumedRatio) / 0.3;
-            return 0.25 + (0.75 * $remainingRatio);
         }
+        if ($consumedRatio <= 0.7) {
+            return 1.0;
+        }
+        $remainingRatio = (1.0 - $consumedRatio) / 0.3;
+        return 0.25 + (0.75 * $remainingRatio);
     }
 
     private function calculateSpawnProbability(PirateRound $currentRound): float
@@ -204,15 +204,15 @@ class PirateCreation implements PirateCreationInterface
         }
 
         $consumedRatio = 1.0 - ($actualPrestige / $maxPrestige);
-
         if ($consumedRatio <= 0.2) {
             return 0.15 + (0.55 * ($consumedRatio / 0.2));
-        } elseif ($consumedRatio <= 0.7) {
-            return 0.85;
-        } else {
-            $remainingRatio = (1.0 - $consumedRatio) / 0.3;
-            return 0.25 + (0.6 * $remainingRatio);
         }
+
+        if ($consumedRatio <= 0.7) {
+            return 0.85;
+        }
+        $remainingRatio = (1.0 - $consumedRatio) / 0.3;
+        return 0.25 + (0.6 * $remainingRatio);
     }
 
     #[\Override]

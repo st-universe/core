@@ -88,7 +88,7 @@ class ManageBattery implements ManagerInterface
             }
         }
         if ($load > $managerProvider->getEps()) {
-            $load = $managerProvider->getEps();
+            return $managerProvider->getEps();
         }
 
         return $load;

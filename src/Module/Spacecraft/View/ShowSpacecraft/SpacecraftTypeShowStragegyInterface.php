@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
 use Stu\Module\Control\GameControllerInterface;

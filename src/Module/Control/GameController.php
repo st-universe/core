@@ -358,7 +358,7 @@ final class GameController implements GameControllerInterface
         } catch (RedirectionException $e) {
             if (!$this->isAdmin()) {
                 $this->session->logout();
-                throw new MaintenanceGameStateException();
+                throw new MaintenanceGameStateException($e->getMessage(), $e->getCode(), $e);
             }
 
             throw $e;

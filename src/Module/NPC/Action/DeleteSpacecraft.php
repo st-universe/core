@@ -38,78 +38,70 @@ final class DeleteSpacecraft implements ActionControllerInterface
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid')) {
             $game->getInfo()->addInformation("Es wurde kein Spacecraft ausgewählt");
             return;
-        } else {
-            $spacecraftIdInput = request::postString('spacecraftid');
-            $reason = request::postString('reason');
+        }
+        $spacecraftIdInput = request::postString('spacecraftid');
+        $reason = request::postString('reason');
+        $spacecraftIdInput = $spacecraftIdInput === false ? '' : $spacecraftIdInput;
+        $reason = $reason === false ? '' : $reason;
+        if ($game->getUser()->isNpc() && $reason === '') {
+            $game->getInfo()->addInformation("Grund fehlt");
+            return;
+        }
+        if (!preg_match('/^[\d\s,]+$/', $spacecraftIdInput)) {
+            $game->getInfo()->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
+            return;
+        }
+        $spacecraftIds = array_filter(
+            array_map(
+                'trim',
+                explode(',', $spacecraftIdInput)
+            ),
+            function ($id): bool {
+                return is_numeric($id) && $id > 0;
+            }
+        );
+        if ($spacecraftIds === []) {
+            $game->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
+            return;
+        }
+        $deletedCount = 0;
+        foreach ($spacecraftIds as $spacecraftId) {
+            $wrapper = $this->spacecraftLoader->find((int)$spacecraftId);
 
-            $spacecraftIdInput = $spacecraftIdInput === false ? '' : $spacecraftIdInput;
-            $reason = $reason === false ? '' : $reason;
-
-            if ($game->getUser()->isNpc() && $reason === '') {
-                $game->getInfo()->addInformation("Grund fehlt");
-                return;
+            if ($wrapper === null) {
+                $game->getInfo()->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
+                continue;
             }
 
-            if (!preg_match('/^[\d\s,]+$/', $spacecraftIdInput)) {
-                $game->getInfo()->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
-                return;
+            $spacecraft = $wrapper->get();
+
+            if ($spacecraft->isStation()) {
+                $game->getInfo()->addInformation("Stationen können nicht gelöscht werden");
+                continue;
             }
 
-            $spacecraftIds = array_filter(
-                array_map(
-                    'trim',
-                    explode(',', $spacecraftIdInput)
-                ),
-                function ($id): bool {
-                    return is_numeric($id) && $id > 0;
-                }
+            $text = sprintf(
+                '%s hat das Spacecraft %s (%d) von Spieler %s (%d) gelöscht. Grund: %s',
+                $user->getName(),
+                $spacecraft->getName(),
+                $spacecraft->getId(),
+                $spacecraft->getUser()->getName(),
+                $spacecraft->getUser()->getId(),
+                $reason
             );
 
-            if ($spacecraftIds === []) {
-                $game->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
-                return;
+            if ($game->getUser()->isNpc()) {
+                $this->createEntry($text, $user->getId());
             }
 
-            $deletedCount = 0;
-            foreach ($spacecraftIds as $spacecraftId) {
-                $wrapper = $this->spacecraftLoader->find((int)$spacecraftId);
-
-                if ($wrapper === null) {
-                    $game->getInfo()->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
-                    continue;
-                }
-
-                $spacecraft = $wrapper->get();
-
-                if ($spacecraft->isStation()) {
-                    $game->getInfo()->addInformation("Stationen können nicht gelöscht werden");
-                    continue;
-                }
-
-                $text = sprintf(
-                    '%s hat das Spacecraft %s (%d) von Spieler %s (%d) gelöscht. Grund: %s',
-                    $user->getName(),
-                    $spacecraft->getName(),
-                    $spacecraft->getId(),
-                    $spacecraft->getUser()->getName(),
-                    $spacecraft->getUser()->getId(),
-                    $reason
-                );
-
-                if ($game->getUser()->isNpc()) {
-                    $this->createEntry($text, $user->getId());
-                }
-
-                $this->letCrewDie($spacecraft);
-                $this->spacecraftRemover->remove($spacecraft);
-                $deletedCount++;
-            }
-
-            if ($deletedCount > 0) {
-                $game->getInfo()->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
-            } else {
-                $game->getInfo()->addInformation("Es wurden keine Schiffe gelöscht");
-            }
+            $this->letCrewDie($spacecraft);
+            $this->spacecraftRemover->remove($spacecraft);
+            $deletedCount++;
+        }
+        if ($deletedCount > 0) {
+            $game->getInfo()->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
+        } else {
+            $game->getInfo()->addInformation("Es wurden keine Schiffe gelöscht");
         }
     }
 

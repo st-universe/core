@@ -37,7 +37,7 @@ class ColonyFunctionManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->hasActiveFunction($colony, $function, false)
         );
     }
@@ -59,10 +59,10 @@ class ColonyFunctionManagerTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->hasActiveFunction($colony, $function, true, [42])
         );
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->hasActiveFunction($colony, $function)
         );
     }
@@ -78,7 +78,7 @@ class ColonyFunctionManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->hasFunction($colony, $function)
         );
     }

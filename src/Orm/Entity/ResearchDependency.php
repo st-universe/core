@@ -33,11 +33,11 @@ class ResearchDependency
     private ResearchModeEnum $mode;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
     private Research $research;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'depends_on', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'depends_on', referencedColumnName: 'id', nullable: false)]
     private Research $research_depends_on;
 
     public function getId(): int

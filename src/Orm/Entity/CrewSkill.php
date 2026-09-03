@@ -20,7 +20,7 @@ class CrewSkill
 {
     #[Id]
     #[ManyToOne(targetEntity: Crew::class, inversedBy: 'skills')]
-    #[JoinColumn(name: 'crew_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Crew $crew;
 
     #[Id]

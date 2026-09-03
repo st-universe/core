@@ -32,16 +32,16 @@ class SpacecraftRump
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', fetch: 'EXTRA_LAZY', cascade: ['all'])]
+    #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private ?SpacecraftRumpBaseValues $baseValues;
 
     #[OneToOne(targetEntity: SpacecraftRump3DModel::class, mappedBy: 'rump', cascade: ['all'])]
     private ?SpacecraftRump3DModel $model3d = null;
 
-    #[Column(type: 'integer', enumType: SpacecraftRumpCategoryEnum::class, nullable: false)]
+    #[Column(type: 'integer', nullable: false, enumType: SpacecraftRumpCategoryEnum::class)]
     private SpacecraftRumpCategoryEnum $category_id;
 
-    #[Column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    #[Column(type: 'integer', nullable: true, enumType: SpacecraftRumpRoleEnum::class)]
     private ?SpacecraftRumpRoleEnum $role_id = null;
 
     #[Column(type: 'smallint')]
@@ -130,7 +130,7 @@ class SpacecraftRump
     private Collection $specialAbilities;
 
     #[ManyToOne(targetEntity: ShipRumpCategory::class)]
-    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
     private ShipRumpCategory $shipRumpCategory;
 
     #[ManyToOne(targetEntity: Commodity::class)]

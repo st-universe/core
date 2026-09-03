@@ -45,7 +45,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->hasShielding()
         );
     }
@@ -59,7 +59,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getMaxShielding()
         );
@@ -75,7 +75,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isShieldingEnabled()
         );
     }
@@ -95,7 +95,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isShieldingEnabled()
         );
     }
@@ -115,7 +115,7 @@ class ColonyShieldingManagerTest extends StuTestCase
             ->once()
             ->andReturn(52);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->isShieldingEnabled()
         );
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Station\View\ShowStation;
 
 use Stu\Component\Spacecraft\SpacecraftStateEnum;

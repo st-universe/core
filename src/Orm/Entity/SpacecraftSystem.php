@@ -55,7 +55,7 @@ class SpacecraftSystem
     private ?Module $module = null;
 
     #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'systems')]
-    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
     public function getId(): int
@@ -113,15 +113,17 @@ class SpacecraftSystem
     {
         if ($this->getStatus() < 1) {
             return _("sysStatus0");
-        } elseif ($this->getStatus() < 26) {
-            return _("sysStatus1to25");
-        } elseif ($this->getStatus() < 51) {
-            return _("sysStatus26to50");
-        } elseif ($this->getStatus() < 76) {
-            return _("sysStatus51to75");
-        } else {
-            return _("sysStatus76to100");
         }
+        if ($this->getStatus() < 26) {
+            return _("sysStatus1to25");
+        }
+        if ($this->getStatus() < 51) {
+            return _("sysStatus26to50");
+        }
+        if ($this->getStatus() < 76) {
+            return _("sysStatus51to75");
+        }
+        return _("sysStatus76to100");
     }
 
     public function getMode(): SpacecraftSystemModeEnum
@@ -188,9 +190,8 @@ class SpacecraftSystem
 
         if ($module !== null && $module->getLevel() > 0) {
             return $module->getLevel();
-        } else {
-            return max(1, $this->getSpacecraft()->getRump()->getBaseValues()->getModuleLevel() - 1);
         }
+        return max(1, $this->getSpacecraft()->getRump()->getBaseValues()->getModuleLevel() - 1);
     }
 
     public function hasSpecial(ModuleSpecialAbilityEnum $ability): bool

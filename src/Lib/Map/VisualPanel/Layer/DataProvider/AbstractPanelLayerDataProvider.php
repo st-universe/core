@@ -39,10 +39,8 @@ abstract class AbstractPanelLayerDataProvider implements PanelLayerDataProviderI
         if ($boundaries->isOnMap()) {
 
             return $this->provideDataForMap($boundaries);
-        } else {
-
-            return $this->provideDataForSystemMap($boundaries);
         }
+        return $this->provideDataForSystemMap($boundaries);
     }
 
     protected function createResultSetMapping(): ResultSetMapping

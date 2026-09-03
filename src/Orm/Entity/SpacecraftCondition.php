@@ -33,7 +33,7 @@ class SpacecraftCondition
 
     #[Id]
     #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'condition')]
-    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
     // transitive fields

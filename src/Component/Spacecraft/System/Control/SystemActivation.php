@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Component\Spacecraft\System\Control;
 
 use Stu\Component\Spacecraft\System\Exception\ActivationConditionsNotMetException;

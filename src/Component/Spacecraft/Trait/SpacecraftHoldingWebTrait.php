@@ -39,13 +39,10 @@ trait SpacecraftHoldingWebTrait
         }
 
         if ($holdingWeb->isFinished()) {
-            $icon =  'webfill.png';
-        } else {
-            $closeTofinish = $holdingWeb->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
-
-            $icon = $closeTofinish ? 'web_ufill.png' : 'web_ufill2.png';
+            return 'webfill.png';
         }
+        $closeTofinish = $holdingWeb->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
 
-        return $icon;
+        return $closeTofinish ? 'web_ufill.png' : 'web_ufill2.png';
     }
 }

@@ -63,7 +63,7 @@ class Research
     private ?int $upper_limit_colony_amount = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]

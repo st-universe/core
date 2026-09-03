@@ -40,11 +40,11 @@ class TorpedoStorage
     private bool $is_active = false;
 
     #[ManyToOne(targetEntity: Spacecraft::class, inversedBy: 'torpedoStorages')]
-    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
-    #[JoinColumn(name: 'torpedo_type', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'torpedo_type', referencedColumnName: 'id', nullable: false)]
     private TorpedoType $torpedo;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'torpedoStorage')]

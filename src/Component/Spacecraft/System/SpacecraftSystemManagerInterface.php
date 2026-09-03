@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Component\Spacecraft\System;
 
 use Doctrine\Common\Collections\Collection;

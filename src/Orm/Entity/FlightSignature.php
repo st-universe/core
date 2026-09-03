@@ -40,10 +40,10 @@ class FlightSignature
     #[Column(type: 'integer')]
     private int $time = 0;
 
-    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
+    #[Column(type: 'smallint', length: 1, nullable: true, enumType: DirectionEnum::class)]
     private ?DirectionEnum $from_direction = null;
 
-    #[Column(type: 'smallint', length: 1, enumType: DirectionEnum::class, nullable: true)]
+    #[Column(type: 'smallint', length: 1, nullable: true, enumType: DirectionEnum::class)]
     private ?DirectionEnum $to_direction = null;
 
     #[Column(type: 'string')]
@@ -53,11 +53,11 @@ class FlightSignature
     private bool $is_cloaked = false;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false)]
     private SpacecraftRump $rump;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'signatures')]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     public function getId(): int

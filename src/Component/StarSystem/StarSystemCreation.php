@@ -176,12 +176,10 @@ final class StarSystemCreation implements StarSystemCreationInterface
         $colonyClass = $systemMap->getFieldType()->getColonyClass();
         if ($colonyClass !== null) {
             if ($colonyClass->getType() === ColonyTypeEnum::ASTEROID) {
-                $identifer = sprintf('%s %s', $colonyClass->getName(), $starSystem->getName());
-            } else {
-                $identifer = sprintf('%s %s', $starSystem->getName(), $mapData->getIdentifier($index));
+                return sprintf('%s %s', $colonyClass->getName(), $starSystem->getName());
             }
 
-            return $identifer;
+            return sprintf('%s %s', $starSystem->getName(), $mapData->getIdentifier($index));
         }
 
         return null;

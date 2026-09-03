@@ -177,19 +177,19 @@ final class CreateNPCQuest implements ActionControllerInterface
 
         $quest->setApprovalRequired($approvalRequired);
 
-        if (!empty($validatedFactions)) {
+        if ($validatedFactions !== []) {
             $quest->setFactions($validatedFactions);
         }
 
-        if (!empty($validatedCommodities)) {
+        if ($validatedCommodities !== []) {
             $quest->setCommodityReward($validatedCommodities);
         }
 
-        if (!empty($validatedSpacecrafts)) {
+        if ($validatedSpacecrafts !== []) {
             $quest->setSpacecrafts($validatedSpacecrafts);
         }
 
-        if (!empty($validatedSecretFactions)) {
+        if ($validatedSecretFactions !== []) {
             $quest->setSecret($validatedSecretFactions);
         }
 

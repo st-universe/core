@@ -35,11 +35,11 @@ class LocationMining
     private ?int $depleted_at = null;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'locationMinings')]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false)]
     private Commodity $commodity;
 
     public function getId(): int

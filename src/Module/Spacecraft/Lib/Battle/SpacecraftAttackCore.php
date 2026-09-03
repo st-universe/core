@@ -90,9 +90,8 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
 
         if ($tractoringShip !== $target) {
             return false;
-        } else {
-            return $target->getWarpDriveState();
         }
+        return $target->getWarpDriveState();
     }
 
     private function sendPms(

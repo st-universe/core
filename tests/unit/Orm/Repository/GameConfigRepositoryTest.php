@@ -83,7 +83,7 @@ class GameConfigRepositoryTest extends StuTestCase
             ->once()
             ->andReturn($item);
 
-        static::assertSame(
+        self::assertSame(
             $item,
             $this->subject->getByOption($optionId)
         );

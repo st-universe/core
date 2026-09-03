@@ -72,7 +72,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         }
 
         $shipIds = request::postArray('spacecrafts');
-        if (count($shipIds) == 0) {
+        if (count($shipIds) === 0) {
             $game->getInfo()->addInformation('Es wurden keine Schiffe ausgewählt');
             return;
         }
@@ -102,7 +102,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
 
             $messages = $this->manageWarpcoreTransfer->manage($targetWrapper, $values, $managerProvider);
 
-            if (!empty($messages) && $spacecraft->getUser() !== $targetShip->getUser()) {
+            if ($messages !== [] && $spacecraft->getUser() !== $targetShip->getUser()) {
                 $targetUserId = $targetShip->getUser()->getId();
                 if (!isset($transfersByUser[$targetUserId])) {
                     $transfersByUser[$targetUserId] = [

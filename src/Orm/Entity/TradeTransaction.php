@@ -45,11 +45,11 @@ class TradeTransaction
     private int $tradepost_id = 0;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'wg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'wg_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $wantedCommodity;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'gg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $offeredCommodity;
 
     public function getId(): int

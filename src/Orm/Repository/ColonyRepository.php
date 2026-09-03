@@ -346,9 +346,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
         if ($location instanceof StarSystemMap) {
             return $this->getClosestColonizableColonyInSystem($spacecraft);
-        } else {
-            return $this->getClosestSystemWithColonizableColonies($spacecraft);
         }
+        return $this->getClosestSystemWithColonizableColonies($spacecraft);
     }
 
     private function getClosestColonizableColonyInSystem(Spacecraft $spacecraft): ?int

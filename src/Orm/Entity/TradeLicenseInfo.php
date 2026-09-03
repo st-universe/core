@@ -40,11 +40,11 @@ class TradeLicenseInfo
     private int $date = 0;
 
     #[ManyToOne(targetEntity: TradePost::class)]
-    #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     public function getId(): int

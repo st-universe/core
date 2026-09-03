@@ -81,7 +81,7 @@ class User
     private ?Alliance $alliance = null;
 
     #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', nullable: false)]
     private Faction $faction;
 
     /**
@@ -128,7 +128,7 @@ class User
     /**
      * @var ArrayCollection<int, ColonyScan>
      */
-    #[OneToMany(targetEntity: ColonyScan::class, mappedBy: 'user', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: ColonyScan::class, mappedBy: 'user', fetch: 'EXTRA_LAZY', indexBy: 'id')]
     #[OrderBy(['colony_id' => 'ASC', 'date' => 'ASC'])]
     private Collection $colonyScans;
 
@@ -138,7 +138,7 @@ class User
     /**
      * @var ArrayCollection<int, UserTutorial>
      */
-    #[OneToMany(targetEntity: UserTutorial::class, mappedBy: 'user', indexBy: 'tutorial_step_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: UserTutorial::class, mappedBy: 'user', fetch: 'EXTRA_LAZY', indexBy: 'tutorial_step_id')]
     private Collection $tutorials;
 
     /**
@@ -390,7 +390,7 @@ class User
 
     public function isContactable(): bool
     {
-        return $this->getId() != UserConstants::USER_NOONE;
+        return $this->getId() !== UserConstants::USER_NOONE;
     }
 
     public function hasAward(int $awardId): bool

@@ -120,7 +120,7 @@ class RelationItemVertexBuilderTest extends StuTestCase
             ->once()
             ->andReturn($url);
 
-        static::assertSame(
+        self::assertSame(
             $vertex,
             $this->subject->build($graph, $alliance)
         );

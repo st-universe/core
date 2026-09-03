@@ -129,7 +129,7 @@ class SpacecraftNfsItem
 
     public function isContactable(): bool
     {
-        return $this->getUserId() != UserConstants::USER_NOONE;
+        return $this->getUserId() !== UserConstants::USER_NOONE;
     }
 
     public function getUserName(): string

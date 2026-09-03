@@ -35,11 +35,11 @@ class UserPirateRound
     private int $prestige = 0;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: PirateRound::class)]
-    #[JoinColumn(name: 'pirate_round_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'pirate_round_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private PirateRound $pirateRound;
 
     public function getId(): int

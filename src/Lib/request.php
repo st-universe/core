@@ -71,7 +71,7 @@ class request
     public static function getInt(string $var, int $std = 0): int
     {
         $int = self::getVarByMethod(self::getvars(), $var);
-        if (strlen($int) == 0) {
+        if ((string) $int === '') {
             return $std;
         }
         return self::returnInt($int);

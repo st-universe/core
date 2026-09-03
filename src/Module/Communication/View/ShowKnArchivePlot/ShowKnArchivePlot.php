@@ -39,7 +39,7 @@ final class ShowKnArchivePlot implements ViewControllerInterface
 
         $mark = $this->showKnArchivePlotRequest->getKnOffset();
 
-        if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
+        if ($mark % GameEnum::KN_PER_SITE !== 0 || $mark < 0) {
             $mark = 0;
         }
 

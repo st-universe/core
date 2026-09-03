@@ -31,7 +31,7 @@ final class TransferCommodities implements ActionControllerInterface
         $amount = $this->transferCommoditiesRequest->getAmount();
         $destinationTradePostId = $this->transferCommoditiesRequest->getDestinationTradePostId();
 
-        if ($destinationTradePostId == -1) {
+        if ($destinationTradePostId === -1) {
             return;
         }
 

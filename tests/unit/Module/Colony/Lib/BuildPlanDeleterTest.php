@@ -127,7 +127,7 @@ class BuildPlanDeleterTest extends StuTestCase
         $this->colonyShipQueueRepository->shouldNotReceive('getCountByBuildplan');
         $this->shipyardShipQueueRepository->shouldNotReceive('getCountByBuildplan');
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
@@ -153,7 +153,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->andReturn(42);
         $this->shipyardShipQueueRepository->shouldNotReceive('getCountByBuildplan');
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
@@ -182,7 +182,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isDeletable($spacecraftBuildplan)
         );
     }
@@ -211,7 +211,7 @@ class BuildPlanDeleterTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->isDeletable($spacecraftBuildplan)
         );
     }

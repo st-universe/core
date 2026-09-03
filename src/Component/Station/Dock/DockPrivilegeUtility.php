@@ -32,8 +32,8 @@ final class DockPrivilegeUtility implements DockPrivilegeUtilityInterface
         $isMatch = match ($privilege->getPrivilegeType()) {
             DockTypeEnum::USER => $privilege->getTargetId() === $user->getId(),
             DockTypeEnum::ALLIANCE => $userAlliance !== null && $privilege->getTargetId() === $userAlliance->getId(),
-            DockTypeEnum::FACTION => $privilege->getTargetId() == $user->getFactionId(),
-            DockTypeEnum::SHIP => $source instanceof Ship && $privilege->getTargetId() == $source->getId(),
+            DockTypeEnum::FACTION => $privilege->getTargetId() === $user->getFactionId(),
+            DockTypeEnum::SHIP => $source instanceof Ship && $privilege->getTargetId() === $source->getId(),
         };
 
         if (!$isMatch) {

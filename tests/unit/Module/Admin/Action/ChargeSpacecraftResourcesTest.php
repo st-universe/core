@@ -140,6 +140,6 @@ class ChargeSpacecraftResourcesTest extends StuTestCase
 
     public function testPerformSessionCheckReturnsTrue(): void
     {
-        static::assertTrue($this->subject->performSessionCheck());
+        self::assertTrue($this->subject->performSessionCheck());
     }
 }

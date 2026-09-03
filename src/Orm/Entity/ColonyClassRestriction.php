@@ -29,7 +29,7 @@ class ColonyClassRestriction
     private ?int $building_id = null;
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
-    #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', nullable: false)]
     private ColonyClass $colonyClass;
 
     #[ManyToOne(targetEntity: Terraforming::class)]

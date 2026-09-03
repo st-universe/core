@@ -37,8 +37,8 @@ final class WormholeEntryPrivilegeUtility implements WormholeEntryPrivilegeUtili
         $isMatch = match ($privilegeType) {
             WormholeEntryTypeEnum::USER => $restriction->getTargetId() === $user->getId(),
             WormholeEntryTypeEnum::ALLIANCE => $userAlliance !== null && $restriction->getTargetId() === $userAlliance->getId(),
-            WormholeEntryTypeEnum::FACTION => $restriction->getTargetId() == $user->getFactionId(),
-            WormholeEntryTypeEnum::SHIP => $source instanceof Spacecraft && $restriction->getTargetId() == $source->getId(),
+            WormholeEntryTypeEnum::FACTION => $restriction->getTargetId() === $user->getFactionId(),
+            WormholeEntryTypeEnum::SHIP => $source instanceof Spacecraft && $restriction->getTargetId() === $source->getId(),
         };
 
         if (!$isMatch) {

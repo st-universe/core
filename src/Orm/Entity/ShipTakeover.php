@@ -38,11 +38,11 @@ class ShipTakeover
     private int $prestige = 0;
 
     #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'takeoverActive')]
-    #[JoinColumn(name: 'source_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'source_spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $source;
 
     #[OneToOne(targetEntity: Spacecraft::class, inversedBy: 'takeoverPassive')]
-    #[JoinColumn(name: 'target_spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'target_spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $target;
 
     public function getId(): int

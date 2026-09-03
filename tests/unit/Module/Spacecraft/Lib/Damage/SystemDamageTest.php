@@ -59,11 +59,11 @@ class SystemDamageTest extends StuTestCase
 
         $result = $this->subject->damageShipSystem($wrapper, $system, 30, $informations);
 
-        static::assertTrue($result);
-        static::assertTrue($condition->isDestroyed());
-        static::assertSame(0, $system->getStatus());
-        static::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $system->getMode());
-        static::assertSame(
+        self::assertTrue($result);
+        self::assertTrue($condition->isDestroyed());
+        self::assertSame(0, $system->getStatus());
+        self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $system->getMode());
+        self::assertSame(
             [
                 '- Der Schaden zerstört folgendes System: Torpedolager',
                 '-- Das Schiff wurde zerstört!'

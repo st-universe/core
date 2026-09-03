@@ -55,7 +55,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
             throw new RuntimeException('this should not happen');
         }
 
-        if ($mark % self::PMLIMITER != 0 || $mark < 0) {
+        if ($mark % self::PMLIMITER !== 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->privateMessageRepository->getAmountByFolder($category);

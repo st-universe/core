@@ -50,7 +50,7 @@ class AllianceBoard
     private Collection $posts;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Alliance $alliance;
 
     public function __construct()

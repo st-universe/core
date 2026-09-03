@@ -38,7 +38,7 @@ class UserRepositoryTest extends IntegrationTestCase
                     $userRepository->lockUsersForUpdate($orderedUserIds);
 
                     $lockedUsers = $entityManager->getRepository(User::class)->findBy(['id' => $orderedUserIds]);
-                    static::assertCount(2, $lockedUsers);
+                    self::assertCount(2, $lockedUsers);
                 });
             }
         } finally {

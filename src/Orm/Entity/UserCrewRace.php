@@ -18,7 +18,7 @@ class UserCrewRace
 {
     #[Id]
     #[ManyToOne(targetEntity: CrewRace::class)]
-    #[JoinColumn(name: 'crew_race_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'crew_race_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private CrewRace $crewRace;
 
     #[Id]

@@ -29,11 +29,11 @@ class Buoy
     private string $text;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'buoys')]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     #[ManyToOne(targetEntity: User::class, inversedBy: 'buoys')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

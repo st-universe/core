@@ -51,7 +51,7 @@ class ShipRumpCategoryRoleCrew
     private int $job_6_crew = 0;
 
     #[ManyToOne(targetEntity: ShipRumpRole::class)]
-    #[JoinColumn(name: 'rump_role_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ShipRumpRole $shiprumpRole;
 
     public function getId(): int

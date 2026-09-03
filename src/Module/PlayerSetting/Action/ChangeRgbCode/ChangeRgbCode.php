@@ -20,7 +20,7 @@ final class ChangeRgbCode implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $value = request::postStringFatal('rgb_code');
-        if (strlen($value) != 7) {
+        if (strlen($value) !== 7) {
             $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
             return;
         }

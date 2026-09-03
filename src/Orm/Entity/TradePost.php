@@ -53,7 +53,7 @@ class TradePost
     private ?bool $is_dock_pm_auto_read = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
     /**
@@ -64,7 +64,7 @@ class TradePost
     private Collection $licenseInfos;
 
     #[OneToOne(targetEntity: Station::class, inversedBy: 'tradePost')]
-    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Station $station;
 
     /**

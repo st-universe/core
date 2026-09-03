@@ -44,11 +44,11 @@ class DatabaseEntry
     private ?int $layer_id = null;
 
     #[ManyToOne(targetEntity: DatabaseType::class)]
-    #[JoinColumn(name: 'type', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'type', referencedColumnName: 'id', nullable: false)]
     private DatabaseType $type_object;
 
     #[ManyToOne(targetEntity: DatabaseCategory::class, inversedBy: 'entries')]
-    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
     private DatabaseCategory $category;
 
     public function getId(): int

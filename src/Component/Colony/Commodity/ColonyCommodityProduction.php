@@ -33,7 +33,7 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
                 $data['pc']
             );
 
-            if ($colonyProduction->getProduction() != 0) {
+            if ($colonyProduction->getProduction() !== 0) {
                 $production[$commodityId] = $colonyProduction;
             }
         }

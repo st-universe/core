@@ -42,10 +42,8 @@ class AttackedBattleParty extends AbstractBattleParty
             return $allDefenders->isEmpty()
                 ? $fleetWrapper->getShipWrappers()
                 : $allDefenders;
-        } else {
-
-            return $this->addDockedTo([$this->leader->get()->getId() => $this->leader]);
         }
+        return $this->addDockedTo([$this->leader->get()->getId() => $this->leader]);
     }
 
     /**

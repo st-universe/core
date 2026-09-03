@@ -50,7 +50,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->tal->getId()
         );
@@ -65,7 +65,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->tal->getKnId()
         );
@@ -80,7 +80,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->tal->getText()
         );
@@ -95,7 +95,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->tal->getDate()
         );
@@ -110,7 +110,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->tal->getUserId()
         );
@@ -125,7 +125,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($userName);
 
-        static::assertSame(
+        self::assertSame(
             $userName,
             $this->tal->getDisplayUserName()
         );
@@ -145,7 +145,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn('');
 
-        static::assertSame(
+        self::assertSame(
             $userName,
             $this->tal->getDisplayUserName()
         );
@@ -157,7 +157,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->withNoArgs()
             ->andReturn('some-name');
 
-        static::assertSame(
+        self::assertSame(
             '',
             $this->tal->getUserAvatarPath()
         );
@@ -189,7 +189,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($basePath);
 
-        static::assertSame(
+        self::assertSame(
             sprintf(
                 '/%s/%s.png',
                 $basePath,
@@ -212,7 +212,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($otherUser);
 
-        static::assertFalse(
+        self::assertFalse(
             $this->tal->isDeleteable()
         );
     }
@@ -224,7 +224,7 @@ class KnCommentWrapperTest extends StuTestCase
             ->once()
             ->andReturn($this->user);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->tal->isDeleteable()
         );
     }

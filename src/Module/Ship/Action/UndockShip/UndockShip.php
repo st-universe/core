@@ -88,7 +88,7 @@ final class UndockShip implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() === 0) {
             $game->getInfo()->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }

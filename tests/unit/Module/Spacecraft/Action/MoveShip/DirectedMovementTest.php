@@ -175,7 +175,7 @@ class DirectedMovementTest extends StuTestCase
 
         $subject->handle($game);
 
-        static::assertTrue(
+        self::assertTrue(
             $subject->performSessionCheck()
         );
     }
@@ -601,7 +601,7 @@ class DirectedMovementTest extends StuTestCase
 
         $subject->handle($game);
 
-        static::assertTrue(
+        self::assertTrue(
             $subject->performSessionCheck()
         );
     }

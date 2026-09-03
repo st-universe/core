@@ -44,7 +44,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         );
 
         $spacecraftIds = request::postArray('spacecrafts');
-        if (count($spacecraftIds) == 0) {
+        if (count($spacecraftIds) === 0) {
             $game->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }

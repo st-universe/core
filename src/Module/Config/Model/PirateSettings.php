@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Config\Model;
 
 class PirateSettings extends AbstractSettings implements PirateSettingsInterface

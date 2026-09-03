@@ -20,7 +20,7 @@ class GraphvizFactoryTest extends StuTestCase
 
     public function testCreateGraphReturnsGraph(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             Graph::class,
             $this->subject->createGraph()
         );
@@ -28,7 +28,7 @@ class GraphvizFactoryTest extends StuTestCase
 
     public function testCreateGraphVizReturnsGraphViz(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             GraphViz::class,
             $this->subject->createGraphViz()
         );

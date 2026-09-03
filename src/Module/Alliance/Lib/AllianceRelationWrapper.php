@@ -21,16 +21,14 @@ final class AllianceRelationWrapper
         if ($this->relation->getType() === AllianceRelationTypeEnum::VASSAL) {
             if ($this->relation->getAlliance()->getId() === $this->alliance->getId()) {
                 return sprintf('Hat die Allianz %s als %s', $toName, $typeDescription);
-            } else {
-                return sprintf('Ist %s der Allianz %s', $typeDescription, $fromName);
             }
+            return sprintf('Ist %s der Allianz %s', $typeDescription, $fromName);
         }
 
         if ($this->relation->getAlliance()->getId() === $this->alliance->getId()) {
             return sprintf('%s mit %s', $typeDescription, $toName);
-        } else {
-            return sprintf('%s mit %s', $typeDescription, $fromName);
         }
+        return sprintf('%s mit %s', $typeDescription, $fromName);
     }
 
     public function getDate(): int

@@ -105,7 +105,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             ->with($user)
             ->once();
 
-        static::assertSame(
+        self::assertSame(
             $user,
             $this->subject->createPlayer(
                 $loginName,

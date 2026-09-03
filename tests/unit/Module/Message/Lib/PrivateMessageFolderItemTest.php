@@ -38,7 +38,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getId()
         );
@@ -53,7 +53,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getDescription()
         );
@@ -66,7 +66,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->isDropable()
         );
     }
@@ -80,7 +80,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getCategoryCount()
         );
@@ -95,7 +95,7 @@ class PrivateMessageFolderItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getCategoryCountNew()
         );

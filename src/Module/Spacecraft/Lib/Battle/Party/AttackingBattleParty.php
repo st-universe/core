@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\Collection;
@@ -35,8 +37,7 @@ class AttackingBattleParty extends AbstractBattleParty
             && $ship->isFleetLeader() && $fleetWrapper !== null
         ) {
             return $fleetWrapper->getShipWrappers();
-        } else {
-            return $this->createSingleton($this->wrapper);
         }
+        return $this->createSingleton($this->wrapper);
     }
 }

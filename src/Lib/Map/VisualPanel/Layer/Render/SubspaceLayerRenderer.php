@@ -63,10 +63,10 @@ final class SubspaceLayerRenderer implements LayerRendererInterface
 
     private function getCode(int $shipCount): int
     {
-        if ($shipCount == 0) {
+        if ($shipCount === 0) {
             return 0;
         }
-        if ($shipCount == 1) {
+        if ($shipCount === 1) {
             return 1;
         }
         if ($shipCount < 6) {

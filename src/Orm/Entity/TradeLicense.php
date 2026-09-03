@@ -39,11 +39,11 @@ class TradeLicense
     private int $expired = 0;
 
     #[ManyToOne(targetEntity: TradePost::class)]
-    #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

@@ -34,7 +34,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
 
     public function testGetCounterpartReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->counterpart,
             $this->subject->getCounterpart()
         );
@@ -42,7 +42,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
 
     public function testGetAllianceReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->alliance,
             $this->subject->getAlliance()
         );
@@ -50,7 +50,7 @@ class DiplomaticRelationProposedEventTest extends StuTestCase
 
     public function testGetRelationTypeIdReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->relationType,
             $this->subject->getRelationType()
         );

@@ -17,15 +17,13 @@ class SignatureWrapper
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::RUMP_VISIBILITY_CLOAKED)) {
                 return $this->signature->getRump();
-            } else {
-                return null;
             }
+            return null;
         }
         if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::RUMP_VISIBILITY_UNCLOAKED)) {
             return $this->signature->getRump();
-        } else {
-            return null;
         }
+        return null;
     }
 
     public function getShipName(): ?string
@@ -33,15 +31,13 @@ class SignatureWrapper
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::NAME_VISIBILITY_CLOAKED)) {
                 return $this->signature->getShipName();
-            } else {
-                return null;
             }
+            return null;
         }
         if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::NAME_VISIBILITY_UNCLOAKED)) {
             return $this->signature->getShipName();
-        } else {
-            return null;
         }
+        return null;
     }
 
     public function getAge(): int

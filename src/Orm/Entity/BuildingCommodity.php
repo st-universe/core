@@ -34,11 +34,11 @@ class BuildingCommodity
     private int $count = 0;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingCommodities')]
-    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Building $building;
 
     public function getId(): int

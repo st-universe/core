@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Component\Ship\Mining;
 
 use Stu\Module\Ship\Lib\ShipWrapperInterface;

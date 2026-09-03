@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Tick\Spacecraft\ManagerComponent;
 
 use Stu\Component\Anomaly\AnomalyHandlingInterface;

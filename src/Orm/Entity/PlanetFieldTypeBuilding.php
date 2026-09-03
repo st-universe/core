@@ -41,7 +41,7 @@ class PlanetFieldTypeBuilding
      * @var Building
      */
     #[ManyToOne(targetEntity: Building::class, inversedBy: 'buildingPossibleFieldTypes')]
-    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private $building;
 
     public function getId(): int

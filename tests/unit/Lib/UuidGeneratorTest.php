@@ -18,7 +18,7 @@ class UuidGeneratorTest extends StuTestCase
 
     public function testGenV4ReturnsUuid(): void
     {
-        static::assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             '/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/',
             $this->subject->genV4()
         );

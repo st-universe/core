@@ -56,9 +56,8 @@ return [
             $cacheProvider = $c->get(CacheProviderInterface::class);
 
             return $cacheProvider->getRedisCachePool();
-        } else {
-            return new ArrayAdapter();
         }
+        return new ArrayAdapter();
     },
     SqlLogger::class => function (): SqlLogger {
         return new SqlLogger(

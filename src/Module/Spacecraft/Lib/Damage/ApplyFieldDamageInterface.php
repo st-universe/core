@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;

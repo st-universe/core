@@ -38,15 +38,15 @@ class NPCLogRepositoryTest extends IntegrationTestCase
         try {
             $result = $repository->getByFactionAndSearch(null, 10, '', 4242, false);
 
-            static::assertContains($matchingLog, $result);
-            static::assertContains($sameUserOtherTextLog, $result);
-            static::assertNotContains($otherUserMatchingTextLog, $result);
+            self::assertContains($matchingLog, $result);
+            self::assertContains($sameUserOtherTextLog, $result);
+            self::assertNotContains($otherUserMatchingTextLog, $result);
 
             $result = $repository->getByFactionAndSearch(null, 10, 'needle', 4242, false);
 
-            static::assertContains($matchingLog, $result);
-            static::assertNotContains($sameUserOtherTextLog, $result);
-            static::assertNotContains($otherUserMatchingTextLog, $result);
+            self::assertContains($matchingLog, $result);
+            self::assertNotContains($sameUserOtherTextLog, $result);
+            self::assertNotContains($otherUserMatchingTextLog, $result);
         } finally {
             $repository->delete($matchingLog);
             $repository->delete($sameUserOtherTextLog);

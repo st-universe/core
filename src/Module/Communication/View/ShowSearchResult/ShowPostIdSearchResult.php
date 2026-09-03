@@ -28,7 +28,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         $id = $this->showSearchResultRequest->getSearchId();
-        if ($id == 0) {
+        if ($id === 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
             $game->getInfo()->addInformation('Bitte eine Beitrag-ID angeben!');
 

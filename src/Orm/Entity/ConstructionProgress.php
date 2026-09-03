@@ -40,7 +40,7 @@ class ConstructionProgress
     private Collection $specialModules;
 
     #[OneToOne(targetEntity: Station::class)]
-    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Station $station;
 
     public function __construct()

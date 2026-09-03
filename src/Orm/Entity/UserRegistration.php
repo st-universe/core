@@ -22,7 +22,7 @@ class UserRegistration
 
     #[Id]
     #[OneToOne(targetEntity: User::class, inversedBy: 'registration')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Column(type: 'string', length: self::LOGIN_MAX_LENGTH)]

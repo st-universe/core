@@ -53,19 +53,19 @@ class TradeOffer
     private int $date = 0;
 
     #[ManyToOne(targetEntity: TradePost::class)]
-    #[JoinColumn(name: 'posts_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'posts_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private TradePost $tradePost;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'wg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'wg_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $wantedCommodity;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'gg_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'gg_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $offeredCommodity;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'tradeOffer')]

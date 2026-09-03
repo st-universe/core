@@ -31,7 +31,7 @@ final class ShowKnPlot implements ViewControllerInterface
         }
         $mark = $this->showKnPlotRequest->getKnOffset();
 
-        if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
+        if ($mark % GameEnum::KN_PER_SITE !== 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->knPostRepository->getAmountByPlot($plot->getId());

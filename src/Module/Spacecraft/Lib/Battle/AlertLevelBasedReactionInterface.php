@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Stu\Lib\Information\InformationInterface;

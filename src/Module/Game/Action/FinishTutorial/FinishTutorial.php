@@ -38,7 +38,7 @@ final class FinishTutorial implements ActionControllerInterface
             'view' => $tutorialStep->getView()
         ]);
 
-        if (empty($allStepsForView)) {
+        if ($allStepsForView === []) {
             return;
         }
 

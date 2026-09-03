@@ -88,7 +88,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             return;
         }
 
-        if ($target->getCrewCount() == 0) {
+        if ($target->getCrewCount() === 0) {
             $game->getInfo()->addInformation('Keine Rettungskapseln vorhanden');
             return;
         }

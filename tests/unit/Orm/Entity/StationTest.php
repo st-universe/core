@@ -68,7 +68,7 @@ class StationTest extends StuTestCase
             ->once()
             ->andReturn(true);
 
-        $result = $this->subject->getDockedWorkbeeCount($this->subject);
+        $result = $this->subject->getDockedWorkbeeCount();
 
         $this->assertEquals(1, $result);
     }

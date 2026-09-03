@@ -32,7 +32,7 @@ class ModuleSpecial
     private ModuleSpecialAbilityEnum $special_id = ModuleSpecialAbilityEnum::RPG;
 
     #[ManyToOne(targetEntity: Module::class, inversedBy: 'moduleSpecials')]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false)]
     private Module $module;
 
     public function getId(): int

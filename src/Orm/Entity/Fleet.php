@@ -43,7 +43,7 @@ class Fleet
     private string $hiddenStyle;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     /**
@@ -54,15 +54,15 @@ class Fleet
     private Collection $ships;
 
     #[OneToOne(targetEntity: Ship::class)]
-    #[JoinColumn(name: 'ships_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'ships_id', referencedColumnName: 'id', nullable: false)]
     private Ship $fleetLeader;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'defenders')]
-    #[JoinColumn(name: 'defended_colony_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'defended_colony_id', referencedColumnName: 'id', nullable: true)]
     private ?Colony $defendedColony = null;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'blockers')]
-    #[JoinColumn(name: 'blocked_colony_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'blocked_colony_id', referencedColumnName: 'id', nullable: true)]
     private ?Colony $blockedColony = null;
 
     public function __construct()

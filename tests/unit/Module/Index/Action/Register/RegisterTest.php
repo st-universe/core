@@ -539,7 +539,7 @@ class RegisterTest extends StuTestCase
 
     public function testPerformSessionCheckReturnsFalse(): void
     {
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->performSessionCheck()
         );
     }

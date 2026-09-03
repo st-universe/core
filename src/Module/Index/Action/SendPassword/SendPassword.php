@@ -32,7 +32,7 @@ final class SendPassword implements ActionControllerInterface
 
         $emailAddress = $this->sendPasswordRequest->getEmailAddress();
 
-        if (mb_strlen($emailAddress) == 0) {
+        if (mb_strlen($emailAddress) === 0) {
             $game->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }

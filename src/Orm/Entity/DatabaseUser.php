@@ -34,11 +34,11 @@ class DatabaseUser
     private int $date;
 
     #[ManyToOne(targetEntity: DatabaseEntry::class)]
-    #[JoinColumn(name: 'database_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'database_id', referencedColumnName: 'id', nullable: false)]
     private DatabaseEntry $databaseEntry;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

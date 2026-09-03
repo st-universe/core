@@ -93,7 +93,7 @@ class ManageCrew implements ManagerInterface
     ): void {
         $ship = $wrapper->get();
 
-        if ($managerProvider->getFreeCrewAmount() == 0) {
+        if ($managerProvider->getFreeCrewAmount() === 0) {
             $msg[] = sprintf(
                 _('%s: Keine Crew auf der %s vorhanden'),
                 $ship->getName(),
@@ -143,7 +143,7 @@ class ManageCrew implements ManagerInterface
     ): void {
         $ship = $wrapper->get();
         $user = $managerProvider->getUser();
-        if ($managerProvider->getFreeCrewStorage() == 0) {
+        if ($managerProvider->getFreeCrewStorage() === 0) {
             $msg[] = sprintf(
                 _('%s: Kein Platz für die Crew auf der %s'),
                 $ship->getName(),

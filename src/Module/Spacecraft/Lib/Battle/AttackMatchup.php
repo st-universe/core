@@ -28,13 +28,12 @@ final class AttackMatchup implements AttackMatchupInterface
 
         if ($firstStrike) {
             return $this->getMatchupInternal($attackers, $defenders);
-        } else {
-            return $this->getMatchupForFurtherStrike(
-                $attackers,
-                $defenders,
-                $oneWay
-            );
         }
+        return $this->getMatchupForFurtherStrike(
+            $attackers,
+            $defenders,
+            $oneWay
+        );
     }
 
     private function getMatchupInternal(
@@ -63,13 +62,13 @@ final class AttackMatchup implements AttackMatchupInterface
         if ($attackersDone && $defendersDone) {
             return null;
         }
-
         if ($attackersDone) {
             return $this->getMatchupInternal($defenders, $attackers);
-        } elseif ($defendersDone || $this->stuRandom->rand(1, 2) === 1) {
-            return $this->getMatchupInternal($attackers, $defenders);
-        } else {
-            return $this->getMatchupInternal($defenders, $attackers);
         }
+
+        if ($defendersDone || $this->stuRandom->rand(1, 2) === 1) {
+            return $this->getMatchupInternal($attackers, $defenders);
+        }
+        return $this->getMatchupInternal($defenders, $attackers);
     }
 }

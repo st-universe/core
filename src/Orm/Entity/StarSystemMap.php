@@ -31,7 +31,7 @@ class StarSystemMap extends Location
     private int $systems_id = 0;
 
     #[ManyToOne(targetEntity: StarSystem::class, inversedBy: 'fields')]
-    #[JoinColumn(name: 'systems_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'systems_id', referencedColumnName: 'id', nullable: false)]
     private StarSystem $starSystem;
 
     #[OneToOne(targetEntity: Colony::class, mappedBy: 'starsystemMap')]

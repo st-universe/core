@@ -32,7 +32,7 @@ class Ship extends Spacecraft
     private ?Fleet $fleet = null;
 
     #[ManyToOne(targetEntity: Station::class, inversedBy: 'dockedShips')]
-    #[JoinColumn(name: 'docked_to_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'docked_to_id', referencedColumnName: 'id', nullable: true)]
     private ?Station $dockedTo = null;
 
     #[OneToOne(targetEntity: Spacecraft::class, mappedBy: 'tractoredShip')]

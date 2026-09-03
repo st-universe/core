@@ -34,11 +34,11 @@ class AuctionBid
     private int $max_amount;
 
     #[ManyToOne(targetEntity: Deals::class)]
-    #[JoinColumn(name: 'auction_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'auction_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Deals $auction;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

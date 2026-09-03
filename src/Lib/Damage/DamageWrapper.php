@@ -215,7 +215,7 @@ class DamageWrapper
         }
 
         if ($this->getIsTorpedoDamage() === true) {
-            $damage = round($damage * ($this->getModificator() / 100));
+            return round($damage * ($this->getModificator() / 100));
         }
         return $damage;
     }

@@ -38,11 +38,11 @@ class WeaponShield
     private ?int $faction_id = 0;
 
     #[ManyToOne(targetEntity: Weapon::class)]
-    #[JoinColumn(name: 'weapon_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'weapon_id', referencedColumnName: 'id', nullable: false)]
     private Weapon $weapon;
 
     #[ManyToOne(targetEntity: Module::class)]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false)]
     private Module $module;
 
     public function getId(): int

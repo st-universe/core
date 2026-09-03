@@ -47,15 +47,15 @@ class AllianceBoardPost
     private ?int $lastedit = null;
 
     #[ManyToOne(targetEntity: AllianceBoardTopic::class, inversedBy: 'posts')]
-    #[JoinColumn(name: 'topic_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'topic_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private AllianceBoardTopic $topic;
 
     #[ManyToOne(targetEntity: AllianceBoard::class, inversedBy: 'posts')]
-    #[JoinColumn(name: 'board_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'board_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private AllianceBoard $board;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

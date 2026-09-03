@@ -91,7 +91,7 @@ final class UserList implements ViewControllerInterface
     private function getUserListNavigation(): array
     {
         $mark = $this->userListRequest->getPagination();
-        if ($mark % self::LIST_LIMIT != 0 || $mark < 0) {
+        if ($mark % self::LIST_LIMIT !== 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->userRepository->getActiveAmount();

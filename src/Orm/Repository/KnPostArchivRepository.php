@@ -98,7 +98,7 @@ final class KnPostArchivRepository extends EntityRepository implements KnPostArc
     #[\Override]
     public function getPlotsByIds(array $plotIds): array
     {
-        if (empty($plotIds)) {
+        if ($plotIds === []) {
             return [];
         }
 

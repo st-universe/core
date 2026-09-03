@@ -130,7 +130,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
                     $regionId = $region->getId();
                     $mapFields = $this->mapRepository->getMapFieldsByRegion($regionId);
 
-                    if (!empty($mapFields)) {
+                    if ($mapFields !== []) {
                         $minX = $maxX = $mapFields[0]->getCx();
                         $minY = $maxY = $mapFields[0]->getCy();
                         $layer = $mapFields[0]->getLayer();

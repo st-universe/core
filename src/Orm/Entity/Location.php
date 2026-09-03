@@ -48,23 +48,23 @@ abstract class Location
     private ?int $cy = null;
 
     #[ManyToOne(targetEntity: Layer::class)]
-    #[JoinColumn(name: 'layer_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', nullable: true)]
     protected ?Layer $layer;
 
     #[ManyToOne(targetEntity: MapFieldType::class)]
-    #[JoinColumn(name: 'field_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'field_id', referencedColumnName: 'id', nullable: false)]
     private MapFieldType $mapFieldType;
 
     /**
      * @var ArrayCollection<int, Spacecraft>
      */
-    #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Spacecraft::class, mappedBy: 'location', fetch: 'EXTRA_LAZY', indexBy: 'id')]
     private Collection $spacecrafts;
 
     /**
      * @var ArrayCollection<int, Trumfield>
      */
-    #[OneToMany(targetEntity: Trumfield::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Trumfield::class, mappedBy: 'location', fetch: 'EXTRA_LAZY', indexBy: 'id')]
     private Collection $trumfields;
 
     /**
@@ -77,13 +77,13 @@ abstract class Location
     /**
      * @var ArrayCollection<int, Buoy>
      */
-    #[OneToMany(targetEntity: Buoy::class, mappedBy: 'location', indexBy: 'id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Buoy::class, mappedBy: 'location', fetch: 'EXTRA_LAZY', indexBy: 'id')]
     private Collection $buoys;
 
     /**
      * @var ArrayCollection<int, Anomaly>
      */
-    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'location', indexBy: 'anomaly_type_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: Anomaly::class, mappedBy: 'location', fetch: 'EXTRA_LAZY', indexBy: 'anomaly_type_id')]
     private Collection $anomalies;
 
     /**

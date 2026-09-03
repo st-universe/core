@@ -41,7 +41,7 @@ final class SetPopulationLimit implements ActionControllerInterface
         if ($limit > 0) {
             $game->getInfo()->addInformationf(_('Das Bevölkerungslimit wurde auf %d gesetzt'), $limit);
         }
-        if ($limit == 0) {
+        if ($limit === 0) {
             $game->getInfo()->addInformation(_('Das Bevölkerungslimit wurde aufgehoben'));
         }
     }

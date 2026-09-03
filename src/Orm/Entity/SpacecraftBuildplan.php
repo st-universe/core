@@ -60,17 +60,17 @@ class SpacecraftBuildplan
     private Collection $spacecrafts;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $shipRump;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     /**
      * @var ArrayCollection<int, BuildplanModule>
      */
-    #[OneToMany(targetEntity: BuildplanModule::class, mappedBy: 'buildplan', indexBy: 'module_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: BuildplanModule::class, mappedBy: 'buildplan', fetch: 'EXTRA_LAZY', indexBy: 'module_id')]
     #[OrderBy(['module_id' => 'ASC'])]
     private Collection $modules;
 

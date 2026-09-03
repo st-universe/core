@@ -63,15 +63,15 @@ class PrivateMessage
     private ?int $former_recip_user = null;
 
     #[ManyToOne(targetEntity: PrivateMessageFolder::class)]
-    #[JoinColumn(name: 'cat_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'cat_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private PrivateMessageFolder $category;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'send_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'send_user', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $sendingUser;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'recip_user', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'recip_user', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $receivingUser;
 
     #[OneToOne(targetEntity: PrivateMessage::class, inversedBy: 'outboxPm')]

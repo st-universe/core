@@ -141,7 +141,7 @@ class AllianceRelationRendererTest extends StuTestCase
             ->once()
             ->andReturn($vertex2);
 
-        static::assertSame(
+        self::assertSame(
             $result,
             $this->subject->render([$relation], $width, $height)
         );

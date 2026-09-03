@@ -56,7 +56,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturn($parsedName);
 
-        static::assertSame(
+        self::assertSame(
             $parsedName,
             $this->subject->convertName($alliance)
         );
@@ -76,7 +76,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturn(FactionEnum::FACTION_FEDERATION->value);
 
-        static::assertSame(
+        self::assertSame(
             '#0000ff',
             $this->subject->getFrameColor($alliance)
         );
@@ -97,7 +97,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturn($rgbCode);
 
-        static::assertSame(
+        self::assertSame(
             $rgbCode,
             $this->subject->getFrameColor($alliance)
         );
@@ -118,7 +118,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturn('');
 
-        static::assertSame(
+        self::assertSame(
             $default,
             $this->subject->getFrameColor($alliance, $default)
         );
@@ -142,7 +142,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
                 ->once()
                 ->andReturn($allianceId);
 
-            static::assertSame(
+            self::assertSame(
                 sprintf(
                     'https://www.stuniverse.de/alliance.php?id=%d',
                     $allianceId
@@ -180,7 +180,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
                 ->once()
                 ->andReturn($baseUrl);
 
-            static::assertSame(
+            self::assertSame(
                 sprintf(
                     'some-url/alliance.php?id=%d',
                     $allianceId
@@ -201,7 +201,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertSame(
+        self::assertSame(
             '#2b2b2b',
             $this->subject->getFillColor($alliance)
         );
@@ -216,7 +216,7 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        static::assertSame(
+        self::assertSame(
             '#4b4b4b',
             $this->subject->getFillColor($alliance)
         );

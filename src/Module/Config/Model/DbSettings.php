@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Config\Model;
 
 final class DbSettings extends AbstractSettings implements DbSettingsInterface

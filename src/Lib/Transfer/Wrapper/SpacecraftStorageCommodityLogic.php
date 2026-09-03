@@ -109,7 +109,7 @@ class SpacecraftStorageCommodityLogic
         $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
-        if (count($commodities) == 0 || count($gcount) == 0) {
+        if (count($commodities) === 0 || count($gcount) === 0) {
             $information->addInformation("Es wurden keine Waren zum Beamen ausgewählt");
             return false;
         }

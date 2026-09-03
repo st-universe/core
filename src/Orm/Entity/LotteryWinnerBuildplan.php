@@ -32,7 +32,7 @@ class LotteryWinnerBuildplan
     private ?int $faction_id = null;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftBuildplan $buildplan;
 
     public function getId(): int

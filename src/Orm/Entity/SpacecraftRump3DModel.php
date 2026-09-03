@@ -18,7 +18,7 @@ class SpacecraftRump3DModel
 {
     #[Id]
     #[OneToOne(targetEntity: SpacecraftRump::class, inversedBy: 'model3d')]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $rump;
 
     #[Column(type: 'integer')]

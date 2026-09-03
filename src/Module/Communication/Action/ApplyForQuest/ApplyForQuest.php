@@ -71,13 +71,16 @@ final class ApplyForQuest implements ActionControllerInterface
             if ($existingQuestUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER) {
                 $game->getInfo()->addInformation('Du bist bereits aktiver Teilnehmer dieser Quest');
                 return;
-            } elseif ($existingQuestUser->getMode() === QuestUserModeEnum::APPLICANT) {
+            }
+            if ($existingQuestUser->getMode() === QuestUserModeEnum::APPLICANT) {
                 $game->getInfo()->addInformation('Du hast dich bereits für diese Quest beworben');
                 return;
-            } elseif ($existingQuestUser->getMode() === QuestUserModeEnum::INVITED) {
+            }
+            if ($existingQuestUser->getMode() === QuestUserModeEnum::INVITED) {
                 $game->getInfo()->addInformation('Du bist bereits zu dieser Quest eingeladen');
                 return;
-            } elseif ($existingQuestUser->getMode() === QuestUserModeEnum::REJECTED_EXCLUDED) {
+            }
+            if ($existingQuestUser->getMode() === QuestUserModeEnum::REJECTED_EXCLUDED) {
                 $game->getInfo()->addInformation('Du wurdest für diese Quest abgelehnt oder ausgeschlossen');
                 return;
             }

@@ -37,7 +37,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset < 0) {
             $offset = 0;
         }
-        if ($offset % self::BUILDMENU_SCROLLOFFSET != 0) {
+        if ($offset % self::BUILDMENU_SCROLLOFFSET !== 0) {
             $offset = (int)floor($offset / self::BUILDMENU_SCROLLOFFSET);
         }
         $ret = $this->buildingRepository->getBuildmenuBuildings(

@@ -47,15 +47,15 @@ class ShipyardShipQueue
     private int $stop_date = 0;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftBuildplan $spacecraftBuildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $spacecraftRump;
 
     #[ManyToOne(targetEntity: Station::class)]
-    #[JoinColumn(name: 'station_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Station $station;
 
     public function getId(): int
