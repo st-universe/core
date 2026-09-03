@@ -69,6 +69,9 @@ class StuContainer extends Container
      */
     public function getDefinedImplementationsOf(string $interfaceName, bool $addDefinitionKey = false): Collection
     {
+        /**
+         * @var Collection<int|string, T>|null $services
+         */
         $services = $this->services->get($interfaceName);
         if ($services === null) {
             return $this->getServices($interfaceName, $addDefinitionKey);
@@ -95,7 +98,7 @@ class StuContainer extends Container
      * @template T
      * @param class-string<T> $interfaceName
      *
-     * @return Collection<int, T>
+     * @return Collection<int|string, T>
      */
     private function getServices(string $interfaceName, bool $addDefinitionKey): Collection
     {
