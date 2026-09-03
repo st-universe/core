@@ -51,8 +51,13 @@ class SessionFactoryTest extends StuTestCase
             ->once()
             ->andReturn($dateTime);
 
-        $sessionString->shouldReceive('setUser')
-            ->with($user)
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(55555);
+
+        $sessionString->shouldReceive('setUserId')
+            ->with(55555)
             ->once()
             ->andReturnSelf();
         $sessionString->shouldReceive('setDate')

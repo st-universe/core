@@ -10,15 +10,15 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\SessionStringRepository;
 
 #[Table(name: 'stu_session_strings')]
 #[Index(name: 'session_string_user_idx', columns: ['sess_string', 'user_id'])]
 #[Index(name: 'session_string_date_idx', columns: ['date'])]
 #[Entity(repositoryClass: SessionStringRepository::class)]
+#[TruncateOnGameReset]
 class SessionString
 {
     #[Id]
@@ -35,10 +35,6 @@ class SessionString
     #[Column(type: 'datetime')]
     private DateTimeInterface $date;
 
-    #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    private ?User $user = null;
-
     public function getId(): int
     {
         return $this->id;
@@ -49,9 +45,9 @@ class SessionString
         return $this->user_id;
     }
 
-    public function setUser(User $user): SessionString
+    public function setUserId(int $userId): SessionString
     {
-        $this->user = $user;
+        $this->user_id = $userId;
         return $this;
     }
 
