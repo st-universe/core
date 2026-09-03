@@ -35,7 +35,7 @@ class SpacecraftEmergency
     private ?int $deleted = null;
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
-    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
     public function getId(): int

@@ -35,7 +35,7 @@ class WarDeclaredEventTest extends StuTestCase
 
     public function testGetAllianceReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->alliance,
             $this->subject->getAlliance()
         );
@@ -43,7 +43,7 @@ class WarDeclaredEventTest extends StuTestCase
 
     public function testGetCounterpartReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->counterpart,
             $this->subject->getCounterpart()
         );
@@ -51,7 +51,7 @@ class WarDeclaredEventTest extends StuTestCase
 
     public function testGetResponsibleUserReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->responsibleUser,
             $this->subject->getResponsibleUser()
         );

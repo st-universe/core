@@ -119,20 +119,20 @@ final class BuildOnField implements ActionControllerInterface
             if ($host instanceof Colony) {
 
                 $changeable = $host->getChangeable();
-
                 if (!$this->checkBuildingCosts($host, $building, $field, $game)) {
                     return;
-                } elseif ($changeable->getEps() < $building->getEpsCost()) {
+                }
+                if ($changeable->getEps() < $building->getEpsCost()) {
                     $game->getInfo()->addInformationf(
                         _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                         $building->getEpsCost(),
                         $changeable->getEps()
                     );
                     return;
-                } elseif (
-                    $changeable->getEps() > $host->getMaxEps() - $currentBuilding->getEpsStorage()
-                    && $host->getMaxEps() - $currentBuilding->getEpsStorage() < $building->getEpsCost()
-                ) {
+                }
+
+                if ($changeable->getEps() > $host->getMaxEps() - $currentBuilding->getEpsStorage()
+                && $host->getMaxEps() - $currentBuilding->getEpsStorage() < $building->getEpsCost()) {
                     $game->getInfo()->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
                     return;
                 }

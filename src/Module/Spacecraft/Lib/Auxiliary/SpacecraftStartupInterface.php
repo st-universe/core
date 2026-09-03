@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\Lib\Auxiliary;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;

@@ -42,7 +42,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     public function testCreateStorageWrapperReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             StorageWrapper::class,
             $this->subject->createStorageWrapper(666, 42, 33)
         );
@@ -50,7 +50,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     public function testCreateDatabaseTopActivTradePostReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             DatabaseTopActivTradePost::class,
             $this->subject->createDatabaseTopActivTradePost(['id' => 666])
         );
@@ -58,7 +58,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     public function testCreateDatabaseTopListCrewReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             DatabaseTopListCrew::class,
             $this->subject->createDatabaseTopListCrew(['user_id' => 42])
         );
@@ -66,7 +66,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     public function testCreateDatabaseTopListWithPointsReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             DatabaseTopListWithPoints::class,
             $this->subject->createDatabaseTopListWithPoints(42, '666')
         );
@@ -74,7 +74,7 @@ class DatabaseUiFactoryTest extends StuTestCase
 
     public function testCreateDatabaseTopListFlightReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             DatabaseTopListFlights::class,
             $this->subject->createDatabaseTopListFlights(['user_id' => 666])
         );

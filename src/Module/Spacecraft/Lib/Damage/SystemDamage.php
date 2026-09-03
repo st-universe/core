@@ -103,16 +103,14 @@ final class SystemDamage implements SystemDamageInterface
             $informations->addInformation("- Folgendes System wurde beschädigt: " . $systemName);
 
             return false;
-        } else {
-            $system->setStatus(0);
-            $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
-            $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
-            $informations->addInformation("- Der Schaden zerstört folgendes System: " . $systemName);
-            if ($wrapper->get()->getCondition()->isDestroyed()) {
-                $informations->addInformation('-- Das Schiff wurde zerstört!');
-            }
-
-            return true;
         }
+        $system->setStatus(0);
+        $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+        $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
+        $informations->addInformation("- Der Schaden zerstört folgendes System: " . $systemName);
+        if ($wrapper->get()->getCondition()->isDestroyed()) {
+            $informations->addInformation('-- Das Schiff wurde zerstört!');
+        }
+        return true;
     }
 }

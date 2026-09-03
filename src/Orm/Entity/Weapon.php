@@ -43,7 +43,7 @@ class Weapon
     private int $module_id = 0;
 
     #[OneToOne(targetEntity: Module::class, inversedBy: 'weapon')]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false)]
     private Module $module;
 
     public function getId(): int

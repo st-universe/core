@@ -50,7 +50,7 @@ class StarSystem implements EntityWithAstroEntryInterface
     private bool $is_wormhole = false;
 
     #[ManyToOne(targetEntity: StarSystemType::class)]
-    #[JoinColumn(name: 'type', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'type', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private StarSystemType $systemType;
 
     #[OneToOne(targetEntity: Map::class, mappedBy: 'starSystem')]
@@ -71,12 +71,7 @@ class StarSystem implements EntityWithAstroEntryInterface
     private Collection $fields;
 
     /** @var ArrayCollection<int, AstronomicalEntry> */
-    #[OneToMany(
-        targetEntity: AstronomicalEntry::class,
-        mappedBy: 'starSystem',
-        indexBy: 'user_id',
-        fetch: 'EXTRA_LAZY'
-    )]
+    #[OneToMany(targetEntity: AstronomicalEntry::class, mappedBy: 'starSystem', fetch: 'EXTRA_LAZY', indexBy: 'user_id')]
     private Collection $astronomicalEntries;
 
     public function __construct()

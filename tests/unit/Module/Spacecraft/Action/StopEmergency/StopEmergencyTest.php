@@ -178,7 +178,7 @@ class StopEmergencyTest extends StuTestCase
 
     public function testPerformSessionCheckReturnsTrue(): void
     {
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->performSessionCheck()
         );
     }

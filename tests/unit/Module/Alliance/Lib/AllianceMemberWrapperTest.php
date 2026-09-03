@@ -36,7 +36,7 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testGetUserReturnsData(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->user,
             $this->subject->getUser()
         );
@@ -44,7 +44,7 @@ class AllianceMemberWrapperTest extends StuTestCase
 
     public function testGetAllianceReturnsData(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->alliance,
             $this->subject->getAlliance()
         );
@@ -57,7 +57,7 @@ class AllianceMemberWrapperTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->isFounder()
         );
     }
@@ -69,7 +69,7 @@ class AllianceMemberWrapperTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->isFounder()
         );
     }
@@ -83,7 +83,7 @@ class AllianceMemberWrapperTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getUserId()
         );
@@ -96,7 +96,7 @@ class AllianceMemberWrapperTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        static::assertSame(
+        self::assertSame(
             'online',
             $this->subject->getOnlineStateCssClass()
         );
@@ -109,7 +109,7 @@ class AllianceMemberWrapperTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        static::assertSame(
+        self::assertSame(
             'offline',
             $this->subject->getOnlineStateCssClass()
         );

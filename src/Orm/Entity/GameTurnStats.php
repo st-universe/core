@@ -61,7 +61,7 @@ class GameTurnStats
     private int $new_pm_count;
 
     #[OneToOne(targetEntity: GameTurn::class, inversedBy: 'stats')]
-    #[JoinColumn(name: 'turn_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'turn_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private GameTurn $turn;
 
     public function getId(): int

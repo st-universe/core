@@ -25,7 +25,7 @@ class ShipRumpModuleLevel
 
     #[Id]
     #[OneToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $rump;
 
     /** @var array<int, array<string, bool|int|string>> */
@@ -35,7 +35,7 @@ class ShipRumpModuleLevel
     public function getMinimumLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::MIN_LEVEL_KEY];
-        if (!is_integer($value)) {
+        if (!is_int($value)) {
             throw new RuntimeException(sprintf('minimum level of type %s is not an integer: %s', $type->name, (string)$value));
         }
 
@@ -45,7 +45,7 @@ class ShipRumpModuleLevel
     public function getDefaultLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::DEFAULT_LEVEL_KEY];
-        if (!is_integer($value)) {
+        if (!is_int($value)) {
             throw new RuntimeException(sprintf('default level of type %s is not an integer: %s', $type->name, (string)$value));
         }
 
@@ -55,7 +55,7 @@ class ShipRumpModuleLevel
     public function getMaximumLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::MAX_LEVEL_KEY];
-        if (!is_integer($value)) {
+        if (!is_int($value)) {
             throw new RuntimeException(sprintf('maximum level of type %s is not an integer: %s', $type->name, (string)$value));
         }
 

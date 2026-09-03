@@ -98,7 +98,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
         }
 
         $system = $spacecraft->getSystem();
-        if ($system) {
+        if ($system instanceof \Stu\Orm\Entity\StarSystem) {
             $cx = $system->getCx();
             $cy = $system->getCy();
         } else {

@@ -18,7 +18,7 @@ final class Init
 
     public static function getContainer(ConfigStageEnum $stage = ConfigStageEnum::PRODUCTION, bool $doReload = false): StuContainer
     {
-        if (static::$CONTAINER === null || $doReload) {
+        if (self::$CONTAINER === null || $doReload) {
             ConfigFileSetup::initConfigStage($stage);
 
             // ordered alphabetically
@@ -83,10 +83,10 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php');
             $builder->addDefinitions(__DIR__ . '/../Orm/Transaction/services.php');
 
-            static::$CONTAINER = $builder->build();
+            self::$CONTAINER = $builder->build();
         }
 
-        return static::$CONTAINER;
+        return self::$CONTAINER;
     }
 
     /**

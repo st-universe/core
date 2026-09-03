@@ -48,7 +48,7 @@ class Colony implements
     #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[OneToOne(targetEntity: ColonyChangeable::class, mappedBy: 'colony', fetch: 'EAGER', cascade: ['all'])]
+    #[OneToOne(targetEntity: ColonyChangeable::class, mappedBy: 'colony', cascade: ['all'], fetch: 'EAGER')]
     private ?ColonyChangeable $changeable;
 
     #[Column(type: 'integer')]
@@ -76,26 +76,21 @@ class Colony implements
     private int $surface_width = 0;
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
-    #[JoinColumn(name: 'colonies_classes_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'colonies_classes_id', referencedColumnName: 'id', nullable: false)]
     private ColonyClass $colonyClass;
 
     #[OneToOne(targetEntity: StarSystemMap::class, inversedBy: 'colony')]
-    #[JoinColumn(name: 'starsystem_map_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'starsystem_map_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private StarSystemMap $starsystemMap;
 
     #[ManyToOne(targetEntity: User::class, inversedBy: 'colonies')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
     /**
      * @var ArrayCollection<int, PlanetField>
      */
-    #[OneToMany(
-        targetEntity: PlanetField::class,
-        mappedBy: 'colony',
-        indexBy: 'field_id',
-        fetch: 'EXTRA_LAZY'
-    )]
+    #[OneToMany(targetEntity: PlanetField::class, mappedBy: 'colony', fetch: 'EXTRA_LAZY', indexBy: 'field_id')]
     #[OrderBy(['field_id' => 'ASC'])]
     private Collection $planetFields;
 

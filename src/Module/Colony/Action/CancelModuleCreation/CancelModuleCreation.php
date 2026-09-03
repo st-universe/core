@@ -56,7 +56,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         ) === 0) {
             return;
         }
-        if ($count == 0) {
+        if ($count === 0) {
             return;
         }
         $queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colony->getId(), $module_id, $function);

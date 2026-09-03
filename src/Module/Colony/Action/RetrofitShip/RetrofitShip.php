@@ -149,7 +149,7 @@ final class RetrofitShip implements ActionControllerInterface
             if (
                 $moduleType != SpacecraftModuleTypeEnum::SPECIAL
                 && $moduleLevels->isMandatory($moduleType)
-                && count($module) == 0
+                && count($module) === 0
             ) {
                 $game->getInfo()->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
@@ -175,7 +175,7 @@ final class RetrofitShip implements ActionControllerInterface
                 }
                 continue;
             }
-            if (count($module) == 0 || current($module) == 0) {
+            if (count($module) === 0 || current($module) == 0) {
                 continue;
             }
             if (current($module) > 0) {
@@ -242,10 +242,7 @@ final class RetrofitShip implements ActionControllerInterface
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
             if (
-                $plannameFromRequest !== false
-                && $plannameFromRequest !== ''
-                && $plannameFromRequest !== 'Bauplanname'
-                && $plannameFromRequest !== $oldplan->getName()
+                !in_array($plannameFromRequest, [false, '', 'Bauplanname', $oldplan->getName()], true)
             ) {
                 $planname = $plannameFromRequest;
             } elseif ($plannameFromRequest === $oldplan->getName()) {

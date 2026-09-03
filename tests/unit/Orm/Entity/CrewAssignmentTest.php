@@ -31,6 +31,6 @@ final class CrewAssignmentTest extends TestCase
         $assignment = new CrewAssignment();
         $assignment->setSlot($slot);
 
-        static::assertSame($expected, $assignment->getCrewImageType());
+        self::assertSame($expected, $assignment->getCrewImageType());
     }
 }

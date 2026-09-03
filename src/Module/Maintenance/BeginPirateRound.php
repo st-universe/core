@@ -65,13 +65,7 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
         if ($month === 12) {
             return false;
         }
-
-
-        if ($month === 1 && $day <= $days) {
-            return false;
-        }
-
-        return true;
+        return $month !== 1 || $day > $days;
     }
 
 
@@ -79,7 +73,7 @@ final class BeginPirateRound implements MaintenanceHandlerInterface
     {
         $allRounds = $this->pirateRoundRepository->findBy([], ['id' => 'DESC'], 1);
 
-        return empty($allRounds) ? null : $allRounds[0];
+        return $allRounds === [] ? null : $allRounds[0];
     }
 
     private function is45DaysAgo(int $timestamp): bool

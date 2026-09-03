@@ -36,7 +36,7 @@ final class EffectsProvider implements PlanetFieldHostComponentInterface
                 continue;
             }
 
-            if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() == 0) {
+            if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() === 0) {
                 continue;
             }
             $effects[$commodityId]['commodity'] = $value;

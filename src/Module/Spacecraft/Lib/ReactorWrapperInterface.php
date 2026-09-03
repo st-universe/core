@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Spacecraft\System\Data\AbstractReactorSystemData;

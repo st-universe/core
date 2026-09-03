@@ -18,7 +18,7 @@ class UserLastAction
 {
     #[Id]
     #[OneToOne(targetEntity: User::class, inversedBy: 'lastAction')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Column(type: 'integer')]

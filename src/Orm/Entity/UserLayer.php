@@ -24,12 +24,12 @@ class UserLayer
 
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: Layer::class)]
-    #[JoinColumn(name: 'layer_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Layer $layer;
 
     public function getUser(): User

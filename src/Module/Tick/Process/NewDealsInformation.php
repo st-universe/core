@@ -25,7 +25,7 @@ final class NewDealsInformation implements ProcessTickHandlerInterface
 
         $recentDeals = $this->dealsRepository->getRecentlyStartedDeals($timeThreshold);
 
-        if (empty($recentDeals)) {
+        if ($recentDeals === []) {
             return;
         }
 

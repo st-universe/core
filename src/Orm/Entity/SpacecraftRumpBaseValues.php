@@ -17,7 +17,7 @@ class SpacecraftRumpBaseValues
 {
     #[Id]
     #[OneToOne(targetEntity: SpacecraftRump::class, inversedBy: 'baseValues')]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $rump;
 
     #[Column(type: 'smallint')]

@@ -79,7 +79,7 @@ final class ShowNPCQuests implements ViewControllerInterface
             }
         }
 
-        if (empty($buildplanIds)) {
+        if ($buildplanIds === []) {
             return [];
         }
 
@@ -106,7 +106,7 @@ final class ShowNPCQuests implements ViewControllerInterface
 
         foreach ($allQuests as $quest) {
             $logs = $this->npcQuestLogRepository->getActiveByQuest($quest->getId());
-            if (!empty($logs)) {
+            if ($logs !== []) {
                 $questLogs[$quest->getId()] = $logs;
             }
         }

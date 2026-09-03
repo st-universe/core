@@ -137,7 +137,7 @@ final class CreateModules implements ActionControllerInterface
                     $moduleAdded = true;
                 }
             }
-            if ($count == $initialcount) {
+            if ($count === $initialcount) {
                 $isEnoughAvailable = true;
             }
 

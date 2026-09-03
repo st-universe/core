@@ -50,7 +50,7 @@ abstract class RequestTestCase extends StuTestCase
             $_GET[$paramName] = $testValue;
         }
 
-        static::assertSame(
+        self::assertSame(
             $expectedValue,
             call_user_func_array([$this->buildRequest(), $methodName], [])
         );

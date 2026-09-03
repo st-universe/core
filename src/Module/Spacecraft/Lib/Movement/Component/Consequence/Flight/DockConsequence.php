@@ -45,10 +45,9 @@ class DockConsequence extends AbstractFlightConsequence implements FlightStartCo
             if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
                 $message->add(sprintf('%s konnte wegen Energiemangels nicht abgedockt werden', $ship->getName()));
                 return;
-            } else {
-                $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
-                $ship->setDockedTo(null);
             }
+            $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
+            $ship->setDockedTo(null);
 
             if ($ship->isTractored()) {
                 //TODO andockschleuse schrotten, wenn passiv

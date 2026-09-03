@@ -104,7 +104,7 @@ class Building
     /**
      * @var ArrayCollection<int, ColonyClassRestriction>
      */
-    #[OneToMany(mappedBy: 'building', targetEntity: ColonyClassRestriction::class)]
+    #[OneToMany(targetEntity: ColonyClassRestriction::class, mappedBy: 'building')]
     private Collection $restrictions;
 
 

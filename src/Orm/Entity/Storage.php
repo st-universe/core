@@ -67,7 +67,7 @@ class Storage
     private ?User $user = null;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     #[ManyToOne(targetEntity: Colony::class, inversedBy: 'storage')]

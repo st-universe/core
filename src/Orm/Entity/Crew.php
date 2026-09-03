@@ -51,15 +51,15 @@ class Crew
     private int $race_id = 0;
 
     #[ManyToOne(targetEntity: CrewRace::class)]
-    #[JoinColumn(name: 'race_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'race_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private CrewRace $race;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     /** @var Collection<int, CrewSkill> */
-    #[OneToMany(targetEntity: CrewSkill::class, mappedBy: 'crew', indexBy: 'position', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[OneToMany(targetEntity: CrewSkill::class, mappedBy: 'crew', cascade: ['persist', 'remove'], orphanRemoval: true, indexBy: 'position')]
     private Collection $skills;
 
     public function __construct()
@@ -187,7 +187,7 @@ class Crew
 
     public function getGenderShort(): string
     {
-        if ($this->getGender() == self::CREW_GENDER_MALE) {
+        if ($this->getGender() === self::CREW_GENDER_MALE) {
             return 'm';
         }
         return 'w';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Lib\ModuleScreen;
 
 final class GradientColor implements GradientColorInterface
@@ -31,13 +33,11 @@ final class GradientColor implements GradientColorInterface
         // Verteile den Prozentwert zwischen den Farben
         if ($percent <= 50) {
             $gradientPercent = $percent * 2;
-            $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
-        } else {
-            $gradientPercent = (($percent - 50) * 2);
-            $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
+            return $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
         }
+        $gradientPercent = (($percent - 50) * 2);
 
-        return $gradientRgb;
+        return $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
     }
 
     /**
@@ -50,11 +50,11 @@ final class GradientColor implements GradientColorInterface
         $b = 0;
         $g = 0;
         $r = 0;
-        if ($length == 3) {
+        if ($length === 3) {
             $r = hexdec(substr($color, 0, 1) . substr($color, 0, 1));
             $g = hexdec(substr($color, 1, 1) . substr($color, 1, 1));
             $b = hexdec(substr($color, 2, 1) . substr($color, 2, 1));
-        } elseif ($length == 6) {
+        } elseif ($length === 6) {
             $r = hexdec(substr($color, 0, 2));
             $g = hexdec(substr($color, 2, 2));
             $b = hexdec(substr($color, 4, 2));

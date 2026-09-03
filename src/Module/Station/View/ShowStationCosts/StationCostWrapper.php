@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Station\View\ShowStationCosts;
 
 use Stu\Orm\Entity\BuildplanModule;
@@ -38,8 +40,7 @@ class StationCostWrapper
     {
         if ($this->getStoredAmount() < $this->getNeededAmount()) {
             return 'red';
-        } else {
-            return 'green';
         }
+        return 'green';
     }
 }

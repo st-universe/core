@@ -71,7 +71,7 @@ class ColonyClass
     /**
      * @var ArrayCollection<int, ColonyClassRestriction>
      */
-    #[OneToMany(mappedBy: 'colonyClass', targetEntity: ColonyClassRestriction::class)]
+    #[OneToMany(targetEntity: ColonyClassRestriction::class, mappedBy: 'colonyClass')]
     private Collection $restrictions;
 
 
@@ -194,7 +194,7 @@ class ColonyClass
 
     public function hasRing(): bool
     {
-        return $this->getSpecialId() == self::COLONY_CLASS_SPECIAL_RING;
+        return $this->getSpecialId() === self::COLONY_CLASS_SPECIAL_RING;
     }
 
     public function getMinRotation(): int

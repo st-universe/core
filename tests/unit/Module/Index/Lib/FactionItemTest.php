@@ -29,7 +29,7 @@ class FactionItemTest extends StuTestCase
 
     public function testGetPlayerCountReturnsValue(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->currentPlayerCount,
             $this->subject->getPlayerCount()
         );
@@ -42,7 +42,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->hasFreePlayerSlots()
         );
     }
@@ -54,7 +54,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($this->currentPlayerCount + 1);
 
-        static::assertTrue(
+        self::assertTrue(
             $this->subject->hasFreePlayerSlots()
         );
     }
@@ -66,7 +66,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($this->currentPlayerCount);
 
-        static::assertFalse(
+        self::assertFalse(
             $this->subject->hasFreePlayerSlots()
         );
     }
@@ -80,7 +80,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($color);
 
-        static::assertSame(
+        self::assertSame(
             $color,
             $this->subject->getColor()
         );
@@ -95,7 +95,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getId()
         );
@@ -110,7 +110,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getName()
         );
@@ -125,7 +125,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getPlayerLimit()
         );
@@ -140,7 +140,7 @@ class FactionItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getDescription()
         );

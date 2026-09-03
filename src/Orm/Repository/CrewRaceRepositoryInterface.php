@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Orm\Repository;
 
 use Stu\Component\Crew\CrewRaceUsageEnum;

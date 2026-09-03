@@ -44,7 +44,7 @@ class AllianceUiFactoryTest extends StuTestCase
 
     public function testCreateManagementListItemReturnsValue(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             ManagementListItem::class,
             $this->subject->createManagementListItem(
                 $this->mock(Alliance::class),
@@ -56,7 +56,7 @@ class AllianceUiFactoryTest extends StuTestCase
 
     public function testCreateAllianceListItemReturnsValue(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             AllianceListItem::class,
             $this->subject->createAllianceListItem(
                 $this->mock(Alliance::class)
@@ -66,7 +66,7 @@ class AllianceUiFactoryTest extends StuTestCase
 
     public function testCreateAllianceMemberWrapperReturnsValue(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             AllianceMemberWrapper::class,
             $this->subject->createAllianceMemberWrapper(
                 $this->mock(User::class),
@@ -77,7 +77,7 @@ class AllianceUiFactoryTest extends StuTestCase
 
     public function testCreateAllianceRelationWrapperReturnsValue(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             AllianceRelationWrapper::class,
             $this->subject->createAllianceRelationWrapper(
                 $this->mock(Alliance::class),

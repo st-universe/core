@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Tick\Spacecraft\Handler;
 
 use Stu\Component\Faction\FactionEnum;
@@ -35,57 +37,54 @@ class AggregationSystemHandler implements SpacecraftTickHandlerInterface
 
         if ($aggsys === null) {
             return;
-        } else {
-            $module = $station->getSpacecraftSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
-            $producedAmount = 0;
-            $usedAmount = 0;
-            $usedCommodity = null;
-            $producedCommodity = null;
+        }
+        $module = $station->getSpacecraftSystem(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)->getModule();
+        $producedAmount = 0;
+        $usedAmount = 0;
+        $usedCommodity = null;
+        $producedCommodity = null;
+        if ($module !== null) {
+            $commodity = $aggsys->getCommodityId();
+            $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
 
-
-            if ($module !== null) {
-                $commodity = $aggsys->getCommodityId();
-                $commodities = CommodityTypeConstants::COMMODITY_CONVERSIONS;
-
-                if ($commodity > 0) {
-                    foreach ($commodities as $entry) {
-                        if ($entry[0] === $commodity) {
-                            $producedCommodityId = $entry[1];
-                            $producedCommodity = $this->commodityCache->get($producedCommodityId);
-                            $usedCommodity = $this->commodityCache->get($entry[0]);
-                            $usedAmount = $entry[2];
-                            $producedAmount = $entry[3];
-                            break;
-                        }
+            if ($commodity > 0) {
+                foreach ($commodities as $entry) {
+                    if ($entry[0] === $commodity) {
+                        $producedCommodityId = $entry[1];
+                        $producedCommodity = $this->commodityCache->get($producedCommodityId);
+                        $usedCommodity = $this->commodityCache->get($entry[0]);
+                        $usedAmount = $entry[2];
+                        $producedAmount = $entry[3];
+                        break;
                     }
+                }
 
-                    if ($module->getFactionId() == FactionEnum::FACTION_FERENGI) {
-                        $producedAmount *= 2;
-                        $usedAmount *= 2;
-                    }
-                    $storage = $this->storageRepository->findOneBy([
-                        'commodity' => $usedCommodity,
-                        'spacecraft' => $station
-                    ]);
-                    if (!$storage && $usedCommodity) {
-                        $information->addInformationf('Es ist kein %s vorhanden!', $usedCommodity->getName());
-                    }
+                if ($module->getFactionId() == FactionEnum::FACTION_FERENGI) {
+                    $producedAmount *= 2;
+                    $usedAmount *= 2;
+                }
+                $storage = $this->storageRepository->findOneBy([
+                    'commodity' => $usedCommodity,
+                    'spacecraft' => $station
+                ]);
+                if (!$storage && $usedCommodity) {
+                    $information->addInformationf('Es ist kein %s vorhanden!', $usedCommodity->getName());
+                }
 
-                    if ($storage && $producedCommodity && $usedCommodity) {
-                        if ($storage->getAmount() >= $usedAmount) {
-                            $this->storageManager->lowerStorage(
-                                $station,
-                                $usedCommodity,
-                                $usedAmount
-                            );
-                            $this->storageManager->upperStorage(
-                                $station,
-                                $producedCommodity,
-                                $producedAmount
-                            );
-                        } else {
-                            $information->addInformationf('Nicht genügend %s vorhanden!', $usedCommodity->getName());
-                        }
+                if ($storage && $producedCommodity && $usedCommodity) {
+                    if ($storage->getAmount() >= $usedAmount) {
+                        $this->storageManager->lowerStorage(
+                            $station,
+                            $usedCommodity,
+                            $usedAmount
+                        );
+                        $this->storageManager->upperStorage(
+                            $station,
+                            $producedCommodity,
+                            $producedAmount
+                        );
+                    } else {
+                        $information->addInformationf('Nicht genügend %s vorhanden!', $usedCommodity->getName());
                     }
                 }
             }

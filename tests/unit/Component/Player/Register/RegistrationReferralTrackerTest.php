@@ -61,9 +61,9 @@ class RegistrationReferralTrackerTest extends StuTestCase
             ->once()
             ->andReturn('yt');
 
-        static::assertSame('/index.php?SHOW_REGISTRATION=1', $this->subject->captureFromRequest());
-        static::assertSame('yt', $_SESSION['stu_registration_ref']);
-        static::assertSame('yt', $_COOKIE['stu_registration_ref']);
+        self::assertSame('/index.php?SHOW_REGISTRATION=1', $this->subject->captureFromRequest());
+        self::assertSame('yt', $_SESSION['stu_registration_ref']);
+        self::assertSame('yt', $_COOKIE['stu_registration_ref']);
     }
 
     public function testCaptureFromRequestIgnoresUnknownReferralCodeButStillRedirects(): void
@@ -78,9 +78,9 @@ class RegistrationReferralTrackerTest extends StuTestCase
         $this->registrationReferralCodeRepository->shouldReceive('incrementHitCount')
             ->never();
 
-        static::assertSame('/', $this->subject->captureFromRequest());
-        static::assertArrayNotHasKey('stu_registration_ref', $_SESSION);
-        static::assertArrayNotHasKey('stu_registration_ref', $_COOKIE);
+        self::assertSame('/', $this->subject->captureFromRequest());
+        self::assertArrayNotHasKey('stu_registration_ref', $_SESSION);
+        self::assertArrayNotHasKey('stu_registration_ref', $_COOKIE);
     }
 
     public function testPrependStoredReferralCodePrependsCodeToSubmittedText(): void
@@ -99,7 +99,7 @@ class RegistrationReferralTrackerTest extends StuTestCase
             ->once()
             ->andReturn('yt');
 
-        static::assertSame('yt Discord', $this->subject->prependStoredReferralCode(' Discord '));
+        self::assertSame('yt Discord', $this->subject->prependStoredReferralCode(' Discord '));
     }
 
     public function testClearStoredReferralCodeRemovesSessionAndCookieValue(): void
@@ -109,7 +109,7 @@ class RegistrationReferralTrackerTest extends StuTestCase
 
         $this->subject->clearStoredReferralCode();
 
-        static::assertArrayNotHasKey('stu_registration_ref', $_SESSION);
-        static::assertArrayNotHasKey('stu_registration_ref', $_COOKIE);
+        self::assertArrayNotHasKey('stu_registration_ref', $_SESSION);
+        self::assertArrayNotHasKey('stu_registration_ref', $_COOKIE);
     }
 }

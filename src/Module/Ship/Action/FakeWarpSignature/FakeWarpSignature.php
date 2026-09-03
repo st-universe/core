@@ -63,7 +63,7 @@ final class FakeWarpSignature implements ActionControllerInterface
             throw new SanityCheckException('Database entry not found', self::ACTION_IDENTIFIER);
         }
 
-        if (!($database->getCategoryId() == DatabaseCategoryTypeEnum::SHIPRUMP->value)) {
+        if ($database->getCategoryId() != DatabaseCategoryTypeEnum::SHIPRUMP->value) {
             $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf kein Schiffsrumpf ist");
             return;
         }
@@ -71,7 +71,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         if (!$this->databaseUserRepository->findFor(
             $databaseId,
             $userId
-        )) {
+        ) instanceof \Stu\Orm\Entity\DatabaseUser) {
             $game->getInfo()->addInformation("Aktion nicht möglich, da der Rumpf noch nicht entdeckt wurde");
             return;
         }
@@ -85,7 +85,7 @@ final class FakeWarpSignature implements ActionControllerInterface
         $ship = $wrapper->get();
         $warpsystem = $wrapper->getWarpDriveSystemData();
 
-        if ($ship->getRumpId() == $rumpId) {
+        if ($ship->getRumpId() === $rumpId) {
             $game->getInfo()->addInformation("Aktion nicht möglich, da das Schiff bereits diesen Rumpf hat");
             return;
         }

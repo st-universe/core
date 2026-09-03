@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Config\Model;
 
 final class MapSettings extends AbstractSettings implements MapSettingsInterface

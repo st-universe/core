@@ -38,15 +38,15 @@ class ColonyTerraforming
     private int $finished = 0;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
-    #[JoinColumn(name: 'terraforming_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Terraforming $terraforming;
 
     #[ManyToOne(targetEntity: PlanetField::class)]
-    #[JoinColumn(name: 'field_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'field_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private PlanetField $field;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colonies_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colonies_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     public function getId(): int

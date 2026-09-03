@@ -63,7 +63,7 @@ final class CommodityCheat implements ActionControllerInterface
             return;
         }
 
-        if (empty($commodities)) {
+        if ($commodities === []) {
             $game->getInfo()->addInformation("Keine Waren angegeben");
             return;
         }
@@ -121,7 +121,7 @@ final class CommodityCheat implements ActionControllerInterface
             $commodityList[] = sprintf('%d %s', $amount, $commodity->getName());
         }
 
-        if (empty($validatedCommodities)) {
+        if ($validatedCommodities === []) {
             $game->getInfo()->addInformation("Keine gültigen Waren ausgewählt");
             return;
         }

@@ -30,11 +30,11 @@ class MiningQueue
     private int $location_mining_id;
 
     #[ManyToOne(targetEntity: LocationMining::class)]
-    #[JoinColumn(name: 'location_mining_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'location_mining_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private LocationMining $locationMining;
 
     #[OneToOne(targetEntity: Ship::class, inversedBy: 'miningqueue')]
-    #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Ship $ship;
 
     public function getId(): int

@@ -238,11 +238,9 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
         if (empty($freeNeighbours)) {
             return null;
-        } else {
-            shuffle($freeNeighbours);
-
-            return current($freeNeighbours);
         }
+        shuffle($freeNeighbours);
+        return current($freeNeighbours);
     }
 
     private function isMapUsed(int $x, int $y): bool

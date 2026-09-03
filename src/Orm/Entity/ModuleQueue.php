@@ -38,11 +38,11 @@ class ModuleQueue
     private BuildingFunctionEnum $buildingfunction = BuildingFunctionEnum::BASE_CAMP;
 
     #[ManyToOne(targetEntity: Module::class)]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Module $module;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     public function getId(): int

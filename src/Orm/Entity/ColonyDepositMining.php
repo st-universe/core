@@ -18,17 +18,17 @@ class ColonyDepositMining
 {
     #[Id]
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     #[Id]
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     #[Column(type: 'integer')]

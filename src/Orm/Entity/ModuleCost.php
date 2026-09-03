@@ -34,14 +34,14 @@ class ModuleCost
     private int $count = 0;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     /**
      * @var Module
      */
     #[ManyToOne(targetEntity: Module::class, inversedBy: 'buildingCosts')]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private $module;
 
     public function getId(): int

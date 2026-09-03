@@ -15,12 +15,10 @@ class ColonyDefendingBattleParty extends AbstractBattleParty implements AlertedB
 
         if ($fleetWrapper === null) {
             return $this->createSingleton($this->leader);
-        } else {
-
-            // only uncloaked ships enter fight
-            return $fleetWrapper->getShipWrappers()
-                ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked());
         }
+        // only uncloaked ships enter fight
+        return $fleetWrapper->getShipWrappers()
+            ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked());
     }
 
     #[\Override]

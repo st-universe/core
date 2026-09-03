@@ -25,13 +25,13 @@ class WormholeRestriction
     private int $id;
 
     #[ManyToOne(targetEntity: WormholeEntry::class, inversedBy: 'restrictions')]
-    #[JoinColumn(name: 'wormhole_entry_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'wormhole_entry_id', referencedColumnName: 'id', nullable: false)]
     private WormholeEntry $wormholeEntry;
 
     #[Column(type: 'integer')]
     private int $target = 0;
 
-    #[Column(type: 'smallint', enumType: WormholeEntryTypeEnum::class, nullable: true)]
+    #[Column(type: 'smallint', nullable: true, enumType: WormholeEntryTypeEnum::class)]
     private ?WormholeEntryTypeEnum $privilege_type = null;
 
     #[Column(type: 'integer', nullable: true)]

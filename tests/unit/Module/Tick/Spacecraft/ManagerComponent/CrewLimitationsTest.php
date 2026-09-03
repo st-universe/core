@@ -135,6 +135,6 @@ class CrewLimitationsTest extends StuTestCase
         $result = $this->getMethod($this->subject, 'letShipAssignmentsQuit')
             ->invokeArgs($this->subject, [$userId, 1]);
 
-        static::assertSame(0, $result);
+        self::assertSame(0, $result);
     }
 }

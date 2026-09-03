@@ -353,7 +353,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->once()
             ->andReturn($this->spacecraft);
 
-        static::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+        self::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
     }
 
     public function testGetByIdAndUserThrowsWhenSpacecraftDoesNotExist(): void
@@ -413,7 +413,7 @@ class SpacecraftLoaderTest extends StuTestCase
             ->once()
             ->andReturn($this->wrapper);
 
-        static::assertSame($this->wrapper, $this->subject->getWrapperByIdAndUserAndTargetUser(5, 42, 7));
+        self::assertSame($this->wrapper, $this->subject->getWrapperByIdAndUserAndTargetUser(5, 42, 7));
     }
 
     public function testGetByIdAndUserThrowsWhenUserDoesNotOwnSpacecraft(): void
@@ -489,9 +489,9 @@ class SpacecraftLoaderTest extends StuTestCase
             ->andReturn($this->spacecraft);
 
         // first call populates cache
-        static::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+        self::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
 
         // second call should use cache: repository/find/wrap called only once, wrapper->get() still returns spacecraft
-        static::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+        self::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
     }
 }

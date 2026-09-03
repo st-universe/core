@@ -91,7 +91,7 @@ class ColonyStorageEntityWrapper implements StorageEntityWrapperInterface
             $information->addInformation('Keine Waren zum Beamen vorhanden');
             return;
         }
-        if (count($commodities) == 0 || $gcount === []) {
+        if (count($commodities) === 0 || $gcount === []) {
             $information->addInformation('Es wurden keine Waren zum Beamen ausgewählt');
             return;
         }

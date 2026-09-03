@@ -59,15 +59,15 @@ class ColonyShipQueue
     private ?int $ship_id = null;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftBuildplan $spacecraftBuildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $shipRump;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     #[OneToOne(targetEntity: Ship::class)]

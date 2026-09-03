@@ -171,7 +171,7 @@ final class SessionLogin implements SessionLoginInterface
 
     private function performCookieLogin(int $uid, string $sstr): void
     {
-        if (strlen($sstr) != 40) {
+        if (strlen($sstr) !== 40) {
             $this->sessionDestruction->destroySession($this->session);
             return;
         }

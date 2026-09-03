@@ -31,7 +31,7 @@ final class CrewSkillLevelEnumTest extends TestCase
     #[DataProvider('expertiseProvider')]
     public function testGetForExpertise(int $expertise, CrewSkillLevelEnum $expected): void
     {
-        static::assertSame($expected, CrewSkillLevelEnum::getForExpertise($expertise));
+        self::assertSame($expected, CrewSkillLevelEnum::getForExpertise($expertise));
     }
 
     /** @return array<string, array{CrewSkillLevelEnum, string, string, string, string, string}> */
@@ -60,12 +60,12 @@ final class CrewSkillLevelEnumTest extends TestCase
         string $cardassian,
         string $ferengi
     ): void {
-        static::assertSame($federation, $rank->getDescription(FactionEnum::FACTION_FEDERATION->value));
-        static::assertSame($romulan, $rank->getDescription(FactionEnum::FACTION_ROMULAN->value));
-        static::assertSame($klingon, $rank->getDescription(FactionEnum::FACTION_KLINGON->value));
-        static::assertSame($cardassian, $rank->getDescription(FactionEnum::FACTION_CARDASSIAN->value));
-        static::assertSame($ferengi, $rank->getDescription(FactionEnum::FACTION_FERENGI->value));
-        static::assertSame($federation, $rank->getDescription(FactionEnum::FACTION_PAKLED->value));
+        self::assertSame($federation, $rank->getDescription(FactionEnum::FACTION_FEDERATION->value));
+        self::assertSame($romulan, $rank->getDescription(FactionEnum::FACTION_ROMULAN->value));
+        self::assertSame($klingon, $rank->getDescription(FactionEnum::FACTION_KLINGON->value));
+        self::assertSame($cardassian, $rank->getDescription(FactionEnum::FACTION_CARDASSIAN->value));
+        self::assertSame($ferengi, $rank->getDescription(FactionEnum::FACTION_FERENGI->value));
+        self::assertSame($federation, $rank->getDescription(FactionEnum::FACTION_PAKLED->value));
     }
 
     /** @return array<string, array{CrewSkillLevelEnum, CrewSkillLevelEnum}> */
@@ -84,7 +84,7 @@ final class CrewSkillLevelEnumTest extends TestCase
         CrewSkillLevelEnum $rank,
         CrewSkillLevelEnum $expected
     ): void {
-        static::assertSame($expected, $rank->getAutomaticPromotionTarget());
+        self::assertSame($expected, $rank->getAutomaticPromotionTarget());
     }
 
     /** @return array<string, array{CrewSkillLevelEnum, null|CrewSkillLevelEnum, null|int}> */
@@ -105,8 +105,8 @@ final class CrewSkillLevelEnumTest extends TestCase
         ?CrewSkillLevelEnum $nextRank,
         ?int $promotionLimit
     ): void {
-        static::assertSame($nextRank, $rank->getNextRank());
-        static::assertSame($promotionLimit, $nextRank?->getPromotionLimit());
+        self::assertSame($nextRank, $rank->getNextRank());
+        self::assertSame($promotionLimit, $nextRank?->getPromotionLimit());
     }
 
     /** @return array<string, array{CrewSkillLevelEnum, null|CrewSkillLevelEnum}> */
@@ -129,6 +129,6 @@ final class CrewSkillLevelEnumTest extends TestCase
     #[DataProvider('nextSkillRankProvider')]
     public function testGetNextSkillRank(CrewSkillLevelEnum $rank, ?CrewSkillLevelEnum $nextRank): void
     {
-        static::assertSame($nextRank, $rank->getNextSkillRank());
+        self::assertSame($nextRank, $rank->getNextSkillRank());
     }
 }

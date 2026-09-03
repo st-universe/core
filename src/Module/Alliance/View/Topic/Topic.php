@@ -93,7 +93,7 @@ final class Topic implements ViewControllerInterface
     private function getTopicNavigation(AllianceBoardTopic $topic): array
     {
         $mark = $this->topicRequest->getPageMark();
-        if ($mark % self::ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
+        if ($mark % self::ALLIANCEBOARDLIMITER !== 0 || $mark < 0) {
             $mark = 0;
         }
 

@@ -78,7 +78,7 @@ final class ColonyTick implements ColonyTickInterface
 
             if ($rewind !== 0) {
                 $i++;
-                if ($i == 100) {
+                if ($i === 100) {
                     // SECURITY
                     //echo "HIT SECURITY BREAK\n";
                     break;

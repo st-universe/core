@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Lib\Interaction\Member;
 
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;

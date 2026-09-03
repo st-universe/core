@@ -19,7 +19,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
     #[\Override]
     public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId, ColonyClass $colonyClass): array
     {
-        if ($userId == UserConstants::USER_NOONE) {
+        if ($userId === UserConstants::USER_NOONE) {
             return $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT t FROM %s t

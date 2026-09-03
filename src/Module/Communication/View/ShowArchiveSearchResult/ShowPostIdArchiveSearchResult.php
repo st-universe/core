@@ -38,7 +38,7 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
             return;
         }
 
-        if ($searchId == 0) {
+        if ($searchId === 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
             $game->getInfo()->addInformation('Bitte eine Original-ID angeben!');
             return;

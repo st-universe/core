@@ -25,7 +25,7 @@ class UserReferer
     private int $id;
 
     #[OneToOne(targetEntity: UserRegistration::class, inversedBy: 'referer')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'user_id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private UserRegistration $userRegistration;
 
     #[Column(type: 'text')]

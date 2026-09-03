@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Component\Spacecraft\System\Control;
 
 use Stu\Module\Control\GameControllerInterface;

@@ -71,7 +71,7 @@ class StuContainer extends Container
     {
         $services = $this->services->get($interfaceName);
         if ($services === null) {
-            $services = $this->getServices($interfaceName, $addDefinitionKey);
+            return $this->getServices($interfaceName, $addDefinitionKey);
         }
 
         return $services;

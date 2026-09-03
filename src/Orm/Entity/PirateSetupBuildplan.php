@@ -20,12 +20,12 @@ class PirateSetupBuildplan
 
     #[Id]
     #[ManyToOne(targetEntity: PirateSetup::class, inversedBy: 'setupBuildplans')]
-    #[JoinColumn(name: 'pirate_setup_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'pirate_setup_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private PirateSetup $setup;
 
     #[Id]
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftBuildplan $buildplan;
 
     public function getBuildplan(): SpacecraftBuildplan

@@ -51,15 +51,15 @@ class PlanetField
     private ?int $reactivate_after_upgrade = null;
 
     #[ManyToOne(targetEntity: Building::class)]
-    #[JoinColumn(name: 'buildings_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', nullable: true)]
     private ?Building $building = null;
 
     #[ManyToOne(targetEntity: Terraforming::class)]
-    #[JoinColumn(name: 'terraforming_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'terraforming_id', referencedColumnName: 'id', nullable: true)]
     private ?Terraforming $terraforming = null;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: true, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?Colony $colony = null;
 
     #[ManyToOne(targetEntity: ColonySandbox::class)]

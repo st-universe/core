@@ -40,10 +40,7 @@ class ManagerProviderSpacecraft implements ManagerProviderInterface
     {
         $spacecraft = $this->wrapper->get();
 
-        return sprintf(
-            '%s',
-            $spacecraft->getName(),
-        );
+        return $spacecraft->getName();
     }
 
     #[\Override]
@@ -97,7 +94,7 @@ class ManagerProviderSpacecraft implements ManagerProviderInterface
     public function getReactorLoad(): int
     {
         $reactor = $this->wrapper->getReactorWrapper();
-        return $reactor ? $reactor->getLoad() : 0;
+        return $reactor instanceof \Stu\Module\Spacecraft\Lib\ReactorWrapperInterface ? $reactor->getLoad() : 0;
     }
 
     public function lowerReactorLoad(int $amount): void

@@ -24,12 +24,12 @@ class ColonyClassDeposit
 
     #[Id]
     #[ManyToOne(targetEntity: ColonyClass::class)]
-    #[JoinColumn(name: 'colony_class_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_class_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ColonyClass $colonyClass;
 
     #[Id]
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     public function getColonyClass(): ColonyClass

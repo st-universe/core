@@ -25,11 +25,11 @@ class AllianceApplication
     private int $id;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Alliance $alliance;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Column(type: 'integer')]

@@ -139,7 +139,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
 
         $this->subject->handle($this->game);
 
-        static::assertSame('{"invisible":true}', $rpgModule->getData());
+        self::assertSame('{"invisible":true}', $rpgModule->getData());
     }
 
     public function testHandleDeactivatesInvisibility(): void
@@ -213,6 +213,6 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
 
         $this->subject->handle($this->game);
 
-        static::assertSame('{"invisible":false}', $rpgModule->getData());
+        self::assertSame('{"invisible":false}', $rpgModule->getData());
     }
 }

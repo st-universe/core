@@ -24,7 +24,7 @@ class ColonyPopulationCalculatorTest extends StuTestCase
             1000
         );
 
-        static::assertSame(5, $subject->getGrowth());
+        self::assertSame(5, $subject->getGrowth());
     }
 
     public function testGetGrowthReturnsZeroForKlingonGrowthBelowOne(): void
@@ -35,7 +35,7 @@ class ColonyPopulationCalculatorTest extends StuTestCase
             200
         );
 
-        static::assertSame(0, $subject->getGrowth());
+        self::assertSame(0, $subject->getGrowth());
     }
 
     private function createSubject(FactionEnum $faction, int $population, int $maxPopulation): ColonyPopulationCalculator

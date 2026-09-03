@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Config\Model;
 
 use Stu\Module\Config\StuConfigException;

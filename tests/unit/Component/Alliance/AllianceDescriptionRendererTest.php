@@ -222,7 +222,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
             ->once()
             ->andReturn($parsedDescription);
 
-        static::assertSame(
+        self::assertSame(
             $parsedDescription,
             $this->subject->render($this->alliance)
         );

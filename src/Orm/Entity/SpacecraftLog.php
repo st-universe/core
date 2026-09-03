@@ -53,7 +53,7 @@ class SpacecraftLog
     private ?int $deleted = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: true, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     public function getId(): int

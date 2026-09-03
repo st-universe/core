@@ -47,11 +47,11 @@ class SkillEnhancementLog
     private int $date;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: SkillEnhancement::class)]
-    #[JoinColumn(name: 'enhancement_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'enhancement_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SkillEnhancement $enhancement;
 
     public function getId(): int

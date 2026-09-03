@@ -54,7 +54,7 @@ class Terraforming
     /**
      * @var ArrayCollection<int, ColonyClassRestriction>
      */
-    #[OneToMany(mappedBy: 'terraforming', targetEntity: ColonyClassRestriction::class)]
+    #[OneToMany(targetEntity: ColonyClassRestriction::class, mappedBy: 'terraforming')]
     private Collection $restrictions;
 
 

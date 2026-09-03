@@ -24,11 +24,11 @@ class ColonyClassResearch
     private int $id;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
     private Research $research;
 
     #[ManyToOne(targetEntity: ColonyClass::class)]
-    #[JoinColumn(name: 'planet_type_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'planet_type_id', referencedColumnName: 'id', nullable: false)]
     private ColonyClass $colonyClass;
 
     public function getId(): int

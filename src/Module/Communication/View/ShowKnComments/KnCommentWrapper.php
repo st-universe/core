@@ -73,14 +73,12 @@ final class KnCommentWrapper implements KnCommentWrapperInterface
                 'assets/rassen/%skn.png',
                 $this->comment->getUser()->getFactionId()
             );
-        } else {
-
-            return sprintf(
-                '/%s/%s.png',
-                $this->config->get('game.user_avatar_path'),
-                $userAvatar
-            );
         }
+        return sprintf(
+            '/%s/%s.png',
+            $this->config->get('game.user_avatar_path'),
+            $userAvatar
+        );
     }
 
     #[\Override]

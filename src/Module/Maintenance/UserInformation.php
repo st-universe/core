@@ -38,7 +38,7 @@ final class UserInformation implements MaintenanceHandlerInterface
             if ($creationTime <= $fourMonthsAgo && $creationTime > $fourMonthsPlusOneDayAgo) {
                 $noobzoneLayerNames = $this->getNoobzoneLayerNames($user);
 
-                if (!empty($noobzoneLayerNames)) {
+                if ($noobzoneLayerNames !== []) {
                     $layerNamesString = implode(', ', $noobzoneLayerNames);
 
                     $message = sprintf(
@@ -58,7 +58,7 @@ final class UserInformation implements MaintenanceHandlerInterface
             if ($creationTime <= $fiveMonthsAgo && $creationTime > $fiveMonthsPlusOneDayAgo) {
                 $noobzoneLayerNames = $this->getNoobzoneLayerNames($user);
 
-                if (!empty($noobzoneLayerNames)) {
+                if ($noobzoneLayerNames !== []) {
                     $layerNamesString = implode(', ', $noobzoneLayerNames);
 
                     $message = sprintf(

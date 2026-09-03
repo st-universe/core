@@ -27,7 +27,7 @@ final class ShowUserSearchResult implements ViewControllerInterface
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        if ($this->showSearchResultRequest->getSearchId() == 0) {
+        if ($this->showSearchResultRequest->getSearchId() === 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
             $game->getInfo()->addInformation('Bitte eine Spieler-ID angeben!');
 

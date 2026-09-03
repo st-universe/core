@@ -17,12 +17,12 @@ class UserTutorial
 {
     #[Id]
     #[ManyToOne(targetEntity: User::class, inversedBy: 'tutorials')]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[Id]
     #[ManyToOne(targetEntity: TutorialStep::class)]
-    #[JoinColumn(name: 'tutorial_step_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'tutorial_step_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private TutorialStep $tutorialStep;
 
     public function getUser(): User

@@ -50,27 +50,22 @@ class ManageTorpedo implements ManagerInterface
 
         if ($isUnload) {
             return $this->unloadTorpedo(abs($load), $wrapper, $managerProvider);
-        } else {
-            $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
-            $torpedoType = $this->determineTorpedoType($wrapper, $selectedTorpedoTypeArray);
-
-            return $this->loadTorpedo($load, $torpedoType, $wrapper, $managerProvider);
         }
+        $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
+        $torpedoType = $this->determineTorpedoType($wrapper, $selectedTorpedoTypeArray);
+        return $this->loadTorpedo($load, $torpedoType, $wrapper, $managerProvider);
     }
 
     private function determineCount(mixed $value, Spacecraft $spacecraft): int
     {
         if ($value == 'm') {
             return $spacecraft->getMaxTorpedos();
-        } else {
-            $count = (int) $value;
-
-            if ($count > $spacecraft->getMaxTorpedos()) {
-                $count = $spacecraft->getMaxTorpedos();
-            }
-
-            return $count;
         }
+        $count = (int) $value;
+        if ($count > $spacecraft->getMaxTorpedos()) {
+            return $spacecraft->getMaxTorpedos();
+        }
+        return $count;
     }
 
     /**

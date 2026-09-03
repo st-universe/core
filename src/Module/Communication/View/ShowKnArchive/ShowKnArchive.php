@@ -37,10 +37,10 @@ final class ShowKnArchive implements ViewControllerInterface
 
         $mark = $knPostCount;
         $lim = floor($mark / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
-        $knStart = $mark % GameEnum::KN_PER_SITE == 0 ? $lim - GameEnum::KN_PER_SITE : $lim;
+        $knStart = $mark % GameEnum::KN_PER_SITE === 0 ? $lim - GameEnum::KN_PER_SITE : $lim;
 
         $mark = request::getInt('mark');
-        if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
+        if ($mark % GameEnum::KN_PER_SITE !== 0 || $mark < 0) {
             $mark = 0;
         }
 
@@ -100,7 +100,7 @@ final class ShowKnArchive implements ViewControllerInterface
         }
 
         $plots = [];
-        if (!empty($plotIds)) {
+        if ($plotIds !== []) {
             $plots = $this->knPostArchivRepository->getPlotsByIds($plotIds);
         }
 

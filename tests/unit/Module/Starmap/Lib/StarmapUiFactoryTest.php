@@ -50,7 +50,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     public function testCreateMapSectionHelperCreates(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             MapSectionHelper::class,
             $this->subject->createMapSectionHelper()
         );
@@ -58,7 +58,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     public function testCreateYRowCreates(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             YRow::class,
             $this->subject->createYRow(
                 $this->mock(Layer::class),
@@ -72,7 +72,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     public function testCreateUserYRowCreates(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             UserYRow::class,
             $this->subject->createUserYRow(
                 $this->mock(User::class),
@@ -87,7 +87,7 @@ class StarmapUiFactoryTest extends StuTestCase
 
     public function testCreateExplorableStarmapItem(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             ExplorableStarMapItem::class,
             $this->subject->createExplorableStarmapItem(
                 $this->mock(ExploreableStarMapInterface::class),
@@ -110,7 +110,7 @@ class StarmapUiFactoryTest extends StuTestCase
             $this->mock(Layer::class)
         );
 
-        static::assertFalse($item->hasEffects());
+        self::assertFalse($item->hasEffects());
     }
 
     public function testExplorableStarmapItemShowsDescribedEffects(): void
@@ -130,6 +130,6 @@ class StarmapUiFactoryTest extends StuTestCase
             $this->mock(Layer::class)
         );
 
-        static::assertTrue($item->hasEffects());
+        self::assertTrue($item->hasEffects());
     }
 }

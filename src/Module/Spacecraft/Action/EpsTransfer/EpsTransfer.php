@@ -72,7 +72,7 @@ final class EpsTransfer implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
 
-        if ($eps === null || $eps->getEps() == 0) {
+        if ($eps === null || $eps->getEps() === 0) {
             $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }

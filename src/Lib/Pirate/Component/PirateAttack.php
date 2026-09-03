@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;

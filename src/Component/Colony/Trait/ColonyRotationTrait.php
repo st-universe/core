@@ -22,7 +22,7 @@ trait ColonyRotationTrait
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
                 $twilightZone = - (($width) - 1);
-            } elseif ((int) - (($width) - ceil($scaled)) == 0) {
+            } elseif ((int) - (($width) - ceil($scaled)) === 0) {
                 $twilightZone = -1;
             } else {
                 $twilightZone = (int) - (($width) - $scaled);
@@ -89,22 +89,21 @@ trait ColonyRotationTrait
 
     public function getDayTimeName(int $timestamp): ?string
     {
-        $daytimename = null;
         if ($this->getDayTimePrefix($timestamp) == 1) {
-            $daytimename = 'Morgen';
+            return 'Morgen';
         }
 
         if ($this->getDayTimePrefix($timestamp) == 2) {
-            $daytimename = 'Tag';
+            return 'Tag';
         }
 
         if ($this->getDayTimePrefix($timestamp) == 3) {
-            $daytimename = 'Abend';
+            return 'Abend';
         }
 
         if ($this->getDayTimePrefix($timestamp) == 4) {
-            $daytimename = 'Nacht';
+            return 'Nacht';
         }
-        return $daytimename;
+        return null;
     }
 }

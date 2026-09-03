@@ -38,11 +38,11 @@ class BuildplanHangar
     private ?TorpedoType $defaultTorpedoType = null;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
-    #[JoinColumn(name: 'buildplan_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildplan_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftBuildplan $buildplan;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class, inversedBy: 'startHangar')]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private SpacecraftRump $spacecraftRump;
 
     public function getId(): int

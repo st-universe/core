@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Starmap\Lib;
 
 use Stu\Lib\Map\FieldTypeEffectEnum;

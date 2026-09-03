@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Station\Lib\Creation;
 
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftConfiguratorInterface;

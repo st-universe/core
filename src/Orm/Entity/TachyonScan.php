@@ -33,11 +33,11 @@ class TachyonScan
     private int $scan_time = 0;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: Location::class)]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     public function getId(): int

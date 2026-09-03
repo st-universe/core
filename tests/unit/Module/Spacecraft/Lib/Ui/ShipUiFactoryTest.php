@@ -32,7 +32,7 @@ class ShipUiFactoryTest extends StuTestCase
 
     public function testCreateVisualNavPanel(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             VisualNavPanel::class,
             $this->subject->createVisualNavPanel(
                 $this->mock(SpacecraftWrapperInterface::class),

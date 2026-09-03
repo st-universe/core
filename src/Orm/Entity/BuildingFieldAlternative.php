@@ -37,11 +37,11 @@ class BuildingFieldAlternative
     private ?int $research_id = null;
 
     #[ManyToOne(targetEntity: Building::class)]
-    #[JoinColumn(name: 'buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'buildings_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Building $building;
 
     #[ManyToOne(targetEntity: Building::class)]
-    #[JoinColumn(name: 'alternate_buildings_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alternate_buildings_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Building $alternateBuilding;
 
     public function getId(): int

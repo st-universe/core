@@ -31,14 +31,12 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
         if ($fleet === null) {
             $this->isSingleton = true;
             return $this->createSingleton($this->leader);
-        } else {
-
-            // only uncloaked and unwarped ships enter fight
-            return $fleet->getShipWrappers()
-                ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked()
-                    && !$wrapper->get()->isWarped()
-                    && $wrapper->getAlertState()->isAtLeast($this->leaderAlertState));
         }
+        // only uncloaked and unwarped ships enter fight
+        return $fleet->getShipWrappers()
+            ->filter(fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->isCloaked()
+                && !$wrapper->get()->isWarped()
+                && $wrapper->getAlertState()->isAtLeast($this->leaderAlertState));
     }
 
     public function isSingleton(): bool

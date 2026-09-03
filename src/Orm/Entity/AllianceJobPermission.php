@@ -25,7 +25,7 @@ class AllianceJobPermission
     private int $id;
 
     #[ManyToOne(targetEntity: AllianceJob::class, inversedBy: 'permissions')]
-    #[JoinColumn(name: 'job_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'job_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private AllianceJob $job;
 
     #[Column(type: 'integer')]

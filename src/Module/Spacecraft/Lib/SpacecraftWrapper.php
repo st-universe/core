@@ -158,7 +158,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
         $result = (int) ceil(($maxshield / 100) * $regenerationPercentage);
 
         if ($result > $maxshield - $shield) {
-            $result = $maxshield - $shield;
+            return $maxshield - $shield;
         }
 
         return $result;

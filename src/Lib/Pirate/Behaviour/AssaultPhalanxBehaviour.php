@@ -140,7 +140,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
         $uplinkMessages = $this->checkUplinkStatus($phalanxWrapper);
 
         // Füge die Uplink-Meldungen zur Nachrichtensammlung hinzu
-        if (!empty($uplinkMessages)) {
+        if ($uplinkMessages !== []) {
             // Erstelle eine einzige Nachricht mit allen Uplink-Meldungen
             $message = $this->messageFactory->createMessage(
                 UserConstants::USER_NPC_KAZON,

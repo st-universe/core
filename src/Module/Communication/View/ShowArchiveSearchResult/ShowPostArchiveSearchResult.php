@@ -57,7 +57,7 @@ final class ShowPostArchiveSearchResult implements ViewControllerInterface
         }
 
         $plots = [];
-        if (!empty($plotIds)) {
+        if ($plotIds !== []) {
             $plots = $this->knPostArchivRepository->getPlotsByIds($plotIds);
         }
 

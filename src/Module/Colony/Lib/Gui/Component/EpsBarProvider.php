@@ -53,7 +53,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
                 $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps - $energyProduction;
             }
         }
-        if ($energyProduction == 0) {
+        if ($energyProduction === 0) {
             $bars[StatusBarColorEnum::YELLOW->value] = $currentEps;
             $bars[StatusBarColorEnum::GREY->value] = $host->getMaxEps() - $currentEps;
         }

@@ -21,7 +21,8 @@ final class TemplateHelper implements TemplateHelperInterface
     {
         if ($value > 0) {
             return sprintf('<span class="positive">+%d</span>', $value);
-        } elseif ($value < 0) {
+        }
+        if ($value < 0) {
             return sprintf('<span class="negative">%d</span>', $value);
         }
         return (string) $value;

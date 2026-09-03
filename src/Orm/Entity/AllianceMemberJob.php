@@ -25,11 +25,11 @@ class AllianceMemberJob
     private int $id;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: AllianceJob::class, inversedBy: 'memberAssignments')]
-    #[JoinColumn(name: 'job_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'job_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private AllianceJob $job;
 
     public function getId(): int

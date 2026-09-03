@@ -29,11 +29,11 @@ class KnCharacter
     private int $characterId;
 
     #[ManyToOne(targetEntity: KnPost::class)]
-    #[JoinColumn(name: "kn_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
+    #[JoinColumn(name: "kn_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private KnPost $knPost;
 
     #[ManyToOne(targetEntity: UserCharacter::class)]
-    #[JoinColumn(name: "character_id", nullable: false, referencedColumnName: "id", onDelete: "CASCADE")]
+    #[JoinColumn(name: "character_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private UserCharacter $userCharacters;
 
 

@@ -113,12 +113,7 @@ abstract class Spacecraft implements
     #[Column(type: 'integer')]
     private int $locationId = 0;
 
-    #[OneToOne(
-        targetEntity: SpacecraftCondition::class,
-        mappedBy: 'spacecraft',
-        fetch: 'EAGER',
-        cascade: ['all']
-    )]
+    #[OneToOne(targetEntity: SpacecraftCondition::class, mappedBy: 'spacecraft', cascade: ['all'], fetch: 'EAGER')]
     private ?SpacecraftCondition $condition;
 
     #[OneToOne(targetEntity: Ship::class, inversedBy: 'tractoringSpacecraft')]
@@ -130,7 +125,7 @@ abstract class Spacecraft implements
     private ?TholianWeb $holdingWeb = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     /**
@@ -154,7 +149,7 @@ abstract class Spacecraft implements
     private Collection $systems;
 
     #[ManyToOne(targetEntity: SpacecraftRump::class)]
-    #[JoinColumn(name: 'rump_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'rump_id', referencedColumnName: 'id', nullable: false)]
     private SpacecraftRump $rump;
 
     #[ManyToOne(targetEntity: SpacecraftBuildplan::class)]
@@ -169,7 +164,7 @@ abstract class Spacecraft implements
     private Collection $storage;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'spacecrafts')]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     #[OneToOne(targetEntity: ShipTakeover::class, mappedBy: 'source')]

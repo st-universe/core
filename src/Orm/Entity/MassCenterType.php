@@ -33,7 +33,7 @@ class MassCenterType
     private int $first_field_type_id = 0;
 
     #[OneToOne(targetEntity: MapFieldType::class)]
-    #[JoinColumn(name: 'first_field_type_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'first_field_type_id', referencedColumnName: 'id', nullable: false)]
     private MapFieldType $firstFieldType;
 
     public function getId(): int

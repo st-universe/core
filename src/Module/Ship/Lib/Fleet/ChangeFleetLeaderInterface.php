@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Ship\Lib\Fleet;
 
 use Stu\Orm\Entity\Ship;

@@ -38,7 +38,7 @@ final class ShowUserArchiveSearchResult implements ViewControllerInterface
             return;
         }
 
-        if ($searchId == 0) {
+        if ($searchId === 0) {
             $game->setTemplateVar('KN_POSTINGS', null);
             $game->getInfo()->addInformation('Bitte eine Spieler-ID angeben!');
             return;
@@ -55,7 +55,7 @@ final class ShowUserArchiveSearchResult implements ViewControllerInterface
         }
 
         $plots = [];
-        if (!empty($plotIds)) {
+        if ($plotIds !== []) {
             $plots = $this->knPostArchivRepository->getPlotsByIds($plotIds);
         }
 

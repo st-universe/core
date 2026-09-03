@@ -43,7 +43,7 @@ class UserRepositoryTest extends StuTestCase
             ->once()
             ->andReturn($user);
 
-        static::assertSame(
+        self::assertSame(
             $user,
             $this->subject->getFallbackUser()
         );

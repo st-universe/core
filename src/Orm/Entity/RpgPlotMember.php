@@ -33,11 +33,11 @@ class RpgPlotMember
     private int $user_id = 0;
 
     #[ManyToOne(targetEntity: RpgPlot::class, inversedBy: 'members')]
-    #[JoinColumn(name: 'plot_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'plot_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private RpgPlot $rpgPlot;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

@@ -98,7 +98,7 @@ final class ShowPirateRound implements ViewControllerInterface
     private function getLastPirateRound(): ?PirateRound
     {
         $allRounds = $this->pirateRoundRepository->findBy([], ['id' => 'DESC'], 1);
-        return empty($allRounds) ? null : $allRounds[0];
+        return $allRounds === [] ? null : $allRounds[0];
     }
 
     /**

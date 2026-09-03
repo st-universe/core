@@ -54,7 +54,7 @@ final class ExcludeQuestUsers implements ActionControllerInterface
         $userIds = array_map('intval', explode(',', $userIdsString));
         $userIds = array_filter($userIds, fn ($id) => $id > 0);
 
-        if (empty($userIds)) {
+        if ($userIds === []) {
             $game->getInfo()->addInformation('Keine gültigen User-IDs gefunden');
             return;
         }

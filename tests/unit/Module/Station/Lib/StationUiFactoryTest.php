@@ -47,7 +47,7 @@ class StationUiFactoryTest extends StuTestCase
 
     public function testCreateDockingPrivilegeItemReturnsInstance(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             DockingPrivilegeItem::class,
             $this->subject->createDockingPrivilegeItem(
                 $this->mock(DockingPrivilege::class)

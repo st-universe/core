@@ -32,7 +32,7 @@ class ParameterSanitizerTest extends StuTestCase
             ->with($expected)
             ->once();
 
-        static::assertSame(
+        self::assertSame(
             $gameRequest,
             $this->subject->sanitize($gameRequest)
         );

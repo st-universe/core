@@ -113,8 +113,8 @@ final class EditDetails implements ActionControllerInterface
             return;
         }
 
-        if (strlen($rgbCode) > 0) {
-            if (strlen($rgbCode) != 7) {
+        if ($rgbCode !== '') {
+            if (strlen($rgbCode) !== 7) {
                 $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
                 return;
             }

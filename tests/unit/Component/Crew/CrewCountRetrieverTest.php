@@ -59,7 +59,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($amount_tradeposts);
 
-        static::assertSame(
+        self::assertSame(
             $amount_debris + $amount_tradeposts,
             $this->subject->getDebrisAndTradePostsCount($user)
         );
@@ -76,7 +76,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getAssignedToShipsCount($user)
         );
@@ -93,7 +93,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getInTrainingCount($user)
         );
@@ -118,7 +118,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        static::assertSame(
+        self::assertSame(
             0,
             $this->subject->getRemainingCount($user)
         );
@@ -143,7 +143,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        static::assertSame(
+        self::assertSame(
             1,
             $this->subject->getRemainingCount($user)
         );
@@ -160,7 +160,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getAssignedCount($user)
         );
@@ -179,7 +179,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn(FactionEnum::FACTION_FEDERATION->value);
 
-        static::assertSame(
+        self::assertSame(
             13,
             $this->subject->getTrainableCount($user)
         );
@@ -198,7 +198,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn(FactionEnum::FACTION_KLINGON->value);
 
-        static::assertSame(
+        self::assertSame(
             20,
             $this->subject->getTrainableCount($user)
         );
@@ -217,7 +217,7 @@ class CrewCountRetrieverTest extends StuTestCase
             ->once()
             ->andReturn(FactionEnum::FACTION_KLINGON->value);
 
-        static::assertSame(
+        self::assertSame(
             1,
             $this->subject->getTrainableCount($user)
         );

@@ -42,11 +42,11 @@ class ColonyShipRepair
     private bool $is_stopped = false;
 
     #[ManyToOne(targetEntity: Colony::class)]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     #[OneToOne(targetEntity: Ship::class)]
-    #[JoinColumn(name: 'ship_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'ship_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Ship $ship;
 
     public function getId(): int

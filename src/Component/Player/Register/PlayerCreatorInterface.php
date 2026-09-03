@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Component\Player\Register;
 
 use Stu\Component\Player\Register\Exception\RegistrationException;

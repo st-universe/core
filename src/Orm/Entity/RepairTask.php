@@ -39,11 +39,11 @@ class RepairTask
     private int $healing_percentage = 0;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: Spacecraft::class)]
-    #[JoinColumn(name: 'spacecraft_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'spacecraft_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Spacecraft $spacecraft;
 
     public function getId(): int

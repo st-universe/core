@@ -49,19 +49,19 @@ class UserRelation
     private int $date = 0;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'source_user_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'source_user_id', referencedColumnName: 'id', nullable: true)]
     private ?User $sourceUser = null;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'source_alliance_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'source_alliance_id', referencedColumnName: 'id', nullable: true)]
     private ?Alliance $sourceAlliance = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'recipient_user_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'recipient_user_id', referencedColumnName: 'id', nullable: true)]
     private ?User $recipientUser = null;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'recipient_alliance_id', nullable: true, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'recipient_alliance_id', referencedColumnName: 'id', nullable: true)]
     private ?Alliance $recipientAlliance = null;
 
     public function getId(): int

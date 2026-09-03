@@ -49,7 +49,7 @@ class Trumfield implements
     private Collection $storage;
 
     #[ManyToOne(targetEntity: Location::class, inversedBy: 'trumfields')]
-    #[JoinColumn(name: 'location_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'location_id', referencedColumnName: 'id', nullable: false)]
     private Location $location;
 
     #[\Override]

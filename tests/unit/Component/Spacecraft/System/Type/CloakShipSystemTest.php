@@ -340,7 +340,7 @@ class CloakShipSystemTest extends StuTestCase
 
     public function testCanBeActivatedWithInsufficientCrew(): void
     {
-        $result = $this->system->canBeActivatedWithInsufficientCrew($this->wrapper);
+        $result = $this->system->canBeActivatedWithInsufficientCrew();
 
         $this->assertFalse($result);
     }

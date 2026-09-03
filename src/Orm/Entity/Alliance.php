@@ -162,7 +162,7 @@ class Alliance
 
     public function hasAvatar(): bool
     {
-        return strlen($this->getAvatar()) > 0;
+        return $this->getAvatar() !== '';
     }
 
     public function getAvatar(): string

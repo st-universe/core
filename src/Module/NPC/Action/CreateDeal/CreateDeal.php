@@ -216,7 +216,7 @@ final class CreateDeal implements ActionControllerInterface
     private function createLogText(string $userName, Deals $deal, string $reason): string
     {
         $dealType = $deal->getAuction() ? "Auktion" : "Deal";
-        $faction = $deal->getFaction() ? " für die Fraktion " . $deal->getFaction()->getName() : "";
+        $faction = $deal->getFaction() instanceof \Stu\Orm\Entity\Faction ? " für die Fraktion " . $deal->getFaction()->getName() : "";
 
         $wantText = "";
         if ($deal->getWantedCommodity() !== null) {
@@ -238,7 +238,7 @@ final class CreateDeal implements ActionControllerInterface
             );
         } elseif ($deal->getBuildplanId() !== null) {
             $type = $deal->getShip() ? "Schiff" : "Bauplan";
-            $buildplanName = $deal->getBuildplan() ? $deal->getBuildplan()->getName() : "ID:" . $deal->getBuildplanId();
+            $buildplanName = $deal->getBuildplan() instanceof \Stu\Orm\Entity\SpacecraftBuildplan ? $deal->getBuildplan()->getName() : "ID:" . $deal->getBuildplanId();
             $giveText = $type . " " . $buildplanName;
         }
 

@@ -18,7 +18,7 @@ class ColonyChangeable
 {
     #[Id]
     #[OneToOne(targetEntity: Colony::class, inversedBy: 'changeable')]
-    #[JoinColumn(name: 'colony_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'colony_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Colony $colony;
 
     #[Column(type: 'integer', length: 5)]

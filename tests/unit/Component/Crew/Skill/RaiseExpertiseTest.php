@@ -76,8 +76,8 @@ final class RaiseExpertiseTest extends StuTestCase
             100
         );
 
-        static::assertSame(100, $skill->getExpertise());
-        static::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
+        self::assertSame(100, $skill->getExpertise());
+        self::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
     }
 
     public function testDoesNotLowerCrewRankForLowerRankSkill(): void
@@ -104,8 +104,8 @@ final class RaiseExpertiseTest extends StuTestCase
             100
         );
 
-        static::assertSame(100, $skill->getExpertise());
-        static::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
+        self::assertSame(100, $skill->getExpertise());
+        self::assertSame(CrewSkillLevelEnum::CREWMAN, $skill->getRank());
     }
 
     public function testDoesNotAutomaticallyPromoteBeyondLieutenantCommander(): void
@@ -137,7 +137,7 @@ final class RaiseExpertiseTest extends StuTestCase
             100
         );
 
-        static::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
+        self::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
     }
 
     public function testPromotesCrewToLieutenantCommanderWhenExperienceExceedsAutomaticRanks(): void
@@ -169,7 +169,7 @@ final class RaiseExpertiseTest extends StuTestCase
             100
         );
 
-        static::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
+        self::assertSame(CrewSkillLevelEnum::COMMANDER, $skill->getRank());
     }
 
     public function testAppliesKlingonExpertiseBonus(): void
@@ -195,7 +195,7 @@ final class RaiseExpertiseTest extends StuTestCase
             100
         );
 
-        static::assertSame(5, $skill->getExpertise());
+        self::assertSame(5, $skill->getExpertise());
     }
 
     public function testDoesNotReduceExpertiseBelowZero(): void
@@ -222,7 +222,7 @@ final class RaiseExpertiseTest extends StuTestCase
             -100
         );
 
-        static::assertSame(0, $skill->getExpertise());
+        self::assertSame(0, $skill->getExpertise());
     }
 
     /** @return MockInterface&Crew */

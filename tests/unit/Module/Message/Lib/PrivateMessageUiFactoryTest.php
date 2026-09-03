@@ -27,7 +27,7 @@ class PrivateMessageUiFactoryTest extends StuTestCase
 
     public function testCreatePrivateMessageFolderItem(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             PrivateMessageFolderItem::class,
             $this->subject->createPrivateMessageFolderItem(
                 $this->mock(PrivateMessageFolder::class)

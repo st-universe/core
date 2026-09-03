@@ -71,7 +71,7 @@ class TorpedoType
     private Collection $productionCosts;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false)]
     private Commodity $commodity;
 
     public function __construct()

@@ -64,7 +64,7 @@ class Module
     #[Column(type: 'boolean')]
     private bool $viewable = false;
 
-    #[Column(type: 'integer', enumType: SpacecraftRumpRoleEnum::class, nullable: true)]
+    #[Column(type: 'integer', nullable: true, enumType: SpacecraftRumpRoleEnum::class)]
     private ?SpacecraftRumpRoleEnum $rumps_role_id = null;
 
     #[Column(type: 'smallint')]
@@ -73,7 +73,7 @@ class Module
     #[Column(type: 'integer', nullable: true, enumType: FactionEnum::class)]
     private ?FactionEnum $faction_id = null;
 
-    #[Column(type: 'integer', enumType: SpacecraftSystemTypeEnum::class, nullable: true)]
+    #[Column(type: 'integer', nullable: true, enumType: SpacecraftSystemTypeEnum::class)]
     private ?SpacecraftSystemTypeEnum $system_type = null;
 
     #[Column(type: 'boolean', nullable: true)]
@@ -83,28 +83,28 @@ class Module
      * @var Research
      */
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
     private $research;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     /**
      * @var Faction
      */
     #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', nullable: false)]
     private $faction;
 
     #[ManyToOne(targetEntity: ShipRumpRole::class)]
-    #[JoinColumn(name: 'rumps_role_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'rumps_role_id', referencedColumnName: 'id', nullable: false)]
     private ShipRumpRole $shipRumpRole;
 
     /**
      * @var ArrayCollection<int, ModuleSpecial>
      */
-    #[OneToMany(targetEntity: ModuleSpecial::class, mappedBy: 'module', indexBy: 'special_id', fetch: 'EXTRA_LAZY')]
+    #[OneToMany(targetEntity: ModuleSpecial::class, mappedBy: 'module', fetch: 'EXTRA_LAZY', indexBy: 'special_id')]
     #[OrderBy(['special_id' => 'ASC'])]
     private Collection $moduleSpecials;
 

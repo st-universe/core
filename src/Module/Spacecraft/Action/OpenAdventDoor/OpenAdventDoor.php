@@ -70,13 +70,14 @@ final class OpenAdventDoor implements ActionControllerInterface
         }
 
         $openedDoors = $this->openedAdventDoorRepository->getOpenedDoorsCountOfToday($user);
-
         //check for nicholas present
         if ((int)date("j") === 6 && (int)date("n") === 12 && $openedDoors === 1) {
             $this->nicholasPresent($game);
             $this->createOpenedAdventDoor($user);
             return;
-        } elseif ($openedDoors > 0) {
+        }
+
+        if ($openedDoors > 0) {
             $game->getInfo()->addInformation("Du hast heute bereits ein Türchen geöffnet");
             return;
         }

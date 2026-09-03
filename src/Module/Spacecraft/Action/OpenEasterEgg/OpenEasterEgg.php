@@ -72,13 +72,14 @@ final class OpenEasterEgg implements ActionControllerInterface
         }
 
         $openedDoors = $this->openedAdventDoorRepository->getOpenedDoorsCountOfToday($user);
-
         //check for easter prestige
         if ($openedDoors === 2) {
             $this->easterPrestige($game);
             $this->createOpenedAdventDoor($user);
             return;
-        } elseif ($openedDoors > 1) {
+        }
+
+        if ($openedDoors > 1) {
             $game->getInfo()->addInformation("Du hast bereits alle Ostereier erhalten");
             return;
         }

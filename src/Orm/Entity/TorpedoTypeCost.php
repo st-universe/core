@@ -31,11 +31,11 @@ class TorpedoTypeCost
     private int $count = 0;
 
     #[ManyToOne(targetEntity: TorpedoType::class)]
-    #[JoinColumn(name: 'torpedo_type_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'torpedo_type_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private TorpedoType $torpedoType;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     public function getId(): int

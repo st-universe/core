@@ -21,7 +21,7 @@ class CrewAssignment
 {
     #[Id]
     #[OneToOne(targetEntity: Crew::class)]
-    #[JoinColumn(name: 'crew_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'crew_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Crew $crew;
 
     #[Column(type: 'smallint', nullable: true, enumType: CrewTypeEnum::class)]
@@ -40,7 +40,7 @@ class CrewAssignment
     private ?TradePost $tradepost = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     #[ManyToOne(targetEntity: RepairTask::class)]

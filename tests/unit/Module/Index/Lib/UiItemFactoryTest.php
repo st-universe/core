@@ -19,7 +19,7 @@ class UiItemFactoryTest extends StuTestCase
 
     public function testCreateFactionItemReturnsValue(): void
     {
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             FactionItem::class,
             $this->subject->createFactionItem(
                 $this->mock(Faction::class),

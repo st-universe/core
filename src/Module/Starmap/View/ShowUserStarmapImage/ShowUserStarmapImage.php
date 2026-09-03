@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowUserStarmapImage;
 
+use GdImage;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Map\EncodedMapInterface;
@@ -177,7 +178,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         }
         imagefill($image, 0, 0, $background);
 
-        /** @var array<string, \GdImage> $tileCache */
+        /** @var array<string, GdImage> $tileCache */
         $tileCache = [];
         foreach ($this->mapRepository->getAllOrdered($layer) as $map) {
             $this->renderMapField($image, $layer, $map, $tileCache);
@@ -231,7 +232,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
     }
 
     /**
-     * @param array<string, \GdImage> $tileCache
+     * @param array<string, GdImage> $tileCache
      */
     private function renderMapField(\GdImage $targetImage, Layer $layer, Map $map, array &$tileCache): void
     {

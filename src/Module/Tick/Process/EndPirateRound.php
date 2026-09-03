@@ -62,7 +62,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
     {
         $allRounds = $this->pirateRoundRepository->findBy([], ['id' => 'DESC'], 1);
 
-        return empty($allRounds) ? null : $allRounds[0];
+        return $allRounds === [] ? null : $allRounds[0];
     }
 
     private function handleRecentlyEndedRound(PirateRound $pirateRound): void
@@ -92,7 +92,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
     {
         $userPirateRounds = $this->userPirateRoundRepository->findByPirateRound($pirateRoundId);
 
-        if (empty($userPirateRounds)) {
+        if ($userPirateRounds === []) {
             return null;
         }
 
@@ -276,7 +276,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
             array_unshift($textParts, 'Du');
         }
 
-        if (!empty($allianceTopThreeUsers)) {
+        if ($allianceTopThreeUsers !== []) {
             foreach ($allianceTopThreeUsers as $allianceUser) {
                 if ($allianceUser->getUser()->getId() !== $user->getId()) {
                     $totalPrestige += (int)round($allianceUser->getPrestige() * 0.3);
@@ -285,7 +285,7 @@ final class EndPirateRound implements ProcessTickHandlerInterface
             $textParts[] = 'Siedler deiner Allianz';
         }
 
-        if (empty($textParts)) {
+        if ($textParts === []) {
             return ['amount' => 0, 'text' => ''];
         }
 

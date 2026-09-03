@@ -98,9 +98,8 @@ final class BuildStation implements ActionControllerInterface
 
             if ($mod === null) {
                 return;
-            } else {
-                $wantedSpecialModules[] = $mod;
             }
+            $wantedSpecialModules[] = $mod;
         }
 
         // try to consume needed commodities

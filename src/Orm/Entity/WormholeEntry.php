@@ -36,15 +36,15 @@ class WormholeEntry
     private ?int $cooldown = null;
 
     #[ManyToOne(targetEntity: Map::class, inversedBy: 'wormholeEntries')]
-    #[JoinColumn(name: 'map_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'map_id', referencedColumnName: 'id', nullable: false)]
     private Map $map;
 
     #[ManyToOne(targetEntity: StarSystem::class)]
-    #[JoinColumn(name: 'system_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'system_id', referencedColumnName: 'id', nullable: false)]
     private StarSystem $starSystem;
 
     #[ManyToOne(targetEntity: StarSystemMap::class, inversedBy: 'wormholeEntries')]
-    #[JoinColumn(name: 'system_map_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'system_map_id', referencedColumnName: 'id', nullable: false)]
     private StarSystemMap $systemMap;
 
     /**

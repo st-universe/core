@@ -46,11 +46,11 @@ class AllianceRelation
     private ?int $last_edited = null;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'alliance_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'alliance_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Alliance $alliance;
 
     #[ManyToOne(targetEntity: Alliance::class)]
-    #[JoinColumn(name: 'recipient', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Alliance $opponent;
 
     public function getId(): int

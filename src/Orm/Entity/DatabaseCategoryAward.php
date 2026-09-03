@@ -32,7 +32,7 @@ class DatabaseCategoryAward
     private ?int $award_id = null;
 
     #[ManyToOne(targetEntity: DatabaseCategory::class)]
-    #[JoinColumn(name: 'category_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
     private DatabaseCategory $category;
 
     #[ManyToOne(targetEntity: Award::class)]

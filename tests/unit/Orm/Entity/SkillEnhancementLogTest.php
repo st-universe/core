@@ -21,7 +21,7 @@ final class SkillEnhancementLogTest extends StuTestCase
             ->setExpertiseSum(3)
             ->setPromotion(null);
 
-        static::assertSame(
+        self::assertSame(
             'Crew von der Aerie hat nun 3 (+3) Expertise (Rang Kadett) für Fremdes Schiff gescannt',
             $log->getDescription('Kadett')
         );

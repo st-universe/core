@@ -25,7 +25,7 @@ final class EditInfluenceArea implements ActionControllerInterface
             return;
         }
 
-        if ($this->editInfluenceAreaRequest->getInfluenceAreaId() == 9999) {
+        if ($this->editInfluenceAreaRequest->getInfluenceAreaId() === 9999) {
 
             $selectedField->setInfluenceArea(null);
         } else {

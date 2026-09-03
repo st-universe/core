@@ -137,8 +137,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
         if ($currentMapField instanceof Map && $layer !== null) {
             return $this->encodedMap->getEncodedMapPath($currentMapField->getFieldId(), $layer);
-        } else {
-            return sprintf('%d.png', $currentMapField->getFieldId());
         }
+        return sprintf('%d.png', $currentMapField->getFieldId());
     }
 }

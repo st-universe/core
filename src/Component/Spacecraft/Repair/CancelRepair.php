@@ -50,9 +50,7 @@ final class CancelRepair implements CancelRepairInterface
         if ($state === SpacecraftStateEnum::REPAIR_PASSIVE) {
             $colonyRepairJob = $this->colonyShipRepairRepository->getByShip($ship->getId());
             $stationRepairJob = $this->stationShipRepairRepository->getByShip($ship->getId());
-
             $this->setStateNoneAndSave($ship);
-
             if ($colonyRepairJob !== null) {
                 $this->colonyShipRepairRepository->delete($colonyRepairJob);
                 $this->refreshColonyQueueAfterRemoval($colonyRepairJob->getColony(), $colonyRepairJob->getFieldId());
@@ -61,19 +59,16 @@ final class CancelRepair implements CancelRepairInterface
                 $this->stationShipRepairRepository->delete($stationRepairJob);
                 $this->refreshStationQueueAfterRemoval($stationRepairJob->getStation());
             }
-
             return new CancelRepairResult(true);
-        } elseif ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
+        }
+        if ($state === SpacecraftStateEnum::REPAIR_ACTIVE) {
             $shipId = $ship->getId();
             $repairTask = $this->repairTaskRepository->getByShip($shipId);
             [$refundedSpareParts, $refundedSystemComponents] = $repairTask === null
                 ? [0, 0]
                 : $this->refundActiveRepairCommodities($ship, $repairTask);
-
             $this->setStateNoneAndSave($ship);
-
             $this->repairTaskRepository->truncateByShipId($shipId);
-
             return new CancelRepairResult(true, $refundedSpareParts, $refundedSystemComponents);
         }
 

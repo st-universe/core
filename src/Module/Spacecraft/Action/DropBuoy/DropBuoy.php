@@ -44,7 +44,7 @@ final class DropBuoy implements ActionControllerInterface
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem === null || $epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() === 0) {
             $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }

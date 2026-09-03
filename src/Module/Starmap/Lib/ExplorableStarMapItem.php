@@ -223,11 +223,12 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
                     $ally = $user->getAlliance();
 
                     $userRgbCode = $this->userSettingsProvider->getRgbCode($user);
-
-                    if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
+                    if ($ally !== null && $ally->getRgbCode() !== '') {
                         $this->borderCssValue = '1px solid ' . $ally->getRgbCode();
                         return $this->borderCssValue;
-                    } elseif (strlen($userRgbCode) > 0) {
+                    }
+
+                    if ($userRgbCode !== '') {
                         $this->borderCssValue = '1px solid ' . $userRgbCode;
                         return $this->borderCssValue;
                     }

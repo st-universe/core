@@ -40,7 +40,7 @@ class Deals
     #[Column(type: 'integer', nullable: true)]
     private ?int $want_commodity = null;
 
-    #[Column(type: 'integer', nullable: true, name: 'give_commodity_amonut')]
+    #[Column(name: 'give_commodity_amonut', type: 'integer', nullable: true)]
     private ?int $give_commodity_amount = null;
 
     #[Column(type: 'integer', nullable: true)]
@@ -58,7 +58,7 @@ class Deals
     #[Column(type: 'integer')]
     private int $start;
 
-    #[Column(type: 'integer', name: '"end"')]
+    #[Column(name: '"end"', type: 'integer')]
     private int $end;
 
     #[Column(type: 'integer', nullable: true)]

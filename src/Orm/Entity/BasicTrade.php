@@ -48,11 +48,11 @@ class BasicTrade
     private ?int $user_id = null;
 
     #[ManyToOne(targetEntity: Faction::class)]
-    #[JoinColumn(name: 'faction_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'faction_id', referencedColumnName: 'id', nullable: false)]
     private Faction $faction;
 
     #[ManyToOne(targetEntity: Commodity::class)]
-    #[JoinColumn(name: 'commodity_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'commodity_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Commodity $commodity;
 
     public function getId(): int

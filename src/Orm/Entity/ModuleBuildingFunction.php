@@ -31,7 +31,7 @@ class ModuleBuildingFunction
     private int $buildingfunction = 0;
 
     #[ManyToOne(targetEntity: Module::class)]
-    #[JoinColumn(name: 'module_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Module $module;
 
     public function getId(): int

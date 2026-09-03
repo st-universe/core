@@ -35,11 +35,11 @@ class Researched
     private int $finished = 0;
 
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
     private Research $research;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
     public function getId(): int

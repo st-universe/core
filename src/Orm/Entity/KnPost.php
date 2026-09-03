@@ -86,7 +86,7 @@ class KnPost implements EntityWithHrefInterface
     private ?RpgPlot $rpgPlot = null;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', nullable: false, referencedColumnName: 'id')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
     public function __construct()
