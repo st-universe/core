@@ -51,7 +51,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
             $game->setTemplateVar('USER_ID', $userId);
             $game->setTemplateVar('SELECTED_USER', $selectedUser);
             $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-            $filteredRumps = array_filter($allRumps, fn ($rump): bool => $rump->getNpcBuildable() === true);
+            $filteredRumps = array_filter($allRumps, fn (SpacecraftRump $rump): bool => $rump->getNpcBuildable() === true);
 
             $game->setTemplateVar('SHIP_RUMPS', $filteredRumps);
 

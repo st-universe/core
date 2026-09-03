@@ -25,27 +25,12 @@ use Stu\StuTestCase;
 
 class BuildingActionTest extends StuTestCase
 {
-    /**
-     * @var MockInterface&StorageManagerInterface
-     */
-    private $storageManager;
-    /**
-     * @var MockInterface&BuildingManagerInterface
-     */
-    private $buildingManager;
-    /**
-     * @var MockInterface&ColonyLibFactoryInterface
-     */
-    private $colonyLibFactory;
-    /**
-     * @var MockInterface&PlanetFieldRepositoryInterface
-     */
-    private $planetFieldRepository;
+    private MockInterface&StorageManagerInterface $storageManager;
+    private MockInterface&BuildingManagerInterface $buildingManager;
+    private MockInterface&ColonyLibFactoryInterface $colonyLibFactory;
+    private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    /**
-     * @var MockInterface&PlanetField
-     */
-    private $field;
+    private MockInterface&PlanetField $field;
 
     private BuildingActionInterface $subject;
 
@@ -53,10 +38,10 @@ class BuildingActionTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->storageManager = Mockery::mock(StorageManagerInterface::class);
-        $this->buildingManager = Mockery::mock(BuildingManagerInterface::class);
-        $this->colonyLibFactory = Mockery::mock(ColonyLibFactoryInterface::class);
-        $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);
+        $this->storageManager = $this->mock(StorageManagerInterface::class);
+        $this->buildingManager = $this->mock(BuildingManagerInterface::class);
+        $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
+        $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->field = $this->mock(PlanetField::class);
 

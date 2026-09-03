@@ -95,16 +95,16 @@ class ColonyCorrector implements ColonyCorrectorInterface
             );
 
             if (
-                $this->check($worker, $colony->getWorkers(), $colony, function (ColonyChangeable $cc, $expected): void {
+                $this->check($worker, $colony->getWorkers(), $colony, function (ColonyChangeable $cc, int $expected): void {
                     $cc->setWorkers($expected);
                 }, 'worker')
-                || $this->check($activeHousing, $colony->getChangeable()->getMaxBev(), $colony, function (ColonyChangeable $cc, $expected): void {
+                || $this->check($activeHousing, $colony->getChangeable()->getMaxBev(), $colony, function (ColonyChangeable $cc, int $expected): void {
                     $cc->setMaxBev($expected);
                 }, 'housing')
-                || $this->check($storage, $colony->getMaxStorage(), $colony, function (ColonyChangeable $cc, $expected): void {
+                || $this->check($storage, $colony->getMaxStorage(), $colony, function (ColonyChangeable $cc, int $expected): void {
                     $cc->setMaxStorage($expected);
                 }, 'storage')
-                || $this->check($eps, $colony->getMaxEps(), $colony, function (ColonyChangeable $cc, $expected): void {
+                || $this->check($eps, $colony->getMaxEps(), $colony, function (ColonyChangeable $cc, int $expected): void {
                     $cc->setMaxEps($expected);
                 }, 'eps')
             ) {

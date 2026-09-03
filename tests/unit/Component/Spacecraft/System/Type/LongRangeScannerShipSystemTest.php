@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Type;
 
 use Mockery;
+use Mockery\MockInterface;
 use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Data\TrackerSystemData;
@@ -39,17 +40,17 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     /** @var SpacecraftMovementPublisherInterface|MockInterface */
     private $spacecraftMovementPublisher;
 
-    private Ship $ship;
-    private ShipWrapperInterface $wrapper;
+    private Ship|MockInterface $ship;
+    private ShipWrapperInterface|MockInterface $wrapper;
 
     #[\Override]
     public function setUp(): void
     {
         $this->ship = $this->mock(Ship::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
-        $this->trackerDeviceManager = Mockery::mock(TrackerDeviceManagerInterface::class);
-        $this->spacecraftMovementPublisher = Mockery::mock(SpacecraftMovementPublisherInterface::class);
+        $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
+        $this->trackerDeviceManager = $this->mock(TrackerDeviceManagerInterface::class);
+        $this->spacecraftMovementPublisher = $this->mock(SpacecraftMovementPublisherInterface::class);
 
         $this->system = new LongRangeScannerShipSystem(
             $this->astroEntryLib,

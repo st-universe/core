@@ -102,7 +102,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystem::class);
+        $starSystem = $this->mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()
@@ -134,7 +134,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystem::class);
+        $starSystem = $this->mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()
@@ -179,7 +179,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $starSystem = Mockery::mock(StarSystem::class);
+        $starSystem = $this->mock(StarSystem::class);
         $this->ship->shouldReceive('getSystem')
             ->withNoArgs()
             ->twice()

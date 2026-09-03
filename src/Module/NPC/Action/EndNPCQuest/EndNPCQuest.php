@@ -70,7 +70,7 @@ final class EndNPCQuest implements ActionControllerInterface
     private function notifyQuestMembers(NPCQuest $quest): void
     {
         $activeMembers = $quest->getQuestUsers()->filter(
-            fn ($questUser) => $questUser->getMode()->value === 1
+            fn ($questUser): bool => $questUser->getMode()->value === 1
         );
 
         $questLeaderId = $quest->getUserId();

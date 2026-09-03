@@ -159,7 +159,7 @@ final class ShowLiveMapImage implements ViewControllerInterface
         return $image;
     }
 
-    private function sendImage(string $cachePath): void
+    private function sendImage(string $cachePath): never
     {
         header('Content-Type: image/png');
         header('Cache-Control: private, max-age=300');

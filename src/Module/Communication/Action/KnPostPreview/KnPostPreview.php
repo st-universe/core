@@ -37,7 +37,7 @@ final class KnPostPreview implements ActionControllerInterface
         $pattern = '/\[.*?\](*SKIP)(*FAIL)|[<>]/';
         $safeText = preg_replace_callback(
             $pattern,
-            function ($matches) {
+            function ($matches): string {
                 return $matches[0] === '<' ? '&lt;' : '&gt;';
             },
             $text

@@ -9,6 +9,7 @@ use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\History;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class HistoryProvider implements ViewComponentProviderInterface
@@ -70,7 +71,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
             ? $this->historyRepository->getByTypeAndSearch($type, $count)
             : $this->historyRepository->getByTypeAndSearchWithoutPirate($type, $count);
 
-        $filteredEntries = array_filter($historyEntries, function ($entry) use ($search): bool {
+        $filteredEntries = array_filter($historyEntries, function (History $entry) use ($search): bool {
             $this->bbcodeParser->parse($entry->getText());
             $plainText = $this->bbcodeParser->getAsText() ?: '';
             return stripos($plainText, $search) !== false;

@@ -57,7 +57,7 @@ final class BuildingReactivationHandler
     {
         return array_filter(
             $host->getPlanetFields()->toArray(),
-            fn(PlanetField $f) => $f->getReactivateAfterUpgrade() === $upgradedFieldId
+            fn(PlanetField $f): bool => $f->getReactivateAfterUpgrade() === $upgradedFieldId
         );
     }
 

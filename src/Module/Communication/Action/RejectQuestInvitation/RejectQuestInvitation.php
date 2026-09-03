@@ -64,7 +64,7 @@ final class RejectQuestInvitation implements ActionControllerInterface
 
         if ($quest->getApplicantMax() !== null) {
             $activeMembersCount = count($quest->getQuestUsers()->filter(
-                fn ($questUser) => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
+                fn ($questUser): bool => $questUser->getMode() === QuestUserModeEnum::ACTIVE_MEMBER
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {

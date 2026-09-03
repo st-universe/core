@@ -97,7 +97,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
         }
 
         $sortedKeys = array_keys($grouped);
-        usort($sortedKeys, function ($a, $b) use ($layerInfo) {
+        usort($sortedKeys, function ($a, $b) use ($layerInfo): int {
             $isANoobzone = $layerInfo[$a]['is_noobzone'] ?? false;
             $isBNoobzone = $layerInfo[$b]['is_noobzone'] ?? false;
 

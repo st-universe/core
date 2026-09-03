@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\PirateWrathRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -44,7 +45,7 @@ final class PirateWrathRanking implements ViewControllerInterface
         $game->setViewTemplate('html/database/highscores/topPirateWrath.twig');
         $wrathList = $this->pirateWrathRepository->getPirateWrathTop10();
         $wrathData = array_map(
-            function ($wrathEntity): array {
+            function (PirateWrath $wrathEntity): array {
                 $userId = $wrathEntity->getUser()->getId();
                 $wrath = $wrathEntity->getWrath();
 

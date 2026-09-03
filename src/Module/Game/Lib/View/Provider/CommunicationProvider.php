@@ -92,7 +92,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
 
         $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
-        $formattedVersions = array_map(function ($version) {
+        $formattedVersions = array_map(function (string $version): array {
             return [
                 'version' => $version,
                 'display' => $this->formatVersion($version)

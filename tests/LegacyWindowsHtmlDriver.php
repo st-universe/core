@@ -28,7 +28,7 @@ final class LegacyWindowsHtmlDriver implements Driver
         return 'html';
     }
 
-    public function match($expected, $actual)
+    public function match(mixed $expected, mixed $actual): void
     {
         Assert::assertEquals($expected, $this->serialize($actual));
     }

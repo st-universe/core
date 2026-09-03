@@ -10,6 +10,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\SpacecraftRump;
 
 final class ShowColonization implements ViewControllerInterface
@@ -57,7 +58,7 @@ final class ShowColonization implements ViewControllerInterface
 
                 $coloniesInLayer = array_filter(
                     $userColonies->toArray(),
-                    fn ($col) => $col->getSystem()->getLayer() === $layer
+                    fn (Colony $col): bool => $col->getSystem()->getLayer() === $layer
                 );
                 $colocount = count($coloniesInLayer);
 

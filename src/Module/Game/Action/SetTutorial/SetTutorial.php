@@ -68,7 +68,7 @@ final class SetTutorial implements ActionControllerInterface
             }
 
             $step = $isForward ? $step->getPreviousStep() : $step->getNextStep();
-        } while ($step !== null);
+        } while ($step instanceof TutorialStep);
 
         return null;
     }

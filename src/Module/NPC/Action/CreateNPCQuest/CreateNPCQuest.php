@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -250,7 +251,7 @@ final class CreateNPCQuest implements ActionControllerInterface
     {
         $validFactions = [];
         $playableFactions = $this->factionRepository->getByChooseable(true);
-        $playableFactionIds = array_map(fn ($faction) => $faction->getId(), $playableFactions);
+        $playableFactionIds = array_map(fn (Faction $faction): int => $faction->getId(), $playableFactions);
 
         foreach ($factionIds as $factionId) {
             $id = (int)$factionId;

@@ -30,11 +30,11 @@ class ShipyardTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);
-        $this->colonyShipRepairRepository = Mockery::mock(ColonyShipRepairRepositoryInterface::class);
-        $this->colonyFunctionManager = Mockery::mock(ColonyFunctionManagerInterface::class);
-        $this->repairUtil = Mockery::mock(RepairUtilInterface::class);
-        $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);
+        $this->colonyShipQueueRepository = $this->mock(ColonyShipQueueRepositoryInterface::class);
+        $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
+        $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
+        $this->repairUtil = $this->mock(RepairUtilInterface::class);
+        $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->shipyard = new Shipyard(
             $this->colonyShipQueueRepository,
@@ -59,7 +59,7 @@ class ShipyardTest extends StuTestCase
 
     public function testDeactivateStopsBuildProcesses(): void
     {
-        $colony = Mockery::mock(Colony::class);
+        $colony = $this->mock(Colony::class);
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
@@ -76,9 +76,9 @@ class ShipyardTest extends StuTestCase
 
     public function testDeactivateStopsRepairProcessesOnField(): void
     {
-        $colony = Mockery::mock(Colony::class);
-        $field = Mockery::mock(PlanetField::class);
-        $repair = Mockery::mock(ColonyShipRepair::class);
+        $colony = $this->mock(Colony::class);
+        $field = $this->mock(PlanetField::class);
+        $repair = $this->mock(ColonyShipRepair::class);
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
@@ -120,7 +120,7 @@ class ShipyardTest extends StuTestCase
 
     public function testActivateRestartsBuildProcesses(): void
     {
-        $colony = Mockery::mock(Colony::class);
+        $colony = $this->mock(Colony::class);
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
         $colony->shouldReceive('getId')
@@ -137,9 +137,9 @@ class ShipyardTest extends StuTestCase
 
     public function testActivateRestartsRepairProcessesOnField(): void
     {
-        $colony = Mockery::mock(Colony::class);
-        $field = Mockery::mock(PlanetField::class);
-        $repair = Mockery::mock(ColonyShipRepair::class);
+        $colony = $this->mock(Colony::class);
+        $field = $this->mock(PlanetField::class);
+        $repair = $this->mock(ColonyShipRepair::class);
         $ship = $this->mock(\Stu\Orm\Entity\Ship::class);
         $buildingFunction = BuildingFunctionEnum::SHIELD_BATTERY;
 
@@ -197,11 +197,11 @@ class ShipyardTest extends StuTestCase
 
     public function testActivateRepairStationStartsSecondQueueSlotImmediately(): void
     {
-        $colony = Mockery::mock(Colony::class);
-        $triggerField = Mockery::mock(PlanetField::class);
-        $queueField = Mockery::mock(PlanetField::class);
-        $jobOne = Mockery::mock(ColonyShipRepair::class);
-        $jobTwo = Mockery::mock(ColonyShipRepair::class);
+        $colony = $this->mock(Colony::class);
+        $triggerField = $this->mock(PlanetField::class);
+        $queueField = $this->mock(PlanetField::class);
+        $jobOne = $this->mock(ColonyShipRepair::class);
+        $jobTwo = $this->mock(ColonyShipRepair::class);
         $shipOne = $this->mock(\Stu\Orm\Entity\Ship::class);
         $shipTwo = $this->mock(\Stu\Orm\Entity\Ship::class);
 
@@ -271,8 +271,8 @@ class ShipyardTest extends StuTestCase
 
     public function testDeactivateRepairStationUsesFieldIndexForIgnoreFilter(): void
     {
-        $colony = Mockery::mock(Colony::class);
-        $triggerField = Mockery::mock(PlanetField::class);
+        $colony = $this->mock(Colony::class);
+        $triggerField = $this->mock(PlanetField::class);
 
         $colony->shouldReceive('getId')
             ->once()

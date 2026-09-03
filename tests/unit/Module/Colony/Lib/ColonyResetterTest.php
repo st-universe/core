@@ -54,46 +54,28 @@ class ColonyResetterTest extends StuTestCase
      */
     private $colonyShipQueueRepository;
 
-    /**
-     * @var null|MockInterface|PlanetFieldRepositoryInterface
-     */
-    private $planetFieldRepository;
+    private null|MockInterface|PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    /**
-     * @var null|MockInterface|CrewRepositoryInterface
-     */
-    private $crewRepository;
+    private null|MockInterface|CrewRepositoryInterface $crewRepository;
 
-    /**
-     * @var null|MockInterface|CrewTrainingRepositoryInterface
-     */
-    private $crewTrainingRepository;
+    private null|MockInterface|CrewTrainingRepositoryInterface $crewTrainingRepository;
 
-    /**
-     * @var null|MockInterface|CrewAssignmentRepositoryInterface
-     */
-    private $shipCrewRepository;
+    private null|MockInterface|CrewAssignmentRepositoryInterface $shipCrewRepository;
 
-    /**
-     * @var null|MockInterface|ColonySandboxRepositoryInterface
-     */
-    private $colonySandboxRepository;
+    private null|MockInterface|ColonySandboxRepositoryInterface $colonySandboxRepository;
 
-    /**
-     * @var null|MockInterface|PrivateMessageSenderInterface
-     */
-    private $privateMessageSender;
+    private null|MockInterface|PrivateMessageSenderInterface $privateMessageSender;
 
     private ColonyResetterInterface $resetter;
 
     #[\Override]
     public function setUp(): void
     {
-        $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);
-        $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
-        $this->storageRepository = Mockery::mock(StorageRepositoryInterface::class);
-        $this->colonyTerraformingRepository = Mockery::mock(ColonyTerraformingRepositoryInterface::class);
-        $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);
+        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
+        $this->colonyTerraformingRepository = $this->mock(ColonyTerraformingRepositoryInterface::class);
+        $this->colonyShipQueueRepository = $this->mock(ColonyShipQueueRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
@@ -118,10 +100,10 @@ class ColonyResetterTest extends StuTestCase
 
     public function testResetResetsColony(): void
     {
-        $colony = Mockery::mock(Colony::class);
+        $colony = $this->mock(Colony::class);
         $changeable = $this->mock(ColonyChangeable::class);
-        $user = Mockery::mock(User::class);
-        $fieldTerraforming = Mockery::mock(ColonyTerraforming::class);
+        $user = $this->mock(User::class);
+        $fieldTerraforming = $this->mock(ColonyTerraforming::class);
 
         $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
@@ -129,7 +111,7 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($user);
 
         //BLOCKERS
-        $blockerFleet = Mockery::mock(Fleet::class);
+        $blockerFleet = $this->mock(Fleet::class);
 
         $blockerFleet->shouldReceive('setBlockedColony')
             ->with(null)
@@ -142,7 +124,7 @@ class ColonyResetterTest extends StuTestCase
             ->andReturn($blockerFleetCollection);
 
         //DEFENDERS
-        $defenderFleet = Mockery::mock(Fleet::class);
+        $defenderFleet = $this->mock(Fleet::class);
 
         $defenderFleet->shouldReceive('setDefendedColony')
             ->with(null)

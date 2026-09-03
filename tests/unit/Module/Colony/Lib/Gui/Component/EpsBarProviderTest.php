@@ -23,7 +23,7 @@ class EpsBarProviderTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
-        $this->planetFieldRepository = Mockery::mock(PlanetFieldRepositoryInterface::class);
+        $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->host = $this->mock(Colony::class);
         $this->game = $this->mock(GameControllerInterface::class);

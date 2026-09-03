@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnArchivePlot;
 
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
+use Stu\Component\Communication\Kn\KnArchiveItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberArchivRepositoryInterface;
@@ -82,7 +84,7 @@ final class ShowKnArchivePlot implements ViewControllerInterface
         $archivePosts = $this->knPostArchivRepository->getByPlotFormerId($plot->getFormerId(), $mark, GameEnum::KN_PER_SITE);
 
         $posts = array_map(
-            fn ($post) => $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot),
+            fn (KnPostArchiv $post): KnArchiveItemInterface => $this->knArchiveFactory->createKnArchiveItem($post, $user, $plot),
             $archivePosts
         );
 

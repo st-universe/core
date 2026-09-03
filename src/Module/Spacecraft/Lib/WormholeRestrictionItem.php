@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum;
+use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Entity\WormholeRestriction;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -90,7 +91,7 @@ final class WormholeRestrictionItem
         return $this->restriction->getMode() === WormholeEntryModeEnum::ALLOW->value;
     }
 
-    public function getEntry(): object
+    public function getEntry(): WormholeEntry
     {
         return $this->restriction->getWormholeEntry();
     }

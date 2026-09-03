@@ -125,12 +125,12 @@ final class BuildStation implements ActionControllerInterface
         }
 
         $inSystem = $station->getSystem();
-        if ($inSystem && $location === StationLocationEnum::BUILDABLE_INSIDE_SYSTEM) {
+        if ($inSystem !== null && $location === StationLocationEnum::BUILDABLE_INSIDE_SYSTEM) {
             return true;
         }
 
         $overSystem = $station->isOverSystem();
-        if ($overSystem && ($location === StationLocationEnum::BUILDABLE_OVER_SYSTEM
+        if ($overSystem !== null && ($location === StationLocationEnum::BUILDABLE_OVER_SYSTEM
             ||  $location === StationLocationEnum::BUILDABLE_OUTSIDE_SYSTEM)) {
             return true;
         }

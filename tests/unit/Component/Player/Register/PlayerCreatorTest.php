@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Register;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
@@ -14,29 +14,30 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\StuTestCase;
 
-class PlayerCreatorTest extends MockeryTestCase
+class PlayerCreatorTest extends StuTestCase
 {
-    private $userRepository;
-    private $playerDefaultsCreator;
-    private $registrationEmailSender;
-    private $smsVerificationCodeSender;
-    private $stuHash;
-    private $entityManager;
-    private $userRefererRepository;
+    private MockInterface&UserRepositoryInterface $userRepository;
+    private MockInterface&PlayerDefaultsCreatorInterface $playerDefaultsCreator;
+    private MockInterface&RegistrationEmailSenderInterface $registrationEmailSender;
+    private MockInterface&SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
+    private MockInterface&StuHashInterface $stuHash;
+    private MockInterface&EntityManagerInterface $entityManager;
+    private MockInterface&UserRefererRepositoryInterface $userRefererRepository;
 
     private PlayerCreatorInterface $creator;
 
     #[\Override]
     public function setUp(): void
     {
-        $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
-        $this->playerDefaultsCreator = Mockery::mock(PlayerDefaultsCreatorInterface::class);
-        $this->registrationEmailSender = Mockery::mock(RegistrationEmailSenderInterface::class);
-        $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
-        $this->stuHash = Mockery::mock(StuHashInterface::class);
-        $this->entityManager = Mockery::mock(EntityManagerInterface::class);
-        $this->userRefererRepository = Mockery::mock(UserRefererRepositoryInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
+        $this->playerDefaultsCreator = $this->mock(PlayerDefaultsCreatorInterface::class);
+        $this->registrationEmailSender = $this->mock(RegistrationEmailSenderInterface::class);
+        $this->smsVerificationCodeSender = $this->mock(SmsVerificationCodeSenderInterface::class);
+        $this->stuHash = $this->mock(StuHashInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
+        $this->userRefererRepository = $this->mock(UserRefererRepositoryInterface::class);
 
         $this->creator = new PlayerCreator(
             $this->userRepository,
@@ -57,7 +58,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->creator->createWithMobileNumber(
             'meh',
             'lol',
-            Mockery::mock(Faction::class),
+            $this->mock(Faction::class),
             'mobile',
             'password'
         );
@@ -78,7 +79,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->creator->createPlayer(
             str_repeat('a', UserRegistration::LOGIN_MAX_LENGTH + 1),
             'valid@example.com',
-            Mockery::mock(Faction::class),
+            $this->mock(Faction::class),
             'password'
         );
     }
@@ -91,7 +92,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->creator->createWithMobileNumber(
             'mehzomglol',
             'lol',
-            Mockery::mock(Faction::class),
+            $this->mock(Faction::class),
             'mobile',
             'password'
         );
@@ -107,12 +108,12 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->userRepository->shouldReceive('getByLogin')
             ->with($loginname)
             ->once()
-            ->andReturn(Mockery::mock(User::class));
+            ->andReturn($this->mock(User::class));
 
         $this->creator->createWithMobileNumber(
             $loginname,
             'lol@example.com',
-            Mockery::mock(Faction::class),
+            $this->mock(Faction::class),
             'mobile',
             'password'
         );
@@ -133,12 +134,12 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->userRepository->shouldReceive('getByEmail')
             ->with($email)
             ->once()
-            ->andReturn(Mockery::mock(User::class));
+            ->andReturn($this->mock(User::class));
 
         $this->creator->createWithMobileNumber(
             $loginname,
             $email,
-            Mockery::mock(Faction::class),
+            $this->mock(Faction::class),
             'mobile',
             'password'
         );
@@ -151,9 +152,9 @@ class PlayerCreatorTest extends MockeryTestCase
         $user_id = 42;
         $password = 'snafu';
 
-        $user = Mockery::mock(User::class);
-        $registration = Mockery::mock(UserRegistration::class);
-        $faction = Mockery::mock(Faction::class);
+        $user = $this->mock(User::class);
+        $registration = $this->mock(UserRegistration::class);
+        $faction = $this->mock(Faction::class);
 
         $this->userRepository->shouldReceive('getByLogin')
             ->with($loginname)

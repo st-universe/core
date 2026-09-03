@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLayer;
@@ -15,15 +14,9 @@ use Stu\StuTestCase;
 
 class UserMapDeletionHandlerTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|UserMapRepositoryInterface
-     */
-    private $userMapRepository;
+    private null|MockInterface|UserMapRepositoryInterface $userMapRepository;
 
-    /**
-     * @var null|MockInterface|UserLayerRepositoryInterface
-     */
-    private $userLayerRepository;
+    private null|MockInterface|UserLayerRepositoryInterface $userLayerRepository;
 
     private PlayerDeletionHandlerInterface $handler;
 
@@ -41,8 +34,8 @@ class UserMapDeletionHandlerTest extends StuTestCase
 
     public function testDeleteDeletesUserMapEntries(): void
     {
-        $user = Mockery::mock(User::class);
-        $userLayer = Mockery::mock(UserLayer::class);
+        $user = $this->mock(User::class);
+        $userLayer = $this->mock(UserLayer::class);
         $userLayers = new ArrayCollection([$userLayer]);
 
         $user->shouldReceive('getUserLayers')

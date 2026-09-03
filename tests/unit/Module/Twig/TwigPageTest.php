@@ -14,10 +14,7 @@ use Twig\TemplateWrapper;
 
 class TwigPageTest extends StuTestCase
 {
-    /**
-     * @var Environment|MockInterface
-     */
-    private $environment;
+    private Environment|MockInterface $environment;
 
 
     private TwigPageInterface $subject;

@@ -196,7 +196,7 @@ final class SaveJobs implements ActionControllerInterface
         }
 
         if ($allSuccessorChildrenPresent && !$hasSuccessor && count($successorChildren) > 0) {
-            $cleanedPermissions = array_filter($cleanedPermissions, function ($value) use ($successorChildren) {
+            $cleanedPermissions = array_filter($cleanedPermissions, function (int $value) use ($successorChildren): bool {
                 foreach ($successorChildren as $child) {
                     if ($child->value === $value) {
                         return false;
@@ -217,7 +217,7 @@ final class SaveJobs implements ActionControllerInterface
         }
 
         if ($allDiplomaticChildrenPresent && !$hasDiplomatic && count($diplomaticChildren) > 0) {
-            $cleanedPermissions = array_filter($cleanedPermissions, function ($value) use ($diplomaticChildren) {
+            $cleanedPermissions = array_filter($cleanedPermissions, function (int $value) use ($diplomaticChildren): bool {
                 foreach ($diplomaticChildren as $child) {
                     if ($child->value === $value) {
                         return false;

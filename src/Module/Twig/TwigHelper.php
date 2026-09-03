@@ -90,7 +90,7 @@ class TwigHelper
         $bbcodeFilter = new TwigFilter('bbcode', fn ($string): string => $this->parser->parse($string)->getAsHTML(), ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
-        $jsquoteFilter = new TwigFilter('jsquote', fn ($string): string => $this->templateHelper->jsquote($string));
+        $jsquoteFilter = new TwigFilter('jsquote', fn (string $string): string => $this->templateHelper->jsquote($string));
         $this->environment->addFilter($jsquoteFilter);
 
         $addPlusCharacterFilter = new TwigFilter('addPlusCharacter', function ($value): string {
@@ -109,22 +109,22 @@ class TwigHelper
         });
         $this->environment->addFilter($formatSecondsFilter);
 
-        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn ($planetField): string => $this->templateHelper->getPlanetFieldTitle($planetField));
+        $planetFieldTitleFilter = new TwigFilter('planetFieldTitle', fn (PlanetField $planetField): string => $this->templateHelper->getPlanetFieldTitle($planetField));
         $this->environment->addFilter($planetFieldTitleFilter);
 
-        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn ($id): string => $this->templateHelper->getPlanetFieldTypeDescription($id));
+        $planetFieldTypeDescriptionFilter = new TwigFilter('planetFieldTypeDescription', fn (int $id): string => $this->templateHelper->getPlanetFieldTypeDescription($id));
         $this->environment->addFilter($planetFieldTypeDescriptionFilter);
 
-        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn ($value): string => $this->templateHelper->formatProductionValue($value));
+        $formatProductionValueFilter = new TwigFilter('formatProductionValue', fn (int $value): string => $this->templateHelper->formatProductionValue($value));
         $this->environment->addFilter($formatProductionValueFilter);
 
         $isPositiveFilter = new TwigFilter('isPositive', fn (int $value): bool => $value > 0);
         $this->environment->addFilter($isPositiveFilter);
 
-        $stuDateTimeFilter = new TwigFilter('stuDateTime', fn ($value): string => $this->stuTime->transformToStuDateTime($value));
+        $stuDateTimeFilter = new TwigFilter('stuDateTime', fn (int $value): string => $this->stuTime->transformToStuDateTime($value));
         $this->environment->addFilter($stuDateTimeFilter);
 
-        $stuDateFilter = new TwigFilter('stuDate', fn ($value): string => $this->stuTime->transformToStuDate($value));
+        $stuDateFilter = new TwigFilter('stuDate', fn (int $value): string => $this->stuTime->transformToStuDate($value));
         $this->environment->addFilter($stuDateFilter);
 
         $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value));
@@ -146,7 +146,7 @@ class TwigHelper
         $getMaxCrewCountByShipFilter = new TwigFilter('getMaxCrewCountByShip', fn (Spacecraft $spacecraft): int => $this->shipCrewCalculator->getMaxCrewCountByShip($spacecraft));
         $this->environment->addFilter($getMaxCrewCountByShipFilter);
 
-        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn ($value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
+        $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn (int $value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
         $this->environment->addFilter($numberWithThousandSeperatorFilter);
     }
 
