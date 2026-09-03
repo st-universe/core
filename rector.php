@@ -38,9 +38,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
 
     $rectorConfig->sets([
-        SetList::CODE_QUALITY,        //last 2026-09-03
+        // SetList::CODE_QUALITY,        //last 2026-09-03
         //SetList::CODING_STYLE,
-        //SetList::DEAD_CODE,           //last 2025-06-03
+        // SetList::DEAD_CODE,           //last 2026-09-03
         //SetList::PRIVATIZATION,       //last 2025-06-03
         //SetList::TYPE_DECLARATION,    //last 2025-06-03
         //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03

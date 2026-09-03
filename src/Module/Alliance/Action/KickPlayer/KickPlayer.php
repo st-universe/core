@@ -31,7 +31,6 @@ final class KickPlayer implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userId = $user->getId();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {

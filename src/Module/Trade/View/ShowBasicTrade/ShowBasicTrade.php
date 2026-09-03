@@ -216,7 +216,7 @@ final class ShowBasicTrade implements ViewControllerInterface
             }
 
             $result[] = [
-                'positionPercent' => (float) round($ratio * 100, 3),
+                'positionPercent' => round($ratio * 100, 3),
                 'label' => $i === 0
                     ? sprintf('%d. letzte', $tradeNumber)
                     : (string) $tradeNumber,

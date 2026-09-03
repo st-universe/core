@@ -71,8 +71,7 @@ class AlertDetectionTest extends StuTestCase
 
         $result = $this->subject->detectAlertedBattleParties(
             $this->incomingShip,
-            $this->mock(InformationInterface::class),
-            null
+            $this->mock(InformationInterface::class)
         );
 
         $this->assertEquals([], $result);
@@ -86,7 +85,7 @@ class AlertDetectionTest extends StuTestCase
         $user = $this->mock(User::class);
         $battleParty = $this->mock(AlertStateBattleParty::class);
         $wrapperToSkip = $this->mock(ShipWrapperInterface::class);
-        $shipToSkip = $this->mock(Ship::class);
+        $this->mock(Ship::class);
         $tractoringShip = $this->mock(Ship::class);
         $informations = $this->mock(InformationInterface::class);
 

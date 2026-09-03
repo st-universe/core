@@ -68,7 +68,7 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
             return;
         }
         if ($epsSystem->getEps() < 100) {
-            $game->getInfo()->addInformation(sprintf(_('Es wird 100 Energie für die Analyse benötigt')));
+            $game->getInfo()->addInformation(_('Es wird 100 Energie für die Analyse benötigt'));
             return;
         }
         $epsSystem->lowerEps(100)->update();

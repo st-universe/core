@@ -13,9 +13,9 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class UserlistEntry
 {
-    private ?CrewCountRetrieverInterface $crewCountRetriever = null;
-    private ?CrewLimitCalculatorInterface $crewLimitCalculator = null;
-    private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository = null;
+    private ?CrewCountRetrieverInterface $crewCountRetriever;
+    private ?CrewLimitCalculatorInterface $crewLimitCalculator;
+    private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
 
     public function __construct(
         private User $user,

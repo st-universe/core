@@ -51,7 +51,7 @@ class SpacecraftSystemWrapper
     public function getPreActionJs(): ?string
     {
         return $this->type->isReloadOnActivation()
-            ? sprintf('setAjaxMandatory(true);')
+            ? 'setAjaxMandatory(true);'
             : null;
     }
 }

@@ -96,9 +96,7 @@ final class SmsManagement implements
 
         $cleanInput = ltrim($cleanInput, '0');
 
-        $processedMobile = str_replace('+', '00', $countryCode) . $cleanInput;
-
-        return $processedMobile;
+        return str_replace('+', '00', $countryCode) . $cleanInput;
     }
 
     private function resendSmsCode(User $user): void

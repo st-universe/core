@@ -158,7 +158,6 @@ final class ShowQuest implements ViewControllerInterface
     }
 
     /**
-     * @param NPCQuest $quest
      * @return array<int, object>
      */
     private function loadBuildplans(NPCQuest $quest): array
@@ -180,7 +179,6 @@ final class ShowQuest implements ViewControllerInterface
     }
 
     /**
-     * @param NPCQuest $quest
      * @return array<int, object>
      */
     private function loadCommodities(NPCQuest $quest): array

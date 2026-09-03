@@ -39,8 +39,6 @@ enum AllianceRelationTypeEnum: int
         }
         if ($this != self::TRADE) {
             $ret[] = ["name" => "Handelsabkommen", "value" => self::TRADE->value];
-        }
-        if ($this != self::TRADE) {
             $ret[] = ["name" => "Vasall", "value" => self::VASSAL->value];
         }
         return $ret;

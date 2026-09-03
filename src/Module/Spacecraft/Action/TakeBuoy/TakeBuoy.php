@@ -92,8 +92,7 @@ final class TakeBuoy implements ActionControllerInterface
                     $ship->getName(),
                     $ship->getSectorString()
                 ),
-                PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
-                null
+                PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
         }
 

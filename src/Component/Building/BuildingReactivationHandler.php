@@ -44,7 +44,7 @@ final class BuildingReactivationHandler
             return $activationDetails;
         }
 
-        return (string) $activationDetails . sprintf(
+        return $activationDetails . sprintf(
             ' - Es wurden %d Orbitalgebäude reaktiviert',
             $reactivatedCount
         );

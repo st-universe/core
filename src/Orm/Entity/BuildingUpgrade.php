@@ -52,9 +52,6 @@ class BuildingUpgrade
     #[JoinColumn(name: 'upgrade_to', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Building $upgradeToBuilding;
 
-    /**
-     * @var Building
-     */
     #[ManyToOne(targetEntity: Building::class)]
     #[JoinColumn(name: 'upgrade_from', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Building $upgradeFromBuilding;

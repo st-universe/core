@@ -334,10 +334,10 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                     $lastX = $x;
                     continue;
                 }
-                $runs[] = ['y' => (int) $y, 'startX' => $startX, 'endX' => $lastX];
+                $runs[] = ['y' => $y, 'startX' => $startX, 'endX' => $lastX];
                 $startX = $lastX = $x;
             }
-            $runs[] = ['y' => (int) $y, 'startX' => $startX, 'endX' => $lastX];
+            $runs[] = ['y' => $y, 'startX' => $startX, 'endX' => $lastX];
         }
 
         return $runs;

@@ -22,7 +22,6 @@ final class ShowKnArchiveComments implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        $user = $game->getUser();
         $postId = $this->showKnArchiveCommentsRequest->getKnPostId();
 
         $game->setMacroInAjaxWindow('html/communication/knArchiveComments.twig');

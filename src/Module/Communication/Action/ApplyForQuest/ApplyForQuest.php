@@ -142,7 +142,7 @@ final class ApplyForQuest implements ActionControllerInterface
                 $quesLeader->getId(),
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                sprintf('/npc/?SHOW_NPC_QUESTS=1')
+                '/npc/?SHOW_NPC_QUESTS=1'
             );
         }
     }

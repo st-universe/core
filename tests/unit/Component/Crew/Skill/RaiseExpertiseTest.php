@@ -66,7 +66,7 @@ final class RaiseExpertiseTest extends StuTestCase
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->with($crew)->once();
-        $this->expectLog($skill, 100, 100, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CREWMAN);
+        $this->expectLog(100, 100, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CREWMAN);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -94,7 +94,7 @@ final class RaiseExpertiseTest extends StuTestCase
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->never();
-        $this->expectLog($skill, 1, 100, CrewSkillLevelEnum::COMMANDER, CrewSkillLevelEnum::COMMANDER);
+        $this->expectLog(1, 100, CrewSkillLevelEnum::COMMANDER, CrewSkillLevelEnum::COMMANDER);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -122,7 +122,6 @@ final class RaiseExpertiseTest extends StuTestCase
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->never();
         $this->expectLog(
-            $skill,
             10_000,
             10_000,
             CrewSkillLevelEnum::LIEUTENANT_COMMANDER,
@@ -154,7 +153,6 @@ final class RaiseExpertiseTest extends StuTestCase
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->with($crew)->once();
         $this->expectLog(
-            $skill,
             10_000,
             10_000,
             CrewSkillLevelEnum::CADET,
@@ -185,7 +183,7 @@ final class RaiseExpertiseTest extends StuTestCase
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->never();
-        $this->expectLog($skill, 5, 5, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CADET);
+        $this->expectLog(5, 5, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CADET);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -212,7 +210,7 @@ final class RaiseExpertiseTest extends StuTestCase
 
         $this->crewSkillRepository->shouldReceive('save')->with($skill)->once();
         $this->crewRepository->shouldReceive('save')->never();
-        $this->expectLog($skill, -2, 0, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CADET);
+        $this->expectLog(-2, 0, CrewSkillLevelEnum::CADET, CrewSkillLevelEnum::CADET);
 
         $this->subject->raiseExpertise(
             $crew,
@@ -259,7 +257,6 @@ final class RaiseExpertiseTest extends StuTestCase
     }
 
     private function expectLog(
-        CrewSkill $skill,
         int $amount,
         int $expertiseSum,
         CrewSkillLevelEnum $oldRank,

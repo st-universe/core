@@ -60,7 +60,7 @@ final class EditRelationText implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $oldText = $relation->getText();
+        $relation->getText();
         $relation->setText($text);
         $relation->setLastEdited(time());
 
@@ -70,15 +70,15 @@ final class EditRelationText implements ActionControllerInterface
         $allianceA = $relation->getAlliance();
         $allianceB = $relation->getOpponent();
 
-        $this->sendNotificationToLeaders($allianceA, $relation, $user->getName(), $user->getId(), $oldText, $text);
+        $this->sendNotificationToLeaders($allianceA, $relation, $user->getName(), $user->getId());
         if ($allianceA->getId() !== $allianceB->getId()) {
-            $this->sendNotificationToLeaders($allianceB, $relation, $user->getName(), $user->getId(), $oldText, $text);
+            $this->sendNotificationToLeaders($allianceB, $relation, $user->getName(), $user->getId());
         }
 
         $game->getInfo()->addInformation('Der Vertragstext wurde erfolgreich bearbeitet');
     }
 
-    private function sendNotificationToLeaders(Alliance $alliance, AllianceRelation $relation, string $editorName, int $editorId, ?string $oldText, ?string $newText): void
+    private function sendNotificationToLeaders(Alliance $alliance, AllianceRelation $relation, string $editorName, int $editorId): void
     {
         $relationTypeName = $relation->getType()->getDescription();
         $allianceAName = $relation->getAlliance()->getName();

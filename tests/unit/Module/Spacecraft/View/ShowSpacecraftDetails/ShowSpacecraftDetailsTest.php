@@ -48,7 +48,6 @@ class ShowSpacecraftDetailsTest extends StuTestCase
     public function testHandleAllowsUplinkForStationDetails(): void
     {
         $game = $this->mock(GameControllerInterface::class);
-        $user = $this->mock(User::class);
         $alliance = $this->mock(Alliance::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $station = $this->mock(Station::class);
