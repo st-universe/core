@@ -11,6 +11,7 @@ use Stu\Component\Map\EncodedMapInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
@@ -33,6 +34,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         private LayerRepositoryInterface $layerRepository,
         private UserMapRepositoryInterface $userMapRepository,
         private StuConfigInterface $config,
+        private StuHashInterface $stuHash,
         private EncodedMapInterface $encodedMap
     ) {}
 
@@ -95,7 +97,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
      */
     private function buildRunsVersion(array $runs): string
     {
-        $hash = hash_init('sha1');
+        $hash = hash_init($this->config->getGameSettings()->getHashMethod());
 
         foreach ($runs as $run) {
             hash_update($hash, sprintf('%d:%d-%d;', $run['y'], $run['startX'], $run['endX']));
@@ -300,7 +302,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
     {
         return sprintf(
             '"%s"',
-            sha1(sprintf('%d:%d:%s:%d', $user->getId(), $layer->getId(), $visibilityVersion, $baseMtime))
+            $this->stuHash->hash(sprintf('%d:%d:%s:%d', $user->getId(), $layer->getId(), $visibilityVersion, $baseMtime))
         );
     }
 

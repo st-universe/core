@@ -14,6 +14,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
@@ -51,6 +52,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
         private AllianceJobManagerInterface $allianceJobManager,
         private AllianceRelationRepositoryInterface $allianceRelationRepository,
         private ContactRepositoryInterface $contactRepository,
+        private StuConfigInterface $stuConfig,
         private Parser $bbCodeParser
     ) {}
 
@@ -161,7 +163,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
      */
     private function buildRunsVersion(array $runs): string
     {
-        $hash = hash_init('sha1');
+        $hash = hash_init($this->stuConfig->getGameSettings()->getHashMethod());
 
         foreach ($runs as $run) {
             hash_update($hash, sprintf('%d:%d-%d;', $run['y'], $run['startX'], $run['endX']));
