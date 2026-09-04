@@ -17,7 +17,7 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class IonStormMapGeneration implements HistoryTickHandlerInterface
 {
-    private const MAX_FRAMES = 168; // 7 days * 24 hours
+    private const int MAX_FRAMES = 168; // 7 days * 24 hours
 
     public function __construct(
         private readonly AnomalyRepositoryInterface $anomalyRepository,

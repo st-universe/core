@@ -9,8 +9,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class NewDealsInformation implements ProcessTickHandlerInterface
 {
-    private const TRADE_POST_ID = 2;
-    private const TIME_THRESHOLD_SECONDS = 60;
+    private const int TRADE_POST_ID = 2;
+    private const int TIME_THRESHOLD_SECONDS = 60;
 
     public function __construct(
         private DealsRepositoryInterface $dealsRepository,

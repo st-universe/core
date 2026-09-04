@@ -24,24 +24,15 @@ class WarpDriveSystemData extends AbstractSystemData
     public int $warpsignature = 0;
     public int $wstimer = 0;
 
-    private StuTime $stuTime;
-    private SpacecraftRumpRepositoryInterface $rumpRepository;
-    private DatabaseUserRepositoryInterface $databaseUserRepository;
-    private GameController $game;
-
     public function __construct(
         SpacecraftSystemRepositoryInterface $shipSystemRepository,
         StatusBarFactoryInterface $statusBarFactory,
-        StuTime $stuTime,
-        SpacecraftRumpRepositoryInterface $rumpRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository,
-        GameController $game
+        private StuTime $stuTime,
+        private SpacecraftRumpRepositoryInterface $rumpRepository,
+        private DatabaseUserRepositoryInterface $databaseUserRepository,
+        private GameController $game
     ) {
         parent::__construct($shipSystemRepository, $statusBarFactory);
-        $this->stuTime = $stuTime;
-        $this->rumpRepository = $rumpRepository;
-        $this->databaseUserRepository = $databaseUserRepository;
-        $this->game = $game;
     }
 
     #[\Override]

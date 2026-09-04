@@ -21,8 +21,6 @@ final class LeaveWormhole extends AbstractDirectedMovement
 {
     public const string ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
 
-    private WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility;
-
     public function __construct(
         MoveShipRequestInterface $moveShipRequest,
         SpacecraftLoaderInterface $spacecraftLoader,
@@ -30,7 +28,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
         FlightRouteFactoryInterface $flightRouteFactory,
         RandomSystemEntryInterface $randomSystemEntry,
         DistributedMessageSenderInterface $distributedMessageSender,
-        WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility
+        private WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility
     ) {
         parent::__construct(
             $moveShipRequest,
@@ -40,7 +38,6 @@ final class LeaveWormhole extends AbstractDirectedMovement
             $randomSystemEntry,
             $distributedMessageSender
         );
-        $this->wormholeEntryPrivilegeUtility = $wormholeEntryPrivilegeUtility;
     }
     #[\Override]
     protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool

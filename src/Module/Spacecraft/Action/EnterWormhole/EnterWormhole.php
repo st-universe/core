@@ -21,8 +21,6 @@ final class EnterWormhole extends AbstractDirectedMovement
 {
     public const string ACTION_IDENTIFIER = 'B_ENTER_WORMHOLE';
 
-    private WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility;
-
     public function __construct(
         MoveShipRequestInterface $moveShipRequest,
         SpacecraftLoaderInterface $spacecraftLoader,
@@ -30,7 +28,7 @@ final class EnterWormhole extends AbstractDirectedMovement
         FlightRouteFactoryInterface $flightRouteFactory,
         RandomSystemEntryInterface $randomSystemEntry,
         DistributedMessageSenderInterface $distributedMessageSender,
-        WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility
+        private WormholeEntryPrivilegeUtilityInterface $wormholeEntryPrivilegeUtility
     ) {
         parent::__construct(
             $moveShipRequest,
@@ -40,7 +38,6 @@ final class EnterWormhole extends AbstractDirectedMovement
             $randomSystemEntry,
             $distributedMessageSender
         );
-        $this->wormholeEntryPrivilegeUtility = $wormholeEntryPrivilegeUtility;
     }
 
     #[\Override]

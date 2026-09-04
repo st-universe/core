@@ -15,7 +15,7 @@ use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class ShowWarpcoreChargeTransfer implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_WARPCORE_CHARGE_TRANSFER';
+    public const string VIEW_IDENTIFIER = 'SHOW_WARPCORE_CHARGE_TRANSFER';
 
     /**
      * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader

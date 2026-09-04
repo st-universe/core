@@ -13,19 +13,12 @@ use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class UserlistEntry
 {
-    private ?CrewCountRetrieverInterface $crewCountRetriever;
-    private ?CrewLimitCalculatorInterface $crewLimitCalculator;
-    private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
-
     public function __construct(
         private User $user,
-        ?CrewCountRetrieverInterface $crewCountRetriever = null,
-        ?CrewLimitCalculatorInterface $crewLimitCalculator = null,
-        ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository = null
-    ) {
-        $this->crewCountRetriever = $crewCountRetriever;
-        $this->crewLimitCalculator = $crewLimitCalculator;
-        $this->spacecraftRumpRepository = $spacecraftRumpRepository;
+        private ?CrewCountRetrieverInterface $crewCountRetriever = null,
+        private ?CrewLimitCalculatorInterface $crewLimitCalculator = null,
+        private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository = null)
+    {
     }
 
     public function getUser(): User
