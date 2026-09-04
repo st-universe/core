@@ -50,8 +50,8 @@ class FriendDeterminator
                         AllianceRelationTypeEnum::ALLIED->value,
                         AllianceRelationTypeEnum::VASSAL->value,
                     ],
-                    $alliance->getId(),
-                    $otherUser->getId()
+                    $alliance,
+                    $otherUser
                 )
                 : ($otherUserAlliance !== null
                     ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
@@ -60,8 +60,8 @@ class FriendDeterminator
                             AllianceRelationTypeEnum::ALLIED->value,
                             AllianceRelationTypeEnum::VASSAL->value,
                         ],
-                        $otherUserAlliance->getId(),
-                        $user->getId()
+                        $otherUserAlliance,
+                        $user
                     )
                     : $this->userRelationRepository->getActiveByUserPair(
                         [
@@ -69,8 +69,8 @@ class FriendDeterminator
                             AllianceRelationTypeEnum::ALLIED->value,
                             AllianceRelationTypeEnum::VASSAL->value,
                         ],
-                        $user->getId(),
-                        $otherUser->getId()
+                        $user,
+                        $otherUser
                     ));
 
             if ($result !== null) {

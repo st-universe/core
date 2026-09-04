@@ -44,19 +44,19 @@ class EnemyDeterminator
             $result = $alliance !== null
                 ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
                     [AllianceRelationTypeEnum::WAR->value],
-                    $alliance->getId(),
-                    $otherUser->getId()
+                    $alliance,
+                    $otherUser
                 )
                 : ($otherUserAlliance !== null
                     ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
                         [AllianceRelationTypeEnum::WAR->value],
-                        $otherUserAlliance->getId(),
-                        $user->getId()
+                        $otherUserAlliance,
+                        $user
                     )
                     : $this->userRelationRepository->getActiveByUserPair(
                         [AllianceRelationTypeEnum::WAR->value],
-                        $user->getId(),
-                        $otherUser->getId()
+                        $user,
+                        $otherUser
                     ));
 
             if ($result !== null) {

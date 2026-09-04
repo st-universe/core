@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Relation;
 
+use InvalidArgumentException;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\History\HistoryTypeEnum;
@@ -104,11 +105,11 @@ final class UserRelationManager implements UserRelationManagerInterface
     #[\Override]
     public function accept(User $actor, UserRelation $relation): bool
     {
-        if (!$relation->isPending() || !$this->canRepresentParty($actor, $this->getRecipientParty($relation))) {
+        if (!$relation->isPending() || !$this->canRepresentParty($actor, $relation->getRecipientParty())) {
             return false;
         }
 
-        foreach ($this->getRelationsByParties($this->getSourceParty($relation), $this->getRecipientParty($relation)) as $existingRelation) {
+        foreach ($this->getRelationsByParties($relation->getSourceParty(), $relation->getRecipientParty()) as $existingRelation) {
             if (!$existingRelation->isPending() && $existingRelation->getId() !== $relation->getId()) {
                 $this->userRelationRepository->delete($existingRelation);
             }
@@ -118,7 +119,7 @@ final class UserRelationManager implements UserRelationManagerInterface
         $this->userRelationRepository->save($relation);
 
         $text = $this->getRelationConclusionText($relation);
-        $this->sendMessageToParty($this->getSourceParty($relation), $text);
+        $this->sendMessageToParty($relation->getSourceParty(), $text);
         $this->addHistory($relation, $actor->getId(), $text);
 
         return true;
@@ -131,8 +132,8 @@ final class UserRelationManager implements UserRelationManagerInterface
             return false;
         }
 
-        $source = $this->getSourceParty($relation);
-        $recipient = $this->getRecipientParty($relation);
+        $source = $relation->getSourceParty();
+        $recipient = $relation->getRecipientParty();
 
         if ($relation->isPending()) {
             if (!$this->canRepresentParty($actor, $source)) {
@@ -173,14 +174,14 @@ final class UserRelationManager implements UserRelationManagerInterface
     #[\Override]
     public function decline(User $actor, UserRelation $relation): bool
     {
-        if (!$relation->isPending() || !$this->canRepresentParty($actor, $this->getRecipientParty($relation))) {
+        if (!$relation->isPending() || !$this->canRepresentParty($actor, $relation->getRecipientParty())) {
             return false;
         }
 
         $this->userRelationRepository->delete($relation);
         $this->sendMessageToParty(
-            $this->getSourceParty($relation),
-            sprintf('%s hat das Angebot für ein %s abgelehnt', $this->getPartyDescription($this->getRecipientParty($relation)), $relation->getType()->getDescription())
+            $relation->getSourceParty(),
+            sprintf('%s hat das Angebot für ein %s abgelehnt', $this->getPartyDescription($relation->getRecipientParty()), $relation->getType()->getDescription())
         );
 
         return true;
@@ -192,18 +193,18 @@ final class UserRelationManager implements UserRelationManagerInterface
         if (
             !$relation->isWar()
             || $relation->isPending()
-            || (!$this->canRepresentParty($actor, $this->getSourceParty($relation))
-                && !$this->canRepresentParty($actor, $this->getRecipientParty($relation)))
+            || (!$this->canRepresentParty($actor, $relation->getSourceParty())
+                && !$this->canRepresentParty($actor, $relation->getRecipientParty()))
         ) {
             return false;
         }
 
-        $source = $this->canRepresentParty($actor, $this->getSourceParty($relation))
-            ? $this->getSourceParty($relation)
-            : $this->getRecipientParty($relation);
-        $recipient = $source === $this->getSourceParty($relation)
-            ? $this->getRecipientParty($relation)
-            : $this->getSourceParty($relation);
+        $source = $this->canRepresentParty($actor, $relation->getSourceParty())
+            ? $relation->getSourceParty()
+            : $relation->getRecipientParty();
+        $recipient = $source === $relation->getSourceParty()
+            ? $relation->getRecipientParty()
+            : $relation->getSourceParty();
 
         foreach ($this->getRelationsByParties($source, $recipient) as $existingRelation) {
             if ($existingRelation->getType() === AllianceRelationTypeEnum::PEACE) {
@@ -224,8 +225,8 @@ final class UserRelationManager implements UserRelationManagerInterface
     public function removeRelationsForAllianceEntry(User $user, Alliance $alliance, bool $isAllianceCreation = false): void
     {
         foreach ($this->userRelationRepository->getByUserAndAlliance($user, null) as $relation) {
-            $source = $this->getSourceParty($relation);
-            $recipient = $this->getRecipientParty($relation);
+            $source = $relation->getSourceParty();
+            $recipient = $relation->getRecipientParty();
             $counterpart = $source instanceof User && $source->getId() === $user->getId() ? $recipient : $source;
 
             $text = sprintf(
@@ -322,25 +323,16 @@ final class UserRelationManager implements UserRelationManagerInterface
     private function getRelationsByParties(User|Alliance $source, User|Alliance $recipient): array
     {
         if ($source instanceof User && $recipient instanceof User) {
-            return $this->userRelationRepository->getByUserPair($source->getId(), $recipient->getId());
+            return $this->userRelationRepository->getByUserPair($source, $recipient);
+        }
+        if ($source instanceof Alliance && $recipient instanceof Alliance) {
+            throw new InvalidArgumentException('Relations between alliances are not allowed');
         }
 
         $alliance = $source instanceof Alliance ? $source : $recipient;
         $user = $source instanceof User ? $source : $recipient;
 
-        return $this->userRelationRepository->getByAllianceAndUserPair($alliance->getId(), $user->getId());
-    }
-
-    private function getSourceParty(UserRelation $relation): User|Alliance
-    {
-        return $relation->getSourceUser() ?? $relation->getSourceAlliance()
-            ?? throw new \LogicException('Relation has no source party');
-    }
-
-    private function getRecipientParty(UserRelation $relation): User|Alliance
-    {
-        return $relation->getRecipientUser() ?? $relation->getRecipientAlliance()
-            ?? throw new \LogicException('Relation has no recipient party');
+        return $this->userRelationRepository->getByAllianceAndUserPair($alliance, $user);
     }
 
     private function getPartyDescription(User|Alliance $party): string
@@ -362,8 +354,8 @@ final class UserRelationManager implements UserRelationManagerInterface
 
     private function getRelationConclusionText(UserRelation $relation): string
     {
-        $source = $this->getSourceParty($relation);
-        $recipient = $this->getRecipientParty($relation);
+        $source = $relation->getSourceParty();
+        $recipient = $relation->getRecipientParty();
 
         if ($relation->getType() === AllianceRelationTypeEnum::VASSAL) {
             return sprintf('%s ist nun Vasall von %s', $this->getPartyDescription($recipient), $this->getPartyDescription($source));
