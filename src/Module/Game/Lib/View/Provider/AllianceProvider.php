@@ -42,9 +42,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $alliance = $this->allianceRepository->find(request::indInt('id'));
         }
 
-        if ($alliance === null) {
-            $alliance = $user->getAlliance();
-        }
+        $alliance ??= $user->getAlliance();
 
         $game->setTemplateVar('ALLIANCE', $alliance);
 
@@ -144,21 +142,15 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('ALLIANCE_LEADERSHIP_JOBS', $leadershipJobs);
 
         $founderDescription = $settings->filter(
-            function (AllianceSettings $setting): bool {
-                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION;
-            }
+            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
         )->first();
 
         $successorDescription = $settings->filter(
-            function (AllianceSettings $setting): bool {
-                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION;
-            }
+            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
         )->first();
 
         $diplomatDescription = $settings->filter(
-            function (AllianceSettings $setting): bool {
-                return $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION;
-            }
+            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
         )->first();
 
         $game->setTemplateVar(

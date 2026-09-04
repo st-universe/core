@@ -151,9 +151,7 @@ final class CommodityTransfer implements CommodityTransferInterface
             ->filter(fn (Storage $storage): bool => $storage->getCommodity()->isBeamable() === true)
             ->toArray();
 
-        usort($beamableStorage, function ($a, $b): int {
-            return $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort();
-        });
+        usort($beamableStorage, fn($a, $b): int => $a->getCommodity()->getSort() <=> $b->getCommodity()->getSort());
 
         return new ArrayCollection($beamableStorage);
     }

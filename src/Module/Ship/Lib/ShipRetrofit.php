@@ -49,14 +49,10 @@ final class ShipRetrofit implements ShipRetrofitInterface
             $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
             /** @var array<Module> */
-            $addingModules = array_udiff($newModules, $oldModules, function (Module $a, Module $b): int {
-                return $a->getId() - $b->getId();
-            });
+            $addingModules = array_udiff($newModules, $oldModules, fn(Module $a, Module $b): int => $a->getId() - $b->getId());
 
             /** @var array<Module> */
-            $deletingModules = array_udiff($oldModules, $newModules, function (Module $a, Module $b): int {
-                return $a->getId() - $b->getId();
-            });
+            $deletingModules = array_udiff($oldModules, $newModules, fn(Module $a, Module $b): int => $a->getId() - $b->getId());
 
             foreach ($deletingModules as $oldModule) {
                 $this->removeModule($ship, $oldModule, $returnedmodules);

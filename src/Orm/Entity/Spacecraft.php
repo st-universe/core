@@ -114,7 +114,7 @@ abstract class Spacecraft implements
     private int $locationId = 0;
 
     #[OneToOne(targetEntity: SpacecraftCondition::class, mappedBy: 'spacecraft', cascade: ['all'], fetch: 'EAGER')]
-    private ?SpacecraftCondition $condition;
+    private ?SpacecraftCondition $condition = null;
 
     #[OneToOne(targetEntity: Ship::class, inversedBy: 'tractoringSpacecraft')]
     #[JoinColumn(name: 'tractored_ship_id', referencedColumnName: 'id', nullable: true)]

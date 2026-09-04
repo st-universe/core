@@ -40,11 +40,9 @@ final class ChangeCrewRankNames implements ActionControllerInterface
                 continue;
             }
 
-            if ($rankEntry === null) {
-                $rankEntry = $this->userCrewRankRepository->prototype()
-                    ->setUser($user)
-                    ->setRank($rank);
-            }
+            $rankEntry ??= $this->userCrewRankRepository->prototype()
+                ->setUser($user)
+                ->setRank($rank);
 
             $rankEntry->setName($name);
             $this->userCrewRankRepository->save($rankEntry);

@@ -139,9 +139,7 @@ final class CrewCreator implements CrewCreatorInterface
                 }
 
                 $crewAssignment = $this->getCrewByType($crewType, $crewProvider, $crewUser);
-                if ($crewAssignment === null) {
-                    $crewAssignment = $this->getCrew($crewProvider, $crewUser);
-                }
+                $crewAssignment ??= $this->getCrew($crewProvider, $crewUser);
 
                 if ($crewAssignment === null) {
                     throw new CrewOriginException('no assignable crew found');

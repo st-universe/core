@@ -42,14 +42,14 @@ return static function (RectorConfig $rectorConfig): void {
         // SetList::CODING_STYLE,
         // SetList::DEAD_CODE,           //last 2026-09-03
         // SetList::PRIVATIZATION,       //last 2026-09-03
-        SetList::TYPE_DECLARATION,    //last 2026-09-03
-        //LevelSetList::UP_TO_PHP_74,   //last 2024-07-03
+        // SetList::TYPE_DECLARATION,    //last 2026-09-03
+        // LevelSetList::UP_TO_PHP_74,   //last 2026-09-04
         //LevelSetList::UP_TO_PHP_84,
         // SetList::PHP_85
         //DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES //last 2023-12-13
     ]);
 
-    /** last 2025-06-03 - partial of php80 to php84
+    /** last 2026-09-04 - partial of php80 to php84
     $rectorConfig->rules([
         AddOverrideAttributeToOverriddenMethodsRector::class,
         AddTypeToConstRector::class,
@@ -58,7 +58,8 @@ return static function (RectorConfig $rectorConfig): void {
         ChangeSwitchToMatchRector::class,
         FinalPrivateToPrivateVisibilityRector::class,
         MyCLabsClassToEnumRector::class
-    ]); */
+    ]);
+     */
 
     $rectorConfig->rules([]);
 

@@ -14,6 +14,9 @@ use org\bovigo\vfs\vfsStream;
 use ReflectionAttribute;
 use ReflectionClass;
 use Stu\Orm\Attribute\TruncateOnGameReset;
+use Stu\Orm\Entity\OpenedAdventDoor;
+use Stu\Orm\Entity\PirateWrath;
+use Stu\Orm\Entity\Station;
 use Stu\StuTestCase;
 
 class EntityResetTest extends StuTestCase
@@ -57,9 +60,9 @@ class EntityResetTest extends StuTestCase
             public function createReflectionClass(string $className): ReflectionClass
             {
                 return match ($className) {
-                    'Stu\Orm\Entity\Station' => $this->reflectionClassWithoutTruncateAttribute,
-                    'Stu\Orm\Entity\PirateWrath' => $this->reflectionClassWithLowPriority,
-                    'Stu\Orm\Entity\OpenedAdventDoor' => $this->reflectionClassWithHighPriority,
+                    Station::class => $this->reflectionClassWithoutTruncateAttribute,
+                    PirateWrath::class => $this->reflectionClassWithLowPriority,
+                    OpenedAdventDoor::class => $this->reflectionClassWithHighPriority,
                 };
             }
         });
@@ -102,15 +105,15 @@ class EntityResetTest extends StuTestCase
         $metadataWithoutTruncateAttribute->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn("Stu\Orm\Entity\Station");
+            ->andReturn(Station::class);
         $metadataWithLowPriority->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn("Stu\Orm\Entity\PirateWrath");
+            ->andReturn(PirateWrath::class);
         $metadataWithHighPriority->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn("Stu\Orm\Entity\OpenedAdventDoor");
+            ->andReturn(OpenedAdventDoor::class);
 
 
         $this->reflectionClassWithoutTruncateAttribute->shouldReceive('getAttributes')

@@ -37,10 +37,10 @@ final class UserRelationRepository extends EntityRepository implements UserRelat
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s r WHERE r.source_user_id = :userId OR r.recipient_user_id = :userId',
+                'DELETE FROM %s r WHERE r.sourceUser = :user OR r.recipientUser = :user',
                 UserRelation::class
             )
-        )->setParameter('userId', $user->getId())->execute();
+        )->setParameter('user', $user)->execute();
     }
 
     #[\Override]
@@ -48,21 +48,21 @@ final class UserRelationRepository extends EntityRepository implements UserRelat
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s r WHERE r.source_alliance_id = :allianceId OR r.recipient_alliance_id = :allianceId',
+                'DELETE FROM %s r WHERE r.sourceAlliance = :alliance OR r.recipientAlliance = :alliance',
                 UserRelation::class
             )
-        )->setParameter('allianceId', $alliance->getId())->execute();
+        )->setParameter('alliance', $alliance)->execute();
     }
 
     #[\Override]
     public function getByUserAndAlliance(User $user, ?Alliance $alliance): array
     {
-        $where = 'r.source_user_id = :userId OR r.recipient_user_id = :userId';
-        $parameters = ['userId' => $user->getId()];
+        $where = 'r.sourceUser = :user OR r.recipientUser = :user';
+        $parameters = ['user' => $user];
 
         if ($alliance !== null) {
-            $where .= ' OR r.source_alliance_id = :allianceId OR r.recipient_alliance_id = :allianceId';
-            $parameters['allianceId'] = $alliance->getId();
+            $where .= ' OR r.sourceAlliance = :alliance OR r.recipientAlliance = :alliance';
+            $parameters['alliance'] = $alliance;
         }
 
         return $this->getEntityManager()->createQuery(
@@ -71,76 +71,76 @@ final class UserRelationRepository extends EntityRepository implements UserRelat
     }
 
     #[\Override]
-    public function getByUserPair(int $firstUserId, int $secondUserId): array
+    public function getByUserPair(User $firstUser, User $secondUser): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT r FROM %s r
-                WHERE r.source_alliance_id IS NULL
-                AND r.recipient_alliance_id IS NULL
-                AND ((r.source_user_id = :firstUserId AND r.recipient_user_id = :secondUserId)
-                    OR (r.source_user_id = :secondUserId AND r.recipient_user_id = :firstUserId))',
+                WHERE r.sourceAlliance IS NULL
+                AND r.recipientAlliance IS NULL
+                AND ((r.sourceUser = :firstUser AND r.recipientUser = :secondUser)
+                    OR (r.sourceUser = :secondUser AND r.recipientUser = :firstUser))',
                 UserRelation::class
             )
         )->setParameters([
-            'firstUserId' => $firstUserId,
-            'secondUserId' => $secondUserId,
+            'firstUser' => $firstUser,
+            'secondUser' => $secondUser,
         ])->getResult();
     }
 
     #[\Override]
-    public function getByAllianceAndUserPair(int $allianceId, int $userId): array
+    public function getByAllianceAndUserPair(Alliance $alliance, User $user): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT r FROM %s r
-                WHERE ((r.source_alliance_id = :allianceId AND r.recipient_user_id = :userId
-                    AND r.source_user_id IS NULL AND r.recipient_alliance_id IS NULL)
-                OR (r.recipient_alliance_id = :allianceId AND r.source_user_id = :userId
-                    AND r.recipient_user_id IS NULL AND r.source_alliance_id IS NULL))',
+                WHERE ((r.sourceAlliance = :alliance AND r.recipientUser = :user
+                    AND r.sourceUser IS NULL AND r.recipientAlliance IS NULL)
+                OR (r.recipientAlliance = :alliance AND r.sourceUser = :user
+                    AND r.recipientUser IS NULL AND r.sourceAlliance IS NULL))',
                 UserRelation::class
             )
         )->setParameters([
-            'allianceId' => $allianceId,
-            'userId' => $userId,
+            'alliance' => $alliance,
+            'user' => $user,
         ])->getResult();
     }
 
     #[\Override]
-    public function getActiveByUserPair(array $typeIds, int $firstUserId, int $secondUserId): ?UserRelation
+    public function getActiveByUserPair(array $typeIds, User $firstUser, User $secondUser): ?UserRelation
     {
         return $this->getActiveRelation(
             $typeIds,
-            'r.source_alliance_id IS NULL
-            AND r.recipient_alliance_id IS NULL
-            AND ((r.source_user_id = :firstUserId AND r.recipient_user_id = :secondUserId)
-                OR (r.source_user_id = :secondUserId AND r.recipient_user_id = :firstUserId))',
+            'r.sourceAlliance IS NULL
+            AND r.recipientAlliance IS NULL
+            AND ((r.sourceUser = :firstUser AND r.recipientUser = :secondUser)
+                OR (r.sourceUser = :secondUser AND r.recipientUser = :firstUser))',
             [
-                'firstUserId' => $firstUserId,
-                'secondUserId' => $secondUserId,
+                'firstUser' => $firstUser,
+                'secondUser' => $secondUser,
             ]
         );
     }
 
     #[\Override]
-    public function getActiveByAllianceAndUserPair(array $typeIds, int $allianceId, int $userId): ?UserRelation
+    public function getActiveByAllianceAndUserPair(array $typeIds, Alliance $alliance, User $user): ?UserRelation
     {
         return $this->getActiveRelation(
             $typeIds,
-            '((r.source_alliance_id = :allianceId AND r.recipient_user_id = :userId
-                AND r.source_user_id IS NULL AND r.recipient_alliance_id IS NULL)
-            OR (r.recipient_alliance_id = :allianceId AND r.source_user_id = :userId
-                AND r.recipient_user_id IS NULL AND r.source_alliance_id IS NULL))',
+            '((r.sourceAlliance = :alliance AND r.recipientUser = :user
+                AND r.sourceUser IS NULL AND r.recipientAlliance IS NULL)
+            OR (r.recipientAlliance = :alliance AND r.sourceUser = :user
+                AND r.recipientUser IS NULL AND r.sourceAlliance IS NULL))',
             [
-                'allianceId' => $allianceId,
-                'userId' => $userId,
+                'alliance' => $alliance,
+                'user' => $user
             ]
         );
     }
 
     /**
      * @param array<int> $typeIds
-     * @param array<string, int> $parameters
+     * @param array<string, Alliance|User> $parameters
      */
     private function getActiveRelation(array $typeIds, string $where, array $parameters): ?UserRelation
     {

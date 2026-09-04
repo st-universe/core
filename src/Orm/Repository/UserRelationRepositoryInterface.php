@@ -34,20 +34,20 @@ interface UserRelationRepositoryInterface extends ObjectRepository
     /**
      * @return list<UserRelation>
      */
-    public function getByUserPair(int $firstUserId, int $secondUserId): array;
+    public function getByUserPair(User $firstUser, User $secondUser): array;
 
     /**
      * @return list<UserRelation>
      */
-    public function getByAllianceAndUserPair(int $allianceId, int $userId): array;
+    public function getByAllianceAndUserPair(Alliance $alliance, User $user): array;
 
     /**
      * @param array<int> $typeIds
      */
-    public function getActiveByUserPair(array $typeIds, int $firstUserId, int $secondUserId): ?UserRelation;
+    public function getActiveByUserPair(array $typeIds, User $firstUser, User $secondUser): ?UserRelation;
 
     /**
      * @param array<int> $typeIds
      */
-    public function getActiveByAllianceAndUserPair(array $typeIds, int $allianceId, int $userId): ?UserRelation;
+    public function getActiveByAllianceAndUserPair(array $typeIds, Alliance $alliance, User $user): ?UserRelation;
 }

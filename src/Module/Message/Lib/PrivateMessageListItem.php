@@ -29,9 +29,7 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     #[\Override]
     public function getSender(): User
     {
-        if ($this->sender === null) {
-            $this->sender = $this->message->getSender();
-        }
+        $this->sender ??= $this->message->getSender();
         return $this->sender;
     }
 
@@ -111,12 +109,10 @@ class PrivateMessageListItem implements PrivateMessageListItemInterface
     #[\Override]
     public function senderIsContact(): ?Contact
     {
-        if ($this->sendercontact === null) {
-            $this->sendercontact = $this->contactRepository->getByUserAndOpponent(
-                $this->currentUser->getId(),
-                $this->message->getSenderId()
-            );
-        }
+        $this->sendercontact ??= $this->contactRepository->getByUserAndOpponent(
+            $this->currentUser->getId(),
+            $this->message->getSenderId()
+        );
         return $this->sendercontact;
     }
 

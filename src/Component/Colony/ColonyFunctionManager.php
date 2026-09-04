@@ -85,12 +85,8 @@ final class ColonyFunctionManager implements ColonyFunctionManagerInterface
         $hostId = $host->getId();
         $value = $function->value;
 
-        if (!isset($this->hasActiveBuildingByColonyAndFunction[$hostId])) {
-            $this->hasActiveBuildingByColonyAndFunction[$hostId] = [];
-        }
-        if (!isset($this->hasActiveBuildingByColonyAndFunction[$hostId][$value])) {
-            $this->hasActiveBuildingByColonyAndFunction[$hostId][$value] = $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED], $ignoredFieldIds);
-        }
+        $this->hasActiveBuildingByColonyAndFunction[$hostId] ??= [];
+        $this->hasActiveBuildingByColonyAndFunction[$hostId][$value] ??= $this->hasBuildingWithFunction($host, $function, [self::STATE_ENABLED], $ignoredFieldIds);
         return $this->hasActiveBuildingByColonyAndFunction[$hostId][$value];
     }
 }
