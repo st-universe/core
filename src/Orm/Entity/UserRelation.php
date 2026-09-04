@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use LogicException;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\UserRelationRepository;
@@ -32,18 +33,6 @@ class UserRelation
 
     #[Column(type: 'smallint', enumType: AllianceRelationTypeEnum::class)]
     private AllianceRelationTypeEnum $type = AllianceRelationTypeEnum::FRIENDS;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $source_user_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $source_alliance_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $recipient_user_id = null;
-
-    #[Column(type: 'integer', nullable: true)]
-    private ?int $recipient_alliance_id = null;
 
     #[Column(type: 'integer')]
     private int $date = 0;
@@ -153,28 +142,20 @@ class UserRelation
                 && $this->sourceAlliance->getId() === $user->getAlliance()->getId());
     }
 
-    public function isRecipientParty(User $user): bool
-    {
-        return ($this->recipientUser !== null && $this->recipientUser->getId() === $user->getId())
-            || ($this->recipientAlliance !== null
-                && $user->getAlliance() !== null
-                && $this->recipientAlliance->getId() === $user->getAlliance()->getId());
-    }
-
-    public function getSourceName(): string
-    {
-        return $this->sourceUser?->getName() ?? $this->sourceAlliance?->getName() ?? '';
-    }
-
-    public function getRecipientName(): string
-    {
-        return $this->recipientUser?->getName() ?? $this->recipientAlliance?->getName() ?? '';
-    }
-
     public function getCounterpartName(User $user): string
     {
         return $this->isSourceParty($user)
-            ? $this->getRecipientName()
-            : $this->getSourceName();
+            ? $this->recipientUser?->getName() ?? $this->recipientAlliance?->getName() ?? ''
+            : $this->sourceUser?->getName() ?? $this->sourceAlliance?->getName() ?? '';
+    }
+
+    public function getSourceParty(): User|Alliance
+    {
+        return $this->sourceUser ?? $this->sourceAlliance ?? throw new LogicException('Relation has no source party');
+    }
+
+    public function getRecipientParty(): User|Alliance
+    {
+        return $this->recipientUser ?? $this->recipientAlliance ?? throw new LogicException('Relation has no recipient party');
     }
 }
