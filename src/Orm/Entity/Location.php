@@ -49,7 +49,7 @@ abstract class Location
 
     #[ManyToOne(targetEntity: Layer::class)]
     #[JoinColumn(name: 'layer_id', referencedColumnName: 'id', nullable: true)]
-    protected ?Layer $layer;
+    protected ?Layer $layer = null;
 
     #[ManyToOne(targetEntity: MapFieldType::class)]
     #[JoinColumn(name: 'field_id', referencedColumnName: 'id', nullable: false)]

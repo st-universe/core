@@ -75,9 +75,7 @@ class ShipRumpModuleLevel
     /** @param int|bool|string $value */
     public function setValue(SpacecraftModuleTypeEnum $type, string $key, $value): ShipRumpModuleLevel
     {
-        if ($this->type_values === null) {
-            $this->type_values = [];
-        }
+        $this->type_values ??= [];
 
         if (!array_key_exists($type->value, $this->type_values)) {
             $this->type_values[$type->value] = [];

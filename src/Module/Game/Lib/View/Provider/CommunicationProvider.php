@@ -92,12 +92,10 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
 
         $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
-        $formattedVersions = array_map(function (string $version): array {
-            return [
-                'version' => $version,
-                'display' => $this->formatVersion($version)
-            ];
-        }, $availableVersions);
+        $formattedVersions = array_map(fn(string $version): array => [
+            'version' => $version,
+            'display' => $this->formatVersion($version)
+        ], $availableVersions);
 
         $game->setTemplateVar('AVAILABLE_ARCHIVE_VERSIONS', $formattedVersions);
         $game->setTemplateVar('SHOW_ARCHIVE_VIEW', ShowKnArchive::VIEW_IDENTIFIER);

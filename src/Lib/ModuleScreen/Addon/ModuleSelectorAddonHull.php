@@ -17,9 +17,7 @@ final class ModuleSelectorAddonHull implements ModuleSelectorAddonInterface
     #[\Override]
     public function getModificators(Module $module): array
     {
-        if ($this->interval === null) {
-            $this->interval = $this->torpedoHullRepository->getModificatorMinAndMax();
-        }
+        $this->interval ??= $this->torpedoHullRepository->getModificatorMinAndMax();
 
         [$lowest, $highest] = $this->interval;
 

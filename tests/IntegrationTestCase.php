@@ -68,9 +68,7 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         $dic = $this->getContainer();
 
-        if (self::$testSession === null) {
-            self::$testSession = new TestSession($dic->get(UserRepositoryInterface::class));
-        }
+        self::$testSession ??= new TestSession($dic->get(UserRepositoryInterface::class));
         $dic->setAdditionalService(SessionInterface::class, self::$testSession);
         self::$testSession->getUser()?->setSessiondata('');
     }
@@ -238,9 +236,7 @@ abstract class IntegrationTestCase extends StuTestCase
 
     protected function getContainer(): StuContainer
     {
-        if (self::$INTTEST_CONTAINER === null) {
-            self::$INTTEST_CONTAINER = Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
-        }
+        self::$INTTEST_CONTAINER ??= Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
 
         return self::$INTTEST_CONTAINER;
     }

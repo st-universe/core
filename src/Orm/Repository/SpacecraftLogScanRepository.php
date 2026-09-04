@@ -33,11 +33,9 @@ final class SpacecraftLogScanRepository extends EntityRepository implements Spac
             'spacecraft_id' => $spacecraftId
         ]);
 
-        if ($spacecraftLogScan === null) {
-            $spacecraftLogScan = $this->prototype()
-                ->setUser($user)
-                ->setSpacecraftId($spacecraftId);
-        }
+        $spacecraftLogScan ??= $this->prototype()
+            ->setUser($user)
+            ->setSpacecraftId($spacecraftId);
 
         $spacecraftLogScan->setDate($date);
         $this->save($spacecraftLogScan);

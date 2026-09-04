@@ -67,18 +67,14 @@ final class ReactorWrapper implements ReactorWrapperInterface
     #[\Override]
     public function getEffectiveEpsProduction(): int
     {
-        if ($this->effectiveValues === null) {
-            $this->effectiveValues = $this->calculateEffectiveProduction();
-        }
+        $this->effectiveValues ??= $this->calculateEffectiveProduction();
         return $this->effectiveValues['eps'];
     }
 
     #[\Override]
     public function getEffectiveWarpDriveProduction(): int
     {
-        if ($this->effectiveValues === null) {
-            $this->effectiveValues = $this->calculateEffectiveProduction();
-        }
+        $this->effectiveValues ??= $this->calculateEffectiveProduction();
 
         return $this->effectiveValues['warpdrive'];
     }

@@ -71,27 +71,21 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
             $regionId = $adminRegion?->getId() ?? 0;
             $regionName = $adminRegion?->getDescription() ?? 'Unbekannte Region';
 
-            if (!isset($layerInfo[$layerId])) {
-                $layerInfo[$layerId] = [
-                    'is_noobzone' => $isNoobzone
-                ];
-            }
+            $layerInfo[$layerId] ??= [
+                'is_noobzone' => $isNoobzone
+            ];
 
-            if (!isset($grouped[$layerId])) {
-                $grouped[$layerId] = [
-                    'layer_name' => $layerName,
-                    'layer_description' => $layerDescription,
-                    'is_noobzone' => $isNoobzone,
-                    'regions' => []
-                ];
-            }
+            $grouped[$layerId] ??= [
+                'layer_name' => $layerName,
+                'layer_description' => $layerDescription,
+                'is_noobzone' => $isNoobzone,
+                'regions' => []
+            ];
 
-            if (!isset($grouped[$layerId]['regions'][$regionId])) {
-                $grouped[$layerId]['regions'][$regionId] = [
-                    'region_name' => $regionName,
-                    'planets' => []
-                ];
-            }
+            $grouped[$layerId]['regions'][$regionId] ??= [
+                'region_name' => $regionName,
+                'planets' => []
+            ];
 
             $grouped[$layerId]['regions'][$regionId]['planets'][] = $planet;
         }

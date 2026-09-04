@@ -60,7 +60,7 @@ class ColonyClass
 
     #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntry $databaseEntry;
+    private ?DatabaseEntry $databaseEntry = null;
 
     /**
      * @var ArrayCollection<int, ColonyClassDeposit>

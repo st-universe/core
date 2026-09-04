@@ -135,9 +135,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
                     }
                 }
             }
-            if ($firstOrbitShip === null) {
-                $firstOrbitShip = $dockedShips->first();
-            }
+            $firstOrbitShip ??= $dockedShips->first();
         }
 
         $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip !== null ? $this->spacecraftWrapperFactory->wrapShip($firstOrbitShip) : null);

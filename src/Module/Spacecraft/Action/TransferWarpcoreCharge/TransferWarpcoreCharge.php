@@ -104,12 +104,10 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
 
             if ($messages !== [] && $spacecraft->getUser() !== $targetShip->getUser()) {
                 $targetUserId = $targetShip->getUser()->getId();
-                if (!isset($transfersByUser[$targetUserId])) {
-                    $transfersByUser[$targetUserId] = [
-                        'transfers' => [],
-                        'sectorString' => $targetShip->getSectorString()
-                    ];
-                }
+                $transfersByUser[$targetUserId] ??= [
+                    'transfers' => [],
+                    'sectorString' => $targetShip->getSectorString()
+                ];
 
                 $transfersByUser[$targetUserId]['transfers'][] = [
                     'shipName' => $targetShip->getName()

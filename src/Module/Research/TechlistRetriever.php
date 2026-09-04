@@ -126,12 +126,10 @@ final class TechlistRetriever implements TechlistRetrieverInterface
             $research_id = $dependency->getResearchId();
             $mode = $dependency->getMode();
 
-            if (!isset($allDependencies[$research_id])) {
-                $allDependencies[$research_id] = [
-                    'AND' => [],
-                    'OR' => []
-                ];
-            }
+            $allDependencies[$research_id] ??= [
+                'AND' => [],
+                'OR' => []
+            ];
 
             if ($mode === ResearchModeEnum::REQUIRE) {
                 $allDependencies[$research_id]['AND'][] = $dependency->getDependsOn();

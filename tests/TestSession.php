@@ -38,9 +38,7 @@ class TestSession implements SessionInterface
 
     public function getUser(): ?User
     {
-        if ($this->user === null) {
-            $this->user = $this->userRepository->find(self::DEFAULT_USER_ID);
-        }
+        $this->user ??= $this->userRepository->find(self::DEFAULT_USER_ID);
         return $this->user;
     }
 

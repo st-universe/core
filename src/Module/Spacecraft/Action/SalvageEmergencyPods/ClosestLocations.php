@@ -38,9 +38,7 @@ class ClosestLocations
             if ($freeQuarters >= $count) {
                 $distance = $this->distanceCalculation->spacecraftToSpacecraftDistance($ship, $station);
 
-                if ($result === null) {
-                    $result = [];
-                }
+                $result ??= [];
 
                 if (empty($result) || $distance < $result[0]) {
                     $result = [$distance, $station];
@@ -73,9 +71,7 @@ class ClosestLocations
                     $distance += 1;
                 }
 
-                if ($result === null) {
-                    $result = [];
-                }
+                $result ??= [];
 
                 if (empty($result) || $distance < $result[0]) {
                     $result = [$distance, $colony];

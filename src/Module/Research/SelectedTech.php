@@ -47,12 +47,10 @@ final class SelectedTech implements SelectedTechInterface
     #[\Override]
     public function getResearchState(): ?Researched
     {
-        if ($this->state === null) {
-            $this->state = $this->researchedRepository->getFor(
-                $this->research->getId(),
-                $this->currentUser->getId()
-            );
-        }
+        $this->state ??= $this->researchedRepository->getFor(
+            $this->research->getId(),
+            $this->currentUser->getId()
+        );
         return $this->state;
     }
 

@@ -80,9 +80,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     #[\Override]
     public function getEpsUsage(): int
     {
-        if ($this->epsUsage === null) {
-            $this->epsUsage = $this->reloadEpsUsage();
-        }
+        $this->epsUsage ??= $this->reloadEpsUsage();
         return $this->epsUsage;
     }
 
@@ -118,9 +116,7 @@ abstract class SpacecraftWrapper implements SpacecraftWrapperInterface
     #[\Override]
     public function getReactorWrapper(): ?ReactorWrapperInterface
     {
-        if ($this->reactorWrapper === null) {
-            $this->reactorWrapper = $this->reactorWrapperFactory->createReactorWrapper($this);
-        }
+        $this->reactorWrapper ??= $this->reactorWrapperFactory->createReactorWrapper($this);
 
         return $this->reactorWrapper;
     }

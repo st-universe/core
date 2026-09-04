@@ -58,12 +58,10 @@ final class DismissCrew implements ActionControllerInterface
             $spacecraft = $crewAssignment->getSpacecraft();
             if ($spacecraft !== null) {
                 $spacecraftId = $spacecraft->getId();
-                if (!isset($spacecrafts[$spacecraftId])) {
-                    $spacecrafts[$spacecraftId] = [
-                        'spacecraft' => $spacecraft,
-                        'foreignCrewChange' => 0
-                    ];
-                }
+                $spacecrafts[$spacecraftId] ??= [
+                    'spacecraft' => $spacecraft,
+                    'foreignCrewChange' => 0
+                ];
                 if ($spacecraft->getUser()->getId() !== $user->getId()) {
                     $spacecrafts[$spacecraftId]['foreignCrewChange']--;
                 }

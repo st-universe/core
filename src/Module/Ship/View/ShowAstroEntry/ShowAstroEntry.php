@@ -48,9 +48,7 @@ final class ShowAstroEntry implements ViewControllerInterface
         $system = null;
         if ($isSystem !== 0) {
             $system = $ship->getSystem();
-            if ($system === null) {
-                $system = $ship->isOverSystem();
-            }
+            $system ??= $ship->isOverSystem();
         }
         $repository = $system !== null ? $this->starSystemMapRepository : $this->mapRepository;
 

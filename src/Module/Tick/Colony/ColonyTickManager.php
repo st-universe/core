@@ -73,9 +73,7 @@ class ColonyTickManager extends AbstractTickManager implements ColonyTickManager
         $user = [];
 
         foreach ($this->crewTrainingRepository->getByBatchGroup($batchGroup, $batchGroupCount) as $obj) {
-            if (!isset($user[$obj->getUserId()])) {
-                $user[$obj->getUserId()] = 0;
-            }
+            $user[$obj->getUserId()] ??= 0;
             if ($user[$obj->getUserId()] >= $this->crewCountRetriever->getTrainableCount($obj->getUser())) {
                 continue;
             }

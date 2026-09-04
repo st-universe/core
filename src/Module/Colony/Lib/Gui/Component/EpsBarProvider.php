@@ -19,7 +19,7 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
     ): void {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($entity);
 
-        $game->setTemplateVar('EPS_STATUS_BAR', $this->getEpsStatusBar($entity, $energyProduction));
+        $game->setTemplateVar('EPS_STATUS_BAR', self::getEpsStatusBar($entity, $energyProduction));
         $game->setTemplateVar('EPS_PRODUCTION', $energyProduction);
         $game->setTemplateVar('EPS_BAR_TITLE_STRING', $this->getEpsBarTitleString($entity, $energyProduction));
     }

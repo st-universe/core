@@ -302,9 +302,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             }
         }
 
-        uasort($latestPerShipAndRump, function ($a, $b): int|float {
-            return $b[0]->getTime() - $a[0]->getTime();
-        });
+        uasort($latestPerShipAndRump, fn($a, $b): int|float => $b[0]->getTime() - $a[0]->getTime());
 
         return array_values($latestPerShipAndRump);
     }

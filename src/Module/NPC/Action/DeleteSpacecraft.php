@@ -56,9 +56,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 'trim',
                 explode(',', $spacecraftIdInput)
             ),
-            function ($id): bool {
-                return is_numeric($id) && $id > 0;
-            }
+            fn($id): bool => is_numeric($id) && $id > 0
         );
         if ($spacecraftIds === []) {
             $game->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");

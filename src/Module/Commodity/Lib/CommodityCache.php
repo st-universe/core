@@ -19,9 +19,7 @@ final class CommodityCache implements CommodityCacheInterface
     #[\Override]
     public function get(int $commodityId): Commodity
     {
-        if ($this->commodityArray === null) {
-            $this->commodityArray = $this->commodityRepository->getAll();
-        }
+        $this->commodityArray ??= $this->commodityRepository->getAll();
 
         return $this->commodityArray[$commodityId];
     }
@@ -29,9 +27,7 @@ final class CommodityCache implements CommodityCacheInterface
     #[\Override]
     public function getAll(?int $type = null): array
     {
-        if ($this->commodityArray === null) {
-            $this->commodityArray = $this->commodityRepository->getAll();
-        }
+        $this->commodityArray ??= $this->commodityRepository->getAll();
 
         if ($type !== null) {
             return array_filter($this->commodityArray, fn (Commodity $commodity): bool => $commodity->getType() === $type);

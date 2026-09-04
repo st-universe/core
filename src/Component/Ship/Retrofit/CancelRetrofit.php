@@ -54,9 +54,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
                     $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
                     /** @var array<Module> */
-                    $addingModules = array_udiff($newModules, $oldModules, function (Module $a, Module $b): int {
-                        return $a->getId() - $b->getId();
-                    });
+                    $addingModules = array_udiff($newModules, $oldModules, fn(Module $a, Module $b): int => $a->getId() - $b->getId());
 
                     if ($withinFirstQuarter) {
                         foreach ($addingModules as $module) {

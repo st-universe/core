@@ -203,9 +203,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     private function getShipRumpModuleLevel(): ShipRumpModuleLevel
     {
-        if ($this->shipRumpModuleLevel === null) {
-            $this->shipRumpModuleLevel = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump);
-        }
+        $this->shipRumpModuleLevel ??= $this->shipRumpModuleLevelRepository->getByShipRump($this->rump);
 
         if ($this->shipRumpModuleLevel === null) {
             throw new RuntimeException(sprintf('no shipRumpModuleLevel found for rumpId %d', $this->rump->getId()));

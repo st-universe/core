@@ -47,9 +47,7 @@ abstract class AbstractBattleParty implements BattlePartyInterface
     #[\Override]
     public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
     {
-        if ($this->members === null) {
-            $this->members = $this->initMembers();
-        }
+        $this->members ??= $this->initMembers();
 
         return $this->members->filter(
             fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed()

@@ -77,15 +77,11 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
             }
         }
 
-        $mode1Commodities = array_filter($mode1Commodities, function (array $entry) use ($userId): bool {
-            return $entry[1] !== null
-            && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
-        });
+        $mode1Commodities = array_filter($mode1Commodities, fn(array $entry): bool => $entry[1] !== null
+        && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId()));
 
-        $mode2Commodities = array_filter($mode2Commodities, function (array $entry) use ($userId): bool {
-            return $entry[1] !== null
-            && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId());
-        });
+        $mode2Commodities = array_filter($mode2Commodities, fn(array $entry): bool => $entry[1] !== null
+        && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId()));
 
         $chosencommodity = $aggregationsystem->getCommodityId();
         $game->setTemplateVar('MODE1_COMMODITIES', $mode1Commodities);

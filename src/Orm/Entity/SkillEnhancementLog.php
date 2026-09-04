@@ -32,7 +32,7 @@ class SkillEnhancementLog
     private string $crew_name;
 
     #[Column(type: 'string', nullable: true)]
-    private ?string $promotion;
+    private ?string $promotion = null;
 
     #[Column(type: 'string')]
     private string $ship_name;

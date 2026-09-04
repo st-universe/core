@@ -120,9 +120,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $scansByColony = [];
         foreach ($filteredScans as $scan) {
             $colonyId = $scan->getColony()->getId();
-            if (!isset($scansByColony[$colonyId])) {
-                $scansByColony[$colonyId] = [];
-            }
+            $scansByColony[$colonyId] ??= [];
             $scansByColony[$colonyId][] = $scan;
         }
 

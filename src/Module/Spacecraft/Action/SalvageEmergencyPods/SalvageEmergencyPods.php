@@ -216,9 +216,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 }
                 $game->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
             } else {
-                if ($closestTradepost === null) {
-                    $closestTradepost = $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $game->getUser());
-                }
+                $closestTradepost ??= $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $game->getUser());
 
                 if ($closestTradepost === null) {
                     $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die eigene Crew überstellt werden könnte');
