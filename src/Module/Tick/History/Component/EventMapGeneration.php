@@ -21,7 +21,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class EventMapGeneration implements HistoryTickHandlerInterface
 {
-    private const SCALE = 2;
+    private const int SCALE = 2;
 
     public function __construct(
         private readonly MapRepositoryInterface $mapRepository,

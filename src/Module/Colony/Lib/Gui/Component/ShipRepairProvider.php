@@ -20,24 +20,8 @@ use Stu\Module\Commodity\CommodityTypeConstants;
 
 final class ShipRepairProvider implements PlanetFieldHostComponentInterface
 {
-    private readonly ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-    private readonly PlanetFieldHostProviderInterface $planetFieldHostProvider;
-    private readonly ColonyFunctionManagerInterface $colonyFunctionManager;
-    private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever;
-    private readonly RepairUtilInterface $repairUtil;
-
-    public function __construct(
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldHostProviderInterface $planetFieldHostProvider,
-        ColonyFunctionManagerInterface $colonyFunctionManager,
-        OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever,
-        RepairUtilInterface $repairUtil
-    ) {
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
-        $this->planetFieldHostProvider = $planetFieldHostProvider;
-        $this->colonyFunctionManager = $colonyFunctionManager;
-        $this->orbitShipWrappersRetriever = $orbitShipWrappersRetriever;
-        $this->repairUtil = $repairUtil;
+    public function __construct(private readonly ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private readonly PlanetFieldHostProviderInterface $planetFieldHostProvider, private readonly ColonyFunctionManagerInterface $colonyFunctionManager, private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever, private readonly RepairUtilInterface $repairUtil)
+    {
     }
 
     /** @param Colony $entity */

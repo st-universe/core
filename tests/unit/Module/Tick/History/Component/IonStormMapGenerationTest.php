@@ -14,8 +14,8 @@ use Stu\StuTestCase;
 
 class IonStormMapGenerationTest extends StuTestCase
 {
-    private const WIDTH = 340;
-    private const HEIGHT = 2;
+    private const int WIDTH = 340;
+    private const int HEIGHT = 2;
 
     private MockInterface&AnomalyRepositoryInterface $anomalyRepository;
     private MockInterface&LayerRepositoryInterface $layerRepository;
