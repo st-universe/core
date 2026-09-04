@@ -59,11 +59,9 @@ return [
         }
         return new ArrayAdapter();
     },
-    SqlLogger::class => function (): SqlLogger {
-        return new SqlLogger(
-            StuLogger::getLogger(LogTypeEnum::DBAL)
-        );
-    },
+    SqlLogger::class => fn(): SqlLogger => new SqlLogger(
+        StuLogger::getLogger(LogTypeEnum::DBAL)
+    ),
     GameControllerInterface::class => autowire(GameController::class)
         ->constructorParameter('callbackExecution', autowire(CallbackExecution::class))
         ->constructorParameter('viewExecution', autowire(ViewExecution::class)),

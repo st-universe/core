@@ -49,7 +49,7 @@ class Colony implements
     private int $id;
 
     #[OneToOne(targetEntity: ColonyChangeable::class, mappedBy: 'colony', cascade: ['all'], fetch: 'EAGER')]
-    private ?ColonyChangeable $changeable;
+    private ?ColonyChangeable $changeable = null;
 
     #[Column(type: 'integer')]
     private int $colonies_classes_id = 0;
@@ -103,7 +103,7 @@ class Colony implements
 
     #[OneToOne(targetEntity: DatabaseEntry::class)]
     #[JoinColumn(name: 'database_id', referencedColumnName: 'id')]
-    private ?DatabaseEntry $databaseEntry;
+    private ?DatabaseEntry $databaseEntry = null;
 
     /**
      * @var ArrayCollection<int, Fleet>

@@ -32,7 +32,7 @@ class TutorialStep
     private string $view = '';
 
     #[Column(type: 'integer', nullable: true)]
-    private ?int $next_step_id;
+    private ?int $next_step_id = null;
 
     #[Column(type: 'text', nullable: true)]
     private ?string $title = null;
@@ -50,11 +50,11 @@ class TutorialStep
     private ?int $fallbackIndex = null;
 
     #[OneToOne(targetEntity: TutorialStep::class, mappedBy: 'nextStep')]
-    private ?TutorialStep $previousStep;
+    private ?TutorialStep $previousStep = null;
 
     #[OneToOne(targetEntity: TutorialStep::class)]
     #[JoinColumn(name: 'next_step_id', referencedColumnName: 'id')]
-    private ?TutorialStep $nextStep;
+    private ?TutorialStep $nextStep = null;
 
     public function getId(): int
     {

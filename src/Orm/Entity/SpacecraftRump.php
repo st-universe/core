@@ -33,7 +33,7 @@ class SpacecraftRump
     private int $id;
 
     #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', cascade: ['all'], fetch: 'EXTRA_LAZY')]
-    private ?SpacecraftRumpBaseValues $baseValues;
+    private ?SpacecraftRumpBaseValues $baseValues = null;
 
     #[OneToOne(targetEntity: SpacecraftRump3DModel::class, mappedBy: 'rump', cascade: ['all'])]
     private ?SpacecraftRump3DModel $model3d = null;

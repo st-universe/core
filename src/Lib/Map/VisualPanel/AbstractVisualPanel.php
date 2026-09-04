@@ -79,9 +79,7 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
 
     public function getBoundaries(): PanelBoundaries
     {
-        if ($this->boundaries === null) {
-            $this->boundaries = $this->createBoundaries();
-        }
+        $this->boundaries ??= $this->createBoundaries();
 
         return $this->boundaries;
     }
@@ -100,9 +98,7 @@ abstract class AbstractVisualPanel implements PanelAttributesInterface
     #[\Override]
     public function getFontSize(): string
     {
-        if ($this->fontSize === null) {
-            $this->fontSize =  sprintf('font-size: %svw;', number_format($this->getViewport() / 2, 1));
-        }
+        $this->fontSize ??= sprintf('font-size: %svw;', number_format($this->getViewport() / 2, 1));
         return $this->fontSize;
     }
 

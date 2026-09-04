@@ -138,9 +138,7 @@ class StuContainer extends Container
     /** @return array<string, mixed> */
     private function getDefinitions(): array
     {
-        if ($this->definitions === null) {
-            $this->definitions = $this->definitionSource->getDefinitions();
-        }
+        $this->definitions ??= $this->definitionSource->getDefinitions();
 
         return $this->definitions;
     }

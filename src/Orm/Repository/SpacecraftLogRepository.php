@@ -171,15 +171,13 @@ final class SpacecraftLogRepository extends EntityRepository implements Spacecra
             $log = $row[0];
             $spacecraftId = $log->getSpacecraftId();
 
-            if (!isset($grouped[$spacecraftId])) {
-                $grouped[$spacecraftId] = [
-                    'spacecraftId' => $spacecraftId,
-                    'name' => $log->getName() ?? sprintf(_('Unbekanntes Schiff %d'), $spacecraftId),
-                    'rumpId' => $log->getRumpId(),
-                    'scanDate' => $row['scanDate'] !== null ? (int)$row['scanDate'] : null,
-                    'logs' => []
-                ];
-            }
+            $grouped[$spacecraftId] ??= [
+                'spacecraftId' => $spacecraftId,
+                'name' => $log->getName() ?? sprintf(_('Unbekanntes Schiff %d'), $spacecraftId),
+                'rumpId' => $log->getRumpId(),
+                'scanDate' => $row['scanDate'] !== null ? (int)$row['scanDate'] : null,
+                'logs' => []
+            ];
 
             $grouped[$spacecraftId]['logs'][] = $log;
         }

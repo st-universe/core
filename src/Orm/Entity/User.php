@@ -71,7 +71,7 @@ class User
     private ?int $last_boarding = null;
 
     #[OneToOne(targetEntity: UserRegistration::class, mappedBy: 'user', cascade: ['all'])]
-    private ?UserRegistration $registration;
+    private ?UserRegistration $registration = null;
 
     #[OneToOne(targetEntity: UserLastAction::class, mappedBy: 'user', cascade: ['all'])]
     private ?UserLastAction $lastAction = null;

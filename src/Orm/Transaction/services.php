@@ -18,11 +18,9 @@ use function DI\autowire;
 
 return [
     ConnectionFactoryInterface::class => autowire(ConnectionFactory::class),
-    Connection::class => function (ContainerInterface $c): Connection {
-
-        return $c->get(ConnectionFactoryInterface::class)
-            ->createConnection();
-    },
+    Connection::class => fn(ContainerInterface $c): Connection =>
+        $c->get(ConnectionFactoryInterface::class)
+            ->createConnection(),
     Configuration::class => function (ContainerInterface $c): Configuration {
         $stuConfig = $c->get(StuConfigInterface::class);
 
@@ -38,12 +36,9 @@ return [
         return $emConfig;
     },
     EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class),
-    EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
-
-        return new ReopeningEntityManager(
-            $c->get(EntityManagerFactoryInterface::class),
-            $c->get(Configuration::class),
-            $c->get(LoggerUtilFactoryInterface::class)
-        );
-    }
+    EntityManagerInterface::class => fn(ContainerInterface $c): EntityManagerInterface => new ReopeningEntityManager(
+        $c->get(EntityManagerFactoryInterface::class),
+        $c->get(Configuration::class),
+        $c->get(LoggerUtilFactoryInterface::class)
+    )
 ];

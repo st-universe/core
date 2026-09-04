@@ -38,9 +38,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
         $result = [];
 
-        if ($this->interval === null) {
-            $this->interval = $this->weaponShieldRepository->getModificatorMinAndMax();
-        }
+        $this->interval ??= $this->weaponShieldRepository->getModificatorMinAndMax();
 
         [$lowest, $highest] = $this->interval;
 

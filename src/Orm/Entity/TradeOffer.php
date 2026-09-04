@@ -69,7 +69,7 @@ class TradeOffer
     private User $user;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'tradeOffer')]
-    private ?Storage $storage;
+    private ?Storage $storage = null;
 
     public function getId(): int
     {

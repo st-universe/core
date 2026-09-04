@@ -60,12 +60,10 @@ final class TradeAccountWrapper implements TradeAccountWrapperInterface
     #[\Override]
     public function getStorage(): array
     {
-        if ($this->storage === null) {
-            $this->storage = $this->storageRepository->getByTradePostAndUser(
-                $this->tradePost->getId(),
-                $this->userId
-            );
-        }
+        $this->storage ??= $this->storageRepository->getByTradePostAndUser(
+            $this->tradePost->getId(),
+            $this->userId
+        );
         return $this->storage;
     }
 

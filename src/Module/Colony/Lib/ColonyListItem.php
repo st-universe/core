@@ -102,9 +102,7 @@ final class ColonyListItem implements ColonyListItemInterface
     #[\Override]
     public function getEnergyProduction(): int
     {
-        if ($this->energyProduction === null) {
-            $this->energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($this->colony);
-        }
+        $this->energyProduction ??= $this->planetFieldRepository->getEnergyProductionByHost($this->colony);
 
         return $this->energyProduction;
     }
@@ -223,21 +221,17 @@ final class ColonyListItem implements ColonyListItemInterface
      */
     private function getProduction(): array
     {
-        if ($this->production === null) {
-            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
-        }
+        $this->production ??= $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
 
         return $this->production;
     }
 
     private function getPopulationCalculator(): ColonyPopulationCalculatorInterface
     {
-        if ($this->colonyPopulationCalculator === null) {
-            $this->colonyPopulationCalculator = $this->colonyLibFactory->createColonyPopulationCalculator(
-                $this->colony,
-                $this->getProduction()
-            );
-        }
+        $this->colonyPopulationCalculator ??= $this->colonyLibFactory->createColonyPopulationCalculator(
+            $this->colony,
+            $this->getProduction()
+        );
 
         return $this->colonyPopulationCalculator;
     }

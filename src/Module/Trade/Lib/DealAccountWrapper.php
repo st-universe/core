@@ -35,12 +35,10 @@ final class DealAccountWrapper implements DealAccountWrapperInterface
     /** @return array<Storage> */
     private function getStorage(): array
     {
-        if ($this->storage === null) {
-            $this->storage = $this->storageRepository->getByTradePostAndUser(
-                $this->tradePost->getId(),
-                $this->userId
-            );
-        }
+        $this->storage ??= $this->storageRepository->getByTradePostAndUser(
+            $this->tradePost->getId(),
+            $this->userId
+        );
         return $this->storage;
     }
 

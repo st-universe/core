@@ -21,9 +21,7 @@ class StuMocks
 
     public static function get(): StuMocks
     {
-        if (self::$instance === null) {
-            self::$instance = new StuMocks();
-        }
+        self::$instance ??= new StuMocks();
 
         return self::$instance;
     }

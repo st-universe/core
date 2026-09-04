@@ -48,7 +48,7 @@ class TorpedoStorage
     private TorpedoType $torpedo;
 
     #[OneToOne(targetEntity: Storage::class, mappedBy: 'torpedoStorage')]
-    private ?Storage $storage;
+    private ?Storage $storage = null;
 
     public function getId(): int
     {
