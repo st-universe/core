@@ -9,6 +9,8 @@ interface GameSettingsInterface
     /** @return array<int> */
     public function getAdminIds(): array;
 
+    public function getHashMethod(): string;
+
     public function getTempDir(): string;
 
     public function getVersion(): string|int;

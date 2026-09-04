@@ -25,6 +25,12 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     }
 
     #[\Override]
+    public function getHashMethod(): string
+    {
+        return $this->settingsCore->getStringConfigValue('hash_method');
+    }
+
+    #[\Override]
     public function getColonySettings(): ColonySettingsInterface
     {
         return $this->settingsCache->getSettings(ColonySettingsInterface::class, $this);
