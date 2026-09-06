@@ -11,7 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
@@ -19,7 +19,7 @@ final class CancelOffer implements ActionControllerInterface
 
     public function __construct(
         private CancelOfferRequestInterface $cancelOfferRequest,
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceJobManagerInterface $allianceJobManager,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
@@ -39,9 +39,21 @@ final class CancelOffer implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
 
         if (
-            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+            !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::DIPLOMATIC
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::CREATE_AGREEMENTS
+            )
         ) {
             throw new AccessViolationException();
         }

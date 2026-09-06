@@ -13,8 +13,8 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
@@ -22,7 +22,7 @@ final class CreateRelation implements ActionControllerInterface
 
     public function __construct(
         private readonly CreateRelationRequestInterface $createRelationRequest,
-        private readonly AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private readonly RelationRepositoryInterface $allianceRelationRepository,
         private readonly AllianceJobManagerInterface $allianceJobManager,
         private readonly AllianceRepositoryInterface $allianceRepository,
         private readonly EventDispatcherInterface $eventDispatcher
@@ -40,7 +40,11 @@ final class CreateRelation implements ActionControllerInterface
         $allianceId = $alliance->getId();
         $user = $game->getUser();
 
-        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
+        if (!$this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::CREATE_AGREEMENTS
+        )) {
             throw new AccessViolationException();
         }
 
@@ -49,11 +53,7 @@ final class CreateRelation implements ActionControllerInterface
 
         $counterpart = $this->allianceRepository->find($counterpartId);
         $relationType = AllianceRelationTypeEnum::tryFrom($typeId);
-        if (
-            $counterpart === null
-            || $alliance->getId() === $counterpart->getId()
-            || $relationType === null
-        ) {
+        if ($counterpart === null || $alliance->getId() === $counterpart->getId() || $relationType === null) {
             return;
         }
 
@@ -64,7 +64,10 @@ final class CreateRelation implements ActionControllerInterface
         }
 
         // check if a relation exists
-        $existingRelations = $this->allianceRelationRepository->getByAlliancePair($allianceId, $counterpartId);
+        $existingRelations = $this->allianceRelationRepository->getByAlliancePair(
+            $allianceId,
+            $counterpartId
+        );
 
         // Iteriere durch die gefundenen Einträge
         foreach ($existingRelations as $existingRelation) {

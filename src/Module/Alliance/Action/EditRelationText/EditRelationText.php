@@ -13,8 +13,8 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Entity\Relation;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class EditRelationText implements ActionControllerInterface
 {
@@ -27,7 +27,7 @@ final class EditRelationText implements ActionControllerInterface
     }
 
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private EditRelationTextRequestInterface $editRelationTextRequest,
         private PrivateMessageSenderInterface $privateMessageSender,
         private AllianceJobManagerInterface $allianceJobManager
@@ -40,10 +40,14 @@ final class EditRelationText implements ActionControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException("user not in alliance");
+            throw new AccessViolationException('user not in alliance');
         }
 
-        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)) {
+        if (!$this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+        )) {
             throw new AccessViolationException();
         }
 
@@ -78,14 +82,18 @@ final class EditRelationText implements ActionControllerInterface
         $game->getInfo()->addInformation('Der Vertragstext wurde erfolgreich bearbeitet');
     }
 
-    private function sendNotificationToLeaders(Alliance $alliance, AllianceRelation $relation, string $editorName, int $editorId): void
-    {
+    private function sendNotificationToLeaders(
+        Alliance $alliance,
+        Relation $relation,
+        string $editorName,
+        int $editorId
+    ): void {
         $relationTypeName = $relation->getType()->getDescription();
         $allianceAName = $relation->getAlliance()->getName();
         $allianceBName = $relation->getOpponent()->getName();
 
         $message = sprintf(
-            "Der Vertragstext für das %s zwischen [b]%s[/b] und [b]%s[/b] wurde von [b]%s[/b] (%d) bearbeitet.",
+            'Der Vertragstext für das %s zwischen [b]%s[/b] und [b]%s[/b] wurde von [b]%s[/b] (%d) bearbeitet.',
             $relationTypeName,
             $allianceAName,
             $allianceBName,

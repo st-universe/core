@@ -14,14 +14,14 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserRelation;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class UserRelationManager implements UserRelationManagerInterface
 {
     public function __construct(
-        private readonly UserRelationRepositoryInterface $userRelationRepository,
+        private readonly RelationRepositoryInterface $userRelationRepository,
         private readonly AllianceJobManagerInterface $allianceJobManager,
         private readonly AllianceActionManagerInterface $allianceActionManager,
         private readonly PrivateMessageSenderInterface $privateMessageSender,
@@ -52,8 +52,12 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     #[\Override]
-    public function create(User $actor, User|Alliance $source, User|Alliance $recipient, AllianceRelationTypeEnum $type): ?UserRelation
-    {
+    public function create(
+        User $actor,
+        User|Alliance $source,
+        User|Alliance $recipient,
+        AllianceRelationTypeEnum $type
+    ): ?Relation {
         if (
             !$this->canCreateForParty($actor, $source)
             || !$this->hasValidParties($source, $recipient)
@@ -77,14 +81,29 @@ final class UserRelationManager implements UserRelationManagerInterface
             $relation = $this->createRelation($source, $recipient, $type, time());
             $this->sendMessageToParty(
                 $recipient,
-                sprintf('%s hat %s den Krieg erklärt', $this->getPartyDescription($source), $this->getPartyDescription($recipient))
+                sprintf(
+                    '%s hat %s den Krieg erklärt',
+                    $this->getPartyDescription($source),
+                    $this->getPartyDescription($recipient)
+                )
             );
-            $this->addHistory($relation, $actor->getId(), sprintf('%s hat %s den Krieg erklärt', $this->getPartyDescription($source), $this->getPartyDescription($recipient)));
+            $this->addHistory(
+                $relation,
+                $actor->getId(),
+                sprintf(
+                    '%s hat %s den Krieg erklärt',
+                    $this->getPartyDescription($source),
+                    $this->getPartyDescription($recipient)
+                )
+            );
 
             return $relation;
         }
 
-        if (count(array_filter($relations, static fn (UserRelation $relation): bool => $relation->isPending())) >= 2) {
+        if (
+            count(array_filter($relations, static fn(Relation $relation): bool => $relation->isPending()))
+            >= 2
+        ) {
             return null;
         }
 
@@ -103,13 +122,16 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     #[\Override]
-    public function accept(User $actor, UserRelation $relation): bool
+    public function accept(User $actor, Relation $relation): bool
     {
         if (!$relation->isPending() || !$this->canRepresentParty($actor, $relation->getRecipientParty())) {
             return false;
         }
 
-        foreach ($this->getRelationsByParties($relation->getSourceParty(), $relation->getRecipientParty()) as $existingRelation) {
+        foreach ($this->getRelationsByParties(
+            $relation->getSourceParty(),
+            $relation->getRecipientParty()
+        ) as $existingRelation) {
             if (!$existingRelation->isPending() && $existingRelation->getId() !== $relation->getId()) {
                 $this->userRelationRepository->delete($existingRelation);
             }
@@ -126,7 +148,7 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     #[\Override]
-    public function cancel(User $actor, UserRelation $relation): bool
+    public function cancel(User $actor, Relation $relation): bool
     {
         if ($relation->isWar()) {
             return false;
@@ -143,7 +165,11 @@ final class UserRelationManager implements UserRelationManagerInterface
             $this->userRelationRepository->delete($relation);
             $this->sendMessageToParty(
                 $recipient,
-                sprintf('%s hat das Angebot für ein %s zurückgezogen', $this->getPartyDescription($source), $relation->getType()->getDescription())
+                sprintf(
+                    '%s hat das Angebot für ein %s zurückgezogen',
+                    $this->getPartyDescription($source),
+                    $relation->getType()->getDescription()
+                )
             );
 
             return true;
@@ -155,7 +181,11 @@ final class UserRelationManager implements UserRelationManagerInterface
 
         $this->userRelationRepository->delete($relation);
         $counterpart = $this->canRepresentParty($actor, $source) ? $recipient : $source;
-        $text = sprintf('%s hat das %s aufgelöst', $this->getPartyDescription($this->canRepresentParty($actor, $source) ? $source : $recipient), $relation->getType()->getDescription());
+        $text = sprintf(
+            '%s hat das %s aufgelöst',
+            $this->getPartyDescription($this->canRepresentParty($actor, $source) ? $source : $recipient),
+            $relation->getType()->getDescription()
+        );
         $this->sendMessageToParty($counterpart, $text);
         $this->addHistory(
             $relation,
@@ -172,7 +202,7 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     #[\Override]
-    public function decline(User $actor, UserRelation $relation): bool
+    public function decline(User $actor, Relation $relation): bool
     {
         if (!$relation->isPending() || !$this->canRepresentParty($actor, $relation->getRecipientParty())) {
             return false;
@@ -181,20 +211,24 @@ final class UserRelationManager implements UserRelationManagerInterface
         $this->userRelationRepository->delete($relation);
         $this->sendMessageToParty(
             $relation->getSourceParty(),
-            sprintf('%s hat das Angebot für ein %s abgelehnt', $this->getPartyDescription($relation->getRecipientParty()), $relation->getType()->getDescription())
+            sprintf(
+                '%s hat das Angebot für ein %s abgelehnt',
+                $this->getPartyDescription($relation->getRecipientParty()),
+                $relation->getType()->getDescription()
+            )
         );
 
         return true;
     }
 
     #[\Override]
-    public function suggestPeace(User $actor, UserRelation $relation): bool
+    public function suggestPeace(User $actor, Relation $relation): bool
     {
         if (
             !$relation->isWar()
             || $relation->isPending()
-            || (!$this->canRepresentParty($actor, $relation->getSourceParty())
-                && !$this->canRepresentParty($actor, $relation->getRecipientParty()))
+            || !$this->canRepresentParty($actor, $relation->getSourceParty())
+            && !$this->canRepresentParty($actor, $relation->getRecipientParty())
         ) {
             return false;
         }
@@ -215,19 +249,27 @@ final class UserRelationManager implements UserRelationManagerInterface
         $this->createRelation($source, $recipient, AllianceRelationTypeEnum::PEACE);
         $this->sendMessageToParty(
             $recipient,
-            sprintf('%s hat %s ein Friedensabkommen angeboten', $this->getPartyDescription($source), $this->getPartyDescription($recipient))
+            sprintf(
+                '%s hat %s ein Friedensabkommen angeboten',
+                $this->getPartyDescription($source),
+                $this->getPartyDescription($recipient)
+            )
         );
 
         return true;
     }
 
     #[\Override]
-    public function removeRelationsForAllianceEntry(User $user, Alliance $alliance, bool $isAllianceCreation = false): void
-    {
+    public function removeRelationsForAllianceEntry(
+        User $user,
+        Alliance $alliance,
+        bool $isAllianceCreation = false
+    ): void {
         foreach ($this->userRelationRepository->getByUserAndAlliance($user, null) as $relation) {
             $source = $relation->getSourceParty();
             $recipient = $relation->getRecipientParty();
-            $counterpart = $source instanceof User && $source->getId() === $user->getId() ? $recipient : $source;
+            $counterpart =
+                $source instanceof User && $source->getId() === $user->getId() ? $recipient : $source;
 
             $text = sprintf(
                 'Der Siedler %s %s. Das %s mit %s entfällt.',
@@ -252,7 +294,7 @@ final class UserRelationManager implements UserRelationManagerInterface
         }
 
         return $actor->getAlliance()?->getId() === $party->getId()
-            && $this->canCreateForAlliance($actor, $party);
+        && $this->canCreateForAlliance($actor, $party);
     }
 
     private function canRepresentParty(User $actor, User|Alliance $party): bool
@@ -262,27 +304,43 @@ final class UserRelationManager implements UserRelationManagerInterface
         }
 
         return $actor->getAlliance()?->getId() === $party->getId()
-            && $this->canManageForAlliance($actor, $party);
+        && $this->canManageForAlliance($actor, $party);
     }
 
     private function canCreateForAlliance(User $user, Alliance $alliance): bool
     {
-        return $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS);
+        return $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::CREATE_AGREEMENTS
+        );
     }
 
     private function canManageForAlliance(User $user, Alliance $alliance): bool
     {
-        return $this->canCreateForAlliance($user, $alliance)
-            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            || $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS);
+        return (
+            $this->canCreateForAlliance($user, $alliance)
+            || $this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::DIPLOMATIC
+            )
+            || $this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+            )
+        );
     }
 
     private function hasValidParties(User|Alliance $source, User|Alliance $recipient): bool
     {
         if ($source instanceof User && $recipient instanceof User) {
-            return $source->getId() !== $recipient->getId()
+            return (
+                $source->getId() !== $recipient->getId()
                 && $source->getAlliance() === null
-                && $recipient->getAlliance() === null;
+                && $recipient->getAlliance() === null
+            );
         }
 
         if ($source instanceof Alliance && $recipient instanceof User) {
@@ -296,8 +354,12 @@ final class UserRelationManager implements UserRelationManagerInterface
         return false;
     }
 
-    private function createRelation(User|Alliance $source, User|Alliance $recipient, AllianceRelationTypeEnum $type, int $date = 0): UserRelation
-    {
+    private function createRelation(
+        User|Alliance $source,
+        User|Alliance $recipient,
+        AllianceRelationTypeEnum $type,
+        int $date = 0
+    ): Relation {
         $relation = $this->userRelationRepository->prototype()->setType($type)->setDate($date);
 
         if ($source instanceof User) {
@@ -318,7 +380,7 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     /**
-     * @return list<UserRelation>
+     * @return array<int, Relation>
      */
     private function getRelationsByParties(User|Alliance $source, User|Alliance $recipient): array
     {
@@ -352,13 +414,17 @@ final class UserRelationManager implements UserRelationManagerInterface
         $this->privateMessageSender->send(UserConstants::USER_NOONE, $party->getId(), $text);
     }
 
-    private function getRelationConclusionText(UserRelation $relation): string
+    private function getRelationConclusionText(Relation $relation): string
     {
         $source = $relation->getSourceParty();
         $recipient = $relation->getRecipientParty();
 
         if ($relation->getType() === AllianceRelationTypeEnum::VASSAL) {
-            return sprintf('%s ist nun Vasall von %s', $this->getPartyDescription($recipient), $this->getPartyDescription($source));
+            return sprintf(
+                '%s ist nun Vasall von %s',
+                $this->getPartyDescription($recipient),
+                $this->getPartyDescription($source)
+            );
         }
 
         return sprintf(
@@ -369,7 +435,7 @@ final class UserRelationManager implements UserRelationManagerInterface
         );
     }
 
-    private function addHistory(UserRelation $relation, int $sourceUserId, string $text): void
+    private function addHistory(Relation $relation, int $sourceUserId, string $text): void
     {
         $targetUser = $relation->getRecipientUser() ?? $relation->getSourceUser();
         if ($targetUser === null) {

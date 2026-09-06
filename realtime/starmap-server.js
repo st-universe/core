@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "redis";
 import { WebSocketServer } from "ws";
+import { isSpacecraftStaticallyVisible } from "./starmap-visibility.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -389,24 +390,6 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 	return spacecraft.isCloaked
 		? isPointTachyonCovered(client.coverage, point)
 		: isPointCovered(client.coverage, point);
-}
-
-function isSpacecraftStaticallyVisible(client, spacecraft) {
-	if (!spacecraft) {
-		return false;
-	}
-
-	const relationship = getSpacecraftRelationship(client, spacecraft);
-	if (relationship.isOwn) {
-		return true;
-	}
-
-	const spacecraftAllianceId = spacecraft.allianceId == null ? null : Number(spacecraft.allianceId);
-	if (client.allianceId !== null && spacecraftAllianceId === client.allianceId) {
-		return client.canSeeAllianceShips;
-	}
-
-	return relationship.isFriendly;
 }
 
 function sanitizeSpacecraftForClient(client, spacecraft) {

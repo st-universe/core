@@ -24,28 +24,22 @@
 <div class="divbody">
     <form action="alliance.php" method="post">
         <input type="hidden" name="SHOW_RELATIONS" value="1" />
-        <select name="oid">
-                        <option value="2">testally</option>
-                    </select>
-        <select name="type">
-                        <option value="1">Krieg</option>
-                        <option value="3">Freundschaftabkommen</option>
-                        <option value="4">Bündnis</option>
-                        <option value="5">Handelsabkommen</option>
-                        <option value="6">Vasall</option>
-                    </select>
-        <input type="submit" value="Erstellen" name="B_NEW_RELATION" />
-    </form>
-</div>
-<br />
-<br />
-<div class="divhead">Abkommen mit Siedler erstellen</div>
-<div class="divbody">
-    <form action="alliance.php" method="post">
-        <input type="hidden" name="SHOW_RELATIONS" value="1" />
-        <input type="hidden" name="ura" value="create" />
+        <input id="relation-user-action" type="hidden" name="ura" value="create" disabled />
         <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
-        Siedler-ID <input type="text" style="width: 50px;" name="uid" />
+        <label for="relation-target-type">Abkommen mit</label>
+        <select id="relation-target-type">
+            <option value="alliance">Allianz</option>
+            <option value="user">Siedler</option>
+        </select>
+        <span id="alliance-relation-target">
+            <select id="alliance-relation-target-id" name="oid">
+                        <option value="2">testally</option>
+                        </select>
+        </span>
+        <span id="user-relation-target" style="display: none;">
+            <label for="user-relation-target-id">Siedler-ID</label>
+            <input id="user-relation-target-id" type="text" style="width: 50px;" name="uid" disabled />
+        </span>
         <select name="type">
                         <option value="1">Krieg</option>
                         <option value="3">Freundschaftabkommen</option>
@@ -53,7 +47,7 @@
                         <option value="5">Handelsabkommen</option>
                         <option value="6">Vasall</option>
                     </select>
-        <input type="submit" value="Erstellen" name="B_MANAGE_USER_RELATION" />
+        <input id="relation-create-button" type="submit" value="Erstellen" name="B_NEW_RELATION" />
     </form>
 </div>
 <table class="tcal">

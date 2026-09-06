@@ -20,9 +20,9 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -36,7 +36,7 @@ class UserProfileProviderTest extends StuTestCase
 
     private MockInterface&SpacecraftLogRepositoryInterface $spacecraftLogRepository;
 
-    private MockInterface&UserRelationRepositoryInterface $userRelationRepository;
+    private MockInterface&RelationRepositoryInterface $userRelationRepository;
 
     private MockInterface&ParserWithImageInterface $parserWithImage;
 
@@ -53,7 +53,7 @@ class UserProfileProviderTest extends StuTestCase
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->spacecraftLogRepository = $this->mock(SpacecraftLogRepositoryInterface::class);
-        $this->userRelationRepository = $this->mock(UserRelationRepositoryInterface::class);
+        $this->userRelationRepository = $this->mock(RelationRepositoryInterface::class);
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
         $this->profileVisitorRegistration = $this->mock(ProfileVisitorRegistrationInterface::class);
 
@@ -78,10 +78,7 @@ class UserProfileProviderTest extends StuTestCase
 
         request::setMockVars(['uid' => $playerId]);
 
-        $this->userRepository->shouldReceive('find')
-            ->with($playerId)
-            ->once()
-            ->andReturnNull();
+        $this->userRepository->shouldReceive('find')->with($playerId)->once()->andReturnNull();
 
         $this->subject->setTemplateVariables($game);
     }
@@ -107,134 +104,94 @@ class UserProfileProviderTest extends StuTestCase
 
         request::setMockVars(['uid' => $playerId]);
 
-        $this->userRepository->shouldReceive('find')
-            ->with($playerId)
-            ->once()
-            ->andReturn($player);
+        $this->userRepository->shouldReceive('find')->with($playerId)->once()->andReturn($player);
 
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($visitor);
-        $game->shouldReceive('setTemplateVar')
-            ->with('PROFILE', $player)
-            ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('HAS_TRANSLATION', false)
-            ->once();
-        $game->shouldReceive('setTemplateVar')
+        $game->shouldReceive('getUser')->withNoArgs()->once()->andReturn($visitor);
+        $game->shouldReceive('setTemplateVar')->with('PROFILE', $player)->once();
+        $game->shouldReceive('setTemplateVar')->with('HAS_TRANSLATION', false)->once();
+        $game
+            ->shouldReceive('setTemplateVar')
             ->with(
                 'DESCRIPTION',
                 $parsedDescription
             )
             ->once();
-        $game->shouldReceive('setTemplateVar')
+        $game
+            ->shouldReceive('setTemplateVar')
             ->with('IS_PROFILE_CURRENT_USER', false)
             ->once()
             ->andReturnFalse();
-        $game->shouldReceive('setTemplateVar')
-            ->with('RPG_PLOTS', [$plotMember])
-            ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('CONTACT', $contact)
-            ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('FRIENDS', [$friend])
-            ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('USER_RELATIONS', [])
-            ->once();
-        $game->shouldReceive('setTemplateVar')
+        $game->shouldReceive('setTemplateVar')->with('RPG_PLOTS', [$plotMember])->once();
+        $game->shouldReceive('setTemplateVar')->with('CONTACT', $contact)->once();
+        $game->shouldReceive('setTemplateVar')->with('FRIENDS', [$friend])->once();
+        $game->shouldReceive('setTemplateVar')->with('USER_RELATIONS', [])->once();
+        $game
+            ->shouldReceive('setTemplateVar')
             ->with('CONTACT_LIST_MODES', ContactListModeEnum::cases())
             ->once();
-        $game->shouldReceive('setTemplateVar')
-            ->with('SPACECRAFT_LOGBOOKS', [])
-            ->once();
+        $game->shouldReceive('setTemplateVar')->with('SPACECRAFT_LOGBOOKS', [])->once();
 
-        $visitor->shouldReceive('getId')
-            ->withNoArgs()
-            ->atLeast()->once()
-            ->andReturn($visitorId);
-        $visitor->shouldReceive('getAlliance')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(null);
-        $visitor->shouldReceive('getColonyScans->toArray')
+        $visitor->shouldReceive('getId')->withNoArgs()->atLeast()->once()->andReturn($visitorId);
+        $visitor->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn(null);
+        $visitor
+            ->shouldReceive('getColonyScans->toArray')
             ->withNoArgs()
             ->once()
             ->andReturn([123 => $colonyScan]);
 
-        $player->shouldReceive('getDescription')
-            ->withNoArgs()
-            ->andReturn($description);
-        $player->shouldReceive('getAlliance')
-            ->withNoArgs()
-            ->twice()
-            ->andReturnNull();
-        $player->shouldReceive('getId')
-            ->withNoArgs()
-            ->atLeast()->once()
-            ->andReturn($playerId);
+        $player->shouldReceive('getDescription')->withNoArgs()->andReturn($description);
+        $player->shouldReceive('getAlliance')->withNoArgs()->twice()->andReturnNull();
+        $player->shouldReceive('getId')->withNoArgs()->atLeast()->once()->andReturn($playerId);
 
-        $this->profileVisitorRegistration->shouldReceive('register')
-            ->with($player, $visitor)
-            ->once();
+        $this->profileVisitorRegistration->shouldReceive('register')->with($player, $visitor)->once();
 
-        $this->parserWithImage->shouldReceive('parse')
-            ->with($description)
-            ->once()
-            ->andReturn($bbCodeParser);
+        $this->parserWithImage->shouldReceive('parse')->with($description)->once()->andReturn($bbCodeParser);
 
-        $bbCodeParser->shouldReceive('getAsHTML')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($parsedDescription);
+        $bbCodeParser->shouldReceive('getAsHTML')->withNoArgs()->once()->andReturn($parsedDescription);
 
-        $this->rpgPlotMemberRepository->shouldReceive('getByUser')
+        $this->rpgPlotMemberRepository
+            ->shouldReceive('getByUser')
             ->with($player)
             ->once()
             ->andReturn([$plotMember]);
 
-        $this->contactRepository->shouldReceive('getByUserAndOpponent')
+        $this->contactRepository
+            ->shouldReceive('getByUserAndOpponent')
             ->with($visitorId, $playerId)
             ->once()
             ->andReturn($contact);
 
-        $this->userRepository->shouldReceive('getFriendsByUserAndAlliance')
+        $this->userRepository
+            ->shouldReceive('getFriendsByUserAndAlliance')
             ->with($player, null)
             ->once()
             ->andReturn([$friend]);
 
-        $this->spacecraftLogRepository->shouldReceive('getGroupedLogbooksForProfile')
+        $this->spacecraftLogRepository
+            ->shouldReceive('getGroupedLogbooksForProfile')
             ->with($player, $visitor)
             ->once()
             ->andReturn([]);
 
-        $this->userRelationRepository->shouldReceive('getByUserAndAlliance')
+        $this->userRelationRepository
+            ->shouldReceive('getByUserAndAlliance')
             ->with($player, null)
             ->once()
             ->andReturn([]);
 
-        $game->shouldReceive('addExecuteJS')
-            ->with("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER)
+        $game
+            ->shouldReceive('addExecuteJS')
+            ->with('initTranslations();', JavascriptExecutionTypeEnum::AFTER_RENDER)
             ->once();
 
-        $colonyScan->shouldReceive('getColonyUserId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($playerId);
+        $colonyScan->shouldReceive('getColonyUserId')->withNoArgs()->once()->andReturn($playerId);
 
-        $colonyScan->shouldReceive('getColony')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colony);
+        $colonyScan->shouldReceive('getColony')->withNoArgs()->once()->andReturn($colony);
 
-        $colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyId);
+        $colony->shouldReceive('getId')->withNoArgs()->once()->andReturn($colonyId);
 
-        $game->shouldReceive('setTemplateVar')
+        $game
+            ->shouldReceive('setTemplateVar')
             ->with('COLONYSCANLIST', Mockery::on(function ($arg) use ($colonyScan): bool {
                 return is_array($arg) && count($arg) === 1 && $arg[0] === $colonyScan;
             }))

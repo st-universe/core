@@ -9,14 +9,17 @@ use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 /**
  * Subscribes to events related to diplomatic relations proposals
  */
 final class DiplomaticRelationProposalCreationSubscriber
 {
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(
+        private RelationRepositoryInterface $allianceRelationRepository,
+        private AllianceActionManagerInterface $allianceActionManager
+    ) {}
 
     /**
      * Reacts on war declaration events

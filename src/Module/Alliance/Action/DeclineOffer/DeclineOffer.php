@@ -11,13 +11,17 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class DeclineOffer implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceJobManagerInterface $allianceJobManager, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(
+        private RelationRepositoryInterface $allianceRelationRepository,
+        private AllianceJobManagerInterface $allianceJobManager,
+        private AllianceActionManagerInterface $allianceActionManager
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -31,7 +35,11 @@ final class DeclineOffer implements ActionControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
+        if (!$this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::CREATE_AGREEMENTS
+        )) {
             throw new AccessViolationException();
         }
 
@@ -48,7 +56,7 @@ final class DeclineOffer implements ActionControllerInterface
         $this->allianceRelationRepository->delete($relation);
 
         $text = sprintf(
-            _("%s wurde von der Allianz %s abgelehnt"),
+            _('%s wurde von der Allianz %s abgelehnt'),
             $relation->getType()->getDescription(),
             $alliance->getName()
         );

@@ -11,13 +11,18 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class SuggestPeace implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
-    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private SuggestPeaceRequestInterface $suggestPeaceRequest, private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceActionManagerInterface $allianceActionManager) {}
+    public function __construct(
+        private AllianceJobManagerInterface $allianceJobManager,
+        private SuggestPeaceRequestInterface $suggestPeaceRequest,
+        private RelationRepositoryInterface $allianceRelationRepository,
+        private AllianceActionManagerInterface $allianceActionManager
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -31,11 +36,20 @@ final class SuggestPeace implements ActionControllerInterface
 
         $allianceId = $alliance->getId();
 
-        if ($relation === null || !$this->allianceJobManager->hasUserPermission($game->getUser(), $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)) {
+        if (
+            $relation === null
+            || !$this->allianceJobManager->hasUserPermission(
+                $game->getUser(),
+                $alliance,
+                AllianceJobPermissionEnum::CREATE_AGREEMENTS
+            )
+        ) {
             throw new AccessViolationException();
         }
 
-        $opponentId = $relation->getOpponent()->getId() === $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
+        $opponentId = $relation->getOpponent()->getId() === $allianceId
+            ? $relation->getAlliance()->getId()
+            : $relation->getOpponent()->getId();
 
         $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
             [AllianceRelationTypeEnum::PEACE->value],
@@ -47,7 +61,10 @@ final class SuggestPeace implements ActionControllerInterface
             return;
         }
 
-        if ($relation->getOpponentId() !== $allianceId && $relation->getAlliance()->getId() !== $alliance->getId()) {
+        if (
+            $relation->getOpponentId() !== $allianceId
+            && $relation->getAlliance()->getId() !== $alliance->getId()
+        ) {
             return;
         }
 

@@ -9,7 +9,7 @@ use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\StuTestCase;
@@ -81,7 +81,7 @@ class AllianceUiFactoryTest extends StuTestCase
             AllianceRelationWrapper::class,
             $this->subject->createAllianceRelationWrapper(
                 $this->mock(Alliance::class),
-                $this->mock(AllianceRelation::class)
+                $this->mock(Relation::class)
             )
         );
     }

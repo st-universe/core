@@ -8,7 +8,7 @@ use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
@@ -65,7 +65,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
     #[\Override]
     public function createAllianceRelationWrapper(
         Alliance $alliance,
-        AllianceRelation $allianceRelation
+        Relation $allianceRelation
     ): AllianceRelationWrapper {
         return new AllianceRelationWrapper(
             $alliance,

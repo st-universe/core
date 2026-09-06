@@ -8,14 +8,17 @@ use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 
 /**
  * Renders the relations between alliances
  */
 final class AllianceRelationRenderer implements AllianceRelationRendererInterface
 {
-    public function __construct(private GraphVizFactoryInterface $graphvizFactory, private RelationItemVertexBuilderInterface $relationItemVertexBuilder) {}
+    public function __construct(
+        private GraphVizFactoryInterface $graphvizFactory,
+        private RelationItemVertexBuilderInterface $relationItemVertexBuilder
+    ) {}
 
     #[\Override]
     public function render(
@@ -34,7 +37,6 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
 
         $vertexes = [];
 
-        /** @var AllianceRelation $relation */
         foreach ($relationList as $relation) {
             $this->addAlliance($graph, $relation->getAlliance(), $vertexes);
             $this->addAlliance($graph, $relation->getOpponent(), $vertexes);

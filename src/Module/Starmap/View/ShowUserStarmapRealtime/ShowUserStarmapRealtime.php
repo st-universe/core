@@ -24,10 +24,10 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Throwable;
 
@@ -56,7 +56,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private Parser $bbCodeParser,
         private ConfigInterface $config,
         private AllianceJobManagerInterface $allianceJobManager,
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private ContactRepositoryInterface $contactRepository,
         private MapRepositoryInterface $mapRepository
     ) {}
@@ -71,19 +71,26 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         $layer = $this->layerRepository->find($layerId);
         if (!$layer instanceof Layer) {
             header('HTTP/1.1 404 Not Found');
-            exit;
+            exit();
         }
 
         $user = $game->getUser();
         if (!$this->hasSeen($user, $layer)) {
             header('HTTP/1.1 403 Forbidden');
-            exit;
+            exit();
         }
 
         $alliance = $user->getAlliance();
         $canSeeAllianceShips = $alliance !== null
-            && $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS);
-        $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
+        && $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_SHIPS
+        );
+        $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges(
+            $user->getId(),
+            $layer->getId()
+        );
         $coverage = $this->buildSensorCoverage($layer, $ranges);
         $this->cacheCoverage($user->getId(), $layer->getId(), $coverage);
 
@@ -92,7 +99,13 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             : $this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId());
         $relationContext = $this->getRelationContext($user);
         $spacecrafts = array_values(array_filter(array_map(
-            fn (array $row): ?array => $this->normalizeVisibleSpacecraft($row, $user, $canSeeAllianceShips, $relationContext, $coverage),
+            fn(array $row): ?array => $this->normalizeVisibleSpacecraft(
+                $row,
+                $user,
+                $canSeeAllianceShips,
+                $relationContext,
+                $coverage
+            ),
             $spacecrafts
         )));
 
@@ -117,7 +130,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'spacecrafts' => $spacecrafts
         ], self::JSON_FLAGS);
 
-        exit;
+        exit();
     }
 
     private function getWebSocketUrl(): string
@@ -194,7 +207,10 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $sourceX = (int) $range['x'];
             $sourceY = (int) $range['y'];
             $sensorRange = max(0, (int) $range['sensor_range']);
-            $tachyonRange = $this->getEffectiveTachyonRange($sensorRange, max(0, (int) ($range['tachyon_range'] ?? 0)));
+            $tachyonRange = $this->getEffectiveTachyonRange($sensorRange, max(
+                0,
+                (int) ($range['tachyon_range'] ?? 0)
+            ));
             $maxRange = $sensorRange;
 
             if ($maxRange <= 0) {
@@ -330,7 +346,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $startX = $xs[0];
             $lastX = $startX;
             foreach (array_slice($xs, 1) as $x) {
-                if ($x === $lastX + 1) {
+                if ($x === ($lastX + 1)) {
                     $lastX = $x;
                     continue;
                 }
@@ -391,8 +407,12 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
      * @return array<string, mixed>
      */
-    private function normalizeSpacecraft(array $row, User $user, bool $canSeeAllianceShips, array $relationContext): array
-    {
+    private function normalizeSpacecraft(
+        array $row,
+        User $user,
+        bool $canSeeAllianceShips,
+        array $relationContext
+    ): array {
         $alertState = (int) $row['alert_state'];
         $relationship = $this->getSpacecraftRelationship($row, $user, $canSeeAllianceShips, $relationContext);
         if ((bool) $row['is_cloaked'] && !$relationship['hasDetails']) {
@@ -411,8 +431,12 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'userNameHtml' => $this->parseBbCodeHtml((string) $row['user_name']),
             'allianceId' => $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null,
             'allianceName' => $row['alliance_name'] !== null ? (string) $row['alliance_name'] : null,
-            'allianceNameText' => $row['alliance_name'] !== null ? $this->parseBbCodeText((string) $row['alliance_name']) : null,
-            'allianceNameHtml' => $row['alliance_name'] !== null ? $this->parseBbCodeHtml((string) $row['alliance_name']) : null,
+            'allianceNameText' => $row['alliance_name'] !== null
+                ? $this->parseBbCodeText((string) $row['alliance_name'])
+                : null,
+            'allianceNameHtml' => $row['alliance_name'] !== null
+                ? $this->parseBbCodeHtml((string) $row['alliance_name'])
+                : null,
             'rumpId' => (int) $row['rump_id'],
             'rumpName' => (string) $row['rump_name'],
             'rumpImage' => $this->getRumpImage((int) $row['rump_id'], (bool) $row['is_cloaked']),
@@ -432,7 +456,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             return $spacecraft;
         }
 
-        return $spacecraft + [
+        return $spacecraft
+        + [
             'hull' => (int) $row['hull'],
             'maxHull' => (int) $row['max_hull'],
             'shield' => (int) $row['shield'],
@@ -442,7 +467,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'warpdrive' => (int) $row['warpdrive'],
             'maxWarpdrive' => (int) $row['max_warpdrive'],
             'alertState' => $alertState,
-            'alertStateName' => SpacecraftAlertStateEnum::tryFrom($alertState)?->getDescription() ?? 'Unbekannt'
+            'alertStateName' =>
+                SpacecraftAlertStateEnum::tryFrom($alertState)?->getDescription() ?? 'Unbekannt'
         ];
     }
 
@@ -488,8 +514,11 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
      * @return array<string, mixed>
      */
-    private function getRealtimeTokenClaims(?int $allianceId, bool $canSeeAllianceShips, array $relationContext): array
-    {
+    private function getRealtimeTokenClaims(
+        ?int $allianceId,
+        bool $canSeeAllianceShips,
+        array $relationContext
+    ): array {
         return [
             'allianceId' => $allianceId,
             'canSeeAllianceShips' => $canSeeAllianceShips,
@@ -532,11 +561,15 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                 if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
                     $enemyAllianceIds[$opponentId] = true;
                 }
-                if (in_array($relation->getType(), [
-                    AllianceRelationTypeEnum::FRIENDS,
-                    AllianceRelationTypeEnum::ALLIED,
-                    AllianceRelationTypeEnum::VASSAL
-                ], true)) {
+                if (in_array(
+                    $relation->getType(),
+                    [
+                        AllianceRelationTypeEnum::FRIENDS,
+                        AllianceRelationTypeEnum::ALLIED,
+                        AllianceRelationTypeEnum::VASSAL
+                    ],
+                    true
+                )) {
                     $friendlyAllianceIds[$opponentId] = true;
                 }
             }
@@ -555,29 +588,36 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
      * @return array{isOwn: bool, isFriendly: bool, isEnemy: bool, hasDetails: bool}
      */
-    private function getSpacecraftRelationship(array $row, User $user, bool $canSeeAllianceShips, array $relationContext): array
-    {
+    private function getSpacecraftRelationship(
+        array $row,
+        User $user,
+        bool $canSeeAllianceShips,
+        array $relationContext
+    ): array {
         $ownerId = (int) $row['user_id'];
         $isOwn = $ownerId === $user->getId();
         $ownAllianceId = $user->getAlliance()?->getId();
         $allianceId = $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null;
         $isOwnAlliance = $ownAllianceId !== null && $allianceId === $ownAllianceId;
 
-        $isFriendly = $isOwn
+        $isFriendly =
+            $isOwn
             || $isOwnAlliance
             || isset($relationContext['friendlyUserIds'][$ownerId])
-            || ($allianceId !== null && isset($relationContext['friendlyAllianceIds'][$allianceId]));
-        $isEnemy = !$isFriendly
+            || $allianceId !== null && isset($relationContext['friendlyAllianceIds'][$allianceId]);
+        $isEnemy =
+            !$isFriendly
             && (
                 isset($relationContext['enemyUserIds'][$ownerId])
-                || ($allianceId !== null && isset($relationContext['enemyAllianceIds'][$allianceId]))
+                || $allianceId !== null
+                && isset($relationContext['enemyAllianceIds'][$allianceId])
             );
 
         return [
             'isOwn' => $isOwn,
             'isFriendly' => $isFriendly,
             'isEnemy' => $isEnemy,
-            'hasDetails' => $isOwn || ($canSeeAllianceShips && $isOwnAlliance)
+            'hasDetails' => $isOwn || $canSeeAllianceShips && $isOwnAlliance
         ];
     }
 

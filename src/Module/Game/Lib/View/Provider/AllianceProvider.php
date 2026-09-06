@@ -18,13 +18,13 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class AllianceProvider implements ViewComponentProviderInterface
 {
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceRepositoryInterface $allianceRepository,
         private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
         private AllianceDescriptionRendererInterface $allianceDescriptionRenderer,
@@ -52,7 +52,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $this->setTemplateVariablesForAlliance($alliance, $game);
         }
 
-        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
+        $game->addExecuteJS('initTranslations();', JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     private function setTemplateVariablesForAlliance(Alliance $alliance, GameControllerInterface $game): void
@@ -61,7 +61,11 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $allianceId = $alliance->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
-        $userIsFounder = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER);
+        $userIsFounder = $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::FOUNDER
+        );
         $isInAlliance = $alliance->getId() === $game->getUser()->getAlliance()?->getId();
         $settings = $alliance->getSettings();
 
@@ -133,25 +137,37 @@ final class AllianceProvider implements ViewComponentProviderInterface
             }
         }
 
-        usort($successorJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
-        usort($diplomaticJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
-        usort($otherJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($successorJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($diplomaticJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($otherJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
 
         $leadershipJobs = array_merge($founderJobs, $successorJobs, $diplomaticJobs, $otherJobs);
 
         $game->setTemplateVar('ALLIANCE_LEADERSHIP_JOBS', $leadershipJobs);
 
-        $founderDescription = $settings->filter(
-            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
-        )->first();
+        $founderDescription = $settings
+            ->filter(
+                fn(AllianceSettings $setting): bool => (
+                    $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
+                )
+            )
+            ->first();
 
-        $successorDescription = $settings->filter(
-            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
-        )->first();
+        $successorDescription = $settings
+            ->filter(
+                fn(AllianceSettings $setting): bool => (
+                    $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
+                )
+            )
+            ->first();
 
-        $diplomatDescription = $settings->filter(
-            fn(AllianceSettings $setting): bool => $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
-        )->first();
+        $diplomatDescription = $settings
+            ->filter(
+                fn(AllianceSettings $setting): bool => (
+                    $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
+                )
+            )
+            ->first();
 
         $game->setTemplateVar(
             'FOUNDER_DESCRIPTION',
@@ -180,14 +196,18 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
+                    $alliance
+                ),
                 $this->allianceRepository->findByApplicationState(true)
             )
         );
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
+                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
+                    $alliance
+                ),
                 $this->allianceRepository->findByApplicationState(false)
             )
         );

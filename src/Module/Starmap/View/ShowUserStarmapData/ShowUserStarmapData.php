@@ -12,20 +12,20 @@ use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
-use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
@@ -50,7 +50,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
         private StarmapUiFactoryInterface $starmapUiFactory,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private AllianceJobManagerInterface $allianceJobManager,
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private ContactRepositoryInterface $contactRepository,
         private StuConfigInterface $stuConfig,
         private Parser $bbCodeParser
@@ -66,20 +66,28 @@ final class ShowUserStarmapData implements ViewControllerInterface
         $layer = $this->layerRepository->find($layerId);
         if (!$layer instanceof Layer) {
             header('HTTP/1.1 404 Not Found');
-            exit;
+            exit();
         }
 
         $user = $game->getUser();
         if (!$this->hasSeen($user, $layer)) {
             header('HTTP/1.1 403 Forbidden');
-            exit;
+            exit();
         }
 
         $visibility = $this->getVisibility($user, $layer);
-        $fields = $this->mapRepository->getUserStarmapFields($user->getId(), $layer->getId(), $visibility['full']);
+        $fields = $this->mapRepository->getUserStarmapFields(
+            $user->getId(),
+            $layer->getId(),
+            $visibility['full']
+        );
         $alliance = $user->getAlliance();
         $canSeeAllianceShips = $alliance !== null
-            && $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::VIEW_SHIPS);
+        && $this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::VIEW_SHIPS
+        );
         $spacecrafts = $this->spacecraftRepository->getUserStarmapSpacecrafts(
             $user->getId(),
             $layer->getId(),
@@ -107,16 +115,21 @@ final class ShowUserStarmapData implements ViewControllerInterface
                 'height' => $layer->getHeight()
             ],
             'fields' => array_map(
-                fn (ExploreableStarMapInterface $field): array => $this->normalizeField($field, $layer),
+                fn(ExploreableStarMapInterface $field): array => $this->normalizeField($field, $layer),
                 $fields
             ),
             'spacecrafts' => array_map(
-                fn (array $row): array => $this->normalizeSpacecraft($row, $user, $canSeeAllianceShips, $relationContext),
+                fn(array $row): array => $this->normalizeSpacecraft(
+                    $row,
+                    $user,
+                    $canSeeAllianceShips,
+                    $relationContext
+                ),
                 $spacecrafts
             )
         ], self::JSON_FLAGS);
 
-        exit;
+        exit();
     }
 
     /**
@@ -193,7 +206,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'territoryOwnerHtml' => $territoryOwner['html'] ?? null,
             'hasEffects' => $item->hasEffects(),
             'effects' => array_map(
-                static fn (FieldTypeEffectEnum $effect): string => $effect->value,
+                static fn(FieldTypeEffectEnum $effect): string => $effect->value,
                 $field->getEffects()
             ),
             'isImpassable' => $item->isImpassable()
@@ -257,7 +270,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
 
         return implode("\n", array_filter(
             explode("\n", $tooltip),
-            fn (string $line): bool => trim($line) !== $lineToRemove
+            fn(string $line): bool => trim($line) !== $lineToRemove
         ));
     }
 
@@ -266,8 +279,12 @@ final class ShowUserStarmapData implements ViewControllerInterface
      * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
      * @return array<string, mixed>
      */
-    private function normalizeSpacecraft(array $row, User $user, bool $canSeeAllianceShips, array $relationContext): array
-    {
+    private function normalizeSpacecraft(
+        array $row,
+        User $user,
+        bool $canSeeAllianceShips,
+        array $relationContext
+    ): array {
         $alertState = (int) $row['alert_state'];
         $relationship = $this->getSpacecraftRelationship($row, $user, $canSeeAllianceShips, $relationContext);
 
@@ -283,8 +300,12 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'userNameHtml' => $this->parseBbCodeHtml((string) $row['user_name']),
             'allianceId' => $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null,
             'allianceName' => $row['alliance_name'] !== null ? (string) $row['alliance_name'] : null,
-            'allianceNameText' => $row['alliance_name'] !== null ? $this->parseBbCodeText((string) $row['alliance_name']) : null,
-            'allianceNameHtml' => $row['alliance_name'] !== null ? $this->parseBbCodeHtml((string) $row['alliance_name']) : null,
+            'allianceNameText' => $row['alliance_name'] !== null
+                ? $this->parseBbCodeText((string) $row['alliance_name'])
+                : null,
+            'allianceNameHtml' => $row['alliance_name'] !== null
+                ? $this->parseBbCodeHtml((string) $row['alliance_name'])
+                : null,
             'rumpId' => (int) $row['rump_id'],
             'rumpName' => (string) $row['rump_name'],
             'rumpImage' => $this->getRumpImage((int) $row['rump_id'], (bool) $row['is_cloaked']),
@@ -303,7 +324,8 @@ final class ShowUserStarmapData implements ViewControllerInterface
             return $spacecraft;
         }
 
-        return $spacecraft + [
+        return $spacecraft
+        + [
             'hull' => (int) $row['hull'],
             'maxHull' => (int) $row['max_hull'],
             'shield' => (int) $row['shield'],
@@ -349,11 +371,15 @@ final class ShowUserStarmapData implements ViewControllerInterface
                 if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
                     $enemyAllianceIds[$opponentId] = true;
                 }
-                if (in_array($relation->getType(), [
-                    AllianceRelationTypeEnum::FRIENDS,
-                    AllianceRelationTypeEnum::ALLIED,
-                    AllianceRelationTypeEnum::VASSAL
-                ], true)) {
+                if (in_array(
+                    $relation->getType(),
+                    [
+                        AllianceRelationTypeEnum::FRIENDS,
+                        AllianceRelationTypeEnum::ALLIED,
+                        AllianceRelationTypeEnum::VASSAL
+                    ],
+                    true
+                )) {
                     $friendlyAllianceIds[$opponentId] = true;
                 }
             }
@@ -372,29 +398,36 @@ final class ShowUserStarmapData implements ViewControllerInterface
      * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
      * @return array{isOwn: bool, isFriendly: bool, isEnemy: bool, hasDetails: bool}
      */
-    private function getSpacecraftRelationship(array $row, User $user, bool $canSeeAllianceShips, array $relationContext): array
-    {
+    private function getSpacecraftRelationship(
+        array $row,
+        User $user,
+        bool $canSeeAllianceShips,
+        array $relationContext
+    ): array {
         $ownerId = (int) $row['user_id'];
         $isOwn = $ownerId === $user->getId();
         $ownAllianceId = $user->getAlliance()?->getId();
         $allianceId = $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null;
         $isOwnAlliance = $ownAllianceId !== null && $allianceId === $ownAllianceId;
 
-        $isFriendly = $isOwn
+        $isFriendly =
+            $isOwn
             || $isOwnAlliance
             || isset($relationContext['friendlyUserIds'][$ownerId])
-            || ($allianceId !== null && isset($relationContext['friendlyAllianceIds'][$allianceId]));
-        $isEnemy = !$isFriendly
+            || $allianceId !== null && isset($relationContext['friendlyAllianceIds'][$allianceId]);
+        $isEnemy =
+            !$isFriendly
             && (
                 isset($relationContext['enemyUserIds'][$ownerId])
-                || ($allianceId !== null && isset($relationContext['enemyAllianceIds'][$allianceId]))
+                || $allianceId !== null
+                && isset($relationContext['enemyAllianceIds'][$allianceId])
             );
 
         return [
             'isOwn' => $isOwn,
             'isFriendly' => $isFriendly,
             'isEnemy' => $isEnemy,
-            'hasDetails' => $isOwn || ($canSeeAllianceShips && $isOwnAlliance)
+            'hasDetails' => $isOwn || $canSeeAllianceShips && $isOwnAlliance
         ];
     }
 
