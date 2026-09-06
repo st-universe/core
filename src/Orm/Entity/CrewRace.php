@@ -48,6 +48,12 @@ class CrewRace
     #[Column(name: 'accepted_user_id', type: 'integer', nullable: true)]
     private ?int $accepted_user_id = null;
 
+    #[Column(type: 'text', nullable: true)]
+    private ?string $rejection_reason = null;
+
+    #[Column(type: 'integer', options: ['default' => 0])]
+    private int $graphics_version = 0;
+
     #[Column(type: 'boolean', options: ['default' => true])]
     private bool $civil = true;
 
@@ -171,6 +177,23 @@ class CrewRace
         return $this;
     }
 
+    public function getRejectionReason(): ?string
+    {
+        return $this->rejection_reason;
+    }
+
+    public function setRejectionReason(?string $reason): CrewRace
+    {
+        $this->rejection_reason = $reason;
+
+        return $this;
+    }
+
+    public function incrementGraphicsVersion(): void
+    {
+        $this->graphics_version++;
+    }
+
     public function isCivil(): bool
     {
         return $this->civil;
@@ -197,7 +220,8 @@ class CrewRace
     {
         $basePath = $this->isCustom() ? '/avatare/user/crew' : '/assets/crew';
 
-        return sprintf('%s/%s/%s/1_%d.png', $basePath, $this->define, $gender, $imageType);
+        return sprintf('%s/%s/%s/1_%d.png', $basePath, $this->define, $gender, $imageType)
+            . ($this->graphics_version > 0 ? '?v=' . $this->graphics_version : '');
     }
 
     public function getStatus(): string

@@ -36,12 +36,29 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
         $game->setTemplateVar('OWN_FACTION_ID', $ownFactionId);
         $game->setTemplateVar('CAN_CREATE_CREW_RACE', $game->isAdmin() || count($ownCrewRaces) < 3);
         $game->setTemplateVar('CREW_RACE_CREATION_REMAINING', $game->isAdmin() ? null : max(0, 3 - count($ownCrewRaces)));
-        $formName = request::postString('crew_race_name') ?: '';
+        $editingRace = null;
+        $editingId = request::indInt('crew_race_id');
+        foreach ($ownCrewRaces as $crewRace) {
+            if ($crewRace->getId() === $editingId && $crewRace->isRejected()) {
+                $editingRace = $crewRace;
+                break;
+            }
+        }
+        $game->setTemplateVar('EDIT_CREW_RACE', $editingRace);
+        $submitted = (request::postString('B_CREATE_CREW_RACE') !== false
+            || request::postString('B_RESUBMIT_CREW_RACE') !== false)
+            && ($editingId === 0 || $editingRace !== null);
+        $formName = $submitted ? (string)request::postString('crew_race_name') : ($editingRace?->getDescription() ?? '');
         $game->setTemplateVar('FORM_CREW_RACE_NAME', $formName);
-        $game->setTemplateVar('FORM_CREW_RACE_DEFINE', request::postString('crew_race_define') ?: CrewRaceInput::normalizeDefine($formName));
-        $game->setTemplateVar('FORM_CREW_RACE_MALE_RATIO', request::postString('crew_race_male_ratio') ?: '50');
-        $game->setTemplateVar('FORM_CREW_RACE_CHANCE', request::postString('crew_race_chance') ?: '25');
-        $game->setTemplateVar('FORM_CREW_RACE_SHARED', request::postString('crew_race_shared') === '1');
-        $game->setTemplateVar('FORM_CREW_RACE_FACTION_IDS', array_map('intval', request::postArray('crew_race_factions')));
+        $game->setTemplateVar('FORM_CREW_RACE_DEFINE', $submitted
+            ? (string)request::postString('crew_race_define')
+            : ($editingRace?->getGfxPath() ?? CrewRaceInput::normalizeDefine($formName)));
+        $game->setTemplateVar('FORM_CREW_RACE_MALE_RATIO', $submitted ? request::postString('crew_race_male_ratio') : ($editingRace?->getMaleRatio() ?? 50));
+        $game->setTemplateVar('FORM_CREW_RACE_CHANCE', $submitted ? request::postString('crew_race_chance') : ($editingRace?->getChance() ?? 25));
+        $game->setTemplateVar('FORM_CREW_RACE_SHARED', $submitted ? request::postString('crew_race_shared') === '1' : ($editingRace?->isShared() ?? false));
+        $game->setTemplateVar('FORM_CREW_RACE_CIVIL', $submitted ? request::postString('crew_race_civil') === '1' : ($editingRace?->isCivil() ?? true));
+        $game->setTemplateVar('FORM_CREW_RACE_FACTION_IDS', $submitted
+            ? array_map('intval', request::postArray('crew_race_factions'))
+            : ($editingRace?->getFactionIds() ?? []));
     }
 }

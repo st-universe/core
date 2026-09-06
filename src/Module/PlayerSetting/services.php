@@ -27,6 +27,7 @@ use Stu\Module\PlayerSetting\Action\CreateTutorials\CreateTutorials;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
 use Stu\Module\PlayerSetting\Action\DeleteTutorials\DeleteTutorials;
 use Stu\Module\PlayerSetting\Action\CreateCrewRace\CreateCrewRace;
+use Stu\Module\PlayerSetting\Action\ResubmitCrewRace\ResubmitCrewRace;
 use Stu\Module\PlayerSetting\Action\UpdateCrewRaceDistribution\UpdateCrewRaceDistribution;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
@@ -54,6 +55,7 @@ return [
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),
         DeleteTutorials::ACTION_IDENTIFIER => autowire(DeleteTutorials::class),
         CreateCrewRace::ACTION_IDENTIFIER => autowire(CreateCrewRace::class),
+        ResubmitCrewRace::ACTION_IDENTIFIER => autowire(ResubmitCrewRace::class),
         UpdateCrewRaceDistribution::ACTION_IDENTIFIER => autowire(UpdateCrewRaceDistribution::class),
     ],
     'OPTIONS_VIEWS' => [
