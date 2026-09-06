@@ -736,6 +736,68 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ->getResult();
     }
 
+    #[\Override]
+    public function getStarmapRealtimeSharedSpacecrafts(
+        int $layerId,
+        array $userIds,
+        array $allianceIds
+    ): array {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('type', 'type', 'string');
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('user_name', 'user_name', 'string');
+        $rsm->addScalarResult('alliance_id', 'alliance_id', 'integer');
+        $rsm->addScalarResult('alliance_name', 'alliance_name', 'string');
+        $rsm->addScalarResult('rump_id', 'rump_id', 'integer');
+        $rsm->addScalarResult('rump_name', 'rump_name', 'string');
+        $rsm->addScalarResult('x', 'x', 'integer');
+        $rsm->addScalarResult('y', 'y', 'integer');
+        $rsm->addScalarResult('in_system', 'in_system', 'boolean');
+        $rsm->addScalarResult('system_name', 'system_name', 'string');
+        $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        $rsm->addScalarResult('hull', 'hull', 'integer');
+        $rsm->addScalarResult('max_hull', 'max_hull', 'integer');
+        $rsm->addScalarResult('shield', 'shield', 'integer');
+        $rsm->addScalarResult('max_shield', 'max_shield', 'integer');
+        $rsm->addScalarResult('eps', 'eps', 'integer');
+        $rsm->addScalarResult('max_eps', 'max_eps', 'integer');
+        $rsm->addScalarResult('warpdrive', 'warpdrive', 'integer');
+        $rsm->addScalarResult('max_warpdrive', 'max_warpdrive', 'integer');
+        $rsm->addScalarResult('alert_state', 'alert_state', 'integer');
+
+        return $this
+            ->getEntityManager()
+            ->createNativeQuery(
+                sprintf(
+                    'SELECT shared_spacecrafts.*
+                    FROM (%s) shared_spacecrafts
+                    WHERE shared_spacecrafts.user_id IN (:userIds)
+                    OR shared_spacecrafts.alliance_id IN (:allianceIds)
+                    ORDER BY shared_spacecrafts.id ASC',
+                    $this->getRealtimeContactPositionSql()
+                ),
+                $rsm
+            )
+            ->setParameters(
+                $this->getRealtimeSensorParameters(0, $layerId)
+                + [
+                    'userIds' => $userIds === [] ? [0] : $userIds,
+                    'allianceIds' => $allianceIds === [] ? [0] : $allianceIds,
+                    'shipType' => SpacecraftTypeEnum::SHIP->value,
+                    'contactStationType' => SpacecraftTypeEnum::STATION->value,
+                    'cloakType' => SpacecraftSystemTypeEnum::CLOAK->value,
+                    'cloakMode' => SpacecraftSystemModeEnum::MODE_ON->value,
+                    'epsType' => SpacecraftSystemTypeEnum::EPS->value,
+                    'warpdriveType' => SpacecraftSystemTypeEnum::WARPDRIVE->value,
+                    'computerType' => SpacecraftSystemTypeEnum::COMPUTER->value,
+                    'rpgModuleType' => SpacecraftSystemTypeEnum::RPG_MODULE->value
+                ]
+            )
+            ->getResult();
+    }
+
     private function getRealtimeSensorSourceSql(): string
     {
         return 'SELECT src.id as source_id,

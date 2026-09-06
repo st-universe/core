@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowContactList;
 
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -61,5 +62,7 @@ final class ShowContactList implements ViewControllerInterface
             AllianceRelationTypeEnum::TRADE,
             AllianceRelationTypeEnum::VASSAL
         ]);
+        $game->setTemplateVar('RELATION_PERMISSIONS', RelationPermissionEnum::cases());
+        $game->setTemplateVar('LIVE_MAP_PERMISSION', RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS);
     }
 }

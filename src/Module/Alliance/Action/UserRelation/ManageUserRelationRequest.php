@@ -33,4 +33,10 @@ final class ManageUserRelationRequest implements ManageUserRelationRequestInterf
     {
         return $this->parameter('type')->int()->defaultsTo(0);
     }
+
+    #[\Override]
+    public function getPermissions(): int
+    {
+        return $this->parameter('relation_permissions')->int()->defaultsTo(0);
+    }
 }

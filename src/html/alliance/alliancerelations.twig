@@ -22,23 +22,33 @@
             <label for="user-relation-target-id">Siedler-ID</label>
             <input id="user-relation-target-id" type="text" style="width: 50px;" name="uid" disabled />
         </span>
-        <select name="type">
+        <select id="alliance-relation-type" name="type" data-relation-permission-selector="alliance-relation-permissions">
             {% for type in POSSIBLE_RELATION_TYPES %}
             <option value="{{ type.value }}">{{ type.getDescription }}</option>
             {% endfor %}
         </select>
+        <input id="alliance-relation-permissions" type="hidden" name="relation_permissions" value="0" />
+        <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions" style="display: none;">
+            {% for permission in RELATION_PERMISSIONS %}
+            <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}" style="display: none;">
+                <input type="checkbox" value="{{ permission.value }}" data-relation-permission />
+                {{ permission.getDescription }}
+            </label>
+            {% endfor %}
+        </span>
         <input id="relation-create-button" type="submit" value="Erstellen" name="B_NEW_RELATION" />
     </form>
 </div>
 {% endif %}
 <table class="tcal">
     <tr>
-        <th colspan="5">Beziehungen</th>
+        <th colspan="6">Beziehungen</th>
     </tr>
     <tr>
         <td class="darkbg">Allianz</td>
         <td class="darkbg">Abkommen</td>
         <td class="darkbg">Zeitpunkt</td>
+        <td class="darkbg">Rechte</td>
         <td class="darkbg">Aktionen</td>
         <td class="darkbg">Vertragswerk</td>
     </tr>
@@ -66,12 +76,23 @@
                 {% endif %}
             </td>
             <td>
+                {% if not relation.hasPermissions %}
+                Keine Rechte
+                {% else %}
+                {% for permission in RELATION_PERMISSIONS %}
+                {% if relation.hasPermission(permission) %}{{ permission.getDescription }}<br />{% endif %}
+                {% endfor %}
+                {% endif %}
+            </td>
+            <td>
                 {% if relation.isPending %}
                 {% if data.offerIsSend %}
                 Wird angeboten
                 {% else %}
                 Wurde angeboten
                 {% endif %}
+                {% elseif relation.hasPendingPermissionChanges %}
+                Rechteänderung ausstehend
                 {% else %}
                 {% if hasAlliancePermission(4) %}
                 {% if relation.isWar %}
@@ -79,12 +100,22 @@
                     href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden
                     vorschlagen</a>
                 {% else %}
-                <select name="type">
+                <select id="alliance-relation-type-{{ relation.getId }}" name="type" data-relation-permission-selector="alliance-relation-permissions-{{ relation.getId }}">
+                    <option value="{{ relation.getType.value }}">{{ relation.getType.getDescription }}</option>
                     {% for rels in relation.getType.getPossibleTypes %}
                     <option value="{{ rels.value }}">{{ rels.name }}</option>
                     {% endfor %}
                 </select>
-                <input type="submit" value="Anbieten" name="B_NEW_RELATION" />
+                <input id="alliance-relation-permissions-{{ relation.getId }}" type="hidden" name="relation_permissions" value="0" />
+                <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions-{{ relation.getId }}">
+                    {% for permission in RELATION_PERMISSIONS %}
+                    <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}">
+                        <input type="checkbox" value="{{ permission.value }}" data-relation-permission {% if relation.hasPermission(permission) %}checked="checked"{% endif %} />
+                        {{ permission.getDescription }}
+                    </label>
+                    {% endfor %}
+                </span>
+                <input type="submit" value="Änderung anbieten" name="B_NEW_RELATION" />
                 {% endif %}
                 {% endif %}
                 {% endif %}
@@ -111,6 +142,13 @@
                 <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
                     class="linkbutton">Ablehnen</a>
                 {% endif %}
+                {% elseif relation.hasPendingPermissionChanges %}
+                {% if data.permissionChangeIsOfferedByCurrentParty %}
+                <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung zurückziehen</a>
+                {% else %}
+                <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung annehmen</a>
+                <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung ablehnen</a>
+                {% endif %}
                 {% else %}
                 {% if relation.hasText %}
                 <a href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});"
@@ -132,17 +170,18 @@
 <br />
 <table class="tcal">
     <tr>
-        <th colspan="4">Abkommen mit Siedlern</th>
+        <th colspan="5">Abkommen mit Siedlern</th>
     </tr>
     <tr>
         <td class="darkbg">Siedler</td>
         <td class="darkbg">Abkommen</td>
         <td class="darkbg">Zeitpunkt</td>
+        <td class="darkbg">Rechte</td>
         <td class="darkbg">Aktionen</td>
     </tr>
     {% if not USER_RELATIONS %}
     <tr>
-        <td colspan="4">Keine Abkommen vorhanden</td>
+        <td colspan="5">Keine Abkommen vorhanden</td>
     </tr>
     {% else %}
     {% for relation in USER_RELATIONS %}
@@ -150,6 +189,15 @@
         <td>{{ relation.getCounterpartName(USER_RELATION_ACTOR)|bbcode }}</td>
         <td>{{ relation.getType.getDescription }}</td>
         <td>{% if not relation.isPending %}{{ relation.getDate|stuDateTime }}{% endif %}</td>
+        <td>
+            {% if not relation.hasPermissions %}
+            Keine Rechte
+            {% else %}
+            {% for permission in RELATION_PERMISSIONS %}
+            {% if relation.hasPermission(permission) %}{{ permission.getDescription }}<br />{% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
         <td>
             {% if relation.isPending %}
                 {% if relation.isSourceParty(USER_RELATION_ACTOR) and CAN_MANAGE_USER_RELATIONS %}
@@ -160,11 +208,38 @@
                 {% else %}
                 Keine Aktionen verfügbar
                 {% endif %}
+            {% elseif relation.hasPendingPermissionChanges %}
+                {% if relation.isPermissionChangeOfferedBy(USER_RELATION_ACTOR) and CAN_MANAGE_USER_RELATIONS %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=cancel_permissions&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Rechteänderung zurückziehen</a>
+                {% elseif CAN_MANAGE_USER_RELATIONS %}
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=accept_permissions&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Rechteänderung annehmen</a>
+                <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=decline_permissions&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Rechteänderung ablehnen</a>
+                {% endif %}
             {% elseif CAN_MANAGE_USER_RELATIONS %}
                 {% if relation.isWar %}
                 <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=peace&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden vorschlagen</a>
                 {% else %}
                 <a class="linkbutton" href="alliance.php?SHOW_RELATIONS=1&B_MANAGE_USER_RELATION=1&ura=cancel&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Vertrag lösen</a>
+                {% if hasAlliancePermission(4) %}
+                <form method="post" action="alliance.php" data-static-relation-permission-form="alliance-user-relation-permissions-{{ relation.getId }}">
+                    <input type="hidden" name="SHOW_RELATIONS" value="1" />
+                    <input type="hidden" name="ura" value="update" />
+                    <input type="hidden" name="ur" value="{{ relation.getId }}" />
+                    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                    <input id="alliance-user-relation-permissions-{{ relation.getId }}" type="hidden" name="relation_permissions" value="0" />
+                    <span class="crew-management-filters">
+                        {% for permission in RELATION_PERMISSIONS %}
+                        {% if permission.isAvailableFor(relation.getType) %}
+                        <label>
+                            <input type="checkbox" value="{{ permission.value }}" data-relation-permission {% if relation.hasPermission(permission) %}checked="checked"{% endif %} />
+                            {{ permission.getDescription }}
+                        </label>
+                        {% endif %}
+                        {% endfor %}
+                    </span>
+                    <input type="submit" class="button" value="Rechte ändern" name="B_MANAGE_USER_RELATION" />
+                </form>
+                {% endif %}
                 {% endif %}
             {% else %}
             Keine Aktionen verfügbar

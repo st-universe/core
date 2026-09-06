@@ -547,9 +547,12 @@ var isUpdateInProgress = false; function switchInnerContent(view, title, params,
 			if (typeof initTooltips === 'function') {
 				initTooltips();
 			}
-			if (typeof initializeRelationTargetSelection === 'function') {
-				initializeRelationTargetSelection();
-			}
+		if (typeof initializeRelationTargetSelection === 'function') {
+			initializeRelationTargetSelection();
+		}
+		if (typeof initializeRelationPermissionSelection === 'function') {
+			initializeRelationPermissionSelection();
+		}
 
 		},
 		method: "get",

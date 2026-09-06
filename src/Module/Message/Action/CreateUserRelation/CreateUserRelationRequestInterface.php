@@ -11,4 +11,6 @@ interface CreateUserRelationRequestInterface
     public function getTargetType(): int;
 
     public function getRelationType(): int;
+
+    public function getPermissions(): int;
 }

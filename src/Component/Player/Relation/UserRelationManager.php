@@ -16,12 +16,14 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class UserRelationManager implements UserRelationManagerInterface
 {
     public function __construct(
         private readonly RelationRepositoryInterface $userRelationRepository,
+        private readonly RelationPermissionRepositoryInterface $relationPermissionRepository,
         private readonly AllianceJobManagerInterface $allianceJobManager,
         private readonly AllianceActionManagerInterface $allianceActionManager,
         private readonly PrivateMessageSenderInterface $privateMessageSender,
@@ -56,7 +58,8 @@ final class UserRelationManager implements UserRelationManagerInterface
         User $actor,
         User|Alliance $source,
         User|Alliance $recipient,
-        AllianceRelationTypeEnum $type
+        AllianceRelationTypeEnum $type,
+        int $permissions = 0
     ): ?Relation {
         if (
             !$this->canCreateForParty($actor, $source)
@@ -68,7 +71,13 @@ final class UserRelationManager implements UserRelationManagerInterface
 
         $relations = $this->getRelationsByParties($source, $recipient);
         foreach ($relations as $relation) {
-            if ($relation->getType() === $type) {
+            if (
+                $relation->getType() === $type
+                && (
+                    $relation->isPending()
+                    || $this->relationPermissionRepository->hasSamePermissions($relation, $permissions)
+                )
+            ) {
                 return null;
             }
         }
@@ -78,7 +87,7 @@ final class UserRelationManager implements UserRelationManagerInterface
                 $this->userRelationRepository->delete($relation);
             }
 
-            $relation = $this->createRelation($source, $recipient, $type, time());
+            $relation = $this->createRelation($source, $recipient, $type, time(), $permissions);
             $this->sendMessageToParty(
                 $recipient,
                 sprintf(
@@ -107,7 +116,7 @@ final class UserRelationManager implements UserRelationManagerInterface
             return null;
         }
 
-        $relation = $this->createRelation($source, $recipient, $type);
+        $relation = $this->createRelation($source, $recipient, $type, 0, $permissions);
         $this->sendMessageToParty(
             $recipient,
             sprintf(
@@ -145,6 +154,124 @@ final class UserRelationManager implements UserRelationManagerInterface
         $this->addHistory($relation, $actor->getId(), $text);
 
         return true;
+    }
+
+    #[\Override]
+    public function proposePermissionChange(User $actor, Relation $relation, int $permissions): bool
+    {
+        if ($relation->isPending() || $relation->isWar() || $relation->hasPendingPermissionChanges()) {
+            return false;
+        }
+
+        $source = $relation->getSourceParty();
+        $recipient = $relation->getRecipientParty();
+        $offeredBySource = $this->canRepresentParty($actor, $source);
+        if (!$offeredBySource && !$this->canRepresentParty($actor, $recipient)) {
+            return false;
+        }
+
+        if (!$this->relationPermissionRepository->proposeForRelation(
+            $relation,
+            $permissions,
+            $offeredBySource
+        )) {
+            return false;
+        }
+
+        $this->sendMessageToParty(
+            $offeredBySource ? $recipient : $source,
+            sprintf(
+                '%s hat eine Rechteänderung für das %s angeboten',
+                $this->getPartyDescription($offeredBySource ? $source : $recipient),
+                $relation->getType()->getDescription()
+            )
+        );
+
+        return true;
+    }
+
+    #[\Override]
+    public function acceptPermissionChange(User $actor, Relation $relation): bool
+    {
+        if (
+            $relation->isPending()
+            || !$relation->hasPendingPermissionChanges()
+            || $relation->isPermissionChangeOfferedBy($actor)
+            || !$this->canRepresentParty(
+                $actor,
+                $relation->isSourceParty($actor)
+                    ? $relation->getSourceParty()
+                    : $relation->getRecipientParty()
+            )
+        ) {
+            return false;
+        }
+
+        if (!$this->relationPermissionRepository->acceptPendingForRelation($relation)) {
+            return false;
+        }
+
+        $this->sendMessageToParty(
+            $relation->isSourceParty($actor) ? $relation->getRecipientParty() : $relation->getSourceParty(),
+            sprintf(
+                '%s hat die Rechteänderung für das %s angenommen',
+                $this->getPartyDescription(
+                    $relation->isSourceParty($actor)
+                        ? $relation->getSourceParty()
+                        : $relation->getRecipientParty()
+                ),
+                $relation->getType()->getDescription()
+            )
+        );
+
+        return true;
+    }
+
+    #[\Override]
+    public function declinePermissionChange(User $actor, Relation $relation): bool
+    {
+        if (
+            $relation->isPending()
+            || !$relation->hasPendingPermissionChanges()
+            || $relation->isPermissionChangeOfferedBy($actor)
+            || !$this->canRepresentRelationParty($actor, $relation)
+        ) {
+            return false;
+        }
+
+        if (!$this->relationPermissionRepository->discardPendingForRelation($relation)) {
+            return false;
+        }
+
+        $this->sendMessageToParty(
+            $relation->isSourceParty($actor) ? $relation->getRecipientParty() : $relation->getSourceParty(),
+            sprintf(
+                '%s hat die Rechteänderung für das %s abgelehnt',
+                $this->getPartyDescription(
+                    $relation->isSourceParty($actor)
+                        ? $relation->getSourceParty()
+                        : $relation->getRecipientParty()
+                ),
+                $relation->getType()->getDescription()
+            )
+        );
+
+        return true;
+    }
+
+    #[\Override]
+    public function cancelPermissionChange(User $actor, Relation $relation): bool
+    {
+        if (
+            $relation->isPending()
+            || !$relation->hasPendingPermissionChanges()
+            || !$relation->isPermissionChangeOfferedBy($actor)
+            || !$this->canRepresentRelationParty($actor, $relation)
+        ) {
+            return false;
+        }
+
+        return $this->relationPermissionRepository->discardPendingForRelation($relation);
     }
 
     #[\Override]
@@ -287,6 +414,14 @@ final class UserRelationManager implements UserRelationManagerInterface
         }
     }
 
+    private function canRepresentRelationParty(User $actor, Relation $relation): bool
+    {
+        return (
+            $this->canRepresentParty($actor, $relation->getSourceParty())
+            || $this->canRepresentParty($actor, $relation->getRecipientParty())
+        );
+    }
+
     private function canCreateForParty(User $actor, User|Alliance $party): bool
     {
         if ($party instanceof User) {
@@ -358,7 +493,8 @@ final class UserRelationManager implements UserRelationManagerInterface
         User|Alliance $source,
         User|Alliance $recipient,
         AllianceRelationTypeEnum $type,
-        int $date = 0
+        int $date = 0,
+        int $permissions = 0
     ): Relation {
         $relation = $this->userRelationRepository->prototype()->setType($type)->setDate($date);
 
@@ -375,6 +511,7 @@ final class UserRelationManager implements UserRelationManagerInterface
         }
 
         $this->userRelationRepository->save($relation);
+        $this->relationPermissionRepository->replaceForRelation($relation, $permissions, $type);
 
         return $relation;
     }

@@ -19,10 +19,19 @@ interface UserRelationManagerInterface
         User $actor,
         User|Alliance $source,
         User|Alliance $recipient,
-        AllianceRelationTypeEnum $type
+        AllianceRelationTypeEnum $type,
+        int $permissions = 0
     ): ?Relation;
 
     public function accept(User $actor, Relation $relation): bool;
+
+    public function proposePermissionChange(User $actor, Relation $relation, int $permissions): bool;
+
+    public function acceptPermissionChange(User $actor, Relation $relation): bool;
+
+    public function declinePermissionChange(User $actor, Relation $relation): bool;
+
+    public function cancelPermissionChange(User $actor, Relation $relation): bool;
 
     public function cancel(User $actor, Relation $relation): bool;
 

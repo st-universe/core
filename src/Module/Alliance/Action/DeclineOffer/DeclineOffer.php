@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\DeclineOffer;
 
 use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -19,6 +20,7 @@ final class DeclineOffer implements ActionControllerInterface
 
     public function __construct(
         private RelationRepositoryInterface $allianceRelationRepository,
+        private UserRelationManagerInterface $userRelationManager,
         private AllianceJobManagerInterface $allianceJobManager,
         private AllianceActionManagerInterface $allianceActionManager
     ) {}
@@ -44,6 +46,16 @@ final class DeclineOffer implements ActionControllerInterface
         }
 
         $relation = $this->allianceRelationRepository->find(request::getIntFatal('al'));
+
+        if ($relation !== null && !$relation->isPending()) {
+            if (!$this->userRelationManager->declinePermissionChange($user, $relation)) {
+                $game->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
+                return;
+            }
+
+            $game->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
+            return;
+        }
 
         if ($relation === null || $relation->getOpponentId() !== $allianceId) {
             return;

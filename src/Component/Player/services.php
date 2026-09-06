@@ -15,6 +15,7 @@ use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterf
 use Stu\Component\Player\Deletion\Handler\AllianceDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\AstronomicalEntryDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ColonyDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\ContactDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\CrewDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\DockingPrivilegeDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\FleetDeletionHandler;
@@ -28,8 +29,8 @@ use Stu\Component\Player\Deletion\Handler\ShipTakeoverHandler;
 use Stu\Component\Player\Deletion\Handler\SpacecraftBuildplanDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\SpacecraftDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\TradepostDeletionHandler;
-use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserCrewRankDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\UserDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserMapDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\UserRelationDeletionHandler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
@@ -65,6 +66,7 @@ return [
         [
             autowire(PirateWrathDeletionHandler::class),
             autowire(UserRelationDeletionHandler::class),
+            autowire(ContactDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),

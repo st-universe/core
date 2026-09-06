@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Relation;
 
-use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
@@ -12,71 +13,22 @@ use Stu\Orm\Repository\RelationRepositoryInterface;
 class FriendDeterminator
 {
     public function __construct(
-        private RelationRepositoryInterface $allianceRelationRepository,
-        private ContactRepositoryInterface $contactRepository,
-        private ?RelationRepositoryInterface $userRelationRepository = null
+        private RelationRepositoryInterface $relationRepository,
+        private ContactRepositoryInterface $contactRepository
     ) {}
 
     public function isFriend(User $user, User $otherUser): PlayerRelationTypeEnum
     {
-        $alliance = $user->getAlliance();
+        $party = $user->getAlliance() ?? $user;
+        $otherParty = $otherUser->getAlliance() ?? $otherUser;
 
-        $otherUserAlliance = $otherUser->getAlliance();
+        if ($party::class === $otherParty::class && $party->getId() === $otherParty->getId()) {
+            return PlayerRelationTypeEnum::ALLY;
+        }
 
-        if ($alliance !== null && $otherUserAlliance !== null) {
-            if ($alliance->getId() === $otherUserAlliance->getId()) {
-                return PlayerRelationTypeEnum::ALLY;
-            }
-
-            $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
-                [
-                    AllianceRelationTypeEnum::FRIENDS->value,
-                    AllianceRelationTypeEnum::ALLIED->value,
-                    AllianceRelationTypeEnum::VASSAL->value
-                ],
-                $otherUserAlliance->getId(),
-                $alliance->getId()
-            );
-
-            if ($result !== null) {
-                return PlayerRelationTypeEnum::ALLY;
-            }
-        } elseif ($this->userRelationRepository !== null) {
-            $result = $alliance !== null
-                ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
-                    [
-                        AllianceRelationTypeEnum::FRIENDS->value,
-                        AllianceRelationTypeEnum::ALLIED->value,
-                        AllianceRelationTypeEnum::VASSAL->value
-                    ],
-                    $alliance,
-                    $otherUser
-                )
-                : (
-                    $otherUserAlliance !== null
-                        ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
-                            [
-                                AllianceRelationTypeEnum::FRIENDS->value,
-                                AllianceRelationTypeEnum::ALLIED->value,
-                                AllianceRelationTypeEnum::VASSAL->value
-                            ],
-                            $otherUserAlliance,
-                            $user
-                        )
-                        : $this->userRelationRepository->getActiveByUserPair(
-                            [
-                                AllianceRelationTypeEnum::FRIENDS->value,
-                                AllianceRelationTypeEnum::ALLIED->value,
-                                AllianceRelationTypeEnum::VASSAL->value
-                            ],
-                            $user,
-                            $otherUser
-                        )
-                );
-
-            if ($result !== null) {
-                return PlayerRelationTypeEnum::ALLY;
-            }
+        $relation = $this->relationRepository->getActiveByParties([], $party, $otherParty);
+        if ($relation?->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
+            return PlayerRelationTypeEnum::ALLY;
         }
 
         $contact = $this->contactRepository->getByUserAndOpponent(

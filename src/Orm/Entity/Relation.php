@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -11,9 +13,11 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\RelationRepository;
 
@@ -36,6 +40,9 @@ class Relation
 
     #[Column(type: 'integer')]
     private int $date = 0;
+
+    #[OneToMany(targetEntity: RelationPermission::class, mappedBy: 'relation')]
+    private Collection $relationPermissions;
 
     #[Column(type: 'text', nullable: true)]
     private ?string $text = null;
@@ -94,6 +101,99 @@ class Relation
     public function isWar(): bool
     {
         return $this->type === AllianceRelationTypeEnum::WAR;
+    }
+
+    public function __construct()
+    {
+        $this->relationPermissions = new ArrayCollection();
+    }
+
+    public function getRelationPermissions(): Collection
+    {
+        return $this->relationPermissions;
+    }
+
+    public function addRelationPermission(RelationPermission $permission): self
+    {
+        if (!$this->relationPermissions->contains($permission)) {
+            $this->relationPermissions->add($permission);
+        }
+
+        return $this;
+    }
+
+    public function removeRelationPermission(RelationPermission $permission): self
+    {
+        $this->relationPermissions->removeElement($permission);
+        return $this;
+    }
+
+    public function hasPermissions(): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if (!$relationPermission->isPending() && $relationPermission->isGranted()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasPendingPermissionChanges(): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if ($relationPermission->isPending()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isPermissionChangeOfferedBy(User $user): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if (!$relationPermission->isPending()) {
+                continue;
+            }
+
+            return $relationPermission->isOfferedBySource()
+                ? $this->isSourceParty($user)
+                : $this->isRecipientParty($user);
+        }
+
+        return false;
+    }
+
+    public function hasPermission(RelationPermissionEnum $permission): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if (
+                !$relationPermission->isPending()
+                && $relationPermission->isGranted()
+                && $relationPermission->getPermission() === $permission
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasPermissionFor(User $user, RelationPermissionEnum $permission): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if (
+                $relationPermission->isGranted()
+                && !$relationPermission->isPending()
+                && $relationPermission->getPermission() === $permission
+                && $relationPermission->isGrantedTo($user)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getText(): ?string
@@ -188,10 +288,14 @@ class Relation
     public function validateParties(): void
     {
         if (($this->sourceUser === null) === ($this->sourceAlliance === null)) {
-            throw new LogicException('Eine Relation muss genau einen Spieler oder eine Allianz als Ausgangspartei haben');
+            throw new LogicException(
+                'Eine Relation muss genau einen Spieler oder eine Allianz als Ausgangspartei haben'
+            );
         }
         if (($this->recipientUser === null) === ($this->recipientAlliance === null)) {
-            throw new LogicException('Eine Relation muss genau einen Spieler oder eine Allianz als Zielpartei haben');
+            throw new LogicException(
+                'Eine Relation muss genau einen Spieler oder eine Allianz als Zielpartei haben'
+            );
         }
 
         $source = $this->getSourceParty();
@@ -208,6 +312,16 @@ class Relation
             && $this->sourceUser->getId() === $user->getId()
             || $this->sourceAlliance !== null
             && $user->getAlliance()?->getId() === $this->sourceAlliance->getId()
+        );
+    }
+
+    public function isRecipientParty(User $user): bool
+    {
+        return (
+            $this->recipientUser !== null
+            && $this->recipientUser->getId() === $user->getId()
+            || $this->recipientAlliance !== null
+            && $user->getAlliance()?->getId() === $this->recipientAlliance->getId()
         );
     }
 

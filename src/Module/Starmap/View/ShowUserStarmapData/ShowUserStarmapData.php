@@ -9,6 +9,7 @@ use JsonException;
 use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
@@ -359,6 +360,40 @@ final class ShowUserStarmapData implements ViewControllerInterface
         $friendlyAllianceIds = [];
         $enemyAllianceIds = [];
         $alliance = $user->getAlliance();
+        foreach ($this->allianceRelationRepository->getByUserAndAlliance($user, $alliance) as $relation) {
+            if ($relation->isPending()) {
+                continue;
+            }
+
+            $sourceIsUser = $relation->getSourceUser()?->getId() === $user->getId();
+            $sourceIsAlliance =
+                $alliance !== null && $relation->getSourceAlliance()?->getId() === $alliance->getId();
+            $recipientIsUser = $relation->getRecipientUser()?->getId() === $user->getId();
+            $recipientIsAlliance =
+                $alliance !== null && $relation->getRecipientAlliance()?->getId() === $alliance->getId();
+            $isSource = $sourceIsUser || $sourceIsAlliance;
+            if (!$isSource && !$recipientIsUser && !$recipientIsAlliance) {
+                continue;
+            }
+
+            $counterpart = $isSource ? $relation->getRecipientParty() : $relation->getSourceParty();
+            if ($counterpart instanceof User) {
+                if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
+                    $enemyUserIds[$counterpart->getId()] = true;
+                }
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
+                    $friendlyUserIds[$counterpart->getId()] = true;
+                }
+                continue;
+            }
+
+            if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
+                $enemyAllianceIds[$counterpart->getId()] = true;
+            }
+            if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
+                $friendlyAllianceIds[$counterpart->getId()] = true;
+            }
+        }
         if ($alliance !== null) {
             $allianceId = $alliance->getId();
             $friendlyAllianceIds[$allianceId] = true;
@@ -371,15 +406,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
                 if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
                     $enemyAllianceIds[$opponentId] = true;
                 }
-                if (in_array(
-                    $relation->getType(),
-                    [
-                        AllianceRelationTypeEnum::FRIENDS,
-                        AllianceRelationTypeEnum::ALLIED,
-                        AllianceRelationTypeEnum::VASSAL
-                    ],
-                    true
-                )) {
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
                     $friendlyAllianceIds[$opponentId] = true;
                 }
             }

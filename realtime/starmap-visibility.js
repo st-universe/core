@@ -6,6 +6,12 @@ export function isSpacecraftStaticallyVisible(client, spacecraft) {
 	if (Number(spacecraft.userId) === client.userId) {
 		return true;
 	}
+	if (client.sharedUserIds.has(Number(spacecraft.userId))) {
+		return true;
+	}
+	if (spacecraft.allianceId != null && client.sharedAllianceIds.has(Number(spacecraft.allianceId))) {
+		return true;
+	}
 
 	return client.canSeeAllianceShips
 		&& client.allianceId !== null

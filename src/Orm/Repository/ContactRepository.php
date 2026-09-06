@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
+use Stu\Orm\Entity\RelationPermission;
 use Stu\Orm\Entity\User;
 
 /**
@@ -33,6 +33,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     {
         $em = $this->getEntityManager();
 
+        $this->deletePermissionsByContacts([$post]);
         $em->remove($post);
         $em->flush();
     }
@@ -42,7 +43,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     {
         return $this->findOneBy([
             'user_id' => $userId,
-            'recipient' => $opponentId,
+            'recipient' => $opponentId
         ]);
     }
 
@@ -51,7 +52,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     {
         return $this->findBy(
             ['user_id' => $user->getId()],
-            ['recipient' => 'asc'],
+            ['recipient' => 'asc']
         );
     }
 
@@ -59,41 +60,67 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     public function getRemoteOrderedByUser(User $user): array
     {
         return $this->findBy(
-            [
-                'recipient' => $user->getId(),
-                'mode' => [ContactListModeEnum::FRIEND->value, ContactListModeEnum::ENEMY->value],
-            ],
+            ['recipient' => $user->getId()],
             [
                 'mode' => 'asc',
-                'user_id' => 'asc',
-            ],
+                'user_id' => 'asc'
+            ]
         );
+    }
+
+    #[\Override]
+    public function getByRecipient(User $user): array
+    {
+        return $this->findBy(['recipient' => $user->getId()]);
     }
 
     #[\Override]
     public function truncateByUser(int $userId): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s c WHERE c.user_id = :userId',
-                Contact::class
-            ),
-        )->setParameters([
-            'userId' => $userId
-        ])->execute();
+        $this->deleteBy('c.user_id = :userId OR c.recipient = :userId', ['userId' => $userId]);
     }
 
     #[\Override]
     public function truncateByUserAndOpponent(int $userId, int $opponentId): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s c WHERE c.user_id = :userId OR c.recipient = :opponentId',
-                Contact::class
-            ),
-        )->setParameters([
-            'userId' => $userId,
-            'opponentId' => $opponentId
-        ])->execute();
+        $this->deleteBy(
+            'c.user_id = :userId OR c.recipient = :opponentId',
+            ['userId' => $userId, 'opponentId' => $opponentId]
+        );
+    }
+
+    private function deleteBy(string $where, array $parameters): void
+    {
+        $contacts = $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf('SELECT c FROM %s c WHERE %s', Contact::class, $where)
+            )
+            ->setParameters($parameters)
+            ->getResult();
+        $this->deletePermissionsByContacts($contacts);
+
+        $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf('DELETE FROM %s c WHERE %s', Contact::class, $where)
+            )
+            ->setParameters($parameters)
+            ->execute();
+    }
+
+    private function deletePermissionsByContacts(array $contacts): void
+    {
+        if ($contacts === []) {
+            return;
+        }
+
+        $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf('DELETE FROM %s rp WHERE rp.contact IN (:contacts)', RelationPermission::class)
+            )
+            ->setParameter('contacts', $contacts)
+            ->execute();
     }
 }

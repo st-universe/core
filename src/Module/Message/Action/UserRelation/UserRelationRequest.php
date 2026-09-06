@@ -15,4 +15,10 @@ final class UserRelationRequest implements UserRelationRequestInterface
     {
         return $this->parameter('ur')->int()->required();
     }
+
+    #[\Override]
+    public function getPermissions(): int
+    {
+        return $this->parameter('relation_permissions')->int()->defaultsTo(0);
+    }
 }

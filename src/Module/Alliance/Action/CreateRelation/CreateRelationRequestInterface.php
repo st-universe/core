@@ -9,4 +9,6 @@ interface CreateRelationRequestInterface
     public function getCounterpartId(): int;
 
     public function getRelationType(): int;
+
+    public function getPermissions(): int;
 }

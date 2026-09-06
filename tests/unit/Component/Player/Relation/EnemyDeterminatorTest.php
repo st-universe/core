@@ -16,25 +16,18 @@ use Stu\StuTestCase;
 
 class EnemyDeterminatorTest extends StuTestCase
 {
-    private MockInterface&RelationRepositoryInterface $allianceRelationRepository;
+    private MockInterface&RelationRepositoryInterface $relationRepository;
     private MockInterface&ContactRepositoryInterface $contactRepository;
-
     private EnemyDeterminator $subject;
-
     private MockInterface&User $user;
     private MockInterface&User $opponent;
 
     #[\Override]
     protected function setUp(): void
     {
-        $this->allianceRelationRepository = $this->mock(RelationRepositoryInterface::class);
+        $this->relationRepository = $this->mock(RelationRepositoryInterface::class);
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
-
-        $this->subject = new EnemyDeterminator(
-            $this->allianceRelationRepository,
-            $this->contactRepository
-        );
-
+        $this->subject = new EnemyDeterminator($this->relationRepository, $this->contactRepository);
         $this->user = $this->mock(User::class);
         $this->opponent = $this->mock(User::class);
     }
@@ -42,125 +35,93 @@ class EnemyDeterminatorTest extends StuTestCase
     public function testIsEnemyReturnsNoneIfAlliancesMatch(): void
     {
         $alliance = $this->mock(Alliance::class);
+        $this->user->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $alliance->shouldReceive('getId')->andReturn(123);
 
-        $alliance->shouldReceive('getId')->withNoArgs()->andReturn(123);
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($alliance);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($alliance);
-
-        $this->assertEquals(
-            PlayerRelationTypeEnum::NONE,
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::NONE, $this->subject->isEnemy(
+            $this->user,
+            $this->opponent
+        ));
     }
 
-    public function testIsEnemyReturnsAllyIfAlliancesHaveWarRelation(): void
+    public function testIsEnemyReturnsAllyIfPartiesHaveWarRelation(): void
     {
-        $allianceUser = $this->mock(Alliance::class);
-        $allianceOpponent = $this->mock(Alliance::class);
-
-        $allianceUserId = 666;
-        $allianceOpponentId = 42;
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceUser);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceOpponent);
-
-        $allianceUser->shouldReceive('getId')->withNoArgs()->andReturn($allianceUserId);
-
-        $allianceOpponent->shouldReceive('getId')->withNoArgs()->andReturn($allianceOpponentId);
-
-        $this->allianceRelationRepository
-            ->shouldReceive('getActiveByTypeAndAlliancePair')
+        $alliance = $this->mock(Alliance::class);
+        $otherAlliance = $this->mock(Alliance::class);
+        $this->user->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturn($otherAlliance);
+        $alliance->shouldReceive('getId')->andReturn(666);
+        $otherAlliance->shouldReceive('getId')->andReturn(42);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
             ->with(
-                [
-                    AllianceRelationTypeEnum::WAR->value
-                ],
-                $allianceOpponentId,
-                $allianceUserId
+                [AllianceRelationTypeEnum::WAR->value],
+                $alliance,
+                $otherAlliance
             )
             ->once()
             ->andReturn($this->mock(Relation::class));
 
-        $this->assertEquals(
-            PlayerRelationTypeEnum::ALLY,
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::ALLY, $this->subject->isEnemy(
+            $this->user,
+            $this->opponent
+        ));
     }
 
-    public function testIsEnemyReturnsNoneIfAlliancesHaveNoEnemyRelationAndUserHasNoContact(): void
+    public function testIsEnemyChecksContactAfterMissingWarRelation(): void
     {
-        $allianceUser = $this->mock(Alliance::class);
-        $allianceOpponent = $this->mock(Alliance::class);
-
-        $allianceUserId = 666;
-        $allianceOpponentId = 42;
-        $userId = 33;
-        $opponentId = 21;
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceUser);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceOpponent);
-
-        $allianceUser->shouldReceive('getId')->withNoArgs()->andReturn($allianceUserId);
-
-        $allianceOpponent->shouldReceive('getId')->withNoArgs()->andReturn($allianceOpponentId);
-
-        $this->allianceRelationRepository
-            ->shouldReceive('getActiveByTypeAndAlliancePair')
+        $this->user->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->user->shouldReceive('getId')->andReturn(33);
+        $this->opponent->shouldReceive('getId')->andReturn(21);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
             ->with(
-                [
-                    AllianceRelationTypeEnum::WAR->value
-                ],
-                $allianceOpponentId,
-                $allianceUserId
+                [AllianceRelationTypeEnum::WAR->value],
+                $this->user,
+                $this->opponent
             )
             ->once()
             ->andReturnNull();
-
-        $this->user->shouldReceive('getId')->withNoArgs()->andReturn($userId);
-
-        $this->opponent->shouldReceive('getId')->withNoArgs()->andReturn($opponentId);
-
         $this->contactRepository
             ->shouldReceive('getByUserAndOpponent')
-            ->with($userId, $opponentId)
+            ->with(33, 21)
             ->once()
             ->andReturnNull();
 
-        $this->assertEquals(
-            PlayerRelationTypeEnum::NONE,
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::NONE, $this->subject->isEnemy(
+            $this->user,
+            $this->opponent
+        ));
     }
 
     public function testIsEnemyReturnsUserIfContactIsEnemy(): void
     {
-        $userId = 33;
-        $opponentId = 21;
-
         $contact = $this->mock(Contact::class);
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturnNull();
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturnNull();
-
-        $this->user->shouldReceive('getId')->withNoArgs()->andReturn($userId);
-
-        $this->opponent->shouldReceive('getId')->withNoArgs()->andReturn($opponentId);
-
+        $this->user->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->user->shouldReceive('getId')->andReturn(33);
+        $this->opponent->shouldReceive('getId')->andReturn(21);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
+            ->with(
+                [AllianceRelationTypeEnum::WAR->value],
+                $this->user,
+                $this->opponent
+            )
+            ->once()
+            ->andReturnNull();
         $this->contactRepository
             ->shouldReceive('getByUserAndOpponent')
-            ->with($userId, $opponentId)
+            ->with(33, 21)
             ->once()
             ->andReturn($contact);
+        $contact->shouldReceive('isEnemy')->once()->andReturnTrue();
 
-        $contact->shouldReceive('isEnemy')->withNoArgs()->once()->andReturnTrue();
-
-        $this->assertEquals(
-            PlayerRelationTypeEnum::USER,
-            $this->subject->isEnemy($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::USER, $this->subject->isEnemy(
+            $this->user,
+            $this->opponent
+        ));
     }
 }

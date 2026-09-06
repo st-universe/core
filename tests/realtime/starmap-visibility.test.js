@@ -11,6 +11,8 @@ function createClient(overrides = {}) {
 		friendlyAllianceIds: new Set([6, 21, 37]),
 		enemyUserIds: new Set(),
 		enemyAllianceIds: new Set(),
+		sharedUserIds: new Set(),
+		sharedAllianceIds: new Set(),
 		...overrides
 	};
 }
@@ -51,4 +53,13 @@ test("unknown and neutral spacecraft do not grant static map access", () => {
 	assert.equal(isSpacecraftStaticallyVisible(client, null), false);
 	assert.equal(isSpacecraftStaticallyVisible(client, { userId: 117, allianceId: 42 }), false);
 	assert.equal(isSpacecraftStaticallyVisible(client, { userId: 117 }), false);
+});
+
+test("shared live-map positions grant static map access", () => {
+	assert.equal(isSpacecraftStaticallyVisible(createClient({ sharedUserIds: new Set([117]) }), {
+		userId: 117, allianceId: null
+	}), true);
+	assert.equal(isSpacecraftStaticallyVisible(createClient({ sharedAllianceIds: new Set([42]) }), {
+		userId: 117, allianceId: 42
+	}), true);
 });

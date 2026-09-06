@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Relation;
 
 use Mockery\MockInterface;
-use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Relation;
@@ -16,26 +16,18 @@ use Stu\StuTestCase;
 
 class FriendDeterminatorTest extends StuTestCase
 {
-    private MockInterface&RelationRepositoryInterface $allianceRelationRepository;
+    private MockInterface&RelationRepositoryInterface $relationRepository;
     private MockInterface&ContactRepositoryInterface $contactRepository;
-
     private FriendDeterminator $subject;
-
     private MockInterface&User $user;
-
     private MockInterface&User $opponent;
 
     #[\Override]
     protected function setUp(): void
     {
-        $this->allianceRelationRepository = $this->mock(RelationRepositoryInterface::class);
+        $this->relationRepository = $this->mock(RelationRepositoryInterface::class);
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
-
-        $this->subject = new FriendDeterminator(
-            $this->allianceRelationRepository,
-            $this->contactRepository
-        );
-
+        $this->subject = new FriendDeterminator($this->relationRepository, $this->contactRepository);
         $this->user = $this->mock(User::class);
         $this->opponent = $this->mock(User::class);
     }
@@ -43,129 +35,89 @@ class FriendDeterminatorTest extends StuTestCase
     public function testIsFriendReturnsAllyIfAlliancesMatch(): void
     {
         $alliance = $this->mock(Alliance::class);
+        $this->user->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $alliance->shouldReceive('getId')->andReturn(424242);
 
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($alliance);
-
-        $alliance->shouldReceive('getId')->withNoArgs()->andReturn(424242);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($alliance);
-
-        $this->assertEquals(
-            PlayerRelationTypeEnum::ALLY,
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::ALLY, $this->subject->isFriend(
+            $this->user,
+            $this->opponent
+        ));
     }
 
-    public function testIsFriendReturnsAllyIfAlliancesHaveFriendlyRelation(): void
+    public function testIsFriendReturnsAllyIfRelationGrantsPermission(): void
     {
-        $allianceUser = $this->mock(Alliance::class);
-        $allianceOpponent = $this->mock(Alliance::class);
-
-        $allianceUserId = 666;
-        $allianceOpponentId = 42;
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceUser);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceOpponent);
-
-        $allianceUser->shouldReceive('getId')->withNoArgs()->andReturn($allianceUserId);
-
-        $allianceOpponent->shouldReceive('getId')->withNoArgs()->andReturn($allianceOpponentId);
-
-        $this->allianceRelationRepository
-            ->shouldReceive('getActiveByTypeAndAlliancePair')
-            ->with(
-                [
-                    AllianceRelationTypeEnum::FRIENDS->value,
-                    AllianceRelationTypeEnum::ALLIED->value,
-                    AllianceRelationTypeEnum::VASSAL->value
-                ],
-                $allianceOpponentId,
-                $allianceUserId
-            )
+        $alliance = $this->mock(Alliance::class);
+        $otherAlliance = $this->mock(Alliance::class);
+        $relation = $this->mock(Relation::class);
+        $this->user->shouldReceive('getAlliance')->once()->andReturn($alliance);
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturn($otherAlliance);
+        $alliance->shouldReceive('getId')->andReturn(666);
+        $otherAlliance->shouldReceive('getId')->andReturn(42);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
+            ->with([], $alliance, $otherAlliance)
             ->once()
-            ->andReturn($this->mock(Relation::class));
+            ->andReturn($relation);
+        $relation
+            ->shouldReceive('hasPermissionFor')
+            ->with($this->user, RelationPermissionEnum::FRIENDLY)
+            ->once()
+            ->andReturnTrue();
 
-        $this->assertEquals(
-            PlayerRelationTypeEnum::ALLY,
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::ALLY, $this->subject->isFriend(
+            $this->user,
+            $this->opponent
+        ));
     }
 
-    public function testIsFriendReturnsNoneIfAlliancesHaveNoFriendlyRelationAndUserHasNoContact(): void
+    public function testIsFriendChecksContactAfterMissingRelationPermission(): void
     {
-        $allianceUser = $this->mock(Alliance::class);
-        $allianceOpponent = $this->mock(Alliance::class);
-
-        $allianceUserId = 666;
-        $allianceOpponentId = 42;
         $userId = 33;
         $opponentId = 21;
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceUser);
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($allianceOpponent);
-
-        $allianceUser->shouldReceive('getId')->withNoArgs()->andReturn($allianceUserId);
-
-        $allianceOpponent->shouldReceive('getId')->withNoArgs()->andReturn($allianceOpponentId);
-
-        $this->allianceRelationRepository
-            ->shouldReceive('getActiveByTypeAndAlliancePair')
-            ->with(
-                [
-                    AllianceRelationTypeEnum::FRIENDS->value,
-                    AllianceRelationTypeEnum::ALLIED->value,
-                    AllianceRelationTypeEnum::VASSAL->value
-                ],
-                $allianceOpponentId,
-                $allianceUserId
-            )
+        $this->user->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->user->shouldReceive('getId')->andReturn($userId);
+        $this->opponent->shouldReceive('getId')->andReturn($opponentId);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
+            ->with([], $this->user, $this->opponent)
             ->once()
             ->andReturnNull();
-
-        $this->user->shouldReceive('getId')->withNoArgs()->andReturn($userId);
-
-        $this->opponent->shouldReceive('getId')->withNoArgs()->andReturn($opponentId);
-
         $this->contactRepository
             ->shouldReceive('getByUserAndOpponent')
             ->with($userId, $opponentId)
             ->once()
             ->andReturnNull();
 
-        $this->assertEquals(
-            PlayerRelationTypeEnum::NONE,
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::NONE, $this->subject->isFriend(
+            $this->user,
+            $this->opponent
+        ));
     }
 
     public function testIsFriendReturnsUserIfContactIsFriendly(): void
     {
-        $userId = 33;
-        $opponentId = 21;
-
         $contact = $this->mock(Contact::class);
-
-        $this->user->shouldReceive('getAlliance')->withNoArgs()->once()->andReturnNull();
-
-        $this->opponent->shouldReceive('getAlliance')->withNoArgs()->once()->andReturnNull();
-
-        $this->user->shouldReceive('getId')->withNoArgs()->andReturn($userId);
-
-        $this->opponent->shouldReceive('getId')->withNoArgs()->andReturn($opponentId);
-
+        $this->user->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->opponent->shouldReceive('getAlliance')->once()->andReturnNull();
+        $this->user->shouldReceive('getId')->andReturn(33);
+        $this->opponent->shouldReceive('getId')->andReturn(21);
+        $this->relationRepository
+            ->shouldReceive('getActiveByParties')
+            ->with([], $this->user, $this->opponent)
+            ->once()
+            ->andReturnNull();
         $this->contactRepository
             ->shouldReceive('getByUserAndOpponent')
-            ->with($userId, $opponentId)
+            ->with(33, 21)
             ->once()
             ->andReturn($contact);
+        $contact->shouldReceive('isFriendly')->once()->andReturnTrue();
 
-        $contact->shouldReceive('isFriendly')->withNoArgs()->once()->andReturnTrue();
-
-        $this->assertEquals(
-            PlayerRelationTypeEnum::USER,
-            $this->subject->isFriend($this->user, $this->opponent)
-        );
+        $this->assertSame(PlayerRelationTypeEnum::USER, $this->subject->isFriend(
+            $this->user,
+            $this->opponent
+        ));
     }
 }

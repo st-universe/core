@@ -132,6 +132,34 @@ function emptyContactComment(contactId) {
 	$('contact_comment_input_' + contactId).value = '';
 	saveContactComment(contactId)
 }
+function saveContactPermissions(contactId) {
+	$('contact_permission_id').value = contactId;
+	$('contact_permissions').value = $('contact_live_map_' + contactId).checked ? '2' : '0';
+	$('formaction').name = 'B_UPDATE_CONTACT_PERMISSIONS';
+	document.forms.contactlist.submit();
+}
+function proposeUserRelationPermissions(relationId) {
+	let permissions = 0;
+	document.querySelectorAll('#user-relation-permissions-' + relationId + ' [data-relation-permission]:checked').forEach((checkbox) => {
+		permissions |= Number(checkbox.value);
+	});
+	$('user_relation_permission_id').value = relationId;
+	$('user_relation_permissions').value = permissions.toString();
+	$('formaction').name = 'B_PROPOSE_USER_RELATION_PERMISSIONS';
+	document.forms.contactlist.submit();
+}
+document.addEventListener('click', (event) => {
+	const contactPermissionButton = event.target.closest('[data-save-contact-permissions]');
+	if (contactPermissionButton !== null) {
+		saveContactPermissions(Number(contactPermissionButton.dataset.contactId));
+		return;
+	}
+
+	const relationPermissionButton = event.target.closest('[data-propose-user-relation-permissions]');
+	if (relationPermissionButton !== null) {
+		proposeUserRelationPermissions(Number(relationPermissionButton.dataset.relationId));
+	}
+});
 function rateKnPost(knId, rating) {
 	ajaxPostUpdate(
 		'kn_rating_' + knId,
