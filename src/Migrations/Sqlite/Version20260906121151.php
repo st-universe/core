@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260906120314 extends AbstractMigration
+final class Version20260906121151 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -48,10 +48,6 @@ final class Version20260906120314 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A36183F74448F8DA ON stu_alliances (faction_id)');
         $this->addSql('CREATE TABLE stu_alliances_jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title VARCHAR(255) DEFAULT NULL, sort INTEGER DEFAULT NULL, alliance_id INTEGER NOT NULL, CONSTRAINT FK_3C71C67B10A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_3C71C67B10A0EA3F ON stu_alliances_jobs (alliance_id)');
-        $this->addSql('CREATE TABLE stu_alliances_relations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, alliance_id INTEGER NOT NULL, recipient INTEGER NOT NULL, date INTEGER NOT NULL, text CLOB DEFAULT NULL, last_edited INTEGER DEFAULT NULL, CONSTRAINT FK_9EBADCD910A0EA3F FOREIGN KEY (alliance_id) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9EBADCD96804FB49 FOREIGN KEY (recipient) REFERENCES stu_alliances (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_9EBADCD910A0EA3F ON stu_alliances_relations (alliance_id)');
-        $this->addSql('CREATE INDEX IDX_9EBADCD96804FB49 ON stu_alliances_relations (recipient)');
-        $this->addSql('CREATE INDEX alliance_relation_idx ON stu_alliances_relations (alliance_id, recipient)');
         $this->addSql('CREATE TABLE stu_anomaly (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, remaining_ticks INTEGER NOT NULL, anomaly_type_id INTEGER NOT NULL, data CLOB DEFAULT NULL, location_id INTEGER DEFAULT NULL, parent_id INTEGER DEFAULT NULL, CONSTRAINT FK_A1426D1126894FC7 FOREIGN KEY (anomaly_type_id) REFERENCES stu_anomaly_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D1164D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A1426D11727ACA70 FOREIGN KEY (parent_id) REFERENCES stu_anomaly (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A1426D1164D218E ON stu_anomaly (location_id)');
         $this->addSql('CREATE INDEX IDX_A1426D11727ACA70 ON stu_anomaly (parent_id)');
@@ -594,11 +590,6 @@ final class Version20260906120314 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_user_referer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referer CLOB NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_A00722FDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user_registration (user_id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A00722FDA76ED395 ON stu_user_referer (user_id)');
         $this->addSql('CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE TABLE stu_user_relations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, date INTEGER NOT NULL, source_user_id INTEGER DEFAULT NULL, source_alliance_id INTEGER DEFAULT NULL, recipient_user_id INTEGER DEFAULT NULL, recipient_alliance_id INTEGER DEFAULT NULL, CONSTRAINT FK_E9506D20EEB16BFD FOREIGN KEY (source_user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9506D202CDFBA9F FOREIGN KEY (source_alliance_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9506D20B15EFB97 FOREIGN KEY (recipient_user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E9506D20A765B64E FOREIGN KEY (recipient_alliance_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX user_relation_source_user_idx ON stu_user_relations (source_user_id)');
-        $this->addSql('CREATE INDEX user_relation_recipient_user_idx ON stu_user_relations (recipient_user_id)');
-        $this->addSql('CREATE INDEX user_relation_source_alliance_idx ON stu_user_relations (source_alliance_id)');
-        $this->addSql('CREATE INDEX user_relation_recipient_alliance_idx ON stu_user_relations (recipient_alliance_id)');
         $this->addSql('CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6AAFACE0A76ED395 ON stu_user_setting (user_id)');
         $this->addSql('CREATE TABLE stu_user_tutorial (user_id INTEGER NOT NULL, tutorial_step_id INTEGER NOT NULL, PRIMARY KEY (user_id, tutorial_step_id), CONSTRAINT FK_9840DDF3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9840DDF3D356979 FOREIGN KEY (tutorial_step_id) REFERENCES stu_tutorial_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -630,7 +621,6 @@ final class Version20260906120314 extends AbstractMigration
         $this->addSql('DROP TABLE stu_alliance_topics');
         $this->addSql('DROP TABLE stu_alliances');
         $this->addSql('DROP TABLE stu_alliances_jobs');
-        $this->addSql('DROP TABLE stu_alliances_relations');
         $this->addSql('DROP TABLE stu_anomaly');
         $this->addSql('DROP TABLE stu_anomaly_type');
         $this->addSql('DROP TABLE stu_astro_entry');
@@ -802,7 +792,6 @@ final class Version20260906120314 extends AbstractMigration
         $this->addSql('DROP TABLE stu_user_profile_visitors');
         $this->addSql('DROP TABLE stu_user_referer');
         $this->addSql('DROP TABLE stu_user_registration');
-        $this->addSql('DROP TABLE stu_user_relations');
         $this->addSql('DROP TABLE stu_user_setting');
         $this->addSql('DROP TABLE stu_user_tutorial');
         $this->addSql('DROP TABLE stu_weapon_shield');
