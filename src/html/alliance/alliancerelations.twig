@@ -31,7 +31,7 @@
         <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions" style="display: none;">
             {% for permission in RELATION_PERMISSIONS %}
             <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}" style="display: none;">
-                <input type="checkbox" value="{{ permission.value }}" data-relation-permission />
+                <input type="checkbox" name="relation_permission_{{ permission.value }}" value="{{ permission.value }}" data-relation-permission />
                 {{ permission.getDescription }}
             </label>
             {% endfor %}
@@ -110,7 +110,7 @@
                 <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions-{{ relation.getId }}">
                     {% for permission in RELATION_PERMISSIONS %}
                     <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}">
-                        <input type="checkbox" value="{{ permission.value }}" data-relation-permission {% if relation.hasPermission(permission) %}checked="checked"{% endif %} />
+                        <input type="checkbox" name="relation_permission_{{ permission.value }}" value="{{ permission.value }}" data-relation-permission {% if relation.hasPermission(permission) %}checked="checked"{% endif %} />
                         {{ permission.getDescription }}
                     </label>
                     {% endfor %}

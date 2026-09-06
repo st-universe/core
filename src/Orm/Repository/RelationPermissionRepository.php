@@ -43,7 +43,7 @@ final class RelationPermissionRepository extends EntityRepository implements
         AllianceRelationTypeEnum $type,
         RelationPermissionDirectionEnum $direction = RelationPermissionDirectionEnum::MUTUAL
     ): void {
-        $this->deleteByRelation($relation);
+        $this->removeRelationPermissions($relation);
 
         $permissions = RelationPermissionEnum::sanitize($permissions, $type);
         foreach (RelationPermissionEnum::cases() as $permission) {
@@ -201,7 +201,22 @@ final class RelationPermissionRepository extends EntityRepository implements
 
     private function deletePendingForRelation(Relation $relation): void
     {
-        $this->deleteWhere('rp.relation = :relation AND rp.pending = true', ['relation' => $relation]);
+        foreach ($relation->getRelationPermissions()->toArray() as $permission) {
+            if (!$permission->isPending()) {
+                continue;
+            }
+
+            $relation->removeRelationPermission($permission);
+            $this->getEntityManager()->remove($permission);
+        }
+    }
+
+    private function removeRelationPermissions(Relation $relation): void
+    {
+        foreach ($relation->getRelationPermissions()->toArray() as $permission) {
+            $relation->removeRelationPermission($permission);
+            $this->getEntityManager()->remove($permission);
+        }
     }
 
     private function getActivePermission(

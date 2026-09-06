@@ -24,8 +24,8 @@ class CreateRelationRequestTest extends RequestTestCase
     public static function requestVarsDataProvider(): array
     {
         return [
-            ['getRelationType', 'type', '666', 666],
-            ['getCounterpartId', 'oid', '666', 666],
+            ['getRelationType',  'type', '666', 666],
+            ['getCounterpartId', 'oid',  '666', 666]
         ];
     }
 
@@ -34,7 +34,18 @@ class CreateRelationRequestTest extends RequestTestCase
     {
         return [
             ['getRelationType'],
-            ['getCounterpartId'],
+            ['getCounterpartId']
         ];
+    }
+
+    public function testGetPermissionsIncludesSelectedCheckboxes(): void
+    {
+        $_GET = [
+            'relation_permissions' => 0,
+            'relation_permission_1' => 1,
+            'relation_permission_2' => 2
+        ];
+
+        self::assertSame(3, $this->buildRequest()->getPermissions());
     }
 }
