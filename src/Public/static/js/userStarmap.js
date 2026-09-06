@@ -131,6 +131,7 @@
 			sensorSpacecrafts: [],
 			sensorSpacecraftById: new Map(),
 			sensorSpacecraftByField: new Map(),
+			realtimeStaticSpacecraftIds: new Set(),
 			sensorCoverageRuns: [],
 			sensorCoverageKeys: new Set(),
 			contactAnimations: new Map(),
@@ -597,7 +598,9 @@
 				}
 
 				applySensorCoverage(state, Array.isArray(data.sensorCoverageRuns) ? data.sensorCoverageRuns : []);
-				applySensorSpacecrafts(state, state.showSensorContacts && Array.isArray(data.spacecrafts) ? data.spacecrafts : []);
+				const spacecrafts = Array.isArray(data.spacecrafts) ? data.spacecrafts : [];
+				applyRealtimeStaticSpacecrafts(state, spacecrafts);
+				applySensorSpacecrafts(state, state.showSensorContacts ? spacecrafts : []);
 				updateFieldDetails(state, state.selectedField);
 				scheduleDraw(state);
 				connectRealtimeSocket(state, data);
@@ -617,6 +620,7 @@
 		clearRealtimeTimers(state);
 		closeRealtimeSocket(state);
 		applySensorSpacecrafts(state, []);
+		removeRealtimeStaticSpacecrafts(state);
 		applySensorCoverage(state, []);
 		clearContactAnimations(state);
 		setStatus(state, "Livekontakte aus");
@@ -666,6 +670,37 @@
 		state.sensorSpacecrafts.forEach(function (spacecraft) {
 			addSensorSpacecraft(state, spacecraft);
 		});
+	}
+
+	function applyRealtimeStaticSpacecrafts(state, spacecrafts) {
+		const spacecraftIds = new Set();
+		spacecrafts.forEach(function (spacecraft) {
+			if (spacecraft.isSensorContact) {
+				return;
+			}
+
+			const spacecraftId = Number(spacecraft.id);
+			if (!Number.isFinite(spacecraftId)) {
+				return;
+			}
+
+			spacecraftIds.add(spacecraftId);
+			updateStaticSpacecraft(state, spacecraft, true);
+		});
+
+		state.realtimeStaticSpacecraftIds.forEach(function (spacecraftId) {
+			if (!spacecraftIds.has(spacecraftId)) {
+				removeStaticSpacecraft(state, spacecraftId);
+			}
+		});
+		state.realtimeStaticSpacecraftIds = spacecraftIds;
+	}
+
+	function removeRealtimeStaticSpacecrafts(state) {
+		state.realtimeStaticSpacecraftIds.forEach(function (spacecraftId) {
+			removeStaticSpacecraft(state, spacecraftId);
+		});
+		state.realtimeStaticSpacecraftIds = new Set();
 	}
 
 	function addSensorSpacecraft(state, spacecraft) {
