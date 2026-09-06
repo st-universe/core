@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class CreateRelationRequest implements CreateRelationRequestInterface
@@ -25,6 +26,16 @@ final class CreateRelationRequest implements CreateRelationRequestInterface
     #[\Override]
     public function getPermissions(): int
     {
-        return $this->parameter('relation_permissions')->int()->defaultsTo(0);
+        $permissions = $this->parameter('relation_permissions')->int()->defaultsTo(0);
+        foreach (RelationPermissionEnum::cases() as $permission) {
+            if (
+                $this->parameter('relation_permission_' . $permission->value)->int()->defaultsTo(0)
+                === $permission->value
+            ) {
+                $permissions |= $permission->value;
+            }
+        }
+
+        return $permissions;
     }
 }
