@@ -11,7 +11,7 @@ use Stu\Module\Alliance\View\Relations\Relations;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ManageUserRelation implements ActionControllerInterface
@@ -21,7 +21,7 @@ final class ManageUserRelation implements ActionControllerInterface
     public function __construct(
         private readonly ManageUserRelationRequestInterface $manageUserRelationRequest,
         private readonly UserRelationManagerInterface $userRelationManager,
-        private readonly UserRelationRepositoryInterface $userRelationRepository,
+        private readonly RelationRepositoryInterface $userRelationRepository,
         private readonly UserRepositoryInterface $userRepository
     ) {}
 
@@ -42,7 +42,7 @@ final class ManageUserRelation implements ActionControllerInterface
             'cancel' => $this->cancelRelation($game),
             'decline' => $this->declineRelation($game),
             'peace' => $this->suggestPeace($game),
-            default => $game->getInfo()->addInformation('Ungültige Aktion'),
+            default => $game->getInfo()->addInformation('Ungültige Aktion')
         };
     }
 
@@ -74,7 +74,9 @@ final class ManageUserRelation implements ActionControllerInterface
 
         $relation = $this->userRelationManager->create($user, $alliance, $recipient, $type);
         if ($relation === null) {
-            $game->getInfo()->addInformation('Das Abkommen kann nicht erstellt werden oder ist bereits vorhanden');
+            $game->getInfo()->addInformation(
+                'Das Abkommen kann nicht erstellt werden oder ist bereits vorhanden'
+            );
             return;
         }
 

@@ -12,19 +12,18 @@ use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class Relations implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceJobManagerInterface $allianceJobManager,
         private AllianceRepositoryInterface $allianceRepository,
-        private UserRelationRepositoryInterface $userRelationRepository,
+        private RelationRepositoryInterface $userRelationRepository,
         private UserRelationManagerInterface $userRelationManager
     ) {}
 
@@ -35,15 +34,27 @@ final class Relations implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException("user not in alliance");
+            throw new AccessViolationException('user not in alliance');
         }
 
         $allianceId = $alliance->getId();
 
         if (
-            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+            !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::DIPLOMATIC
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::CREATE_AGREEMENTS
+            )
         ) {
             throw new AccessViolationException();
         }
@@ -76,9 +87,14 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
-        $game->setTemplateVar('USER_RELATIONS', $this->userRelationRepository->getByUserAndAlliance($user, $alliance));
+        $game->setTemplateVar('USER_RELATIONS', $this->userRelationRepository->getByUserAndAlliance(
+            $user,
+            $alliance
+        ));
         $game->setTemplateVar('USER_RELATION_ACTOR', $user);
-        $game->setTemplateVar('CAN_MANAGE_USER_RELATIONS', $this->userRelationManager->canManageRelations($user));
-        $game->setTemplateVar('CAN_CREATE_USER_RELATIONS', $this->userRelationManager->getRepresentedParty($user) !== null);
+        $game->setTemplateVar(
+            'CAN_MANAGE_USER_RELATIONS',
+            $this->userRelationManager->canManageRelations($user)
+        );
     }
 }

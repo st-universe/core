@@ -36,6 +36,54 @@ function editRelationText(relationid) {
 	updatePopup('alliance.php?EDIT_RELATION_TEXT=1&relationid=' + relationid, 650, posX, posY, false);
 }
 
+function initializeRelationTargetSelection() {
+	const targetType = document.getElementById('relation-target-type');
+	if (targetType !== null && targetType.dataset.initialized !== '1') {
+		const allianceTarget = document.getElementById('alliance-relation-target');
+		const allianceTargetId = document.getElementById('alliance-relation-target-id');
+		const userTarget = document.getElementById('user-relation-target');
+		const userTargetId = document.getElementById('user-relation-target-id');
+		const userAction = document.getElementById('relation-user-action');
+		const createButton = document.getElementById('relation-create-button');
+
+		const updateRelationTarget = () => {
+			const isAlliance = targetType.value === 'alliance';
+			allianceTarget.style.display = isAlliance ? '' : 'none';
+			allianceTargetId.disabled = !isAlliance;
+			userTarget.style.display = isAlliance ? 'none' : '';
+			userTargetId.disabled = isAlliance;
+			userAction.disabled = isAlliance;
+			createButton.name = isAlliance ? 'B_NEW_RELATION' : 'B_MANAGE_USER_RELATION';
+		};
+
+		targetType.addEventListener('change', updateRelationTarget);
+		targetType.dataset.initialized = '1';
+		updateRelationTarget();
+	}
+
+	const contactTargetType = document.getElementById('contact-relation-target-type');
+	if (contactTargetType !== null && contactTargetType.dataset.initialized !== '1') {
+		const userTarget = document.getElementById('contact-user-relation-target');
+		const userTargetId = document.getElementById('contact-user-relation-target-id');
+		const allianceTarget = document.getElementById('contact-alliance-relation-target');
+		const allianceTargetId = document.getElementById('contact-alliance-relation-target-id');
+
+		const updateContactRelationTarget = () => {
+			const isUser = contactTargetType.value === '1';
+			userTarget.style.display = isUser ? '' : 'none';
+			userTargetId.disabled = !isUser;
+			allianceTarget.style.display = isUser ? 'none' : '';
+			allianceTargetId.disabled = isUser;
+		};
+
+		contactTargetType.addEventListener('change', updateContactRelationTarget);
+		contactTargetType.dataset.initialized = '1';
+		updateContactRelationTarget();
+	}
+}
+
+document.addEventListener('DOMContentLoaded', initializeRelationTargetSelection);
+
 let newJobCounter = 0;
 
 function addNewAllianceJob() {

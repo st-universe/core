@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\View\Diplomatic;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 /**
  * Renders a overview of all diplomatic relations between alliances
@@ -20,7 +20,10 @@ final class DiplomaticRelations implements ViewControllerInterface
 
     public const string VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
-    public function __construct(private AllianceRelationRepositoryInterface $allianceRelationRepository, private AllianceRelationRendererInterface $allianceRelationRenderer) {}
+    public function __construct(
+        private RelationRepositoryInterface $allianceRelationRepository,
+        private AllianceRelationRendererInterface $allianceRelationRenderer
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -29,11 +32,11 @@ final class DiplomaticRelations implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'alliance.php',
-                'title' => 'Allianz',
+                'title' => 'Allianz'
             ],
             [
                 'url' => 'alliance.php?showlist=1',
-                'title' => 'Allianzliste',
+                'title' => 'Allianzliste'
             ],
             [
                 'url' => sprintf('alliance.php?%s=1', self::VIEW_IDENTIFIER),

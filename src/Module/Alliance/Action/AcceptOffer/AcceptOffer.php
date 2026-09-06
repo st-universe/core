@@ -12,7 +12,7 @@ use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
@@ -21,7 +21,7 @@ final class AcceptOffer implements ActionControllerInterface
     public function __construct(
         private AcceptOfferRequestInterface $acceptOfferRequest,
         private EntryCreatorInterface $entryCreator,
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceActionManagerInterface $allianceActionManager,
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
@@ -42,9 +42,21 @@ final class AcceptOffer implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
         if (
-            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+            !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::DIPLOMATIC
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::CREATE_AGREEMENTS
+            )
         ) {
             throw new AccessViolationException();
         }
@@ -57,7 +69,10 @@ final class AcceptOffer implements ActionControllerInterface
             return;
         }
 
-        $rel = $this->allianceRelationRepository->getActiveByAlliancePair($relation->getAllianceId(), $relation->getOpponentId());
+        $rel = $this->allianceRelationRepository->getActiveByAlliancePair(
+            $relation->getAllianceId(),
+            $relation->getOpponentId()
+        );
         if ($rel !== null) {
             $this->allianceRelationRepository->delete($rel);
         }

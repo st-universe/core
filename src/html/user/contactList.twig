@@ -139,16 +139,23 @@
 			</tr>
 			<tr>
 				<td>
-					{% if USER.getAlliance %}
-					Im Namen der Allianz {{ USER.getAlliance.getName|bbcode }} an Siedler-ID
-					<input type="hidden" name="relation_target_type" value="1" />
-					{% else %}
-					<select name="relation_target_type">
+					<label for="contact-relation-target-type">Abkommen mit</label>
+					<select id="contact-relation-target-type" name="relation_target_type">
 						<option value="1">Siedler</option>
 						<option value="2">Allianz</option>
-					</select> ID
-					{% endif %}
-					<input type="text" style="width: 50px;" name="relation_target" />
+					</select>
+					<span id="contact-user-relation-target">
+						<label for="contact-user-relation-target-id">Siedler-ID</label>
+						<input id="contact-user-relation-target-id" type="text" style="width: 50px;" name="relation_target" />
+					</span>
+					<span id="contact-alliance-relation-target" style="display: none;">
+						<label for="contact-alliance-relation-target-id">Allianz</label>
+						<select id="contact-alliance-relation-target-id" name="relation_target" disabled>
+							{% for alliance in ALLIANCE_LIST %}
+							<option value="{{ alliance.getId }}">{{ alliance.getName|bbcode2txt }}</option>
+							{% endfor %}
+						</select>
+					</span>
 					<select name="relation_type">
 						{% for type in POSSIBLE_USER_RELATION_TYPES %}
 						<option value="{{ type.value }}">{{ type.getDescription }}</option>

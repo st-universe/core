@@ -9,8 +9,9 @@ use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class ShowContactList implements ViewControllerInterface
 {
@@ -18,7 +19,8 @@ final class ShowContactList implements ViewControllerInterface
 
     public function __construct(
         private ContactRepositoryInterface $contactRepository,
-        private UserRelationRepositoryInterface $userRelationRepository,
+        private AllianceRepositoryInterface $allianceRepository,
+        private RelationRepositoryInterface $userRelationRepository,
         private UserRelationManagerInterface $userRelationManager
     ) {}
 
@@ -38,16 +40,26 @@ final class ShowContactList implements ViewControllerInterface
         $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($user));
         $game->setTemplateVar('REMOTE_CONTACTS', $this->contactRepository->getRemoteOrderedByUser($user));
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
+        $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('SHOW_USER_RELATIONS', $showUserRelations);
-        $game->setTemplateVar('USER_RELATIONS', $showUserRelations ? $this->userRelationRepository->getByUserAndAlliance($user, null) : []);
-        $game->setTemplateVar('CAN_MANAGE_USER_RELATIONS', $showUserRelations && $this->userRelationManager->canManageRelations($user));
-        $game->setTemplateVar('CAN_CREATE_USER_RELATIONS', $showUserRelations && $this->userRelationManager->getRepresentedParty($user) !== null);
+        $game->setTemplateVar(
+            'USER_RELATIONS',
+            $showUserRelations ? $this->userRelationRepository->getByUserAndAlliance($user, null) : []
+        );
+        $game->setTemplateVar(
+            'CAN_MANAGE_USER_RELATIONS',
+            $showUserRelations && $this->userRelationManager->canManageRelations($user)
+        );
+        $game->setTemplateVar(
+            'CAN_CREATE_USER_RELATIONS',
+            $showUserRelations && $this->userRelationManager->getRepresentedParty($user) !== null
+        );
         $game->setTemplateVar('POSSIBLE_USER_RELATION_TYPES', [
             AllianceRelationTypeEnum::WAR,
             AllianceRelationTypeEnum::FRIENDS,
             AllianceRelationTypeEnum::ALLIED,
             AllianceRelationTypeEnum::TRADE,
-            AllianceRelationTypeEnum::VASSAL,
+            AllianceRelationTypeEnum::VASSAL
         ]);
     }
 }

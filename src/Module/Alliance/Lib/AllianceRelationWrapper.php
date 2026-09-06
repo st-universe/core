@@ -6,11 +6,14 @@ namespace Stu\Module\Alliance\Lib;
 
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 
 final class AllianceRelationWrapper
 {
-    public function __construct(private Alliance $alliance, private AllianceRelation $relation) {}
+    public function __construct(
+        private Alliance $alliance,
+        private Relation $relation
+    ) {}
 
     public function getDescription(): string
     {

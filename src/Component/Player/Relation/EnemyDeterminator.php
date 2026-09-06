@@ -6,16 +6,15 @@ namespace Stu\Component\Player\Relation;
 
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 class EnemyDeterminator
 {
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private ContactRepositoryInterface $contactRepository,
-        private ?UserRelationRepositoryInterface $userRelationRepository = null
+        private ?RelationRepositoryInterface $userRelationRepository = null
     ) {}
 
     public function isEnemy(User $user, User $otherUser): PlayerRelationTypeEnum
@@ -31,7 +30,7 @@ class EnemyDeterminator
 
             $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
                 [
-                    AllianceRelationTypeEnum::WAR->value,
+                    AllianceRelationTypeEnum::WAR->value
                 ],
                 $otherUserAlliance->getId(),
                 $alliance->getId()
@@ -47,17 +46,19 @@ class EnemyDeterminator
                     $alliance,
                     $otherUser
                 )
-                : ($otherUserAlliance !== null
-                    ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
-                        [AllianceRelationTypeEnum::WAR->value],
-                        $otherUserAlliance,
-                        $user
-                    )
-                    : $this->userRelationRepository->getActiveByUserPair(
-                        [AllianceRelationTypeEnum::WAR->value],
-                        $user,
-                        $otherUser
-                    ));
+                : (
+                    $otherUserAlliance !== null
+                        ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
+                            [AllianceRelationTypeEnum::WAR->value],
+                            $otherUserAlliance,
+                            $user
+                        )
+                        : $this->userRelationRepository->getActiveByUserPair(
+                            [AllianceRelationTypeEnum::WAR->value],
+                            $user,
+                            $otherUser
+                        )
+                );
 
             if ($result !== null) {
                 return PlayerRelationTypeEnum::ALLY;

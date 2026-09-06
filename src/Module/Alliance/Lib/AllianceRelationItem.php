@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
 
 final class AllianceRelationItem implements AllianceRelationItemInterface
 {
-    public function __construct(private AllianceRelation $allianceRelation, private User $currentUser) {}
+    public function __construct(
+        private Relation $allianceRelation,
+        private User $currentUser
+    ) {}
 
     #[\Override]
-    public function getRelation(): AllianceRelation
+    public function getRelation(): Relation
     {
         return $this->allianceRelation;
     }

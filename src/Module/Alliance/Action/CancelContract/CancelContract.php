@@ -12,7 +12,7 @@ use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class CancelContract implements ActionControllerInterface
 {
@@ -21,7 +21,7 @@ final class CancelContract implements ActionControllerInterface
     public function __construct(
         private CancelContractRequestInterface $cancelContractRequest,
         private EntryCreatorInterface $entryCreator,
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceActionManagerInterface $allianceActionManager,
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
@@ -41,14 +41,29 @@ final class CancelContract implements ActionControllerInterface
         $relation = $this->allianceRelationRepository->find($this->cancelContractRequest->getRelationId());
 
         if (
-            !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)
-            && !$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::CREATE_AGREEMENTS)
+            !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::DIPLOMATIC
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+            )
+            && !$this->allianceJobManager->hasUserPermission(
+                $user,
+                $alliance,
+                AllianceJobPermissionEnum::CREATE_AGREEMENTS
+            )
         ) {
             throw new AccessViolationException();
         }
 
-        if ($relation === null || ($relation->getOpponentId() !== $allianceId && $relation->getAllianceId() !== $allianceId)) {
+        if (
+            $relation === null
+            || $relation->getOpponentId() !== $allianceId && $relation->getAllianceId() !== $allianceId
+        ) {
             return;
         }
 

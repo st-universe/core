@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 
 interface AllianceRelationRendererInterface
 {
     /**
      * Renders the relations between alliances as graph
      *
-     * @param iterable<AllianceRelation> $relationList
+     * @param iterable<Relation> $relationList
      */
     public function render(
         iterable $relationList,

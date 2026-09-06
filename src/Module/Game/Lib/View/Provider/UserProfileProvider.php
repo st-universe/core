@@ -12,12 +12,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Entity\UserRelation;
 use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftLogRepositoryInterface;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserProfileProvider implements ViewComponentProviderInterface
@@ -27,7 +27,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         private ContactRepositoryInterface $contactRepository,
         private UserRepositoryInterface $userRepository,
         private SpacecraftLogRepositoryInterface $spacecraftLogRepository,
-        private UserRelationRepositoryInterface $userRelationRepository,
+        private RelationRepositoryInterface $userRelationRepository,
         private ParserWithImageInterface $parserWithImage,
         private ProfileVisitorRegistrationInterface $profileVisitorRegistration
     ) {}
@@ -53,7 +53,10 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('PROFILE', $user);
         $game->setTemplateVar('HAS_TRANSLATION', $this->hasTranslation($user));
         $game->setTemplateVar('COLONYSCANLIST', $this->getColonyScanList($user, $visitor));
-        $game->setTemplateVar('SPACECRAFT_LOGBOOKS', $this->spacecraftLogRepository->getGroupedLogbooksForProfile($user, $visitor));
+        $game->setTemplateVar('SPACECRAFT_LOGBOOKS', $this->spacecraftLogRepository->getGroupedLogbooksForProfile(
+            $user,
+            $visitor
+        ));
         $game->setTemplateVar(
             'DESCRIPTION',
             $this->parserWithImage->parse($user->getDescription())->getAsHTML()
@@ -85,12 +88,12 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             $user->getAlliance() === null
                 ? array_values(array_filter(
                     $this->userRelationRepository->getByUserAndAlliance($user, null),
-                    static fn (UserRelation $relation): bool => !$relation->isPending()
+                    static fn(Relation $relation): bool => !$relation->isPending()
                 ))
                 : []
         );
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
-        $game->addExecuteJS("initTranslations();", JavascriptExecutionTypeEnum::AFTER_RENDER);
+        $game->addExecuteJS('initTranslations();', JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     private function hasTranslation(User $user): bool
@@ -107,14 +110,16 @@ final class UserProfileProvider implements ViewComponentProviderInterface
         $alliance = $visitor->getAlliance();
 
         if ($alliance !== null) {
-            $unfilteredScans = array_merge(...$alliance->getMembers()->map(fn (User $user) => $user->getColonyScans()->toArray()));
+            $unfilteredScans = array_merge(...$alliance->getMembers()->map(
+                fn(User $user) => $user->getColonyScans()->toArray()
+            ));
         } else {
             $unfilteredScans = $visitor->getColonyScans()->toArray();
         }
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn (ColonyScan $scan): bool => $scan->getColonyUserId() === $user->getId()
+            fn(ColonyScan $scan): bool => $scan->getColonyUserId() === $user->getId()
         );
 
         $scansByColony = [];
@@ -126,7 +131,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         $latestScans = [];
         foreach ($scansByColony as $scans) {
-            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
+            usort($scans, fn($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

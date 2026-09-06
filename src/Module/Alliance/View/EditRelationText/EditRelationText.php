@@ -9,14 +9,14 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class EditRelationText implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'EDIT_RELATION_TEXT';
 
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private AllianceJobManagerInterface $allianceJobManager,
         private EditRelationTextRequestInterface $editRelationTextRequest
     ) {}
@@ -33,10 +33,14 @@ final class EditRelationText implements ViewControllerInterface
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
-            throw new AccessViolationException("user not in alliance");
+            throw new AccessViolationException('user not in alliance');
         }
 
-        if (!$this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS)) {
+        if (!$this->allianceJobManager->hasUserPermission(
+            $user,
+            $alliance,
+            AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+        )) {
             throw new AccessViolationException();
         }
 

@@ -8,7 +8,7 @@ use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
-use Stu\Orm\Repository\UserRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class AcceptUserRelation implements ActionControllerInterface
 {
@@ -16,7 +16,7 @@ final class AcceptUserRelation implements ActionControllerInterface
 
     public function __construct(
         private readonly UserRelationRequestInterface $userRelationRequest,
-        private readonly UserRelationRepositoryInterface $userRelationRepository,
+        private readonly RelationRepositoryInterface $userRelationRepository,
         private readonly UserRelationManagerInterface $userRelationManager
     ) {}
 

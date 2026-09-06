@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Lib;
 
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
 
 interface AllianceUiFactoryInterface
@@ -14,7 +14,7 @@ interface AllianceUiFactoryInterface
     public function createManagementListItem(
         Alliance $alliance,
         User $user,
-        int $currentUserId,
+        int $currentUserId
     ): ManagementListItem;
 
     public function createAllianceListItem(
@@ -28,6 +28,6 @@ interface AllianceUiFactoryInterface
 
     public function createAllianceRelationWrapper(
         Alliance $alliance,
-        AllianceRelation $allianceRelation
+        Relation $allianceRelation
     ): AllianceRelationWrapper;
 }

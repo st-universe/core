@@ -6,14 +6,14 @@ namespace Stu\Module\Alliance\View\ShowRelationText;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class ShowRelationText implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_RELATION_TEXT';
 
     public function __construct(
-        private AllianceRelationRepositoryInterface $allianceRelationRepository,
+        private RelationRepositoryInterface $allianceRelationRepository,
         private ShowRelationTextRequestInterface $showRelationTextRequest
     ) {}
 
