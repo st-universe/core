@@ -26,6 +26,16 @@ final class DeclineUserRelation implements ActionControllerInterface
         $game->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
 
+        if ($relation !== null && !$relation->isPending()) {
+            if (!$this->userRelationManager->declinePermissionChange($game->getUser(), $relation)) {
+                $game->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
+                return;
+            }
+
+            $game->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
+            return;
+        }
+
         if ($relation === null || !$this->userRelationManager->decline($game->getUser(), $relation)) {
             $game->getInfo()->addInformation('Das Angebot kann nicht abgelehnt werden');
             return;

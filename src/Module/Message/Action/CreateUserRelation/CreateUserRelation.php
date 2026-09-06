@@ -33,28 +33,37 @@ final class CreateUserRelation implements ActionControllerInterface
         $user = $game->getUser();
         $source = $this->userRelationManager->getRepresentedParty($user);
         if ($source === null) {
-            $game->getInfo()->addInformation('Du hast keine Berechtigung, Abkommen für Deine Allianz zu erstellen');
+            $game->getInfo()->addInformation(
+                'Du hast keine Berechtigung, Abkommen für Deine Allianz zu erstellen'
+            );
             return;
         }
 
         $type = AllianceRelationTypeEnum::tryFrom($this->createUserRelationRequest->getRelationType());
-        if (
-            $type === null
-            || $type === AllianceRelationTypeEnum::PEACE
-        ) {
+        if ($type === null || $type === AllianceRelationTypeEnum::PEACE) {
             $game->getInfo()->addInformation('Ungültiger Abkommenstyp');
             return;
         }
 
         $target = $this->getTarget($source instanceof Alliance);
         if ($target === null) {
-            $game->getInfo()->addInformation('Die gewählte Vertragspartei existiert nicht oder kann kein Abkommen schließen');
+            $game->getInfo()->addInformation(
+                'Die gewählte Vertragspartei existiert nicht oder kann kein Abkommen schließen'
+            );
             return;
         }
 
-        $relation = $this->userRelationManager->create($user, $source, $target, $type);
+        $relation = $this->userRelationManager->create(
+            $user,
+            $source,
+            $target,
+            $type,
+            $this->createUserRelationRequest->getPermissions()
+        );
         if ($relation === null) {
-            $game->getInfo()->addInformation('Das Abkommen kann nicht erstellt werden oder ist bereits vorhanden');
+            $game->getInfo()->addInformation(
+                'Das Abkommen kann nicht erstellt werden oder ist bereits vorhanden'
+            );
             return;
         }
 

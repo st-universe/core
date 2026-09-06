@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -20,6 +21,7 @@ final class CancelOffer implements ActionControllerInterface
     public function __construct(
         private CancelOfferRequestInterface $cancelOfferRequest,
         private RelationRepositoryInterface $allianceRelationRepository,
+        private UserRelationManagerInterface $userRelationManager,
         private AllianceJobManagerInterface $allianceJobManager,
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
@@ -37,6 +39,16 @@ final class CancelOffer implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
+
+        if ($relation !== null && !$relation->isPending()) {
+            if (!$this->userRelationManager->cancelPermissionChange($user, $relation)) {
+                $game->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
+                return;
+            }
+
+            $game->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
+            return;
+        }
 
         if (
             !$this->allianceJobManager->hasUserPermission(

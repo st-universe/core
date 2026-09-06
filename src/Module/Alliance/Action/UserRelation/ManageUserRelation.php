@@ -42,6 +42,10 @@ final class ManageUserRelation implements ActionControllerInterface
             'cancel' => $this->cancelRelation($game),
             'decline' => $this->declineRelation($game),
             'peace' => $this->suggestPeace($game),
+            'update' => $this->updatePermissions($game),
+            'accept_permissions' => $this->acceptPermissions($game),
+            'decline_permissions' => $this->declinePermissions($game),
+            'cancel_permissions' => $this->cancelPermissions($game),
             default => $game->getInfo()->addInformation('Ungültige Aktion')
         };
     }
@@ -72,7 +76,13 @@ final class ManageUserRelation implements ActionControllerInterface
             return;
         }
 
-        $relation = $this->userRelationManager->create($user, $alliance, $recipient, $type);
+        $relation = $this->userRelationManager->create(
+            $user,
+            $alliance,
+            $recipient,
+            $type,
+            $this->manageUserRelationRequest->getPermissions()
+        );
         if ($relation === null) {
             $game->getInfo()->addInformation(
                 'Das Abkommen kann nicht erstellt werden oder ist bereits vorhanden'
@@ -129,5 +139,65 @@ final class ManageUserRelation implements ActionControllerInterface
         }
 
         $game->getInfo()->addInformation('Der Frieden wurde angeboten');
+    }
+
+    private function acceptPermissions(GameControllerInterface $game): void
+    {
+        $relation = $this->userRelationRepository->find($this->manageUserRelationRequest->getRelationId());
+        if (
+            $relation === null
+            || !$this->userRelationManager->acceptPermissionChange($game->getUser(), $relation)
+        ) {
+            $game->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
+            return;
+        }
+
+        $game->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
+    }
+
+    private function declinePermissions(GameControllerInterface $game): void
+    {
+        $relation = $this->userRelationRepository->find($this->manageUserRelationRequest->getRelationId());
+        if (
+            $relation === null
+            || !$this->userRelationManager->declinePermissionChange($game->getUser(), $relation)
+        ) {
+            $game->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
+            return;
+        }
+
+        $game->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
+    }
+
+    private function cancelPermissions(GameControllerInterface $game): void
+    {
+        $relation = $this->userRelationRepository->find($this->manageUserRelationRequest->getRelationId());
+        if (
+            $relation === null
+            || !$this->userRelationManager->cancelPermissionChange($game->getUser(), $relation)
+        ) {
+            $game->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
+            return;
+        }
+
+        $game->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
+    }
+
+    private function updatePermissions(GameControllerInterface $game): void
+    {
+        $relation = $this->userRelationRepository->find($this->manageUserRelationRequest->getRelationId());
+        if (
+            $relation === null
+            || !$this->userRelationManager->proposePermissionChange(
+                $game->getUser(),
+                $relation,
+                $this->manageUserRelationRequest->getPermissions()
+            )
+        ) {
+            $game->getInfo()->addInformation('Die Rechte können nicht geändert werden');
+            return;
+        }
+
+        $game->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
     }
 }

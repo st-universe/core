@@ -26,6 +26,16 @@ final class CancelUserRelation implements ActionControllerInterface
         $game->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
 
+        if ($relation !== null && !$relation->isPending()) {
+            if (!$this->userRelationManager->cancelPermissionChange($game->getUser(), $relation)) {
+                $game->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
+                return;
+            }
+
+            $game->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
+            return;
+        }
+
         if ($relation === null || !$this->userRelationManager->cancel($game->getUser(), $relation)) {
             $game->getInfo()->addInformation('Das Abkommen kann nicht aufgelöst werden');
             return;

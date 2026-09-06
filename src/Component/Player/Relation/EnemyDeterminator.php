@@ -12,57 +12,26 @@ use Stu\Orm\Repository\RelationRepositoryInterface;
 class EnemyDeterminator
 {
     public function __construct(
-        private RelationRepositoryInterface $allianceRelationRepository,
-        private ContactRepositoryInterface $contactRepository,
-        private ?RelationRepositoryInterface $userRelationRepository = null
+        private RelationRepositoryInterface $relationRepository,
+        private ContactRepositoryInterface $contactRepository
     ) {}
 
     public function isEnemy(User $user, User $otherUser): PlayerRelationTypeEnum
     {
-        $alliance = $user->getAlliance();
+        $party = $user->getAlliance() ?? $user;
+        $otherParty = $otherUser->getAlliance() ?? $otherUser;
 
-        $otherUserAlliance = $otherUser->getAlliance();
+        if ($party::class === $otherParty::class && $party->getId() === $otherParty->getId()) {
+            return PlayerRelationTypeEnum::NONE;
+        }
 
-        if ($alliance !== null && $otherUserAlliance !== null) {
-            if ($alliance->getId() === $otherUserAlliance->getId()) {
-                return PlayerRelationTypeEnum::NONE;
-            }
-
-            $result = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
-                [
-                    AllianceRelationTypeEnum::WAR->value
-                ],
-                $otherUserAlliance->getId(),
-                $alliance->getId()
-            );
-
-            if ($result !== null) {
-                return PlayerRelationTypeEnum::ALLY;
-            }
-        } elseif ($this->userRelationRepository !== null) {
-            $result = $alliance !== null
-                ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
-                    [AllianceRelationTypeEnum::WAR->value],
-                    $alliance,
-                    $otherUser
-                )
-                : (
-                    $otherUserAlliance !== null
-                        ? $this->userRelationRepository->getActiveByAllianceAndUserPair(
-                            [AllianceRelationTypeEnum::WAR->value],
-                            $otherUserAlliance,
-                            $user
-                        )
-                        : $this->userRelationRepository->getActiveByUserPair(
-                            [AllianceRelationTypeEnum::WAR->value],
-                            $user,
-                            $otherUser
-                        )
-                );
-
-            if ($result !== null) {
-                return PlayerRelationTypeEnum::ALLY;
-            }
+        $relation = $this->relationRepository->getActiveByParties(
+            [AllianceRelationTypeEnum::WAR->value],
+            $party,
+            $otherParty
+        );
+        if ($relation !== null) {
+            return PlayerRelationTypeEnum::ALLY;
         }
 
         $contact = $this->contactRepository->getByUserAndOpponent(

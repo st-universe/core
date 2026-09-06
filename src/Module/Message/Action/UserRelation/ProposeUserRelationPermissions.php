@@ -10,9 +10,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
-final class AcceptUserRelation implements ActionControllerInterface
+final class ProposeUserRelationPermissions implements ActionControllerInterface
 {
-    public const string ACTION_IDENTIFIER = 'B_ACCEPT_USER_RELATION';
+    public const string ACTION_IDENTIFIER = 'B_PROPOSE_USER_RELATION_PERMISSIONS';
 
     public function __construct(
         private readonly UserRelationRequestInterface $userRelationRequest,
@@ -25,23 +25,19 @@ final class AcceptUserRelation implements ActionControllerInterface
     {
         $game->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
-
-        if ($relation !== null && !$relation->isPending()) {
-            if (!$this->userRelationManager->acceptPermissionChange($game->getUser(), $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
-                return;
-            }
-
-            $game->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
+        if (
+            $relation === null
+            || !$this->userRelationManager->proposePermissionChange(
+                $game->getUser(),
+                $relation,
+                $this->userRelationRequest->getPermissions()
+            )
+        ) {
+            $game->getInfo()->addInformation('Die Rechte können nicht geändert werden');
             return;
         }
 
-        if ($relation === null || !$this->userRelationManager->accept($game->getUser(), $relation)) {
-            $game->getInfo()->addInformation('Das Angebot kann nicht angenommen werden');
-            return;
-        }
-
-        $game->getInfo()->addInformation('Das Angebot wurde angenommen');
+        $game->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
     }
 
     #[\Override]

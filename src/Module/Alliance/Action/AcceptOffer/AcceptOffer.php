@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -22,6 +23,7 @@ final class AcceptOffer implements ActionControllerInterface
         private AcceptOfferRequestInterface $acceptOfferRequest,
         private EntryCreatorInterface $entryCreator,
         private RelationRepositoryInterface $allianceRelationRepository,
+        private UserRelationManagerInterface $userRelationManager,
         private AllianceActionManagerInterface $allianceActionManager,
         private AllianceJobManagerInterface $allianceJobManager
     ) {}
@@ -40,6 +42,16 @@ final class AcceptOffer implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
+
+        if ($relation !== null && !$relation->isPending()) {
+            if (!$this->userRelationManager->acceptPermissionChange($user, $relation)) {
+                $game->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
+                return;
+            }
+
+            $game->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
+            return;
+        }
 
         if (
             !$this->allianceJobManager->hasUserPermission(

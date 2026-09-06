@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -11,7 +13,9 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\ContactRepository;
@@ -42,12 +46,15 @@ class Contact
     #[Column(type: 'integer')]
     private int $date = 0;
 
+    #[OneToMany(targetEntity: RelationPermission::class, mappedBy: 'contact')]
+    private Collection $relationPermissions;
+
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
     #[ManyToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[JoinColumn(name: 'recipient', referencedColumnName: 'id', nullable: false)]
     private User $opponent;
 
     public function getId(): int
@@ -96,6 +103,41 @@ class Contact
     {
         $this->date = $date;
         return $this;
+    }
+
+    public function __construct()
+    {
+        $this->relationPermissions = new ArrayCollection();
+    }
+
+    public function getRelationPermissions(): Collection
+    {
+        return $this->relationPermissions;
+    }
+
+    public function addRelationPermission(RelationPermission $permission): self
+    {
+        if (!$this->relationPermissions->contains($permission)) {
+            $this->relationPermissions->add($permission);
+        }
+
+        return $this;
+    }
+
+    public function hasPermissions(): bool
+    {
+        return !$this->relationPermissions->isEmpty();
+    }
+
+    public function hasPermission(RelationPermissionEnum $permission): bool
+    {
+        foreach ($this->relationPermissions as $relationPermission) {
+            if ($relationPermission->getPermission() === $permission) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getRecipient(): User

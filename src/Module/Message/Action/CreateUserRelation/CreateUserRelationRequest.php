@@ -27,4 +27,10 @@ final class CreateUserRelationRequest implements CreateUserRelationRequestInterf
     {
         return $this->parameter('relation_type')->int()->required();
     }
+
+    #[\Override]
+    public function getPermissions(): int
+    {
+        return $this->parameter('relation_permissions')->int()->defaultsTo(0);
+    }
 }

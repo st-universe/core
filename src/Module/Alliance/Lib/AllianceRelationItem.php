@@ -36,4 +36,10 @@ final class AllianceRelationItem implements AllianceRelationItemInterface
     {
         return $this->allianceRelation->getAlliance() === $this->currentUser->getAlliance();
     }
+
+    #[\Override]
+    public function permissionChangeIsOfferedByCurrentParty(): bool
+    {
+        return $this->allianceRelation->isPermissionChangeOfferedBy($this->currentUser);
+    }
 }

@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\View\Relations;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
@@ -87,6 +88,7 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
+        $game->setTemplateVar('RELATION_PERMISSIONS', RelationPermissionEnum::cases());
         $game->setTemplateVar('USER_RELATIONS', $this->userRelationRepository->getByUserAndAlliance(
             $user,
             $alliance

@@ -9,6 +9,7 @@ use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 /**
@@ -18,6 +19,7 @@ final class DiplomaticRelationProposalCreationSubscriber
 {
     public function __construct(
         private RelationRepositoryInterface $allianceRelationRepository,
+        private RelationPermissionRepositoryInterface $relationPermissionRepository,
         private AllianceActionManagerInterface $allianceActionManager
     ) {}
 
@@ -57,7 +59,9 @@ final class DiplomaticRelationProposalCreationSubscriber
         $this->createAllianceRelation(
             $alliance,
             $counterpart,
-            $event->getRelationType()
+            $event->getRelationType(),
+            0,
+            $event->getPermissions()
         );
 
         $this->allianceActionManager->sendMessage(
@@ -73,7 +77,8 @@ final class DiplomaticRelationProposalCreationSubscriber
         Alliance $alliance,
         Alliance $counterpart,
         AllianceRelationTypeEnum $relationType,
-        int $date = 0
+        int $date = 0,
+        int $permissions = 0
     ): void {
         $relation = $this->allianceRelationRepository
             ->prototype()
@@ -83,5 +88,6 @@ final class DiplomaticRelationProposalCreationSubscriber
             ->setDate($date);
 
         $this->allianceRelationRepository->save($relation);
+        $this->relationPermissionRepository->replaceForRelation($relation, $permissions, $relationType);
     }
 }

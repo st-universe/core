@@ -7,13 +7,16 @@ namespace Stu\Module\Alliance\Action\CreateRelation;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
@@ -23,6 +26,8 @@ final class CreateRelation implements ActionControllerInterface
     public function __construct(
         private readonly CreateRelationRequestInterface $createRelationRequest,
         private readonly RelationRepositoryInterface $allianceRelationRepository,
+        private readonly RelationPermissionRepositoryInterface $relationPermissionRepository,
+        private readonly UserRelationManagerInterface $userRelationManager,
         private readonly AllianceJobManagerInterface $allianceJobManager,
         private readonly AllianceRepositoryInterface $allianceRepository,
         private readonly EventDispatcherInterface $eventDispatcher
@@ -50,12 +55,14 @@ final class CreateRelation implements ActionControllerInterface
 
         $counterpartId = $this->createRelationRequest->getCounterpartId();
         $typeId = $this->createRelationRequest->getRelationType();
+        $permissions = $this->createRelationRequest->getPermissions();
 
         $counterpart = $this->allianceRepository->find($counterpartId);
         $relationType = AllianceRelationTypeEnum::tryFrom($typeId);
         if ($counterpart === null || $alliance->getId() === $counterpart->getId() || $relationType === null) {
             return;
         }
+        $permissions = RelationPermissionEnum::sanitize($permissions, $relationType);
 
         $cnt = $this->allianceRelationRepository->getPendingCountByAlliances($allianceId, $counterpartId);
         if ($cnt >= 2) {
@@ -63,19 +70,28 @@ final class CreateRelation implements ActionControllerInterface
             return;
         }
 
-        // check if a relation exists
         $existingRelations = $this->allianceRelationRepository->getByAlliancePair(
             $allianceId,
             $counterpartId
         );
 
-        // Iteriere durch die gefundenen Einträge
         foreach ($existingRelations as $existingRelation) {
-            $existingRelationType = $existingRelation->getType();
+            if ($existingRelation->getType() !== $relationType) {
+                continue;
+            }
 
-            if ($existingRelationType === $relationType) {
+            if ($existingRelation->isPending()) {
                 return;
             }
+
+            if ($this->relationPermissionRepository->hasSamePermissions($existingRelation, $permissions)) {
+                return;
+            }
+
+            if ($this->userRelationManager->proposePermissionChange($user, $existingRelation, $permissions)) {
+                $game->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
+            }
+            return;
         }
 
         if ($relationType === AllianceRelationTypeEnum::WAR) {
@@ -92,7 +108,8 @@ final class CreateRelation implements ActionControllerInterface
             $this->eventDispatcher->dispatch(new DiplomaticRelationProposedEvent(
                 $alliance,
                 $counterpart,
-                $relationType
+                $relationType,
+                $permissions
             ));
 
             $game->getInfo()->addInformation('Das Abkommen wurde angeboten');

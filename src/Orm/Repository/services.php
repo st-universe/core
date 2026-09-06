@@ -110,6 +110,7 @@ use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\RegistrationReferralCode;
 use Stu\Orm\Entity\Relation;
+use Stu\Orm\Entity\RelationPermission;
 use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
@@ -249,6 +250,8 @@ return [
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgressModule::class),
     ContactRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Contact::class),
+    RelationPermissionRepositoryInterface::class =>
+        fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(RelationPermission::class),
     ColonyClassDepositRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class),
     ColonyClassRestrictionRepositoryInterface::class =>

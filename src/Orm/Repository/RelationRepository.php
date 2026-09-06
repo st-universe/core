@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Relation;
+use Stu\Orm\Entity\RelationPermission;
 use Stu\Orm\Entity\User;
 
 final class RelationRepository extends EntityRepository implements RelationRepositoryInterface
@@ -24,6 +25,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
 
     public function delete(Relation $relation): void
     {
+        $this->deletePermissionsByRelations([$relation]);
         $this->getEntityManager()->remove($relation);
     }
 
@@ -51,6 +53,14 @@ final class RelationRepository extends EntityRepository implements RelationRepos
     {
         return $this->query(
             'r.date > 0 AND r.sourceAlliance IS NOT NULL AND r.recipientAlliance IS NOT NULL ORDER BY r.id ASC'
+        )->getResult();
+    }
+
+    public function getActiveByTypes(array $typeIds): array
+    {
+        return $this->query(
+            'r.date > 0 AND r.type IN (:typeIds) ORDER BY r.id ASC',
+            ['typeIds' => $typeIds]
         )->getResult();
     }
 
@@ -95,6 +105,24 @@ final class RelationRepository extends EntityRepository implements RelationRepos
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?Relation
     {
         return $this->getActiveByTypeAndAlliancePair([], $allianceId, $opponentId);
+    }
+
+    public function getActiveByParties(
+        array $typeIds,
+        User|Alliance $firstParty,
+        User|Alliance $secondParty
+    ): ?Relation {
+        $firstSourceField = $this->getPartyField($firstParty, 'source');
+        $firstRecipientField = $this->getPartyField($firstParty, 'recipient');
+        $secondSourceField = $this->getPartyField($secondParty, 'source');
+        $secondRecipientField = $this->getPartyField($secondParty, 'recipient');
+
+        return $this->getActiveRelation(
+            $typeIds,
+            "(r.$firstSourceField = :firstParty AND r.$secondRecipientField = :secondParty)"
+            . " OR (r.$secondSourceField = :secondParty AND r.$firstRecipientField = :firstParty)",
+            ['firstParty' => $firstParty, 'secondParty' => $secondParty]
+        );
     }
 
     public function getActiveByTypeAndAlliancePair(
@@ -161,12 +189,23 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         );
     }
 
+    private function getPartyField(User|Alliance $party, string $position): string
+    {
+        if ($party instanceof User) {
+            return $position === 'source' ? 'sourceUser' : 'recipientUser';
+        }
+
+        return $position === 'source' ? 'sourceAlliance' : 'recipientAlliance';
+    }
+
     private function getActiveRelation(array $typeIds, string $where, array $parameters): ?Relation
     {
-        return $this->query("r.date > 0 AND r.type IN (:typeIds) AND ($where)", [
-            ...$parameters,
-            'typeIds' => $typeIds
-        ])->getOneOrNullResult();
+        if ($typeIds !== []) {
+            $where = "r.type IN (:typeIds) AND ($where)";
+            $parameters['typeIds'] = $typeIds;
+        }
+
+        return $this->query("r.date > 0 AND ($where)", $parameters)->getOneOrNullResult();
     }
 
     private function query(string $where, array $parameters = []): \Doctrine\ORM\Query
@@ -181,12 +220,30 @@ final class RelationRepository extends EntityRepository implements RelationRepos
 
     private function deleteBy(string $where, array $parameters): void
     {
+        $relations = $this->query($where, $parameters)->getResult();
+        $this->deletePermissionsByRelations($relations);
+
         $this
             ->getEntityManager()
             ->createQuery(
                 sprintf('DELETE FROM %s r WHERE %s', Relation::class, $where)
             )
             ->setParameters($parameters)
+            ->execute();
+    }
+
+    private function deletePermissionsByRelations(array $relations): void
+    {
+        if ($relations === []) {
+            return;
+        }
+
+        $this
+            ->getEntityManager()
+            ->createQuery(
+                sprintf('DELETE FROM %s rp WHERE rp.relation IN (:relations)', RelationPermission::class)
+            )
+            ->setParameter('relations', $relations)
             ->execute();
     }
 }

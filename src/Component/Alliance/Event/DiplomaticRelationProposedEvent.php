@@ -15,7 +15,8 @@ class DiplomaticRelationProposedEvent
     public function __construct(
         private readonly Alliance $alliance,
         private readonly Alliance $counterpart,
-        private readonly AllianceRelationTypeEnum $relationType
+        private readonly AllianceRelationTypeEnum $relationType,
+        private readonly int $permissions = 0
     ) {}
 
     /**
@@ -40,5 +41,10 @@ class DiplomaticRelationProposedEvent
     public function getRelationType(): AllianceRelationTypeEnum
     {
         return $this->relationType;
+    }
+
+    public function getPermissions(): int
+    {
+        return $this->permissions;
     }
 }

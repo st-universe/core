@@ -7,4 +7,6 @@ namespace Stu\Module\Message\Action\UserRelation;
 interface UserRelationRequestInterface
 {
     public function getRelationId(): int;
+
+    public function getPermissions(): int;
 }

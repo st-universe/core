@@ -9,12 +9,12 @@ use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Message\Action\AddContact\AddContact;
 use Stu\Module\Message\Action\AddContact\AddContactRequest;
 use Stu\Module\Message\Action\AddContact\AddContactRequestInterface;
-use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelation;
-use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequest;
-use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequestInterface;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategory;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategoryRequest;
 use Stu\Module\Message\Action\AddPmCategory\AddPmCategoryRequestInterface;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelation;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequest;
+use Stu\Module\Message\Action\CreateUserRelation\CreateUserRelationRequestInterface;
 use Stu\Module\Message\Action\DeleteAllContacts\DeleteAllContacts;
 use Stu\Module\Message\Action\DeleteAllIgnores\DeleteAllIgnores;
 use Stu\Module\Message\Action\DeleteAllPms\DeleteAllPms;
@@ -53,9 +53,13 @@ use Stu\Module\Message\Action\SortPmCategories\SortPmCategoriesRequestInterface;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactMode;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequest;
 use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequestInterface;
+use Stu\Module\Message\Action\UpdateContactPermissions\UpdateContactPermissions;
+use Stu\Module\Message\Action\UpdateContactPermissions\UpdateContactPermissionsRequest;
+use Stu\Module\Message\Action\UpdateContactPermissions\UpdateContactPermissionsRequestInterface;
 use Stu\Module\Message\Action\UserRelation\AcceptUserRelation;
 use Stu\Module\Message\Action\UserRelation\CancelUserRelation;
 use Stu\Module\Message\Action\UserRelation\DeclineUserRelation;
+use Stu\Module\Message\Action\UserRelation\ProposeUserRelationPermissions;
 use Stu\Module\Message\Action\UserRelation\SuggestUserRelationPeace;
 use Stu\Module\Message\Action\UserRelation\UserRelationRequest;
 use Stu\Module\Message\Action\UserRelation\UserRelationRequestInterface;
@@ -104,6 +108,7 @@ return [
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),
     SwitchContactModeRequestInterface::class => autowire(SwitchContactModeRequest::class),
+    UpdateContactPermissionsRequestInterface::class => autowire(UpdateContactPermissionsRequest::class),
     AddContactRequestInterface::class => autowire(AddContactRequest::class),
     CreateUserRelationRequestInterface::class => autowire(CreateUserRelationRequest::class),
     UserRelationRequestInterface::class => autowire(UserRelationRequest::class),
@@ -123,11 +128,13 @@ return [
     SendWelcomeMessageInterface::class => autowire(SendWelcomeMessage::class),
     'PM_ACTIONS' => [
         SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
+        UpdateContactPermissions::ACTION_IDENTIFIER => autowire(UpdateContactPermissions::class),
         AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
         CreateUserRelation::ACTION_IDENTIFIER => autowire(CreateUserRelation::class),
         AcceptUserRelation::ACTION_IDENTIFIER => autowire(AcceptUserRelation::class),
         CancelUserRelation::ACTION_IDENTIFIER => autowire(CancelUserRelation::class),
         DeclineUserRelation::ACTION_IDENTIFIER => autowire(DeclineUserRelation::class),
+        ProposeUserRelationPermissions::ACTION_IDENTIFIER => autowire(ProposeUserRelationPermissions::class),
         SuggestUserRelationPeace::ACTION_IDENTIFIER => autowire(SuggestUserRelationPeace::class),
         DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
         DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
@@ -143,7 +150,7 @@ return [
         MarkPmsRead::ACTION_IDENTIFIER => autowire(MarkPmsRead::class),
         MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
         WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
-        EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
+        EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class)
     ],
     'PM_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -158,7 +165,7 @@ return [
         ShowIgnore::VIEW_IDENTIFIER => autowire(ShowIgnore::class),
         ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
         ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
-        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
-    PrivateMessageUiFactoryInterface::class => autowire(PrivateMessageUiFactory::class),
+    PrivateMessageUiFactoryInterface::class => autowire(PrivateMessageUiFactory::class)
 ];

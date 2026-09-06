@@ -25,6 +25,8 @@ interface RelationRepositoryInterface extends ObjectRepository
 
     public function getActive(): array;
 
+    public function getActiveByTypes(array $typeIds): array;
+
     public function getByAlliance(int $allianceId): array;
 
     public function getByAlliancePair(int $allianceId, int $opponentId): array;
@@ -34,6 +36,12 @@ interface RelationRepositoryInterface extends ObjectRepository
     public function getActiveByAlliance(int $allianceId): array;
 
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?Relation;
+
+    public function getActiveByParties(
+        array $typeIds,
+        User|Alliance $firstParty,
+        User|Alliance $secondParty
+    ): ?Relation;
 
     public function getActiveByTypeAndAlliancePair(
         array $typeIds,

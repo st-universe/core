@@ -14,4 +14,6 @@ interface AllianceRelationItemInterface
     public function getOpponent(): Alliance;
 
     public function offerIsSend(): bool;
+
+    public function permissionChangeIsOfferedByCurrentParty(): bool;
 }

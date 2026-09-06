@@ -82,7 +82,74 @@ function initializeRelationTargetSelection() {
 	}
 }
 
-document.addEventListener('DOMContentLoaded', initializeRelationTargetSelection);
+function initializeRelationPermissionSelection() {
+	document.querySelectorAll('[data-relation-permission-selector]').forEach((relationType) => {
+		if (relationType.dataset.initialized === '1') {
+			return;
+		}
+
+		const permissionField = document.getElementById(relationType.dataset.relationPermissionSelector);
+		const permissionContainer = document.querySelector(
+			`[data-relation-permissions="${relationType.dataset.relationPermissionSelector}"]`
+		);
+		const form = relationType.closest('form');
+		if (permissionField === null || permissionContainer === null || form === null) {
+			return;
+		}
+
+		const updatePermissions = () => {
+			const relationTypeId = relationType.value;
+			let hasVisiblePermission = false;
+			permissionContainer.querySelectorAll('[data-relation-permission-types]').forEach((label) => {
+				const isAvailable = label.dataset.relationPermissionTypes.split(',').includes(relationTypeId);
+				label.style.display = isAvailable ? '' : 'none';
+				const checkbox = label.querySelector('[data-relation-permission]');
+				checkbox.disabled = !isAvailable;
+				if (!isAvailable) {
+					checkbox.checked = false;
+				}
+				hasVisiblePermission = hasVisiblePermission || isAvailable;
+			});
+			permissionContainer.style.display = hasVisiblePermission ? '' : 'none';
+		};
+
+		form.addEventListener('submit', () => {
+			let permissions = 0;
+			permissionContainer.querySelectorAll('[data-relation-permission]:checked').forEach((checkbox) => {
+				permissions |= Number(checkbox.value);
+			});
+			permissionField.value = permissions.toString();
+		});
+		relationType.addEventListener('change', updatePermissions);
+		relationType.dataset.initialized = '1';
+		updatePermissions();
+	});
+
+	document.querySelectorAll('[data-static-relation-permission-form]').forEach((form) => {
+		if (form.dataset.initialized === '1') {
+			return;
+		}
+
+		const permissionField = document.getElementById(form.dataset.staticRelationPermissionForm);
+		if (permissionField === null) {
+			return;
+		}
+
+		form.addEventListener('submit', () => {
+			let permissions = 0;
+			form.querySelectorAll('[data-relation-permission]:checked').forEach((checkbox) => {
+				permissions |= Number(checkbox.value);
+			});
+			permissionField.value = permissions.toString();
+		});
+		form.dataset.initialized = '1';
+	});
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	initializeRelationTargetSelection();
+	initializeRelationPermissionSelection();
+});
 
 let newJobCounter = 0;
 

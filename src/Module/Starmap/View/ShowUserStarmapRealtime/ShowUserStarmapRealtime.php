@@ -10,6 +10,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Realtime\RealtimeChannels;
 use Stu\Component\Realtime\RealtimeRedisFactory;
 use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
@@ -94,10 +95,23 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         $coverage = $this->buildSensorCoverage($layer, $ranges);
         $this->cacheCoverage($user->getId(), $layer->getId(), $coverage);
 
-        $spacecrafts = $ranges === []
+        $sensorSpacecrafts = $ranges === []
             ? []
             : $this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId());
         $relationContext = $this->getRelationContext($user);
+        $sharedSpacecrafts =
+            $relationContext['sharedUserIds'] === [] && $relationContext['sharedAllianceIds'] === []
+                ? []
+                : $this->spacecraftRepository->getStarmapRealtimeSharedSpacecrafts(
+                    $layer->getId(),
+                    array_keys($relationContext['sharedUserIds']),
+                    array_keys($relationContext['sharedAllianceIds'])
+                );
+        $spacecrafts = array_values(array_column(
+            [...$sensorSpacecrafts, ...$sharedSpacecrafts],
+            null,
+            'id'
+        ));
         $spacecrafts = array_values(array_filter(array_map(
             fn(array $row): ?array => $this->normalizeVisibleSpacecraft(
                 $row,
@@ -387,9 +401,13 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     ): ?array {
         $key = $this->fieldKey((int) $row['x'], (int) $row['y']);
         $isOwn = (int) $row['user_id'] === $user->getId();
+        $allianceId = $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null;
+        $isShared =
+            isset($relationContext['sharedUserIds'][(int) $row['user_id']])
+            || $allianceId !== null && isset($relationContext['sharedAllianceIds'][$allianceId]);
         $isCloaked = (bool) $row['is_cloaked'];
 
-        if (!$isOwn) {
+        if (!$isOwn && !$isShared) {
             if ($isCloaked) {
                 if (!isset($coverage['tachyonKeys'][$key])) {
                     return null;
@@ -415,7 +433,11 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     ): array {
         $alertState = (int) $row['alert_state'];
         $relationship = $this->getSpacecraftRelationship($row, $user, $canSeeAllianceShips, $relationContext);
-        if ((bool) $row['is_cloaked'] && !$relationship['hasDetails']) {
+        if (
+            (bool) $row['is_cloaked']
+            && !$relationship['hasDetails']
+            && !$relationship['hasSharedLiveMapPosition']
+        ) {
             return $this->normalizeCloakedSignature($row, $relationship);
         }
 
@@ -449,7 +471,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'isFriendly' => $relationship['isFriendly'],
             'isEnemy' => $relationship['isEnemy'],
             'hasDetails' => $relationship['hasDetails'],
-            'isSensorContact' => true
+            'isSensorContact' => !$relationship['hasSharedLiveMapPosition']
         ];
 
         if (!$relationship['hasDetails']) {
@@ -525,7 +547,9 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'friendlyUserIds' => array_keys($relationContext['friendlyUserIds']),
             'enemyUserIds' => array_keys($relationContext['enemyUserIds']),
             'friendlyAllianceIds' => array_keys($relationContext['friendlyAllianceIds']),
-            'enemyAllianceIds' => array_keys($relationContext['enemyAllianceIds'])
+            'enemyAllianceIds' => array_keys($relationContext['enemyAllianceIds']),
+            'sharedUserIds' => array_keys($relationContext['sharedUserIds']),
+            'sharedAllianceIds' => array_keys($relationContext['sharedAllianceIds'])
         ];
     }
 
@@ -546,9 +570,57 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             }
         }
 
+        $sharedUserIds = [];
+        foreach ($this->contactRepository->getByRecipient($user) as $contact) {
+            if ($contact->hasPermission(RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS)) {
+                $sharedUserIds[$contact->getUserId()] = true;
+            }
+        }
+
         $friendlyAllianceIds = [];
         $enemyAllianceIds = [];
+        $sharedAllianceIds = [];
         $alliance = $user->getAlliance();
+        foreach ($this->allianceRelationRepository->getByUserAndAlliance($user, $alliance) as $relation) {
+            if ($relation->isPending()) {
+                continue;
+            }
+
+            $sourceIsUser = $relation->getSourceUser()?->getId() === $user->getId();
+            $sourceIsAlliance =
+                $alliance !== null && $relation->getSourceAlliance()?->getId() === $alliance->getId();
+            $recipientIsUser = $relation->getRecipientUser()?->getId() === $user->getId();
+            $recipientIsAlliance =
+                $alliance !== null && $relation->getRecipientAlliance()?->getId() === $alliance->getId();
+            $isSource = $sourceIsUser || $sourceIsAlliance;
+            if (!$isSource && !$recipientIsUser && !$recipientIsAlliance) {
+                continue;
+            }
+
+            $counterpart = $isSource ? $relation->getRecipientParty() : $relation->getSourceParty();
+            if ($counterpart instanceof User) {
+                if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
+                    $enemyUserIds[$counterpart->getId()] = true;
+                }
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
+                    $friendlyUserIds[$counterpart->getId()] = true;
+                }
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS)) {
+                    $sharedUserIds[$counterpart->getId()] = true;
+                }
+                continue;
+            }
+
+            if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
+                $enemyAllianceIds[$counterpart->getId()] = true;
+            }
+            if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
+                $friendlyAllianceIds[$counterpart->getId()] = true;
+            }
+            if ($relation->hasPermissionFor($user, RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS)) {
+                $sharedAllianceIds[$counterpart->getId()] = true;
+            }
+        }
         if ($alliance !== null) {
             $ownAllianceId = $alliance->getId();
             $friendlyAllianceIds[$ownAllianceId] = true;
@@ -561,16 +633,11 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                 if ($relation->getType() === AllianceRelationTypeEnum::WAR) {
                     $enemyAllianceIds[$opponentId] = true;
                 }
-                if (in_array(
-                    $relation->getType(),
-                    [
-                        AllianceRelationTypeEnum::FRIENDS,
-                        AllianceRelationTypeEnum::ALLIED,
-                        AllianceRelationTypeEnum::VASSAL
-                    ],
-                    true
-                )) {
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::FRIENDLY)) {
                     $friendlyAllianceIds[$opponentId] = true;
+                }
+                if ($relation->hasPermissionFor($user, RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS)) {
+                    $sharedAllianceIds[$opponentId] = true;
                 }
             }
         }
@@ -579,7 +646,9 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'friendlyUserIds' => $friendlyUserIds,
             'enemyUserIds' => $enemyUserIds,
             'friendlyAllianceIds' => $friendlyAllianceIds,
-            'enemyAllianceIds' => $enemyAllianceIds
+            'enemyAllianceIds' => $enemyAllianceIds,
+            'sharedUserIds' => $sharedUserIds,
+            'sharedAllianceIds' => $sharedAllianceIds
         ];
     }
 
@@ -599,6 +668,9 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         $ownAllianceId = $user->getAlliance()?->getId();
         $allianceId = $row['alliance_id'] !== null ? (int) $row['alliance_id'] : null;
         $isOwnAlliance = $ownAllianceId !== null && $allianceId === $ownAllianceId;
+        $hasSharedLiveMapPosition =
+            isset($relationContext['sharedUserIds'][$ownerId])
+            || $allianceId !== null && isset($relationContext['sharedAllianceIds'][$allianceId]);
 
         $isFriendly =
             $isOwn
@@ -617,7 +689,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'isOwn' => $isOwn,
             'isFriendly' => $isFriendly,
             'isEnemy' => $isEnemy,
-            'hasDetails' => $isOwn || $canSeeAllianceShips && $isOwnAlliance
+            'hasDetails' => $isOwn || $canSeeAllianceShips && $isOwnAlliance,
+            'hasSharedLiveMapPosition' => $hasSharedLiveMapPosition
         ];
     }
 

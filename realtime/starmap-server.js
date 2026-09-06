@@ -76,6 +76,8 @@ async function handleConnection(ws, request) {
 		enemyUserIds: auth.enemyUserIds,
 		friendlyAllianceIds: auth.friendlyAllianceIds,
 		enemyAllianceIds: auth.enemyAllianceIds,
+		sharedUserIds: auth.sharedUserIds,
+		sharedAllianceIds: auth.sharedAllianceIds,
 		coverage: await loadCoverage(auth.userId, auth.layerId),
 		coverageLoadedAt: Date.now()
 	};
@@ -394,7 +396,7 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 
 function sanitizeSpacecraftForClient(client, spacecraft) {
 	const relationship = getSpacecraftRelationship(client, spacecraft);
-	if (spacecraft.isCloaked && !relationship.hasDetails) {
+	if (spacecraft.isCloaked && !relationship.hasDetails && !relationship.hasSharedLiveMapPosition) {
 		return sanitizeCloakedSignature(spacecraft, relationship);
 	}
 
@@ -458,6 +460,8 @@ function getSpacecraftRelationship(client, spacecraft) {
 	const allianceId = spacecraft.allianceId == null ? null : Number(spacecraft.allianceId);
 	const isOwn = ownerId === client.userId;
 	const isOwnAlliance = client.allianceId !== null && allianceId === client.allianceId;
+	const hasSharedLiveMapPosition = client.sharedUserIds.has(ownerId)
+		|| (allianceId !== null && client.sharedAllianceIds.has(allianceId));
 	const isFriendly = isOwn
 		|| isOwnAlliance
 		|| client.friendlyUserIds.has(ownerId)
@@ -472,7 +476,8 @@ function getSpacecraftRelationship(client, spacecraft) {
 		isOwn,
 		isFriendly,
 		isEnemy,
-		hasDetails: isOwn || (client.canSeeAllianceShips && isOwnAlliance)
+		hasDetails: isOwn || (client.canSeeAllianceShips && isOwnAlliance),
+		hasSharedLiveMapPosition
 	};
 }
 
@@ -502,7 +507,9 @@ function verifyToken(token) {
 		friendlyUserIds: toNumberSet(payload.friendlyUserIds),
 		enemyUserIds: toNumberSet(payload.enemyUserIds),
 		friendlyAllianceIds: toNumberSet(payload.friendlyAllianceIds),
-		enemyAllianceIds: toNumberSet(payload.enemyAllianceIds)
+		enemyAllianceIds: toNumberSet(payload.enemyAllianceIds),
+		sharedUserIds: toNumberSet(payload.sharedUserIds),
+		sharedAllianceIds: toNumberSet(payload.sharedAllianceIds)
 	};
 }
 

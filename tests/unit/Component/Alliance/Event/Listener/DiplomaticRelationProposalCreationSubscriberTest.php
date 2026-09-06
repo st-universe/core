@@ -7,17 +7,21 @@ namespace Stu\Component\Alliance\Event\Listener;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
+use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Alliance\Event\DiplomaticRelationProposedEvent;
 use Stu\Component\Alliance\Event\WarDeclaredEvent;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Relation;
+use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\StuTestCase;
 
 class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
 {
     private MockInterface&RelationRepositoryInterface $allianceRelationRepository;
+
+    private MockInterface&RelationPermissionRepositoryInterface $relationPermissionRepository;
 
     private MockInterface&AllianceActionManagerInterface $allianceActionManager;
 
@@ -27,10 +31,12 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
     protected function setUp(): void
     {
         $this->allianceRelationRepository = $this->mock(RelationRepositoryInterface::class);
+        $this->relationPermissionRepository = $this->mock(RelationPermissionRepositoryInterface::class);
         $this->allianceActionManager = $this->mock(AllianceActionManagerInterface::class);
 
         $this->subject = new DiplomaticRelationProposalCreationSubscriber(
             $this->allianceRelationRepository,
+            $this->relationPermissionRepository,
             $this->allianceActionManager
         );
     }
@@ -74,6 +80,10 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
         $relation->shouldReceive('setAlliance')->with($alliance)->once()->andReturnSelf();
         $relation->shouldReceive('setOpponent')->with($counterpart)->once()->andReturnSelf();
         $relation->shouldReceive('setType')->with(AllianceRelationTypeEnum::WAR)->once()->andReturnSelf();
+        $this->relationPermissionRepository
+            ->shouldReceive('replaceForRelation')
+            ->with($relation, 0, AllianceRelationTypeEnum::WAR)
+            ->once();
         $relation->shouldReceive('setDate')->with(Mockery::type('int'))->once()->andReturnSelf();
 
         $this->subject->onWarDeclaration($event);
@@ -89,10 +99,13 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
         $allianceName = 'some-name';
         $counterpartId = 666;
         $relationType = AllianceRelationTypeEnum::ALLIED;
+        $permissions =
+            RelationPermissionEnum::FRIENDLY->value | RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS->value;
 
         $event->shouldReceive('getAlliance')->withNoArgs()->once()->andReturn($alliance);
         $event->shouldReceive('getCounterpart')->withNoArgs()->once()->andReturn($counterpart);
         $event->shouldReceive('getRelationType')->withNoArgs()->once()->andReturn($relationType);
+        $event->shouldReceive('getPermissions')->withNoArgs()->once()->andReturn($permissions);
 
         $counterpart->shouldReceive('getId')->withNoArgs()->once()->andReturn($counterpartId);
 
@@ -119,6 +132,10 @@ class DiplomaticRelationProposalCreationSubscriberTest extends StuTestCase
         $relation->shouldReceive('setAlliance')->with($alliance)->once()->andReturnSelf();
         $relation->shouldReceive('setOpponent')->with($counterpart)->once()->andReturnSelf();
         $relation->shouldReceive('setType')->with($relationType)->once()->andReturnSelf();
+        $this->relationPermissionRepository
+            ->shouldReceive('replaceForRelation')
+            ->with($relation, $permissions, $relationType)
+            ->once();
         $relation->shouldReceive('setDate')->with(0)->once()->andReturnSelf();
 
         $this->subject->onRelationProposal($event);

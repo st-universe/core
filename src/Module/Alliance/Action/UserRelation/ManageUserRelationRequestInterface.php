@@ -13,4 +13,6 @@ interface ManageUserRelationRequestInterface
     public function getUserId(): int;
 
     public function getRelationType(): int;
+
+    public function getPermissions(): int;
 }
