@@ -15,7 +15,6 @@ use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Entity\AllianceMemberJob;
-use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyType;
@@ -178,7 +177,6 @@ use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserPirateRound;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserReferer;
-use Stu\Orm\Entity\UserRelation;
 use Stu\Orm\Entity\UserSetting;
 use Stu\Orm\Entity\UserTutorial;
 use Stu\Orm\Entity\Weapon;
@@ -203,8 +201,6 @@ return [
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceMemberJob::class),
     AllianceJobPermissionRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceJobPermission::class),
-    AllianceRelationRepositoryInterface::class =>
-        fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
     RelationRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Relation::class),
     AllianceSettingsRepositoryInterface::class =>
@@ -517,8 +513,6 @@ return [
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(User::class),
     UserLastActionRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserLastAction::class),
-    UserRelationRepositoryInterface::class =>
-        fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserRelation::class),
     UserIpTableRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class),
     UserInvitationRepositoryInterface::class =>
