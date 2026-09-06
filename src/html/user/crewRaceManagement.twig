@@ -13,7 +13,15 @@
         {% for crewRace in OWN_CREW_RACES %}
         <tr>
             <td>{{ crewRace.getDescription }}</td>
-            <td>{{ crewRace.getStatus }}</td>
+            <td>
+                {{ crewRace.getStatus }}
+                {% if crewRace.isRejected %}
+                <form action="options.php" method="post">
+                    <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
+                    <button class="button" type="submit" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Überarbeiten und erneut einreichen</button>
+                </form>
+                {% endif %}
+            </td>
             <td>{{ crewRace.getMaleRatio }} %</td>
             <td>{{ crewRace.isShared ? 'Mit anderen teilen' : 'Nur eigene Nutzung' }}</td>
             <td>
@@ -22,6 +30,9 @@
                 {% endfor %}
             </td>
         </tr>
+        {% if crewRace.isRejected and crewRace.getRejectionReason %}
+        <tr><td colspan="5"><strong>Ablehnungsgrund:</strong><div class="crew-race-reason">{{ crewRace.getRejectionReason }}</div></td></tr>
+        {% endif %}
         {% if crewRace.canEditDistribution %}
         <tr>
             <td colspan="5">
@@ -50,17 +61,21 @@
     </table>
     <br />
 
-    {% if CAN_CREATE_CREW_RACE %}
-    <form action="options.php" method="post" enctype="multipart/form-data">
+    {% if CAN_CREATE_CREW_RACE or EDIT_CREW_RACE %}
+    <form id="crew-race-form" action="options.php" method="post" enctype="multipart/form-data">
+        {% if EDIT_CREW_RACE %}<input type="hidden" name="crew_race_id" value="{{ EDIT_CREW_RACE.getId }}" />{% endif %}
         <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <tr>
-                <th colspan="2">Neue Crew-Rasse einreichen</th>
+                <th colspan="2">{{ EDIT_CREW_RACE ? 'Crew-Rasse überarbeiten und erneut einreichen' : 'Neue Crew-Rasse einreichen' }}</th>
             </tr>
-            {% if CREW_RACE_CREATION_REMAINING is not null %}
+            {% if CREW_RACE_CREATION_REMAINING is not null and not EDIT_CREW_RACE %}
             <tr>
                 <td colspan="2">Du kannst noch {{ CREW_RACE_CREATION_REMAINING }} eigene Crew-Rasse{% if CREW_RACE_CREATION_REMAINING != 1 %}n{% endif %} einreichen</td>
             </tr>
+            {% endif %}
+            {% if EDIT_CREW_RACE and EDIT_CREW_RACE.getRejectionReason %}
+            <tr><td>Ablehnungsgrund</td><td class="crew-race-reason">{{ EDIT_CREW_RACE.getRejectionReason }}</td></tr>
             {% endif %}
             <tr>
                 <td>Name</td>
@@ -80,6 +95,10 @@
             <tr>
                 <td>Zufallsrate</td>
                 <td><input class="text" type="number" name="crew_race_chance" min="1" max="100" value="{{ FORM_CREW_RACE_CHANCE }}" required="required" /><div>Legt fest, wie häufig diese Crew-Rasse im Verhältnis zu anderen Crew-Rassen erzeugt wird</div></td>
+            </tr>
+            <tr>
+                <td>Zivil</td>
+                <td><label><input type="checkbox" name="crew_race_civil" value="1"{% if FORM_CREW_RACE_CIVIL %} checked="checked"{% endif %} />Als zivile Crew verwendbar</label></td>
             </tr>
             <tr>
                 <td>Mit anderen teilen</td>
@@ -102,24 +121,32 @@
                 <td>
                     <div>Nur PNG-Dateien mit exakt 51x52 Pixeln und höchstens 10 KB pro Grafik. Bei Fehlern müssen Dateien erneut ausgewählt werden</div>
                     <div>Der Hintergrund sollte transparent sein. Verwende positionsspezifische Rahmen: Rot für Navigation und die Kommandoposten, Grau für Crewman, Gelb für Taktik und Technik sowie Blau für Wissenschaft. Die Gestaltung soll neutral, einfach grafisch und an den bestehenden Crew-Grafiken orientiert sein. Fotorealistische oder unpassende Motive können abgelehnt werden</div>
+                    {% if EDIT_CREW_RACE %}<p>Vorhandene Grafiken bleiben erhalten. Wähle nur für die Positionen neue Dateien aus, die du ersetzen möchtest. Für neu benötigte Geschlechter sind alle sechs Grafiken erforderlich</p>{% endif %}
                     {% for gender, label in {'m': 'Männlich', 'w': 'Weiblich'} %}
                     <fieldset class="crew-race-graphics">
                         <legend>{{ label }}{% if gender == 'm' %} (bei Männeranteil 0 % nicht erforderlich){% else %} (bei Männeranteil 100 % nicht erforderlich){% endif %}</legend>
                         {% for imageType, position in {1: 'Kommandoposten', 2: 'Taktik', 3: 'Wissenschaft', 4: 'Technik', 5: 'Navigation', 6: 'Crewman'} %}
-                        <label>{{ position }} <input type="file" name="crew_graphics[{{ gender }}][{{ imageType }}]" accept="image/png" /></label><br />
+                        <label class="crew-race-upload">
+                            <span>{{ position }}</span>
+                            {% if EDIT_CREW_RACE and ((gender == 'm' and EDIT_CREW_RACE.getMaleRatio > 0) or (gender == 'w' and EDIT_CREW_RACE.getMaleRatio < 100)) %}
+                            <span class="crew-race-graphic-preview"><img src="{{ EDIT_CREW_RACE.getImagePath(gender, imageType) }}" alt="{{ position }} {{ label }}" /></span>
+                            {% endif %}
+                            <input type="file" name="crew_graphics[{{ gender }}][{{ imageType }}]" accept="image/png" />
+                        </label>
                         {% endfor %}
                     </fieldset>
                     {% endfor %}
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" class="button" name="B_CREATE_CREW_RACE" value="Crew-Rasse einreichen" /></td>
+                <td colspan="2"><input type="submit" class="button" name="{{ EDIT_CREW_RACE ? 'B_RESUBMIT_CREW_RACE' : 'B_CREATE_CREW_RACE' }}" value="{{ EDIT_CREW_RACE ? 'Erneut zur Freigabe einreichen' : 'Crew-Rasse einreichen' }}" />{% if EDIT_CREW_RACE %} <button class="button" type="submit" form="crew-race-cancel" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Abbrechen</button>{% endif %}</td>
             </tr>
         </table>
         <script>
             (() => {
                 const name = document.getElementById('crew-race-name');
                 const define = document.getElementById('crew-race-define');
+                if (define.value) define.dataset.edited = '1';
                 const normalizeDefine = (value) => value
                     .replaceAll('Ä', 'AE')
                     .replaceAll('Ö', 'OE')
@@ -146,5 +173,6 @@
             })();
         </script>
     </form>
+    {% if EDIT_CREW_RACE %}<form id="crew-race-cancel" action="options.php" method="post"></form>{% endif %}
     {% endif %}
 </div>

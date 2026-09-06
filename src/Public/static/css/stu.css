@@ -658,10 +658,6 @@ input[type="radio"].torpedoSelection:focus-visible {
   flex-basis: 100%;
 }
 
-.crew-race-graphics {
-  margin: 8px 0;
-}
-
 .crew-race-graphic-preview {
   display: inline-block;
   margin: 1px;
@@ -672,12 +668,76 @@ input[type="radio"].torpedoSelection:focus-visible {
   display: block;
 }
 
-.crew-race-moderation-settings > summary {
-  cursor: pointer;
+.crew-race-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  gap: 12px;
+  align-items: start;
 }
 
-.crew-race-moderation-settings table {
-  margin-top: 6px;
+.crew-race-previews,
+.crew-race-previews > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.crew-race-previews {
+  gap: 6px 16px;
+}
+
+.crew-race-facts,
+.crew-race-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.crew-race-facts dt {
+  font-weight: bold;
+}
+
+.crew-race-facts dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.crew-race-fields > label,
+.crew-race-decision {
+  display: grid;
+  gap: 5px;
+}
+
+.crew-race-fields .text,
+.crew-race-decision textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.crew-race-reason {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.crew-race-graphics {
+  margin: 8px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.crew-race-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.crew-race-upload input {
+  max-width: 100%;
 }
 
 .starmapSectionInfo .starmapInner {

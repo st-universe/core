@@ -10,6 +10,7 @@ use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -52,7 +53,14 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
         }
 
         $accepted = $decision === 'accept';
+        $reason = trim((string)request::postString('rejection_reason'));
+        if (mb_strlen($reason) > 2000) {
+            $game->getInfo()->addInformation(_('Der Ablehnungsgrund darf höchstens 2000 Zeichen enthalten'));
+            return;
+        }
+
         $crewRace
+            ->setRejectionReason($accepted || $reason === '' ? null : $reason)
             ->setAccepted($accepted)
             ->setAcceptedUserId($game->getUser()->getId());
         $this->crewRaceRepository->save($crewRace);
@@ -73,6 +81,10 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
                 $accepted
                     ? sprintf(_('Deine Crew-Rasse %s wurde akzeptiert'), $crewRace->getDescription())
                     : sprintf(_('Deine Crew-Rasse %s wurde abgelehnt'), $crewRace->getDescription())
+                        . ($reason === '' ? '' : "\n\nBegründung: " . $reason)
+                        . "\n\nDu kannst sie unter Optionen > Crew-Rassen überarbeiten und erneut einreichen",
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
+                'options.php?SHOW_CREW_RACE_MANAGEMENT=1'
             );
         }
 
