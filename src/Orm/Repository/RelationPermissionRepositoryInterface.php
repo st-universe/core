@@ -12,6 +12,11 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\RelationPermission;
 
+/**
+ * @extends ObjectRepository<RelationPermission>
+ *
+ * @method null|RelationPermission find(integer $id)
+ */
 interface RelationPermissionRepositoryInterface extends ObjectRepository
 {
     public function prototype(): RelationPermission;
@@ -43,9 +48,11 @@ interface RelationPermissionRepositoryInterface extends ObjectRepository
 
     public function deleteByRelation(Relation $relation): void;
 
+    /** @param array<int, Relation> $relations */
     public function deleteByRelations(array $relations): void;
 
     public function deleteByContact(Contact $contact): void;
 
+    /** @param array<int, Contact> $contacts */
     public function deleteByContacts(array $contacts): void;
 }

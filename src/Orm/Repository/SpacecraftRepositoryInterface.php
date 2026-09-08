@@ -182,6 +182,35 @@ interface SpacecraftRepositoryInterface extends ObjectRepository
      */
     public function getUserStarmapRealtimeSpacecrafts(int $userId, int $layerId): array;
 
+    /**
+     * @param array<int, int> $userIds
+     * @param array<int, int> $allianceIds
+     * @return array<array{
+     *     id: int,
+     *     name: string,
+     *     type: string,
+     *     user_id: int,
+     *     user_name: string,
+     *     alliance_id: null|int,
+     *     alliance_name: null|string,
+     *     rump_id: int,
+     *     rump_name: string,
+     *     x: int,
+     *     y: int,
+     *     in_system: bool,
+     *     system_name: null|string,
+     *     is_cloaked: bool,
+     *     hull: int,
+     *     max_hull: int,
+     *     shield: int,
+     *     max_shield: int,
+     *     eps: int,
+     *     max_eps: int,
+     *     warpdrive: int,
+     *     max_warpdrive: int,
+     *     alert_state: int
+     * }>
+     */
     public function getStarmapRealtimeSharedSpacecrafts(
         int $layerId,
         array $userIds,

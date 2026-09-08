@@ -135,6 +135,11 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
     {
         ob_start();
         imagegif($img);
-        return ob_get_clean();
+        $imageBlob = ob_get_clean();
+        if ($imageBlob === false) {
+            throw new InvalidArgumentException('Fehler beim Erstellen der GIF-Daten');
+        }
+
+        return $imageBlob;
     }
 }

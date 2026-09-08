@@ -69,6 +69,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
     }
 
     #[\Override]
+    /** @return list<Contact> */
     public function getByRecipient(User $user): array
     {
         return $this->findBy(['recipient' => $user->getId()]);
@@ -89,6 +90,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         );
     }
 
+    /** @param array<string, mixed> $parameters */
     private function deleteBy(string $where, array $parameters): void
     {
         $contacts = $this
@@ -109,6 +111,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
             ->execute();
     }
 
+    /** @param list<Contact> $contacts */
     private function deletePermissionsByContacts(array $contacts): void
     {
         if ($contacts === []) {

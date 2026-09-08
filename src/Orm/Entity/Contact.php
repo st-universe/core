@@ -46,6 +46,7 @@ class Contact
     #[Column(type: 'integer')]
     private int $date = 0;
 
+    /** @var Collection<int, RelationPermission> */
     #[OneToMany(targetEntity: RelationPermission::class, mappedBy: 'contact')]
     private Collection $relationPermissions;
 
@@ -110,6 +111,7 @@ class Contact
         $this->relationPermissions = new ArrayCollection();
     }
 
+    /** @return Collection<int, RelationPermission> */
     public function getRelationPermissions(): Collection
     {
         return $this->relationPermissions;
