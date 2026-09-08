@@ -27,10 +27,11 @@ final class ImageCreation implements ImageCreationInterface
         } else {
             imagegif($gdImage);
         }
-        $img_data = ob_get_contents();
+        $imgData = ob_get_clean();
+        if ($imgData === false) {
+            throw new RuntimeException('Fehler beim Erstellen der Bilddaten');
+        }
 
-        ob_end_clean();
-
-        return '<img src="data:image/' . $format . ';base64,' . base64_encode($img_data) . '"/>';
+        return '<img src="data:image/' . $format . ';base64,' . base64_encode($imgData) . '"/>';
     }
 }

@@ -32,6 +32,23 @@ use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Throwable;
 
+/**
+ * @phpstan-type RelationContext array{
+ *     friendlyUserIds: array<int, true>,
+ *     enemyUserIds: array<int, true>,
+ *     friendlyAllianceIds: array<int, true>,
+ *     enemyAllianceIds: array<int, true>,
+ *     sharedUserIds: array<int, true>,
+ *     sharedAllianceIds: array<int, true>
+ * }
+ * @phpstan-type SpacecraftRelationship array{
+ *     isOwn: bool,
+ *     isFriendly: bool,
+ *     isEnemy: bool,
+ *     hasDetails: bool,
+ *     hasSharedLiveMapPosition: bool
+ * }
+ */
 final class ShowUserStarmapRealtime implements ViewControllerInterface
 {
     use LayerExplorationTrait;
@@ -380,7 +397,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
 
     /**
      * @param array<string, mixed> $row
-     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
+     * @param RelationContext $relationContext
      * @param array{
      *     runs: array<int, array{y: int, startX: int, endX: int}>,
      *     tachyonRuns: array<int, array{y: int, startX: int, endX: int}>,
@@ -422,7 +439,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
 
     /**
      * @param array<string, mixed> $row
-     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
+     * @param RelationContext $relationContext
      * @return array<string, mixed>
      */
     private function normalizeSpacecraft(
@@ -496,7 +513,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
 
     /**
      * @param array<string, mixed> $row
-     * @param array{isOwn: bool, isFriendly: bool, isEnemy: bool, hasDetails: bool} $relationship
+     * @param SpacecraftRelationship $relationship
      * @return array<string, mixed>
      */
     private function normalizeCloakedSignature(array $row, array $relationship): array
@@ -533,7 +550,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     }
 
     /**
-     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
+     * @param RelationContext $relationContext
      * @return array<string, mixed>
      */
     private function getRealtimeTokenClaims(
@@ -554,7 +571,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
     }
 
     /**
-     * @return array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>}
+     * @return RelationContext
      */
     private function getRelationContext(User $user): array
     {
@@ -654,8 +671,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
 
     /**
      * @param array<string, mixed> $row
-     * @param array{friendlyUserIds: array<int, true>, enemyUserIds: array<int, true>, friendlyAllianceIds: array<int, true>, enemyAllianceIds: array<int, true>} $relationContext
-     * @return array{isOwn: bool, isFriendly: bool, isEnemy: bool, hasDetails: bool}
+     * @param RelationContext $relationContext
+     * @return SpacecraftRelationship
      */
     private function getSpacecraftRelationship(
         array $row,

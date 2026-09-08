@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Doctrine\Common\Collections\Collection;
 use request;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceSettingsEnum;
@@ -13,9 +14,12 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
+use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
+use Stu\Module\Alliance\Lib\AllianceRelationWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceSettings;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -58,9 +62,6 @@ final class AllianceProvider implements ViewComponentProviderInterface
     private function setTemplateVariablesForAlliance(Alliance $alliance, GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $allianceId = $alliance->getId();
-
-        $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $userIsFounder = $this->allianceJobManager->hasUserPermission(
             $user,
             $alliance,
@@ -75,15 +76,10 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $alliance->getId()
         ), _('Allianz anzeigen'));
 
-        $relations = [];
-        foreach ($result as $key => $relation) {
-            $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
-        }
-
         $game->setTemplateVar('SHOW_ALLIANCE', $alliance);
         $game->setTemplateVar(
             'ALLIANCE_RELATIONS',
-            $relations !== [] ? $relations : null
+            $this->getAllianceRelations($alliance)
         );
         $game->setTemplateVar(
             'DESCRIPTION',
@@ -96,7 +92,26 @@ final class AllianceProvider implements ViewComponentProviderInterface
             $this->allianceUserApplicationChecker->mayApply($user, $alliance)
         );
 
-        $membersWithJobs = $alliance->getMembers()->map(
+        $game->setTemplateVar('MEMBERS', $this->getMembersWithJobs($alliance));
+        $game->setTemplateVar('ALLIANCE_LEADERSHIP_JOBS', $this->getLeadershipJobs($alliance));
+        $this->setLeadershipDescriptions($game, $alliance->getSettings());
+    }
+
+    /** @return array<int, AllianceRelationWrapper>|null */
+    private function getAllianceRelations(Alliance $alliance): ?array
+    {
+        $relations = [];
+        foreach ($this->allianceRelationRepository->getActiveByAlliance($alliance->getId()) as $key => $relation) {
+            $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
+        }
+
+        return $relations !== [] ? $relations : null;
+    }
+
+    /** @return Collection<int, array{wrapper: AllianceMemberWrapper, jobs: list<string>}> */
+    private function getMembersWithJobs(Alliance $alliance): Collection
+    {
+        return $alliance->getMembers()->map(
             function (User $user) use ($alliance): array {
                 $wrapper = $this->allianceUiFactory->createAllianceMemberWrapper($user, $alliance);
 
@@ -113,9 +128,11 @@ final class AllianceProvider implements ViewComponentProviderInterface
                 ];
             }
         );
+    }
 
-        $game->setTemplateVar('MEMBERS', $membersWithJobs);
-
+    /** @return array<int, AllianceJob> */
+    private function getLeadershipJobs(Alliance $alliance): array
+    {
         $founderJobs = [];
         $successorJobs = [];
         $diplomaticJobs = [];
@@ -137,17 +154,23 @@ final class AllianceProvider implements ViewComponentProviderInterface
             }
         }
 
-        usort($successorJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
-        usort($diplomaticJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
-        usort($otherJobs, fn($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($successorJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($diplomaticJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
+        usort($otherJobs, fn ($a, $b): int => $a->getSort() <=> $b->getSort());
 
         $leadershipJobs = array_merge($founderJobs, $successorJobs, $diplomaticJobs, $otherJobs);
 
-        $game->setTemplateVar('ALLIANCE_LEADERSHIP_JOBS', $leadershipJobs);
+        return $leadershipJobs;
+    }
 
+    /** @param Collection<int, AllianceSettings> $settings */
+    private function setLeadershipDescriptions(
+        GameControllerInterface $game,
+        Collection $settings
+    ): void {
         $founderDescription = $settings
             ->filter(
-                fn(AllianceSettings $setting): bool => (
+                fn (AllianceSettings $setting): bool => (
                     $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_FOUNDER_DESCRIPTION
                 )
             )
@@ -155,7 +178,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
 
         $successorDescription = $settings
             ->filter(
-                fn(AllianceSettings $setting): bool => (
+                fn (AllianceSettings $setting): bool => (
                     $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_SUCCESSOR_DESCRIPTION
                 )
             )
@@ -163,7 +186,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
 
         $diplomatDescription = $settings
             ->filter(
-                fn(AllianceSettings $setting): bool => (
+                fn (AllianceSettings $setting): bool => (
                     $setting->getSetting() === AllianceSettingsEnum::ALLIANCE_DIPLOMATIC_DESCRIPTION
                 )
             )
@@ -196,7 +219,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
+                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
                     $alliance
                 ),
                 $this->allianceRepository->findByApplicationState(true)
@@ -205,7 +228,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                fn(Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
+                fn (Alliance $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem(
                     $alliance
                 ),
                 $this->allianceRepository->findByApplicationState(false)

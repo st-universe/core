@@ -10,6 +10,9 @@ use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\RelationPermission;
 use Stu\Orm\Entity\User;
 
+/**
+ * @extends EntityRepository<Relation>
+ */
 final class RelationRepository extends EntityRepository implements RelationRepositoryInterface
 {
     public function prototype(): Relation
@@ -49,6 +52,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         );
     }
 
+    /** @return array<int, Relation> */
     public function getActive(): array
     {
         return $this->query(
@@ -56,6 +60,10 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /**
+     * @param array<int, int> $typeIds
+     * @return array<int, Relation>
+     */
     public function getActiveByTypes(array $typeIds): array
     {
         return $this->query(
@@ -64,6 +72,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /** @return array<int, Relation> */
     public function getByAlliance(int $allianceId): array
     {
         return $this->query(
@@ -72,6 +81,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /** @return array<int, Relation> */
     public function getByAlliancePair(int $allianceId, int $opponentId): array
     {
         return $this->query(
@@ -94,6 +104,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
             ->getSingleScalarResult();
     }
 
+    /** @return array<int, Relation> */
     public function getActiveByAlliance(int $allianceId): array
     {
         return $this->query(
@@ -107,6 +118,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         return $this->getActiveByTypeAndAlliancePair([], $allianceId, $opponentId);
     }
 
+    /** @param array<int, int> $typeIds */
     public function getActiveByParties(
         array $typeIds,
         User|Alliance $firstParty,
@@ -125,6 +137,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         );
     }
 
+    /** @param array<int, int> $typeIds */
     public function getActiveByTypeAndAlliancePair(
         array $typeIds,
         int $allianceId,
@@ -140,6 +153,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         return $this->query($where, $parameters)->getOneOrNullResult();
     }
 
+    /** @return array<int, Relation> */
     public function getByUserAndAlliance(User $user, ?Alliance $alliance): array
     {
         $where = 'r.sourceUser = :user OR r.recipientUser = :user';
@@ -155,6 +169,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /** @return array<int, Relation> */
     public function getByUserPair(User $firstUser, User $secondUser): array
     {
         return $this->query(
@@ -163,6 +178,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /** @return array<int, Relation> */
     public function getByAllianceAndUserPair(Alliance $alliance, User $user): array
     {
         return $this->query(
@@ -171,6 +187,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         )->getResult();
     }
 
+    /** @param array<int, int> $typeIds */
     public function getActiveByUserPair(array $typeIds, User $firstUser, User $secondUser): ?Relation
     {
         return $this->getActiveRelation(
@@ -180,6 +197,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         );
     }
 
+    /** @param array<int, int> $typeIds */
     public function getActiveByAllianceAndUserPair(array $typeIds, Alliance $alliance, User $user): ?Relation
     {
         return $this->getActiveRelation(
@@ -198,6 +216,10 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         return $position === 'source' ? 'sourceAlliance' : 'recipientAlliance';
     }
 
+    /**
+     * @param array<int, int> $typeIds
+     * @param array<string, mixed> $parameters
+     */
     private function getActiveRelation(array $typeIds, string $where, array $parameters): ?Relation
     {
         if ($typeIds !== []) {
@@ -208,6 +230,10 @@ final class RelationRepository extends EntityRepository implements RelationRepos
         return $this->query("r.date > 0 AND ($where)", $parameters)->getOneOrNullResult();
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     * @return \Doctrine\ORM\Query<int, Relation>
+     */
     private function query(string $where, array $parameters = []): \Doctrine\ORM\Query
     {
         return $this
@@ -218,6 +244,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
             ->setParameters($parameters);
     }
 
+    /** @param array<string, mixed> $parameters */
     private function deleteBy(string $where, array $parameters): void
     {
         $relations = $this->query($where, $parameters)->getResult();
@@ -232,6 +259,7 @@ final class RelationRepository extends EntityRepository implements RelationRepos
             ->execute();
     }
 
+    /** @param array<int, Relation> $relations */
     private function deletePermissionsByRelations(array $relations): void
     {
         if ($relations === []) {

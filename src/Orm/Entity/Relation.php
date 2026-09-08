@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use LogicException;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
-use Stu\Component\Alliance\Enum\RelationPermissionEnum;
+use Stu\Component\Alliance\Relations\Trait\RelationPartyTrait;
+use Stu\Component\Alliance\Relations\Trait\RelationPermissionTrait;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\RelationRepository;
 
@@ -30,6 +30,9 @@ use Stu\Orm\Repository\RelationRepository;
 #[TruncateOnGameReset]
 class Relation
 {
+    use RelationPartyTrait;
+    use RelationPermissionTrait;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]
@@ -41,6 +44,7 @@ class Relation
     #[Column(type: 'integer')]
     private int $date = 0;
 
+    /** @var Collection<int, RelationPermission> */
     #[OneToMany(targetEntity: RelationPermission::class, mappedBy: 'relation')]
     private Collection $relationPermissions;
 
@@ -108,94 +112,6 @@ class Relation
         $this->relationPermissions = new ArrayCollection();
     }
 
-    public function getRelationPermissions(): Collection
-    {
-        return $this->relationPermissions;
-    }
-
-    public function addRelationPermission(RelationPermission $permission): self
-    {
-        if (!$this->relationPermissions->contains($permission)) {
-            $this->relationPermissions->add($permission);
-        }
-
-        return $this;
-    }
-
-    public function removeRelationPermission(RelationPermission $permission): self
-    {
-        $this->relationPermissions->removeElement($permission);
-        return $this;
-    }
-
-    public function hasPermissions(): bool
-    {
-        foreach ($this->relationPermissions as $relationPermission) {
-            if (!$relationPermission->isPending() && $relationPermission->isGranted()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function hasPendingPermissionChanges(): bool
-    {
-        foreach ($this->relationPermissions as $relationPermission) {
-            if ($relationPermission->isPending()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function isPermissionChangeOfferedBy(User $user): bool
-    {
-        foreach ($this->relationPermissions as $relationPermission) {
-            if (!$relationPermission->isPending()) {
-                continue;
-            }
-
-            return $relationPermission->isOfferedBySource()
-                ? $this->isSourceParty($user)
-                : $this->isRecipientParty($user);
-        }
-
-        return false;
-    }
-
-    public function hasPermission(RelationPermissionEnum $permission): bool
-    {
-        foreach ($this->relationPermissions as $relationPermission) {
-            if (
-                !$relationPermission->isPending()
-                && $relationPermission->isGranted()
-                && $relationPermission->getPermission() === $permission
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function hasPermissionFor(User $user, RelationPermissionEnum $permission): bool
-    {
-        foreach ($this->relationPermissions as $relationPermission) {
-            if (
-                $relationPermission->isGranted()
-                && !$relationPermission->isPending()
-                && $relationPermission->getPermission() === $permission
-                && $relationPermission->isGrantedTo($user)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function getText(): ?string
     {
         return $this->text;
@@ -223,142 +139,4 @@ class Relation
         return $this->text !== null && trim($this->text) !== '';
     }
 
-    public function getSourceUser(): ?User
-    {
-        return $this->sourceUser;
-    }
-
-    public function setSourceUser(?User $sourceUser): self
-    {
-        $this->sourceUser = $sourceUser;
-        return $this;
-    }
-
-    public function getSourceAlliance(): ?Alliance
-    {
-        return $this->sourceAlliance;
-    }
-
-    public function setSourceAlliance(?Alliance $sourceAlliance): self
-    {
-        $this->sourceAlliance = $sourceAlliance;
-        return $this;
-    }
-
-    public function getRecipientUser(): ?User
-    {
-        return $this->recipientUser;
-    }
-
-    public function setRecipientUser(?User $recipientUser): self
-    {
-        $this->recipientUser = $recipientUser;
-        return $this;
-    }
-
-    public function getRecipientAlliance(): ?Alliance
-    {
-        return $this->recipientAlliance;
-    }
-
-    public function setRecipientAlliance(?Alliance $recipientAlliance): self
-    {
-        $this->recipientAlliance = $recipientAlliance;
-        return $this;
-    }
-
-    public function getSourceParty(): User|Alliance
-    {
-        return (
-            $this->sourceUser ?? $this->sourceAlliance ?? throw new LogicException(
-                'Eine Relation hat keine Ausgangspartei'
-            )
-        );
-    }
-
-    public function getRecipientParty(): User|Alliance
-    {
-        return (
-            $this->recipientUser ?? $this->recipientAlliance ?? throw new LogicException(
-                'Eine Relation hat keine Zielpartei'
-            )
-        );
-    }
-
-    public function validateParties(): void
-    {
-        if (($this->sourceUser === null) === ($this->sourceAlliance === null)) {
-            throw new LogicException(
-                'Eine Relation muss genau einen Spieler oder eine Allianz als Ausgangspartei haben'
-            );
-        }
-        if (($this->recipientUser === null) === ($this->recipientAlliance === null)) {
-            throw new LogicException(
-                'Eine Relation muss genau einen Spieler oder eine Allianz als Zielpartei haben'
-            );
-        }
-
-        $source = $this->getSourceParty();
-        $recipient = $this->getRecipientParty();
-        if ($source::class === $recipient::class && $source->getId() === $recipient->getId()) {
-            throw new LogicException('Die Parteien einer Relation müssen verschieden sein');
-        }
-    }
-
-    public function isSourceParty(User $user): bool
-    {
-        return (
-            $this->sourceUser !== null
-            && $this->sourceUser->getId() === $user->getId()
-            || $this->sourceAlliance !== null
-            && $user->getAlliance()?->getId() === $this->sourceAlliance->getId()
-        );
-    }
-
-    public function isRecipientParty(User $user): bool
-    {
-        return (
-            $this->recipientUser !== null
-            && $this->recipientUser->getId() === $user->getId()
-            || $this->recipientAlliance !== null
-            && $user->getAlliance()?->getId() === $this->recipientAlliance->getId()
-        );
-    }
-
-    public function getCounterpartName(User $user): string
-    {
-        return $this->isSourceParty($user)
-            ? $this->getRecipientParty()->getName()
-            : $this->getSourceParty()->getName();
-    }
-
-    public function getAlliance(): Alliance
-    {
-        return $this->sourceAlliance ?? throw new LogicException('Die Ausgangspartei ist keine Allianz');
-    }
-
-    public function setAlliance(Alliance $alliance): self
-    {
-        return $this->setSourceAlliance($alliance);
-    }
-
-    public function getOpponent(): Alliance
-    {
-        return $this->recipientAlliance ?? throw new LogicException('Die Zielpartei ist keine Allianz');
-    }
-
-    public function setOpponent(Alliance $opponent): self
-    {
-        return $this->setRecipientAlliance($opponent);
-    }
-
-    public function getAllianceId(): int
-    {
-        return $this->getAlliance()->getId();
-    }
-
-    public function getOpponentId(): int
-    {
-        return $this->getOpponent()->getId();
-    }
 }

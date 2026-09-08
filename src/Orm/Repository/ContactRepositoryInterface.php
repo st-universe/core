@@ -33,6 +33,7 @@ interface ContactRepositoryInterface extends ObjectRepository
      */
     public function getRemoteOrderedByUser(User $user): array;
 
+    /** @return list<Contact> */
     public function getByRecipient(User $user): array;
 
     public function truncateByUser(int $userId): void;

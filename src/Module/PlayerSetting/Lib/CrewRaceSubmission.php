@@ -6,10 +6,10 @@ namespace Stu\Module\PlayerSetting\Lib;
 
 use request;
 use Stu\Component\Crew\CrewRaceGraphics;
-use Stu\Component\Crew\CrewRaceInput;
 use Stu\Component\Crew\CrewRaceSubmissionNotifier;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
+use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -28,63 +28,37 @@ final class CrewRaceSubmission
         $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
-        $crewRaceId = $resubmitted ? request::postInt('crew_race_id') : 0;
-        $crewRace = $crewRaceId === 0 ? null : $this->crewRaceRepository->find($crewRaceId);
-        if ($resubmitted && ($crewRace === null || $crewRace->getCreatorUserId() !== $user->getId() || !$crewRace->isRejected())) {
-            $game->getInfo()->addInformation(_('Nur eigene abgelehnte Crew-Rassen können erneut eingereicht werden'));
+        $crewRace = $this->getResubmittableCrewRace($game, $resubmitted, $user->getId());
+        if ($resubmitted && $crewRace === null) {
             return;
         }
-        if (!$resubmitted && !$game->isAdmin() && count($this->crewRaceRepository->getByCreatorUserId($user->getId())) >= 3) {
-            $game->getInfo()->addInformation(_('Du kannst maximal drei eigene Crew-Rassen erstellen'));
+        if ($this->hasReachedSubmissionLimit($game, $resubmitted, $user->getId())) {
             return;
         }
 
-        $description = trim((string)request::postString('crew_race_name'));
-        if (!CrewRaceInput::isValidDescription($description)) {
-            $game->getInfo()->addInformation(_('Der Name muss mit einem Großbuchstaben beginnen und darf nur Buchstaben, einzelne Leerzeichen sowie einzelne Apostrophe oder Backticks enthalten'));
-            return;
-        }
-        $maleRatio = filter_var(request::postString('crew_race_male_ratio'), FILTER_VALIDATE_INT);
-        if ($maleRatio === false || $maleRatio < 0 || $maleRatio > 100) {
-            $game->getInfo()->addInformation(_('Das Männerverhältnis muss eine Zahl zwischen 0 und 100 sein'));
-            return;
-        }
-
-        $gfxPath = CrewRaceInput::normalizeDefine(request::postString('crew_race_define') ?: $description);
-        if (!CrewRaceInput::isValidDefine($gfxPath)) {
-            $game->getInfo()->addInformation(_('Die Grafikdefinition darf nur Großbuchstaben und einzelne Unterstriche enthalten'));
-            return;
-        }
-        $existing = $this->crewRaceRepository->getByGfxPath($gfxPath);
-        if ($existing !== null && ($crewRace === null || $existing->getId() !== $crewRace->getId())) {
-            $game->getInfo()->addInformation(_('Eine Crew-Rasse mit dieser Grafikdefinition existiert bereits'));
-            return;
-        }
-
-        $chance = filter_var(request::postString('crew_race_chance'), FILTER_VALIDATE_INT);
-        if ($chance === false || $chance < 1 || $chance > 100) {
-            $game->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
-            return;
-        }
-
-        $shared = request::postString('crew_race_shared') === '1';
-        if (!$this->crewRaceGraphics->store($gfxPath, (int)$maleRatio, $crewRace?->getGfxPath(), $game)) {
+        $submission = new CrewRaceSubmissionRequestFactory($this->crewRaceRepository)->create($game, $crewRace);
+        if ($submission === null || !$this->crewRaceGraphics->store(
+            $submission->gfxPath,
+            $submission->maleRatio,
+            $crewRace?->getGfxPath(),
+            $game
+        )) {
             return;
         }
 
         $crewRace ??= $this->crewRaceRepository->prototype();
         $crewRace
-            ->setDescription($description)
-            ->setGfxPath($gfxPath)
-            ->setMaleRatio((int)$maleRatio)
-            ->setChance((int)$chance)
+            ->setDescription($submission->description)
+            ->setGfxPath($submission->gfxPath)
+            ->setMaleRatio($submission->maleRatio)
+            ->setChance($submission->chance)
             ->setCreatorUserId($user->getId())
-            ->setShared($shared)
-            ->setCivil(request::postString('crew_race_civil') === '1')
+            ->setShared($submission->shared)
+            ->setCivil($submission->civil)
             ->setAccepted(false)
             ->setAcceptedUserId(null)
             ->setRejectionReason(null)
-            ->setFactionIds($this->getFactionIds($user->getFactionId(), $shared));
+            ->setFactionIds($this->getFactionIds($user->getFactionId(), $submission->shared));
 
         $crewRace->incrementGraphicsVersion();
 
@@ -93,6 +67,38 @@ final class CrewRaceSubmission
         $game->getInfo()->addInformation($resubmitted
             ? _('Die Crew-Rasse wurde erneut zur Freigabe eingereicht')
             : _('Die Crew-Rasse wurde zur Freigabe eingereicht'));
+    }
+
+    private function getResubmittableCrewRace(
+        GameControllerInterface $game,
+        bool $resubmitted,
+        int $userId
+    ): ?CrewRace {
+        if (!$resubmitted) {
+            return null;
+        }
+
+        $crewRaceId = request::postInt('crew_race_id');
+        $crewRace = $crewRaceId === 0 ? null : $this->crewRaceRepository->find($crewRaceId);
+        if ($crewRace !== null && $crewRace->getCreatorUserId() === $userId && $crewRace->isRejected()) {
+            return $crewRace;
+        }
+
+        $game->getInfo()->addInformation(_('Nur eigene abgelehnte Crew-Rassen können erneut eingereicht werden'));
+        return null;
+    }
+
+    private function hasReachedSubmissionLimit(
+        GameControllerInterface $game,
+        bool $resubmitted,
+        int $userId
+    ): bool {
+        if ($resubmitted || $game->isAdmin() || count($this->crewRaceRepository->getByCreatorUserId($userId)) < 3) {
+            return false;
+        }
+
+        $game->getInfo()->addInformation(_('Du kannst maximal drei eigene Crew-Rassen erstellen'));
+        return true;
     }
 
     /** @return list<int> */
@@ -108,7 +114,7 @@ final class CrewRaceSubmission
             $this->factionRepository->getByChooseable(true)
         );
         foreach (request::postArray('crew_race_factions') as $factionId) {
-            $factionId = (int)$factionId;
+            $factionId = (int) $factionId;
             if (in_array($factionId, $playableFactionIds, true)) {
                 $factionIds[] = $factionId;
             }
@@ -116,5 +122,4 @@ final class CrewRaceSubmission
 
         return array_values(array_unique($factionIds));
     }
-
 }

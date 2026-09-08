@@ -12,6 +12,9 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\RelationPermission;
 
+/**
+ * @extends EntityRepository<RelationPermission>
+ */
 final class RelationPermissionRepository extends EntityRepository implements
     RelationPermissionRepositoryInterface
 {
@@ -176,6 +179,7 @@ final class RelationPermissionRepository extends EntityRepository implements
         $this->deleteWhere('rp.relation = :relation', ['relation' => $relation]);
     }
 
+    /** @param array<int, Relation> $relations */
     public function deleteByRelations(array $relations): void
     {
         if ($relations === []) {
@@ -190,6 +194,7 @@ final class RelationPermissionRepository extends EntityRepository implements
         $this->deleteWhere('rp.contact = :contact', ['contact' => $contact]);
     }
 
+    /** @param array<int, Contact> $contacts */
     public function deleteByContacts(array $contacts): void
     {
         if ($contacts === []) {
@@ -232,6 +237,7 @@ final class RelationPermissionRepository extends EntityRepository implements
         return null;
     }
 
+    /** @param array<string, mixed> $parameters */
     private function deleteWhere(string $where, array $parameters): void
     {
         $this
