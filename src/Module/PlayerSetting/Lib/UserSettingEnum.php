@@ -73,7 +73,8 @@ enum UserSettingEnum: string
             self::CSS_COLOR_SHEET => 'Auswahl der Interface-Farben',
             self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt Einträge in der History an, die durch Interaktion mit dem Piraten-NPC entstanden sind',
             self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert',
-            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)'
+            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)',
+            self::CREW_RACE_USAGE => ''
         };
     }
 
