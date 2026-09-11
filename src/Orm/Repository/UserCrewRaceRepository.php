@@ -25,6 +25,12 @@ final class UserCrewRaceRepository extends EntityRepository implements UserCrewR
     }
 
     #[\Override]
+    public function delete(UserCrewRace $userCrewRace): void
+    {
+        $this->getEntityManager()->remove($userCrewRace);
+    }
+
+    #[\Override]
     public function exists(int $crewRaceId, int $userId): bool
     {
         return $this->count([
@@ -36,7 +42,17 @@ final class UserCrewRaceRepository extends EntityRepository implements UserCrewR
     #[\Override]
     public function getByUserId(int $userId): array
     {
-        return $this->findBy(['user_id' => $userId]);
+        $userCrewRaces = $this->findBy(['user_id' => $userId]);
+        foreach ($this->getEntityManager()->getUnitOfWork()->getIdentityMap()[UserCrewRace::class] ?? [] as $userCrewRace) {
+            if ($userCrewRace instanceof UserCrewRace
+                && $userCrewRace->getUserId() === $userId
+                && !in_array($userCrewRace, $userCrewRaces, true)
+            ) {
+                $userCrewRaces[] = $userCrewRace;
+            }
+        }
+
+        return $userCrewRaces;
     }
 
     #[\Override]

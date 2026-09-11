@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Stu\Component\Crew\CrewRaceUsageEnum;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewRace;
 
@@ -27,7 +26,12 @@ interface CrewRaceRepositoryInterface extends ObjectRepository
     /**
      * @return list<CrewRace>
      */
-    public function getForUser(int $userId, int $factionId, CrewRaceUsageEnum $usage): array;
+    public function getSelectableForUser(int $userId, int $factionId): array;
+
+    /**
+     * @return list<CrewRace>
+     */
+    public function getStandardForFaction(int $factionId): array;
 
     /**
      * @return list<CrewRace>

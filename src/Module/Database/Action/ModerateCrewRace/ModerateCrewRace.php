@@ -71,6 +71,7 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
                 $this->userCrewRaceRepository->prototype()
                     ->setCrewRace($crewRace)
                     ->setUserId($creatorUserId)
+                    ->setChance($crewRace->getChance())
             );
         }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Settings;
 
 use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Crew\CrewRaceUsageEnum;
 use Stu\Component\Player\UserCssClassEnum;
 use Stu\Component\Player\UserRpgBehaviorEnum;
 use Stu\Orm\Entity\User;
@@ -20,7 +19,6 @@ interface UserSettingsProviderInterface
     public function getDefaultView(User $user): ModuleEnum;
     public function getRpgBehavior(User $user): UserRpgBehaviorEnum;
     public function getCss(User $user): UserCssClassEnum;
-    public function getCrewRaceUsage(User $user): CrewRaceUsageEnum;
 
     // BOOL
     public function isEmailNotification(User $user): bool;

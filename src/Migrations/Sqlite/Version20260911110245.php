@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260906134103 extends AbstractMigration
+final class Version20260911110245 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -561,7 +561,7 @@ final class Version20260906134103 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E1449B843D5282CF ON stu_user_award (award_id)');
         $this->addSql('CREATE TABLE stu_user_character (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description CLOB DEFAULT NULL, avatar VARCHAR(32) DEFAULT NULL, former_user_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6E46626CA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6E46626CA76ED395 ON stu_user_character (user_id)');
-        $this->addSql('CREATE TABLE stu_user_crew_race (user_id INTEGER NOT NULL, crew_race_id INTEGER NOT NULL, PRIMARY KEY (crew_race_id, user_id), CONSTRAINT FK_1E6F8FE85E681894 FOREIGN KEY (crew_race_id) REFERENCES stu_crew_race (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_user_crew_race (user_id INTEGER NOT NULL, chance SMALLINT DEFAULT NULL, crew_race_id INTEGER NOT NULL, PRIMARY KEY (crew_race_id, user_id), CONSTRAINT FK_1E6F8FE85E681894 FOREIGN KEY (crew_race_id) REFERENCES stu_crew_race (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_1E6F8FE85E681894 ON stu_user_crew_race (crew_race_id)');
         $this->addSql('CREATE TABLE stu_user_crew_rank (rank VARCHAR(255) NOT NULL, name VARCHAR(64) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, rank), CONSTRAINT FK_4C79DCA2A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX user_crew_rank_user_idx ON stu_user_crew_rank (user_id)');

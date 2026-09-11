@@ -8,16 +8,18 @@ use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
-    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository, private TutorialStepRepositoryInterface $tutorialStepRepository, private UserTutorialRepositoryInterface $userTutorialRepository) {}
+    public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private ResearchedRepositoryInterface $researchedRepository, private LayerRepositoryInterface $layerRepository, private UserLayerRepositoryInterface $userLayerRepository, private TutorialStepRepositoryInterface $tutorialStepRepository, private UserTutorialRepositoryInterface $userTutorialRepository, private CrewRaceRepositoryInterface $crewRaceRepository, private UserCrewRaceRepositoryInterface $userCrewRaceRepository) {}
 
     #[\Override]
     public function createDefault(User $user): void
@@ -25,6 +27,7 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $this->createDefaultPmCategories($user);
         $this->createDefaultUserLayer($user);
         $this->createDefaultStartResearch($user);
+        $this->createDefaultCrewRaces($user);
         $this->createTutorialsForPlayer($user);
     }
 
@@ -78,6 +81,18 @@ final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
         $db->setActive(0);
 
         $this->researchedRepository->save($db);
+    }
+
+    private function createDefaultCrewRaces(User $user): void
+    {
+        foreach ($this->crewRaceRepository->getStandardForFaction($user->getFactionId()) as $crewRace) {
+            $this->userCrewRaceRepository->save(
+                $this->userCrewRaceRepository->prototype()
+                    ->setCrewRace($crewRace)
+                    ->setUserId($user->getId())
+                    ->setChance($crewRace->getChance())
+            );
+        }
     }
 
     private function createTutorialsForPlayer(User $player): void

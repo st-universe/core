@@ -157,9 +157,11 @@ final class CrewRaceGraphics
             return false;
         }
 
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        if ($finfo->file($file['tmp_name']) !== 'image/png') {
-            return false;
+        if (class_exists(finfo::class)) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            if ($finfo->file($file['tmp_name']) !== 'image/png') {
+                return false;
+            }
         }
 
         $imageSize = @getimagesize($file['tmp_name']);

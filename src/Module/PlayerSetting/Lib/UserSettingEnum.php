@@ -73,8 +73,7 @@ enum UserSettingEnum: string
             self::CSS_COLOR_SHEET => 'Auswahl der Interface-Farben',
             self::SHOW_PIRATE_HISTORY_ENTRYS => 'Zeigt Einträge in der History an, die durch Interaktion mit dem Piraten-NPC entstanden sind',
             self::INBOX_MESSENGER_STYLE => 'Nachrichteneingang des "Persönlich"-Ordners ist wie bei einem Messenger nach Kontakten gruppiert',
-            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)',
-            self::CREW_RACE_USAGE => 'Legt fest, ob bei der Crew-Erzeugung nur Standard-Crew oder auch deine freigeschalteten Crew-Rassen verwendet werden'
+            self::SHOW_3D_MODEL => 'Zeigt 3D Modelle im Spiel an (nur für Beta Tester)'
         };
     }
 
@@ -86,7 +85,6 @@ enum UserSettingEnum: string
             self::DEFAULT_VIEW  => 'html/user/settings/enumUserSetting.twig',
             self::AVATAR        => 'html/user/settings/avatarUserSetting.twig',
             self::RGB_CODE      => 'html/user/settings/rgbCodeUserSetting.twig',
-            self::CREW_RACE_USAGE => 'html/user/settings/crewRaceUsageUserSetting.twig',
             default             => 'html/user/settings/booleanUserSetting.twig'
         };
     }
@@ -109,7 +107,7 @@ enum UserSettingEnum: string
             self::SHOW_PIRATE_HISTORY_ENTRYS => $settingsProvider->isShowPirateHistoryEntrys($user),
             self::INBOX_MESSENGER_STYLE => $settingsProvider->isInboxMessengerStyle($user),
             self::SHOW_3D_MODEL => $settingsProvider->isShow3DModel($user),
-            self::CREW_RACE_USAGE => $settingsProvider->getCrewRaceUsage($user)
+            self::CREW_RACE_USAGE => false
         };
     }
 
@@ -122,6 +120,6 @@ enum UserSettingEnum: string
     /** @return array<self> */
     public static function getNonDistinct(): array
     {
-        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => !$type->isDistinctSetting());
+        return array_filter(self::cases(), fn(UserSettingEnum $type): bool => !$type->isDistinctSetting() && $type !== self::CREW_RACE_USAGE);
     }
 }

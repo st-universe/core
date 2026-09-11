@@ -50,7 +50,7 @@ final class CrewRaceFormsTest extends StuTestCase
         self::assertSame(0, $xpath->query('//a[@href]')->length);
         self::assertSame(12, $xpath->query('//form[@id="crew-race-form"]//input[@type="file"]')->length);
         self::assertSame(1, $xpath->query('//input[@name="crew_race_male_ratio" and @value="0"]')->length);
-        self::assertStringContainsString('Erneut zur Freigabe einreichen', $html);
+        self::assertStringContainsString('Erneut einreichen', $html);
         self::assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $html);
         self::assertStringNotContainsString('<script>alert(1)</script>', $html);
     }

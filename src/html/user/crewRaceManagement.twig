@@ -1,4 +1,59 @@
-<div class="crew-race-management">
+<div class="crew-race-management" id="crew-race-management" data-session-string="{{ SESSIONSTRING }}">
+    <table class="tcal">
+        <tr>
+            <th colspan="4">Ausgewählte Crew-Rassen</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Grafiken</th>
+            <th>Zufallsrate</th>
+            <th>Zuordnung</th>
+        </tr>
+        {% for crewRace in SELECTABLE_CREW_RACES|default([]) %}
+        {% set userCrewRace = USER_CREW_RACES[crewRace.getId]|default(null) %}
+        {% set genderCount = crewRace.getMaleRatio > 0 and crewRace.getMaleRatio < 100 ? 2 : 1 %}
+        {% for gender, label in {'m': 'Männlich', 'w': 'Weiblich'} %}
+        {% if (gender == 'm' and crewRace.getMaleRatio > 0) or (gender == 'w' and crewRace.getMaleRatio < 100) %}
+        {% set isFirstGender = gender == 'm' or crewRace.getMaleRatio == 0 %}
+        <tr data-crew-race-id="{{ crewRace.getId }}">
+            {% if isFirstGender %}
+            <td rowspan="{{ genderCount }}">
+                {{ crewRace.getDescription }}
+                {% if crewRace.getCreatorUserId is not null %}
+                <br />von {{ CREW_RACE_OWNER_NAMES[crewRace.getId]|default('Niemand')|bbcode }} ({{ crewRace.getCreatorUserId }})
+                {% endif %}
+            </td>
+            {% endif %}
+            <td>
+                {{ label }}
+                {% for imageType, position in {1: 'Kommandoposten', 2: 'Taktik', 3: 'Wissenschaft', 4: 'Technik', 5: 'Navigation', 6: 'Crewman'} %}
+                <img src="{{ crewRace.getImagePath(gender, imageType) }}" alt="{{ position }} {{ label }}" title="{{ position }} {{ label }}" />
+                {% endfor %}
+            </td>
+            {% if isFirstGender %}
+            <td rowspan="{{ genderCount }}">
+                {% if userCrewRace %}
+                <input class="text crew-race-chance" type="number" min="1" max="100" value="{{ userCrewRace.getChance ?? crewRace.getChance }}" />
+                <button class="button crew-race-action" type="button" data-action="save">Speichern</button>
+                {% endif %}
+            </td>
+            <td rowspan="{{ genderCount }}">
+                {% if userCrewRace %}
+                <button class="button crew-race-action" type="button" data-action="remove">X</button>
+                {% else %}
+                <button class="button crew-race-action" type="button" data-action="select">Auswählen</button>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <tr><td colspan="4">Keine Crew-Rassen verfügbar</td></tr>
+        {% endfor %}
+    </table>
+    <br />
+
     <table class="tcal">
         <tr>
             <th colspan="5">Meine Crew-Rassen</th>
@@ -18,7 +73,7 @@
                 {% if crewRace.isRejected %}
                 <form action="options.php" method="post">
                     <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
-                    <button class="button" type="submit" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Überarbeiten und erneut einreichen</button>
+                    <button class="button" type="submit" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Erneut einreichen</button>
                 </form>
                 {% endif %}
             </td>
@@ -40,8 +95,11 @@
                     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                     <input type="hidden" name="crew_race_id" value="{{ crewRace.getId }}" />
                     <div class="crew-race-choice">
-                        <label><input type="radio" name="crew_race_shared" value="0"{% if not crewRace.isShared %} checked="checked"{% else %} disabled="disabled"{% endif %} />Nicht teilen</label>
-                        <label><input type="radio" name="crew_race_shared" value="1"{% if crewRace.isShared %} checked="checked"{% endif %} />Mit anderen Spielern teilen</label>
+                        {% if crewRace.isShared %}
+                        Mit anderen Spielern teilen
+                        {% else %}
+                        <label><input type="checkbox" name="crew_race_shared" value="1" />Mit anderen Spielern teilen</label>
+                        {% endif %}
                     </div>
                     <div class="crew-race-factions">
                         {% for faction in PLAYABLE_FACTIONS %}
@@ -139,7 +197,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" class="button" name="{{ EDIT_CREW_RACE ? 'B_RESUBMIT_CREW_RACE' : 'B_CREATE_CREW_RACE' }}" value="{{ EDIT_CREW_RACE ? 'Erneut zur Freigabe einreichen' : 'Crew-Rasse einreichen' }}" />{% if EDIT_CREW_RACE %} <button class="button" type="submit" form="crew-race-cancel" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Abbrechen</button>{% endif %}</td>
+                <td colspan="2"><input type="submit" class="button" name="{{ EDIT_CREW_RACE ? 'B_RESUBMIT_CREW_RACE' : 'B_CREATE_CREW_RACE' }}" value="{{ EDIT_CREW_RACE ? 'Erneut einreichen' : 'Crew-Rasse einreichen' }}" />{% if EDIT_CREW_RACE %} <button class="button" type="submit" form="crew-race-cancel" name="SHOW_CREW_RACE_MANAGEMENT" value="1">Abbrechen</button>{% endif %}</td>
             </tr>
         </table>
         <script>
