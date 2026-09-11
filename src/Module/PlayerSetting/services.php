@@ -29,6 +29,9 @@ use Stu\Module\PlayerSetting\Action\DeleteTutorials\DeleteTutorials;
 use Stu\Module\PlayerSetting\Action\CreateCrewRace\CreateCrewRace;
 use Stu\Module\PlayerSetting\Action\ResubmitCrewRace\ResubmitCrewRace;
 use Stu\Module\PlayerSetting\Action\UpdateCrewRaceDistribution\UpdateCrewRaceDistribution;
+use Stu\Module\PlayerSetting\Action\SelectCrewRace\SelectCrewRace;
+use Stu\Module\PlayerSetting\Action\RemoveCrewRace\RemoveCrewRace;
+use Stu\Module\PlayerSetting\Action\UpdateUserCrewRaceChance\UpdateUserCrewRaceChance;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSetting;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
@@ -57,6 +60,9 @@ return [
         CreateCrewRace::ACTION_IDENTIFIER => autowire(CreateCrewRace::class),
         ResubmitCrewRace::ACTION_IDENTIFIER => autowire(ResubmitCrewRace::class),
         UpdateCrewRaceDistribution::ACTION_IDENTIFIER => autowire(UpdateCrewRaceDistribution::class),
+        SelectCrewRace::ACTION_IDENTIFIER => autowire(SelectCrewRace::class),
+        RemoveCrewRace::ACTION_IDENTIFIER => autowire(RemoveCrewRace::class),
+        UpdateUserCrewRaceChance::ACTION_IDENTIFIER => autowire(UpdateUserCrewRaceChance::class),
     ],
     'OPTIONS_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -25,6 +25,9 @@ class UserCrewRace
     #[Column(name: 'user_id', type: 'integer')]
     private int $user_id;
 
+    #[Column(type: 'smallint', nullable: true)]
+    private ?int $chance = null;
+
     public function getCrewRace(): CrewRace
     {
         return $this->crewRace;
@@ -33,6 +36,18 @@ class UserCrewRace
     public function setCrewRace(CrewRace $crewRace): UserCrewRace
     {
         $this->crewRace = $crewRace;
+
+        return $this;
+    }
+
+    public function getChance(): ?int
+    {
+        return $this->chance;
+    }
+
+    public function setChance(?int $chance): UserCrewRace
+    {
+        $this->chance = $chance;
 
         return $this;
     }

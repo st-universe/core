@@ -16,10 +16,12 @@ use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserTutorial;
+use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
 use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 use Stu\StuTestCase;
@@ -38,6 +40,10 @@ class PlayerDefaultsCreatorTest extends StuTestCase
 
     private MockInterface&UserTutorialRepositoryInterface $userTutorialRepository;
 
+    private MockInterface&CrewRaceRepositoryInterface $crewRaceRepository;
+
+    private MockInterface&UserCrewRaceRepositoryInterface $userCrewRaceRepository;
+
     private PlayerDefaultsCreatorInterface $defaultsCreator;
 
     #[\Override]
@@ -49,6 +55,8 @@ class PlayerDefaultsCreatorTest extends StuTestCase
         $this->userLayerRepository = $this->mock(UserLayerRepositoryInterface::class);
         $this->tutorialStepRepository = $this->mock(TutorialStepRepositoryInterface::class);
         $this->userTutorialRepository = $this->mock(UserTutorialRepositoryInterface::class);
+        $this->crewRaceRepository = $this->mock(CrewRaceRepositoryInterface::class);
+        $this->userCrewRaceRepository = $this->mock(UserCrewRaceRepositoryInterface::class);
 
         $this->defaultsCreator = new PlayerDefaultsCreator(
             $this->privateMessageFolderRepository,
@@ -56,7 +64,9 @@ class PlayerDefaultsCreatorTest extends StuTestCase
             $this->layerRepository,
             $this->userLayerRepository,
             $this->tutorialStepRepository,
-            $this->userTutorialRepository
+            $this->userTutorialRepository,
+            $this->crewRaceRepository,
+            $this->userCrewRaceRepository
         );
     }
 
@@ -110,6 +120,15 @@ class PlayerDefaultsCreatorTest extends StuTestCase
                 ->once()
                 ->andReturnSelf();
         }
+
+        $user->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+        $this->crewRaceRepository->shouldReceive('getStandardForFaction')
+            ->with(1)
+            ->once()
+            ->andReturn([]);
 
         $user->shouldReceive('getFaction->getStartResearch')
             ->withNoArgs()

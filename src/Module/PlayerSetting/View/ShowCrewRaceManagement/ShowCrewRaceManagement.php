@@ -10,6 +10,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowCrewRaceManagement implements ViewControllerInterface
 {
@@ -17,7 +19,9 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
 
     public function __construct(
         private readonly CrewRaceRepositoryInterface $crewRaceRepository,
-        private readonly FactionRepositoryInterface $factionRepository
+        private readonly FactionRepositoryInterface $factionRepository,
+        private readonly UserCrewRaceRepositoryInterface $userCrewRaceRepository,
+        private readonly UserRepositoryInterface $userRepository
     ) {}
 
     #[\Override]
@@ -26,12 +30,36 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
         $user = $game->getUser();
         $ownCrewRaces = $this->crewRaceRepository->getByCreatorUserId($user->getId());
         $ownFactionId = $user->getFactionId();
+        $userCrewRaces = [];
+        foreach ($this->userCrewRaceRepository->getByUserId($user->getId()) as $userCrewRace) {
+            $userCrewRaces[$userCrewRace->getCrewRace()->getId()] = $userCrewRace;
+        }
+        $selectableCrewRaces = $this->crewRaceRepository->getSelectableForUser($user->getId(), $ownFactionId);
+        foreach ($userCrewRaces as $userCrewRace) {
+            if (!in_array($userCrewRace->getCrewRace(), $selectableCrewRaces, true)) {
+                $selectableCrewRaces[] = $userCrewRace->getCrewRace();
+            }
+        }
+        usort(
+            $selectableCrewRaces,
+            static fn ($a, $b): int => [$a->isCivil() ? 1 : 0, $a->getDescription()] <=> [$b->isCivil() ? 1 : 0, $b->getDescription()]
+        );
+        $crewRaceOwnerNames = [];
+        foreach ($selectableCrewRaces as $crewRace) {
+            $creatorUserId = $crewRace->getCreatorUserId();
+            if ($creatorUserId !== null) {
+                $crewRaceOwnerNames[$crewRace->getId()] = $this->userRepository->find($creatorUserId)?->getName() ?? _('Niemand');
+            }
+        }
 
         $game->setViewTemplate('html/user/crewRaceManagement.twig');
         $game->setPageTitle(_('Crew-Rassen verwalten'));
         $game->appendNavigationPart('options.php', _('Optionen'));
         $game->appendNavigationPart('?SHOW_CREW_RACE_MANAGEMENT=1', _('Crew-Rassen'));
         $game->setTemplateVar('OWN_CREW_RACES', $ownCrewRaces);
+        $game->setTemplateVar('SELECTABLE_CREW_RACES', $selectableCrewRaces);
+        $game->setTemplateVar('USER_CREW_RACES', $userCrewRaces);
+        $game->setTemplateVar('CREW_RACE_OWNER_NAMES', $crewRaceOwnerNames);
         $game->setTemplateVar('PLAYABLE_FACTIONS', $this->factionRepository->getByChooseable(true));
         $game->setTemplateVar('OWN_FACTION_ID', $ownFactionId);
         $game->setTemplateVar('CAN_CREATE_CREW_RACE', $game->isAdmin() || count($ownCrewRaces) < 3);

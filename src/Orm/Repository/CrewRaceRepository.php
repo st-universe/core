@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Crew\CrewRaceUsageEnum;
 use Stu\Orm\Entity\CrewRace;
-use Stu\Orm\Entity\UserCrewRace;
 
 /**
  * @extends EntityRepository<CrewRace>
@@ -36,37 +34,31 @@ final class CrewRaceRepository extends EntityRepository implements CrewRaceRepos
     }
 
     #[\Override]
-    public function getForUser(int $userId, int $factionId, CrewRaceUsageEnum $usage): array
+    public function getSelectableForUser(int $userId, int $factionId): array
     {
-        $races = $usage === CrewRaceUsageEnum::FOREIGN_ONLY
-            ? []
-            : $this->getByFaction($factionId);
+        $races = array_filter(
+            $this->findAll(),
+            static fn (CrewRace $crewRace): bool =>
+                $crewRace->hasFactionId($factionId)
+                && (!$crewRace->isCivil()
+                    || ($crewRace->getCreatorUserId() !== null && $crewRace->isAccepted() && ($crewRace->isShared() || $crewRace->getCreatorUserId() === $userId)))
+        );
 
-        if ($usage === CrewRaceUsageEnum::STANDARD) {
-            return $races;
-        }
+        usort(
+            $races,
+            static fn (CrewRace $a, CrewRace $b): int =>
+                [$a->isCivil() ? 1 : 0, $a->getDescription()] <=> [$b->isCivil() ? 1 : 0, $b->getDescription()]
+        );
 
-        $customRaces = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT cr FROM %s cr
-                JOIN %s ucr WITH ucr.crewRace = cr
-                WHERE ucr.user_id = :userId
-                AND cr.creator_user_id IS NOT NULL
-                AND cr.accepted = :accepted',
-                CrewRace::class,
-                UserCrewRace::class
-            )
-        )->setParameters([
-            'userId' => $userId,
-            'accepted' => true
-        ])->getResult();
+        return $races;
+    }
 
-        foreach ($customRaces as $crewRace) {
-            if (
-                $crewRace instanceof CrewRace
-                && ($crewRace->isShared() || $crewRace->getCreatorUserId() === $userId)
-                && $crewRace->hasFactionId($factionId)
-            ) {
+    #[\Override]
+    public function getStandardForFaction(int $factionId): array
+    {
+        $races = [];
+        foreach ($this->getByFaction($factionId) as $crewRace) {
+            if (!$crewRace->isCivil()) {
                 $races[] = $crewRace;
             }
         }

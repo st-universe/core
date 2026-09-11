@@ -16,6 +16,8 @@ interface UserCrewRaceRepositoryInterface extends ObjectRepository
 
     public function save(UserCrewRace $userCrewRace): void;
 
+    public function delete(UserCrewRace $userCrewRace): void;
+
     public function exists(int $crewRaceId, int $userId): bool;
 
     /**

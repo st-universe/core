@@ -4,103 +4,46 @@ declare(strict_types=1);
 
 namespace Stu\Component\Refactor;
 
-use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
-use Stu\Component\Alliance\Enum\RelationPermissionEnum;
-use Stu\Component\Crew\CrewTypeEnum;
-use Stu\Orm\Entity\CrewAssignment;
-use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
-use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
-use Stu\Orm\Repository\RelationRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\CrewRaceRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class RefactorRunner
 {
     public function __construct(
-        private SpacecraftRepositoryInterface $spacecraftRepository,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
-        private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
-        private RelationRepositoryInterface $relationRepository,
-        private RelationPermissionRepositoryInterface $relationPermissionRepository
+        private UserRepositoryInterface $userRepository,
+        private CrewRaceRepositoryInterface $crewRaceRepository,
+        private UserCrewRaceRepositoryInterface $userCrewRaceRepository
     ) {}
 
     public function refactor(): void
     {
-        foreach ($this->spacecraftRepository->findAll() as $spacecraft) {
-            $this->restoreCrewPosts($spacecraft);
-        }
-
-        foreach ($this->relationRepository->getActiveByTypes([
-            AllianceRelationTypeEnum::FRIENDS->value,
-            AllianceRelationTypeEnum::ALLIED->value,
-            AllianceRelationTypeEnum::VASSAL->value
-        ]) as $relation) {
-            $this->relationPermissionRepository->grantForRelation(
-                $relation,
-                RelationPermissionEnum::FRIENDLY
-            );
+        foreach ($this->userRepository->findAll() as $user) {
+            $this->refactorUser($user);
         }
     }
 
-    private function restoreCrewPosts(Spacecraft $spacecraft): void
+    private function refactorUser(User $user): void
     {
-        $rump = $spacecraft->getRump();
-        $rumpRole = $rump->getShipRumpRole();
-        if ($rumpRole === null) {
-            return;
-        }
-
-        $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
-            $rump->getShipRumpCategory()->getId(),
-            $rumpRole->getId()
-        );
-        if ($config === null) {
-            return;
-        }
-
-        $crewAssignments = $spacecraft->getCrewAssignments()->toArray();
-        $availableCrew = [];
-        foreach ($crewAssignments as $crewAssignment) {
-            if (
-                $crewAssignment->getCrew()->getUserId() === $spacecraft->getUser()->getId()
-                && $crewAssignment->getSlot() === CrewTypeEnum::CREWMAN
-            ) {
-                $availableCrew[$crewAssignment->getCrew()->getId()] = $crewAssignment;
+        foreach ($this->userCrewRaceRepository->getByUserId($user->getId()) as $userCrewRace) {
+            if ($userCrewRace->getChance() === null) {
+                $userCrewRace->setChance($userCrewRace->getCrewRace()->getChance());
             }
+            $this->userCrewRaceRepository->save($userCrewRace);
         }
 
-        foreach (CrewTypeEnum::getOrder() as $position) {
-            if ($position === CrewTypeEnum::CREWMAN || $availableCrew === []) {
+        foreach ($this->crewRaceRepository->getStandardForFaction($user->getFactionId()) as $crewRace) {
+            if ($this->userCrewRaceRepository->exists($crewRace->getId(), $user->getId())) {
                 continue;
             }
 
-            $assignedCrewCount = count(array_filter(
-                $crewAssignments,
-                static fn(CrewAssignment $crewAssignment): bool => (
-                    $crewAssignment->getCrew()->getUserId() === $spacecraft->getUser()->getId()
-                    && $crewAssignment->getSlot() === $position
-                )
-            ));
-            $freeSlots = $config->getCrewForPosition($position) - $assignedCrewCount;
-            if ($freeSlots < 1) {
-                continue;
-            }
-
-            uasort(
-                $availableCrew,
-                static fn(CrewAssignment $a, CrewAssignment $b): int => (
-                    ($b->getCrew()->getSkillAt($position)?->getExpertise() ?? 0)
-                    <=> ($a->getCrew()->getSkillAt($position)?->getExpertise() ?? 0)
-                    ?: $a->getCrew()->getId() <=> $b->getCrew()->getId()
-                )
+            $this->userCrewRaceRepository->save(
+                $this->userCrewRaceRepository->prototype()
+                    ->setCrewRace($crewRace)
+                    ->setUserId($user->getId())
+                    ->setChance($crewRace->getChance())
             );
-
-            foreach (array_slice($availableCrew, 0, $freeSlots, true) as $crewId => $crewAssignment) {
-                $crewAssignment->setSlot($position);
-                $this->crewAssignmentRepository->save($crewAssignment);
-                unset($availableCrew[$crewId]);
-            }
         }
     }
 }

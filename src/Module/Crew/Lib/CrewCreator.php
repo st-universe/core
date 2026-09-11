@@ -7,7 +7,6 @@ namespace Stu\Module\Crew\Lib;
 use InvalidArgumentException;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Component\Crew\CrewTypeEnum;
-use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
@@ -21,17 +20,18 @@ use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewCreator implements CrewCreatorInterface
 {
     public function __construct(
-        private CrewRaceRepositoryInterface $crewRaceRepository,
         private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         private CrewAssignmentRepositoryInterface $shipCrewRepository,
         private CrewRepositoryInterface $crewRepository,
         private UserRepositoryInterface $userRepository,
-        private UserSettingsProviderInterface $userSettingsProvider,
+        private CrewRaceRepositoryInterface $crewRaceRepository,
+        private UserCrewRaceRepositoryInterface $userCrewRaceRepository,
         private StuRandom $stuRandom,
         private TroopTransferUtilityInterface $troopTransferUtility
     ) {}
@@ -45,31 +45,35 @@ final class CrewCreator implements CrewCreatorInterface
             throw new InvalidArgumentException('user not found1');
         }
 
-        $arr = [];
-        $raceList = $this->crewRaceRepository->getForUser(
-            $user->getId(),
-            $user->getFactionId(),
-            $this->userSettingsProvider->getCrewRaceUsage($user)
-        );
+        $raceList = $this->userCrewRaceRepository->getByUserId($user->getId());
         if ($raceList === []) {
-            $raceList = $this->crewRaceRepository->getByFaction($user->getFactionId());
+            foreach ($this->crewRaceRepository->getStandardForFaction($user->getFactionId()) as $crewRace) {
+                $userCrewRace = $this->userCrewRaceRepository->prototype()
+                    ->setCrewRace($crewRace)
+                    ->setUserId($user->getId())
+                    ->setChance($crewRace->getChance());
+                $this->userCrewRaceRepository->save($userCrewRace);
+                $raceList[] = $userCrewRace;
+            }
         }
-        foreach ($raceList as $obj) {
-            $min = key($arr) + 1;
-            $amount = range($min, $min + $obj->getChance());
-            array_walk(
-                $amount,
-                function (&$value) use ($obj): void {
-                    $value = $obj->getId();
-                }
-            );
-            $arr = [...$arr, ...$amount];
+        if ($raceList === []) {
+            throw new SanityCheckException(sprintf('userId %d has no crew races', $user->getId()));
         }
-        $randomRaceId = $arr[$this->stuRandom->array_rand($arr)];
-        $race = $this->crewRaceRepository->find($randomRaceId);
-        if ($race === null) {
-            throw new SanityCheckException(sprintf('raceId %d does not exist', $randomRaceId));
+
+        $races = [];
+        foreach ($raceList as $userCrewRace) {
+            $chance = $userCrewRace->getChance();
+            if ($chance === null || $chance < 1) {
+                continue;
+            }
+
+            $races = [...$races, ...array_fill(0, $chance, $userCrewRace->getCrewRace())];
         }
+        if ($races === []) {
+            throw new SanityCheckException(sprintf('userId %d has no usable crew races', $user->getId()));
+        }
+
+        $race = $races[$this->stuRandom->array_rand($races)];
 
         $gender = random_int(1, 100) > $race->getMaleRatio() ? Crew::CREW_GENDER_FEMALE : Crew::CREW_GENDER_MALE;
 
