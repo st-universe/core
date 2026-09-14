@@ -201,12 +201,9 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             ->createQuery(
                 sprintf(
                     'SELECT pm FROM %1$s pm
-                JOIN %2$s pmf
-                WITH pm.cat_id = pmf.id
-                LEFT JOIN %1$s inbox
-                WITH pm.inbox_pm_id = inbox.id
-                LEFT JOIN %2$s pmfinbox
-                WITH inbox.cat_id = pmfinbox.id
+                JOIN pm.category pmf
+                LEFT JOIN pm.inboxPm inbox
+                LEFT JOIN inbox.category pmfinbox
                 WHERE pmf.special in (:main, :out)
                 AND (pmfinbox.special is null or pmfinbox.special = :main)
                 AND pm.receivingUser = :user
@@ -214,11 +211,10 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                 AND  NOT EXISTS (SELECT pm2.id FROM %1$s pm2
                                     WHERE pm2.send_user = pm.send_user
                                     AND pm2.cat_id = :out
-                                    AND pm2.recip_user = pm.recip_user 
+                                    AND pm2.recip_user = pm.recip_user
                                     AND pm2.date < pm.date)
                 ORDER BY pm.id DESC',
-                    PrivateMessage::class,
-                    PrivateMessageFolder::class
+                    PrivateMessage::class
                 )
             )
             ->setParameters([
