@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessage;
@@ -195,7 +197,23 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     }
 
     #[\Override]
-    public function getConversations(User $user): array
+    public function getConversations(User $user, int $offset = 0, int $limit = 20): array
+    {
+        $query = $this->getConversationsQuery($user)
+            ->setFirstResult(max(0, $offset))
+            ->setMaxResults(max(1, $limit));
+        $paginator = new Paginator($query);
+
+        return [
+            'items' => iterator_to_array($paginator),
+            'total' => count($paginator),
+        ];
+    }
+
+    /**
+     * @return Query<int, PrivateMessage>
+     */
+    private function getConversationsQuery(User $user): Query
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -208,21 +226,34 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                 AND (pmfinbox.special is null or pmfinbox.special = :main)
                 AND pm.receivingUser = :user
                 AND pm.deleted IS NULL
-                AND  NOT EXISTS (SELECT pm2.id FROM %1$s pm2
-                                    WHERE pm2.send_user = pm.send_user
-                                    AND pm2.cat_id = :out
-                                    AND pm2.recip_user = pm.recip_user
-                                    AND pm2.date < pm.date)
-                ORDER BY pm.id DESC',
+                AND (pm.send_user != :system
+                    OR (pm.former_send_user IS NOT NULL AND pm.former_send_user != :system))
+                AND NOT EXISTS (SELECT pm2.id FROM %1$s pm2
+                    JOIN pm2.category pmf2
+                    LEFT JOIN pm2.inboxPm inbox2
+                    LEFT JOIN inbox2.category pmfinbox2
+                    WHERE pmf2.special in (:main, :out)
+                    AND (pmfinbox2.special is null or pmfinbox2.special = :main)
+                    AND pm2.receivingUser = :user
+                    AND pm2.deleted IS NULL
+                    AND (pm2.send_user != :system
+                        OR (pm2.former_send_user IS NOT NULL AND pm2.former_send_user != :system))
+                    AND (CASE WHEN pm2.send_user = :system
+                        THEN pm2.former_send_user ELSE pm2.send_user END) =
+                        (CASE WHEN pm.send_user = :system
+                        THEN pm.former_send_user ELSE pm.send_user END)
+                    AND (pm2.date > pm.date
+                        OR (pm2.date = pm.date AND pm2.id > pm.id)))
+                ORDER BY pm.date DESC, pm.id DESC',
                     PrivateMessage::class
                 )
             )
             ->setParameters([
                 'user' => $user,
                 'main' => PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
-                'out' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT
-            ])
-            ->getResult();
+                'out' => PrivateMessageFolderTypeEnum::SPECIAL_PMOUT,
+                'system' => 1
+            ]);
     }
 
     #[\Override]

@@ -50,8 +50,8 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
         int $limit
     ): array;
 
-    /** @return array<PrivateMessage> */
-    public function getConversations(User $user): array;
+    /** @return array{items: array<int, PrivateMessage>, total: int} */
+    public function getConversations(User $user, int $offset = 0, int $limit = 20): array;
 
     public function getAmountByFolder(PrivateMessageFolder $privateMessageFolder): int;
 

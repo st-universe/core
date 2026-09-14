@@ -504,7 +504,8 @@ function actionToInnerContent(action, params, title, page) {
 	switchInnerContent(action, title, params, page);
 }
 
-var isUpdateInProgress = false; function switchInnerContent(view, title, params, page, stateUrl) {
+var isUpdateInProgress = false;
+function switchInnerContent(view, title, params, page, stateUrl) {
 	if (isUpdateInProgress) {
 		return;
 	}
