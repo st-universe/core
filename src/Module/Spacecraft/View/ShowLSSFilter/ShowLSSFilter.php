@@ -30,7 +30,7 @@ final class ShowLSSFilter implements ViewControllerInterface
             false
         );
 
-        $game->setPageTitle(_('LSS Filter'));
+        $game->setPageTitle(_('LSS-Filter'));
         $game->setMacroInAjaxWindow('html/spacecraft/lssFilter.twig');
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('LSS_MODES', SpacecraftLssModeEnum::cases());
