@@ -119,7 +119,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         if (!$target->hasFreeDockingSlots()) {
-            $game->getInfo()->addInformation('Zur Zeit sind alle Dockplätze belegt');
+            $game->getInfo()->addInformation('Zurzeit sind alle Dockplätze belegt');
             return;
         }
         if ($ship->isCloaked()) {

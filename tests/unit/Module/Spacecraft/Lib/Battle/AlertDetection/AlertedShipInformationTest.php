@@ -26,8 +26,8 @@ class AlertedShipInformationTest extends StuTestCase
         return [
             [SpacecraftAlertStateEnum::ALERT_YELLOW, false, 'In Sektor 5|9 befindet sich 1 Flotte(n) auf [b][color=yellow]Alarm-Gelb![/color][/b]'],
             [SpacecraftAlertStateEnum::ALERT_YELLOW, true, 'In Sektor 5|9 befindet sich 1 Einzelschiff(e) auf [b][color=yellow]Alarm-Gelb![/color][/b]'],
-            [SpacecraftAlertStateEnum::ALERT_RED, false, 'In Sektor 5|9 befindet sich 1 Flotte(n) auf [b][color=red]Alarm-Rot![/color][/b]'],
-            [SpacecraftAlertStateEnum::ALERT_RED, true, 'In Sektor 5|9 befindet sich 1 Einzelschiff(e) auf [b][color=red]Alarm-Rot![/color][/b]'],
+            [SpacecraftAlertStateEnum::ALERT_RED, false, 'In Sektor 5|9 befindet sich 1 Flotte(n) auf [b][color=red]Alarm Rot![/color][/b]'],
+            [SpacecraftAlertStateEnum::ALERT_RED, true, 'In Sektor 5|9 befindet sich 1 Einzelschiff(e) auf [b][color=red]Alarm Rot![/color][/b]'],
         ];
     }
 

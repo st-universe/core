@@ -58,7 +58,7 @@ final class DockTractoredShip implements ActionControllerInterface
         }
         //check for free dock slots
         if (!$station->hasFreeDockingSlots()) {
-            $game->getInfo()->addInformation('Zur Zeit sind alle Dockplätze belegt');
+            $game->getInfo()->addInformation('Zurzeit sind alle Dockplätze belegt');
             return;
         }
 
