@@ -75,6 +75,23 @@ final class CrewRaceRepository extends EntityRepository implements CrewRaceRepos
         );
     }
 
+    /** @return list<CrewRace> */
+    #[\Override]
+    public function getWithoutCreator(): array
+    {
+        return $this->findBy(['creator_user_id' => null], ['description' => 'ASC']);
+    }
+
+    /**
+     * @param list<int> $factionIds
+     * @return list<CrewRace>
+     */
+    #[\Override]
+    public function getWithoutCreatorByFactionIds(array $factionIds): array
+    {
+        return $this->filterByFactionIds($this->getWithoutCreator(), $factionIds);
+    }
+
     #[\Override]
     public function getPendingCustomRaces(): array
     {
@@ -123,5 +140,48 @@ final class CrewRaceRepository extends EntityRepository implements CrewRaceRepos
     public function getByGfxPath(string $gfxPath): ?CrewRace
     {
         return $this->findOneBy(['define' => $gfxPath]);
+    }
+
+    /** @return list<CrewRace> */
+    #[\Override]
+    public function getShared(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT cr FROM %s cr
+                WHERE cr.shared = :shared AND cr.accepted = :accepted
+                ORDER BY cr.description ASC',
+                CrewRace::class
+            )
+        )->setParameters([
+            'shared' => true,
+            'accepted' => true
+        ])->getResult();
+    }
+
+    /**
+     * @param list<int> $factionIds
+     * @return list<CrewRace>
+     */
+    #[\Override]
+    public function getSharedByFactionIds(array $factionIds): array
+    {
+        return $this->filterByFactionIds($this->getShared(), $factionIds);
+    }
+
+    /**
+     * @param list<CrewRace> $races
+     * @param list<int> $factionIds
+     * @return list<CrewRace>
+     */
+    private function filterByFactionIds(array $races, array $factionIds): array
+    {
+        return array_values(array_filter(
+            $races,
+            static fn (CrewRace $crewRace): bool => array_any(
+                $factionIds,
+                $crewRace->hasFactionId(...)
+            )
+        ));
     }
 }

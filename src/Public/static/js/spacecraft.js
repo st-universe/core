@@ -2061,3 +2061,9 @@ function initializeCrewSkillRadar() {
     chart.dataset.initialized = '1';
   });
 }
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeCrewSkillRadar);
+} else {
+  initializeCrewSkillRadar();
+}

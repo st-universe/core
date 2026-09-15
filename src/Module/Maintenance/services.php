@@ -22,6 +22,7 @@ return [
     OldTachyonScanDeletion::class => autowire(OldTachyonScanDeletion::class),
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
+    OrionSlaveTrade::class => autowire(OrionSlaveTrade::class),
     MaintenanceCrewExperienceHandler::class => autowire(MaintenanceCrewExperienceHandler::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
     BeginPirateRound::class => autowire(BeginPirateRound::class),
@@ -45,6 +46,7 @@ return [
         get(TopFlightsReward::class),
         get(BeginPirateRound::class),
         get(EndLotteryPeriod::class),
+        get(OrionSlaveTrade::class),
         get(PirateWrathDecreaser::class),
         get(UserInformation::class),
         get(GameRequestCleanUp::class)

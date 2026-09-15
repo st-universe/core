@@ -21,6 +21,7 @@ use Stu\Component\Player\Deletion\Handler\DockingPrivilegeDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\FleetDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\ForeignCrewDumpingHandler;
 use Stu\Component\Player\Deletion\Handler\KnPostDeletionHandler;
+use Stu\Component\Player\Deletion\Handler\OrionAuctionDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\PirateWrathDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\PrivateMessageDeletionHandler;
 use Stu\Component\Player\Deletion\Handler\RefererDeletionHandler;
@@ -73,6 +74,7 @@ return [
             autowire(KnPostDeletionHandler::class),
             autowire(RpgPlotDeletionHandler::class),
             autowire(TradepostDeletionHandler::class),
+            autowire(OrionAuctionDeletionHandler::class),
             autowire(CrewDeletionHandler::class),
             autowire(ForeignCrewDumpingHandler::class),
             autowire(ShipTakeoverHandler::class),

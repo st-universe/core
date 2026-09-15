@@ -83,4 +83,10 @@ interface ModuleRepositoryInterface extends ObjectRepository
      * @return array<Module>
      */
     public function getByCommodityIds(array $commodityIds): array;
+
+    /**
+     * @param list<int> $levels
+     * @return list<Module>
+     */
+    public function getNonFactionNonSpecialByLevels(array $levels): array;
 }
