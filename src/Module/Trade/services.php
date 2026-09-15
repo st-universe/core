@@ -33,6 +33,12 @@ use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequestInterface;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
 use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
+use Stu\Module\Trade\Action\OrionBidAuction\OrionBidAuction;
+use Stu\Module\Trade\Action\OrionBidAuction\OrionBidAuctionRequest;
+use Stu\Module\Trade\Action\OrionBidAuction\OrionBidAuctionRequestInterface;
+use Stu\Module\Trade\Action\OrionDeleteAuction\OrionDeleteAuction;
+use Stu\Module\Trade\Action\OrionDeleteAuction\OrionDeleteAuctionRequest;
+use Stu\Module\Trade\Action\OrionDeleteAuction\OrionDeleteAuctionRequestInterface;
 use Stu\Module\Trade\Action\PirateProtection\PirateProtection;
 use Stu\Module\Trade\Action\PirateProtection\PirateProtectionRequest;
 use Stu\Module\Trade\Action\PirateProtection\PirateProtectionRequestInterface;
@@ -73,6 +79,7 @@ use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequestInterface;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOffer;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequest;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequestInterface;
+use Stu\Module\Trade\View\ShowOrionSlaveTrade\ShowOrionSlaveTrade;
 use Stu\Module\Trade\View\ShowShiplist\ShowShiplist;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBox;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBoxRequest;
@@ -108,6 +115,8 @@ return [
     DealsBidAuctionRequestInterface::class => autowire(DealsBidAuctionRequest::class),
     DealsTakeAuctionRequestInterface::class => autowire(DealsTakeAuctionRequest::class),
     PirateProtectionRequestInterface::class => autowire(PirateProtectionRequest::class),
+    OrionBidAuctionRequestInterface::class => autowire(OrionBidAuctionRequest::class),
+    OrionDeleteAuctionRequestInterface::class => autowire(OrionDeleteAuctionRequest::class),
     PirateProtection::class => autowire(PirateProtection::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
@@ -130,6 +139,8 @@ return [
         DealsTakeOffer::ACTION_IDENTIFIER => autowire(DealsTakeOffer::class),
         DealsBidAuction::ACTION_IDENTIFIER => autowire(DealsBidAuction::class),
         DealsTakeAuction::ACTION_IDENTIFIER => autowire(DealsTakeAuction::class),
+        OrionBidAuction::ACTION_IDENTIFIER => autowire(OrionBidAuction::class),
+        OrionDeleteAuction::ACTION_IDENTIFIER => autowire(OrionDeleteAuction::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class),
         BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class),
@@ -156,6 +167,7 @@ return [
         ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
         ShowDeals::VIEW_IDENTIFIER => autowire(ShowDeals::class),
         ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class),
-        ShowLottery::VIEW_IDENTIFIER => autowire(ShowLottery::class)
+        ShowLottery::VIEW_IDENTIFIER => autowire(ShowLottery::class),
+        ShowOrionSlaveTrade::VIEW_IDENTIFIER => autowire(ShowOrionSlaveTrade::class)
     ],
 ];

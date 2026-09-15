@@ -38,6 +38,15 @@ interface CrewRaceRepositoryInterface extends ObjectRepository
      */
     public function getByCreatorUserId(int $userId): array;
 
+    /** @return list<CrewRace> */
+    public function getWithoutCreator(): array;
+
+    /**
+     * @param list<int> $factionIds
+     * @return list<CrewRace>
+     */
+    public function getWithoutCreatorByFactionIds(array $factionIds): array;
+
     /**
      * @return list<CrewRace>
      */
@@ -54,4 +63,13 @@ interface CrewRaceRepositoryInterface extends ObjectRepository
     public function getRejectedCustomRaces(): array;
 
     public function getByGfxPath(string $gfxPath): ?CrewRace;
+
+    /** @return list<CrewRace> */
+    public function getShared(): array;
+
+    /**
+     * @param list<int> $factionIds
+     * @return list<CrewRace>
+     */
+    public function getSharedByFactionIds(array $factionIds): array;
 }

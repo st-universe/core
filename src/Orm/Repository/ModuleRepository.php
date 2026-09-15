@@ -20,6 +20,23 @@ use Stu\Orm\Entity\Spacecraft;
  */
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
+    /**
+     * @param list<int> $levels
+     * @return list<Module>
+     */
+    #[\Override]
+    public function getNonFactionNonSpecialByLevels(array $levels): array
+    {
+        return $this->createQueryBuilder('module')
+            ->where('module.level IN (:levels)')
+            ->andWhere('module.faction_id IS NULL')
+            ->andWhere('module.moduleSpecials IS EMPTY')
+            ->setParameter('levels', $levels)
+            ->orderBy('module.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // used for ModuleSelector
     #[\Override]
     public function getBySpecialTypeAndRumpAndRole(

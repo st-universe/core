@@ -18,4 +18,5 @@ final class TradeEnum
 
     // Deals
     public const int DEALS_FERG_TRADEPOST_ID = 2;
+    public const int ORION_ZAGOS_TRADEPOST_ID = 14;
 }

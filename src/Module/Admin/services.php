@@ -55,6 +55,7 @@ use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
 use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualSpacecraftTick;
+use Stu\Module\Admin\Action\Ticks\DoOrionSlaveTrade;
 use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\FullMapEditor\ShowFullMapEditor;
@@ -116,6 +117,7 @@ return [
                 'handlerList',
                 get(MaintenanceHandlerInterface::class)
             ),
+        DoOrionSlaveTrade::ACTION_IDENTIFIER => autowire(DoOrionSlaveTrade::class),
         DoManualSpacecraftTick::ACTION_IDENTIFIER => autowire(DoManualSpacecraftTick::class),
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class)
             ->constructorParameter(

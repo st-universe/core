@@ -98,6 +98,8 @@ use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\NPCQuestLog;
 use Stu\Orm\Entity\NPCQuestUser;
 use Stu\Orm\Entity\OpenedAdventDoor;
+use Stu\Orm\Entity\OrionAuction;
+use Stu\Orm\Entity\OrionAuctionBid;
 use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PirateRound;
 use Stu\Orm\Entity\PirateSetup;
@@ -286,6 +288,10 @@ return [
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Deals::class),
     AuctionBidRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(AuctionBid::class),
+    OrionAuctionRepositoryInterface::class =>
+        fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(OrionAuction::class),
+    OrionAuctionBidRepositoryInterface::class =>
+        fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(OrionAuctionBid::class),
     DockingPrivilegeRepositoryInterface::class =>
         fn(ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(DockingPrivilege::class),
     FactionRepositoryInterface::class =>

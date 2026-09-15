@@ -1,0 +1,112 @@
+<div class="divhead">Orion Sklavenhandel</div>
+<div class="divbody" style="display: flex; align-items: center;">
+    <div style="width: 50%;">
+        Nur herein, Käufer. Abseits der offiziellen Routen bringt mein Netzwerk alle zwei Tage ausgewählte Crewman nach Zagos. Wer zögert, überlässt die vielversprechendsten Exemplare der Konkurrenz. Dein Gebot wird sofort deinem Warenkonto bei Zagos entnommen. Wirst du überboten, erhältst du es selbstverständlich zurück. Wer am Ende am meisten bietet, darf seine neue Errungenschaft direkt bei Zagos abholen
+    </div>
+    <div style="width: 20%; text-align: center;">
+        <img src="assets/buttons/orion.png" />
+    </div>
+    <div style="width: 30%;"></div>
+</div>
+<br />
+
+{% if not HAS_LICENSE %}
+<div class="divhead">Kein Warenkonto</div>
+<div class="divbody">Für den Orion Sklavenhandel benötigst du ein aktives Warenkonto bei Zagos Freihandel</div>
+{% else %}
+<div class="box">
+    <div class="box_title">Laufende Auktionen</div>
+    <div class="box_body">
+        {% if AUCTIONS is empty %}
+        Keine Auktionen vorhanden
+        {% endif %}
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            {% for auction in AUCTIONS %}
+            {% set crew = auction.getCrew %}
+            {% set highestBid = HIGHEST_BIDS[auction.getId] %}
+            {% set highestSkill = HIGHEST_SKILLS[auction.getId] %}
+            {% set wantedCommodity = auction.getWantedCommodity %}
+            <div style="flex: 1 1 calc(50% - 5px); min-width: 480px;">
+                <table class="tcal" style="width: 100%; height: 100%;">
+                    <tr>
+                        <th colspan="2">{{ crew.getRace.getDescription|bbcode }}</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 70%; vertical-align: top;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 25%; text-align: center;">
+                                    <img src="{{ crew.getRace.getImagePath(crew.getGenderShort, auction.getCrewImageType) }}" />
+                                </div>
+                                <div style="width: 75%;">
+                                    <div class="crew-skill-radar" style="max-width: 360px;" data-crew-skill-radar data-radar-data="{{ RADAR_DATA[auction.getId]|json_encode|e('html_attr') }}"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 30%; vertical-align: top;">
+                            <b>Aktuelles Gebot</b><br />
+                            {% if wantedCommodity %}
+                            <img src="assets/commodities/{{ wantedCommodity.getId }}.png" title="{{ wantedCommodity.getName }}" />
+                            {% else %}
+                            <img src="assets/buttons/prestige.png" title="Prestige" />
+                            {% endif %}
+                            {% if auction.getAuctionAmount %}
+                            {{ auction.getAuctionAmount }}
+                            {% else %}
+                            Kein Gebot
+                            {% endif %}
+                            <br />
+                            <b>Höchste Position:</b><br />
+                            {{ highestSkill.getPosition.getDescription }}<br />
+                            <b>Rang:</b> {{ CREW_RANK_NAMES[highestSkill.getRank.value] }}
+                            <br />
+                            <b>Höchstbietender:</b><br />
+                            {% if highestBid %}
+                            {{ highestBid.getUser.getName|bbcode }} ({{ highestBid.getUser.getId }})
+                            {% else %}
+                            Kein Gebot
+                            {% endif %}
+                            <br />
+                            <b>Ende:</b> {{ auction.getEnd|stuDateTime }} Uhr
+                            <form method="post" action="trade.php" style="margin-top: 6px;">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="auctionid" value="{{ auction.getId }}" />
+                                <input type="number" min="1" size="7" style="width: 65px;" name="amount" value="{{ auction.getAuctionAmount + 1 }}" />
+                                <input type="submit" class="button" name="B_ORION_BID_AUCTION" value="Bieten" />
+                            </form>
+                            {% if IS_ADMIN %}
+                            <form method="post" action="trade.php" style="margin-top: 6px;">
+                                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                                <input type="hidden" name="auctionid" value="{{ auction.getId }}" />
+                                <input type="submit" class="button" name="B_DELETE_ORION_AUCTION" value="Angebot löschen" />
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<br />
+<div class="box">
+    <div class="box_title">Ersteigerte Crew der letzten 14 Tage</div>
+    <div class="box_body">
+        <table class="tcal" style="width: 100%;">
+            <tr><th>Crewman</th><th>Rang</th><th>Ersteigert von</th><th>Abschluss</th></tr>
+            {% if HISTORY is empty %}
+            <tr><td colspan="4">Noch keine Crewman ersteigert</td></tr>
+            {% endif %}
+            {% for auction in HISTORY %}
+            {% set crew = auction.getCrew %}
+            <tr class="row{{ loop.index is odd }}">
+                <td><img src="{{ crew.getRace.getImagePath(crew.getGenderShort, auction.getCrewImageType) }}" /> {{ crew.getName }}</td>
+                <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>
+                <td>{% if auction.getWinner %}{{ auction.getWinner.getName|bbcode }} ({{ auction.getWinner.getId }}){% else %}{{ auction.getWinnerName|bbcode }}{% endif %}</td>
+                <td>{{ auction.getCompletedAt|stuDateTime }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
