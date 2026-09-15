@@ -554,6 +554,9 @@ function switchInnerContent(view, title, params, page, stateUrl) {
 		if (typeof initializeRelationPermissionSelection === 'function') {
 			initializeRelationPermissionSelection();
 		}
+		if (typeof initializeCrewSkillRadar === 'function') {
+			initializeCrewSkillRadar();
+		}
 
 		},
 		method: "get",
