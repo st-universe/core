@@ -71,7 +71,7 @@ enum SpacecraftModuleTypeEnum: int
             self::REACTOR => "Reaktor",
             self::COMPUTER => "Computer",
             self::PHASER => "Energiewaffe",
-            self::TORPEDO => "Torpedobank",
+            self::TORPEDO => "Torpedorampe",
             self::SPECIAL => "Spezial",
             self::WARPDRIVE => "Warpantrieb",
             self::SENSOR => "Sensoren"

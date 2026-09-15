@@ -63,7 +63,7 @@ class AlertStateBattleParty extends AbstractBattleParty implements AlertedBattle
     public function getAlertDescription(): string
     {
         return $this->leaderAlertState === SpacecraftAlertStateEnum::ALERT_RED
-            ? '[b][color=red]Alarm-Rot[/color][/b]'
+            ? '[b][color=red]Alarm Rot[/color][/b]'
             : '[b][color=yellow]Alarm-Gelb[/color][/b]';
     }
 }

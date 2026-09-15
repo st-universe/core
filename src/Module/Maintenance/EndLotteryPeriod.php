@@ -165,7 +165,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             $tradePost->getUserId(),
             $winner->getId(),
             sprintf(
-                "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur goldenen Kugel'",
+                "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur Goldenen Kugel'",
                 $jackpot,
                 $ticketCount
             ),
@@ -204,7 +204,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             $tradePost->getUserId(),
             $winner->getId(),
             sprintf(
-                "Als zusätzlicher Lotteriegewinn wurde dir ein Schiff der %s-Klasse zu den Koordinaten %s am Handelsposten 'Zur goldenen Kugel' überstellt.",
+                "Als zusätzlicher Lotteriegewinn wurde dir ein Schiff der %s-Klasse zu den Koordinaten %s am Handelsposten 'Zur Goldenen Kugel' überstellt.",
                 $ship->getRumpName(),
                 $ship->getSectorString()
             ),
