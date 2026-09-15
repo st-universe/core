@@ -35,11 +35,11 @@ final class ShowNPCQuests implements ViewControllerInterface
                 '/npc/?%s=1',
                 self::VIEW_IDENTIFIER
             ),
-            _('NPC Quests')
+            _('NPC-Quests')
         );
 
         $game->setTemplateFile('html/npc/npcquests.twig');
-        $game->setPageTitle(_('NPC Quests'));
+        $game->setPageTitle(_('NPC-Quests'));
 
         $userId = $game->getUser()->getId();
 

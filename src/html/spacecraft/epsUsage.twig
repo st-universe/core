@@ -10,7 +10,7 @@
     {% if not WRAPPER.isUnalerted %}
     <br />
     {% set alertState = WRAPPER.getAlertState %}
-    <div class="divhead">Alarmstufe Verbrauch</div>
+    <div class="divhead">Alarmstufenverbrauch</div>
     <div class="divbody">
         <img src="/assets/buttons/alert{{ alertState.value }}.png" title="{{ alertState.getDescription }}" />
         <span>{{ alertState.getEpsUsage }} EPS</span>

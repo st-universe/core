@@ -34,7 +34,7 @@ final class ShowEpsUsage implements ViewControllerInterface
             false
         );
 
-        $game->setPageTitle('EPS Verbrauch');
+        $game->setPageTitle('EPS-Verbrauch');
         $game->setMacroInAjaxWindow('html/spacecraft/epsUsage.twig');
 
         $game->setTemplateVar('WRAPPER', $wrapper);
