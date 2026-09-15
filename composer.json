@@ -59,7 +59,7 @@
     "sebastian/diff": "^8.0",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
-    "symfony/cache": "^7.2",
+    "symfony/cache": "^8.0",
     "symfony/event-dispatcher": "^8.0",
     "symfony/mailer": "^8.0.0",
     "twig/twig": "^3.6"
