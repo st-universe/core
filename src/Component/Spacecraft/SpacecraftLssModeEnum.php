@@ -14,7 +14,7 @@ enum SpacecraftLssModeEnum: int
     public function getDescription(): string
     {
         return match ($this) {
-            self::NORMAL => "LSS Filter deaktivieren",
+            self::NORMAL => "LSS-Filter deaktivieren",
             self::BORDER => "Territorialansicht",
             self::IMPASSABLE => "Unpassierbarkeitsansicht",
             self::CARTOGRAPHING => "Kartographieansicht"

@@ -31,7 +31,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         $game->setView(ShowLottery::VIEW_IDENTIFIER);
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
-            $game->getInfo()->addInformation(_('Um Lotterielose zu kaufen wird eine Handelslizenz bei der Goldenen Kugel benötigt'));
+            $game->getInfo()->addInformation(_('Um Lotterielose zu kaufen, wird eine Handelslizenz bei der Goldenen Kugel benötigt'));
             return;
         }
 

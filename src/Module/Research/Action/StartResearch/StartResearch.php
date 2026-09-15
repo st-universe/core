@@ -50,7 +50,7 @@ final class StartResearch implements ActionControllerInterface
         if ($researches === []) {
             $game->getInfo()->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
         } else {
-            $game->getInfo()->addInformation(sprintf(_('%s wird als nächstes erforscht'), $research->getName()));
+            $game->getInfo()->addInformation(sprintf(_('%s wird als Nächstes erforscht'), $research->getName()));
         }
 
         $game->setView(GameController::DEFAULT_VIEW);

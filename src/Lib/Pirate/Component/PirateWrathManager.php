@@ -110,7 +110,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         $this->privateMessageSender->send(
             UserConstants::USER_NPC_KAZON,
             $user->getId(),
-            'Wie kannst du es wagen? Ich werde meine Horden auf dich hetzen bis du winselnd am Boden liegst! Der Nichtangriffspakt ist hinfällig!',
+            'Wie kannst du es wagen? Ich werde meine Horden auf dich hetzen, bis du winselnd am Boden liegst! Der Nichtangriffspakt ist hinfällig!',
             PrivateMessageFolderTypeEnum::SPECIAL_MAIN
         );
     }
@@ -183,7 +183,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
 
 
         $game->getInfo()->addInformation(sprintf(
-            _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s Uhr aushandeln'),
+            _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s aushandeln'),
             $this->stuTime->transformToStuDateTime($timestamp)
         ));
 
