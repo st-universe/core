@@ -119,7 +119,7 @@ final class AlertStateManager implements AlertStateManagerInterface
         }
 
         if ($alertState === SpacecraftAlertStateEnum::ALERT_RED && $ship->isCloaked()) {
-            $information->addInformationf('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]', $ship->getName());
+            $information->addInformationf('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm Rot[/color][/b]', $ship->getName());
             return false;
         }
 
@@ -132,7 +132,7 @@ final class AlertStateManager implements AlertStateManagerInterface
                 $information->addInformationf('%s: [b][color=FAFA03]%s[/color][/b]', $ship->getName(), $alertMsg);
             }
         } catch (InsufficientEnergyException $e) {
-            $information->addInformationf('%s: [b][color=#ff2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]', $ship->getName(), $e->getNeededEnergy());
+            $information->addInformationf('%s: [b][color=#ff2626]Nicht genügend Energie, um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]', $ship->getName(), $e->getNeededEnergy());
             return false;
         }
 

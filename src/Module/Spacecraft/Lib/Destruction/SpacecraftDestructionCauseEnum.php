@@ -47,7 +47,7 @@ enum SpacecraftDestructionCauseEnum
                 self::SHIP_FIGHT->getHistoryEntryText($destroyer, $destroyedSpacecraft),
             ),
             self::ALERT_RED => sprintf(
-                '[b][color=red]Alarm-Rot:[/color][/b] %s',
+                '[b][color=red]Alarm Rot:[/color][/b] %s',
                 self::SHIP_FIGHT->getHistoryEntryText($destroyer, $destroyedSpacecraft),
             ),
             self::ESCAPE_TRACTOR => sprintf(

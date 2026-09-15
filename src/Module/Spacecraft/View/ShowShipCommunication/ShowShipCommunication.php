@@ -49,7 +49,7 @@ final class ShowShipCommunication implements ViewControllerInterface
         $game->setTemplateVar(
             'TEMPLATETEXT',
             sprintf(
-                'Die %s in Sektor %s sendet folgende Broadcast Nachricht:',
+                'Die %s in Sektor %s sendet folgende Broadcast-Nachricht:',
                 $this->bbCodeParser->parse($spacecraft->getName())->getAsText(),
                 $spacecraft->getSectorString()
             )

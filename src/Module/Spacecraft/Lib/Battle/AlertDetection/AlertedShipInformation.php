@@ -23,7 +23,7 @@ class AlertedShipInformation implements AlertedShipInformationInterface
             $alertedBattleParties,
             SpacecraftAlertStateEnum::ALERT_RED,
             false,
-            'Flotte(n) auf [b][color=red]Alarm-Rot![/color][/b]',
+            'Flotte(n) auf [b][color=red]Alarm Rot![/color][/b]',
             $informations
         );
         $this->addInformation(
@@ -31,7 +31,7 @@ class AlertedShipInformation implements AlertedShipInformationInterface
             $alertedBattleParties,
             SpacecraftAlertStateEnum::ALERT_RED,
             true,
-            'Einzelschiff(e) auf [b][color=red]Alarm-Rot![/color][/b]',
+            'Einzelschiff(e) auf [b][color=red]Alarm Rot![/color][/b]',
             $informations
         );
         $this->addInformation(
