@@ -38,6 +38,13 @@ class ShipRumpColonizationBuilding
         return $this->rump_id;
     }
 
+    public function setRumpId(int $rumpId): ShipRumpColonizationBuilding
+    {
+        $this->rump_id = $rumpId;
+
+        return $this;
+    }
+
     public function getBuildingId(): int
     {
         return $this->building_id;

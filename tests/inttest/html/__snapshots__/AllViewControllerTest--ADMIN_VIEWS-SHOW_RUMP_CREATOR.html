@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:stu="stu" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#121220" />
+    <script src="/static/js/prototype.js"></script>
+    <script src="/static/js/lib/Sortable.min.js"></script>
+    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/mapEditor.js"></script>
+    <script src="/static/js/starmap.js"></script>
+    <script src="/static/js/default.js"></script>
+    <title>Admin: Rump Creator</title>
+    <script>
+        var gfx_path = '/assets';
+    </script>
+    <link rel="STYLESHEET" type="text/css" href="/static/css/schwarz.css" />
+    <link rel="STYLESHEET" type="text/css" href="/static/css/stu.css" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+</head>
+
+<body onload="startUp();">
+    <div id="popupWindow" class="popup" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+<script>
+    appendJsAsync('/static/js/popup.js');
+</script>
+    <div class="container">
+        <div class="header">
+            <div onclick="goToUrl('/maindesk.php'); return false;" class="header_box header_box_user border_box action">
+                <img style="width: 30px; height: 30px;" src="/assets/buttons/b_from1.png"
+                    title="Zurück zu Spielmodus" />
+                <br />
+                <span style="color: orange; font-size: 150%;">Klick führt zurück aufs Maindesk</span>
+            </div>
+            <div class="header_box header_box_logout border_box action" onclick="goToUrl('/game.php?B_LOGOUT=1')"
+                onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')"
+                onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_logout"
+                        src="/assets/navigation/menu_logout0.png" title="Logout" />
+                    <div style="margin-top: 5px">Logout</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_help border_box action" onclick="openNewTab('https://wiki.change.me')"
+                onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
+                onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_docu"
+                        src="/assets/navigation/menu_doku0.png" title="Wiki" />
+                    <div style="margin-top: 5px">Wiki</div>
+                </div>
+            </div>
+                                    <div class="header_box header_box_help border_box action" onclick="openNewTab('https://board.change.me')"
+                onmouseover="cp('header_menu_board','navigation/menu_scripts1', 'png')"
+                onmouseout="cp('header_menu_board','navigation/menu_scripts0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_board"
+                        src="/assets/navigation/menu_scripts0.png" title="Forum" />
+                    <div style="margin-top: 5px">Forum</div>
+                </div>
+            </div>
+                        <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')"
+                onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')"
+                onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')">
+                <div>
+                    <img style="width: 40px; height: 40px;" id="header_menu_settings"
+                        src="/assets/navigation/menu_option0.png" title="Einstellungen" />
+                    <div style="margin-top: 5px">Einstellungen</div>
+                </div>
+            </div>
+            <div class="headerBottom"> </div>
+        </div>
+        <div style="margin-top: 80px;">
+            <div class="sidebar">
+                                <div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_PLAYER_LIST=1'; }"
+    onmouseover="cp('nav_item_ally','navigation/menu_ally1', 'png')"
+    onmouseout="cp('nav_item_ally','navigation/menu_ally0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_PLAYER_LIST=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ally0.png" id="nav_item_ally"
+            title="Spielerliste" />
+        <div class="navitem_title">Spielerliste</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MASS_MAIL=1'; }"
+    onmouseover="cp('nav_item_msg','navigation/menu_msg1', 'png')"
+    onmouseout="cp('nav_item_msg','navigation/menu_msg0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MASS_MAIL=1">
+        <img class="navitem_img" src="/assets/navigation/menu_msg0.png" id="nav_item_msg"
+            title="Nachrichten" />
+        <div class="navitem_title">Nachrichten</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_MAP_EDITOR=1'; }"
+    onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')"
+    onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_MAP_EDITOR=1">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map"
+            title="Karteneditor" />
+        <div class="navitem_title">Karteneditor</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_ADMIN_FULL_MAP_EDITOR=1'; }"
+    onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')"
+    onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_ADMIN_FULL_MAP_EDITOR=1">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map"
+            title="Karteneditor Vollkarte" />
+        <div class="navitem_title">Karteneditor Vollkarte</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_ADMIN_LIVE_MAP=1&amp;layerid=2'; }"
+    onmouseover="cp('nav_item_map','navigation/menu_map1', 'png')"
+    onmouseout="cp('nav_item_map','navigation/menu_map0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_ADMIN_LIVE_MAP=1&amp;layerid=2">
+        <img class="navitem_img" src="/assets/navigation/menu_map0.png" id="nav_item_map"
+            title="Livekarte" />
+        <div class="navitem_title">Livekarte</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_TICKS=1'; }"
+    onmouseover="cp('nav_item_ticks','navigation/menu_ticks1', 'png')"
+    onmouseout="cp('nav_item_ticks','navigation/menu_ticks0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_TICKS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_ticks0.png" id="nav_item_ticks"
+            title="Ticks" />
+        <div class="navitem_title">Ticks</div>
+    </a>
+</div>
+
+<div class="navigation_item border_box" onmousedown="if(event.button === 0) { window.location.href='/admin/?SHOW_SCRIPTS=1'; }"
+    onmouseover="cp('nav_item_scripts','navigation/menu_scripts1', 'png')"
+    onmouseout="cp('nav_item_scripts','navigation/menu_scripts0', 'png')">
+    <a class="navitem_link" href="/admin/?SHOW_SCRIPTS=1">
+        <img class="navitem_img" src="/assets/navigation/menu_scripts0.png" id="nav_item_scripts"
+            title="Skripte" />
+        <div class="navitem_title">Skripte</div>
+    </a>
+</div>
+
+
+            </div>
+            <div id="innerContent" class="innerContent">
+                
+<div class="box">
+    <div class="box_title" style="text-align: left">/
+                <a href="/admin/?SHOW_RUMP_CREATOR=1">
+            Rump Creator
+        </a>
+                    </div>
+</div>
+<br />
+
+<div id="result" style="display: none;">..</div>
+<form action="/admin/index.php" method="post" id="rump-creator-form" data-rump-templates="&#x7B;&quot;8&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;8,&quot;name&quot;&#x3A;&quot;Wrack&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;1,&quot;role_id&quot;&#x3A;1,&quot;base_torpedo_storage&quot;&#x3A;0,&quot;phaser_volleys&quot;&#x3A;0,&quot;phaser_hull_damage_factor&quot;&#x3A;0,&quot;phaser_shield_damage_factor&quot;&#x3A;0,&quot;torpedo_level&quot;&#x3A;0,&quot;torpedo_volleys&quot;&#x3A;0,&quot;is_buildable&quot;&#x3A;false,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;0,&quot;storage&quot;&#x3A;500,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;0,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;0,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;0,&quot;beam_factor&quot;&#x3A;1,&quot;shuttle_slots&quot;&#x3A;0,&quot;tractor_mass&quot;&#x3A;5,&quot;tractor_payload&quot;&#x3A;6,&quot;prestige&quot;&#x3A;0,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;&#x7B;&quot;evade_chance&quot;&#x3A;0,&quot;hit_chance&quot;&#x3A;0,&quot;module_level&quot;&#x3A;0,&quot;base_crew&quot;&#x3A;0,&quot;max_crew&quot;&#x3A;5,&quot;base_eps&quot;&#x3A;0,&quot;base_reactor&quot;&#x3A;0,&quot;base_hull&quot;&#x3A;10,&quot;base_shield&quot;&#x3A;0,&quot;base_damage&quot;&#x3A;0,&quot;base_sensor_range&quot;&#x3A;0,&quot;base_warpdrive&quot;&#x3A;0,&quot;special_slots&quot;&#x3A;0&#x7D;,&quot;moduleLevels&quot;&#x3A;null,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;,&quot;9&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;9,&quot;name&quot;&#x3A;&quot;Energienetz&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;13,&quot;role_id&quot;&#x3A;18,&quot;base_torpedo_storage&quot;&#x3A;0,&quot;phaser_volleys&quot;&#x3A;0,&quot;phaser_hull_damage_factor&quot;&#x3A;0,&quot;phaser_shield_damage_factor&quot;&#x3A;0,&quot;torpedo_level&quot;&#x3A;0,&quot;torpedo_volleys&quot;&#x3A;0,&quot;is_buildable&quot;&#x3A;false,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;0,&quot;storage&quot;&#x3A;0,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;0,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;0,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;0,&quot;beam_factor&quot;&#x3A;1,&quot;shuttle_slots&quot;&#x3A;0,&quot;tractor_mass&quot;&#x3A;35,&quot;tractor_payload&quot;&#x3A;35,&quot;prestige&quot;&#x3A;3,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;null,&quot;moduleLevels&quot;&#x3A;null,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;,&quot;101&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;101,&quot;name&quot;&#x3A;&quot;Rettungskapsel&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;9,&quot;role_id&quot;&#x3A;1,&quot;base_torpedo_storage&quot;&#x3A;0,&quot;phaser_volleys&quot;&#x3A;0,&quot;phaser_hull_damage_factor&quot;&#x3A;0,&quot;phaser_shield_damage_factor&quot;&#x3A;0,&quot;torpedo_level&quot;&#x3A;0,&quot;torpedo_volleys&quot;&#x3A;0,&quot;is_buildable&quot;&#x3A;false,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;0,&quot;storage&quot;&#x3A;0,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;0,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;0,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;0,&quot;beam_factor&quot;&#x3A;1,&quot;shuttle_slots&quot;&#x3A;0,&quot;tractor_mass&quot;&#x3A;3,&quot;tractor_payload&quot;&#x3A;4,&quot;prestige&quot;&#x3A;-20,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;&#x7B;&quot;evade_chance&quot;&#x3A;0,&quot;hit_chance&quot;&#x3A;0,&quot;module_level&quot;&#x3A;0,&quot;base_crew&quot;&#x3A;0,&quot;max_crew&quot;&#x3A;0,&quot;base_eps&quot;&#x3A;0,&quot;base_reactor&quot;&#x3A;0,&quot;base_hull&quot;&#x3A;50,&quot;base_shield&quot;&#x3A;0,&quot;base_damage&quot;&#x3A;0,&quot;base_sensor_range&quot;&#x3A;0,&quot;base_warpdrive&quot;&#x3A;0,&quot;special_slots&quot;&#x3A;0&#x7D;,&quot;moduleLevels&quot;&#x3A;null,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;,&quot;161&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;161,&quot;name&quot;&#x3A;&quot;Workbee&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;10,&quot;role_id&quot;&#x3A;9,&quot;base_torpedo_storage&quot;&#x3A;0,&quot;phaser_volleys&quot;&#x3A;0,&quot;phaser_hull_damage_factor&quot;&#x3A;0,&quot;phaser_shield_damage_factor&quot;&#x3A;0,&quot;torpedo_level&quot;&#x3A;0,&quot;torpedo_volleys&quot;&#x3A;0,&quot;is_buildable&quot;&#x3A;true,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;25,&quot;storage&quot;&#x3A;0,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;1,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;161,&quot;commodity_id&quot;&#x3A;20061,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;0,&quot;beam_factor&quot;&#x3A;1,&quot;shuttle_slots&quot;&#x3A;0,&quot;tractor_mass&quot;&#x3A;2,&quot;tractor_payload&quot;&#x3A;2,&quot;prestige&quot;&#x3A;-10,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;null,&quot;moduleLevels&quot;&#x3A;&#x7B;&quot;1&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;2&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;3&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;4&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;5&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;6&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;7&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;8&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;10&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;11&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;1,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;&#x7D;,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;,&quot;3107&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;3107,&quot;name&quot;&#x3A;&quot;Tholianisches&#x20;Netzschiff&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;3,&quot;role_id&quot;&#x3A;1,&quot;base_torpedo_storage&quot;&#x3A;10,&quot;phaser_volleys&quot;&#x3A;2,&quot;phaser_hull_damage_factor&quot;&#x3A;125,&quot;phaser_shield_damage_factor&quot;&#x3A;125,&quot;torpedo_level&quot;&#x3A;4,&quot;torpedo_volleys&quot;&#x3A;2,&quot;is_buildable&quot;&#x3A;false,&quot;is_npc&quot;&#x3A;true,&quot;eps_cost&quot;&#x3A;150,&quot;storage&quot;&#x3A;160,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;9600,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;3107,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;2,&quot;beam_factor&quot;&#x3A;15,&quot;shuttle_slots&quot;&#x3A;0,&quot;tractor_mass&quot;&#x3A;330000,&quot;tractor_payload&quot;&#x3A;400000,&quot;prestige&quot;&#x3A;12,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;null,&quot;moduleLevels&quot;&#x3A;&#x7B;&quot;1&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;2&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;3&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;4&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;5&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;6&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;7&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;8&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;10&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;11&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;false&#x7D;&#x7D;,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;,&quot;6501&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;6501,&quot;name&quot;&#x3A;&quot;Aerie&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;6,&quot;role_id&quot;&#x3A;5,&quot;base_torpedo_storage&quot;&#x3A;0,&quot;phaser_volleys&quot;&#x3A;2,&quot;phaser_hull_damage_factor&quot;&#x3A;100,&quot;phaser_shield_damage_factor&quot;&#x3A;150,&quot;torpedo_level&quot;&#x3A;5,&quot;torpedo_volleys&quot;&#x3A;0,&quot;is_buildable&quot;&#x3A;true,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;50,&quot;storage&quot;&#x3A;155,&quot;slots&quot;&#x3A;0,&quot;buildtime&quot;&#x3A;9600,&quot;needed_workbees&quot;&#x3A;null,&quot;sort&quot;&#x3A;6501,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;2,&quot;beam_factor&quot;&#x3A;20,&quot;shuttle_slots&quot;&#x3A;5,&quot;tractor_mass&quot;&#x3A;133000,&quot;tractor_payload&quot;&#x3A;159600,&quot;prestige&quot;&#x3A;-20,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;&#x7B;&quot;evade_chance&quot;&#x3A;0,&quot;hit_chance&quot;&#x3A;75,&quot;module_level&quot;&#x3A;3,&quot;base_crew&quot;&#x3A;1,&quot;max_crew&quot;&#x3A;18,&quot;base_eps&quot;&#x3A;120,&quot;base_reactor&quot;&#x3A;60,&quot;base_hull&quot;&#x3A;910,&quot;base_shield&quot;&#x3A;910,&quot;base_damage&quot;&#x3A;48,&quot;base_sensor_range&quot;&#x3A;3,&quot;base_warpdrive&quot;&#x3A;60,&quot;special_slots&quot;&#x3A;2&#x7D;,&quot;moduleLevels&quot;&#x3A;&#x7B;&quot;1&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;2&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;3&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;4&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;5&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;6&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;2,&quot;max&quot;&#x3A;2,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;7&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;2,&quot;max&quot;&#x3A;2,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;8&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;0,&quot;default&quot;&#x3A;0,&quot;max&quot;&#x3A;0,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;10&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;2,&quot;max&quot;&#x3A;2,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;11&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;2,&quot;default&quot;&#x3A;3,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;false&#x7D;&#x7D;,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;5,7,8,9,10&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;1&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;6501001,&quot;description&quot;&#x3A;&quot;Aerie&quot;,&quot;data&quot;&#x3A;&quot;&quot;,&quot;categoryId&quot;&#x3A;1&#x7D;&#x7D;,&quot;10053&quot;&#x3A;&#x7B;&quot;id&quot;&#x3A;10053,&quot;name&quot;&#x3A;&quot;Au&#x5C;u00dfenposten&quot;,&quot;core&quot;&#x3A;&#x7B;&quot;category_id&quot;&#x3A;12,&quot;role_id&quot;&#x3A;15,&quot;base_torpedo_storage&quot;&#x3A;500,&quot;phaser_volleys&quot;&#x3A;6,&quot;phaser_hull_damage_factor&quot;&#x3A;100,&quot;phaser_shield_damage_factor&quot;&#x3A;200,&quot;torpedo_level&quot;&#x3A;4,&quot;torpedo_volleys&quot;&#x3A;6,&quot;is_buildable&quot;&#x3A;false,&quot;is_npc&quot;&#x3A;false,&quot;eps_cost&quot;&#x3A;0,&quot;storage&quot;&#x3A;10000,&quot;slots&quot;&#x3A;30,&quot;buildtime&quot;&#x3A;40,&quot;needed_workbees&quot;&#x3A;30,&quot;sort&quot;&#x3A;10053,&quot;commodity_id&quot;&#x3A;null,&quot;faction_id&quot;&#x3A;null,&quot;flight_ecost&quot;&#x3A;0,&quot;beam_factor&quot;&#x3A;25,&quot;shuttle_slots&quot;&#x3A;15,&quot;tractor_mass&quot;&#x3A;34500000,&quot;tractor_payload&quot;&#x3A;41400000,&quot;prestige&quot;&#x3A;0,&quot;npc_buildable&quot;&#x3A;0&#x7D;,&quot;baseValues&quot;&#x3A;&#x7B;&quot;evade_chance&quot;&#x3A;0,&quot;hit_chance&quot;&#x3A;70,&quot;module_level&quot;&#x3A;5,&quot;base_crew&quot;&#x3A;0,&quot;max_crew&quot;&#x3A;25,&quot;base_eps&quot;&#x3A;500,&quot;base_reactor&quot;&#x3A;175,&quot;base_hull&quot;&#x3A;21000,&quot;base_shield&quot;&#x3A;35000,&quot;base_damage&quot;&#x3A;200,&quot;base_sensor_range&quot;&#x3A;4,&quot;base_warpdrive&quot;&#x3A;0,&quot;special_slots&quot;&#x3A;3&#x7D;,&quot;moduleLevels&quot;&#x3A;&#x7B;&quot;1&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;5,&quot;default&quot;&#x3A;5,&quot;max&quot;&#x3A;5,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;2&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;5,&quot;default&quot;&#x3A;5,&quot;max&quot;&#x3A;5,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;3&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;4&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;1,&quot;default&quot;&#x3A;0,&quot;max&quot;&#x3A;1,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;5&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;6&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;7&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;5,&quot;default&quot;&#x3A;5,&quot;max&quot;&#x3A;5,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;8&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;5,&quot;default&quot;&#x3A;5,&quot;max&quot;&#x3A;5,&quot;mandatory&quot;&#x3A;false&#x7D;,&quot;10&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;true&#x7D;,&quot;11&quot;&#x3A;&#x7B;&quot;min&quot;&#x3A;4,&quot;default&quot;&#x3A;4,&quot;max&quot;&#x3A;4,&quot;mandatory&quot;&#x3A;false&#x7D;&#x7D;,&quot;model3d&quot;&#x3A;null,&quot;costs&quot;&#x3A;&#x5B;&#x5D;,&quot;moduleSpecialIds&quot;&#x3A;&#x5B;7,8,5,9,10&#x5D;,&quot;buildingFunctionIds&quot;&#x3A;&#x5B;&#x5D;,&quot;specialAbilityIds&quot;&#x3A;&#x5B;&#x5D;,&quot;colonizationBuildingId&quot;&#x3A;null,&quot;databaseEntry&quot;&#x3A;null&#x7D;&#x7D;" data-form-values="&#x5B;&#x5D;">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+    <input type="hidden" name="edit_rump_id" id="edit-rump-id" value="" />
+    <div class="divhead">Bestehenden Rumpf bearbeiten</div>
+    <div class="divbody">
+        <label for="edit-rump">Rumpf auswählen</label>
+        <select id="edit-rump">
+            <option value="">Neuen Rumpf anlegen</option>
+                        <option value="6501">Aerie (6501)</option>
+                        <option value="10053">Außenposten (10053)</option>
+                        <option value="9">Energienetz (9)</option>
+                        <option value="101">Rettungskapsel (101)</option>
+                        <option value="3107">Tholianisches Netzschiff (3107)</option>
+                        <option value="161">Workbee (161)</option>
+                        <option value="8">Wrack (8)</option>
+                    </select>
+        <div style="margin-top: 8px;">Beim Bearbeiten werden alle gespeicherten Werte geladen. Die Rumpf-ID bleibt dabei unverändert</div>
+    </div>
+    <br />
+    <div class="divhead">Rumpfvorlage</div>
+    <div class="divbody">
+        <label for="rump-template">Bestehenden Rumpf als Vorlage verwenden</label>
+        <select id="rump-template">
+            <option value="">Keine Vorlage</option>
+                        <option value="6501">Aerie (6501)</option>
+                        <option value="10053">Außenposten (10053)</option>
+                        <option value="9">Energienetz (9)</option>
+                        <option value="101">Rettungskapsel (101)</option>
+                        <option value="3107">Tholianisches Netzschiff (3107)</option>
+                        <option value="161">Workbee (161)</option>
+                        <option value="8">Wrack (8)</option>
+                    </select>
+        <div style="margin-top: 8px;">ID und Name bleiben beim Anwenden einer Vorlage unverändert</div>
+    </div>
+    <br />
+    <div class="divhead">Grunddaten</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Rumpf-ID</td>
+                <td><input type="number" min="1" name="rump_id" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" maxlength="255" name="rump_name" required="required" style="width: 320px;" /></td>
+            </tr>
+            <tr>
+                <td>Kategorie</td>
+                <td>
+                    <select name="category_id" required="required">
+                        <option value="">Bitte wählen</option>
+                                                <option value="13">Energienetz (13)</option>
+                                                <option value="3">Eskortschiff (3)</option>
+                                                <option value="6">Frachter (6)</option>
+                                                <option value="2">Fregatte (2)</option>
+                                                <option value="1">Jäger/Runabout (1)</option>
+                                                <option value="11">Konstruktion (11)</option>
+                                                <option value="5">Kreuzer (5)</option>
+                                                <option value="8">Kriegsschiff (8)</option>
+                                                <option value="9">Rettungskapsel (9)</option>
+                                                <option value="12">Station (12)</option>
+                                                <option value="10">Workbee (10)</option>
+                                                <option value="4">Zerstörer (4)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Rolle</td>
+                <td>
+                    <select name="role_id">
+                        <option value="">Keine</option>
+                                                <option value="17">Adventstür (17)</option>
+                                                <option value="15">Außenposten (15)</option>
+                                                <option value="16">Basis (16)</option>
+                                                <option value="12">Depot (12)</option>
+                                                <option value="18">Energienetz (18)</option>
+                                                <option value="4">Forschungsschiff (4)</option>
+                                                <option value="6">Großraumfrachter (6)</option>
+                                                <option value="11">Kleines Depot (11)</option>
+                                                <option value="5">Kolonieschiff (5)</option>
+                                                <option value="8">Kurzstreckenfrachter (8)</option>
+                                                <option value="7">Langstreckenfrachter (7)</option>
+                                                <option value="1">Phaserschiff (1)</option>
+                                                <option value="2">Pulswaffenschiff (2)</option>
+                                                <option value="10">Raumkonstrukt (10)</option>
+                                                <option value="14">Sensorenphalanx (14)</option>
+                                                <option value="9">Shuttle (9)</option>
+                                                <option value="3">Torpedoschiff (3)</option>
+                                                <option value="13">Werft (13)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Fraktion</td>
+                <td>
+                    <select name="faction_id">
+                        <option value="">Keine</option>
+                                                <option value="8">Borg-Kollektiv (8)</option>
+                                                <option value="4">Cardassianische Union (4)</option>
+                                                <option value="5">Ferengi Allianz (5)</option>
+                                                <option value="9">Fraktionslos (9)</option>
+                                                <option value="10">Hirogen (10)</option>
+                                                <option value="7">Kazon (7)</option>
+                                                <option value="3">Klingonisches Imperium (3)</option>
+                                                <option value="6">Pakled (6)</option>
+                                                <option value="2">Romulanisches Imperium (2)</option>
+                                                <option value="1">Vereinte Föderation der Planeten (1)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Startware</td>
+                <td>
+                    <select name="commodity_id">
+                        <option value="">Keine</option>
+                                                <option value="60">Adventspunkt (60)</option>
+                                                <option value="19075">Aggregations-System (19075)</option>
+                                                <option value="1012">Ale (1012)</option>
+                                                <option value="6">Antimaterie (6)</option>
+                                                <option value="64">Antimaterie Partikel (64)</option>
+                                                <option value="19006">Astrometrie-Labor (19006)</option>
+                                                <option value="21402">Atarra (21402)</option>
+                                                <option value="41">Bat&#039;leth (41)</option>
+                                                <option value="2">Baumaterial (2)</option>
+                                                <option value="1601">Bildung (1601)</option>
+                                                <option value="46">Blutwein (46)</option>
+                                                <option value="1013">Blutwein (1013)</option>
+                                                <option value="88">Boje (88)</option>
+                                                <option value="21405">Bronta (21405)</option>
+                                                <option value="19073">Bussard-Kollektor (19073)</option>
+                                                <option value="21604">CF-Frachter (21604)</option>
+                                                <option value="10641">Cardassianische Sensorenphalanx (Klasse 1) (10641)</option>
+                                                <option value="10642">Cardassianische Sensorenphalanx (Klasse 2) (10642)</option>
+                                                <option value="10643">Cardassianische Sensorenphalanx (Klasse 3) (10643)</option>
+                                                <option value="10644">Cardassianische Sensorenphalanx (Klasse 4) (10644)</option>
+                                                <option value="10645">Cardassianische Sensorenphalanx (Klasse 5) (10645)</option>
+                                                <option value="10646">Cardassianische Sensorenphalanx (Klasse 6) (10646)</option>
+                                                <option value="11741">Cardassianischer Puls-Disruptor (Klasse 1) (11741)</option>
+                                                <option value="11742">Cardassianischer Puls-Disruptor (Klasse 2) (11742)</option>
+                                                <option value="11743">Cardassianischer Puls-Disruptor (Klasse 3) (11743)</option>
+                                                <option value="11744">Cardassianischer Puls-Disruptor (Klasse 4) (11744)</option>
+                                                <option value="11745">Cardassianischer Puls-Disruptor (Klasse 5) (11745)</option>
+                                                <option value="11746">Cardassianischer Puls-Disruptor (Klasse 6) (11746)</option>
+                                                <option value="10741">Cardassianischer Spiralwellendisruptor (Klasse 1) (10741)</option>
+                                                <option value="10742">Cardassianischer Spiralwellendisruptor (Klasse 2) (10742)</option>
+                                                <option value="10743">Cardassianischer Spiralwellendisruptor (Klasse 3) (10743)</option>
+                                                <option value="10744">Cardassianischer Spiralwellendisruptor (Klasse 4) (10744)</option>
+                                                <option value="10745">Cardassianischer Spiralwellendisruptor (Klasse 5) (10745)</option>
+                                                <option value="10746">Cardassianischer Spiralwellendisruptor (Klasse 6) (10746)</option>
+                                                <option value="11841">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 1) (11841)</option>
+                                                <option value="11842">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 2) (11842)</option>
+                                                <option value="11843">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 3) (11843)</option>
+                                                <option value="11844">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 4) (11844)</option>
+                                                <option value="11845">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 5) (11845)</option>
+                                                <option value="11846">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 6) (11846)</option>
+                                                <option value="40">Chateau Picard (40)</option>
+                                                <option value="3">Chemische Komponenten (3)</option>
+                                                <option value="11901">Computer (Klasse 1) (11901)</option>
+                                                <option value="11902">Computer (Klasse 2) (11902)</option>
+                                                <option value="11903">Computer (Klasse 3) (11903)</option>
+                                                <option value="11904">Computer (Klasse 4) (11904)</option>
+                                                <option value="11905">Computer (Klasse 5) (11905)</option>
+                                                <option value="11906">Computer (Klasse 6) (11906)</option>
+                                                <option value="42">Container (42)</option>
+                                                <option value="19005">Crewtransport-Modul (19005)</option>
+                                                <option value="21401">Danube (21401)</option>
+                                                <option value="9999">Der Zonk (9999)</option>
+                                                <option value="5">Deuterium (5)</option>
+                                                <option value="63">Deuterium Partikel (63)</option>
+                                                <option value="1551">Deuterium-Tanks (1551)</option>
+                                                <option value="1505">Deuterium-Vorkommen (1505)</option>
+                                                <option value="21102">Dhelan (21102)</option>
+                                                <option value="8">Dilithium (8)</option>
+                                                <option value="1508">Dilithium-Vorkommen (1508)</option>
+                                                <option value="1043">Disruptor (1043)</option>
+                                                <option value="21">Duranium (21)</option>
+                                                <option value="10111">Duranium-Hüllenpanzerung (Klasse 1) (10111)</option>
+                                                <option value="10112">Duranium-Hüllenpanzerung (Klasse 2) (10112)</option>
+                                                <option value="10113">Duranium-Hüllenpanzerung (Klasse 3) (10113)</option>
+                                                <option value="10114">Duranium-Hüllenpanzerung (Klasse 4) (10114)</option>
+                                                <option value="10115">Duranium-Hüllenpanzerung (Klasse 5) (10115)</option>
+                                                <option value="10116">Duranium-Hüllenpanzerung (Klasse 6) (10116)</option>
+                                                <option value="10301">EPS-Gitter (Klasse 1) (10301)</option>
+                                                <option value="10302">EPS-Gitter (Klasse 2) (10302)</option>
+                                                <option value="10303">EPS-Gitter (Klasse 3) (10303)</option>
+                                                <option value="10304">EPS-Gitter (Klasse 4) (10304)</option>
+                                                <option value="10305">EPS-Gitter (Klasse 5) (10305)</option>
+                                                <option value="10306">EPS-Gitter (Klasse 6) (10306)</option>
+                                                <option value="1003">Ehre (1003)</option>
+                                                <option value="10201">Elektromagnetische-Schilde (Klasse 1) (10201)</option>
+                                                <option value="10202">Elektromagnetische-Schilde (Klasse 2) (10202)</option>
+                                                <option value="10203">Elektromagnetische-Schilde (Klasse 3) (10203)</option>
+                                                <option value="10204">Elektromagnetische-Schilde (Klasse 4) (10204)</option>
+                                                <option value="10205">Elektromagnetische-Schilde (Klasse 5) (10205)</option>
+                                                <option value="10206">Elektromagnetische-Schilde (Klasse 6) (10206)</option>
+                                                <option value="21304">Enkud (21304)</option>
+                                                <option value="1021">Erholung (1021)</option>
+                                                <option value="10001">Ersatzteil (10001)</option>
+                                                <option value="21605">FK-Frachter (21605)</option>
+                                                <option value="19076">Ferengi Aggregations-System (19076)</option>
+                                                <option value="19074">Ferengi Bussard-Kollektor (19074)</option>
+                                                <option value="10351">Ferengi EPS-Gitter (Klasse 1) (10351)</option>
+                                                <option value="10352">Ferengi EPS-Gitter (Klasse 2) (10352)</option>
+                                                <option value="10353">Ferengi EPS-Gitter (Klasse 3) (10353)</option>
+                                                <option value="10354">Ferengi EPS-Gitter (Klasse 4) (10354)</option>
+                                                <option value="10355">Ferengi EPS-Gitter (Klasse 5) (10355)</option>
+                                                <option value="10356">Ferengi EPS-Gitter (Klasse 6) (10356)</option>
+                                                <option value="10751">Ferengi Phaser (Klasse 1) (10751)</option>
+                                                <option value="10752">Ferengi Phaser (Klasse 2) (10752)</option>
+                                                <option value="10753">Ferengi Phaser (Klasse 3) (10753)</option>
+                                                <option value="10754">Ferengi Phaser (Klasse 4) (10754)</option>
+                                                <option value="10755">Ferengi Phaser (Klasse 5) (10755)</option>
+                                                <option value="10756">Ferengi Phaser (Klasse 6) (10756)</option>
+                                                <option value="11751">Ferengi Puls-Phaser (Klasse 1) (11751)</option>
+                                                <option value="11752">Ferengi Puls-Phaser (Klasse 2) (11752)</option>
+                                                <option value="11753">Ferengi Puls-Phaser (Klasse 3) (11753)</option>
+                                                <option value="11754">Ferengi Puls-Phaser (Klasse 4) (11754)</option>
+                                                <option value="11755">Ferengi Puls-Phaser (Klasse 5) (11755)</option>
+                                                <option value="11756">Ferengi Puls-Phaser (Klasse 6) (11756)</option>
+                                                <option value="57">Floppy (57)</option>
+                                                <option value="51">Flüssiges Latinum (51)</option>
+                                                <option value="1700">Forschungslabors (1700)</option>
+                                                <option value="1721">Forschungspunkte (Gebäude) (1721)</option>
+                                                <option value="1701">Forschungspunkte (Level 1) (1701)</option>
+                                                <option value="1702">Forschungspunkte (Level 2) (1702)</option>
+                                                <option value="1703">Forschungspunkte (Level 3) (1703)</option>
+                                                <option value="1712">Forschungspunkte (Module) (1712)</option>
+                                                <option value="1711">Forschungspunkte (Raumkonstrukte) (1711)</option>
+                                                <option value="1731">Forschungspunkte (Rümpfe) (1731)</option>
+                                                <option value="1722">Forschungspunkte (Untergrund) (1722)</option>
+                                                <option value="11501">Fusionsreaktor (Klasse 1) (11501)</option>
+                                                <option value="10701">Föderations Phaser (Klasse 1) (10701)</option>
+                                                <option value="10702">Föderations Phaser (Klasse 2) (10702)</option>
+                                                <option value="10703">Föderations Phaser (Klasse 3) (10703)</option>
+                                                <option value="10704">Föderations Phaser (Klasse 4) (10704)</option>
+                                                <option value="10705">Föderations Phaser (Klasse 5) (10705)</option>
+                                                <option value="10706">Föderations Phaser (Klasse 6) (10706)</option>
+                                                <option value="11701">Föderations Puls-Phaser (Klasse 1) (11701)</option>
+                                                <option value="11702">Föderations Puls-Phaser (Klasse 2) (11702)</option>
+                                                <option value="11703">Föderations Puls-Phaser (Klasse 3) (11703)</option>
+                                                <option value="11704">Föderations Puls-Phaser (Klasse 4) (11704)</option>
+                                                <option value="11705">Föderations Puls-Phaser (Klasse 5) (11705)</option>
+                                                <option value="11706">Föderations Puls-Phaser (Klasse 6) (11706)</option>
+                                                <option value="10911">Föderations Warpantrieb (Klasse 1) (10911)</option>
+                                                <option value="10912">Föderations Warpantrieb (Klasse 2) (10912)</option>
+                                                <option value="10913">Föderations Warpantrieb (Klasse 3) (10913)</option>
+                                                <option value="10914">Föderations Warpantrieb (Klasse 4) (10914)</option>
+                                                <option value="10915">Föderations Warpantrieb (Klasse 5) (10915)</option>
+                                                <option value="10916">Föderations Warpantrieb (Klasse 6) (10916)</option>
+                                                <option value="10511">Föderations Warpkern (Klasse 1) (10511)</option>
+                                                <option value="10512">Föderations Warpkern (Klasse 2) (10512)</option>
+                                                <option value="10513">Föderations Warpkern (Klasse 3) (10513)</option>
+                                                <option value="10514">Föderations Warpkern (Klasse 4) (10514)</option>
+                                                <option value="10515">Föderations Warpkern (Klasse 5) (10515)</option>
+                                                <option value="10516">Föderations Warpkern (Klasse 6) (10516)</option>
+                                                <option value="22">Galazit (22)</option>
+                                                <option value="12">Galazit-Erz (12)</option>
+                                                <option value="1512">Galazit-Vorkommen (1512)</option>
+                                                <option value="71">Galonium Gas (71)</option>
+                                                <option value="1201">Gebündelte Solarenergie (1201)</option>
+                                                <option value="1280">Geothermische Energie (1280)</option>
+                                                <option value="54">Gerät 2 (54)</option>
+                                                <option value="1501">Geschmolzenes Tritanium (1501)</option>
+                                                <option value="21404">Hideki (21404)</option>
+                                                <option value="66">Hoch-Energie Plasma Partikel (66)</option>
+                                                <option value="1502">Hochenergetische Ladung (1502)</option>
+                                                <option value="1520">Hochenergetisches Ladungsvorkommen (1520)</option>
+                                                <option value="32">Hochenergie-Plasma (32)</option>
+                                                <option value="1699">Holodeck-Programme (1699)</option>
+                                                <option value="1301">Hydroponische Aufbereitung (1301)</option>
+                                                <option value="21501">Icarus (21501)</option>
+                                                <option value="21104">Imerek (21104)</option>
+                                                <option value="1602">Imperiales Gedankengut (1602)</option>
+                                                <option value="10401">Impulsantrieb (Klasse 1) (10401)</option>
+                                                <option value="10402">Impulsantrieb (Klasse 2) (10402)</option>
+                                                <option value="10403">Impulsantrieb (Klasse 3) (10403)</option>
+                                                <option value="10404">Impulsantrieb (Klasse 4) (10404)</option>
+                                                <option value="10405">Impulsantrieb (Klasse 5) (10405)</option>
+                                                <option value="10406">Impulsantrieb (Klasse 6) (10406)</option>
+                                                <option value="20">Iridium (20)</option>
+                                                <option value="11">Iridium-Erz (11)</option>
+                                                <option value="1511">Iridium-Erz-Vorkommen (1511)</option>
+                                                <option value="31">Isolineare Speicherchips (31)</option>
+                                                <option value="21203">K&#039;Pak (21203)</option>
+                                                <option value="21403">K&#039;toch (21403)</option>
+                                                <option value="21603">K-Frachter (21603)</option>
+                                                <option value="1603">Kampftraining (1603)</option>
+                                                <option value="52">Kanar (52)</option>
+                                                <option value="1014">Kanar (1014)</option>
+                                                <option value="10771">Kazon Phaser (Klasse 1) (10771)</option>
+                                                <option value="10772">Kazon Phaser (Klasse 2) (10772)</option>
+                                                <option value="10773">Kazon Phaser (Klasse 3) (10773)</option>
+                                                <option value="10774">Kazon Phaser (Klasse 4) (10774)</option>
+                                                <option value="10775">Kazon Phaser (Klasse 5) (10775)</option>
+                                                <option value="10776">Kazon Phaser (Klasse 6) (10776)</option>
+                                                <option value="11771">Kazon Pulsphaser (Klasse 1) (11771)</option>
+                                                <option value="11772">Kazon Pulsphaser (Klasse 2) (11772)</option>
+                                                <option value="11773">Kazon Pulsphaser (Klasse 3) (11773)</option>
+                                                <option value="11775">Kazon Pulsphaser (Klasse 5) (11775)</option>
+                                                <option value="11776">Kazon Pulsphaser (Klasse 6) (11776)</option>
+                                                <option value="11774">Kazon Puslphaser (Klasse 4) (11774)</option>
+                                                <option value="10271">Kazon-Schilde (Klasse 1) (10271)</option>
+                                                <option value="10272">Kazon-Schilde (Klasse 2) (10272)</option>
+                                                <option value="10273">Kazon-Schilde (Klasse 3) (10273)</option>
+                                                <option value="10274">Kazon-Schilde (Klasse 4) (10274)</option>
+                                                <option value="10275">Kazon-Schilde (Klasse 5) (10275)</option>
+                                                <option value="10276">Kazon-Schilde (Klasse 6) (10276)</option>
+                                                <option value="25">Kelbonit (25)</option>
+                                                <option value="15">Kelbonit-Erz (15)</option>
+                                                <option value="1515">Kelbonit-Vorkommen (1515)</option>
+                                                <option value="72">Kelbonium Gas (72)</option>
+                                                <option value="10831">Klingonische Torpedobank (Klasse 1) (10831)</option>
+                                                <option value="10832">Klingonische Torpedobank (Klasse 2) (10832)</option>
+                                                <option value="10833">Klingonische Torpedobank (Klasse 3) (10833)</option>
+                                                <option value="10834">Klingonische Torpedobank (Klasse 4) (10834)</option>
+                                                <option value="10835">Klingonische Torpedobank (Klasse 5) (10835)</option>
+                                                <option value="10836">Klingonische Torpedobank (Klasse 6) (10836)</option>
+                                                <option value="10731">Klingonischer Disruptor (Klasse 1) (10731)</option>
+                                                <option value="10732">Klingonischer Disruptor (Klasse 2) (10732)</option>
+                                                <option value="10733">Klingonischer Disruptor (Klasse 3) (10733)</option>
+                                                <option value="10734">Klingonischer Disruptor (Klasse 4) (10734)</option>
+                                                <option value="10735">Klingonischer Disruptor (Klasse 5) (10735)</option>
+                                                <option value="10736">Klingonischer Disruptor (Klasse 6) (10736)</option>
+                                                <option value="10431">Klingonischer Impulsantrieb (Klasse 1) (10431)</option>
+                                                <option value="10432">Klingonischer Impulsantrieb (Klasse 2) (10432)</option>
+                                                <option value="10433">Klingonischer Impulsantrieb (Klasse 3) (10433)</option>
+                                                <option value="10434">Klingonischer Impulsantrieb (Klasse 4) (10434)</option>
+                                                <option value="10435">Klingonischer Impulsantrieb (Klasse 5) (10435)</option>
+                                                <option value="10436">Klingonischer Impulsantrieb (Klasse 6) (10436)</option>
+                                                <option value="11731">Klingonischer Puls-Disruptor (Klasse 1) (11731)</option>
+                                                <option value="11732">Klingonischer Puls-Disruptor (Klasse 2) (11732)</option>
+                                                <option value="11733">Klingonischer Puls-Disruptor (Klasse 3) (11733)</option>
+                                                <option value="11734">Klingonischer Puls-Disruptor (Klasse 4) (11734)</option>
+                                                <option value="11735">Klingonischer Puls-Disruptor (Klasse 5) (11735)</option>
+                                                <option value="11736">Klingonischer Puls-Disruptor (Klasse 6) (11736)</option>
+                                                <option value="58">Klingonischer Saboteur (58)</option>
+                                                <option value="1311">Klone (1311)</option>
+                                                <option value="44">Kontaminiertes-Warpplasma (44)</option>
+                                                <option value="1032">Kultur (1032)</option>
+                                                <option value="1035">Kundschaft (1035)</option>
+                                                <option value="1102">Kuppel-Versorgung (1102)</option>
+                                                <option value="50">Latinum (50)</option>
+                                                <option value="1300">Lebensstandard (1300)</option>
+                                                <option value="82">Leichter Photonentorpedo (82)</option>
+                                                <option value="1550">Lift-Kapazität (1550)</option>
+                                                <option value="1022">Literatur (1022)</option>
+                                                <option value="1002">Loyalität (1002)</option>
+                                                <option value="24">Magnesit (24)</option>
+                                                <option value="14">Magnesit-Erz (14)</option>
+                                                <option value="1514">Magnesit-Vorkommen (1514)</option>
+                                                <option value="19072">Marker (19072)</option>
+                                                <option value="21505">Matis (21505)</option>
+                                                <option value="19008">Matrixsensoren (19008)</option>
+                                                <option value="11801">Mehrfach-Torpedogeschütz (Klasse 1) (11801)</option>
+                                                <option value="11802">Mehrfach-Torpedogeschütz (Klasse 2) (11802)</option>
+                                                <option value="11803">Mehrfach-Torpedogeschütz (Klasse 3) (11803)</option>
+                                                <option value="11804">Mehrfach-Torpedogeschütz (Klasse 4) (11804)</option>
+                                                <option value="11805">Mehrfach-Torpedogeschütz (Klasse 5) (11805)</option>
+                                                <option value="11806">Mehrfach-Torpedogeschütz (Klasse 6) (11806)</option>
+                                                <option value="70">Metaphasen Gas (70)</option>
+                                                <option value="35">Metaphasen-Konverter (35)</option>
+                                                <option value="81">Micro-Photonentorpedo (81)</option>
+                                                <option value="36">Mikrodyne-Modulator (36)</option>
+                                                <option value="21205">Mirox (21205)</option>
+                                                <option value="1810">Modul-Fabrikation (1810)</option>
+                                                <option value="1811">Modul-Technologie (1811)</option>
+                                                <option value="10101">Monotanium-Hüllenpanzerung (Klasse 1) (10101)</option>
+                                                <option value="10102">Monotanium-Hüllenpanzerung (Klasse 2) (10102)</option>
+                                                <option value="10103">Monotanium-Hüllenpanzerung (Klasse 3) (10103)</option>
+                                                <option value="10104">Monotanium-Hüllenpanzerung (Klasse 4) (10104)</option>
+                                                <option value="10105">Monotanium-Hüllenpanzerung (Klasse 5) (10105)</option>
+                                                <option value="10106">Monotanium-Hüllenpanzerung (Klasse 6) (10106)</option>
+                                                <option value="1">Nahrung (1)</option>
+                                                <option value="19071">Netzspinner (19071)</option>
+                                                <option value="23">Nitrium (23)</option>
+                                                <option value="69">Nitrium Partikel (69)</option>
+                                                <option value="13">Nitrium-Erz (13)</option>
+                                                <option value="33">Nitrium-Schaltkreise (33)</option>
+                                                <option value="1513">Nitrium-Vorkommen (1513)</option>
+                                                <option value="21103">NuQ&#039;duj (21103)</option>
+                                                <option value="1801">Orbitale Wartung (1801)</option>
+                                                <option value="1309">Organische Regeneration (1309)</option>
+                                                <option value="73">Osterei (73)</option>
+                                                <option value="20066">Pakled Shuttle (20066)</option>
+                                                <option value="1604">Patriotismus (1604)</option>
+                                                <option value="21201">Peregrine (21201)</option>
+                                                <option value="10211">Phasische-Schilde (Klasse 1) (10211)</option>
+                                                <option value="10212">Phasische-Schilde (Klasse 2) (10212)</option>
+                                                <option value="10213">Phasische-Schilde (Klasse 3) (10213)</option>
+                                                <option value="10214">Phasische-Schilde (Klasse 4) (10214)</option>
+                                                <option value="10215">Phasische-Schilde (Klasse 5) (10215)</option>
+                                                <option value="10216">Phasische-Schilde (Klasse 6) (10216)</option>
+                                                <option value="83">Photonentorpedo (83)</option>
+                                                <option value="7">Plasma (7)</option>
+                                                <option value="65">Plasma Partikel (65)</option>
+                                                <option value="10221">Plasmatische-Schilde (Klasse 1) (10221)</option>
+                                                <option value="10222">Plasmatische-Schilde (Klasse 2) (10222)</option>
+                                                <option value="10223">Plasmatische-Schilde (Klasse 3) (10223)</option>
+                                                <option value="10224">Plasmatische-Schilde (Klasse 4) (10224)</option>
+                                                <option value="10225">Plasmatische-Schilde (Klasse 5) (10225)</option>
+                                                <option value="10226">Plasmatische-Schilde (Klasse 6) (10226)</option>
+                                                <option value="86">Plasmatorpedo (86)</option>
+                                                <option value="11201">Polarische-Schilde (Klasse 1) (11201)</option>
+                                                <option value="11202">Polarische-Schilde (Klasse 2) (11202)</option>
+                                                <option value="11203">Polarische-Schilde (Klasse 3) (11203)</option>
+                                                <option value="11204">Polarische-Schilde (Klasse 4) (11204)</option>
+                                                <option value="11205">Polarische-Schilde (Klasse 5) (11205)</option>
+                                                <option value="11206">Polarische-Schilde (Klasse 6) (11206)</option>
+                                                <option value="1025">Produkte (1025)</option>
+                                                <option value="1605">Profitgier (1605)</option>
+                                                <option value="84">Quantentorpedo (84)</option>
+                                                <option value="11807">RPG-Modul (11807)</option>
+                                                <option value="21602">RX-Frachter (21602)</option>
+                                                <option value="21101">Raider (21101)</option>
+                                                <option value="61">Raumkraut (61)</option>
+                                                <option value="1304">Replikator-Biofilter (1304)</option>
+                                                <option value="1303">Replikatorleistung (1303)</option>
+                                                <option value="11921">Romulanischer Computer (Klasse 1) (11921)</option>
+                                                <option value="11922">Romulanischer Computer (Klasse 2) (11922)</option>
+                                                <option value="11923">Romulanischer Computer (Klasse 3) (11923)</option>
+                                                <option value="11924">Romulanischer Computer (Klasse 4) (11924)</option>
+                                                <option value="11925">Romulanischer Computer (Klasse 5) (11925)</option>
+                                                <option value="11926">Romulanischer Computer (Klasse 6) (11926)</option>
+                                                <option value="10721">Romulanischer Disruptor (Klasse 1) (10721)</option>
+                                                <option value="10722">Romulanischer Disruptor (Klasse 2) (10722)</option>
+                                                <option value="10723">Romulanischer Disruptor (Klasse 3) (10723)</option>
+                                                <option value="10724">Romulanischer Disruptor (Klasse 4) (10724)</option>
+                                                <option value="10725">Romulanischer Disruptor (Klasse 5) (10725)</option>
+                                                <option value="10726">Romulanischer Disruptor (Klasse 6) (10726)</option>
+                                                <option value="11721">Romulanischer Puls-Disruptor (Klasse 1) (11721)</option>
+                                                <option value="11722">Romulanischer Puls-Disruptor (Klasse 2) (11722)</option>
+                                                <option value="11723">Romulanischer Puls-Disruptor (Klasse 3) (11723)</option>
+                                                <option value="11724">Romulanischer Puls-Disruptor (Klasse 4) (11724)</option>
+                                                <option value="11725">Romulanischer Puls-Disruptor (Klasse 5) (11725)</option>
+                                                <option value="11726">Romulanischer Puls-Disruptor (Klasse 6) (11726)</option>
+                                                <option value="10521">Romulanischer Singularitätsreaktor (Klasse 1) (10521)</option>
+                                                <option value="10522">Romulanischer Singularitätsreaktor (Klasse 2) (10522)</option>
+                                                <option value="10523">Romulanischer Singularitätsreaktor (Klasse 3) (10523)</option>
+                                                <option value="10524">Romulanischer Singularitätsreaktor (Klasse 4) (10524)</option>
+                                                <option value="10525">Romulanischer Singularitätsreaktor (Klasse 5) (10525)</option>
+                                                <option value="10526">Romulanischer Singularitätsreaktor (Klasse 6) (10526)</option>
+                                                <option value="49">Romulanisches Ale (49)</option>
+                                                <option value="1011">Root Bier (1011)</option>
+                                                <option value="21503">Saqghom (21503)</option>
+                                                <option value="1000">Scheiben vakuumgetrockneter Hux (1000)</option>
+                                                <option value="62">Schnupftabak (62)</option>
+                                                <option value="87">Schwerer Plasmatorpedo (87)</option>
+                                                <option value="85">Schwerer Quantentorpedo (85)</option>
+                                                <option value="1031">Sehenswürdigkeit (1031)</option>
+                                                <option value="10601">Sensorenphalanx (Klasse 1) (10601)</option>
+                                                <option value="10602">Sensorenphalanx (Klasse 2) (10602)</option>
+                                                <option value="10603">Sensorenphalanx (Klasse 3) (10603)</option>
+                                                <option value="10604">Sensorenphalanx (Klasse 4) (10604)</option>
+                                                <option value="10605">Sensorenphalanx (Klasse 5) (10605)</option>
+                                                <option value="10606">Sensorenphalanx (Klasse 6) (10606)</option>
+                                                <option value="19010">Shuttlerampe (19010)</option>
+                                                <option value="53">Slug-O-Cola (53)</option>
+                                                <option value="1015">Slug-O-Cola (1015)</option>
+                                                <option value="1041">Sport (1041)</option>
+                                                <option value="1004">Stolz (1004)</option>
+                                                <option value="34">Subraum-Feldspulen (34)</option>
+                                                <option value="19007">Subraumfeldscanner (19007)</option>
+                                                <option value="10002">Systemkomponente (10002)</option>
+                                                <option value="21502">T&#039;Liss (21502)</option>
+                                                <option value="19003">Tachyon-Scanner (19003)</option>
+                                                <option value="26">Talgonit (26)</option>
+                                                <option value="16">Talgonit-Erz (16)</option>
+                                                <option value="1516">Talgonit-Vorkommen (1516)</option>
+                                                <option value="68">Talgonium Gas (68)</option>
+                                                <option value="21504">Taranortak (21504)</option>
+                                                <option value="47">Targ (47)</option>
+                                                <option value="19001">Tarnvorrichtung (19001)</option>
+                                                <option value="1521">Thermalquellen (1521)</option>
+                                                <option value="110">Tomatenschäler (110)</option>
+                                                <option value="10801">Torpedobank (Klasse 1) (10801)</option>
+                                                <option value="10802">Torpedobank (Klasse 2) (10802)</option>
+                                                <option value="10803">Torpedobank (Klasse 3) (10803)</option>
+                                                <option value="10804">Torpedobank (Klasse 4) (10804)</option>
+                                                <option value="10805">Torpedobank (Klasse 5) (10805)</option>
+                                                <option value="10806">Torpedobank (Klasse 6) (10806)</option>
+                                                <option value="19009">Torpedotransportmodul (19009)</option>
+                                                <option value="1503">Transformierte hochenergetische Ladung (1503)</option>
+                                                <option value="4">Transparentes Aluminium (4)</option>
+                                                <option value="19070">Transwarp-Spule (19070)</option>
+                                                <option value="48">Tribble (48)</option>
+                                                <option value="29">Tritanium (29)</option>
+                                                <option value="67">Tritanium Partikel (67)</option>
+                                                <option value="19">Tritanium-Erz (19)</option>
+                                                <option value="10121">Tritanium-Hüllenpanzerung (Klasse 1) (10121)</option>
+                                                <option value="10122">Tritanium-Hüllenpanzerung (Klasse 2) (10122)</option>
+                                                <option value="10123">Tritanium-Hüllenpanzerung (Klasse 3) (10123)</option>
+                                                <option value="10124">Tritanium-Hüllenpanzerung (Klasse 4) (10124)</option>
+                                                <option value="10125">Tritanium-Hüllenpanzerung (Klasse 5) (10125)</option>
+                                                <option value="10126">Tritanium-Hüllenpanzerung (Klasse 6) (10126)</option>
+                                                <option value="1519">Tritanium-Vorkommen (1519)</option>
+                                                <option value="1202">Turbinen-Verankerung (1202)</option>
+                                                <option value="1552">Untergrund-Logistik (1552)</option>
+                                                <option value="21302">V&#039;Rela (21302)</option>
+                                                <option value="21491">Venture (21491)</option>
+                                                <option value="10901">Warpantrieb (Klasse 1) (10901)</option>
+                                                <option value="10902">Warpantrieb (Klasse 2) (10902)</option>
+                                                <option value="10903">Warpantrieb (Klasse 3) (10903)</option>
+                                                <option value="10904">Warpantrieb (Klasse 4) (10904)</option>
+                                                <option value="10905">Warpantrieb (Klasse 5) (10905)</option>
+                                                <option value="10906">Warpantrieb (Klasse 6) (10906)</option>
+                                                <option value="10501">Warpkern (Klasse 1) (10501)</option>
+                                                <option value="10502">Warpkern (Klasse 2) (10502)</option>
+                                                <option value="10503">Warpkern (Klasse 3) (10503)</option>
+                                                <option value="10504">Warpkern (Klasse 4) (10504)</option>
+                                                <option value="10505">Warpkern (Klasse 5) (10505)</option>
+                                                <option value="10506">Warpkern (Klasse 6) (10506)</option>
+                                                <option value="1802">Werft-Logistik (1802)</option>
+                                                <option value="45">Werkzeugkoffer (45)</option>
+                                                <option value="1302">Wetterkontroll-Uplink (1302)</option>
+                                                <option value="1005">Wohlstand (1005)</option>
+                                                <option value="1101">Wohnhäuser (1101)</option>
+                                                <option value="20061">Workbee (20061)</option>
+                                                <option value="20062">Workbee (20062)</option>
+                                                <option value="20063">Workbee (20063)</option>
+                                                <option value="20064">Workbee (20064)</option>
+                                                <option value="20065">Workbee (20065)</option>
+                                                <option value="1522">Wärmeenergie (1522)</option>
+                                                <option value="21601">Y-Frachter (21601)</option>
+                                                <option value="21105">Zarlax (21105)</option>
+                                                <option value="1310">Zuchtprogramm (1310)</option>
+                                                <option value="1001">Zufriedenheit (1001)</option>
+                                                <option value="1023">Zweikampf (1023)</option>
+                                                <option value="11111">ablative Duranium-Hüllenpanzerung (Klasse 1) (11111)</option>
+                                                <option value="11112">ablative Duranium-Hüllenpanzerung (Klasse 2) (11112)</option>
+                                                <option value="11113">ablative Duranium-Hüllenpanzerung (Klasse 3) (11113)</option>
+                                                <option value="11114">ablative Duranium-Hüllenpanzerung (Klasse 4) (11114)</option>
+                                                <option value="11115">ablative Duranium-Hüllenpanzerung (Klasse 5) (11115)</option>
+                                                <option value="11116">ablative Duranium-Hüllenpanzerung (Klasse 6) (11116)</option>
+                                                <option value="11101">ablative Monotanium-Hüllenpanzerung (Klasse 1) (11101)</option>
+                                                <option value="11102">ablative Monotanium-Hüllenpanzerung (Klasse 2) (11102)</option>
+                                                <option value="11103">ablative Monotanium-Hüllenpanzerung (Klasse 3) (11103)</option>
+                                                <option value="11104">ablative Monotanium-Hüllenpanzerung (Klasse 4) (11104)</option>
+                                                <option value="11105">ablative Monotanium-Hüllenpanzerung (Klasse 5) (11105)</option>
+                                                <option value="11106">ablative Monotanium-Hüllenpanzerung (Klasse 6) (11106)</option>
+                                                <option value="11121">ablative Tritanium-Hüllenpanzerung (Klasse 1) (11121)</option>
+                                                <option value="11122">ablative Tritanium-Hüllenpanzerung (Klasse 2) (11122)</option>
+                                                <option value="11123">ablative Tritanium-Hüllenpanzerung (Klasse 3) (11123)</option>
+                                                <option value="11124">ablative Tritanium-Hüllenpanzerung (Klasse 4) (11124)</option>
+                                                <option value="11125">ablative Tritanium-Hüllenpanzerung (Klasse 5) (11125)</option>
+                                                <option value="11126">ablative Tritanium-Hüllenpanzerung (Klasse 6) (11126)</option>
+                                                <option value="56">legendäres Bat&#039;leth (56)</option>
+                                                <option value="1033">mek&#039;leth (1033)</option>
+                                                <option value="43">selbstdichtende Schaftbolzen (43)</option>
+                                                <option value="55">verwanzte Replikation von Gerät 2 (55)</option>
+                                                <option value="1024">Öffentlichkeit (1024)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Sortierung</td>
+                <td><input type="number" min="0" name="sort" value="0" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Baubar</td>
+                <td><label><input type="checkbox" name="is_buildable" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>NPC-Rumpf</td>
+                <td><label><input type="checkbox" name="is_npc" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Für NPCs baubar</td>
+                <td>
+                    <select name="npc_buildable">
+                        <option value="">Nicht gesetzt</option>
+                        <option value="1">Ja</option>
+                        <option value="0">Nein</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Kampf, Bau und Logistik</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr><td>Basis-Torpedolager</td><td><input type="number" min="0" name="base_torpedo_storage" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffensalven</td><td><input type="number" min="0" name="phaser_volleys" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffen-Hüllenschaden</td><td><input type="number" min="0" name="phaser_hull_damage_factor" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffen-Schildschaden</td><td><input type="number" min="0" name="phaser_shield_damage_factor" value="0" required="required" /></td></tr>
+            <tr><td>Torpedolevel</td><td><input type="number" min="0" name="torpedo_level" value="0" required="required" /></td></tr>
+            <tr><td>Torpedosalven</td><td><input type="number" min="0" name="torpedo_volleys" value="0" required="required" /></td></tr>
+            <tr><td>EPS-Kosten</td><td><input type="number" min="0" name="eps_cost" value="0" required="required" /></td></tr>
+            <tr><td>Lagerkapazität</td><td><input type="number" min="0" name="storage" value="0" required="required" /></td></tr>
+            <tr><td>Dockplätze</td><td><input type="number" min="0" name="slots" value="0" required="required" /></td></tr>
+            <tr><td>Bauzeit</td><td><input type="number" min="0" name="buildtime" value="0" required="required" /></td></tr>
+            <tr><td>Benötigte Workbees</td><td><input type="number" min="0" name="needed_workbees" /></td></tr>
+            <tr><td>Flugkosten</td><td><input type="number" min="0" name="flight_ecost" value="0" required="required" /></td></tr>
+            <tr><td>Beamfaktor</td><td><input type="number" min="0" name="beam_factor" value="0" required="required" /></td></tr>
+            <tr><td>Shuttleslots</td><td><input type="number" min="0" name="shuttle_slots" value="0" required="required" /></td></tr>
+            <tr><td>Traktormasse</td><td><input type="number" min="1" name="tractor_mass" value="1" required="required" /></td></tr>
+            <tr><td>Traktor-Zuladung</td><td><input type="number" min="0" name="tractor_payload" value="100" required="required" /></td></tr>
+            <tr><td>Prestige</td><td><input type="number" name="prestige" value="0" required="required" /></td></tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Basiswerte</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr><td>Ausweichchance</td><td><input type="number" min="0" name="evade_chance" value="0" required="required" /></td></tr>
+            <tr><td>Trefferchance</td><td><input type="number" min="0" name="hit_chance" value="0" required="required" /></td></tr>
+            <tr><td>Modullevel</td><td><input type="number" min="0" name="module_level" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Crew</td><td><input type="number" min="0" name="base_crew" value="0" required="required" /></td></tr>
+            <tr><td>Maximale Crew</td><td><input type="number" min="0" name="max_crew" value="0" required="required" /></td></tr>
+            <tr><td>Basis-EPS</td><td><input type="number" min="0" name="base_eps" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Reaktor</td><td><input type="number" min="0" name="base_reactor" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Hülle</td><td><input type="number" min="0" name="base_hull" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Schilde</td><td><input type="number" min="0" name="base_shield" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Schaden</td><td><input type="number" min="0" name="base_damage" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Sensorreichweite</td><td><input type="number" min="0" name="base_sensor_range" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Warpantrieb</td><td><input type="number" min="0" name="base_warpdrive" value="0" required="required" /></td></tr>
+            <tr><td>Spezialslots</td><td><input type="number" min="0" name="special_slots" value="0" required="required" /></td></tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Modullevel</div>
+    <div class="divbody">
+        <label><input type="checkbox" name="create_module_levels" value="1" checked="checked" /> Modullevel-Konfiguration anlegen</label>
+        <table class="tcal" style="margin-top: 8px;">
+            <tr><th>Modultyp</th><th>Minimum</th><th>Standard</th><th>Maximum</th><th>Pflichtmodul</th></tr>
+                        <tr data-module-type="1">
+                <td>Hülle</td>
+                <td><input type="number" min="0" name="module_min_1" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_1" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_1" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_1" value="1" /></td>
+            </tr>
+                        <tr data-module-type="2">
+                <td>Schilde</td>
+                <td><input type="number" min="0" name="module_min_2" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_2" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_2" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_2" value="1" /></td>
+            </tr>
+                        <tr data-module-type="6">
+                <td>Computer</td>
+                <td><input type="number" min="0" name="module_min_6" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_6" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_6" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_6" value="1" /></td>
+            </tr>
+                        <tr data-module-type="4">
+                <td>Antrieb</td>
+                <td><input type="number" min="0" name="module_min_4" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_4" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_4" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_4" value="1" /></td>
+            </tr>
+                        <tr data-module-type="10">
+                <td>Sensoren</td>
+                <td><input type="number" min="0" name="module_min_10" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_10" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_10" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_10" value="1" /></td>
+            </tr>
+                        <tr data-module-type="11">
+                <td>Warpantrieb</td>
+                <td><input type="number" min="0" name="module_min_11" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_11" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_11" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_11" value="1" /></td>
+            </tr>
+                        <tr data-module-type="5">
+                <td>Reaktor</td>
+                <td><input type="number" min="0" name="module_min_5" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_5" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_5" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_5" value="1" /></td>
+            </tr>
+                        <tr data-module-type="3">
+                <td>EPS-Leistung</td>
+                <td><input type="number" min="0" name="module_min_3" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_3" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_3" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_3" value="1" /></td>
+            </tr>
+                        <tr data-module-type="7">
+                <td>Energiewaffe</td>
+                <td><input type="number" min="0" name="module_min_7" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_7" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_7" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_7" value="1" /></td>
+            </tr>
+                        <tr data-module-type="8">
+                <td>Torpedobank</td>
+                <td><input type="number" min="0" name="module_min_8" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_8" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_8" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_8" value="1" /></td>
+            </tr>
+                    </table>
+    </div>
+    <br />
+    <div class="divhead">Baukosten</div>
+    <div class="divbody">
+        <div id="rump-costs"></div>
+        <button type="button" class="button" id="add-rump-cost">Baukosten hinzufügen</button>
+    </div>
+    <template id="rump-cost-template">
+        <div class="rump-cost-row" style="margin-bottom: 5px;">
+            <select name="cost_commodity_ids[]">
+                <option value="">Ware wählen</option>
+                                <option value="60">Adventspunkt (60)</option>
+                                <option value="19075">Aggregations-System (19075)</option>
+                                <option value="1012">Ale (1012)</option>
+                                <option value="6">Antimaterie (6)</option>
+                                <option value="64">Antimaterie Partikel (64)</option>
+                                <option value="19006">Astrometrie-Labor (19006)</option>
+                                <option value="21402">Atarra (21402)</option>
+                                <option value="41">Bat&#039;leth (41)</option>
+                                <option value="2">Baumaterial (2)</option>
+                                <option value="1601">Bildung (1601)</option>
+                                <option value="46">Blutwein (46)</option>
+                                <option value="1013">Blutwein (1013)</option>
+                                <option value="88">Boje (88)</option>
+                                <option value="21405">Bronta (21405)</option>
+                                <option value="19073">Bussard-Kollektor (19073)</option>
+                                <option value="21604">CF-Frachter (21604)</option>
+                                <option value="10641">Cardassianische Sensorenphalanx (Klasse 1) (10641)</option>
+                                <option value="10642">Cardassianische Sensorenphalanx (Klasse 2) (10642)</option>
+                                <option value="10643">Cardassianische Sensorenphalanx (Klasse 3) (10643)</option>
+                                <option value="10644">Cardassianische Sensorenphalanx (Klasse 4) (10644)</option>
+                                <option value="10645">Cardassianische Sensorenphalanx (Klasse 5) (10645)</option>
+                                <option value="10646">Cardassianische Sensorenphalanx (Klasse 6) (10646)</option>
+                                <option value="11741">Cardassianischer Puls-Disruptor (Klasse 1) (11741)</option>
+                                <option value="11742">Cardassianischer Puls-Disruptor (Klasse 2) (11742)</option>
+                                <option value="11743">Cardassianischer Puls-Disruptor (Klasse 3) (11743)</option>
+                                <option value="11744">Cardassianischer Puls-Disruptor (Klasse 4) (11744)</option>
+                                <option value="11745">Cardassianischer Puls-Disruptor (Klasse 5) (11745)</option>
+                                <option value="11746">Cardassianischer Puls-Disruptor (Klasse 6) (11746)</option>
+                                <option value="10741">Cardassianischer Spiralwellendisruptor (Klasse 1) (10741)</option>
+                                <option value="10742">Cardassianischer Spiralwellendisruptor (Klasse 2) (10742)</option>
+                                <option value="10743">Cardassianischer Spiralwellendisruptor (Klasse 3) (10743)</option>
+                                <option value="10744">Cardassianischer Spiralwellendisruptor (Klasse 4) (10744)</option>
+                                <option value="10745">Cardassianischer Spiralwellendisruptor (Klasse 5) (10745)</option>
+                                <option value="10746">Cardassianischer Spiralwellendisruptor (Klasse 6) (10746)</option>
+                                <option value="11841">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 1) (11841)</option>
+                                <option value="11842">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 2) (11842)</option>
+                                <option value="11843">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 3) (11843)</option>
+                                <option value="11844">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 4) (11844)</option>
+                                <option value="11845">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 5) (11845)</option>
+                                <option value="11846">Cardassianisches Mehrfach-Torpedogeschütz (Klasse 6) (11846)</option>
+                                <option value="40">Chateau Picard (40)</option>
+                                <option value="3">Chemische Komponenten (3)</option>
+                                <option value="11901">Computer (Klasse 1) (11901)</option>
+                                <option value="11902">Computer (Klasse 2) (11902)</option>
+                                <option value="11903">Computer (Klasse 3) (11903)</option>
+                                <option value="11904">Computer (Klasse 4) (11904)</option>
+                                <option value="11905">Computer (Klasse 5) (11905)</option>
+                                <option value="11906">Computer (Klasse 6) (11906)</option>
+                                <option value="42">Container (42)</option>
+                                <option value="19005">Crewtransport-Modul (19005)</option>
+                                <option value="21401">Danube (21401)</option>
+                                <option value="9999">Der Zonk (9999)</option>
+                                <option value="5">Deuterium (5)</option>
+                                <option value="63">Deuterium Partikel (63)</option>
+                                <option value="1551">Deuterium-Tanks (1551)</option>
+                                <option value="1505">Deuterium-Vorkommen (1505)</option>
+                                <option value="21102">Dhelan (21102)</option>
+                                <option value="8">Dilithium (8)</option>
+                                <option value="1508">Dilithium-Vorkommen (1508)</option>
+                                <option value="1043">Disruptor (1043)</option>
+                                <option value="21">Duranium (21)</option>
+                                <option value="10111">Duranium-Hüllenpanzerung (Klasse 1) (10111)</option>
+                                <option value="10112">Duranium-Hüllenpanzerung (Klasse 2) (10112)</option>
+                                <option value="10113">Duranium-Hüllenpanzerung (Klasse 3) (10113)</option>
+                                <option value="10114">Duranium-Hüllenpanzerung (Klasse 4) (10114)</option>
+                                <option value="10115">Duranium-Hüllenpanzerung (Klasse 5) (10115)</option>
+                                <option value="10116">Duranium-Hüllenpanzerung (Klasse 6) (10116)</option>
+                                <option value="10301">EPS-Gitter (Klasse 1) (10301)</option>
+                                <option value="10302">EPS-Gitter (Klasse 2) (10302)</option>
+                                <option value="10303">EPS-Gitter (Klasse 3) (10303)</option>
+                                <option value="10304">EPS-Gitter (Klasse 4) (10304)</option>
+                                <option value="10305">EPS-Gitter (Klasse 5) (10305)</option>
+                                <option value="10306">EPS-Gitter (Klasse 6) (10306)</option>
+                                <option value="1003">Ehre (1003)</option>
+                                <option value="10201">Elektromagnetische-Schilde (Klasse 1) (10201)</option>
+                                <option value="10202">Elektromagnetische-Schilde (Klasse 2) (10202)</option>
+                                <option value="10203">Elektromagnetische-Schilde (Klasse 3) (10203)</option>
+                                <option value="10204">Elektromagnetische-Schilde (Klasse 4) (10204)</option>
+                                <option value="10205">Elektromagnetische-Schilde (Klasse 5) (10205)</option>
+                                <option value="10206">Elektromagnetische-Schilde (Klasse 6) (10206)</option>
+                                <option value="21304">Enkud (21304)</option>
+                                <option value="1021">Erholung (1021)</option>
+                                <option value="10001">Ersatzteil (10001)</option>
+                                <option value="21605">FK-Frachter (21605)</option>
+                                <option value="19076">Ferengi Aggregations-System (19076)</option>
+                                <option value="19074">Ferengi Bussard-Kollektor (19074)</option>
+                                <option value="10351">Ferengi EPS-Gitter (Klasse 1) (10351)</option>
+                                <option value="10352">Ferengi EPS-Gitter (Klasse 2) (10352)</option>
+                                <option value="10353">Ferengi EPS-Gitter (Klasse 3) (10353)</option>
+                                <option value="10354">Ferengi EPS-Gitter (Klasse 4) (10354)</option>
+                                <option value="10355">Ferengi EPS-Gitter (Klasse 5) (10355)</option>
+                                <option value="10356">Ferengi EPS-Gitter (Klasse 6) (10356)</option>
+                                <option value="10751">Ferengi Phaser (Klasse 1) (10751)</option>
+                                <option value="10752">Ferengi Phaser (Klasse 2) (10752)</option>
+                                <option value="10753">Ferengi Phaser (Klasse 3) (10753)</option>
+                                <option value="10754">Ferengi Phaser (Klasse 4) (10754)</option>
+                                <option value="10755">Ferengi Phaser (Klasse 5) (10755)</option>
+                                <option value="10756">Ferengi Phaser (Klasse 6) (10756)</option>
+                                <option value="11751">Ferengi Puls-Phaser (Klasse 1) (11751)</option>
+                                <option value="11752">Ferengi Puls-Phaser (Klasse 2) (11752)</option>
+                                <option value="11753">Ferengi Puls-Phaser (Klasse 3) (11753)</option>
+                                <option value="11754">Ferengi Puls-Phaser (Klasse 4) (11754)</option>
+                                <option value="11755">Ferengi Puls-Phaser (Klasse 5) (11755)</option>
+                                <option value="11756">Ferengi Puls-Phaser (Klasse 6) (11756)</option>
+                                <option value="57">Floppy (57)</option>
+                                <option value="51">Flüssiges Latinum (51)</option>
+                                <option value="1700">Forschungslabors (1700)</option>
+                                <option value="1721">Forschungspunkte (Gebäude) (1721)</option>
+                                <option value="1701">Forschungspunkte (Level 1) (1701)</option>
+                                <option value="1702">Forschungspunkte (Level 2) (1702)</option>
+                                <option value="1703">Forschungspunkte (Level 3) (1703)</option>
+                                <option value="1712">Forschungspunkte (Module) (1712)</option>
+                                <option value="1711">Forschungspunkte (Raumkonstrukte) (1711)</option>
+                                <option value="1731">Forschungspunkte (Rümpfe) (1731)</option>
+                                <option value="1722">Forschungspunkte (Untergrund) (1722)</option>
+                                <option value="11501">Fusionsreaktor (Klasse 1) (11501)</option>
+                                <option value="10701">Föderations Phaser (Klasse 1) (10701)</option>
+                                <option value="10702">Föderations Phaser (Klasse 2) (10702)</option>
+                                <option value="10703">Föderations Phaser (Klasse 3) (10703)</option>
+                                <option value="10704">Föderations Phaser (Klasse 4) (10704)</option>
+                                <option value="10705">Föderations Phaser (Klasse 5) (10705)</option>
+                                <option value="10706">Föderations Phaser (Klasse 6) (10706)</option>
+                                <option value="11701">Föderations Puls-Phaser (Klasse 1) (11701)</option>
+                                <option value="11702">Föderations Puls-Phaser (Klasse 2) (11702)</option>
+                                <option value="11703">Föderations Puls-Phaser (Klasse 3) (11703)</option>
+                                <option value="11704">Föderations Puls-Phaser (Klasse 4) (11704)</option>
+                                <option value="11705">Föderations Puls-Phaser (Klasse 5) (11705)</option>
+                                <option value="11706">Föderations Puls-Phaser (Klasse 6) (11706)</option>
+                                <option value="10911">Föderations Warpantrieb (Klasse 1) (10911)</option>
+                                <option value="10912">Föderations Warpantrieb (Klasse 2) (10912)</option>
+                                <option value="10913">Föderations Warpantrieb (Klasse 3) (10913)</option>
+                                <option value="10914">Föderations Warpantrieb (Klasse 4) (10914)</option>
+                                <option value="10915">Föderations Warpantrieb (Klasse 5) (10915)</option>
+                                <option value="10916">Föderations Warpantrieb (Klasse 6) (10916)</option>
+                                <option value="10511">Föderations Warpkern (Klasse 1) (10511)</option>
+                                <option value="10512">Föderations Warpkern (Klasse 2) (10512)</option>
+                                <option value="10513">Föderations Warpkern (Klasse 3) (10513)</option>
+                                <option value="10514">Föderations Warpkern (Klasse 4) (10514)</option>
+                                <option value="10515">Föderations Warpkern (Klasse 5) (10515)</option>
+                                <option value="10516">Föderations Warpkern (Klasse 6) (10516)</option>
+                                <option value="22">Galazit (22)</option>
+                                <option value="12">Galazit-Erz (12)</option>
+                                <option value="1512">Galazit-Vorkommen (1512)</option>
+                                <option value="71">Galonium Gas (71)</option>
+                                <option value="1201">Gebündelte Solarenergie (1201)</option>
+                                <option value="1280">Geothermische Energie (1280)</option>
+                                <option value="54">Gerät 2 (54)</option>
+                                <option value="1501">Geschmolzenes Tritanium (1501)</option>
+                                <option value="21404">Hideki (21404)</option>
+                                <option value="66">Hoch-Energie Plasma Partikel (66)</option>
+                                <option value="1502">Hochenergetische Ladung (1502)</option>
+                                <option value="1520">Hochenergetisches Ladungsvorkommen (1520)</option>
+                                <option value="32">Hochenergie-Plasma (32)</option>
+                                <option value="1699">Holodeck-Programme (1699)</option>
+                                <option value="1301">Hydroponische Aufbereitung (1301)</option>
+                                <option value="21501">Icarus (21501)</option>
+                                <option value="21104">Imerek (21104)</option>
+                                <option value="1602">Imperiales Gedankengut (1602)</option>
+                                <option value="10401">Impulsantrieb (Klasse 1) (10401)</option>
+                                <option value="10402">Impulsantrieb (Klasse 2) (10402)</option>
+                                <option value="10403">Impulsantrieb (Klasse 3) (10403)</option>
+                                <option value="10404">Impulsantrieb (Klasse 4) (10404)</option>
+                                <option value="10405">Impulsantrieb (Klasse 5) (10405)</option>
+                                <option value="10406">Impulsantrieb (Klasse 6) (10406)</option>
+                                <option value="20">Iridium (20)</option>
+                                <option value="11">Iridium-Erz (11)</option>
+                                <option value="1511">Iridium-Erz-Vorkommen (1511)</option>
+                                <option value="31">Isolineare Speicherchips (31)</option>
+                                <option value="21203">K&#039;Pak (21203)</option>
+                                <option value="21403">K&#039;toch (21403)</option>
+                                <option value="21603">K-Frachter (21603)</option>
+                                <option value="1603">Kampftraining (1603)</option>
+                                <option value="52">Kanar (52)</option>
+                                <option value="1014">Kanar (1014)</option>
+                                <option value="10771">Kazon Phaser (Klasse 1) (10771)</option>
+                                <option value="10772">Kazon Phaser (Klasse 2) (10772)</option>
+                                <option value="10773">Kazon Phaser (Klasse 3) (10773)</option>
+                                <option value="10774">Kazon Phaser (Klasse 4) (10774)</option>
+                                <option value="10775">Kazon Phaser (Klasse 5) (10775)</option>
+                                <option value="10776">Kazon Phaser (Klasse 6) (10776)</option>
+                                <option value="11771">Kazon Pulsphaser (Klasse 1) (11771)</option>
+                                <option value="11772">Kazon Pulsphaser (Klasse 2) (11772)</option>
+                                <option value="11773">Kazon Pulsphaser (Klasse 3) (11773)</option>
+                                <option value="11775">Kazon Pulsphaser (Klasse 5) (11775)</option>
+                                <option value="11776">Kazon Pulsphaser (Klasse 6) (11776)</option>
+                                <option value="11774">Kazon Puslphaser (Klasse 4) (11774)</option>
+                                <option value="10271">Kazon-Schilde (Klasse 1) (10271)</option>
+                                <option value="10272">Kazon-Schilde (Klasse 2) (10272)</option>
+                                <option value="10273">Kazon-Schilde (Klasse 3) (10273)</option>
+                                <option value="10274">Kazon-Schilde (Klasse 4) (10274)</option>
+                                <option value="10275">Kazon-Schilde (Klasse 5) (10275)</option>
+                                <option value="10276">Kazon-Schilde (Klasse 6) (10276)</option>
+                                <option value="25">Kelbonit (25)</option>
+                                <option value="15">Kelbonit-Erz (15)</option>
+                                <option value="1515">Kelbonit-Vorkommen (1515)</option>
+                                <option value="72">Kelbonium Gas (72)</option>
+                                <option value="10831">Klingonische Torpedobank (Klasse 1) (10831)</option>
+                                <option value="10832">Klingonische Torpedobank (Klasse 2) (10832)</option>
+                                <option value="10833">Klingonische Torpedobank (Klasse 3) (10833)</option>
+                                <option value="10834">Klingonische Torpedobank (Klasse 4) (10834)</option>
+                                <option value="10835">Klingonische Torpedobank (Klasse 5) (10835)</option>
+                                <option value="10836">Klingonische Torpedobank (Klasse 6) (10836)</option>
+                                <option value="10731">Klingonischer Disruptor (Klasse 1) (10731)</option>
+                                <option value="10732">Klingonischer Disruptor (Klasse 2) (10732)</option>
+                                <option value="10733">Klingonischer Disruptor (Klasse 3) (10733)</option>
+                                <option value="10734">Klingonischer Disruptor (Klasse 4) (10734)</option>
+                                <option value="10735">Klingonischer Disruptor (Klasse 5) (10735)</option>
+                                <option value="10736">Klingonischer Disruptor (Klasse 6) (10736)</option>
+                                <option value="10431">Klingonischer Impulsantrieb (Klasse 1) (10431)</option>
+                                <option value="10432">Klingonischer Impulsantrieb (Klasse 2) (10432)</option>
+                                <option value="10433">Klingonischer Impulsantrieb (Klasse 3) (10433)</option>
+                                <option value="10434">Klingonischer Impulsantrieb (Klasse 4) (10434)</option>
+                                <option value="10435">Klingonischer Impulsantrieb (Klasse 5) (10435)</option>
+                                <option value="10436">Klingonischer Impulsantrieb (Klasse 6) (10436)</option>
+                                <option value="11731">Klingonischer Puls-Disruptor (Klasse 1) (11731)</option>
+                                <option value="11732">Klingonischer Puls-Disruptor (Klasse 2) (11732)</option>
+                                <option value="11733">Klingonischer Puls-Disruptor (Klasse 3) (11733)</option>
+                                <option value="11734">Klingonischer Puls-Disruptor (Klasse 4) (11734)</option>
+                                <option value="11735">Klingonischer Puls-Disruptor (Klasse 5) (11735)</option>
+                                <option value="11736">Klingonischer Puls-Disruptor (Klasse 6) (11736)</option>
+                                <option value="58">Klingonischer Saboteur (58)</option>
+                                <option value="1311">Klone (1311)</option>
+                                <option value="44">Kontaminiertes-Warpplasma (44)</option>
+                                <option value="1032">Kultur (1032)</option>
+                                <option value="1035">Kundschaft (1035)</option>
+                                <option value="1102">Kuppel-Versorgung (1102)</option>
+                                <option value="50">Latinum (50)</option>
+                                <option value="1300">Lebensstandard (1300)</option>
+                                <option value="82">Leichter Photonentorpedo (82)</option>
+                                <option value="1550">Lift-Kapazität (1550)</option>
+                                <option value="1022">Literatur (1022)</option>
+                                <option value="1002">Loyalität (1002)</option>
+                                <option value="24">Magnesit (24)</option>
+                                <option value="14">Magnesit-Erz (14)</option>
+                                <option value="1514">Magnesit-Vorkommen (1514)</option>
+                                <option value="19072">Marker (19072)</option>
+                                <option value="21505">Matis (21505)</option>
+                                <option value="19008">Matrixsensoren (19008)</option>
+                                <option value="11801">Mehrfach-Torpedogeschütz (Klasse 1) (11801)</option>
+                                <option value="11802">Mehrfach-Torpedogeschütz (Klasse 2) (11802)</option>
+                                <option value="11803">Mehrfach-Torpedogeschütz (Klasse 3) (11803)</option>
+                                <option value="11804">Mehrfach-Torpedogeschütz (Klasse 4) (11804)</option>
+                                <option value="11805">Mehrfach-Torpedogeschütz (Klasse 5) (11805)</option>
+                                <option value="11806">Mehrfach-Torpedogeschütz (Klasse 6) (11806)</option>
+                                <option value="70">Metaphasen Gas (70)</option>
+                                <option value="35">Metaphasen-Konverter (35)</option>
+                                <option value="81">Micro-Photonentorpedo (81)</option>
+                                <option value="36">Mikrodyne-Modulator (36)</option>
+                                <option value="21205">Mirox (21205)</option>
+                                <option value="1810">Modul-Fabrikation (1810)</option>
+                                <option value="1811">Modul-Technologie (1811)</option>
+                                <option value="10101">Monotanium-Hüllenpanzerung (Klasse 1) (10101)</option>
+                                <option value="10102">Monotanium-Hüllenpanzerung (Klasse 2) (10102)</option>
+                                <option value="10103">Monotanium-Hüllenpanzerung (Klasse 3) (10103)</option>
+                                <option value="10104">Monotanium-Hüllenpanzerung (Klasse 4) (10104)</option>
+                                <option value="10105">Monotanium-Hüllenpanzerung (Klasse 5) (10105)</option>
+                                <option value="10106">Monotanium-Hüllenpanzerung (Klasse 6) (10106)</option>
+                                <option value="1">Nahrung (1)</option>
+                                <option value="19071">Netzspinner (19071)</option>
+                                <option value="23">Nitrium (23)</option>
+                                <option value="69">Nitrium Partikel (69)</option>
+                                <option value="13">Nitrium-Erz (13)</option>
+                                <option value="33">Nitrium-Schaltkreise (33)</option>
+                                <option value="1513">Nitrium-Vorkommen (1513)</option>
+                                <option value="21103">NuQ&#039;duj (21103)</option>
+                                <option value="1801">Orbitale Wartung (1801)</option>
+                                <option value="1309">Organische Regeneration (1309)</option>
+                                <option value="73">Osterei (73)</option>
+                                <option value="20066">Pakled Shuttle (20066)</option>
+                                <option value="1604">Patriotismus (1604)</option>
+                                <option value="21201">Peregrine (21201)</option>
+                                <option value="10211">Phasische-Schilde (Klasse 1) (10211)</option>
+                                <option value="10212">Phasische-Schilde (Klasse 2) (10212)</option>
+                                <option value="10213">Phasische-Schilde (Klasse 3) (10213)</option>
+                                <option value="10214">Phasische-Schilde (Klasse 4) (10214)</option>
+                                <option value="10215">Phasische-Schilde (Klasse 5) (10215)</option>
+                                <option value="10216">Phasische-Schilde (Klasse 6) (10216)</option>
+                                <option value="83">Photonentorpedo (83)</option>
+                                <option value="7">Plasma (7)</option>
+                                <option value="65">Plasma Partikel (65)</option>
+                                <option value="10221">Plasmatische-Schilde (Klasse 1) (10221)</option>
+                                <option value="10222">Plasmatische-Schilde (Klasse 2) (10222)</option>
+                                <option value="10223">Plasmatische-Schilde (Klasse 3) (10223)</option>
+                                <option value="10224">Plasmatische-Schilde (Klasse 4) (10224)</option>
+                                <option value="10225">Plasmatische-Schilde (Klasse 5) (10225)</option>
+                                <option value="10226">Plasmatische-Schilde (Klasse 6) (10226)</option>
+                                <option value="86">Plasmatorpedo (86)</option>
+                                <option value="11201">Polarische-Schilde (Klasse 1) (11201)</option>
+                                <option value="11202">Polarische-Schilde (Klasse 2) (11202)</option>
+                                <option value="11203">Polarische-Schilde (Klasse 3) (11203)</option>
+                                <option value="11204">Polarische-Schilde (Klasse 4) (11204)</option>
+                                <option value="11205">Polarische-Schilde (Klasse 5) (11205)</option>
+                                <option value="11206">Polarische-Schilde (Klasse 6) (11206)</option>
+                                <option value="1025">Produkte (1025)</option>
+                                <option value="1605">Profitgier (1605)</option>
+                                <option value="84">Quantentorpedo (84)</option>
+                                <option value="11807">RPG-Modul (11807)</option>
+                                <option value="21602">RX-Frachter (21602)</option>
+                                <option value="21101">Raider (21101)</option>
+                                <option value="61">Raumkraut (61)</option>
+                                <option value="1304">Replikator-Biofilter (1304)</option>
+                                <option value="1303">Replikatorleistung (1303)</option>
+                                <option value="11921">Romulanischer Computer (Klasse 1) (11921)</option>
+                                <option value="11922">Romulanischer Computer (Klasse 2) (11922)</option>
+                                <option value="11923">Romulanischer Computer (Klasse 3) (11923)</option>
+                                <option value="11924">Romulanischer Computer (Klasse 4) (11924)</option>
+                                <option value="11925">Romulanischer Computer (Klasse 5) (11925)</option>
+                                <option value="11926">Romulanischer Computer (Klasse 6) (11926)</option>
+                                <option value="10721">Romulanischer Disruptor (Klasse 1) (10721)</option>
+                                <option value="10722">Romulanischer Disruptor (Klasse 2) (10722)</option>
+                                <option value="10723">Romulanischer Disruptor (Klasse 3) (10723)</option>
+                                <option value="10724">Romulanischer Disruptor (Klasse 4) (10724)</option>
+                                <option value="10725">Romulanischer Disruptor (Klasse 5) (10725)</option>
+                                <option value="10726">Romulanischer Disruptor (Klasse 6) (10726)</option>
+                                <option value="11721">Romulanischer Puls-Disruptor (Klasse 1) (11721)</option>
+                                <option value="11722">Romulanischer Puls-Disruptor (Klasse 2) (11722)</option>
+                                <option value="11723">Romulanischer Puls-Disruptor (Klasse 3) (11723)</option>
+                                <option value="11724">Romulanischer Puls-Disruptor (Klasse 4) (11724)</option>
+                                <option value="11725">Romulanischer Puls-Disruptor (Klasse 5) (11725)</option>
+                                <option value="11726">Romulanischer Puls-Disruptor (Klasse 6) (11726)</option>
+                                <option value="10521">Romulanischer Singularitätsreaktor (Klasse 1) (10521)</option>
+                                <option value="10522">Romulanischer Singularitätsreaktor (Klasse 2) (10522)</option>
+                                <option value="10523">Romulanischer Singularitätsreaktor (Klasse 3) (10523)</option>
+                                <option value="10524">Romulanischer Singularitätsreaktor (Klasse 4) (10524)</option>
+                                <option value="10525">Romulanischer Singularitätsreaktor (Klasse 5) (10525)</option>
+                                <option value="10526">Romulanischer Singularitätsreaktor (Klasse 6) (10526)</option>
+                                <option value="49">Romulanisches Ale (49)</option>
+                                <option value="1011">Root Bier (1011)</option>
+                                <option value="21503">Saqghom (21503)</option>
+                                <option value="1000">Scheiben vakuumgetrockneter Hux (1000)</option>
+                                <option value="62">Schnupftabak (62)</option>
+                                <option value="87">Schwerer Plasmatorpedo (87)</option>
+                                <option value="85">Schwerer Quantentorpedo (85)</option>
+                                <option value="1031">Sehenswürdigkeit (1031)</option>
+                                <option value="10601">Sensorenphalanx (Klasse 1) (10601)</option>
+                                <option value="10602">Sensorenphalanx (Klasse 2) (10602)</option>
+                                <option value="10603">Sensorenphalanx (Klasse 3) (10603)</option>
+                                <option value="10604">Sensorenphalanx (Klasse 4) (10604)</option>
+                                <option value="10605">Sensorenphalanx (Klasse 5) (10605)</option>
+                                <option value="10606">Sensorenphalanx (Klasse 6) (10606)</option>
+                                <option value="19010">Shuttlerampe (19010)</option>
+                                <option value="53">Slug-O-Cola (53)</option>
+                                <option value="1015">Slug-O-Cola (1015)</option>
+                                <option value="1041">Sport (1041)</option>
+                                <option value="1004">Stolz (1004)</option>
+                                <option value="34">Subraum-Feldspulen (34)</option>
+                                <option value="19007">Subraumfeldscanner (19007)</option>
+                                <option value="10002">Systemkomponente (10002)</option>
+                                <option value="21502">T&#039;Liss (21502)</option>
+                                <option value="19003">Tachyon-Scanner (19003)</option>
+                                <option value="26">Talgonit (26)</option>
+                                <option value="16">Talgonit-Erz (16)</option>
+                                <option value="1516">Talgonit-Vorkommen (1516)</option>
+                                <option value="68">Talgonium Gas (68)</option>
+                                <option value="21504">Taranortak (21504)</option>
+                                <option value="47">Targ (47)</option>
+                                <option value="19001">Tarnvorrichtung (19001)</option>
+                                <option value="1521">Thermalquellen (1521)</option>
+                                <option value="110">Tomatenschäler (110)</option>
+                                <option value="10801">Torpedobank (Klasse 1) (10801)</option>
+                                <option value="10802">Torpedobank (Klasse 2) (10802)</option>
+                                <option value="10803">Torpedobank (Klasse 3) (10803)</option>
+                                <option value="10804">Torpedobank (Klasse 4) (10804)</option>
+                                <option value="10805">Torpedobank (Klasse 5) (10805)</option>
+                                <option value="10806">Torpedobank (Klasse 6) (10806)</option>
+                                <option value="19009">Torpedotransportmodul (19009)</option>
+                                <option value="1503">Transformierte hochenergetische Ladung (1503)</option>
+                                <option value="4">Transparentes Aluminium (4)</option>
+                                <option value="19070">Transwarp-Spule (19070)</option>
+                                <option value="48">Tribble (48)</option>
+                                <option value="29">Tritanium (29)</option>
+                                <option value="67">Tritanium Partikel (67)</option>
+                                <option value="19">Tritanium-Erz (19)</option>
+                                <option value="10121">Tritanium-Hüllenpanzerung (Klasse 1) (10121)</option>
+                                <option value="10122">Tritanium-Hüllenpanzerung (Klasse 2) (10122)</option>
+                                <option value="10123">Tritanium-Hüllenpanzerung (Klasse 3) (10123)</option>
+                                <option value="10124">Tritanium-Hüllenpanzerung (Klasse 4) (10124)</option>
+                                <option value="10125">Tritanium-Hüllenpanzerung (Klasse 5) (10125)</option>
+                                <option value="10126">Tritanium-Hüllenpanzerung (Klasse 6) (10126)</option>
+                                <option value="1519">Tritanium-Vorkommen (1519)</option>
+                                <option value="1202">Turbinen-Verankerung (1202)</option>
+                                <option value="1552">Untergrund-Logistik (1552)</option>
+                                <option value="21302">V&#039;Rela (21302)</option>
+                                <option value="21491">Venture (21491)</option>
+                                <option value="10901">Warpantrieb (Klasse 1) (10901)</option>
+                                <option value="10902">Warpantrieb (Klasse 2) (10902)</option>
+                                <option value="10903">Warpantrieb (Klasse 3) (10903)</option>
+                                <option value="10904">Warpantrieb (Klasse 4) (10904)</option>
+                                <option value="10905">Warpantrieb (Klasse 5) (10905)</option>
+                                <option value="10906">Warpantrieb (Klasse 6) (10906)</option>
+                                <option value="10501">Warpkern (Klasse 1) (10501)</option>
+                                <option value="10502">Warpkern (Klasse 2) (10502)</option>
+                                <option value="10503">Warpkern (Klasse 3) (10503)</option>
+                                <option value="10504">Warpkern (Klasse 4) (10504)</option>
+                                <option value="10505">Warpkern (Klasse 5) (10505)</option>
+                                <option value="10506">Warpkern (Klasse 6) (10506)</option>
+                                <option value="1802">Werft-Logistik (1802)</option>
+                                <option value="45">Werkzeugkoffer (45)</option>
+                                <option value="1302">Wetterkontroll-Uplink (1302)</option>
+                                <option value="1005">Wohlstand (1005)</option>
+                                <option value="1101">Wohnhäuser (1101)</option>
+                                <option value="20061">Workbee (20061)</option>
+                                <option value="20062">Workbee (20062)</option>
+                                <option value="20063">Workbee (20063)</option>
+                                <option value="20064">Workbee (20064)</option>
+                                <option value="20065">Workbee (20065)</option>
+                                <option value="1522">Wärmeenergie (1522)</option>
+                                <option value="21601">Y-Frachter (21601)</option>
+                                <option value="21105">Zarlax (21105)</option>
+                                <option value="1310">Zuchtprogramm (1310)</option>
+                                <option value="1001">Zufriedenheit (1001)</option>
+                                <option value="1023">Zweikampf (1023)</option>
+                                <option value="11111">ablative Duranium-Hüllenpanzerung (Klasse 1) (11111)</option>
+                                <option value="11112">ablative Duranium-Hüllenpanzerung (Klasse 2) (11112)</option>
+                                <option value="11113">ablative Duranium-Hüllenpanzerung (Klasse 3) (11113)</option>
+                                <option value="11114">ablative Duranium-Hüllenpanzerung (Klasse 4) (11114)</option>
+                                <option value="11115">ablative Duranium-Hüllenpanzerung (Klasse 5) (11115)</option>
+                                <option value="11116">ablative Duranium-Hüllenpanzerung (Klasse 6) (11116)</option>
+                                <option value="11101">ablative Monotanium-Hüllenpanzerung (Klasse 1) (11101)</option>
+                                <option value="11102">ablative Monotanium-Hüllenpanzerung (Klasse 2) (11102)</option>
+                                <option value="11103">ablative Monotanium-Hüllenpanzerung (Klasse 3) (11103)</option>
+                                <option value="11104">ablative Monotanium-Hüllenpanzerung (Klasse 4) (11104)</option>
+                                <option value="11105">ablative Monotanium-Hüllenpanzerung (Klasse 5) (11105)</option>
+                                <option value="11106">ablative Monotanium-Hüllenpanzerung (Klasse 6) (11106)</option>
+                                <option value="11121">ablative Tritanium-Hüllenpanzerung (Klasse 1) (11121)</option>
+                                <option value="11122">ablative Tritanium-Hüllenpanzerung (Klasse 2) (11122)</option>
+                                <option value="11123">ablative Tritanium-Hüllenpanzerung (Klasse 3) (11123)</option>
+                                <option value="11124">ablative Tritanium-Hüllenpanzerung (Klasse 4) (11124)</option>
+                                <option value="11125">ablative Tritanium-Hüllenpanzerung (Klasse 5) (11125)</option>
+                                <option value="11126">ablative Tritanium-Hüllenpanzerung (Klasse 6) (11126)</option>
+                                <option value="56">legendäres Bat&#039;leth (56)</option>
+                                <option value="1033">mek&#039;leth (1033)</option>
+                                <option value="43">selbstdichtende Schaftbolzen (43)</option>
+                                <option value="55">verwanzte Replikation von Gerät 2 (55)</option>
+                                <option value="1024">Öffentlichkeit (1024)</option>
+                            </select>
+            <input type="number" min="1" name="cost_amounts[]" placeholder="Menge" />
+            <button type="button" class="button remove-rump-cost">Entfernen</button>
+        </div>
+    </template>
+    <br />
+    <div class="divhead">Sonderkonfiguration</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Spezialmodule</td>
+                <td>
+                    <div style="max-height: 180px; min-width: 330px; overflow-y: auto;">
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="1" /> Modul 11807 – RPG-Schiff (1)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="2" /> Modul 110 – Spezial-ID 42 (2)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="3" /> Modul 19101 – Tarnung (3)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="10" /> Modul 19403 – Tachyon-Scanner (10)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="11" /> Modul 19805 – Truppen-Quartiere (11)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="12" /> Modul 19906 – Astrometrie-Labor (12)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="14" /> Modul 20017 – Subraumfeldsensor (14)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="20" /> Modul 21018 – Matrix-Sensor (20)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="26" /> Modul 22009 – Torpedo-Lager (26)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="27" /> Modul 22010 – Shuttle-Rampe (27)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="43" /> Modul 22170 – Transwarpspule (43)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="44" /> Modul 22171 – Tholianischer Netzemitter (44)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="45" /> Modul 22172 – Tracker-Device (45)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="47" /> Modul 22173 – Bussard-Kollektor (47)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="48" /> Modul 22174 – Bussard-Kollektor (48)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="49" /> Modul 22175 – Aggregationssystem (49)</label>
+                                                <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="50" /> Modul 22176 – Aggregationssystem (50)</label>
+                                            </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Gebäudefunktionen</td>
+                <td>
+                    <div style="max-height: 180px; min-width: 330px; overflow-y: auto;">
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="1" /> COLONY CENTRAL (1)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="2" /> BASE CAMP (2)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="4" /> AIRFIELD (4)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="5" /> FIGHTER SHIPYARD (5)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="6" /> ESCORT SHIPYARD (6)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="7" /> FRIGATE SHIPYARD (7)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="8" /> CRUISER SHIPYARD (8)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="9" /> TORPEDO FAB (9)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="10" /> MODULEFAB TYPE1 LVL1 (10)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="11" /> MODULEFAB TYPE1 LVL2 (11)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="12" /> MODULEFAB TYPE1 LVL3 (12)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="13" /> MODULEFAB TYPE2 LVL1 (13)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="14" /> MODULEFAB TYPE2 LVL2 (14)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="15" /> MODULEFAB TYPE2 LVL3 (15)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="16" /> MODULEFAB TYPE3 LVL1 (16)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="17" /> MODULEFAB TYPE3 LVL2 (17)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="18" /> MODULEFAB TYPE3 LVL3 (18)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="20" /> ACADEMY (20)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="21" /> DESTROYER SHIPYARD (21)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="22" /> REPAIR SHIPYARD (22)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="23" /> WAREHOUSE (23)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="31" /> SUBSPACE TELESCOPE (31)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="24" /> SHIELD GENERATOR (24)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="25" /> SHIELD BATTERY (25)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="26" /> ENERGY PHALANX (26)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="27" /> PARTICLE PHALANX (27)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="28" /> ANTI PARTICLE (28)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="29" /> FABRICATION HALL (29)</label>
+                                                <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="30" /> TECH CENTER (30)</label>
+                                            </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Sonderfähigkeiten</td>
+                <td><label><input type="checkbox" name="special_ability_ids[]" value="1" /> Kolonisieren</label></td>
+            </tr>
+            <tr>
+                <td>Kolonisationsgebäude</td>
+                <td>
+                    <select name="colonization_building_id">
+                        <option value="">Keines</option>
+                                                <option value="82010100">Koloniezentrale (82010100)</option>
+                                                <option value="12345">Lager (12345)</option>
+                                            </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">3D-Modell</div>
+    <div class="divbody">
+        <label><input type="checkbox" name="create_model_3d" value="1" /> 3D-Modell-Konfiguration anlegen</label>
+        <table class="tcal" style="margin-top: 8px;">
+            <tr><td>Breite</td><td><input type="number" min="0" name="model_3d_width" value="0" required="required" /></td></tr>
+            <tr><td>Höhe</td><td><input type="number" min="0" name="model_3d_height" value="0" required="required" /></td></tr>
+            <tr><td>Rotation</td><td><input type="number" min="0" name="model_3d_rotation" value="0" required="required" /></td></tr>
+        </table>
+        <div style="margin-top: 8px;">Die Bilddatei assets/ships/Rumpf-ID.png und gegebenenfalls das 3D-Modell müssen separat bereitgestellt werden</div>
+    </div>
+    <br />
+    <div class="divhead">Datenbankeintrag</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Vorhandenen Rumpf-Eintrag verknüpfen</td>
+                <td>
+                    <select name="database_id">
+                        <option value="">Keinen</option>
+                                                <option value="6501001">Schiffsrümpfe – 20 – Aerie (6501001)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Neuen Datenbankeintrag anlegen</td>
+                <td><label><input type="checkbox" name="create_database_entry" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Verknüpften Datenbankeintrag bearbeiten</td>
+                <td><label><input type="checkbox" name="update_database_entry" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Datenbank-ID</td>
+                <td>
+                    <input type="number" min="1" name="database_entry_id" />
+                    <div style="margin-top: 8px;">Optional. Leer lassen, damit die Datenbank die nächste ID vergibt</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Beschreibung</td>
+                <td><input type="text" name="database_entry_description" maxlength="255" style="width: 320px;" /></td>
+            </tr>
+            <tr>
+                <td>Text</td>
+                <td><textarea name="database_entry_data" rows="6" cols="70"></textarea></td>
+            </tr>
+            <tr>
+                <td>Kategorie</td>
+                <td>
+                    <select name="database_entry_category_id">
+                        <option value="">Bitte wählen</option>
+                                                <option value="1">Schiffsrümpfe (1)</option>
+                                                <option value="9">Stationsrümpfe (9)</option>
+                                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Einfügeposition</td>
+                <td>
+                    <select name="database_entry_before_id" id="database-entry-before-id" size="10" style="min-width: 420px;">
+                        <option value="">Am Ende der Kategorie einfügen</option>
+                                                <option value="6501001" data-category-id="1">Schiffsrümpfe – 20 – Aerie (6501001)</option>
+                                            </select>
+                    <div style="margin-top: 8px;">Der Eintrag wird vor der gewählten Position eingefügt. Alle nachfolgenden Einträge dieser Kategorie werden um eine Position verschoben</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <input type="submit" class="button" id="rump-save-button" name="B_CREATE_RUMP" value="Rumpf erstellen" />
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('rump-creator-form');
+    const templates = JSON.parse(form.dataset.rumpTemplates || '{}');
+    const formValues = JSON.parse(form.dataset.formValues || '{}');
+    const templateSelect = document.getElementById('rump-template');
+    const editRumpSelect = document.getElementById('edit-rump');
+    const editRumpId = document.getElementById('edit-rump-id');
+    const rumpId = form.querySelector('[name="rump_id"]');
+    const saveButton = document.getElementById('rump-save-button');
+    const costContainer = document.getElementById('rump-costs');
+    const costTemplate = document.getElementById('rump-cost-template');
+    const databaseCategory = form.querySelector('[name="database_entry_category_id"]');
+    const databasePosition = document.getElementById('database-entry-before-id');
+
+    const setValue = function (name, value) {
+        const field = form.querySelector('[name="' + name + '"]');
+        if (!field) {
+            return;
+        }
+        if (field.type === 'checkbox') {
+            field.checked = Boolean(value);
+            return;
+        }
+        field.value = value === null || value === undefined ? '' : value;
+    };
+
+    const setMultiChoice = function (name, values) {
+        const selected = new Set((values || []).map(String));
+        form.querySelectorAll('[name="' + name + '[]"]').forEach(function (field) {
+            field.checked = selected.has(field.value);
+        });
+    };
+
+    const setEditingState = function (id) {
+        const isEditing = id !== null && id !== undefined && String(id) !== '';
+        editRumpId.value = isEditing ? id : '';
+        rumpId.readOnly = isEditing;
+        saveButton.name = isEditing ? 'B_UPDATE_RUMP' : 'B_CREATE_RUMP';
+        saveButton.value = isEditing ? 'Rumpf speichern' : 'Rumpf erstellen';
+    };
+
+    const addCost = function (cost) {
+        const row = costTemplate.content.cloneNode(true);
+        const commodity = row.querySelector('[name="cost_commodity_ids[]"]');
+        const amount = row.querySelector('[name="cost_amounts[]"]');
+        commodity.value = cost && cost.commodityId ? cost.commodityId : '';
+        amount.value = cost && cost.amount ? cost.amount : '';
+        row.querySelector('.remove-rump-cost').addEventListener('click', function (event) {
+            event.currentTarget.closest('.rump-cost-row').remove();
+        });
+        costContainer.appendChild(row);
+    };
+
+    const restoreFormValues = function () {
+        if (Object.keys(formValues).length === 0) {
+            return;
+        }
+
+        form.querySelectorAll('input[type="checkbox"]').forEach(function (field) {
+            field.checked = false;
+        });
+
+        const commodityIds = Array.isArray(formValues.cost_commodity_ids) ? formValues.cost_commodity_ids : [];
+        const amounts = Array.isArray(formValues.cost_amounts) ? formValues.cost_amounts : [];
+        const costRowCount = Math.max(commodityIds.length, amounts.length);
+        for (let index = 0; index < costRowCount; index++) {
+            addCost({ commodityId: commodityIds[index], amount: amounts[index] });
+        }
+
+        Object.entries(formValues).forEach(function (entry) {
+            const name = entry[0];
+            const value = entry[1];
+            if (['sstr', 'B_CREATE_RUMP', 'B_UPDATE_RUMP', 'cost_commodity_ids', 'cost_amounts'].includes(name)) {
+                return;
+            }
+
+            const fields = form.querySelectorAll('[name="' + name + '"], [name="' + name + '[]"]');
+            const values = (Array.isArray(value) ? value : [value]).map(String);
+            fields.forEach(function (field) {
+                if (field.name.endsWith('[]')) {
+                    field.checked = values.includes(field.value);
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    field.checked = true;
+                    return;
+                }
+                field.value = value;
+            });
+        });
+    };
+
+    document.getElementById('add-rump-cost').addEventListener('click', function () {
+        addCost(null);
+    });
+
+    restoreFormValues();
+    setEditingState(editRumpId.value);
+    editRumpSelect.value = editRumpId.value;
+
+    databasePosition.addEventListener('change', function () {
+        const selectedPosition = databasePosition.options[databasePosition.selectedIndex];
+        if (selectedPosition.dataset.categoryId) {
+            databaseCategory.value = selectedPosition.dataset.categoryId;
+        }
+    });
+
+    const applyTemplate = function (template, isEditing) {
+
+        Object.entries(template.core || {}).forEach(function (entry) {
+            setValue(entry[0], entry[1]);
+        });
+        Object.entries(template.baseValues || {}).forEach(function (entry) {
+            setValue(entry[0], entry[1]);
+        });
+
+        const moduleLevels = template.moduleLevels || {};
+        form.querySelectorAll('[data-module-type]').forEach(function (row) {
+            const typeId = row.dataset.moduleType;
+            const values = moduleLevels[typeId] || { min: 0, default: 0, max: 0, mandatory: false };
+            setValue('module_min_' + typeId, values.min);
+            setValue('module_default_' + typeId, values.default);
+            setValue('module_max_' + typeId, values.max);
+            setValue('module_mandatory_' + typeId, values.mandatory);
+        });
+        setValue('create_module_levels', template.moduleLevels !== null);
+
+        const model = template.model3d || { width: 0, height: 0, rotation: 0 };
+        setValue('create_model_3d', template.model3d !== null);
+        setValue('model_3d_width', model.width);
+        setValue('model_3d_height', model.height);
+        setValue('model_3d_rotation', model.rotation);
+
+        costContainer.replaceChildren();
+        (template.costs || []).forEach(addCost);
+        setMultiChoice('module_special_ids', template.moduleSpecialIds);
+        setMultiChoice('building_function_ids', template.buildingFunctionIds);
+        setMultiChoice('special_ability_ids', template.specialAbilityIds);
+        setValue('colonization_building_id', template.colonizationBuildingId);
+
+        const databaseEntry = template.databaseEntry;
+        setValue('database_id', isEditing && databaseEntry ? databaseEntry.id : '');
+        setValue('create_database_entry', !isEditing && databaseEntry !== null);
+        setValue('update_database_entry', isEditing && databaseEntry !== null);
+        setValue('database_entry_id', '');
+        setValue('database_entry_description', databaseEntry ? databaseEntry.description : '');
+        setValue('database_entry_data', databaseEntry ? databaseEntry.data : '');
+        setValue('database_entry_category_id', databaseEntry ? databaseEntry.categoryId : '');
+        setValue('database_entry_before_id', databaseEntry ? databaseEntry.id : '');
+    };
+
+    templateSelect.addEventListener('change', function () {
+        const template = templates[templateSelect.value];
+        if (!template) {
+            return;
+        }
+
+        setEditingState(null);
+        editRumpSelect.value = '';
+        applyTemplate(template, false);
+    });
+
+    editRumpSelect.addEventListener('change', function () {
+        const template = templates[editRumpSelect.value];
+        if (!template) {
+            setEditingState(null);
+            return;
+        }
+
+        templateSelect.value = '';
+        setValue('rump_id', template.id);
+        setValue('rump_name', template.name);
+        setEditingState(template.id);
+        applyTemplate(template, true);
+    });
+});
+</script>
+            </div>
+            <div class="footer">
+                                Rendered in 4.203s - Memory usage: 42.77Mb
+            </div>
+        </div>
+    </div>
+        
+</body>
+
+</html>

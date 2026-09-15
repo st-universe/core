@@ -22,6 +22,12 @@ use Stu\Orm\Entity\User;
 final class SpacecraftRumpRepository extends EntityRepository implements SpacecraftRumpRepositoryInterface
 {
     #[\Override]
+    public function prototype(): SpacecraftRump
+    {
+        return new SpacecraftRump();
+    }
+
+    #[\Override]
     public function save(SpacecraftRump $post): void
     {
         $em = $this->getEntityManager();

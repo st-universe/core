@@ -42,6 +42,11 @@ class ShipRumpBuildingFunction
         return $this;
     }
 
+    public function getRumpId(): int
+    {
+        return $this->rump_id;
+    }
+
     public function getBuildingFunction(): BuildingFunctionEnum
     {
         return $this->building_function;

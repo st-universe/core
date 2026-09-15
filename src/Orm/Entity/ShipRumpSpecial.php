@@ -46,6 +46,11 @@ class ShipRumpSpecial
         return $this;
     }
 
+    public function getRumpId(): int
+    {
+        return $this->rump_id;
+    }
+
     public function getSpecialId(): int
     {
         return $this->special;
@@ -54,6 +59,13 @@ class ShipRumpSpecial
     public function setSpecialId(int $specialId): ShipRumpSpecial
     {
         $this->special = $specialId;
+
+        return $this;
+    }
+
+    public function setSpacecraftRump(SpacecraftRump $spacecraftRump): ShipRumpSpecial
+    {
+        $this->spacecraftRump = $spacecraftRump;
 
         return $this;
     }

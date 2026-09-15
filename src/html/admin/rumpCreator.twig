@@ -1,0 +1,484 @@
+{% extends "html/admindefaults.twig" %}
+
+{% block body %}
+{% include 'html/breadcrumb.twig' %}
+<form action="/admin/index.php" method="post" id="rump-creator-form" data-rump-templates="{{ RUMP_TEMPLATES|json_encode|e('html_attr') }}" data-form-values="{{ RUMP_CREATOR_FORM_VALUES|default({})|json_encode|e('html_attr') }}">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <input type="hidden" name="edit_rump_id" id="edit-rump-id" value="" />
+    <div class="divhead">Bestehenden Rumpf bearbeiten</div>
+    <div class="divbody">
+        <label for="edit-rump">Rumpf auswählen</label>
+        <select id="edit-rump">
+            <option value="">Neuen Rumpf anlegen</option>
+            {% for rump in RUMPS %}
+            <option value="{{ rump.id }}">{{ rump.name }} ({{ rump.id }})</option>
+            {% endfor %}
+        </select>
+        <div style="margin-top: 8px;">Beim Bearbeiten werden alle gespeicherten Werte geladen. Die Rumpf-ID bleibt dabei unverändert</div>
+    </div>
+    <br />
+    <div class="divhead">Rumpfvorlage</div>
+    <div class="divbody">
+        <label for="rump-template">Bestehenden Rumpf als Vorlage verwenden</label>
+        <select id="rump-template">
+            <option value="">Keine Vorlage</option>
+            {% for rump in RUMPS %}
+            <option value="{{ rump.id }}">{{ rump.name }} ({{ rump.id }})</option>
+            {% endfor %}
+        </select>
+        <div style="margin-top: 8px;">ID und Name bleiben beim Anwenden einer Vorlage unverändert</div>
+    </div>
+    <br />
+    <div class="divhead">Grunddaten</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Rumpf-ID</td>
+                <td><input type="number" min="1" name="rump_id" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" maxlength="255" name="rump_name" required="required" style="width: 320px;" /></td>
+            </tr>
+            <tr>
+                <td>Kategorie</td>
+                <td>
+                    <select name="category_id" required="required">
+                        <option value="">Bitte wählen</option>
+                        {% for category in CATEGORIES %}
+                        <option value="{{ category.id }}">{{ category.name }} ({{ category.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Rolle</td>
+                <td>
+                    <select name="role_id">
+                        <option value="">Keine</option>
+                        {% for role in ROLES %}
+                        <option value="{{ role.id }}">{{ role.name }} ({{ role.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Fraktion</td>
+                <td>
+                    <select name="faction_id">
+                        <option value="">Keine</option>
+                        {% for faction in FACTIONS %}
+                        <option value="{{ faction.id }}">{{ faction.name }} ({{ faction.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Startware</td>
+                <td>
+                    <select name="commodity_id">
+                        <option value="">Keine</option>
+                        {% for commodity in COMMODITIES %}
+                        <option value="{{ commodity.id }}">{{ commodity.name }} ({{ commodity.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Sortierung</td>
+                <td><input type="number" min="0" name="sort" value="0" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Baubar</td>
+                <td><label><input type="checkbox" name="is_buildable" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>NPC-Rumpf</td>
+                <td><label><input type="checkbox" name="is_npc" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Für NPCs baubar</td>
+                <td>
+                    <select name="npc_buildable">
+                        <option value="">Nicht gesetzt</option>
+                        <option value="1">Ja</option>
+                        <option value="0">Nein</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Kampf, Bau und Logistik</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr><td>Basis-Torpedolager</td><td><input type="number" min="0" name="base_torpedo_storage" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffensalven</td><td><input type="number" min="0" name="phaser_volleys" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffen-Hüllenschaden</td><td><input type="number" min="0" name="phaser_hull_damage_factor" value="0" required="required" /></td></tr>
+            <tr><td>Energiewaffen-Schildschaden</td><td><input type="number" min="0" name="phaser_shield_damage_factor" value="0" required="required" /></td></tr>
+            <tr><td>Torpedolevel</td><td><input type="number" min="0" name="torpedo_level" value="0" required="required" /></td></tr>
+            <tr><td>Torpedosalven</td><td><input type="number" min="0" name="torpedo_volleys" value="0" required="required" /></td></tr>
+            <tr><td>EPS-Kosten</td><td><input type="number" min="0" name="eps_cost" value="0" required="required" /></td></tr>
+            <tr><td>Lagerkapazität</td><td><input type="number" min="0" name="storage" value="0" required="required" /></td></tr>
+            <tr><td>Dockplätze</td><td><input type="number" min="0" name="slots" value="0" required="required" /></td></tr>
+            <tr><td>Bauzeit</td><td><input type="number" min="0" name="buildtime" value="0" required="required" /></td></tr>
+            <tr><td>Benötigte Workbees</td><td><input type="number" min="0" name="needed_workbees" /></td></tr>
+            <tr><td>Flugkosten</td><td><input type="number" min="0" name="flight_ecost" value="0" required="required" /></td></tr>
+            <tr><td>Beamfaktor</td><td><input type="number" min="0" name="beam_factor" value="0" required="required" /></td></tr>
+            <tr><td>Shuttleslots</td><td><input type="number" min="0" name="shuttle_slots" value="0" required="required" /></td></tr>
+            <tr><td>Traktormasse</td><td><input type="number" min="1" name="tractor_mass" value="1" required="required" /></td></tr>
+            <tr><td>Traktor-Zuladung</td><td><input type="number" min="0" name="tractor_payload" value="100" required="required" /></td></tr>
+            <tr><td>Prestige</td><td><input type="number" name="prestige" value="0" required="required" /></td></tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Basiswerte</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr><td>Ausweichchance</td><td><input type="number" min="0" name="evade_chance" value="0" required="required" /></td></tr>
+            <tr><td>Trefferchance</td><td><input type="number" min="0" name="hit_chance" value="0" required="required" /></td></tr>
+            <tr><td>Modullevel</td><td><input type="number" min="0" name="module_level" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Crew</td><td><input type="number" min="0" name="base_crew" value="0" required="required" /></td></tr>
+            <tr><td>Maximale Crew</td><td><input type="number" min="0" name="max_crew" value="0" required="required" /></td></tr>
+            <tr><td>Basis-EPS</td><td><input type="number" min="0" name="base_eps" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Reaktor</td><td><input type="number" min="0" name="base_reactor" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Hülle</td><td><input type="number" min="0" name="base_hull" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Schilde</td><td><input type="number" min="0" name="base_shield" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Schaden</td><td><input type="number" min="0" name="base_damage" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Sensorreichweite</td><td><input type="number" min="0" name="base_sensor_range" value="0" required="required" /></td></tr>
+            <tr><td>Basis-Warpantrieb</td><td><input type="number" min="0" name="base_warpdrive" value="0" required="required" /></td></tr>
+            <tr><td>Spezialslots</td><td><input type="number" min="0" name="special_slots" value="0" required="required" /></td></tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Modullevel</div>
+    <div class="divbody">
+        <label><input type="checkbox" name="create_module_levels" value="1" checked="checked" /> Modullevel-Konfiguration anlegen</label>
+        <table class="tcal" style="margin-top: 8px;">
+            <tr><th>Modultyp</th><th>Minimum</th><th>Standard</th><th>Maximum</th><th>Pflichtmodul</th></tr>
+            {% for type in MODULE_TYPES %}
+            <tr data-module-type="{{ type.id }}">
+                <td>{{ type.name }}</td>
+                <td><input type="number" min="0" name="module_min_{{ type.id }}" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_default_{{ type.id }}" value="0" required="required" /></td>
+                <td><input type="number" min="0" name="module_max_{{ type.id }}" value="0" required="required" /></td>
+                <td><input type="checkbox" name="module_mandatory_{{ type.id }}" value="1" /></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <br />
+    <div class="divhead">Baukosten</div>
+    <div class="divbody">
+        <div id="rump-costs"></div>
+        <button type="button" class="button" id="add-rump-cost">Baukosten hinzufügen</button>
+    </div>
+    <template id="rump-cost-template">
+        <div class="rump-cost-row" style="margin-bottom: 5px;">
+            <select name="cost_commodity_ids[]">
+                <option value="">Ware wählen</option>
+                {% for commodity in COMMODITIES %}
+                <option value="{{ commodity.id }}">{{ commodity.name }} ({{ commodity.id }})</option>
+                {% endfor %}
+            </select>
+            <input type="number" min="1" name="cost_amounts[]" placeholder="Menge" />
+            <button type="button" class="button remove-rump-cost">Entfernen</button>
+        </div>
+    </template>
+    <br />
+    <div class="divhead">Sonderkonfiguration</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Spezialmodule</td>
+                <td>
+                    <div style="max-height: 180px; min-width: 330px; overflow-y: auto;">
+                        {% for special in MODULE_SPECIALS %}
+                        <label style="display: block;"><input type="checkbox" name="module_special_ids[]" value="{{ special.id }}" /> {{ special.name }} ({{ special.id }})</label>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Gebäudefunktionen</td>
+                <td>
+                    <div style="max-height: 180px; min-width: 330px; overflow-y: auto;">
+                        {% for function in BUILDING_FUNCTIONS %}
+                        <label style="display: block;"><input type="checkbox" name="building_function_ids[]" value="{{ function.id }}" /> {{ function.name }} ({{ function.id }})</label>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Sonderfähigkeiten</td>
+                <td><label><input type="checkbox" name="special_ability_ids[]" value="1" /> Kolonisieren</label></td>
+            </tr>
+            <tr>
+                <td>Kolonisationsgebäude</td>
+                <td>
+                    <select name="colonization_building_id">
+                        <option value="">Keines</option>
+                        {% for building in BUILDINGS %}
+                        <option value="{{ building.id }}">{{ building.name }} ({{ building.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div class="divhead">3D-Modell</div>
+    <div class="divbody">
+        <label><input type="checkbox" name="create_model_3d" value="1" /> 3D-Modell-Konfiguration anlegen</label>
+        <table class="tcal" style="margin-top: 8px;">
+            <tr><td>Breite</td><td><input type="number" min="0" name="model_3d_width" value="0" required="required" /></td></tr>
+            <tr><td>Höhe</td><td><input type="number" min="0" name="model_3d_height" value="0" required="required" /></td></tr>
+            <tr><td>Rotation</td><td><input type="number" min="0" name="model_3d_rotation" value="0" required="required" /></td></tr>
+        </table>
+        <div style="margin-top: 8px;">Die Bilddatei assets/ships/Rumpf-ID.png und gegebenenfalls das 3D-Modell müssen separat bereitgestellt werden</div>
+    </div>
+    <br />
+    <div class="divhead">Datenbankeintrag</div>
+    <div class="divbody">
+        <table class="tcal">
+            <tr>
+                <td>Vorhandenen Rumpf-Eintrag verknüpfen</td>
+                <td>
+                    <select name="database_id">
+                        <option value="">Keinen</option>
+                        {% for entry in DATABASE_ENTRIES %}
+                        <option value="{{ entry.id }}">{{ entry.categoryName }} – {{ entry.sort }} – {{ entry.name }} ({{ entry.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Neuen Datenbankeintrag anlegen</td>
+                <td><label><input type="checkbox" name="create_database_entry" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Verknüpften Datenbankeintrag bearbeiten</td>
+                <td><label><input type="checkbox" name="update_database_entry" value="1" /> Ja</label></td>
+            </tr>
+            <tr>
+                <td>Datenbank-ID</td>
+                <td>
+                    <input type="number" min="1" name="database_entry_id" />
+                    <div style="margin-top: 8px;">Optional. Leer lassen, damit die Datenbank die nächste ID vergibt</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Beschreibung</td>
+                <td><input type="text" name="database_entry_description" maxlength="255" style="width: 320px;" /></td>
+            </tr>
+            <tr>
+                <td>Text</td>
+                <td><textarea name="database_entry_data" rows="6" cols="70"></textarea></td>
+            </tr>
+            <tr>
+                <td>Kategorie</td>
+                <td>
+                    <select name="database_entry_category_id">
+                        <option value="">Bitte wählen</option>
+                        {% for category in DATABASE_CATEGORIES %}
+                        <option value="{{ category.id }}">{{ category.name }} ({{ category.id }})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Einfügeposition</td>
+                <td>
+                    <select name="database_entry_before_id" id="database-entry-before-id" size="10" style="min-width: 420px;">
+                        <option value="">Am Ende der Kategorie einfügen</option>
+                        {% for entry in DATABASE_ENTRIES %}
+                        <option value="{{ entry.id }}" data-category-id="{{ entry.categoryId }}">{{ entry.categoryName }} – {{ entry.sort }} – {{ entry.name }} ({{ entry.id }})</option>
+                        {% endfor %}
+                    </select>
+                    <div style="margin-top: 8px;">Der Eintrag wird vor der gewählten Position eingefügt. Alle nachfolgenden Einträge dieser Kategorie werden um eine Position verschoben</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <input type="submit" class="button" id="rump-save-button" name="B_CREATE_RUMP" value="Rumpf erstellen" />
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('rump-creator-form');
+    const templates = JSON.parse(form.dataset.rumpTemplates || '{}');
+    const formValues = JSON.parse(form.dataset.formValues || '{}');
+    const templateSelect = document.getElementById('rump-template');
+    const editRumpSelect = document.getElementById('edit-rump');
+    const editRumpId = document.getElementById('edit-rump-id');
+    const rumpId = form.querySelector('[name="rump_id"]');
+    const saveButton = document.getElementById('rump-save-button');
+    const costContainer = document.getElementById('rump-costs');
+    const costTemplate = document.getElementById('rump-cost-template');
+    const databaseCategory = form.querySelector('[name="database_entry_category_id"]');
+    const databasePosition = document.getElementById('database-entry-before-id');
+
+    const setValue = function (name, value) {
+        const field = form.querySelector('[name="' + name + '"]');
+        if (!field) {
+            return;
+        }
+        if (field.type === 'checkbox') {
+            field.checked = Boolean(value);
+            return;
+        }
+        field.value = value === null || value === undefined ? '' : value;
+    };
+
+    const setMultiChoice = function (name, values) {
+        const selected = new Set((values || []).map(String));
+        form.querySelectorAll('[name="' + name + '[]"]').forEach(function (field) {
+            field.checked = selected.has(field.value);
+        });
+    };
+
+    const setEditingState = function (id) {
+        const isEditing = id !== null && id !== undefined && String(id) !== '';
+        editRumpId.value = isEditing ? id : '';
+        rumpId.readOnly = isEditing;
+        saveButton.name = isEditing ? 'B_UPDATE_RUMP' : 'B_CREATE_RUMP';
+        saveButton.value = isEditing ? 'Rumpf speichern' : 'Rumpf erstellen';
+    };
+
+    const addCost = function (cost) {
+        const row = costTemplate.content.cloneNode(true);
+        const commodity = row.querySelector('[name="cost_commodity_ids[]"]');
+        const amount = row.querySelector('[name="cost_amounts[]"]');
+        commodity.value = cost && cost.commodityId ? cost.commodityId : '';
+        amount.value = cost && cost.amount ? cost.amount : '';
+        row.querySelector('.remove-rump-cost').addEventListener('click', function (event) {
+            event.currentTarget.closest('.rump-cost-row').remove();
+        });
+        costContainer.appendChild(row);
+    };
+
+    const restoreFormValues = function () {
+        if (Object.keys(formValues).length === 0) {
+            return;
+        }
+
+        form.querySelectorAll('input[type="checkbox"]').forEach(function (field) {
+            field.checked = false;
+        });
+
+        const commodityIds = Array.isArray(formValues.cost_commodity_ids) ? formValues.cost_commodity_ids : [];
+        const amounts = Array.isArray(formValues.cost_amounts) ? formValues.cost_amounts : [];
+        const costRowCount = Math.max(commodityIds.length, amounts.length);
+        for (let index = 0; index < costRowCount; index++) {
+            addCost({ commodityId: commodityIds[index], amount: amounts[index] });
+        }
+
+        Object.entries(formValues).forEach(function (entry) {
+            const name = entry[0];
+            const value = entry[1];
+            if (['sstr', 'B_CREATE_RUMP', 'B_UPDATE_RUMP', 'cost_commodity_ids', 'cost_amounts'].includes(name)) {
+                return;
+            }
+
+            const fields = form.querySelectorAll('[name="' + name + '"], [name="' + name + '[]"]');
+            const values = (Array.isArray(value) ? value : [value]).map(String);
+            fields.forEach(function (field) {
+                if (field.name.endsWith('[]')) {
+                    field.checked = values.includes(field.value);
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    field.checked = true;
+                    return;
+                }
+                field.value = value;
+            });
+        });
+    };
+
+    document.getElementById('add-rump-cost').addEventListener('click', function () {
+        addCost(null);
+    });
+
+    restoreFormValues();
+    setEditingState(editRumpId.value);
+    editRumpSelect.value = editRumpId.value;
+
+    databasePosition.addEventListener('change', function () {
+        const selectedPosition = databasePosition.options[databasePosition.selectedIndex];
+        if (selectedPosition.dataset.categoryId) {
+            databaseCategory.value = selectedPosition.dataset.categoryId;
+        }
+    });
+
+    const applyTemplate = function (template, isEditing) {
+
+        Object.entries(template.core || {}).forEach(function (entry) {
+            setValue(entry[0], entry[1]);
+        });
+        Object.entries(template.baseValues || {}).forEach(function (entry) {
+            setValue(entry[0], entry[1]);
+        });
+
+        const moduleLevels = template.moduleLevels || {};
+        form.querySelectorAll('[data-module-type]').forEach(function (row) {
+            const typeId = row.dataset.moduleType;
+            const values = moduleLevels[typeId] || { min: 0, default: 0, max: 0, mandatory: false };
+            setValue('module_min_' + typeId, values.min);
+            setValue('module_default_' + typeId, values.default);
+            setValue('module_max_' + typeId, values.max);
+            setValue('module_mandatory_' + typeId, values.mandatory);
+        });
+        setValue('create_module_levels', template.moduleLevels !== null);
+
+        const model = template.model3d || { width: 0, height: 0, rotation: 0 };
+        setValue('create_model_3d', template.model3d !== null);
+        setValue('model_3d_width', model.width);
+        setValue('model_3d_height', model.height);
+        setValue('model_3d_rotation', model.rotation);
+
+        costContainer.replaceChildren();
+        (template.costs || []).forEach(addCost);
+        setMultiChoice('module_special_ids', template.moduleSpecialIds);
+        setMultiChoice('building_function_ids', template.buildingFunctionIds);
+        setMultiChoice('special_ability_ids', template.specialAbilityIds);
+        setValue('colonization_building_id', template.colonizationBuildingId);
+
+        const databaseEntry = template.databaseEntry;
+        setValue('database_id', isEditing && databaseEntry ? databaseEntry.id : '');
+        setValue('create_database_entry', !isEditing && databaseEntry !== null);
+        setValue('update_database_entry', isEditing && databaseEntry !== null);
+        setValue('database_entry_id', '');
+        setValue('database_entry_description', databaseEntry ? databaseEntry.description : '');
+        setValue('database_entry_data', databaseEntry ? databaseEntry.data : '');
+        setValue('database_entry_category_id', databaseEntry ? databaseEntry.categoryId : '');
+        setValue('database_entry_before_id', databaseEntry ? databaseEntry.id : '');
+    };
+
+    templateSelect.addEventListener('change', function () {
+        const template = templates[templateSelect.value];
+        if (!template) {
+            return;
+        }
+
+        setEditingState(null);
+        editRumpSelect.value = '';
+        applyTemplate(template, false);
+    });
+
+    editRumpSelect.addEventListener('change', function () {
+        const template = templates[editRumpSelect.value];
+        if (!template) {
+            setEditingState(null);
+            return;
+        }
+
+        templateSelect.value = '';
+        setValue('rump_id', template.id);
+        setValue('rump_name', template.name);
+        setEditingState(template.id);
+        applyTemplate(template, true);
+    });
+});
+</script>
+{% endblock %}

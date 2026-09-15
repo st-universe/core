@@ -59,9 +59,28 @@ class SpacecraftRumpBaseValues
     #[Column(type: 'smallint')]
     private int $special_slots = 0;
 
+    public function setRump(SpacecraftRump $rump): SpacecraftRumpBaseValues
+    {
+        $this->rump = $rump;
+
+        return $this;
+    }
+
+    public function getRump(): SpacecraftRump
+    {
+        return $this->rump;
+    }
+
     public function getEvadeChance(): int
     {
         return $this->evade_chance;
+    }
+
+    public function setEvadeChance(int $evadeChance): SpacecraftRumpBaseValues
+    {
+        $this->evade_chance = $evadeChance;
+
+        return $this;
     }
 
     public function getHitChance(): int
@@ -69,9 +88,23 @@ class SpacecraftRumpBaseValues
         return $this->hit_chance;
     }
 
+    public function setHitChance(int $hitChance): SpacecraftRumpBaseValues
+    {
+        $this->hit_chance = $hitChance;
+
+        return $this;
+    }
+
     public function getModuleLevel(): int
     {
         return $this->module_level;
+    }
+
+    public function setModuleLevel(int $moduleLevel): SpacecraftRumpBaseValues
+    {
+        $this->module_level = $moduleLevel;
+
+        return $this;
     }
 
     public function getBaseCrew(): int
@@ -79,9 +112,23 @@ class SpacecraftRumpBaseValues
         return $this->base_crew;
     }
 
+    public function setBaseCrew(int $baseCrew): SpacecraftRumpBaseValues
+    {
+        $this->base_crew = $baseCrew;
+
+        return $this;
+    }
+
     public function getMaxCrew(): int
     {
         return $this->max_crew;
+    }
+
+    public function setMaxCrew(int $maxCrew): SpacecraftRumpBaseValues
+    {
+        $this->max_crew = $maxCrew;
+
+        return $this;
     }
 
     public function getBaseEps(): int
@@ -89,9 +136,23 @@ class SpacecraftRumpBaseValues
         return $this->base_eps;
     }
 
+    public function setBaseEps(int $baseEps): SpacecraftRumpBaseValues
+    {
+        $this->base_eps = $baseEps;
+
+        return $this;
+    }
+
     public function getBaseReactor(): int
     {
         return $this->base_reactor;
+    }
+
+    public function setBaseReactor(int $baseReactor): SpacecraftRumpBaseValues
+    {
+        $this->base_reactor = $baseReactor;
+
+        return $this;
     }
 
     public function getBaseHull(): int
@@ -99,9 +160,23 @@ class SpacecraftRumpBaseValues
         return $this->base_hull;
     }
 
+    public function setBaseHull(int $baseHull): SpacecraftRumpBaseValues
+    {
+        $this->base_hull = $baseHull;
+
+        return $this;
+    }
+
     public function getBaseShield(): int
     {
         return $this->base_shield;
+    }
+
+    public function setBaseShield(int $baseShield): SpacecraftRumpBaseValues
+    {
+        $this->base_shield = $baseShield;
+
+        return $this;
     }
 
     public function getBaseDamage(): int
@@ -109,9 +184,23 @@ class SpacecraftRumpBaseValues
         return $this->base_damage;
     }
 
+    public function setBaseDamage(int $baseDamage): SpacecraftRumpBaseValues
+    {
+        $this->base_damage = $baseDamage;
+
+        return $this;
+    }
+
     public function getBaseSensorRange(): int
     {
         return $this->base_sensor_range;
+    }
+
+    public function setBaseSensorRange(int $baseSensorRange): SpacecraftRumpBaseValues
+    {
+        $this->base_sensor_range = $baseSensorRange;
+
+        return $this;
     }
 
     public function getBaseWarpDrive(): int
@@ -119,8 +208,22 @@ class SpacecraftRumpBaseValues
         return $this->base_warpdrive;
     }
 
+    public function setBaseWarpDrive(int $baseWarpDrive): SpacecraftRumpBaseValues
+    {
+        $this->base_warpdrive = $baseWarpDrive;
+
+        return $this;
+    }
+
     public function getSpecialSlots(): int
     {
         return $this->special_slots;
+    }
+
+    public function setSpecialSlots(int $specialSlots): SpacecraftRumpBaseValues
+    {
+        $this->special_slots = $specialSlots;
+
+        return $this;
     }
 }

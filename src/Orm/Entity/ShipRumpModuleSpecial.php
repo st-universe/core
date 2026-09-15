@@ -39,6 +39,11 @@ class ShipRumpModuleSpecial
         return $this;
     }
 
+    public function getRumpId(): int
+    {
+        return $this->rump_id;
+    }
+
     public function getModuleSpecialId(): int
     {
         return $this->module_special_id;

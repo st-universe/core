@@ -9,6 +9,7 @@ use Stu\Module\Admin\Action\ChargeSpacecraftResources;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
 use Stu\Module\Admin\Action\CreateCrew;
 use Stu\Module\Admin\Action\CreateMissingUserWards;
+use Stu\Module\Admin\Action\CreateRump;
 use Stu\Module\Admin\Action\LockUser;
 use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
 use Stu\Module\Admin\Action\Map\EditAdminRegion\EditAdminRegion;
@@ -73,6 +74,7 @@ use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
+use Stu\Module\Admin\View\RumpCreator\ShowRumpCreator;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\ShowUserLock\ShowUserLock;
@@ -124,6 +126,8 @@ return [
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
         CreateCrew::ACTION_IDENTIFIER => autowire(CreateCrew::class),
+        CreateRump::ACTION_IDENTIFIER => autowire(CreateRump::class),
+        CreateRump::UPDATE_ACTION_IDENTIFIER => autowire(CreateRump::class),
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
@@ -149,6 +153,7 @@ return [
         ShowLiveMapImage::VIEW_IDENTIFIER => autowire(ShowLiveMapImage::class),
         ShowLiveMapData::VIEW_IDENTIFIER => autowire(ShowLiveMapData::class),
         ShowScripts::VIEW_IDENTIFIER => autowire(ShowScripts::class),
+        ShowRumpCreator::VIEW_IDENTIFIER => autowire(ShowRumpCreator::class),
         ShowTicks::VIEW_IDENTIFIER => autowire(ShowTicks::class),
         EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
         ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
