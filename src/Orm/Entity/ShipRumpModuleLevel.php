@@ -32,6 +32,18 @@ class ShipRumpModuleLevel
     #[Column(type: 'json', nullable: true)]
     private ?array $type_values = null;
 
+    public function setRump(SpacecraftRump $rump): ShipRumpModuleLevel
+    {
+        $this->rump = $rump;
+
+        return $this;
+    }
+
+    public function getRump(): SpacecraftRump
+    {
+        return $this->rump;
+    }
+
     public function getMinimumLevel(SpacecraftModuleTypeEnum $type): int
     {
         $value = $this->getValuesForType($type)[self::MIN_LEVEL_KEY];

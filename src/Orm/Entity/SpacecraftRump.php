@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -29,7 +28,6 @@ class SpacecraftRump
 
     #[Id]
     #[Column(type: 'integer')]
-    #[GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
     #[OneToOne(targetEntity: SpacecraftRumpBaseValues::class, mappedBy: 'rump', cascade: ['all'], fetch: 'EXTRA_LAZY')]
@@ -165,6 +163,13 @@ class SpacecraftRump
         return $this->id;
     }
 
+    public function setId(int $id): SpacecraftRump
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getBaseValues(): SpacecraftRumpBaseValues
     {
         return $this->baseValues ?? throw new LogicException('Rump has no base balues');
@@ -180,9 +185,23 @@ class SpacecraftRump
         return $this->category_id;
     }
 
+    public function setCategoryId(SpacecraftRumpCategoryEnum $categoryId): SpacecraftRump
+    {
+        $this->category_id = $categoryId;
+
+        return $this;
+    }
+
     public function getRoleId(): ?SpacecraftRumpRoleEnum
     {
         return $this->role_id;
+    }
+
+    public function setRoleId(?SpacecraftRumpRoleEnum $roleId): SpacecraftRump
+    {
+        $this->role_id = $roleId;
+
+        return $this;
     }
 
     public function getBeamFactor(): int
@@ -190,9 +209,23 @@ class SpacecraftRump
         return $this->beam_factor;
     }
 
+    public function setBeamFactor(int $beamFactor): SpacecraftRump
+    {
+        $this->beam_factor = $beamFactor;
+
+        return $this;
+    }
+
     public function getShuttleSlots(): int
     {
         return $this->shuttle_slots;
+    }
+
+    public function setShuttleSlots(int $shuttleSlots): SpacecraftRump
+    {
+        $this->shuttle_slots = $shuttleSlots;
+
+        return $this;
     }
 
     public function getTractorMass(): int
@@ -200,9 +233,23 @@ class SpacecraftRump
         return $this->tractor_mass;
     }
 
+    public function setTractorMass(int $tractorMass): SpacecraftRump
+    {
+        $this->tractor_mass = $tractorMass;
+
+        return $this;
+    }
+
     public function getTractorPayload(): int
     {
         return $this->tractor_payload;
+    }
+
+    public function setTractorPayload(int $tractorPayload): SpacecraftRump
+    {
+        $this->tractor_payload = $tractorPayload;
+
+        return $this;
     }
 
     public function getPhaserVolleys(): int
@@ -210,9 +257,23 @@ class SpacecraftRump
         return $this->phaser_volleys;
     }
 
+    public function setPhaserVolleys(int $phaserVolleys): SpacecraftRump
+    {
+        $this->phaser_volleys = $phaserVolleys;
+
+        return $this;
+    }
+
     public function getPhaserHullDamageFactor(): int
     {
         return $this->phaser_hull_damage_factor;
+    }
+
+    public function setPhaserHullDamageFactor(int $phaserHullDamageFactor): SpacecraftRump
+    {
+        $this->phaser_hull_damage_factor = $phaserHullDamageFactor;
+
+        return $this;
     }
 
     public function getPhaserShieldDamageFactor(): int
@@ -220,9 +281,23 @@ class SpacecraftRump
         return $this->phaser_shield_damage_factor;
     }
 
+    public function setPhaserShieldDamageFactor(int $phaserShieldDamageFactor): SpacecraftRump
+    {
+        $this->phaser_shield_damage_factor = $phaserShieldDamageFactor;
+
+        return $this;
+    }
+
     public function getTorpedoLevel(): int
     {
         return $this->torpedo_level;
+    }
+
+    public function setTorpedoLevel(int $torpedoLevel): SpacecraftRump
+    {
+        $this->torpedo_level = $torpedoLevel;
+
+        return $this;
     }
 
     public function getTorpedoVolleys(): int
@@ -230,9 +305,23 @@ class SpacecraftRump
         return $this->torpedo_volleys;
     }
 
+    public function setTorpedoVolleys(int $torpedoVolleys): SpacecraftRump
+    {
+        $this->torpedo_volleys = $torpedoVolleys;
+
+        return $this;
+    }
+
     public function getBaseTorpedoStorage(): int
     {
         return $this->base_torpedo_storage;
+    }
+
+    public function setBaseTorpedoStorage(int $baseTorpedoStorage): SpacecraftRump
+    {
+        $this->base_torpedo_storage = $baseTorpedoStorage;
+
+        return $this;
     }
 
     public function getName(): string
@@ -355,14 +444,35 @@ class SpacecraftRump
         return $this->flight_ecost;
     }
 
+    public function setFlightEcost(int $flightEcost): SpacecraftRump
+    {
+        $this->flight_ecost = $flightEcost;
+
+        return $this;
+    }
+
     public function getShipRumpRole(): ?ShipRumpRole
     {
         return $this->shipRumpRole;
     }
 
+    public function setShipRumpRole(?ShipRumpRole $shipRumpRole): SpacecraftRump
+    {
+        $this->shipRumpRole = $shipRumpRole;
+
+        return $this;
+    }
+
     public function getShipRumpCategory(): ShipRumpCategory
     {
         return $this->shipRumpCategory;
+    }
+
+    public function setShipRumpCategory(ShipRumpCategory $shipRumpCategory): SpacecraftRump
+    {
+        $this->shipRumpCategory = $shipRumpCategory;
+
+        return $this;
     }
 
     public function getCommodity(): ?Commodity
@@ -379,6 +489,13 @@ class SpacecraftRump
     public function getNeededWorkbees(): ?int
     {
         return $this->needed_workbees;
+    }
+
+    public function setNeededWorkbees(?int $neededWorkbees): SpacecraftRump
+    {
+        $this->needed_workbees = $neededWorkbees;
+
+        return $this;
     }
 
     public function getNeededRepairWorkbees(): ?int
@@ -400,6 +517,13 @@ class SpacecraftRump
     public function getPrestige(): int
     {
         return $this->prestige;
+    }
+
+    public function setPrestige(int $prestige): SpacecraftRump
+    {
+        $this->prestige = $prestige;
+
+        return $this;
     }
 
     public function isEscapePods(): bool

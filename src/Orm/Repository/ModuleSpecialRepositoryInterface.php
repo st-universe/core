@@ -13,6 +13,11 @@ use Stu\Orm\Entity\ModuleSpecial;
 interface ModuleSpecialRepositoryInterface extends ObjectRepository
 {
     /**
+     * @return list<array{id: int, module_id: int, special_id: int}>
+     */
+    public function getAllForRumpCreator(): array;
+
+    /**
      * @return list<ModuleSpecial>
      */
     public function getByModule(int $moduleId): array;

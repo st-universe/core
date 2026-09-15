@@ -16,6 +16,8 @@ use Stu\Orm\Entity\User;
  */
 interface SpacecraftRumpRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): SpacecraftRump;
+
     public function save(SpacecraftRump $obj): void;
 
     /**

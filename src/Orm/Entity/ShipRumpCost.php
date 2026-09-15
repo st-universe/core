@@ -51,6 +51,13 @@ class ShipRumpCost
         return $this->rump_id;
     }
 
+    public function setRumpId(int $rumpId): ShipRumpCost
+    {
+        $this->rump_id = $rumpId;
+
+        return $this;
+    }
+
     public function getCommodityId(): int
     {
         return $this->commodity_id;
@@ -78,5 +85,19 @@ class ShipRumpCost
     public function getCommodity(): Commodity
     {
         return $this->commodity;
+    }
+
+    public function setCommodity(Commodity $commodity): ShipRumpCost
+    {
+        $this->commodity = $commodity;
+
+        return $this;
+    }
+
+    public function setSpacecraftRump(SpacecraftRump $spacecraftRump): ShipRumpCost
+    {
+        $this->spacecraftRump = $spacecraftRump;
+
+        return $this;
     }
 }

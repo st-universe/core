@@ -118,7 +118,8 @@ class AllViewControllerTest extends TwigTestCase
             'NPC_VIEWS-SHOW_PLAYER_DETAILS',
             'MAINDESK_VIEWS-SHOW_COLONYLIST' => 2,
             'ADMIN_VIEWS-SHOW_ADMIN_LIVE_MAP',
-            'ADMIN_VIEWS-SHOW_ADMIN_FULL_MAP_EDITOR' => 102,
+            'ADMIN_VIEWS-SHOW_ADMIN_FULL_MAP_EDITOR',
+            'ADMIN_VIEWS-SHOW_RUMP_CREATOR' => 102,
             'SHIP_VIEWS-SHOW_COLONIZATION' => 103,
             default => 101
         };

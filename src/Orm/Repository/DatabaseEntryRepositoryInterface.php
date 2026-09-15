@@ -40,6 +40,8 @@ interface DatabaseEntryRepositoryInterface extends ObjectRepository
 
     public function save(DatabaseEntry $entry): void;
 
+    public function saveWithManualId(DatabaseEntry $entry, int $entryId): void;
+
     /**
      * @return array<int|null>
      */

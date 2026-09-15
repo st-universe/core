@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Location;
@@ -127,6 +128,27 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         $em = $this->getEntityManager();
 
         $em->persist($entry);
+    }
+
+    #[\Override]
+    public function saveWithManualId(DatabaseEntry $entry, int $entryId): void
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $connection->insert('stu_database_entrys', [
+            'id' => $entryId,
+            'description' => $entry->getDescription(),
+            'data' => $entry->getData(),
+            'category_id' => $entry->getCategory()->getId(),
+            'type' => $entry->getTypeObject()->getId(),
+            'sort' => $entry->getSort(),
+            'object_id' => $entry->getObjectId()
+        ]);
+
+        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $connection->executeStatement(
+                "SELECT setval(pg_get_serial_sequence('stu_database_entrys', 'id'), (SELECT MAX(id) FROM stu_database_entrys), true)"
+            );
+        }
     }
 
     /**
