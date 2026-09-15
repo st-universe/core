@@ -69,7 +69,7 @@ final class TakeOffer implements ActionControllerInterface
 
         if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedCommodityCount()) {
             $game->getInfo()->addInformation(sprintf(
-                _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
+                _('Nicht genügend %s auf diesem Handelsposten vorhanden'),
                 $selectedOffer->getWantedCommodity()->getName()
             ));
             return;

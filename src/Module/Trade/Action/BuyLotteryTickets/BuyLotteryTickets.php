@@ -53,7 +53,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         );
 
         if ($storage === null || $storage->getAmount() < $amount) {
-            $game->getInfo()->addInformation(_('Es befindet sich nicht genügend Latinum auf diesem Handelsposten'));
+            $game->getInfo()->addInformation(_('Nicht genügend Latinum auf diesem Handelsposten vorhanden'));
             return;
         }
 
