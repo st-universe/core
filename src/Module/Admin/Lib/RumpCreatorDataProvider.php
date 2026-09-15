@@ -15,10 +15,13 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\ShipRumpCategory;
+use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\ShipRumpCost;
+use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\ShipRumpModuleSpecial;
 use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftRump3DModel;
 use Stu\Orm\Entity\SpacecraftRumpBaseValues;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -77,139 +80,260 @@ final class RumpCreatorDataProvider
 
     public function getTemplates(): RumpCreatorData
     {
-        $baseValues = [];
-        foreach ($this->entityManager->getRepository(SpacecraftRumpBaseValues::class)->findAll() as $baseValue) {
-            $baseValues[$baseValue->getRump()->getId()] = $baseValue;
-        }
-
-        $moduleLevels = [];
-        foreach ($this->shipRumpModuleLevelRepository->findAll() as $moduleLevel) {
-            $values = [];
-            foreach (SpacecraftModuleTypeEnum::cases() as $type) {
-                if ($type->isSpecialSystemType()) {
-                    continue;
-                }
-                $values[$type->value] = [
-                    'min' => $moduleLevel->getMinimumLevel($type),
-                    'default' => $moduleLevel->getDefaultLevel($type),
-                    'max' => $moduleLevel->getMaximumLevel($type),
-                    'mandatory' => $moduleLevel->isMandatory($type)
-                ];
-            }
-            $moduleLevels[$moduleLevel->getRump()->getId()] = $values;
-        }
-
-        $models = [];
-        foreach ($this->spacecraftRump3DModelRepository->findAll() as $model) {
-            $models[$model->getRumpId()] = $model;
-        }
-
-        $costs = [];
-        foreach ($this->shipRumpCostRepository->findAll() as $cost) {
-            $costs[$cost->getRumpId()][] = $cost;
-        }
-
-        $moduleSpecialIds = [];
-        foreach ($this->entityManager->getRepository(ShipRumpModuleSpecial::class)->findAll() as $moduleSpecial) {
-            $moduleSpecialIds[$moduleSpecial->getRumpId()][] = $moduleSpecial->getModuleSpecialId();
-        }
-
-        $buildingFunctionIds = [];
-        foreach ($this->shipRumpBuildingFunctionRepository->findAll() as $buildingFunction) {
-            $buildingFunctionIds[$buildingFunction->getRumpId()][] = $buildingFunction->getBuildingFunction()->value;
-        }
-
-        $specialAbilityIds = [];
-        foreach ($this->shipRumpSpecialRepository->findAll() as $specialAbility) {
-            $specialAbilityIds[$specialAbility->getRumpId()][] = $specialAbility->getSpecialId();
-        }
-
-        $colonizationBuildings = [];
-        foreach ($this->shipRumpColonizationBuildingRepository->findAll() as $colonizationBuilding) {
-            $colonizationBuildings[$colonizationBuilding->getRumpId()] = $colonizationBuilding;
-        }
+        $configuration = $this->getTemplateConfiguration();
         $templates = [];
 
         foreach ($this->spacecraftRumpRepository->findAll() as $rump) {
-            $rumpId = $rump->getId();
-            $databaseEntry = $rump->getDatabaseId() === null
-                ? null
-                : $this->databaseEntryRepository->findOneBy(['id' => $rump->getDatabaseId()]);
-            $baseValue = $baseValues[$rumpId] ?? null;
-            $model = $models[$rumpId] ?? null;
-
-            $templates[$rumpId] = [
-                'id' => $rumpId,
-                'name' => $rump->getName(),
-                'core' => [
-                    'category_id' => $rump->getCategoryId()->value,
-                    'role_id' => $rump->getRoleId()?->value,
-                    'base_torpedo_storage' => $rump->getBaseTorpedoStorage(),
-                    'phaser_volleys' => $rump->getPhaserVolleys(),
-                    'phaser_hull_damage_factor' => $rump->getPhaserHullDamageFactor(),
-                    'phaser_shield_damage_factor' => $rump->getPhaserShieldDamageFactor(),
-                    'torpedo_level' => $rump->getTorpedoLevel(),
-                    'torpedo_volleys' => $rump->getTorpedoVolleys(),
-                    'is_buildable' => $rump->getIsBuildable(),
-                    'is_npc' => $rump->getIsNpc(),
-                    'eps_cost' => $rump->getEpsCost(),
-                    'storage' => $rump->getStorage(),
-                    'slots' => $rump->getDockingSlots(),
-                    'buildtime' => $rump->getBuildtime(),
-                    'needed_workbees' => $rump->getNeededWorkbees(),
-                    'sort' => $rump->getSort(),
-                    'commodity_id' => $rump->getCommodityId(),
-                    'faction_id' => $rump->getFactionId(),
-                    'flight_ecost' => $rump->getFlightEcost(),
-                    'beam_factor' => $rump->getBeamFactor(),
-                    'shuttle_slots' => $rump->getShuttleSlots(),
-                    'tractor_mass' => $rump->getTractorMass(),
-                    'tractor_payload' => $rump->getTractorPayload(),
-                    'prestige' => $rump->getPrestige(),
-                    'npc_buildable' => $rump->getNpcBuildable() === null ? '' : (int) $rump->getNpcBuildable()
-                ],
-                'baseValues' => $baseValue === null ? null : [
-                    'evade_chance' => $baseValue->getEvadeChance(),
-                    'hit_chance' => $baseValue->getHitChance(),
-                    'module_level' => $baseValue->getModuleLevel(),
-                    'base_crew' => $baseValue->getBaseCrew(),
-                    'max_crew' => $baseValue->getMaxCrew(),
-                    'base_eps' => $baseValue->getBaseEps(),
-                    'base_reactor' => $baseValue->getBaseReactor(),
-                    'base_hull' => $baseValue->getBaseHull(),
-                    'base_shield' => $baseValue->getBaseShield(),
-                    'base_damage' => $baseValue->getBaseDamage(),
-                    'base_sensor_range' => $baseValue->getBaseSensorRange(),
-                    'base_warpdrive' => $baseValue->getBaseWarpDrive(),
-                    'special_slots' => $baseValue->getSpecialSlots()
-                ],
-                'moduleLevels' => $moduleLevels[$rumpId] ?? null,
-                'model3d' => $model === null ? null : [
-                    'width' => $model->getWidth(),
-                    'height' => $model->getHeight(),
-                    'rotation' => $model->getRotation()
-                ],
-                'costs' => array_map(
-                    fn (ShipRumpCost $cost): array => [
-                        'commodityId' => $cost->getCommodityId(),
-                        'amount' => $cost->getAmount()
-                    ],
-                    $costs[$rumpId] ?? []
-                ),
-                'moduleSpecialIds' => $moduleSpecialIds[$rumpId] ?? [],
-                'buildingFunctionIds' => $buildingFunctionIds[$rumpId] ?? [],
-                'specialAbilityIds' => $specialAbilityIds[$rumpId] ?? [],
-                'colonizationBuildingId' => ($colonizationBuildings[$rumpId] ?? null)?->getBuildingId(),
-                'databaseEntry' => $databaseEntry === null ? null : [
-                    'id' => $databaseEntry->getId(),
-                    'description' => $databaseEntry->getDescription(),
-                    'data' => $databaseEntry->getData(),
-                    'categoryId' => $databaseEntry->getCategoryId()
-                ]
-            ];
+            $templates[$rump->getId()] = $this->getTemplate($rump, $configuration)->all();
         }
 
         return new RumpCreatorData($templates);
+    }
+
+    private function getTemplateConfiguration(): RumpCreatorTemplateConfiguration
+    {
+        return new RumpCreatorTemplateConfiguration(
+            $this->getBaseValuesByRumpId(),
+            $this->getModuleLevelsByRumpId(),
+            $this->getModelsByRumpId(),
+            $this->getCostsByRumpId(),
+            $this->getModuleSpecialIdsByRumpId(),
+            $this->getBuildingFunctionIdsByRumpId(),
+            $this->getSpecialAbilityIdsByRumpId(),
+            $this->getColonizationBuildingsByRumpId()
+        );
+    }
+
+    private function getBaseValuesByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->entityManager->getRepository(SpacecraftRumpBaseValues::class)->findAll() as $baseValue) {
+            $result[$baseValue->getRump()->getId()] = $baseValue;
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getModuleLevelsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->shipRumpModuleLevelRepository->findAll() as $moduleLevel) {
+            $result[$moduleLevel->getRump()->getId()] = $this->getModuleLevelValues($moduleLevel)->all();
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getModuleLevelValues(ShipRumpModuleLevel $moduleLevel): RumpCreatorData
+    {
+        $result = [];
+        foreach (SpacecraftModuleTypeEnum::cases() as $type) {
+            if ($type->isSpecialSystemType()) {
+                continue;
+            }
+            $result[$type->value] = [
+                'min' => $moduleLevel->getMinimumLevel($type),
+                'default' => $moduleLevel->getDefaultLevel($type),
+                'max' => $moduleLevel->getMaximumLevel($type),
+                'mandatory' => $moduleLevel->isMandatory($type)
+            ];
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getModelsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->spacecraftRump3DModelRepository->findAll() as $model) {
+            $result[$model->getRumpId()] = $model;
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getCostsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->shipRumpCostRepository->findAll() as $cost) {
+            $result[$cost->getRumpId()][] = $cost;
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getModuleSpecialIdsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->entityManager->getRepository(ShipRumpModuleSpecial::class)->findAll() as $moduleSpecial) {
+            $result[$moduleSpecial->getRumpId()][] = $moduleSpecial->getModuleSpecialId();
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getBuildingFunctionIdsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->shipRumpBuildingFunctionRepository->findAll() as $buildingFunction) {
+            $result[$buildingFunction->getRumpId()][] = $buildingFunction->getBuildingFunction()->value;
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getSpecialAbilityIdsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->shipRumpSpecialRepository->findAll() as $specialAbility) {
+            $result[$specialAbility->getRumpId()][] = $specialAbility->getSpecialId();
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getColonizationBuildingsByRumpId(): RumpCreatorData
+    {
+        $result = [];
+        foreach ($this->shipRumpColonizationBuildingRepository->findAll() as $colonizationBuilding) {
+            $result[$colonizationBuilding->getRumpId()] = $colonizationBuilding;
+        }
+
+        return new RumpCreatorData($result);
+    }
+
+    private function getTemplate(SpacecraftRump $rump, RumpCreatorTemplateConfiguration $configuration): RumpCreatorData
+    {
+        $rumpId = $rump->getId();
+
+        return new RumpCreatorData([
+            'id' => $rumpId,
+            'name' => $rump->getName(),
+            'core' => $this->getCoreValues($rump)->all(),
+            'baseValues' => $this->getBaseValueTemplate($configuration->baseValues->get($rumpId))->all(),
+            'moduleLevels' => $configuration->moduleLevels->get($rumpId),
+            'model3d' => $this->getModelTemplate($configuration->models->get($rumpId))->all(),
+            'costs' => $this->getCostTemplates($configuration->costs->get($rumpId))->all(),
+            'moduleSpecialIds' => $configuration->moduleSpecialIds->get($rumpId) ?? [],
+            'buildingFunctionIds' => $configuration->buildingFunctionIds->get($rumpId) ?? [],
+            'specialAbilityIds' => $configuration->specialAbilityIds->get($rumpId) ?? [],
+            'colonizationBuildingId' => $this->getColonizationBuildingId($configuration->colonizationBuildings->get($rumpId)),
+            'databaseEntry' => $this->getDatabaseEntryTemplate($this->getDatabaseEntry($rump))->all()
+        ]);
+    }
+
+    private function getCoreValues(SpacecraftRump $rump): RumpCreatorData
+    {
+        return new RumpCreatorData([
+            'category_id' => $rump->getCategoryId()->value,
+            'role_id' => $rump->getRoleId()?->value,
+            'base_torpedo_storage' => $rump->getBaseTorpedoStorage(),
+            'phaser_volleys' => $rump->getPhaserVolleys(),
+            'phaser_hull_damage_factor' => $rump->getPhaserHullDamageFactor(),
+            'phaser_shield_damage_factor' => $rump->getPhaserShieldDamageFactor(),
+            'torpedo_level' => $rump->getTorpedoLevel(),
+            'torpedo_volleys' => $rump->getTorpedoVolleys(),
+            'is_buildable' => $rump->getIsBuildable(),
+            'is_npc' => $rump->getIsNpc(),
+            'eps_cost' => $rump->getEpsCost(),
+            'storage' => $rump->getStorage(),
+            'slots' => $rump->getDockingSlots(),
+            'buildtime' => $rump->getBuildtime(),
+            'needed_workbees' => $rump->getNeededWorkbees(),
+            'sort' => $rump->getSort(),
+            'commodity_id' => $rump->getCommodityId(),
+            'faction_id' => $rump->getFactionId(),
+            'flight_ecost' => $rump->getFlightEcost(),
+            'beam_factor' => $rump->getBeamFactor(),
+            'shuttle_slots' => $rump->getShuttleSlots(),
+            'tractor_mass' => $rump->getTractorMass(),
+            'tractor_payload' => $rump->getTractorPayload(),
+            'prestige' => $rump->getPrestige(),
+            'npc_buildable' => match ($rump->getNpcBuildable()) {
+                null => '',
+                false => 0,
+                true => 1
+            }
+        ]);
+    }
+
+    private function getBaseValueTemplate(?SpacecraftRumpBaseValues $baseValue): RumpCreatorData
+    {
+        if ($baseValue === null) {
+            return new RumpCreatorData(null);
+        }
+
+        return new RumpCreatorData([
+            'evade_chance' => $baseValue->getEvadeChance(),
+            'hit_chance' => $baseValue->getHitChance(),
+            'module_level' => $baseValue->getModuleLevel(),
+            'base_crew' => $baseValue->getBaseCrew(),
+            'max_crew' => $baseValue->getMaxCrew(),
+            'base_eps' => $baseValue->getBaseEps(),
+            'base_reactor' => $baseValue->getBaseReactor(),
+            'base_hull' => $baseValue->getBaseHull(),
+            'base_shield' => $baseValue->getBaseShield(),
+            'base_damage' => $baseValue->getBaseDamage(),
+            'base_sensor_range' => $baseValue->getBaseSensorRange(),
+            'base_warpdrive' => $baseValue->getBaseWarpDrive(),
+            'special_slots' => $baseValue->getSpecialSlots()
+        ]);
+    }
+
+    private function getModelTemplate(?SpacecraftRump3DModel $model): RumpCreatorData
+    {
+        if ($model === null) {
+            return new RumpCreatorData(null);
+        }
+
+        return new RumpCreatorData([
+            'width' => $model->getWidth(),
+            'height' => $model->getHeight(),
+            'rotation' => $model->getRotation()
+        ]);
+    }
+
+    private function getCostTemplates(mixed $costs): RumpCreatorData
+    {
+        if (!is_array($costs)) {
+            return new RumpCreatorData([]);
+        }
+
+        return new RumpCreatorData(array_map(
+            fn (ShipRumpCost $cost): array => [
+                'commodityId' => $cost->getCommodityId(),
+                'amount' => $cost->getAmount()
+            ],
+            $costs
+        ));
+    }
+
+    private function getColonizationBuildingId(?ShipRumpColonizationBuilding $colonizationBuilding): ?int
+    {
+        return $colonizationBuilding?->getBuildingId();
+    }
+
+    private function getDatabaseEntry(SpacecraftRump $rump): ?DatabaseEntry
+    {
+        if ($rump->getDatabaseId() === null) {
+            return null;
+        }
+
+        return $this->databaseEntryRepository->findOneBy(['id' => $rump->getDatabaseId()]);
+    }
+
+    private function getDatabaseEntryTemplate(?DatabaseEntry $databaseEntry): RumpCreatorData
+    {
+        if ($databaseEntry === null) {
+            return new RumpCreatorData(null);
+        }
+
+        return new RumpCreatorData([
+            'id' => $databaseEntry->getId(),
+            'description' => $databaseEntry->getDescription(),
+            'data' => $databaseEntry->getData(),
+            'categoryId' => $databaseEntry->getCategoryId()
+        ]);
     }
 
     public function getOptions(): RumpCreatorData
