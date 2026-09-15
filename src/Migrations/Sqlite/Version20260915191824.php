@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260911110245 extends AbstractMigration
+final class Version20260915191824 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -326,6 +326,14 @@ final class Version20260911110245 extends AbstractMigration
         $this->addSql('CREATE INDEX npc_quest_award_idx ON stu_npc_quests (award_id)');
         $this->addSql('CREATE INDEX npc_quest_plot_idx ON stu_npc_quests (plot_id)');
         $this->addSql('CREATE TABLE stu_opened_advent_door (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, day INTEGER NOT NULL, month INTEGER NOT NULL, year INTEGER NOT NULL, time INTEGER NOT NULL)');
+        $this->addSql('CREATE TABLE stu_orion_auction (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, start INTEGER NOT NULL, "end" INTEGER NOT NULL, completed_at INTEGER DEFAULT NULL, auction_amount INTEGER NOT NULL, winner_name VARCHAR(255) DEFAULT NULL, image_position SMALLINT NOT NULL, crew_id INTEGER NOT NULL, wanted_commodity_id INTEGER DEFAULT NULL, winner_id INTEGER DEFAULT NULL, CONSTRAINT FK_7AF6695FE259F6 FOREIGN KEY (crew_id) REFERENCES stu_crew (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7AF669DCBCD0C6 FOREIGN KEY (wanted_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7AF6695DFCD4B8 FOREIGN KEY (winner_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_7AF6695FE259F6 ON stu_orion_auction (crew_id)');
+        $this->addSql('CREATE INDEX IDX_7AF669DCBCD0C6 ON stu_orion_auction (wanted_commodity_id)');
+        $this->addSql('CREATE INDEX IDX_7AF6695DFCD4B8 ON stu_orion_auction (winner_id)');
+        $this->addSql('CREATE TABLE stu_orion_auction_bid (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, max_amount INTEGER NOT NULL, auction_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_252E8C9E57B8F0DE FOREIGN KEY (auction_id) REFERENCES stu_orion_auction (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_252E8C9EA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_252E8C9E57B8F0DE ON stu_orion_auction_bid (auction_id)');
+        $this->addSql('CREATE INDEX IDX_252E8C9EA76ED395 ON stu_orion_auction_bid (user_id)');
+        $this->addSql('CREATE INDEX orion_auction_bid_auction_idx ON stu_orion_auction_bid (auction_id, max_amount)');
         $this->addSql('CREATE TABLE stu_partnersite (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, text CLOB NOT NULL, banner VARCHAR(200) NOT NULL)');
         $this->addSql('CREATE TABLE stu_pirate_round (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, start INTEGER NOT NULL, end_time INTEGER DEFAULT NULL, max_prestige INTEGER NOT NULL, actual_prestige INTEGER NOT NULL, faction_winner INTEGER DEFAULT NULL)');
         $this->addSql('CREATE TABLE stu_pirate_setup (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(200) NOT NULL, probability_weight INTEGER NOT NULL)');
@@ -393,7 +401,7 @@ final class Version20260911110245 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_researched (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, research_id INTEGER NOT NULL, user_id INTEGER NOT NULL, aktiv INTEGER NOT NULL, finished INTEGER NOT NULL, CONSTRAINT FK_8F6D5B47909E1ED FOREIGN KEY (research_id) REFERENCES stu_research (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8F6D5B4A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8F6D5B47909E1ED ON stu_researched (research_id)');
         $this->addSql('CREATE INDEX IDX_8F6D5B4A76ED395 ON stu_researched (user_id)');
-        $this->addSql('CREATE TABLE stu_rump (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, npc_buildable BOOLEAN DEFAULT NULL, CONSTRAINT FK_AD2CDF30D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF3012469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_rump (id INTEGER NOT NULL, category_id INTEGER NOT NULL, role_id INTEGER DEFAULT NULL, phaser_volleys SMALLINT NOT NULL, phaser_hull_damage_factor SMALLINT NOT NULL, phaser_shield_damage_factor SMALLINT NOT NULL, torpedo_level SMALLINT NOT NULL, torpedo_volleys SMALLINT NOT NULL, base_torpedo_storage SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, is_buildable BOOLEAN NOT NULL, is_npc BOOLEAN NOT NULL, eps_cost SMALLINT NOT NULL, storage INTEGER NOT NULL, slots SMALLINT NOT NULL, buildtime INTEGER NOT NULL, needed_workbees SMALLINT DEFAULT NULL, sort SMALLINT NOT NULL, database_id INTEGER DEFAULT NULL, commodity_id INTEGER DEFAULT NULL, faction_id INTEGER DEFAULT NULL, flight_ecost SMALLINT NOT NULL, beam_factor SMALLINT NOT NULL, shuttle_slots SMALLINT NOT NULL, tractor_mass INTEGER NOT NULL, tractor_payload INTEGER NOT NULL, prestige INTEGER NOT NULL, npc_buildable BOOLEAN DEFAULT NULL, PRIMARY KEY (id), CONSTRAINT FK_AD2CDF30D60322AC FOREIGN KEY (role_id) REFERENCES stu_rumps_roles (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF3012469DE2 FOREIGN KEY (category_id) REFERENCES stu_rumps_categories (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AD2CDF30F0AA09DB FOREIGN KEY (database_id) REFERENCES stu_database_entrys (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_AD2CDF30D60322AC ON stu_rump (role_id)');
         $this->addSql('CREATE INDEX IDX_AD2CDF3012469DE2 ON stu_rump (category_id)');
         $this->addSql('CREATE INDEX IDX_AD2CDF30B4ACC212 ON stu_rump (commodity_id)');
@@ -711,6 +719,8 @@ final class Version20260911110245 extends AbstractMigration
         $this->addSql('DROP TABLE stu_npc_quest_user');
         $this->addSql('DROP TABLE stu_npc_quests');
         $this->addSql('DROP TABLE stu_opened_advent_door');
+        $this->addSql('DROP TABLE stu_orion_auction');
+        $this->addSql('DROP TABLE stu_orion_auction_bid');
         $this->addSql('DROP TABLE stu_partnersite');
         $this->addSql('DROP TABLE stu_pirate_round');
         $this->addSql('DROP TABLE stu_pirate_setup');
