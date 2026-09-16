@@ -71,6 +71,10 @@ final class CrewRaceGraphicsTest extends StuTestCase
 
     public function testFailedUploadLeavesEntirePreviousImageSetIntact(): void
     {
+        if (!extension_loaded('gd')) {
+            self::markTestSkipped('GD extension is required');
+        }
+
         $temporaryFile = $this->directory . '/replacement.png';
         $image = imagecreatetruecolor(51, 52);
         imagepng($image, $temporaryFile);

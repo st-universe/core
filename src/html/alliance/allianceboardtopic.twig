@@ -5,7 +5,7 @@
     erstellen</a>
 <br />
 <br />
-{{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
+{% include 'html/paging/paging.twig' %}
 <br />
 {% for post in POSTINGS %}
 <table class="tcal row{{ loop.index is odd ? 'odd' : '' }}">
@@ -67,21 +67,8 @@
 <br />
 {% endfor %}
 <br />
-{{ _self.topicnavigation(TOPIC_NAVIGATION, TOPIC) }}
+{% include 'html/paging/paging.twig' %}
 <br />
 <a href="?SHOW_NEW_POST=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}" class="linkbutton">Antwort
     erstellen</a>
 {% endblock %}
-
-{% macro topicnavigation(TOPIC_NAVIGATION, TOPIC) %}
-<table class="use">
-    <tr>
-        {% for item in TOPIC_NAVIGATION %}
-        <td>
-            <a href="?SHOW_TOPIC=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}&mark={{ item.mark }}"
-                class="{{ item.cssclass }}">{{ item.page }}</a>
-        </td>
-        {% endfor %}
-    </tr>
-</table>
-{% endmacro %}

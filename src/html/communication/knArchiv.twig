@@ -6,20 +6,7 @@
     <div class="divbody">Keine Beiträge in dieser Archiv-Version vorhanden</div>
     {% else %}
 
-    {% if KN_NAVIGATION %}
-    <table>
-        <tr>
-            {% for item in KN_NAVIGATION %}
-            <td>
-                <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                    class="{{ item.cssclass }}" style="{{ item.style }}">
-                    {{ item.page }}
-                </a>
-            </td>
-            {% endfor %}
-        </tr>
-    </table>
-    {% endif %}
+    {% include 'html/paging/paging.twig' %}
     <br />
 
     {% for post in KN_POSTINGS %}
@@ -118,20 +105,7 @@
     {% endfor %}
 
     <br />
-    {% if KN_NAVIGATION %}
-    <table>
-        <tr>
-            {% for item in KN_NAVIGATION %}
-            <td>
-                <a href="?{{ SHOW_ARCHIVE_VIEW }}=1&version={{ ARCHIVE_VERSION }}&mark={{ item.mark }}"
-                    class="{{ item.cssclass }}" style="{{ item.style }}">
-                    {{ item.page }}
-                </a>
-            </td>
-            {% endfor %}
-        </tr>
-    </table>
-    {% endif %}
+    {% include 'html/paging/paging.twig' %}
 
     {% endif %}
 </div>

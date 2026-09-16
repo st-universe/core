@@ -6,6 +6,7 @@ use RuntimeException;
 use request;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
@@ -24,6 +25,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
         private readonly ContactRepositoryInterface $contactRepository,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly PagingFactory $pagingFactory,
         private readonly StuTime $stuTime
     ) {}
 
@@ -82,42 +84,12 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
             }
         }
 
-        $maxPage = (int) ceil($conversationPage['total'] / self::CONVERSATION_LIMIT);
-        $currentPage = (int) floor($mark / self::CONVERSATION_LIMIT);
-        $pmNavigation = [];
-        if ($currentPage !== 0) {
-            $pmNavigation[] = ['page' => '<<', 'mark' => 0, 'cssclass' => 'pages'];
-            $pmNavigation[] = [
-                'page' => '<',
-                'mark' => $mark - self::CONVERSATION_LIMIT,
-                'cssclass' => 'pages'
-            ];
-        }
-        for ($page = $currentPage - 1; $page <= $currentPage + 3; $page++) {
-            if ($page < 1 || $page > $maxPage) {
-                continue;
-            }
-            $pmNavigation[] = [
-                'page' => $page,
-                'mark' => ($page - 1) * self::CONVERSATION_LIMIT,
-                'cssclass' => $currentPage + 1 === $page ? 'pages selected' : 'pages'
-            ];
-        }
-        if ($currentPage + 1 < $maxPage) {
-            $pmNavigation[] = [
-                'page' => '>',
-                'mark' => $mark + self::CONVERSATION_LIMIT,
-                'cssclass' => 'pages'
-            ];
-            $pmNavigation[] = [
-                'page' => '>>',
-                'mark' => ($maxPage - 1) * self::CONVERSATION_LIMIT,
-                'cssclass' => 'pages'
-            ];
-        }
-
         $game->setTemplateVar('CONVERSATIONS', $conversations);
-        $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $conversationPage['total'],
+            self::CONVERSATION_LIMIT,
+            $mark
+        ));
     }
 
     private function determineUnreadPmCount(PrivateMessage $message): int

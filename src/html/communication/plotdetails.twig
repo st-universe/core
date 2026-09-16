@@ -1,6 +1,5 @@
 {% from 'html/macros.twig' import userAvatar, pmWindow %}
 <form action="comm.php" method="post">
-  {% set navigationMacro = 'plotNavigation' %}
   <input type="hidden" name="SHOW_PLOT" value="1" />
   <input type="hidden" name="plotid" value="{{ PLOT.getId }}" />
   <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />

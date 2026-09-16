@@ -9,6 +9,7 @@ use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchive;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPost;
@@ -19,9 +20,10 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 final class CommunicationProvider implements ViewComponentProviderInterface
 {
     public function __construct(
-        private KnPostRepositoryInterface $knPostRepository,
-        private KnFactoryInterface $knFactory,
-        private KnPostArchivRepositoryInterface $knPostArchivRepository
+        private readonly KnPostRepositoryInterface $knPostRepository,
+        private readonly KnFactoryInterface $knFactory,
+        private readonly KnPostArchivRepositoryInterface $knPostArchivRepository,
+        private readonly PagingFactory $pagingFactory
     ) {}
 
     #[\Override]
@@ -43,28 +45,6 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         }
         if (request::getInt('user_mark') !== 0) {
             $mark = max(0, (int) floor(($newKnPostCount - 1) / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE);
-        }
-
-        $maxpage = ceil($knPostCount / GameEnum::KN_PER_SITE);
-        $curpage = floor($mark / GameEnum::KN_PER_SITE);
-        $knNavigation = [];
-        if ($curpage != 0) {
-            $knNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $knNavigation[] = ["page" => "<", "mark" => ($mark - GameEnum::KN_PER_SITE), "cssclass" => "pages"];
-        }
-        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-            if ($i > $maxpage || $i < 1) {
-                continue;
-            }
-            $knNavigation[] = [
-                "page" => $i,
-                "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
-            ];
-        }
-        if ($curpage + 1 !== $maxpage) {
-            $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
-            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
         $markedPostId = $this->getMarkedKnId($user);
@@ -89,7 +69,12 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('KN_START', $knStart);
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
-        $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $knPostCount,
+            GameEnum::KN_PER_SITE,
+            $mark,
+            "?SHOW_KN"
+        ));
 
         $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
         $formattedVersions = array_map(fn(string $version): array => [

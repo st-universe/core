@@ -11,7 +11,6 @@
     </tr>
     {% for topic in TOPICS %}
     {% set RECENT_POST = topic.getLatestPost %}
-    {% set PAGES = topic.getPages %}
     <tr class="row{{ loop.index is odd ? 'odd' : '' }}">
         <td>
             <div style="display: table-cell; width: 100%">
@@ -21,14 +20,6 @@
                 <a href="alliance.php?SHOW_TOPIC=1&boardid={{ topic.getBoardId }}&topicid={{ topic.getId }}&mark=0">{{
                     topic.getName|raw }}</a>
             </div>
-            {% if PAGES %}
-            <div style="white-space: nowrap;text-align: right;display: table-cell">
-                {% for page in PAGES %}
-                <a href="?SHOW_TOPIC=1&boardid={{ topic.getBoardId }}&topicid={{ topic.getId }}&mark={{ page }}"
-                    class="pages">{{ loop.index }}</a>
-                {% endfor %}
-            </div>
-            {% endif %}
         </td>
         <td>{{ topic.getPostCount }}</td>
         <td>

@@ -6,6 +6,7 @@ namespace Stu\Module\Database\View\UserList;
 
 use JBBCode\Parser;
 use request;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
@@ -29,9 +30,10 @@ final class UserList implements ViewControllerInterface
     private const int LIST_LIMIT = 25;
 
     public function __construct(
-        private UserListRequestInterface $userListRequest,
-        private UserRepositoryInterface $userRepository,
-        private Parser $parser
+        private readonly UserListRequestInterface $userListRequest,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly PagingFactory $pagingFactory,
+        private readonly Parser $parser
     ) {}
 
     #[\Override]
@@ -79,47 +81,14 @@ final class UserList implements ViewControllerInterface
             );
         }
 
-        $game->setTemplateVar('USER_LIST_NAVIGATION', $this->getUserListNavigation());
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $this->userRepository->getActiveAmount(),
+            self::LIST_LIMIT,
+            $this->userListRequest->getPagination(),
+            sprintf("?SHOW_SETTLERLIST=1&order=%s&way=%s", $sort_field, $sort_order)
+        ));
         $game->setTemplateVar('LIST', $user_list);
-        $game->setTemplateVar('SORT_ORDER', $sort_order);
-        $game->setTemplateVar('ORDER_BY', $sort_field);
         $game->setTemplateVar('PAGINATION', $pagination);
         $game->setTemplateVar('SEARCH', $search !== false ? request::indString('search') : '');
-    }
-
-    /** @return array<array{page: '<'|'<<'|'>', mark: int<-25, max>, cssclass: 'pages'}|array{page: '>>'|float, mark: float, cssclass: 'pages'|'pages selected'}> */
-    private function getUserListNavigation(): array
-    {
-        $mark = $this->userListRequest->getPagination();
-        if ($mark % self::LIST_LIMIT !== 0 || $mark < 0) {
-            $mark = 0;
-        }
-        $maxcount = $this->userRepository->getActiveAmount();
-        $maxpage = ceil($maxcount / self::LIST_LIMIT);
-        $curpage = floor($mark / self::LIST_LIMIT);
-        $ret = [];
-        if ($curpage != 0) {
-            $ret[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $ret[] = ["page" => "<", "mark" => ($mark - self::LIST_LIMIT), "cssclass" => "pages"];
-        }
-        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-            if ($i > $maxpage || $i < 1) {
-                continue;
-            }
-            $ret[] = [
-                "page" => $i,
-                "mark" => ($i * self::LIST_LIMIT - self::LIST_LIMIT),
-                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages"),
-            ];
-        }
-        if ($curpage + 1 !== $maxpage) {
-            $ret[] = ["page" => ">", "mark" => ($mark + self::LIST_LIMIT), "cssclass" => "pages"];
-            $ret[] = [
-                "page" => ">>",
-                "mark" => $maxpage * self::LIST_LIMIT - self::LIST_LIMIT,
-                "cssclass" => "pages",
-            ];
-        }
-        return $ret;
     }
 }

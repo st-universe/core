@@ -1,0 +1,16 @@
+{% if PAGING %}
+{% set style = PAGING.getStyle %}
+<table>
+    <tr>
+        {% for page in PAGING.getPages %}
+        <td>
+            <a href="{{ page.getUrl }}"
+               class="{{ page.getCssClass }}"
+               {%if style %}style="{{ style }}"{% endif %}>
+                {{ page.getLabel }}
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endif %}
