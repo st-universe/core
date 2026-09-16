@@ -8,6 +8,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -25,7 +26,8 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
         private readonly PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         private readonly PrivateMessageRepositoryInterface $privateMessageRepository,
         private readonly ContactRepositoryInterface $contactRepository,
-        private readonly UserSettingsProviderInterface $userSettingsProvider
+        private readonly UserSettingsProviderInterface $userSettingsProvider,
+        private readonly PagingFactory $pagingFactory
     ) {}
 
     #[\Override]
@@ -58,28 +60,6 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
         if ($mark % self::PMLIMITER !== 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxcount = $this->privateMessageRepository->getAmountByFolder($category);
-        $maxpage = ceil($maxcount / self::PMLIMITER);
-        $curpage = floor($mark / self::PMLIMITER);
-        $pmNavigation = [];
-        if ($curpage != 0) {
-            $pmNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $pmNavigation[] = ["page" => "<", "mark" => ($mark - self::PMLIMITER), "cssclass" => "pages"];
-        }
-        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-            if ($i > $maxpage || $i < 1) {
-                continue;
-            }
-            $pmNavigation[] = [
-                "page" => $i,
-                "mark" => ($i * self::PMLIMITER - self::PMLIMITER),
-                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")
-            ];
-        }
-        if ($curpage + 1 !== $maxpage) {
-            $pmNavigation[] = ["page" => ">", "mark" => ($mark + self::PMLIMITER), "cssclass" => "pages"];
-            $pmNavigation[] = ["page" => ">>", "mark" => $maxpage * self::PMLIMITER - self::PMLIMITER, "cssclass" => "pages"];
-        }
 
         $game->appendNavigationPart(
             sprintf('%s?pmcat=%d', ModuleEnum::PM->getPhpPage(), $category->getId()),
@@ -105,6 +85,11 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
                 )
             )
         );
-        $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $this->privateMessageRepository->getAmountByFolder($category),
+            self::PMLIMITER,
+            $mark,
+            sprintf('?pmcat=%d', $category->getId())
+        ));
     }
 }

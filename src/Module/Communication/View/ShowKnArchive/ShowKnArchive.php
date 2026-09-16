@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\View\ShowKnArchive;
 use request;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
@@ -19,6 +20,7 @@ final class ShowKnArchive implements ViewControllerInterface
         private ShowKnArchiveRequestInterface $showKnArchiveRequest,
         private KnPostArchivRepositoryInterface $knPostArchivRepository,
         private KnArchiveFactoryInterface $knArchiveFactory,
+        private readonly PagingFactory $pagingFactory
     ) {}
 
     #[\Override]
@@ -42,52 +44,6 @@ final class ShowKnArchive implements ViewControllerInterface
         $mark = request::getInt('mark');
         if ($mark % GameEnum::KN_PER_SITE !== 0 || $mark < 0) {
             $mark = 0;
-        }
-
-        $maxpage = ceil($knPostCount / GameEnum::KN_PER_SITE);
-        $curpage = floor($mark / GameEnum::KN_PER_SITE);
-
-        $knNavigation = [];
-        if ($curpage != 0) {
-            $knNavigation[] = [
-                "page" => "<<",
-                "mark" => 0,
-                "cssclass" => "pages",
-                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
-            ];
-            $knNavigation[] = [
-                "page" => "<",
-                "mark" => ($mark - GameEnum::KN_PER_SITE),
-                "cssclass" => "pages",
-                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
-            ];
-        }
-
-        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-            if ($i > $maxpage || $i < 1) {
-                continue;
-            }
-            $knNavigation[] = [
-                "page" => $i,
-                "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages"),
-                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
-            ];
-        }
-
-        if ($curpage + 1 !== $maxpage) {
-            $knNavigation[] = [
-                "page" => ">",
-                "mark" => ($mark + GameEnum::KN_PER_SITE),
-                "cssclass" => "pages",
-                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
-            ];
-            $knNavigation[] = [
-                "page" => ">>",
-                "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE,
-                "cssclass" => "pages",
-                "style" => "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
-            ];
         }
 
         $archivePosts = $this->knPostArchivRepository->getByVersion($version, $mark, GameEnum::KN_PER_SITE);
@@ -130,8 +86,15 @@ final class ShowKnArchive implements ViewControllerInterface
             ];
         }
 
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $knPostCount,
+            GameEnum::KN_PER_SITE,
+            $mark,
+            sprintf('?%s=1&version=%s', self::VIEW_IDENTIFIER, $version),
+            "min-width: 30px; width: auto; padding: 5px 8px; text-align: center; display: inline-block; white-space: nowrap;"
+        ));
+
         $game->setTemplateVar('KN_POSTINGS', $posts);
-        $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
         $game->setTemplateVar('KN_START', $knStart);
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('ARCHIVE_VERSION', $version);

@@ -3,7 +3,7 @@
 <div class="divhead">Meldung</div>
 <div class="divbody">Keine Beiträge vorhanden</div>
 {% else %}
-{% include 'html/communication/'~ navigationMacro ~'.twig' %}
+{% include 'html/paging/paging.twig' %}
 <br />
 {% for post in KN_POSTINGS %}
 {% set postUser = post.getUser %}
@@ -156,5 +156,5 @@
 </div>
 {% endfor %}
 <br />
-{% include 'html/communication/'~ navigationMacro ~'.twig' %}
+{% include 'html/paging/paging.twig' %}
 {% endif %}

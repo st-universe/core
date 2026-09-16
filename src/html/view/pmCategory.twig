@@ -6,7 +6,7 @@
   <input type="hidden" name="deletion_mark" id="deletion_mark" value="" />
   <input type="hidden" name="pmcat" id="pmcat" value="{{ CATEGORY.getId }}" />
   <div style="float: left; width: 75%;">
-    {% include 'html/communication/pmNavigation.twig' %}
+    {% include 'html/paging/paging.twig' %}
     <br />
     {% for post in PM_LIST %}
     {% set postId = post.getId %}
@@ -101,7 +101,7 @@
     </div>
     {% endfor %}
     {% include 'html/communication/conversations.twig' %}
-    {% include 'html/communication/pmNavigation.twig' %}
+    {% include 'html/paging/paging.twig' %}
   </div>
 </form>
 <div style="float: left; width: 24%; margin-left: 1%">

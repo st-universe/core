@@ -9,6 +9,8 @@ use Mockery\MockInterface;
 use request;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Paging\Paging;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -26,6 +28,7 @@ class MessengerStyleProviderTest extends StuTestCase
     private MockInterface&PrivateMessageRepositoryInterface $privateMessageRepository;
     private MockInterface&ContactRepositoryInterface $contactRepository;
     private MockInterface&UserSettingsProviderInterface $userSettingsProvider;
+    private MockInterface&PagingFactory $pagingFactory;
 
     private StuTime $stuTime;
 
@@ -40,6 +43,7 @@ class MessengerStyleProviderTest extends StuTestCase
         $this->privateMessageRepository = $this->mock(PrivateMessageRepositoryInterface::class);
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
         $this->userSettingsProvider = $this->mock(UserSettingsProviderInterface::class);
+        $this->pagingFactory = $this->mock(PagingFactory::class);
         $this->stuTime = new StuTime();
 
         $this->subject = new MessengerStyleProvider(
@@ -47,6 +51,7 @@ class MessengerStyleProviderTest extends StuTestCase
             $this->privateMessageRepository,
             $this->contactRepository,
             $this->userSettingsProvider,
+            $this->pagingFactory,
             $this->stuTime
         );
     }
@@ -78,6 +83,7 @@ class MessengerStyleProviderTest extends StuTestCase
         $message = $this->mock(PrivateMessage::class);
         $sender = $this->mock(User::class);
         $mainFolder = $this->mock(PrivateMessageFolder::class);
+        $paging = $this->mock(Paging::class);
 
         $userId = 42;
         $senderId = 99;
@@ -121,12 +127,10 @@ class MessengerStyleProviderTest extends StuTestCase
                 && $value[$senderId] instanceof Conversation;
         }))->once();
 
-        $game->shouldReceive('setTemplateVar')->with('PM_NAVIGATION', Mockery::on(function (array $value): bool {
-            return count($value) === 1
-                && $value[0]['page'] === 1
-                && $value[0]['mark'] === 0
-                && $value[0]['cssclass'] === 'pages selected';
-        }))->once();
+        $this->pagingFactory->shouldReceive('createPaging')->with(1, 20, 0)->once()->andReturn($paging);
+
+        $game->shouldReceive('setTemplateVar')->with('PAGING', $paging)
+            ->once();
 
         $this->subject->setTemplateVariables($game);
     }
