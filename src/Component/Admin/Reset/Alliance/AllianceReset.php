@@ -21,4 +21,14 @@ final class AllianceReset implements AllianceResetInterface
 
         $this->entityManager->flush();
     }
+
+    #[\Override]
+    public function unsetAllianceDepots(): void
+    {
+        echo "  - removes alliance depot references\n";
+
+        $this->entityManager->getConnection()->executeQuery('update stu_station set ally_id = null');
+
+        $this->entityManager->flush();
+    }
 }

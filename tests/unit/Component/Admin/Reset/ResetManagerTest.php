@@ -117,6 +117,9 @@ class ResetManagerTest extends StuTestCase
         $this->allianceReset->shouldReceive('unsetUserAlliances')
             ->withNoArgs()
             ->once();
+        $this->allianceReset->shouldReceive('unsetAllianceDepots')
+            ->withNoArgs()
+            ->once();
 
         $this->entityReset->shouldReceive('reset')
             ->withAnyArgs()

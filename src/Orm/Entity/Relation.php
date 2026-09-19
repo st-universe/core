@@ -27,7 +27,7 @@ use Stu\Orm\Repository\RelationRepository;
 #[Index(name: 'relation_source_alliance_idx', columns: ['source_alliance_id'])]
 #[Index(name: 'relation_recipient_alliance_idx', columns: ['recipient_alliance_id'])]
 #[Entity(repositoryClass: RelationRepository::class)]
-#[TruncateOnGameReset]
+#[TruncateOnGameReset(1)]
 class Relation
 {
     use RelationPartyTrait;
