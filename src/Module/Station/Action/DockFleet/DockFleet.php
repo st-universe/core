@@ -10,9 +10,10 @@ use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -26,13 +27,13 @@ final class DockFleet implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_DOCK_FLEET';
 
     public function __construct(
-        private StationLoaderInterface $stationLoader,
-        private FleetRepositoryInterface $fleetRepository,
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private InteractionCheckerInterface $interactionChecker,
-        private CancelRepairInterface $cancelRepair,
-        private CancelRetrofitInterface $cancelRetrofit,
-        private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly StationLoaderInterface $stationLoader,
+        private readonly FleetRepositoryInterface $fleetRepository,
+        private readonly SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private readonly CancelRepairInterface $cancelRepair,
+        private readonly CancelRetrofitInterface $cancelRetrofit,
+        private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
+        private readonly InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
     ) {}
 
     #[\Override]
@@ -53,9 +54,6 @@ final class DockFleet implements ActionControllerInterface
         if ($targetFleet === null) {
             return;
         }
-        if (!$this->interactionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
-            return;
-        }
         if ($targetFleet->getUser()->getId() !== $game->getUser()->getId()) {
             return;
         }
@@ -63,13 +61,24 @@ final class DockFleet implements ActionControllerInterface
             return;
         }
 
-        if (!$station->hasEnoughCrew($game)) {
-            return;
-        }
-
-        if ($station->isShielded()) {
-            $game->getInfo()->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
-            return;
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($station)
+            ->setTarget($targetFleet->getLeadShip())
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_SOURCE_TACHYON,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
+                InteractionCheckType::EXPECT_TARGET_UNSHIELDED,
+                InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB
+            ])
+            ->check($game->getInfo())) {
+                return;
         }
 
         $this->fleetDock($wrapper, $targetFleet, $game);
