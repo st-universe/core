@@ -25,6 +25,7 @@ enum InteractionCheckType
     case EXPECT_TARGET_UNWARPED;
     case EXPECT_TARGET_SAME_USER;
     case EXPECT_TARGET_ALSO_IN_FINISHED_WEB;
+    case EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB;
     case EXPECT_TARGET_DOCKED_OR_NO_ION_STORM;
     case EXPECT_TARGET_UNBLOCKED;
 
@@ -42,6 +43,7 @@ enum InteractionCheckType
             self::EXPECT_TARGET_UNSHIELDED => 'Das Ziel hat die Schilde aktiviert',
             self::EXPECT_TARGET_UNWARPED => 'Das Ziel hat den Warpantrieb aktiviert',
             self::EXPECT_TARGET_ALSO_IN_FINISHED_WEB => 'Das Ziel ist nicht mit im Energienetz gefangen',
+            self::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB => 'Das Ziel ist nicht auf derselben Seite des Energienetzes',
             self::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM => 'Beamen nicht möglich während eines Ionensturms',
             self::EXPECT_TARGET_UNBLOCKED => 'Das Ziel wird blockiert.',
             self::EXPECT_SOURCE_TACHYON => throw new SanityCheckException('Tried to interact with cloaked entity without active tachyon'),
