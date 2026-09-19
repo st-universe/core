@@ -21,18 +21,16 @@ final class Session implements SessionInterface
     ) {}
 
     #[\Override]
-    public function createSession(bool $session_check = true): void
+    public function createSession(): void
     {
-        if (!$this->isLoggedIn() && $session_check) {
+        if (!$this->isLoggedIn()) {
             throw new SessionInvalidException('Session abgelaufen');
         }
-        if ($session_check && (!$_SESSION['uid'] || !$_SESSION['login'])) {
+        if (!$_SESSION['uid'] || !$_SESSION['login']) {
             $this->logout();
             return;
         }
-        if ($this->isLoggedIn() && $session_check) {
-            $this->chklogin();
-        }
+        $this->chklogin();
     }
 
     private function isLoggedIn(): bool

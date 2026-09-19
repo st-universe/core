@@ -29,8 +29,7 @@ Init::run(function (ContainerInterface $dic): void {
     }
 
     $dic->get(GameControllerInterface::class)->main(
-        ModuleEnum::INDEX,
-        false
+        ModuleEnum::INDEX
     );
 
     $em->commit();
