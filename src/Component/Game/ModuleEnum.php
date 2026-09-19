@@ -105,4 +105,8 @@ enum ModuleEnum: string
             default => null
         };
     }
+
+    public function doSessionCheck(): bool {
+        return $this !== self::INDEX;
+    }
 }
