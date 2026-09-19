@@ -73,7 +73,8 @@ Init::run(function (ContainerInterface $dic): void {
                 throw new RuntimeException('userId %d does not exist', $userId);
             }
 
-            $signature = $buildplanSignatureCreation->createSignatureByModuleIds(array_merge($moduleList, $moduleSpecialList), 0);
+            $merged = array_merge($moduleList, $moduleSpecialList);
+            $signature = $buildplanSignatureCreation->createSignatureByModuleIds($merged, 0);
             $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
 
             if ($plan === null) {
