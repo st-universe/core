@@ -68,8 +68,7 @@ final class InterceptShip implements ActionControllerInterface
             ->setTarget($target)
             ->setCheckTypes([
                 InteractionCheckType::EXPECT_SOURCE_ENABLED,
-                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW
             ])
             ->check($information)) {
             return;

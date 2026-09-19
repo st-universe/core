@@ -97,7 +97,6 @@ final class BoardShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED,
                 InteractionCheckType::EXPECT_SOURCE_TACHYON,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
             ->check($game->getInfo())) {

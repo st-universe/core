@@ -79,7 +79,7 @@ final class SalvageCrew implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game->getInfo())) {
+            ->check($game->getInfo(), false)) {
             return;
         }
 

@@ -8,5 +8,5 @@ use Stu\Lib\Information\InformationInterface;
 
 interface CustomizedInteractionCheckerInterface
 {
-    public function check(InformationInterface $information): bool;
+    public function check(InformationInterface $information, bool $expectTargetNoVacation = true): bool;
 }

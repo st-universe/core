@@ -73,7 +73,7 @@ final class ShowTransfer implements ViewControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game->getInfo())) {
+            ->check($game->getInfo(), false)) {
             $game->setMacroInAjaxWindow('');
             return;
         }
