@@ -212,7 +212,7 @@ final class GameController implements GameControllerInterface
     #[\Override]
     public function sessionAndAdminCheck(): void
     {
-        $this->session->createSession(true);
+        $this->session->createSession();
 
         if (!$this->isAdmin()) {
             header(self::REDIRECT_TO_DOMAIN_ROOT);
@@ -239,21 +239,16 @@ final class GameController implements GameControllerInterface
     }
 
     #[\Override]
-    public function main(
-        ModuleEnum $module,
-        bool $session_check = true,
-        bool $admin_check = false,
-        bool $npc_check = false,
-    ): void {
+    public function main(ModuleEnum $module): void {
         $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $module);
 
         $gameRequest = $this->getGameRequest();
         $gameRequest->setModule($module->value);
 
         try {
-            $this->session->createSession($session_check);
-
-            if ($session_check === false) {
+            if ($module->doSessionCheck()) {
+                $this->session->createSession();
+            } else {
                 $this->sessionLogin->checkLoginCookie();
             }
 
