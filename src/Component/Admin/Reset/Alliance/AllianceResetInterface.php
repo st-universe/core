@@ -7,4 +7,5 @@ namespace Stu\Component\Admin\Reset\Alliance;
 interface AllianceResetInterface
 {
     public function unsetUserAlliances(): void;
+    public function unsetAllianceDepots(): void;
 }

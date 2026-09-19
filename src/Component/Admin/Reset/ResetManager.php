@@ -68,6 +68,7 @@ final class ResetManager implements ResetManagerInterface
             $this->pmReset->unsetAllInboxReferences();
             $this->pmReset->resetAllNonNpcPmFolders();
             $this->allianceReset->unsetUserAlliances();
+            $this->allianceReset->unsetAllianceDepots();
             $this->fleetReset->unsetShipFleetReference();
 
             //HERE

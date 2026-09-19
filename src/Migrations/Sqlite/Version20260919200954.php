@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260915191824 extends AbstractMigration
+final class Version20260919200954 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -380,7 +380,7 @@ final class Version20260915191824 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7FE75407AFC2B591 ON stu_progress_module (module_id)');
         $this->addSql('CREATE TABLE stu_registration_referral_code (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, code VARCHAR(30) NOT NULL, description VARCHAR(255) DEFAULT NULL, hit_count INTEGER NOT NULL, active BOOLEAN NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_40DECBB677153098 ON stu_registration_referral_code (code)');
-        $this->addSql('CREATE TABLE stu_relation_permissions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, permission SMALLINT NOT NULL, direction SMALLINT NOT NULL, pending BOOLEAN NOT NULL, granted BOOLEAN NOT NULL, offered_by_source BOOLEAN NOT NULL, relation_id INTEGER DEFAULT NULL, contact_id INTEGER DEFAULT NULL, CONSTRAINT FK_4FB919C33256915B FOREIGN KEY (relation_id) REFERENCES stu_relations (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4FB919C3E7A1254A FOREIGN KEY (contact_id) REFERENCES stu_contactlist (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_relation_permissions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, permission SMALLINT NOT NULL, direction SMALLINT NOT NULL, pending BOOLEAN NOT NULL, granted BOOLEAN NOT NULL, offered_by_source BOOLEAN NOT NULL, relation_id INTEGER DEFAULT NULL, contact_id INTEGER DEFAULT NULL, CONSTRAINT FK_4FB919C33256915B FOREIGN KEY (relation_id) REFERENCES stu_relations (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_4FB919C3E7A1254A FOREIGN KEY (contact_id) REFERENCES stu_contactlist (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_4FB919C33256915B ON stu_relation_permissions (relation_id)');
         $this->addSql('CREATE INDEX IDX_4FB919C3E7A1254A ON stu_relation_permissions (contact_id)');
         $this->addSql('CREATE TABLE stu_relations (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type SMALLINT NOT NULL, date INTEGER NOT NULL, text CLOB DEFAULT NULL, last_edited INTEGER DEFAULT NULL, source_user_id INTEGER DEFAULT NULL, source_alliance_id INTEGER DEFAULT NULL, recipient_user_id INTEGER DEFAULT NULL, recipient_alliance_id INTEGER DEFAULT NULL, CONSTRAINT FK_1A0964E1EEB16BFD FOREIGN KEY (source_user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1A0964E12CDFBA9F FOREIGN KEY (source_alliance_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1A0964E1B15EFB97 FOREIGN KEY (recipient_user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1A0964E1A765B64E FOREIGN KEY (recipient_alliance_id) REFERENCES stu_alliances (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');

@@ -21,7 +21,7 @@ use Stu\Orm\Repository\AllianceRepository;
 
 #[Table(name: 'stu_alliances')]
 #[Entity(repositoryClass: AllianceRepository::class)]
-#[TruncateOnGameReset]
+#[TruncateOnGameReset(0)]
 class Alliance
 {
     #[Id]

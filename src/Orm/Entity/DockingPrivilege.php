@@ -13,10 +13,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\DockingPrivilegeRepository;
 
 #[Table(name: 'stu_dockingrights')]
 #[Entity(repositoryClass: DockingPrivilegeRepository::class)]
+#[TruncateOnGameReset]
 class DockingPrivilege
 {
     #[Id]

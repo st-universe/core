@@ -41,11 +41,11 @@ class RelationPermission
     private bool $offeredBySource = false;
 
     #[ManyToOne(targetEntity: Relation::class, inversedBy: 'relationPermissions')]
-    #[JoinColumn(name: 'relation_id', referencedColumnName: 'id', nullable: true)]
+    #[JoinColumn(name: 'relation_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?Relation $relation = null;
 
     #[ManyToOne(targetEntity: Contact::class, inversedBy: 'relationPermissions')]
-    #[JoinColumn(name: 'contact_id', referencedColumnName: 'id', nullable: true)]
+    #[JoinColumn(name: 'contact_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?Contact $contact = null;
 
     public function getId(): int
