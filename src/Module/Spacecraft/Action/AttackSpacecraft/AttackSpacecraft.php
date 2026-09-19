@@ -65,7 +65,6 @@ final class AttackSpacecraft implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED,
                 InteractionCheckType::EXPECT_SOURCE_TACHYON,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_UNWARPED
             ])
             ->check($info)) {

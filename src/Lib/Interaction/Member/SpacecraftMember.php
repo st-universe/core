@@ -56,6 +56,14 @@ class SpacecraftMember implements InteractionMemberInterface
             return InteractionCheckType::EXPECT_SOURCE_TACHYON;
         }
 
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB)
+            && ($this->tholianWebUtil->isTargetInsideFinishedTholianWeb($other->get(), $this->spacecraft)
+                    || $this->tholianWebUtil->isTargetInsideFinishedTholianWeb($this->spacecraft, $other->get()))
+        ) {
+            return InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB;
+        }
+
         return null;
     }
 

@@ -38,6 +38,7 @@ use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Lib\Session\Session;
 use Stu\Lib\Session\SessionDestruction;
 use Stu\Lib\Session\SessionDestructionInterface;
@@ -119,6 +120,7 @@ return [
     BorderDataProviderFactoryInterface::class => autowire(BorderDataProviderFactory::class),
     SubspaceDataProviderFactoryInterface::class => autowire(SubspaceDataProviderFactory::class),
     SpacecraftCountDataProviderFactoryInterface::class => autowire(SpacecraftCountDataProviderFactory::class),
+    PagingFactory::class => autowire(PagingFactory::class),
     PanelLayerCreationInterface::class => autowire(PanelLayerCreation::class)
         ->constructorParameter('lssBlockadeGridFactory', autowire(LssBlockadeGridFactory::class))
         ->constructorParameter(

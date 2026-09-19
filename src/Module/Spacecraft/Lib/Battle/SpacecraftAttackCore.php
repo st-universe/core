@@ -149,7 +149,7 @@ final class SpacecraftAttackCore implements SpacecraftAttackCoreInterface
             $ship,
             $targetWrapper->get()
         )) {
-            $attackCause = SpacecraftAttackCauseEnum::THOLIAN_WEB_REFLECTION;
+            $attackCause = SpacecraftAttackCauseEnum::TARGET_CAPTURED_IN_THOLIAN_WEB;
         }
 
         return [

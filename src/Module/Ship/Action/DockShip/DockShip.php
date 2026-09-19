@@ -11,13 +11,14 @@ use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
+use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
+use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Station;
@@ -31,7 +32,7 @@ final class DockShip implements ActionControllerInterface
         private DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         private PrivateMessageSenderInterface $privateMessageSender,
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private InteractionCheckerInterface $interactionChecker,
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
         private CancelRepairInterface $cancelRepair,
         private CancelRetrofitInterface $cancelRetrofit
     ) {}
@@ -64,27 +65,27 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->interactionChecker->checkPosition($target, $ship)) {
+        if (!$this->interactionCheckerBuilderFactory
+            ->createInteractionChecker()
+            ->setSource($ship)
+            ->setTarget($target)
+            ->setCheckTypes([
+                InteractionCheckType::EXPECT_SOURCE_ENABLED,
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
+                InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
+                InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
+                InteractionCheckType::EXPECT_SOURCE_UNWARPED,
+                InteractionCheckType::EXPECT_SOURCE_TACHYON,
+                InteractionCheckType::EXPECT_TARGET_UNWARPED,
+                InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
+                InteractionCheckType::EXPECT_TARGET_UNSHIELDED,
+                InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB
+            ])
+            ->check($game->getInfo())) {
             return;
         }
+
         if ($ship->getDockedTo() !== null) {
-            return;
-        }
-        if (!$target->isStation()) {
-            return;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
-            return;
-        }
-
-        if ($ship->isTractored()) {
-            $game->getInfo()->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
-            return;
-        }
-
-        if ($target->isShielded()) {
-            $game->getInfo()->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;
         }
 
@@ -122,14 +123,11 @@ final class DockShip implements ActionControllerInterface
             $game->getInfo()->addInformation('Zurzeit sind alle Dockplätze belegt');
             return;
         }
-        if ($ship->isCloaked()) {
-            $game->getInfo()->addInformation("Das Schiff ist getarnt");
-            return;
-        }
 
         try {
             $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::SHIELDS);
         } catch (SpacecraftSystemException) {
+            // nothing to do here
         }
 
         if ($this->cancelRepair->cancelRepair($ship)) {

@@ -19,13 +19,13 @@ enum InteractionCheckType
     case EXPECT_SOURCE_UNBLOCKED;
 
     // TARGET
-    case EXPECT_TARGET_NO_VACATION;
     case EXPECT_TARGET_NOT_NPC;
     case EXPECT_TARGET_UNSHIELDED;
     case EXPECT_TARGET_UNCLOAKED;
     case EXPECT_TARGET_UNWARPED;
     case EXPECT_TARGET_SAME_USER;
     case EXPECT_TARGET_ALSO_IN_FINISHED_WEB;
+    case EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB;
     case EXPECT_TARGET_DOCKED_OR_NO_ION_STORM;
     case EXPECT_TARGET_UNBLOCKED;
 
@@ -39,11 +39,11 @@ enum InteractionCheckType
             self::EXPECT_SOURCE_ENABLED => sprintf('%s ist kampfunfähig', $placeholder),
             self::EXPECT_SOURCE_UNTRACTORED => 'Das Schiff wird von einem Traktorstrahl gehalten',
             self::EXPECT_SOURCE_UNBLOCKED => 'Die Kolonie wird blockiert.',
-            self::EXPECT_TARGET_NO_VACATION => 'Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!',
             self::EXPECT_TARGET_NOT_NPC => 'Aktion nicht möglich, der Spieler ist NPC!',
             self::EXPECT_TARGET_UNSHIELDED => 'Das Ziel hat die Schilde aktiviert',
             self::EXPECT_TARGET_UNWARPED => 'Das Ziel hat den Warpantrieb aktiviert',
             self::EXPECT_TARGET_ALSO_IN_FINISHED_WEB => 'Das Ziel ist nicht mit im Energienetz gefangen',
+            self::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB => 'Das Ziel ist nicht auf derselben Seite des Energienetzes',
             self::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM => 'Beamen nicht möglich während eines Ionensturms',
             self::EXPECT_TARGET_UNBLOCKED => 'Das Ziel wird blockiert.',
             self::EXPECT_SOURCE_TACHYON => throw new SanityCheckException('Tried to interact with cloaked entity without active tachyon'),

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use Stu\Exception\AccessViolationException;
+use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -18,9 +18,10 @@ final class Topic implements ViewControllerInterface
     public const int ALLIANCEBOARDLIMITER = 20;
 
     public function __construct(
-        private TopicRequestInterface $topicRequest,
-        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+        private readonly TopicRequestInterface $topicRequest,
+        private readonly AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private readonly AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private readonly PagingFactory $pagingFactory
     ) {}
 
     #[\Override]
@@ -76,7 +77,12 @@ final class Topic implements ViewControllerInterface
 
         $game->setViewTemplate('html/alliance/allianceboardtopic.twig');
         $game->setTemplateVar('TOPIC', $topic);
-        $game->setTemplateVar('TOPIC_NAVIGATION', $this->getTopicNavigation($topic));
+        $game->setTemplateVar('PAGING', $this->pagingFactory->createPaging(
+            $topic->getPostCount(),
+            self::ALLIANCEBOARDLIMITER,
+            $this->topicRequest->getPageMark(),
+            sprintf('?SHOW_TOPIC=1&boardid=%d&topicid=%d', $boardId, $topicId)
+        ));
         $game->setTemplateVar(
             'POSTINGS',
             $this->allianceBoardPostRepository->getByTopic(
@@ -86,38 +92,5 @@ final class Topic implements ViewControllerInterface
             )
         );
         $game->setTemplateVar('USERID', $game->getUser()->getId());
-    }
-
-    /** @return array< array{page: '<'|'<<'|'>', mark: int<-20, max>, cssclass: 'pages'}|array{page: '>>'|float, mark: float, cssclass: 'pages'|'pages selected'}> */
-    private function getTopicNavigation(AllianceBoardTopic $topic): array
-    {
-        $mark = $this->topicRequest->getPageMark();
-        if ($mark % self::ALLIANCEBOARDLIMITER !== 0 || $mark < 0) {
-            $mark = 0;
-        }
-
-        $maxcount = $topic->getPostCount();
-        $maxpage = ceil($maxcount / self::ALLIANCEBOARDLIMITER);
-        $curpage = floor($mark / self::ALLIANCEBOARDLIMITER);
-        $ret = [];
-        if ($curpage != 0) {
-            $ret[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $ret[] = ["page" => "<", "mark" => ($mark - self::ALLIANCEBOARDLIMITER), "cssclass" => "pages"];
-        }
-
-        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-            if ($i > $maxpage || $i < 1) {
-                continue;
-            }
-
-            $ret[] = ["page" => $i, "mark" => ($i * self::ALLIANCEBOARDLIMITER - self::ALLIANCEBOARDLIMITER), "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")];
-        }
-
-        if ($curpage + 1 !== $maxpage) {
-            $ret[] = ["page" => ">", "mark" => ($mark + self::ALLIANCEBOARDLIMITER), "cssclass" => "pages"];
-            $ret[] = ["page" => ">>", "mark" => $maxpage * self::ALLIANCEBOARDLIMITER - self::ALLIANCEBOARDLIMITER, "cssclass" => "pages"];
-        }
-
-        return $ret;
     }
 }

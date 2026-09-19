@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Orm\Repository\AllianceBoardTopicRepository;
 
 #[Table(name: 'stu_alliance_topics')]
@@ -139,24 +138,6 @@ class AllianceBoardTopic
     {
         $this->user = $user;
         return $this;
-    }
-
-    /**
-     * @return null|array<int>
-     */
-    public function getPages(): ?array
-    {
-        $postCount = count($this->getPosts());
-
-        if ($postCount <= Topic::ALLIANCEBOARDLIMITER) {
-            return null;
-        }
-
-        $pages = [];
-        for ($i = 1; $i <= ceil($postCount / Topic::ALLIANCEBOARDLIMITER); $i++) {
-            $pages[$i] = ($i - 1) * Topic::ALLIANCEBOARDLIMITER;
-        }
-        return $pages;
     }
 
     public function getPostCount(): int

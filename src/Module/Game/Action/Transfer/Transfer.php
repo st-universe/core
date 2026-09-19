@@ -88,7 +88,6 @@ final class Transfer implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED,
                 InteractionCheckType::EXPECT_SOURCE_UNSHIELDED,
                 InteractionCheckType::EXPECT_SOURCE_UNBLOCKED,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM,
                 InteractionCheckType::EXPECT_TARGET_UNWARPED,
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,

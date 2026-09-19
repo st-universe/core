@@ -32,15 +32,15 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
     }
 
     #[\Override]
-    public function check(InformationInterface $information): bool
+    public function check(InformationInterface $information, bool $expectTargetNoVacation = true): bool
     {
         $targetUser = $this->target->getUser();
         if (
-            $this->shouldCheck(InteractionCheckType::EXPECT_TARGET_NO_VACATION)
+            $expectTargetNoVacation
             && $targetUser !== null
             && $targetUser->isVacationRequestOldEnough()
         ) {
-            $information->addInformation(InteractionCheckType::EXPECT_TARGET_NO_VACATION->getReason());
+            $information->addInformation('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!');
             return false;
         }
 
