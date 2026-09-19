@@ -79,7 +79,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED
             ])
-            ->check($game->getInfo())) {
+            ->check($game->getInfo(), false)) {
             return;
         }
 

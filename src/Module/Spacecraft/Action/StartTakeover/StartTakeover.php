@@ -79,7 +79,6 @@ final class StartTakeover implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_ENABLED,
                 InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
                 InteractionCheckType::EXPECT_SOURCE_TACHYON,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
             ->check($game->getInfo())) {

@@ -94,9 +94,7 @@ final class ShowColonyScan implements ViewControllerInterface
             ->createInteractionChecker()
             ->setSource($ship)
             ->setTarget($colony)
-            ->setCheckTypes([
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION
-            ])
+            ->setCheckTypes([])
             ->check($game->getInfo())) {
             $game->setMacroInAjaxWindow('');
             return;

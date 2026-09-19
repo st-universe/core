@@ -60,7 +60,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNWARPED,
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
             ])
-            ->check($game->getInfo())) {
+            ->check($game->getInfo(), false)) {
             return;
         }
 

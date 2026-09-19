@@ -128,8 +128,7 @@ class InterceptShipTest extends StuTestCase
         $checkTypesSetup->shouldReceive('setCheckTypes')
             ->with([
                 InteractionCheckType::EXPECT_SOURCE_ENABLED,
-                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW,
-                InteractionCheckType::EXPECT_TARGET_NO_VACATION
+                InteractionCheckType::EXPECT_SOURCE_SUFFICIENT_CREW
             ])
             ->once()
             ->andReturn($interactionChecker);
