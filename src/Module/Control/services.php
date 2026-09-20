@@ -35,6 +35,7 @@ use Stu\Module\Control\Router\Handler\UserLockedFallbackHandler;
 use function DI\autowire;
 
 return [
+    GameSessionInitializerInterface::class => autowire(GameSessionInitializer::class),
     AccessCheckInterface::class => autowire(AccessCheck::class),
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     ComponentSetupInterface::class => autowire(ComponentSetup::class),
