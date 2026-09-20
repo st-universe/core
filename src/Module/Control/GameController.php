@@ -13,7 +13,6 @@ use Stu\Exception\MaintenanceGameStateException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
-use Stu\Lib\UserLockedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\ViewExecution;
@@ -40,6 +39,7 @@ final class GameController implements GameControllerInterface
 
     public function __construct(
         private readonly SessionInterface $session,
+        private readonly UserLockCheckerInterface $userLockChecker,
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
         private readonly TwigPageInterface $twigPage,
@@ -235,7 +235,9 @@ final class GameController implements GameControllerInterface
                 exit;
             }
 
-            $this->checkUserLock();
+            if ($this->hasUser()) {
+                $this->userLockChecker->check($this->getUser());
+            }
 
             $callbackExecuted = false;
             if ($this->shouldExecuteLoginBeforeGameState($module)) {
@@ -281,23 +283,6 @@ final class GameController implements GameControllerInterface
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)ceil($renderMs / 1_000_000));
-    }
-
-    private function checkUserLock(): void
-    {
-        if ($this->hasUser()) {
-            $user = $this->getUser();
-
-            $userLock = $user->getUserLock();
-            if ($this->getUser()->isLocked() && $userLock !== null) {
-                $this->session->logout();
-
-                throw new UserLockedException(
-                    _('Dein Spieleraccount wurde gesperrt'),
-                    sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
-                );
-            }
-        }
     }
 
     private function shouldExecuteLoginBeforeGameState(ModuleEnum $module): bool
