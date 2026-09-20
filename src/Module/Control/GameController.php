@@ -3,7 +3,6 @@
 namespace Stu\Module\Control;
 
 use BadMethodCallException;
-use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
@@ -80,13 +79,7 @@ final class GameController implements GameControllerInterface
     #[\Override]
     public function setViewTemplate(string $viewTemplate): void
     {
-        $isSwitch = request::has('switch');
-        if ($isSwitch) {
-            $this->setTemplateFile('html/view/breadcrumbAndView.twig');
-            $this->setTemplateVar('VIEW_TEMPLATE', $viewTemplate);
-        } else {
-            $this->gameSetup->setTemplateAndComponents($viewTemplate, $this);
-        }
+        $this->gameSetup->setTemplateAndComponents($viewTemplate, $this);
     }
 
     #[\Override]
