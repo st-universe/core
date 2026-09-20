@@ -42,6 +42,7 @@ return [
     UserLockCheckerInterface::class => autowire(UserLockChecker::class),
     MaintenanceLoginExecutorInterface::class => autowire(MaintenanceLoginExecutor::class),
     GameResponseFinalizerInterface::class => autowire(GameResponseFinalizer::class),
+    GameModuleAccessCheckerInterface::class => autowire(GameModuleAccessChecker::class),
     AccessCheckInterface::class => autowire(AccessCheck::class),
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     ComponentSetupInterface::class => autowire(ComponentSetup::class),

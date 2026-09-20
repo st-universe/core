@@ -33,6 +33,7 @@ final class GameController implements GameControllerInterface
     public function __construct(
         private readonly SessionInterface $session,
         private readonly UserLockCheckerInterface $userLockChecker,
+        private readonly GameModuleAccessCheckerInterface $gameModuleAccessChecker,
         private readonly MaintenanceLoginExecutorInterface $maintenanceLoginExecutor,
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
@@ -202,12 +203,7 @@ final class GameController implements GameControllerInterface
 
         try {
 
-            if ($module === ModuleEnum::NPC && (!$this->isNpc() && !$this->isAdmin())) {
-                header(self::REDIRECT_TO_DOMAIN_ROOT);
-                exit;
-            }
-
-            if ($module === ModuleEnum::ADMIN && !$this->isAdmin()) {
+            if (!$this->gameModuleAccessChecker->isAllowed($module, $this)) {
                 header(self::REDIRECT_TO_DOMAIN_ROOT);
                 exit;
             }
