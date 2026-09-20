@@ -13,11 +13,9 @@ use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\ViewExecution;
-use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Control\Router\FallbackRouteException;
 use Stu\Module\Control\Router\FallbackRouterInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
-use Stu\Module\Logging\StuLogger;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
@@ -42,8 +40,7 @@ final class GameController implements GameControllerInterface
         private readonly TwigPageInterface $twigPage,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly ComponentSetupInterface $componentSetup,
-        private readonly GameTwigRendererInterface $gameTwigRenderer,
+        private readonly GameResponseFinalizerInterface $gameResponseFinalizer,
         private readonly FallbackRouterInterface $fallbackRouter,
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
@@ -249,34 +246,9 @@ final class GameController implements GameControllerInterface
             $this->fallbackRouter->showFallbackSite($e, $this);
         }
 
-        $isTemplateSet = $this->twigPage->isTemplateSet();
-
-        if (!$isTemplateSet) {
-            StuLogger::logf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET');
-            StuLogger::log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
-        }
-
-        $this->componentSetup->setup($this);
-
-        $this->render($gameRequest);
-    }
-
-    private function render(GameRequest $gameRequest): void
-    {
-        $user = $this->hasUser()
-            ? $this->getUser()
-            : null;
-
-        $startTime = hrtime(true);
-        $renderResult = $this->gameTwigRenderer->render($this, $user);
-        $renderMs = hrtime(true) - $startTime;
-
         ob_start();
-        echo $renderResult;
+        echo $this->gameResponseFinalizer->finalize($this, $gameRequest);
         ob_end_flush();
-
-        // SAVE META DATA
-        $gameRequest->setRenderMs((int)ceil($renderMs / 1_000_000));
     }
 
     #[\Override]

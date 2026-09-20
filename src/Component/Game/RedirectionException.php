@@ -10,6 +10,7 @@ class RedirectionException extends FallbackRouteException
 {
     public function __construct(private string $href)
     {
+        parent::__construct($href);
     }
 
     public function getHref(): string
