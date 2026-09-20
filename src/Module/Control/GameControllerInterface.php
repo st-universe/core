@@ -62,7 +62,7 @@ interface GameControllerInterface
 
     public function getGameRequest(): GameRequest;
 
-    public function main(ModuleEnum $view): void;
+    public function main(ModuleEnum $view, GameRequest $gameRequest): void;
 
     public function isAdmin(): bool;
 

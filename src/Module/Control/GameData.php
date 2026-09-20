@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control;
 
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 
 final class GameData
@@ -24,8 +23,6 @@ final class GameData
 
     /** @var array<int, mixed> $viewContext */
     public array $viewContext = [];
-
-    public ?GameRequest $gameRequest = null;
 
     public function __construct()
     {
