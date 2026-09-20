@@ -13,11 +13,16 @@ class GameRequestRunnerTest extends StuTestCase
     public function testRunStartsSessionAndDelegatesToController(): void
     {
         $gameController = $this->mock(GameControllerInterface::class);
+        $sessionStarter = $this->mock(SessionStarterInterface::class);
+
+        $sessionStarter->shouldReceive('start')
+            ->withNoArgs()
+            ->once();
         $gameController->shouldReceive('main')
             ->with(ModuleEnum::GAME)
             ->once();
 
-        $runner = new GameRequestRunner($gameController);
+        $runner = new GameRequestRunner($gameController, $sessionStarter);
 
         $runner->run(ModuleEnum::GAME);
     }
