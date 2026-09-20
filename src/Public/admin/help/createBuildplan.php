@@ -8,7 +8,7 @@ use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Config\Init;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\AdminSessionGuardInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Module;
@@ -19,8 +19,6 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-@session_start();
-
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
@@ -28,7 +26,7 @@ Init::run(function (ContainerInterface $dic): void {
 
     $db->beginTransaction();
 
-    $dic->get(GameControllerInterface::class)->sessionAndAdminCheck();
+    $dic->get(AdminSessionGuardInterface::class)->check();
 
     $shipRumpRepo = $dic->get(SpacecraftRumpRepositoryInterface::class);
     $shipRumpModuleLevelRepo = $dic->get(ShipRumpModuleLevelRepositoryInterface::class);

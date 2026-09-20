@@ -196,16 +196,6 @@ final class GameController implements GameControllerInterface
     }
 
     #[\Override]
-    public function sessionAndAdminCheck(): void
-    {
-        $this->session->createSession();
-
-        if (!$this->isAdmin()) {
-            header(self::REDIRECT_TO_DOMAIN_ROOT);
-        }
-    }
-
-    #[\Override]
     public function getGameRequest(): GameRequest
     {
         return $this->gameRequest;

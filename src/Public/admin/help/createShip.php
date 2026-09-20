@@ -5,15 +5,13 @@ declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\AdminSessionGuardInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-
-@session_start();
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
@@ -22,7 +20,7 @@ Init::run(function (ContainerInterface $dic): void {
 
     $db->beginTransaction();
 
-    $dic->get(GameControllerInterface::class)->sessionAndAdminCheck();
+    $dic->get(AdminSessionGuardInterface::class)->check();
 
     $buildplanRepo = $dic->get(SpacecraftBuildplanRepositoryInterface::class);
     $torpedoTypeRepo = $dic->get(TorpedoTypeRepositoryInterface::class);

@@ -58,8 +58,6 @@ interface GameControllerInterface
 
     public function getSessionString(): string;
 
-    public function sessionAndAdminCheck(): void;
-
     public function getGameRequest(): GameRequest;
 
     public function main(ModuleEnum $view, GameRequest $gameRequest): void;
