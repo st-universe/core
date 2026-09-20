@@ -34,7 +34,6 @@ final class LockUser implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('admin', LogLevelEnum::ERROR);
         $game->setView(Playerlist::VIEW_IDENTIFIER);
 
         $this->loggerUtil->log('A');
