@@ -6,6 +6,7 @@ namespace Stu\Config;
 
 use request;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,7 +23,8 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         private readonly SessionStarterInterface $sessionStarter,
         private readonly GameSessionInitializerInterface $gameSessionInitializer,
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
-        private readonly UuidGeneratorInterface $uuidGenerator
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly GameRequestSaverInterface $gameRequestSaver
     ) {}
 
     #[\Override]
@@ -31,19 +33,25 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         $this->sessionStarter->start();
 
         $gameRequest = $this->getGameRequest();
+        $errorOccured = false;
 
         try {
             $user = $this->gameSessionInitializer->initialize($module);
             $gameRequest->setUserId($user);
             $this->gameController->main($module, $gameRequest);
         } catch (SessionInvalidException) {
-            session_destroy();
+            $errorOccured = true;
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                session_destroy();
+            }
 
             if (request::isAjaxRequest()) {
                 header('HTTP/1.0 400');
             } else {
                 header(self::REDIRECT_TO_DOMAIN_ROOT);
             }
+        } finally {
+            $this->gameRequestSaver->save($gameRequest, $errorOccured);
         }
     }
 

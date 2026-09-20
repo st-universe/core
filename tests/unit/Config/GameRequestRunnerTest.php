@@ -6,6 +6,8 @@ namespace Stu\Config;
 
 use Mockery;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
+use Stu\Exception\SessionInvalidException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameSessionInitializerInterface;
@@ -25,6 +27,7 @@ class GameRequestRunnerTest extends StuTestCase
         $uuidGenerator = $this->mock(UuidGeneratorInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
         $user = $this->mock(User::class);
+        $gameRequestSaver = $this->mock(GameRequestSaverInterface::class);
 
         $sessionStarter->shouldReceive('start')
             ->withNoArgs()
@@ -60,13 +63,54 @@ class GameRequestRunnerTest extends StuTestCase
         $gameController->shouldReceive('main')
             ->with(ModuleEnum::GAME, $gameRequest)
             ->once();
+        $gameRequestSaver->shouldReceive('save')
+            ->with($gameRequest, false)
+            ->once();
 
         $runner = new GameRequestRunner(
             $gameController,
             $sessionStarter,
             $gameSessionInitializer,
             $gameRequestRepository,
-            $uuidGenerator
+            $uuidGenerator,
+            $gameRequestSaver
+        );
+
+        $runner->run(ModuleEnum::GAME);
+    }
+
+    public function testRunSavesRequestAsErrorWhenSessionIsInvalid(): void
+    {
+        $gameController = $this->mock(GameControllerInterface::class);
+        $sessionStarter = $this->mock(SessionStarterInterface::class);
+        $gameSessionInitializer = $this->mock(GameSessionInitializerInterface::class);
+        $gameRequestRepository = $this->mock(GameRequestRepositoryInterface::class);
+        $uuidGenerator = $this->mock(UuidGeneratorInterface::class);
+        $gameRequestSaver = $this->mock(GameRequestSaverInterface::class);
+        $gameRequest = $this->mock(GameRequest::class);
+
+        $sessionStarter->shouldReceive('start')->once();
+        $gameRequestRepository->shouldReceive('prototype')->once()->andReturn($gameRequest);
+        $uuidGenerator->shouldReceive('genV4')->once()->andReturn('request-id');
+        $gameRequest->shouldReceive('setTime')->once()->andReturnSelf();
+        $gameRequest->shouldReceive('setParameterArray')->once()->andReturnSelf();
+        $gameRequest->shouldReceive('setRequestId')->with('request-id')->once()->andReturnSelf();
+        $gameSessionInitializer->shouldReceive('initialize')
+            ->with(ModuleEnum::GAME)
+            ->once()
+            ->andThrow(new SessionInvalidException());
+        $gameRequestSaver->shouldReceive('save')
+            ->with($gameRequest, true)
+            ->once();
+        $gameController->shouldNotReceive('main');
+
+        $runner = new GameRequestRunner(
+            $gameController,
+            $sessionStarter,
+            $gameSessionInitializer,
+            $gameRequestRepository,
+            $uuidGenerator,
+            $gameRequestSaver
         );
 
         $runner->run(ModuleEnum::GAME);
