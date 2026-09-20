@@ -222,8 +222,7 @@ final class GameController implements GameControllerInterface
         $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $module);
 
         $this->gameRequest = $gameRequest;
-        $gameRequest->setTurnId($this->getCurrentRound());
-        
+
         try {
 
             if ($module === ModuleEnum::NPC && (!$this->isNpc() && !$this->isAdmin())) {
@@ -236,7 +235,7 @@ final class GameController implements GameControllerInterface
                 exit;
             }
 
-            $this->checkUserLock($gameRequest);
+            $this->checkUserLock();
 
             $callbackExecuted = false;
             if ($this->shouldExecuteLoginBeforeGameState($module)) {
@@ -284,11 +283,10 @@ final class GameController implements GameControllerInterface
         $gameRequest->setRenderMs((int)ceil($renderMs / 1_000_000));
     }
 
-    private function checkUserLock(GameRequest $gameRequest): void
+    private function checkUserLock(): void
     {
         if ($this->hasUser()) {
             $user = $this->getUser();
-            $gameRequest->setUserId($user);
 
             $userLock = $user->getUserLock();
             if ($this->getUser()->isLocked() && $userLock !== null) {

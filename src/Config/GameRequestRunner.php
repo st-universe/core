@@ -12,6 +12,7 @@ use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameSessionInitializerInterface;
 use Stu\Orm\Entity\GameRequest;
+use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 
 final class GameRequestRunner implements GameRequestRunnerInterface
@@ -24,7 +25,8 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         private readonly GameSessionInitializerInterface $gameSessionInitializer,
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
         private readonly UuidGeneratorInterface $uuidGenerator,
-        private readonly GameRequestSaverInterface $gameRequestSaver
+        private readonly GameRequestSaverInterface $gameRequestSaver,
+        private readonly GameTurnRepositoryInterface $gameTurnRepository
     ) {}
 
     #[\Override]
@@ -59,6 +61,7 @@ final class GameRequestRunner implements GameRequestRunnerInterface
     {
         $gameRequest = $this->gameRequestRepository->prototype();
         $gameRequest->setTime(time());
+        $gameRequest->setTurnId($this->gameTurnRepository->getCurrent());
         $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
         $gameRequest->setRequestId($this->uuidGenerator->genV4());
 

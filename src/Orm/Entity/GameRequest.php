@@ -78,9 +78,11 @@ class GameRequest
         return $this;
     }
 
-    public function setTurnId(GameTurn $turn): GameRequest
+    public function setTurnId(?GameTurn $turn): GameRequest
     {
-        $this->turn_id = $turn->getId();
+        if ($turn !== null) {
+            $this->turn_id = $turn->getId();
+        }
         return $this;
     }
 

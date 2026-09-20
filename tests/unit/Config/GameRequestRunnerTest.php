@@ -14,6 +14,7 @@ use Stu\Module\Control\GameSessionInitializerInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
+use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\StuTestCase;
 
 class GameRequestRunnerTest extends StuTestCase
@@ -28,6 +29,8 @@ class GameRequestRunnerTest extends StuTestCase
         $gameRequest = $this->mock(GameRequest::class);
         $user = $this->mock(User::class);
         $gameRequestSaver = $this->mock(GameRequestSaverInterface::class);
+        $gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
+        $gameTurn = $this->mock(\Stu\Orm\Entity\GameTurn::class);
 
         $sessionStarter->shouldReceive('start')
             ->withNoArgs()
@@ -40,12 +43,20 @@ class GameRequestRunnerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('request-id');
+        $gameTurnRepository->shouldReceive('getCurrent')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($gameTurn);
         $gameSessionInitializer->shouldReceive('initialize')
             ->with(ModuleEnum::GAME)
             ->once()
             ->andReturn($user);
         $gameRequest->shouldReceive('setTime')
             ->withArgs([Mockery::type('int')])
+            ->once()
+            ->andReturnSelf();
+        $gameRequest->shouldReceive('setTurnId')
+            ->with($gameTurn)
             ->once()
             ->andReturnSelf();
         $gameRequest->shouldReceive('setParameterArray')
@@ -73,7 +84,8 @@ class GameRequestRunnerTest extends StuTestCase
             $gameSessionInitializer,
             $gameRequestRepository,
             $uuidGenerator,
-            $gameRequestSaver
+            $gameRequestSaver,
+            $gameTurnRepository
         );
 
         $runner->run(ModuleEnum::GAME);
@@ -87,12 +99,16 @@ class GameRequestRunnerTest extends StuTestCase
         $gameRequestRepository = $this->mock(GameRequestRepositoryInterface::class);
         $uuidGenerator = $this->mock(UuidGeneratorInterface::class);
         $gameRequestSaver = $this->mock(GameRequestSaverInterface::class);
+        $gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
+        $gameTurn = $this->mock(\Stu\Orm\Entity\GameTurn::class);
         $gameRequest = $this->mock(GameRequest::class);
 
         $sessionStarter->shouldReceive('start')->once();
         $gameRequestRepository->shouldReceive('prototype')->once()->andReturn($gameRequest);
         $uuidGenerator->shouldReceive('genV4')->once()->andReturn('request-id');
+        $gameTurnRepository->shouldReceive('getCurrent')->once()->andReturn($gameTurn);
         $gameRequest->shouldReceive('setTime')->once()->andReturnSelf();
+        $gameRequest->shouldReceive('setTurnId')->with($gameTurn)->once()->andReturnSelf();
         $gameRequest->shouldReceive('setParameterArray')->once()->andReturnSelf();
         $gameRequest->shouldReceive('setRequestId')->with('request-id')->once()->andReturnSelf();
         $gameSessionInitializer->shouldReceive('initialize')
@@ -110,7 +126,8 @@ class GameRequestRunnerTest extends StuTestCase
             $gameSessionInitializer,
             $gameRequestRepository,
             $uuidGenerator,
-            $gameRequestSaver
+            $gameRequestSaver,
+            $gameTurnRepository
         );
 
         $runner->run(ModuleEnum::GAME);
