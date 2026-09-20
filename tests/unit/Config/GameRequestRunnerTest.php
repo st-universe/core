@@ -7,6 +7,7 @@ namespace Stu\Config;
 use Mockery;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
+use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -85,7 +86,8 @@ class GameRequestRunnerTest extends StuTestCase
             $gameRequestRepository,
             $uuidGenerator,
             $gameRequestSaver,
-            $gameTurnRepository
+            $gameTurnRepository,
+            $this->mock(RegistrationReferralTrackerInterface::class)
         );
 
         $runner->run(ModuleEnum::GAME);
@@ -127,7 +129,8 @@ class GameRequestRunnerTest extends StuTestCase
             $gameRequestRepository,
             $uuidGenerator,
             $gameRequestSaver,
-            $gameTurnRepository
+            $gameTurnRepository,
+            $this->mock(RegistrationReferralTrackerInterface::class)
         );
 
         $runner->run(ModuleEnum::GAME);

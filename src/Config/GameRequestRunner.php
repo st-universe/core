@@ -7,6 +7,8 @@ namespace Stu\Config;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
+use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
+use Stu\Component\Game\RedirectionException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,13 +28,22 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         private readonly GameRequestRepositoryInterface $gameRequestRepository,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly GameRequestSaverInterface $gameRequestSaver,
-        private readonly GameTurnRepositoryInterface $gameTurnRepository
+        private readonly GameTurnRepositoryInterface $gameTurnRepository,
+        private readonly RegistrationReferralTrackerInterface $registrationReferralTracker
     ) {}
 
     #[\Override]
     public function run(ModuleEnum $module): void
     {
         $this->sessionStarter->start();
+
+        if ($module === ModuleEnum::INDEX) {
+            $redirectTarget = $this->registrationReferralTracker->captureFromRequest();
+            if ($redirectTarget !== null) {
+                header(sprintf('Location: %s', $redirectTarget), true, 302);
+                return;
+            }
+        }
 
         $gameRequest = $this->getGameRequest();
         $errorOccured = false;
