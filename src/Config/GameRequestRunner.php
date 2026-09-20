@@ -10,13 +10,14 @@ use Stu\Module\Control\GameControllerInterface;
 final class GameRequestRunner implements GameRequestRunnerInterface
 {
     public function __construct(
-        private readonly GameControllerInterface $gameController
+        private readonly GameControllerInterface $gameController,
+        private readonly SessionStarterInterface $sessionStarter
     ) {}
 
     #[\Override]
     public function run(ModuleEnum $module): void
     {
-        @session_start();
+        $this->sessionStarter->start();
 
         $this->gameController->main($module);
     }

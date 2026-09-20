@@ -48,6 +48,7 @@ return [
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
     SettingsCacheInterface::class => autowire(SettingsCache::class),
     StuConfigInterface::class => autowire(StuConfig::class),
+    SessionStarterInterface::class => autowire(SessionStarter::class),
     GameRequestRunnerInterface::class => autowire(GameRequestRunner::class),
     CacheProviderInterface::class => autowire(CacheProvider::class),
     CacheItemPoolInterface::class => function (ContainerInterface $c): CacheItemPoolInterface {
