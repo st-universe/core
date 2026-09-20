@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib;
 
+use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,10 +17,14 @@ final class GameSetup implements GameSetupInterface
     #[\Override]
     public function setTemplateAndComponents(string $viewTemplate, GameControllerInterface $game): void
     {
-        $game->setTemplateFile(ModuleEnum::GAME->getTemplate());
         $game->setTemplateVar('VIEW_TEMPLATE', $viewTemplate);
-
-        $this->registerComponents();
+        
+        if (request::has('switch')) {
+            $game->setTemplateFile('html/view/breadcrumbAndView.twig');
+        } else {
+            $game->setTemplateFile(ModuleEnum::GAME->getTemplate());
+            $this->registerComponents();
+        }
     }
 
     private function registerComponents(): void
