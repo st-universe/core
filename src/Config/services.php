@@ -48,6 +48,7 @@ return [
     SettingsFactoryInterface::class => autowire(SettingsFactory::class),
     SettingsCacheInterface::class => autowire(SettingsCache::class),
     StuConfigInterface::class => autowire(StuConfig::class),
+    GameRequestRunnerInterface::class => autowire(GameRequestRunner::class),
     CacheProviderInterface::class => autowire(CacheProvider::class),
     CacheItemPoolInterface::class => function (ContainerInterface $c): CacheItemPoolInterface {
         $stuConfig = $c->get(StuConfigInterface::class);
