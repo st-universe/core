@@ -8,7 +8,6 @@ use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
-use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Lib\Information\InformationWrapper;
@@ -49,7 +48,6 @@ final class GameController implements GameControllerInterface
         private readonly ComponentSetupInterface $componentSetup,
         private readonly GameTwigRendererInterface $gameTwigRenderer,
         private readonly FallbackRouterInterface $fallbackRouter,
-        private readonly GameRequestSaverInterface $gameRequestSaver,
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
         private readonly JavascriptExecutionInterface $javascriptExecution,
@@ -266,8 +264,6 @@ final class GameController implements GameControllerInterface
         $this->componentSetup->setup($this);
 
         $this->render($gameRequest);
-
-        $this->gameRequestSaver->save($gameRequest);
     }
 
     private function render(GameRequest $gameRequest): void
