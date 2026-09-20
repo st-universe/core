@@ -11,13 +11,10 @@ use Stu\Component\Game\RedirectionException;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\MaintenanceGameStateException;
-use Stu\Exception\SessionInvalidException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
-use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Lib\UserLockedException;
-use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\ViewExecution;
@@ -30,7 +27,6 @@ use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 
 final class GameController implements GameControllerInterface
@@ -40,21 +36,19 @@ final class GameController implements GameControllerInterface
     private const string LOGIN_ACTION_IDENTIFIER = 'B_LOGIN';
     private const string REDIRECT_TO_DOMAIN_ROOT = 'Location: /';
 
+    private GameRequest $gameRequest;
     private GameData $gameData;
 
     public function __construct(
         private readonly SessionInterface $session,
-        private readonly SessionLoginInterface $sessionLogin,
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
         private readonly TwigPageInterface $twigPage,
         private readonly StuConfigInterface $stuConfig,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly ComponentSetupInterface $componentSetup,
-        private readonly GameRequestRepositoryInterface $gameRequestRepository,
         private readonly GameTwigRendererInterface $gameTwigRenderer,
         private readonly FallbackRouterInterface $fallbackRouter,
-        private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly GameRequestSaverInterface $gameRequestSaver,
         private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
@@ -222,35 +216,17 @@ final class GameController implements GameControllerInterface
     #[\Override]
     public function getGameRequest(): GameRequest
     {
-        if ($this->gameData->gameRequest === null) {
-            $gameRequest = $this->gameRequestRepository->prototype();
-            $gameRequest->setTime(time());
-            $gameRequest->setTurnId($this->getCurrentRound());
-            $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
-            $gameRequest->setRequestId($this->uuidGenerator->genV4());
-
-            if ($this->hasUser()) {
-                $gameRequest->setUserId($this->getUser());
-            }
-
-            $this->gameData->gameRequest = $gameRequest;
-        }
-        return $this->gameData->gameRequest;
+        return $this->gameRequest;
     }
 
     #[\Override]
-    public function main(ModuleEnum $module): void {
+    public function main(ModuleEnum $module, GameRequest $gameRequest): void {
         $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $module);
 
-        $gameRequest = $this->getGameRequest();
-        $gameRequest->setModule($module->value);
-
+        $this->gameRequest = $gameRequest;
+        $gameRequest->setTurnId($this->getCurrentRound());
+        
         try {
-            if ($module->doSessionCheck()) {
-                $this->session->createSession();
-            } else {
-                $this->sessionLogin->checkLoginCookie();
-            }
 
             if ($module === ModuleEnum::NPC && (!$this->isNpc() && !$this->isAdmin())) {
                 header(self::REDIRECT_TO_DOMAIN_ROOT);
@@ -276,15 +252,6 @@ final class GameController implements GameControllerInterface
                 $this->callbackExecution->execute($module, $this);
             }
             $this->viewExecution->execute($module, $this);
-        } catch (SessionInvalidException) {
-            session_destroy();
-
-            if (request::isAjaxRequest()) {
-                header('HTTP/1.0 400');
-            } else {
-                header(self::REDIRECT_TO_DOMAIN_ROOT);
-            }
-            return;
         } catch (FallbackRouteException $e) {
             $this->fallbackRouter->showFallbackSite($e, $this);
         }
@@ -298,12 +265,12 @@ final class GameController implements GameControllerInterface
 
         $this->componentSetup->setup($this);
 
-        $this->render();
+        $this->render($gameRequest);
 
         $this->gameRequestSaver->save($gameRequest);
     }
 
-    private function render(): void
+    private function render(GameRequest $gameRequest): void
     {
         $user = $this->hasUser()
             ? $this->getUser()
@@ -318,7 +285,7 @@ final class GameController implements GameControllerInterface
         ob_end_flush();
 
         // SAVE META DATA
-        $this->getGameRequest()->setRenderMs((int)ceil($renderMs / 1_000_000));
+        $gameRequest->setRenderMs((int)ceil($renderMs / 1_000_000));
     }
 
     private function checkUserLock(GameRequest $gameRequest): void
