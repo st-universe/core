@@ -13,6 +13,8 @@ use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
+use Stu\Module\Control\Component\CallbackExecution;
+use Stu\Module\Control\Component\CallbackExecutionInterface;
 use Stu\Module\Control\Component\ControllerDiscovery;
 use Stu\Module\Control\Component\ControllerDiscoveryInterface;
 use Stu\Module\Control\Component\TutorialProvider;
@@ -37,9 +39,11 @@ use function DI\autowire;
 return [
     GameSessionInitializerInterface::class => autowire(GameSessionInitializer::class),
     UserLockCheckerInterface::class => autowire(UserLockChecker::class),
+    MaintenanceLoginExecutorInterface::class => autowire(MaintenanceLoginExecutor::class),
     AccessCheckInterface::class => autowire(AccessCheck::class),
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     ComponentSetupInterface::class => autowire(ComponentSetup::class),
+    CallbackExecutionInterface::class => autowire(CallbackExecution::class),
     GameStateInterface::class => autowire(GameState::class),
     ControllerDiscoveryInterface::class => autowire(ControllerDiscovery::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),
