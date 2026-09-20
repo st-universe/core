@@ -38,6 +38,7 @@ use function DI\autowire;
 
 return [
     GameSessionInitializerInterface::class => autowire(GameSessionInitializer::class),
+    AdminSessionGuardInterface::class => autowire(AdminSessionGuard::class),
     UserLockCheckerInterface::class => autowire(UserLockChecker::class),
     MaintenanceLoginExecutorInterface::class => autowire(MaintenanceLoginExecutor::class),
     GameResponseFinalizerInterface::class => autowire(GameResponseFinalizer::class),
