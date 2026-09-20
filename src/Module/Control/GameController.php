@@ -4,12 +4,9 @@ namespace Stu\Module\Control;
 
 use BadMethodCallException;
 use request;
-use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Game\RedirectionException;
 use Stu\Exception\AccessViolationException;
-use Stu\Exception\MaintenanceGameStateException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
@@ -31,7 +28,6 @@ final class GameController implements GameControllerInterface
 {
     public const string DEFAULT_VIEW = 'DEFAULT_VIEW';
 
-    private const string LOGIN_ACTION_IDENTIFIER = 'B_LOGIN';
     private const string REDIRECT_TO_DOMAIN_ROOT = 'Location: /';
 
     private GameRequest $gameRequest;
@@ -40,6 +36,7 @@ final class GameController implements GameControllerInterface
     public function __construct(
         private readonly SessionInterface $session,
         private readonly UserLockCheckerInterface $userLockChecker,
+        private readonly MaintenanceLoginExecutorInterface $maintenanceLoginExecutor,
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
         private readonly TwigPageInterface $twigPage,
@@ -239,11 +236,8 @@ final class GameController implements GameControllerInterface
                 $this->userLockChecker->check($this->getUser());
             }
 
-            $callbackExecuted = false;
-            if ($this->shouldExecuteLoginBeforeGameState($module)) {
-                $this->executeLoginBeforeGameState($module);
-                $callbackExecuted = true;
-            }
+            $callbackExecuted = $this->maintenanceLoginExecutor
+                ->executeIfRequired($module, $this);
 
             $this->gameState->checkGameState($this->isAdmin());
 
@@ -283,27 +277,6 @@ final class GameController implements GameControllerInterface
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)ceil($renderMs / 1_000_000));
-    }
-
-    private function shouldExecuteLoginBeforeGameState(ModuleEnum $module): bool
-    {
-        return $module === ModuleEnum::INDEX
-            && request::has(self::LOGIN_ACTION_IDENTIFIER)
-            && $this->gameState->getGameState() === GameStateEnum::MAINTENANCE;
-    }
-
-    private function executeLoginBeforeGameState(ModuleEnum $module): void
-    {
-        try {
-            $this->callbackExecution->execute($module, $this);
-        } catch (RedirectionException $e) {
-            if (!$this->isAdmin()) {
-                $this->session->logout();
-                throw new MaintenanceGameStateException($e->getMessage(), $e->getCode(), $e);
-            }
-
-            throw $e;
-        }
     }
 
     #[\Override]

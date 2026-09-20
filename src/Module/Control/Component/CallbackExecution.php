@@ -11,7 +11,7 @@ use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 
-class CallbackExecution
+class CallbackExecution implements CallbackExecutionInterface
 {
     public function __construct(
         private readonly ControllerDiscoveryInterface $controllerDiscovery,
