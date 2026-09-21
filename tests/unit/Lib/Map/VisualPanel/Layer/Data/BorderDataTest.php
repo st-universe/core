@@ -18,9 +18,11 @@ class BorderDataTest extends StuTestCase
 {
     #[TestWith(['impassable', true])]
     #[TestWith(['impassable', false])]
+    #[TestWith(['impassable', null])]
     #[TestWith(['cartographing', true])]
     #[TestWith(['cartographing', false])]
-    public function testFlushDoesNotWriteHydratedBorderData(string $field, bool $value): void
+    #[TestWith(['cartographing', null])]
+    public function testFlushDoesNotWriteHydratedBorderData(string $field, ?bool $value): void
     {
         $configuration = ORMSetup::createAttributeMetadataConfig([], true);
         $configuration->enableNativeLazyObjects(true);
@@ -55,7 +57,7 @@ class BorderDataTest extends StuTestCase
         $this->assertSame(12, $borderData->getPosX());
         $this->assertSame(34, $borderData->getPosY());
         $this->assertSame('#123456', $borderData->getComplementaryColor());
-        $this->assertSame((string) $value, $field === 'impassable'
+        $this->assertSame($value, $field === 'impassable'
             ? $borderData->getImpassable()
             : $borderData->getCartographing());
 
