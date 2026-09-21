@@ -32,12 +32,6 @@ final class CreateDeal implements ActionControllerInterface
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
         $user = $game->getUser();
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         $dealType = request::postInt('deal_type');
         $dealCount = request::postInt('deal_count');
         $factionId = request::postInt('faction_restriction');

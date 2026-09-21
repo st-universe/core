@@ -23,11 +23,6 @@ final class SetGameState implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $gameState = GameStateEnum::tryFrom(request::postInt('game_state'));
         if ($gameState === null) {
             $game->getInfo()->addInformation(_('Ungültiger Spielmodus'));

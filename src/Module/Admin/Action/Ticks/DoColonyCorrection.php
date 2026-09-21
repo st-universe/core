@@ -19,13 +19,6 @@ final class DoColonyCorrection implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
-
-        // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $this->colonyCorrector->correct();
 
         $game->getInfo()->addInformation("Korrektur der Kolonien wurde durchgeführt!");

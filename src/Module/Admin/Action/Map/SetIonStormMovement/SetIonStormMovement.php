@@ -32,10 +32,6 @@ final class SetIonStormMovement implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            $this->respondJson(['success' => false, 'message' => 'Aktion nur fuer Admins moeglich'], 403);
-        }
-
         $rootId = request::postInt('rootId');
         $directionInDegrees = $this->parseIntPostValue('directionInDegrees');
         $velocity = $this->parseIntPostValue('velocity');

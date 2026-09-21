@@ -38,10 +38,6 @@ final class BlockUser implements ActionControllerInterface
 
         $this->loggerUtil->log('A');
         // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
 
         $this->loggerUtil->log('B');
         $userIdToBlock = request::getIntFatal('uid');

@@ -31,24 +31,6 @@ final class RenameBuildplanTest extends StuTestCase
         $this->subject = new RenameBuildplan($this->spacecraftBuildplanRepository, $this->npcLogRepository);
     }
 
-    public function testNpcCannotRenameBuildplans(): void
-    {
-        $game = $this->mock(GameControllerInterface::class);
-
-        $game->shouldReceive('isAdmin')
-            ->once()
-            ->andReturn(false);
-        $game->shouldReceive('getInfo->addInformation')
-            ->with('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]')
-            ->once();
-        $game->shouldReceive('getUser')
-            ->never();
-        $this->spacecraftBuildplanRepository->shouldReceive('find')
-            ->never();
-
-        $this->subject->handle($game);
-    }
-
     public function testAdminCanRenameAnotherUsersBuildplan(): void
     {
         $buildplanId = 42;
@@ -63,9 +45,6 @@ final class RenameBuildplanTest extends StuTestCase
             'newName' => $newName
         ]);
 
-        $game->shouldReceive('isAdmin')
-            ->once()
-            ->andReturn(true);
         $game->shouldReceive('getUser')
             ->once()
             ->andReturn($admin);

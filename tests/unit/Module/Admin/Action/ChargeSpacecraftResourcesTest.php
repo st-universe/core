@@ -46,22 +46,6 @@ class ChargeSpacecraftResourcesTest extends StuTestCase
         );
     }
 
-    public function testHandleDoesNothingWhenNotAdmin(): void
-    {
-        $this->game->shouldReceive('setView')
-            ->with(ShowScripts::VIEW_IDENTIFIER)
-            ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $this->game->shouldReceive('getInfo->addInformation')
-            ->with('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]')
-            ->once();
-
-        $this->subject->handle($this->game);
-    }
-
     public function testHandleRequiresConfirmationForGlobalCharge(): void
     {
         request::setMockVars([
@@ -74,10 +58,6 @@ class ChargeSpacecraftResourcesTest extends StuTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->game->shouldReceive('getInfo->addInformation')
             ->with('Bitte die globale Spacecraft-Ladung zuerst bestätigen')
             ->once();
@@ -100,10 +80,6 @@ class ChargeSpacecraftResourcesTest extends StuTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->spacecraftRepository->shouldReceive('find')
             ->with(42)
             ->once()

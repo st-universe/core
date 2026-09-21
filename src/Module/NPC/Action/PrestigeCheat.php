@@ -27,15 +27,6 @@ final class PrestigeCheat implements ActionControllerInterface
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
         $currentUser = $game->getUser();
-
-        // only Admins or NPC can trigger
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_(
-                '[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'
-            ));
-            return;
-        }
-
         $userId = request::postInt('userid');
         if ($userId === 0) {
             $game->getInfo()->addInformation('Es wurde kein User ausgewählt');

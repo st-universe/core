@@ -22,9 +22,6 @@ final class AdminDeleteKnPost implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolationException();
-        }
         $admin = $game->getUser();
 
         /** @var KnPost|null $post */

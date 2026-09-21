@@ -48,11 +48,6 @@ final class ShowLiveMapData implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            header('HTTP/1.1 403 Forbidden');
-            exit;
-        }
-
         $layerId = request::getIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);
         if (!$layer instanceof Layer) {

@@ -24,13 +24,6 @@ final class DoManualMaintenance implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
-
-        // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
-            return;
-        }
-
         // load maintance tick runner without DatabaseBackup maintenance handler
         $maintenance = $this->maintenanceTickRunnerFactory->createMaintenanceTickRunner(
             array_filter(
