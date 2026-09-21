@@ -7,7 +7,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 
-#[Entity(readOnly: true)]
+#[Entity]
 class BorderData extends AbstractData
 {
     #[Column(type: 'string', nullable: true)]
@@ -16,12 +16,12 @@ class BorderData extends AbstractData
     private ?string $usercolor = null;
     #[Column(type: 'string', nullable: true)]
     private ?string $factioncolor = null;
-    #[Column(type: 'string', nullable: true)]
-    private ?string $impassable = null;
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $impassable = null;
     #[Column(type: 'string', nullable: true)]
     private ?string $normal = null;
-    #[Column(type: 'string', nullable: true)]
-    private ?string $cartographing = null;
+    #[Column(type: 'boolean', nullable: true)]
+    private ?bool $cartographing = null;
     #[Column(type: 'string', nullable: true)]
     private ?string $complementary_color = null;
 
@@ -40,7 +40,7 @@ class BorderData extends AbstractData
         return $this->usercolor;
     }
 
-    public function getImpassable(): ?string
+    public function getImpassable(): ?bool
     {
         return $this->impassable;
     }
@@ -50,7 +50,7 @@ class BorderData extends AbstractData
         return $this->normal;
     }
 
-    public function getCartographing(): ?string
+    public function getCartographing(): ?bool
     {
         return $this->cartographing;
     }
