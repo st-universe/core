@@ -28,11 +28,6 @@ final class CreateCrew implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $spacecraftId = request::postInt('spacecraft_id');
         $colonyId = request::postInt('colony_id');
         $amount = request::postIntFatal('crew_amount');

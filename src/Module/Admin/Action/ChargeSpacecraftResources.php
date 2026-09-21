@@ -49,11 +49,6 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $target = (string) request::postString('spacecraft_charge_target');
         if (!array_key_exists($target, self::TARGET_LABELS)) {
             $game->getInfo()->addInformation(_('Ungültige Ladeoption'));

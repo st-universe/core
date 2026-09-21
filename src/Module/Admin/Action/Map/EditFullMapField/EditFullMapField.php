@@ -43,10 +43,6 @@ final class EditFullMapField implements ActionControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            $this->respondJson(['success' => false, 'message' => 'Aktion nur fuer Admins moeglich'], 403);
-        }
-
         $selectedFields = $this->getSelectedFields();
         if ($selectedFields === []) {
             $this->respondJson(['success' => false, 'message' => 'Kartenfeld nicht gefunden'], 404);

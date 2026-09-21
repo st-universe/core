@@ -19,11 +19,6 @@ final class DoOrionSlaveTrade implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
-            return;
-        }
-
         $this->orionSlaveTrade->handle();
         $this->entityManager->flush();
         $game->getInfo()->addInformation('Der Orion Sklavenhandel wurde durchgeführt');

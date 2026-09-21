@@ -31,13 +31,6 @@ final class CommodityCheat implements ActionControllerInterface
         $text = '';
         $colony = null;
         $spacecraft = null;
-
-        // only Admins or NPC can trigger
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
             $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;

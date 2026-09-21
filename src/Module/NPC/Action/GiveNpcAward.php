@@ -34,14 +34,6 @@ final class GiveNpcAward implements ActionControllerInterface
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
         $currentUser = $game->getUser();
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_(
-                '[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'
-            ));
-            return;
-        }
-
         $awardId = request::postInt('assign_award_id');
         if ($awardId === 0) {
             $game->getInfo()->addInformation('Es wurde keine Award-ID angegeben');

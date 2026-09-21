@@ -66,12 +66,6 @@ final class CreateBuildplan implements ActionControllerInterface
                 $moduleSpecialList[] = (int)$moduleId;
             }
         }
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         $rump = $this->spacecraftRumpRepository->find($rumpId);
         if ($rump === null) {
             throw new RuntimeException(sprintf('rumpId %d does not exist!', $rumpId));

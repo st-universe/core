@@ -24,12 +24,6 @@ final class SaveWelcomeMessage implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         $user = $game->getUser();
         $factionId = $user->getFactionId();
         $welcomeMessage = request::postString('welcomemessage');

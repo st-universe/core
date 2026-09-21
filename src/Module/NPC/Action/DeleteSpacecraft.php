@@ -28,13 +28,6 @@ final class DeleteSpacecraft implements ActionControllerInterface
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
         $user = $game->getUser();
-
-        // only Admins or NPC can trigger
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid')) {
             $game->getInfo()->addInformation("Es wurde kein Spacecraft ausgewählt");
             return;

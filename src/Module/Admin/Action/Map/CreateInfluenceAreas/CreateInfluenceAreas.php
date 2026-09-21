@@ -43,13 +43,6 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
-
-        // only Admins can trigger this
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $layerId = request::postIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
