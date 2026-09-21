@@ -7,7 +7,7 @@ namespace Stu\Lib\Map\VisualPanel\Layer\Data;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 
-#[Entity]
+#[Entity(readOnly: true)]
 class BorderData extends AbstractData
 {
     #[Column(type: 'string', nullable: true)]
