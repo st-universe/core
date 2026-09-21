@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Contact;
-use Stu\Orm\Entity\RelationPermission;
 use Stu\Orm\Entity\User;
 
 /**
@@ -102,28 +101,21 @@ final class ContactRepository extends EntityRepository implements ContactReposit
             ->getResult();
         $this->deletePermissionsByContacts($contacts);
 
-        $this
-            ->getEntityManager()
-            ->createQuery(
-                sprintf('DELETE FROM %s c WHERE %s', Contact::class, $where)
-            )
-            ->setParameters($parameters)
-            ->execute();
+        $em = $this->getEntityManager();
+        foreach ($contacts as $contact) {
+            $em->remove($contact);
+        }
+        $em->flush();
     }
 
     /** @param list<Contact> $contacts */
     private function deletePermissionsByContacts(array $contacts): void
     {
-        if ($contacts === []) {
-            return;
+        $em = $this->getEntityManager();
+        foreach ($contacts as $contact) {
+            foreach ($contact->getRelationPermissions() as $permission) {
+                $em->remove($permission);
+            }
         }
-
-        $this
-            ->getEntityManager()
-            ->createQuery(
-                sprintf('DELETE FROM %s rp WHERE rp.contact IN (:contacts)', RelationPermission::class)
-            )
-            ->setParameter('contacts', $contacts)
-            ->execute();
     }
 }
