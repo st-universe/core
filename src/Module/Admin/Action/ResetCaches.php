@@ -20,12 +20,6 @@ final class ResetCaches implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $this->cache->clear();
 
         $game->getInfo()->addInformation(_('Der PHP Cache Item Pool wurde geleert'));

@@ -26,11 +26,6 @@ final class LogPlayerDetails implements ActionControllerInterface
     {
         $userId = request::postIntFatal('userid');
         $reason = request::postStringFatal('reason');
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            return;
-        }
-
         $user = $this->userRepository->find($userId);
         if ($user === null) {
             return;

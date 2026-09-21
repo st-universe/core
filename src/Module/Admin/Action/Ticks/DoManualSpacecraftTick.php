@@ -31,13 +31,6 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
-
-        // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
-            return;
-        }
-
         //check if single or all ships
         if (!request::getVarByMethod(request::postvars(), 'spacecrafttickid')) {
             $this->spacecraftTickManager->work();

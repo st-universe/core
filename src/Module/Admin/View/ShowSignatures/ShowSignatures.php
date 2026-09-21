@@ -21,11 +21,6 @@ final class ShowSignatures implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $layerId = request::postIntFatal('layerid');
         $shipId = request::postInt('shipid');
         $userId = request::postInt('userid');

@@ -31,14 +31,6 @@ final class CreateNpcAward implements ActionControllerInterface
     {
         $game->setView(ShowTools::VIEW_IDENTIFIER);
         $currentUser = $game->getUser();
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_(
-                '[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'
-            ));
-            return;
-        }
-
         $description = trim((string) request::postString('award_description'));
         if ($description === '' || $description === '0') {
             $game->getInfo()->addInformation('Beschreibung fehlt');

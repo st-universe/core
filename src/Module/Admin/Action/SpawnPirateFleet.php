@@ -30,11 +30,6 @@ final class SpawnPirateFleet implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $layerId = request::postIntFatal('pirate_layer');
         $cx = request::postIntFatal('pirate_cx');
         $cy = request::postIntFatal('pirate_cy');

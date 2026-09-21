@@ -62,11 +62,6 @@ final class CreateRump implements ActionControllerInterface
     {
         $game->setView(ShowRumpCreator::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $isUpdate = request::postString(self::UPDATE_ACTION_IDENTIFIER) !== false;
         $editRumpId = $isUpdate
             ? $this->readOptionalInteger($game, 'edit_rump_id', 'Zu bearbeitender Rumpf', 1, PHP_INT_MAX)

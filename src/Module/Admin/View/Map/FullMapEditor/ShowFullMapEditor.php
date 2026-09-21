@@ -38,11 +38,6 @@ final class ShowFullMapEditor implements ViewControllerInterface
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $layers = $this->layerRepository->findAllIndexed();
         $requestedLayerId = request::getInt('layerid', MapEnum::DEFAULT_LAYER);
         $layer = $requestedLayerId > 0

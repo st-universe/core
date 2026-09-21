@@ -44,12 +44,6 @@ final class SendMassMail implements ActionControllerInterface
         $subject = trim(request::postStringFatal('subject'));
         $medium = request::postInt('medium');
 
-        // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $count = 0;
         if ($medium === self::MEDIUM_EMAIL) {
             $count = $this->sendMassEmails($text, $subject);

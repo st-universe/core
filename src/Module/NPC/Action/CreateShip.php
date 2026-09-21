@@ -51,12 +51,6 @@ final class CreateShip implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShipCreator::VIEW_IDENTIFIER);
-
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin/NPC![/color][/b]'));
-            return;
-        }
-
         $userId = request::postIntFatal('userId');
         $buildplanId = request::postIntFatal('buildplanId');
         $shipCount = request::postIntFatal('shipcount');

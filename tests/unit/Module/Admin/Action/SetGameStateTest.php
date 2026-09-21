@@ -35,22 +35,6 @@ class SetGameStateTest extends StuTestCase
         );
     }
 
-    public function testHandleDoesNothingWhenNotAdmin(): void
-    {
-        $this->game->shouldReceive('setView')
-            ->with(ShowScripts::VIEW_IDENTIFIER)
-            ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $this->game->shouldReceive('getInfo->addInformation')
-            ->with('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]')
-            ->once();
-
-        $this->subject->handle($this->game);
-    }
-
     public function testHandleRejectsInvalidGameState(): void
     {
         request::setMockVars(['game_state' => 999]);
@@ -58,10 +42,6 @@ class SetGameStateTest extends StuTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->game->shouldReceive('getInfo->addInformation')
             ->with('Ungültiger Spielmodus')
             ->once();
@@ -76,10 +56,6 @@ class SetGameStateTest extends StuTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->gameConfigRepository->shouldReceive('getByOption')
             ->with(GameStateInterface::CONFIG_GAMESTATE)
             ->once()
@@ -100,10 +76,6 @@ class SetGameStateTest extends StuTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
         $this->gameConfigRepository->shouldReceive('getByOption')
             ->with(GameStateInterface::CONFIG_GAMESTATE)
             ->once()

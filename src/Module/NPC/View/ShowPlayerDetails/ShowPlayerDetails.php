@@ -34,10 +34,6 @@ final class ShowPlayerDetails implements ViewControllerInterface
         $userId = request::getIntFatal('userid');
         $reason = request::getString('reason');
 
-        if (!$game->isAdmin() && !$game->isNpc()) {
-            return;
-        }
-
         $user = $this->userRepository->find($userId);
         if ($user === null) {
             return;

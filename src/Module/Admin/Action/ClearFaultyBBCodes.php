@@ -27,10 +27,6 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
         // only Admins can trigger ticks
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
 
         //USERS
         $game->getInfo()->addInformation("USERS:");

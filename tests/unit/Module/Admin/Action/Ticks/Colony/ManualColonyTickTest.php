@@ -51,30 +51,8 @@ class ManualColonyTickTest extends StuTestCase
         );
     }
 
-    public function testHandleDoNothingWhenNotAdmin(): void
-    {
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-
-        $this->game->shouldReceive('setView')
-            ->with(ShowTicks::VIEW_IDENTIFIER)
-            ->once();
-
-        $this->game->shouldReceive('getInfo->addInformation')
-            ->once();
-
-        $this->subject->handle($this->game);
-    }
-
     public function testHandleExecutesForAllColoniesWhenRequestParameterEmpty(): void
     {
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
         $this->game->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
@@ -104,11 +82,6 @@ class ManualColonyTickTest extends StuTestCase
     {
         $groupId = 5;
         $groupCount = 42;
-
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         $this->game->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
@@ -144,11 +117,6 @@ class ManualColonyTickTest extends StuTestCase
     {
         $colonyId = 5;
 
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
         $this->game->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
@@ -174,11 +142,6 @@ class ManualColonyTickTest extends StuTestCase
     {
         $colonyId = 5;
         $colony = $this->mock(Colony::class);
-
-        $this->game->shouldReceive('isAdmin')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         $this->game->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)

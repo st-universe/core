@@ -25,11 +25,6 @@ final class PostNews implements ActionControllerInterface
     {
         $game->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin[/color][/b]'));
-            return;
-        }
-
         $subject = request::postString('subject');
         $text = request::postString('text');
         $isChangelog = request::postInt('is_changelog');
