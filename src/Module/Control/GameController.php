@@ -9,7 +9,6 @@ use Stu\Exception\AccessViolationException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
-use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\ViewExecution;
 use Stu\Module\Control\Router\FallbackRouteException;
@@ -38,7 +37,7 @@ final class GameController implements GameControllerInterface
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
         private readonly TwigPageInterface $twigPage,
-        private readonly StuConfigInterface $stuConfig,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly GameResponseFinalizerInterface $gameResponseFinalizer,
         private readonly FallbackRouterInterface $fallbackRouter,
@@ -233,25 +232,13 @@ final class GameController implements GameControllerInterface
     #[\Override]
     public function isAdmin(): bool
     {
-        if (!$this->hasUser()) {
-            return false;
-        }
-
-        return in_array(
-            $this->getUser()->getId(),
-            $this->stuConfig->getGameSettings()->getAdminIds(),
-            true
-        );
+        return $this->gameUserRoleChecker->isAdmin();
     }
 
     #[\Override]
     public function isNpc(): bool
     {
-        if (!$this->hasUser()) {
-            return false;
-        }
-
-        return $this->getUser()->isNpc();
+        return $this->gameUserRoleChecker->isNpc();
     }
 
     #[\Override]
