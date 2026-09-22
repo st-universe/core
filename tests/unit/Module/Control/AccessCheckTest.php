@@ -19,6 +19,7 @@ class AccessCheckTest extends StuTestCase
 {
     private MockInterface&SessionStringRepositoryInterface $sessionStringRepository;
     private MockInterface&StuConfigInterface $stuConfig;
+    private MockInterface&GameUserRoleCheckerInterface $gameUserRoleChecker;
 
     private MockInterface&GameControllerInterface $game;
 
@@ -29,12 +30,14 @@ class AccessCheckTest extends StuTestCase
     {
         $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
+        $this->gameUserRoleChecker = $this->mock(GameUserRoleCheckerInterface::class);
 
         $this->game = $this->mock(GameControllerInterface::class);
 
         $this->subject = new AccessCheck(
             $this->sessionStringRepository,
-            $this->stuConfig
+            $this->stuConfig,
+            $this->gameUserRoleChecker
         );
     }
 
@@ -108,7 +111,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -143,7 +146,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -195,7 +198,7 @@ class AccessCheckTest extends StuTestCase
         $this->game->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

@@ -7,6 +7,7 @@ namespace Stu\Module\NPC\View\ShowShipCreator;
 use request;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -27,7 +28,8 @@ final class ShowShipCreator implements ViewControllerInterface
         private LayerRepositoryInterface $layerRepository,
         private TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
-        private ModuleRepositoryInterface $moduleRepository
+        private ModuleRepositoryInterface $moduleRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -57,7 +59,7 @@ final class ShowShipCreator implements ViewControllerInterface
                     $rump = $buildplan->getRump();
 
                     $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
-                    $filteredRumps = $game->isAdmin()
+                    $filteredRumps = $this->gameUserRoleChecker->isAdmin()
                         ? $allRumps
                         : array_filter($allRumps, fn (SpacecraftRump $rump): bool => $rump->getNpcBuildable() === true);
 
@@ -92,7 +94,7 @@ final class ShowShipCreator implements ViewControllerInterface
                 $allRumps = iterator_to_array($this->spacecraftRumpRepository->getList());
                 $allBuildplans = $this->spacecraftBuildplanRepository->getByUser($userId);
 
-                if ($game->isAdmin()) {
+                if ($this->gameUserRoleChecker->isAdmin()) {
                     $filteredBuildplans = $allBuildplans;
                 } else {
                     $filteredBuildplans = array_filter($allBuildplans, function (SpacecraftBuildplan $buildplan) use ($allRumps): bool {

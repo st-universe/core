@@ -9,6 +9,7 @@ use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
@@ -23,7 +24,8 @@ final class CreateNpcAward implements ActionControllerInterface
     public function __construct(
         private AwardRepositoryInterface $awardRepository,
         private NPCLogRepositoryInterface $npcLogRepository,
-        private ConfigInterface $config
+        private ConfigInterface $config,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -50,7 +52,7 @@ final class CreateNpcAward implements ActionControllerInterface
         }
 
         $reason = trim((string) request::postString('reason'));
-        if (!$game->isAdmin() && $currentUser->isNpc() && $reason === '') {
+        if (!$this->gameUserRoleChecker->isAdmin() && $currentUser->isNpc() && $reason === '') {
             $game->getInfo()->addInformation('Grund fehlt');
             return;
         }

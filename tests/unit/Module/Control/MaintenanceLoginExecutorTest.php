@@ -21,13 +21,14 @@ class MaintenanceLoginExecutorTest extends StuTestCase
         $callbackExecution = $this->mock(CallbackExecutionInterface::class);
         $gameState = $this->mock(GameStateInterface::class);
         $session = $this->mock(SessionInterface::class);
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $callbackExecution->shouldNotReceive('execute');
         $gameState->shouldNotReceive('getGameState');
         $session->shouldNotReceive('logout');
 
-        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session))
+        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
             ->executeIfRequired(ModuleEnum::GAME, $game);
 
         $this->assertFalse($result);
@@ -39,12 +40,13 @@ class MaintenanceLoginExecutorTest extends StuTestCase
         $callbackExecution = $this->mock(CallbackExecutionInterface::class);
         $gameState = $this->mock(GameStateInterface::class);
         $session = $this->mock(SessionInterface::class);
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $gameState->shouldReceive('getGameState')->once()->andReturn(GameStateEnum::MAINTENANCE);
         $callbackExecution->shouldReceive('execute')->with(ModuleEnum::INDEX, $game)->once();
 
-        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session))
+        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
             ->executeIfRequired(ModuleEnum::INDEX, $game);
 
         $this->assertTrue($result);
@@ -56,6 +58,7 @@ class MaintenanceLoginExecutorTest extends StuTestCase
         $callbackExecution = $this->mock(CallbackExecutionInterface::class);
         $gameState = $this->mock(GameStateInterface::class);
         $session = $this->mock(SessionInterface::class);
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
         $game = $this->mock(GameControllerInterface::class);
 
         $gameState->shouldReceive('getGameState')->once()->andReturn(GameStateEnum::MAINTENANCE);
@@ -63,12 +66,12 @@ class MaintenanceLoginExecutorTest extends StuTestCase
             ->with(ModuleEnum::INDEX, $game)
             ->once()
             ->andThrow(new RedirectionException('/login'));
-        $game->shouldReceive('isAdmin')->once()->andReturnFalse();
+        $roleChecker->shouldReceive('isAdmin')->once()->andReturnFalse();
         $session->shouldReceive('logout')->once();
 
         static::expectException(MaintenanceGameStateException::class);
 
-        (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session))
+        (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
             ->executeIfRequired(ModuleEnum::INDEX, $game);
     }
 }

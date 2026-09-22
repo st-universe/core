@@ -6,6 +6,7 @@ namespace Stu\Module\NPC\View\ShowNPCQuests;
 
 use Override;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\NPCQuestLog;
@@ -24,7 +25,8 @@ final class ShowNPCQuests implements ViewControllerInterface
         private CommodityRepositoryInterface $commodityRepository,
         private NPCQuestRepositoryInterface $npcQuestRepository,
         private NPCQuestLogRepositoryInterface $npcQuestLogRepository,
-        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository
+        private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[Override]
@@ -46,7 +48,7 @@ final class ShowNPCQuests implements ViewControllerInterface
         $myActiveQuests = $this->npcQuestRepository->getActiveQuestsByUser($userId);
         $myFinishedQuests = $this->npcQuestRepository->getFinishedQuestsByUser($userId);
 
-        if ($game->isAdmin()) {
+        if ($this->gameUserRoleChecker->isAdmin()) {
             $commodityList = $this->commodityRepository->getTradeableAdmin();
         } else {
             $commodityList = $this->commodityRepository->getTradeableNPC();

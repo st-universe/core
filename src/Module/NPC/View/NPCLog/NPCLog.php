@@ -6,6 +6,7 @@ namespace Stu\Module\NPC\View\NPCLog;
 
 use request;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
@@ -19,7 +20,10 @@ final class NPCLog implements ViewControllerInterface
 
     private const string TYPE_FACTION = 'faction';
 
-    public function __construct(private NPCLogRepositoryInterface $npclogRepository) {}
+    public function __construct(
+        private NPCLogRepositoryInterface $npclogRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
@@ -39,7 +43,7 @@ final class NPCLog implements ViewControllerInterface
 
         $search = trim(request::indString('nlogsearch') ?: '');
         $sourceUserId = request::indInt('nloguserid');
-        $includeAdminView = $game->isAdmin() && request::indInt('nlogadminview') === 1;
+        $includeAdminView = $this->gameUserRoleChecker->isAdmin() && request::indInt('nlogadminview') === 1;
         $type = request::indString('nlogtype') ?: self::TYPE_NORMAL;
         $factionId = $game->getUser()->getFactionId();
 
@@ -91,7 +95,7 @@ final class NPCLog implements ViewControllerInterface
         $game->setTemplateVar('NPC_LOG_SEARCH', $search);
         $game->setTemplateVar('NPC_LOG_USER_ID', $sourceUserId === 0 ? '' : $sourceUserId);
         $game->setTemplateVar('NPC_LOG_ADMIN_VIEW', $includeAdminView);
-        $game->setTemplateVar('NPC_LOG_CAN_SHOW_ADMIN_VIEW', $game->isAdmin());
+        $game->setTemplateVar('NPC_LOG_CAN_SHOW_ADMIN_VIEW', $this->gameUserRoleChecker->isAdmin());
         $game->setTemplateVar('NPC_LOG_EMPTY_MESSAGE', $type === self::TYPE_FACTION ? _('Keine Fraktions-Logs vorhanden') : _('Keine NPC-Logs vorhanden'));
     }
 }

@@ -13,6 +13,7 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameStateInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\JavascriptExecutionInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
@@ -33,7 +34,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly UserSettingsProviderInterface $userSettingsProvider,
         private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly AchievementManagerInterface $achievementManager,
-        private readonly BenchmarkResultInterface $benchmarkResult
+        private readonly BenchmarkResultInterface $benchmarkResult,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -66,8 +68,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('EXECUTEJSAFTERRENDER', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::AFTER_RENDER));
         $this->twigPage->setVar('EXECUTEJSAJAXUPDATE', $this->javascriptExecution->getExecuteJS(JavascriptExecutionTypeEnum::ON_AJAX_UPDATE));
         $this->twigPage->setVar('JAVASCRIPTPATH', $this->getJavascriptPath(), true);
-        $this->twigPage->setVar('IS_NPC', $game->isNpc());
-        $this->twigPage->setVar('IS_ADMIN', $game->isAdmin());
+        $this->twigPage->setVar('IS_NPC', $this->gameUserRoleChecker->isNpc());
+        $this->twigPage->setVar('IS_ADMIN', $this->gameUserRoleChecker->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $this->benchmarkResult);
         $this->twigPage->setVar('GAME_STATS', $this->getGameStats($game));
 
