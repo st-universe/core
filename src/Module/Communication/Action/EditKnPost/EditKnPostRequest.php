@@ -25,9 +25,7 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
     #[\Override]
     public function getText(): string
     {
-        return $this->tidyString(
-            $this->parameter('text')->string()->trim()->required()
-        );
+        return $this->parameter('text')->string()->trim()->required();
     }
 
     #[\Override]
