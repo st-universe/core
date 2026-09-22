@@ -13,6 +13,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -27,6 +28,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
     private MockInterface&SpacecraftSystemRepositoryInterface $spacecraftSystemRepository;
     private MockInterface&StatusBarFactoryInterface $statusBarFactory;
     private MockInterface&SpacecraftMovementPublisherInterface $spacecraftMovementPublisher;
+    private MockInterface&GameUserRoleCheckerInterface $gameUserRoleChecker;
 
     private SetRpgModuleInvisibility $subject;
 
@@ -39,10 +41,12 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->spacecraftSystemRepository = $this->mock(SpacecraftSystemRepositoryInterface::class);
         $this->statusBarFactory = $this->mock(StatusBarFactoryInterface::class);
         $this->spacecraftMovementPublisher = $this->mock(SpacecraftMovementPublisherInterface::class);
+        $this->gameUserRoleChecker = $this->mock(GameUserRoleCheckerInterface::class);
 
         $this->subject = new SetRpgModuleInvisibility(
             $this->spacecraftLoader,
-            $this->spacecraftMovementPublisher
+            $this->spacecraftMovementPublisher,
+            $this->gameUserRoleChecker
         );
     }
 
@@ -51,7 +55,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -87,7 +91,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -161,7 +165,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('isAdmin')
+        $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(true);

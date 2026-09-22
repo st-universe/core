@@ -19,7 +19,8 @@ final class MaintenanceLoginExecutor implements MaintenanceLoginExecutorInterfac
     public function __construct(
         private readonly CallbackExecutionInterface $callbackExecution,
         private readonly GameStateInterface $gameState,
-        private readonly SessionInterface $session
+        private readonly SessionInterface $session,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -36,7 +37,7 @@ final class MaintenanceLoginExecutor implements MaintenanceLoginExecutorInterfac
         try {
             $this->callbackExecution->execute($module, $game);
         } catch (RedirectionException $e) {
-            if (!$game->isAdmin()) {
+            if (!$this->gameUserRoleChecker->isAdmin()) {
                 $this->session->logout();
                 throw new MaintenanceGameStateException($e->getMessage(), $e->getCode(), $e);
             }

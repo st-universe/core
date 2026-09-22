@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -19,7 +20,8 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -27,7 +29,7 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
     {
         $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        if (!$game->isAdmin()) {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
             return;
         }
 

@@ -9,6 +9,7 @@ use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -23,7 +24,8 @@ final class ShowKnPlot implements ViewControllerInterface
         private readonly KnPostRepositoryInterface $knPostRepository,
         private readonly RpgPlotRepositoryInterface $rpgPlotRepository,
         private readonly KnFactoryInterface $knFactory,
-        private readonly PagingFactory $pagingFactory
+        private readonly PagingFactory $pagingFactory,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -66,7 +68,7 @@ final class ShowKnPlot implements ViewControllerInterface
                 $this->knPostRepository->getByPlot($plot, $mark, GameEnum::KN_PER_SITE)
             )
         );
-        $game->setTemplateVar('USER', $game->isAdmin());
+        $game->setTemplateVar('USER', $this->gameUserRoleChecker->isAdmin());
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('MAY_EDIT', $plot->getUserId() === $game->getUser()->getId());

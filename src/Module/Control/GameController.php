@@ -202,7 +202,7 @@ final class GameController implements GameControllerInterface
 
         try {
 
-            if (!$this->gameModuleAccessChecker->isAllowed($module, $this)) {
+            if (!$this->gameModuleAccessChecker->isAllowed($module)) {
                 header(self::REDIRECT_TO_DOMAIN_ROOT);
                 exit;
             }
@@ -214,7 +214,7 @@ final class GameController implements GameControllerInterface
             $callbackExecuted = $this->maintenanceLoginExecutor
                 ->executeIfRequired($module, $this);
 
-            $this->gameState->checkGameState($this->isAdmin());
+            $this->gameState->checkGameState($this->gameUserRoleChecker->isAdmin());
 
             if (!$callbackExecuted) {
                 $this->callbackExecution->execute($module, $this);
@@ -227,18 +227,6 @@ final class GameController implements GameControllerInterface
         ob_start();
         echo $this->gameResponseFinalizer->finalize($this, $gameRequest);
         ob_end_flush();
-    }
-
-    #[\Override]
-    public function isAdmin(): bool
-    {
-        return $this->gameUserRoleChecker->isAdmin();
-    }
-
-    #[\Override]
-    public function isNpc(): bool
-    {
-        return $this->gameUserRoleChecker->isNpc();
     }
 
     #[\Override]

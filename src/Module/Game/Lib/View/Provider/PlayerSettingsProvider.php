@@ -8,6 +8,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingWrapper;
 use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
@@ -16,7 +17,8 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
 {
     public function __construct(
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository
+        private readonly UserCrewRankRepositoryInterface $userCrewRankRepository,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -29,8 +31,9 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
             _('Optionen')
         );
 
-        $game->setTemplateVar('DISTINCT_SETTING_WRAPPERS', array_map(fn (UserSettingEnum $type): UserSettingWrapper => new UserSettingWrapper($user, $type, $game->isAdmin(), $this->userSettingsProvider), UserSettingEnum::getDistinct()));
-        $game->setTemplateVar('SETTING_WRAPPERS', array_map(fn (UserSettingEnum $type): UserSettingWrapper => new UserSettingWrapper($user, $type, $game->isAdmin(), $this->userSettingsProvider), UserSettingEnum::getNonDistinct()));
+        $isAdmin = $this->gameUserRoleChecker->isAdmin();
+        $game->setTemplateVar('DISTINCT_SETTING_WRAPPERS', array_map(fn (UserSettingEnum $type): UserSettingWrapper => new UserSettingWrapper($user, $type, $isAdmin, $this->userSettingsProvider), UserSettingEnum::getDistinct()));
+        $game->setTemplateVar('SETTING_WRAPPERS', array_map(fn (UserSettingEnum $type): UserSettingWrapper => new UserSettingWrapper($user, $type, $isAdmin, $this->userSettingsProvider), UserSettingEnum::getNonDistinct()));
 
         $game->setTemplateVar('REAL_USER', $user);
         $game->setTemplateVar('CREW_RANKS', CrewSkillLevelEnum::cases());

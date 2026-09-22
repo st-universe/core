@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Crew\CrewRaceGraphics;
 use Stu\Component\Crew\CrewRaceSubmissionNotifier;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\Faction;
@@ -20,7 +21,8 @@ final class CrewRaceSubmission
         private readonly CrewRaceRepositoryInterface $crewRaceRepository,
         private readonly FactionRepositoryInterface $factionRepository,
         private readonly CrewRaceGraphics $crewRaceGraphics,
-        private readonly CrewRaceSubmissionNotifier $submissionNotifier
+        private readonly CrewRaceSubmissionNotifier $submissionNotifier,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     public function submit(GameControllerInterface $game, bool $resubmitted): void
@@ -93,7 +95,7 @@ final class CrewRaceSubmission
         bool $resubmitted,
         int $userId
     ): bool {
-        if ($resubmitted || $game->isAdmin() || count($this->crewRaceRepository->getByCreatorUserId($userId)) < 3) {
+        if ($resubmitted || $this->gameUserRoleChecker->isAdmin() || count($this->crewRaceRepository->getByCreatorUserId($userId)) < 3) {
             return false;
         }
 

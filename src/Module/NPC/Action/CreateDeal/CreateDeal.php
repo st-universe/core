@@ -7,6 +7,7 @@ namespace Stu\Module\NPC\Action\CreateDeal;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -24,7 +25,8 @@ final class CreateDeal implements ActionControllerInterface
         private NPCLogRepositoryInterface $npcLogRepository,
         private DealsRepositoryInterface $dealsRepository,
         private FactionRepositoryInterface $factionRepository,
-        private SpacecraftBuildplanRepositoryInterface $buildplanRepository
+        private SpacecraftBuildplanRepositoryInterface $buildplanRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -49,7 +51,7 @@ final class CreateDeal implements ActionControllerInterface
         $giveBuildplanId = request::postInt('give_buildplan_id');
         $giveType = request::postInt('give_type');
 
-        if ($game->isNPC() && $reason === '') {
+        if ($this->gameUserRoleChecker->isNpc() && $reason === '') {
             $game->getInfo()->addInformation("Grund fehlt");
             return;
         }

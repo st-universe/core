@@ -37,8 +37,6 @@ interface GameControllerInterface
 
     public function hasUser(): bool;
 
-    public function isNpc(): bool;
-
     /**
      * Sets all navigation items at once
      *
@@ -61,8 +59,6 @@ interface GameControllerInterface
     public function getGameRequest(): GameRequest;
 
     public function main(ModuleEnum $view, GameRequest $gameRequest): void;
-
-    public function isAdmin(): bool;
 
     public function resetGameData(): void;
 }

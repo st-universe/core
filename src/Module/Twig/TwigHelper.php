@@ -195,7 +195,7 @@ class TwigHelper
         );
         $this->environment->addFunction($getSpacecraftSystemWrapperFunction);
 
-        $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn (int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature), $this->game));
+        $isFeatureGrantedFunction = new TwigFunction('isFeatureGranted', fn (int $userId, string $feature): bool => $this->accessCheck->isFeatureGranted($userId, AccessGrantedFeatureEnum::from($feature)));
         $this->environment->addFunction($isFeatureGrantedFunction);
 
         $getUserAvatarFunction = new TwigFunction('getAvatar', fn (User|UserContainer $user): string => $user instanceof UserContainer

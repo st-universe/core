@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\View\ShowCrewRaceManagement;
 use request;
 use Stu\Component\Crew\CrewRaceInput;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -21,7 +22,8 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
         private readonly CrewRaceRepositoryInterface $crewRaceRepository,
         private readonly FactionRepositoryInterface $factionRepository,
         private readonly UserCrewRaceRepositoryInterface $userCrewRaceRepository,
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -62,8 +64,9 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
         $game->setTemplateVar('CREW_RACE_OWNER_NAMES', $crewRaceOwnerNames);
         $game->setTemplateVar('PLAYABLE_FACTIONS', $this->factionRepository->getByChooseable(true));
         $game->setTemplateVar('OWN_FACTION_ID', $ownFactionId);
-        $game->setTemplateVar('CAN_CREATE_CREW_RACE', $game->isAdmin() || count($ownCrewRaces) < 3);
-        $game->setTemplateVar('CREW_RACE_CREATION_REMAINING', $game->isAdmin() ? null : max(0, 3 - count($ownCrewRaces)));
+        $isAdmin = $this->gameUserRoleChecker->isAdmin();
+        $game->setTemplateVar('CAN_CREATE_CREW_RACE', $isAdmin || count($ownCrewRaces) < 3);
+        $game->setTemplateVar('CREW_RACE_CREATION_REMAINING', $isAdmin ? null : max(0, 3 - count($ownCrewRaces)));
         $editingRace = null;
         $editingId = request::indInt('crew_race_id');
         foreach ($ownCrewRaces as $crewRace) {

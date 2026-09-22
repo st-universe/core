@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowAdminDeletePost;
 
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -14,7 +15,8 @@ final class ShowAdminDeletePost implements ViewControllerInterface
 
     public function __construct(
         private ShowAdminDeletePostRequestInterface $showAdminDeletePostRequest,
-        private KnPostRepositoryInterface $knPostRepository
+        private KnPostRepositoryInterface $knPostRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -29,7 +31,7 @@ final class ShowAdminDeletePost implements ViewControllerInterface
             return;
         }
 
-        if (!$game->isAdmin()) {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
             return;
         }
 
