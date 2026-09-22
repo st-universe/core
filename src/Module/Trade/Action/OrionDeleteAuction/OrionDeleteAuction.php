@@ -8,6 +8,7 @@ use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -28,13 +29,14 @@ final class OrionDeleteAuction implements ActionControllerInterface
         private TradePostRepositoryInterface $tradePostRepository,
         private TradeLibFactoryInterface $tradeLibFactory,
         private CreatePrestigeLogInterface $createPrestigeLog,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowOrionSlaveTrade::VIEW_IDENTIFIER);
-        if (!$game->isAdmin()) {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
             $game->getInfo()->addInformation('Aktion nicht möglich');
             return;
         }

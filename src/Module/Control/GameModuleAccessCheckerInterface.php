@@ -8,5 +8,5 @@ use Stu\Component\Game\ModuleEnum;
 
 interface GameModuleAccessCheckerInterface
 {
-    public function isAllowed(ModuleEnum $module, GameControllerInterface $game): bool;
+    public function isAllowed(ModuleEnum $module): bool;
 }

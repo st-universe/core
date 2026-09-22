@@ -7,6 +7,7 @@ namespace Stu\Module\NPC\View\ShowTools;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -21,13 +22,14 @@ final class ShowTools implements ViewControllerInterface
         private CommodityRepositoryInterface $commodityRepository,
         private LayerRepositoryInterface $layerRepository,
         private FactionRepositoryInterface $factionRepository,
-        private AwardRepositoryInterface $awardRepository
+        private AwardRepositoryInterface $awardRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->isAdmin()) {
+        if ($this->gameUserRoleChecker->isAdmin()) {
             $commodityList = $this->commodityRepository->getTradeableAdmin();
         } else {
             $commodityList = $this->commodityRepository->getTradeableNPC();

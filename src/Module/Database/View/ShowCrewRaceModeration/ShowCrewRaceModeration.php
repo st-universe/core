@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\ShowCrewRaceModeration;
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\Faction;
@@ -21,7 +22,8 @@ final class ShowCrewRaceModeration implements ViewControllerInterface, AccessChe
     public function __construct(
         private readonly CrewRaceRepositoryInterface $crewRaceRepository,
         private readonly FactionRepositoryInterface $factionRepository,
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -47,7 +49,7 @@ final class ShowCrewRaceModeration implements ViewControllerInterface, AccessChe
         $game->setTemplateVar('ACCEPTED_CREW_RACES', $this->createEntries($this->crewRaceRepository->getAcceptedCustomRaces(), $factionNames));
         $game->setTemplateVar('REJECTED_CREW_RACES', $this->createEntries($this->crewRaceRepository->getRejectedCustomRaces(), $factionNames));
         $game->setTemplateVar('PLAYABLE_FACTIONS', $playableFactions);
-        $game->setTemplateVar('IS_ADMIN', $game->isAdmin());
+        $game->setTemplateVar('IS_ADMIN', $this->gameUserRoleChecker->isAdmin());
     }
 
     /**

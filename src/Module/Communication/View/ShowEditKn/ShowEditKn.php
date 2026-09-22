@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\View\ShowEditKn;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnCharacter;
@@ -23,7 +24,8 @@ final class ShowEditKn implements ViewControllerInterface
         private KnPostRepositoryInterface $knPostRepository,
         private RpgPlotRepositoryInterface $rpgPlotRepository,
         private KnCharacterRepositoryInterface $knCharactersRepository,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -34,14 +36,14 @@ final class ShowEditKn implements ViewControllerInterface
             throw new AccessViolationException(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));
         }
 
-        if ($post->getUserId() !== $game->getUser()->getId() && !$game->isAdmin()) {
+        if ($post->getUserId() !== $game->getUser()->getId() && !$this->gameUserRoleChecker->isAdmin()) {
             throw new AccessViolationException(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
         }
 
         $game->setViewTemplate('html/communication/editKn.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME && !$game->isAdmin()) {
+        if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME && !$this->gameUserRoleChecker->isAdmin()) {
             $game->getInfo()->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(

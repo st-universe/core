@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -24,18 +25,28 @@ final class EditKnPost implements ActionControllerInterface
     public const int EDIT_TIME = 600;
 
 
-    public function __construct(private EditKnPostRequestInterface $editKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository, private KnCharacterRepositoryInterface $knCharactersRepository, private UserCharacterRepositoryInterface $userCharactersRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(
+        private EditKnPostRequestInterface $editKnPostRequest,
+        private KnPostRepositoryInterface $knPostRepository,
+        private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        private RpgPlotRepositoryInterface $rpgPlotRepository,
+        private KnCharacterRepositoryInterface $knCharactersRepository,
+        private UserCharacterRepositoryInterface $userCharactersRepository,
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
+    ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
+        $isAdmin = $this->gameUserRoleChecker->isAdmin();
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
-        if ($post === null || ($post->getUserId() !== $userId && !$game->isAdmin())) {
+        if ($post === null || ($post->getUserId() !== $userId && !$isAdmin)) {
             throw new AccessViolationException();
         }
-        if ($post->getDate() < time() - self::EDIT_TIME && !$game->isAdmin()) {
+        if ($post->getDate() < time() - self::EDIT_TIME && !$isAdmin) {
             $game->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
@@ -177,7 +188,7 @@ final class EditKnPost implements ActionControllerInterface
 
         $this->knPostRepository->save($post);
 
-        if ($game->isAdmin() && $game->getUser() != $post->getUser()) {
+        if ($isAdmin && $game->getUser() != $post->getUser()) {
             $this->privateMessageSender->send(
                 UserConstants::USER_NOONE,
                 $post->getUser()->getId(),

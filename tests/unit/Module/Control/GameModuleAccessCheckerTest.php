@@ -11,33 +11,33 @@ class GameModuleAccessCheckerTest extends StuTestCase
 {
     public function testRegularModuleIsAllowedWithoutRoleChecks(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
-        $game->shouldNotReceive('isNpc');
-        $game->shouldNotReceive('isAdmin');
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
+        $roleChecker->shouldNotReceive('isNpc');
+        $roleChecker->shouldNotReceive('isAdmin');
 
         $this->assertTrue(
-            (new GameModuleAccessChecker())->isAllowed(ModuleEnum::GAME, $game)
+            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::GAME)
         );
     }
 
     public function testNpcModuleRequiresNpcOrAdmin(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
-        $game->shouldReceive('isNpc')->once()->andReturnFalse();
-        $game->shouldReceive('isAdmin')->once()->andReturnFalse();
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
+        $roleChecker->shouldReceive('isNpc')->once()->andReturnFalse();
+        $roleChecker->shouldReceive('isAdmin')->once()->andReturnFalse();
 
         $this->assertFalse(
-            (new GameModuleAccessChecker())->isAllowed(ModuleEnum::NPC, $game)
+            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::NPC)
         );
     }
 
     public function testAdminModuleRequiresAdmin(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
-        $game->shouldReceive('isAdmin')->once()->andReturnTrue();
+        $roleChecker = $this->mock(GameUserRoleCheckerInterface::class);
+        $roleChecker->shouldReceive('isAdmin')->once()->andReturnTrue();
 
         $this->assertTrue(
-            (new GameModuleAccessChecker())->isAllowed(ModuleEnum::ADMIN, $game)
+            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::ADMIN)
         );
     }
 }

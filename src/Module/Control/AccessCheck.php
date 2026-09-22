@@ -12,7 +12,8 @@ class AccessCheck implements AccessCheckInterface
 {
     public function __construct(
         private readonly SessionStringRepositoryInterface $sessionStringRepository,
-        private readonly StuConfigInterface $stuConfig
+        private readonly StuConfigInterface $stuConfig,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -39,7 +40,7 @@ class AccessCheck implements AccessCheckInterface
         }
 
         $feature = $controller->getFeatureIdentifier();
-        if ($hasUser && $this->isFeatureGranted($game->getUser()->getId(), $feature, $game)) {
+        if ($hasUser && $this->isFeatureGranted($game->getUser()->getId(), $feature)) {
             return true;
         }
 
@@ -78,9 +79,9 @@ class AccessCheck implements AccessCheckInterface
     }
 
     #[\Override]
-    public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature, GameControllerInterface $game): bool
+    public function isFeatureGranted(int $userId, AccessGrantedFeatureEnum $feature): bool
     {
-        if ($game->isAdmin()) {
+        if ($this->gameUserRoleChecker->isAdmin()) {
             return true;
         }
 

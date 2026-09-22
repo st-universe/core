@@ -11,6 +11,7 @@ use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\Faction;
@@ -24,7 +25,8 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
     public function __construct(
         private readonly CrewRaceRepositoryInterface $crewRaceRepository,
         private readonly FactionRepositoryInterface $factionRepository,
-        private readonly ConfigInterface $config
+        private readonly ConfigInterface $config,
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
@@ -44,7 +46,7 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
             return;
         }
 
-        $isAdmin = $game->isAdmin();
+        $isAdmin = $this->gameUserRoleChecker->isAdmin();
         if (!$isAdmin && (!$this->isPending($crewRace))) {
             $game->getInfo()->addInformation(_('Diese Crew-Rasse kann nur vor der Entscheidung geändert werden'));
             return;

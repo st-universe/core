@@ -12,6 +12,7 @@ use Stu\ActionControllerTestCase;
 use Stu\Component\Crew\CrewRaceGraphics;
 use Stu\Component\Crew\CrewRaceSubmissionNotifier;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\CrewRaceSubmission;
@@ -54,7 +55,8 @@ final class ResubmitCrewRaceTest extends ActionControllerTestCase
                 $this->mock(StuConfigInterface::class),
                 $this->mock(UserRepositoryInterface::class),
                 $this->mock(PrivateMessageSenderInterface::class)
-            )
+            ),
+            $this->mock(GameUserRoleCheckerInterface::class)
         ))->handle($this->game);
     }
 
@@ -112,7 +114,8 @@ final class ResubmitCrewRaceTest extends ActionControllerTestCase
                 $races,
                 $factions,
                 new CrewRaceGraphics($graphicsConfig),
-                new CrewRaceSubmissionNotifier($config, $users, $sender)
+                new CrewRaceSubmissionNotifier($config, $users, $sender),
+                $this->mock(GameUserRoleCheckerInterface::class)
             ))->handle($this->game);
             self::assertSame(5, $race->getId());
             self::assertSame('Neu', $race->getDescription());
