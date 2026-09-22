@@ -116,12 +116,8 @@ class KnItemTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->bbcodeParser->shouldReceive('parse')
+        $this->bbcodeParser->shouldReceive('parseToHtml')
             ->with($value)
-            ->once()
-            ->andReturnSelf();
-        $this->bbcodeParser->shouldReceive('getAsHTML')
-            ->withNoArgs()
             ->once()
             ->andReturn($parsed_value);
 

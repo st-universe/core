@@ -34,18 +34,7 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setTemplateVar('MARK', $mark);
         $game->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
 
-        $pattern = '/\[.*?\](*SKIP)(*FAIL)|[<>]/';
-        $safeText = preg_replace_callback(
-            $pattern,
-            function ($matches): string {
-                return $matches[0] === '<' ? '&lt;' : '&gt;';
-            },
-            $text
-        );
-
-        $safeText = (string) $safeText;
-
-        $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($safeText)->getAsHTML());
+        $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parseToHtml($text));
 
         $game->getInfo()->addInformation(_('Vorschau wurde erstellt'));
 

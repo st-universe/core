@@ -42,7 +42,7 @@ final class KnArchiveItem implements KnArchiveItemInterface
     #[\Override]
     public function getText(): string
     {
-        return $this->bbcodeParser->parse($this->post->getText())->getAsHTML();
+        return $this->bbcodeParser->parseToHtml($this->post->getText());
     }
 
     #[\Override]
