@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Mockery\MockInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Relation;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\StuTestCase;
@@ -33,7 +33,7 @@ class DiplomaticRelationsTest extends StuTestCase
 
     public function testHandleRenders(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
 
         $renderResult = 'some-render-result';
 

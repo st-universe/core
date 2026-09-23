@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -18,7 +18,7 @@ final class ColonyListProvider implements ViewComponentProviderInterface
     public function __construct(private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository, private ColonyLibFactoryInterface $colonyLibFactory, private ModuleQueueRepositoryInterface $moduleQueueRepository, private BuildingCommodityRepositoryInterface $buildingCommodityRepository) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

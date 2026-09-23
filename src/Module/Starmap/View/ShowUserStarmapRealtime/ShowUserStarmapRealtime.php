@@ -20,7 +20,7 @@ use Stu\Lib\Map\VisualPanel\LssBlockade\LssBlockadeGrid;
 use Stu\Lib\Map\VisualPanel\PanelBoundaries;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Layer;
@@ -83,7 +83,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      * @throws JsonException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = request::getIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);

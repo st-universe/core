@@ -8,7 +8,7 @@ use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Communication\Kn\KnArchiveItemInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostArchiv;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
@@ -29,7 +29,7 @@ final class ShowKnArchivePlot implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $plotId = $this->showKnArchivePlotRequest->getPlotId();

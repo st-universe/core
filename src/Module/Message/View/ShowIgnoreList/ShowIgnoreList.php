@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowIgnoreList;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
@@ -15,7 +15,7 @@ final class ShowIgnoreList implements ViewControllerInterface
     public function __construct(private IgnoreListRepositoryInterface $ignoreListRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

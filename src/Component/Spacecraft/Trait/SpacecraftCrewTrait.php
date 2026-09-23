@@ -6,7 +6,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Session\SessionInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\CrewAssignment;
 
 trait SpacecraftCrewTrait
@@ -47,7 +47,7 @@ trait SpacecraftCrewTrait
         return $this->getCrewCount() - $this->getNeededCrewCount();
     }
 
-    public function hasEnoughCrew(?GameControllerInterface $game = null): bool
+    public function hasEnoughCrew(?ViewControllerContext $game = null): bool
     {
         $buildplan = $this->getThis()->getBuildplan();
 

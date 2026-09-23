@@ -11,7 +11,7 @@ use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\Colony;
@@ -72,7 +72,7 @@ class UserProfileProviderTest extends StuTestCase
     {
         $playerId = 666;
 
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
 
         static::expectException(ItemNotFoundException::class);
 
@@ -91,7 +91,7 @@ class UserProfileProviderTest extends StuTestCase
         $parsedDescription = 'some-parsed-description';
         $description = 'some-description';
 
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $player = $this->mock(User::class);
         $visitor = $this->mock(User::class);
         $plotMember = $this->mock(RpgPlotMember::class);

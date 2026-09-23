@@ -17,7 +17,7 @@ use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -69,7 +69,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
@@ -201,7 +201,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $user->getUserLayers()->set($layer->getId(), $userLayer);
     }
 
-    private function addWarpcoreSplitJavascript(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): void
+    private function addWarpcoreSplitJavascript(SpacecraftWrapperInterface $wrapper, ViewControllerContext $game): void
     {
         $reactor = $wrapper->getReactorWrapper();
         $warpDriveSystem = $wrapper->getWarpDriveSystemData();

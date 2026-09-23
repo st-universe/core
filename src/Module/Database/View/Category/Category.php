@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\Category;
 
 use request;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
 use Stu\Orm\Entity\DatabaseCategory;
@@ -20,7 +20,7 @@ final class Category implements ViewControllerInterface
     public function __construct(private CategoryRequestInterface $categoryRequest, private DatabaseCategoryRepositoryInterface $databaseCategoryRepository, private DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory, private LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $category_id = $this->categoryRequest->getCategoryId();
 

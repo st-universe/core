@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowUserPlotList;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
@@ -15,7 +15,7 @@ final class ShowUserPlotList implements ViewControllerInterface
     public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setViewTemplate('html/communication/plot/userPlots.twig');
         $game->appendNavigationPart('comm.php', _('KommNet'));

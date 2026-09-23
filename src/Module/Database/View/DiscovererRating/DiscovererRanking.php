@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DiscovererRating;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -17,7 +17,7 @@ final class DiscovererRanking implements ViewControllerInterface
     public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private DatabaseUserRepositoryInterface $databaseUserRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             'database.php',

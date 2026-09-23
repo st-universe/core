@@ -13,7 +13,7 @@ use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPost;
@@ -50,7 +50,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
@@ -152,7 +152,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         $this->setActiveQuests($game);
     }
 
-    private function setPotentialEmergencies(GameControllerInterface $game): void
+    private function setPotentialEmergencies(ViewControllerContext $game): void
     {
         $emergencies = $this->spacecraftEmergencyRepository->getActive();
 
@@ -169,7 +169,7 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         $game->setTemplateVar('EMERGENCYWRAPPERS', $emergencyWrappers);
     }
 
-    private function setActiveQuests(GameControllerInterface $game): void
+    private function setActiveQuests(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userFactionId = $user->getFactionId();

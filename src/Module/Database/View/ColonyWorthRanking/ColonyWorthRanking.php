@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\ColonyWorthRanking;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -17,7 +17,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
     public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setNavigation([
             [
@@ -50,7 +50,7 @@ final class ColonyWorthRanking implements ViewControllerInterface
     /**
      * @return array<int, int>
      */
-    private function getNetWorthPerUser(GameControllerInterface $game): array
+    private function getNetWorthPerUser(ViewControllerContext $game): array
     {
         $currentUser = $game->getUser();
 

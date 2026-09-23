@@ -7,7 +7,7 @@ namespace Stu\Module\Message\View\ShowWritePm;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -38,7 +38,7 @@ final class ShowWritePm implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $recipientId = $this->showWritePmRequest->getRecipientId();

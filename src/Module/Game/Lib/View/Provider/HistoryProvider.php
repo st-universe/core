@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
@@ -23,7 +23,7 @@ final class HistoryProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $type = HistoryTypeEnum::tryFrom(request::indInt('htype')) ?? HistoryTypeEnum::SHIP;

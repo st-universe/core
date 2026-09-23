@@ -6,7 +6,7 @@ namespace Stu\Lib\Transfer\Strategy;
 
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 
 interface TransferStrategyInterface
 {
@@ -14,7 +14,7 @@ interface TransferStrategyInterface
         bool $isUnload,
         StorageEntityWrapperInterface $source,
         StorageEntityWrapperInterface $target,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void;
 
     public function transfer(

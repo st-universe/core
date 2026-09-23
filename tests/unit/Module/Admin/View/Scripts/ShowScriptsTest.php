@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\View\Scripts;
 use Mockery\MockInterface;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 use Stu\StuTestCase;
@@ -36,7 +36,7 @@ class ShowScriptsTest extends StuTestCase
 
     public function testHandleSetsTemplateVars(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $pirateSetups = [];
 
         $game->shouldReceive('setTemplateFile')

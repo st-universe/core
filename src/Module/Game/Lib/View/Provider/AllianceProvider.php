@@ -17,7 +17,7 @@ use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceMemberWrapper;
 use Stu\Module\Alliance\Lib\AllianceRelationWrapper;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceSettings;
@@ -37,7 +37,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 
@@ -59,7 +59,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         $game->addExecuteJS('initTranslations();', JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
-    private function setTemplateVariablesForAlliance(Alliance $alliance, GameControllerInterface $game): void
+    private function setTemplateVariablesForAlliance(Alliance $alliance, ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userIsFounder = $this->allianceJobManager->hasUserPermission(
@@ -68,7 +68,6 @@ final class AllianceProvider implements ViewComponentProviderInterface
             AllianceJobPermissionEnum::FOUNDER
         );
         $isInAlliance = $alliance->getId() === $game->getUser()->getAlliance()?->getId();
-        $settings = $alliance->getSettings();
 
         $game->appendNavigationPart(sprintf(
             '%s?id=%d',
@@ -165,7 +164,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
 
     /** @param Collection<int, AllianceSettings> $settings */
     private function setLeadershipDescriptions(
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         Collection $settings
     ): void {
         $founderDescription = $settings
@@ -208,7 +207,7 @@ final class AllianceProvider implements ViewComponentProviderInterface
         );
     }
 
-    private function setTemplateVariablesForAllianceList(GameControllerInterface $game): void
+    private function setTemplateVariablesForAllianceList(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(sprintf(
             '%s?showlist=1',

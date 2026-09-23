@@ -11,7 +11,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\Paging\PagingFactory;
 use Stu\Module\Communication\View\ShowKnArchive\ShowKnArchive;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
@@ -27,7 +27,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userKnMark = $user->getKnMark();

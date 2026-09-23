@@ -16,7 +16,7 @@ use Stu\Lib\Transfer\TransferEntityTypeEnum;
 use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferInformationFactoryInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowTransfer implements ViewControllerInterface
@@ -30,7 +30,7 @@ final class ShowTransfer implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 
@@ -97,7 +97,7 @@ final class ShowTransfer implements ViewControllerInterface
 
     private function setPageTitle(
         TransferInformation $transferInformation,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $game->setPageTitle(sprintf(
             '%s %s %s %s',

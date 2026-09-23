@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\View\ShowEditKn;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
@@ -29,7 +29,7 @@ final class ShowEditKn implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $post = $this->knPostRepository->find($this->showEditKnRequest->getKnId());
         if ($post === null) {

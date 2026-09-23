@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\BuoyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -23,7 +23,7 @@ final class ShipListProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

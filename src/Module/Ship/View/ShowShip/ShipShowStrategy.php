@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowShip;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -26,7 +27,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
     ) {}
 
     #[\Override]
-    public function appendNavigationPart(GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
+    public function appendNavigationPart(ViewControllerContext $game): SpacecraftTypeShowStragegyInterface
     {
         $game->appendNavigationPart('ship.php', _('Schiffe'));
 
@@ -34,7 +35,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
     }
 
     #[\Override]
-    public function setTemplateVariables(int $spacecraftId, GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
+    public function setTemplateVariables(int $spacecraftId, ViewControllerContext $game): SpacecraftTypeShowStragegyInterface
     {
         $ship = $this->shipLoader->getByIdAndUser($spacecraftId, $game->getUser()->getId(), true, false);
         $game->setTemplateVar('ASTRO_STATE_SYSTEM', $this->getAstroState($ship, $game, true));
@@ -43,7 +44,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    private function getAstroState(Ship $ship, GameControllerInterface $game, bool $isSystem): AstroStateWrapper
+    private function getAstroState(Ship $ship, ViewControllerContext $game, bool $isSystem): AstroStateWrapper
     {
         //$this->loggerUtil->init('SS', LogLevelEnum::ERROR);
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\ShowPrestigeLog;
 
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 
@@ -18,7 +18,7 @@ final class ShowPrestigeLog implements ViewControllerInterface
     public function __construct(private PrestigeLogRepositoryInterface $prestigeLogRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $count = request::postInt('count');
 

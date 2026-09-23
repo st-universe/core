@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\TradePostActivity;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopActivTradePost;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -17,7 +17,7 @@ final class TradePostActivity implements ViewControllerInterface
     public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private TradeTransactionRepositoryInterface $tradeTransactionRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setNavigation([
             [

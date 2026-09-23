@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -16,7 +16,7 @@ final class MapProvider implements ViewComponentProviderInterface
     public function __construct(private LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         //only layers, that are known by user
         $layers = $this->layerRepository->getKnownByUser($game->getUser());

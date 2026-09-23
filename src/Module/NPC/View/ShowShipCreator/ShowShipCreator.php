@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\View\ShowShipCreator;
 
 use request;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -33,7 +33,7 @@ final class ShowShipCreator implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = request::getInt('userId');
         $buildplanId = request::getInt('buildplanId');

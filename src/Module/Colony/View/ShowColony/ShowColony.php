@@ -10,7 +10,7 @@ use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,7 +27,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();

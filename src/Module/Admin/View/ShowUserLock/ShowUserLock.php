@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\ShowUserLock;
 
 use request;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,7 +21,7 @@ final class ShowUserLock implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userIdToLock = request::getIntFatal('id');
 

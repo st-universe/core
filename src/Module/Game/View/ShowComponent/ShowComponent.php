@@ -11,7 +11,7 @@ use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentEnumInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Component\EntityWithComponentsInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 
@@ -25,7 +25,7 @@ final class ShowComponent implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $exploded = explode('_', request::getStringFatal('component'), 2);
         $moduleView = ModuleEnum::tryFrom(strtolower($exploded[0]));
@@ -48,7 +48,7 @@ final class ShowComponent implements ViewControllerInterface
         return $moduleView->getComponentEnum($exploded[1]);
     }
 
-    private function getEntity(?ModuleEnum $moduleView, GameControllerInterface $game): ?EntityWithComponentsInterface
+    private function getEntity(?ModuleEnum $moduleView, ViewControllerContext $game): ?EntityWithComponentsInterface
     {
         if ($moduleView === null) {
             return null;

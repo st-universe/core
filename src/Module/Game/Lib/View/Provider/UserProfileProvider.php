@@ -7,8 +7,8 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\ParserWithImageInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\Exception\ItemNotFoundException;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerProfile\Lib\ProfileVisitorRegistrationInterface;
 use Stu\Orm\Entity\ColonyScan;
@@ -33,7 +33,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         if (!request::has('uid')) {
             $user = $game->getUser();

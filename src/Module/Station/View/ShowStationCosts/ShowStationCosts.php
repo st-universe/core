@@ -6,7 +6,7 @@ namespace Stu\Module\Station\View\ShowStationCosts;
 
 use request;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 
@@ -17,7 +17,7 @@ final class ShowStationCosts implements ViewControllerInterface
     public function __construct(private StationLoaderInterface $stationLoader, private StationUtilityInterface $stationUtility) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),

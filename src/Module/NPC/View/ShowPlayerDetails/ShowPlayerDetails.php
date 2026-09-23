@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Admin\Lib\UserlistEntry;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\NPC\Action\LogPlayerDetails;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -27,7 +27,7 @@ final class ShowPlayerDetails implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setTemplateFile('html/npc/playerDetails.twig');
 

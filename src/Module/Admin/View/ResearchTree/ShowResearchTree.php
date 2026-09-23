@@ -9,7 +9,7 @@ use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use request;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
@@ -23,7 +23,7 @@ final class ShowResearchTree implements ViewControllerInterface
     public function __construct(private FactionRepositoryInterface $factionRepository, private ResearchDependencyRepositoryInterface $researchDependencyRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $graph = new Graph();
 

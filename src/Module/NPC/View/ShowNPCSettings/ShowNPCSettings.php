@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\View\ShowNPCSettings;
 
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
@@ -16,7 +16,7 @@ final class ShowNPCSettings implements ViewControllerInterface
     public function __construct(private FactionRepositoryInterface $factionRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\CommoditiesOverview;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;
@@ -20,7 +20,7 @@ final class CommoditiesOverview implements ViewControllerInterface
     public function __construct(private StorageRepositoryInterface $storageRepository, private DatabaseUiFactoryInterface $databaseUiFactory) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setNavigation([
             [

@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -24,7 +24,7 @@ final class ShowKnComments implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 

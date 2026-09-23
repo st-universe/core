@@ -9,6 +9,7 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -36,7 +37,7 @@ final class EditSection implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = $this->request->getLayerId();
         $layer = $this->layerRepository->find($layerId);
@@ -90,7 +91,7 @@ final class EditSection implements ViewControllerInterface
         ), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
     }
 
-    private function setSystemTypes(GameControllerInterface $game): void
+    private function setSystemTypes(ViewControllerContext $game): void
     {
         $possibleSystemTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->starSystemTypeRepository->findAll() as $key => $value) {
@@ -102,7 +103,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_SYSTEM_TYPES', $possibleSystemTypes);
     }
 
-    private function setPossibleAreas(int $layerId, GameControllerInterface $game): void
+    private function setPossibleAreas(int $layerId, ViewControllerContext $game): void
     {
         $possibleAreas = ['row_0' => [9999]];
         foreach ($this->mapRepository->getUniqueInfluenceAreaIds($layerId) as $key => $value) {
@@ -111,7 +112,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_AREAS', $possibleAreas);
     }
 
-    private function setPossibleRegions(int $layerId, GameControllerInterface $game): void
+    private function setPossibleRegions(int $layerId, ViewControllerContext $game): void
     {
         $possibleRegion = ['row_0'];
         foreach ($this->mapRegionRepository->findAll() as $key => $value) {
@@ -135,7 +136,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_REGION', $possibleRegion);
     }
 
-    private function setPossibleAdminRegions(GameControllerInterface $game): void
+    private function setPossibleAdminRegions(ViewControllerContext $game): void
     {
         $possibleAdminRegions = ['row_0'];
         foreach ($this->mapRegionRepository->findAll() as $key => $value) {
@@ -147,7 +148,7 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('POSSIBLE_ADMIN_REGION', $possibleAdminRegions);
     }
 
-    private function setPossibleFieldTypes(GameControllerInterface $game): void
+    private function setPossibleFieldTypes(ViewControllerContext $game): void
     {
         $possibleFieldTypes = ['row_0' => [], 'row_1' => [], 'row_2' => [], 'row_3' => [], 'row_4' => [], 'row_5' => []];
         foreach ($this->mapFieldTypeRepository->findAll() as $key => $value) {

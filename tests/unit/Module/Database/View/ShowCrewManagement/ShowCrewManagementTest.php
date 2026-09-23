@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\Matcher\Closure;
 use Mockery\MockInterface;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\User;
@@ -37,7 +37,7 @@ final class ShowCrewManagementTest extends StuTestCase
 
     public function testHandleRendersCrewSortedByHighestExpertise(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
         $highCrew = $this->mock(Crew::class);
         $highAssignment = $this->mock(CrewAssignment::class);

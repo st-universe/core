@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 
@@ -24,7 +24,7 @@ final class ShowKnArchive implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $version = $this->showKnArchiveRequest->getVersion();
         $game->setViewTemplate('html/communication/knArchiv.twig');

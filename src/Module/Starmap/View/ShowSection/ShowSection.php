@@ -9,7 +9,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Trait\LayerExplorationTrait;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
@@ -25,7 +25,7 @@ final class ShowSection implements ViewControllerInterface
     public function __construct(private ShowSectionRequestInterface $showSectionRequest, private StarmapUiFactoryInterface $starmapUiFactory, private LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = $this->showSectionRequest->getLayerId();
         $layer = $this->layerRepository->find($layerId);

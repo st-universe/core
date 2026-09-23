@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\ShowRelationText;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -18,7 +18,7 @@ final class ShowRelationText implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $relationId = $this->showRelationTextRequest->getRelationId();
         if ($relationId === 0) {

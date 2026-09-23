@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\View\Management;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Alliance;
@@ -32,10 +32,9 @@ final class Management implements ViewControllerInterface
         $minSort = null;
 
         foreach ($alliance->getJobs() as $job) {
-            if ($job->hasUser($user) && $job->getSort() !== null) {
-                if ($minSort === null || $job->getSort() < $minSort) {
-                    $minSort = $job->getSort();
-                }
+            if ($job->hasUser($user) && $job->getSort() !== null
+                && ($minSort === null || $job->getSort() < $minSort)) {
+                $minSort = $job->getSort();
             }
         }
 
@@ -43,7 +42,7 @@ final class Management implements ViewControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $alliance = $game->getUser()->getAlliance();
         $userId = $game->getUser()->getId();

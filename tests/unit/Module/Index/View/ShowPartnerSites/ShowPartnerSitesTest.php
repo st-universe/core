@@ -7,7 +7,7 @@ namespace Stu\Module\Index\View\ShowPartnerSites;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\StuTestCase;
 
 class ShowPartnerSitesTest extends StuTestCase
@@ -28,7 +28,7 @@ class ShowPartnerSitesTest extends StuTestCase
 
     public function testHandleShowsSites(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
 
         $baseBannerPath = 'some-base-banner-path';
         $siteName = 'some-site';

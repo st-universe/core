@@ -11,6 +11,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\AccessCheckInterface;
+use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\ControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
@@ -46,8 +47,8 @@ class CallbackExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ActionControllerInterface::class);
+        $controller2 = $this->mock(ActionControllerInterface::class);
 
         request::setMockVars([]);
 
@@ -79,8 +80,8 @@ class CallbackExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ActionControllerInterface::class);
+        $controller2 = $this->mock(ActionControllerInterface::class);
         $exception = new SanityCheckException();
 
         request::setMockVars(['B_DO_THIS' => 1]);
@@ -129,8 +130,8 @@ class CallbackExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ActionControllerInterface::class);
+        $controller2 = $this->mock(ActionControllerInterface::class);
         $exception = new EntityLockedException('LOCKED');
 
         request::setMockVars(['B_DO_THIS' => 1]);
@@ -179,8 +180,8 @@ class CallbackExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ActionControllerInterface::class);
+        $controller2 = $this->mock(ActionControllerInterface::class);
 
         request::setMockVars(['B_DO_THIS' => 1]);
 
@@ -228,8 +229,8 @@ class CallbackExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ActionControllerInterface::class);
+        $controller2 = $this->mock(ActionControllerInterface::class);
 
         request::setMockVars(['B_DO_THIS' => 1]);
 
