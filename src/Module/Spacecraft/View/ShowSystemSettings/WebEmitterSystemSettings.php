@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -23,7 +23,7 @@ class WebEmitterSystemSettings implements SystemSettingsProviderInterface
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         if (!$wrapper instanceof ShipWrapperInterface) {
             throw new RuntimeException('this should not happen');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowDeals;
 
 use Stu\Lib\Pirate\Component\PirateWrathManager;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -22,7 +22,7 @@ final class ShowDeals implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
@@ -93,7 +93,7 @@ final class ShowDeals implements ViewControllerInterface
     }
 
 
-    private function loadActiveDeals(int $userId, GameControllerInterface $game): void
+    private function loadActiveDeals(int $userId, ViewControllerContext $game): void
     {
         $activedealsgoods = $this->dealsRepository->getActiveDealsGoods($userId);
         $activedealsships = $this->dealsRepository->getActiveDealsShips($userId);
@@ -110,7 +110,7 @@ final class ShowDeals implements ViewControllerInterface
         $game->setTemplateVar('ACTIVEDEALSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
     }
 
-    private function loadActiveAuctions(int $userId, GameControllerInterface $game): void
+    private function loadActiveAuctions(int $userId, ViewControllerContext $game): void
     {
         $activeauctionsgoods = $this->dealsRepository->getActiveAuctionsGoods($userId);
         $activeauctionsships = $this->dealsRepository->getActiveAuctionsShips($userId);
@@ -127,7 +127,7 @@ final class ShowDeals implements ViewControllerInterface
         $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANSPRESTIGE', $activeauctionsbuildplansprestige);
     }
 
-    private function loadOwnAuctionsToTake(int $userId, GameControllerInterface $game): void
+    private function loadOwnAuctionsToTake(int $userId, ViewControllerContext $game): void
     {
         $ownendedauctionsgoods = $this->dealsRepository->getOwnEndedAuctionsGoods($userId);
         $ownendedauctionsships = $this->dealsRepository->getOwnEndedAuctionsShips($userId);
@@ -144,7 +144,7 @@ final class ShowDeals implements ViewControllerInterface
         $game->setTemplateVar('OWNENDEDAUCTIONSBUILDPLANSPRESTIGE', $ownendedauctionsbuildplansprestige);
     }
 
-    private function loadEndedAuctions(int $userId, GameControllerInterface $game): void
+    private function loadEndedAuctions(int $userId, ViewControllerContext $game): void
     {
         $endedauctionsgoods = $this->dealsRepository->getEndedAuctionsGoods($userId);
         $endedauctionsships = $this->dealsRepository->getEndedAuctionsShips($userId);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map\LiveMap;
 
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -17,7 +17,7 @@ final class ShowLiveMap implements ViewControllerInterface
     public function __construct(private LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layers = $this->layerRepository->findAllIndexed();
         $requestedLayerId = request::getInt('layerid');

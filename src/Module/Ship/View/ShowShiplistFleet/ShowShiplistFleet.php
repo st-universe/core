@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -24,7 +24,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
         $fleetId = request::getIntFatal('fleetid');

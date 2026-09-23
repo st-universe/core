@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Trait\LayerExplorationTrait;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
@@ -28,7 +28,7 @@ final class RefreshSection implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = $this->request->getLayerId();
         $layer = $this->layerRepository->find($layerId);

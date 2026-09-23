@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use request;
 use Stu\Component\Map\EncodedMapInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -26,7 +26,7 @@ final class ShowMapOverall implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = request::getIntFatal('layerid');
 

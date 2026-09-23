@@ -7,7 +7,7 @@ namespace Stu\Module\Message\View\ShowContactList;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Enum\RelationPermissionEnum;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -26,7 +26,7 @@ final class ShowContactList implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $showUserRelations = $user->getAlliance() === null;

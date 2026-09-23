@@ -8,11 +8,11 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\AccessCheckInterface;
-use Stu\Module\Control\ControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 
 class ViewExecution
@@ -46,6 +46,7 @@ class ViewExecution
     {
         $viewFromContext = $game->getViewContext(ViewContextTypeEnum::VIEW);
 
+        /** @var array<string, ViewControllerInterface> $views */
         $views = $this->controllerDiscovery->getControllers($module, true);
 
         foreach ($views as $viewIdentifier => $controller) {
@@ -76,7 +77,7 @@ class ViewExecution
         }
     }
 
-    private function handleView(ControllerInterface $view, GameControllerInterface $game): void
+    private function handleView(ViewControllerInterface $view, GameControllerInterface $game): void
     {
         $view->handle($game);
 

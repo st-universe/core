@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CrewAssignment;
@@ -28,7 +28,7 @@ class TroopTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         StorageEntityWrapperInterface $source,
         StorageEntityWrapperInterface $target,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
 
         $user = $game->getUser();

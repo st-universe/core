@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\PassiveRepairProgressBuilder;
@@ -35,7 +36,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
     ) {}
 
     #[\Override]
-    public function appendNavigationPart(GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
+    public function appendNavigationPart(ViewControllerContext $game): SpacecraftTypeShowStragegyInterface
     {
         $game->appendNavigationPart('station.php', _('Stationen'));
 
@@ -43,7 +44,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
     }
 
     #[\Override]
-    public function setTemplateVariables(int $spacecraftId, GameControllerInterface $game): SpacecraftTypeShowStragegyInterface
+    public function setTemplateVariables(int $spacecraftId, ViewControllerContext $game): SpacecraftTypeShowStragegyInterface
     {
         $station = $this->stationLoader->getByIdAndUser(
             $spacecraftId,
@@ -73,7 +74,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         return $this;
     }
 
-    private function doConstructionStuff(Station $station, ?ConstructionProgress $progress, GameControllerInterface $game): void
+    private function doConstructionStuff(Station $station, ?ConstructionProgress $progress, ViewControllerContext $game): void
     {
         if (!$station->isConstruction()) {
             return;
@@ -99,7 +100,7 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         }
     }
 
-    private function doStationStuff(Station $station, GameControllerInterface $game): void
+    private function doStationStuff(Station $station, ViewControllerContext $game): void
     {
         if ($this->stationUtility->canManageShips($station)) {
             $game->setTemplateVar('CAN_MANAGE', true);

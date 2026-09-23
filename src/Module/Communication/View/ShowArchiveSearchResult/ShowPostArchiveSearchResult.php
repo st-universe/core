@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\View\ShowArchiveSearchResult;
 
 use Stu\Component\Communication\Kn\KnArchiveFactoryInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 
@@ -23,7 +23,7 @@ final class ShowPostArchiveSearchResult implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $version = $this->showArchiveSearchResultRequest->getVersion();

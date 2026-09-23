@@ -7,7 +7,7 @@ namespace Stu\Module\Database\View\NPCList;
 use JBBCode\Parser;
 use request;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -37,7 +37,7 @@ final class NPCList implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $sort_field = $this->npcListRequest->getSortField();
         $sort_order = $this->npcListRequest->getSortOrder();

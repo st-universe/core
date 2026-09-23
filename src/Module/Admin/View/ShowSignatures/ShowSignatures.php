@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 
 use request;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreationInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -19,7 +19,7 @@ final class ShowSignatures implements ViewControllerInterface
     public function __construct(private FlightSignatureRepositoryInterface $flightSignatureRepository, private LoggerUtilFactoryInterface $loggerUtilFactory, private PanelLayerCreationInterface $panelLayerCreation, private LayerRepositoryInterface $layerRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = request::postIntFatal('layerid');
         $shipId = request::postInt('shipid');

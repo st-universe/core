@@ -15,7 +15,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMapInterface;
@@ -61,7 +61,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
      * @throws JsonException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = request::getIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);

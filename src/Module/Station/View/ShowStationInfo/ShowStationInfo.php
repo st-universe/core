@@ -8,7 +8,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
@@ -19,7 +19,7 @@ final class ShowStationInfo implements ViewControllerInterface
     public function __construct(private StationUtilityInterface $stationUtility, private ShipRumpUserRepositoryInterface $shipRumpUserRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setPageTitle(_('Baukosten'));
 

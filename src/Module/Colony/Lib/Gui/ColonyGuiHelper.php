@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Lib\Gui;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\ColonySandbox;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
@@ -18,7 +18,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
     public function registerMenuComponents(
         ColonyMenuEnum $menu,
         PlanetFieldHostInterface $host,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
 
         foreach ($menu->getNecessaryGuiComponents() as $componentEnum) {
@@ -38,7 +38,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
     #[\Override]
     public function registerComponents(
         PlanetFieldHostInterface $host,
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         array $guiComponents
     ): void {
         foreach ($guiComponents as $componentEnum) {

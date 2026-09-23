@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowQuestList;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\NPCQuest;
@@ -26,7 +26,7 @@ final class ShowQuestList implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userFactionId = $user->getFactionId();

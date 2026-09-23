@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\View\EditRelationText;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -22,7 +22,7 @@ final class EditRelationText implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $relationId = $this->editRelationTextRequest->getRelationId();
         if ($relationId === 0) {

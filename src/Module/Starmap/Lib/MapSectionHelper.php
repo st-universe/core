@@ -8,7 +8,7 @@ use RuntimeException;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\Layer;
@@ -25,7 +25,7 @@ final class MapSectionHelper
     }
 
     public function setTemplateVars(
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         Layer $layer,
         int $currentSection,
         bool $isMapEditor = false,
@@ -90,7 +90,7 @@ final class MapSectionHelper
         int $miny,
         int $maxy,
         Layer $layer,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(
@@ -135,7 +135,7 @@ final class MapSectionHelper
         int $xCoordinate,
         int $yCoordinate,
         Layer $layer,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $layerWidth = $layer->getWidth();
         $layerHeight = $layer->getHeight();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleCancel;
 
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Module;
@@ -18,7 +18,7 @@ final class ShowModuleCancel implements ViewControllerInterface
     public function __construct(private ColonyLoaderInterface $colonyLoader, private ShowModuleCancelRequestInterface $showModuleCancelRequest, private ModuleQueueRepositoryInterface $moduleQueueRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

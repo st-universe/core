@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\Colony;
@@ -26,7 +26,7 @@ class CommodityTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         StorageEntityWrapperInterface $source,
         StorageEntityWrapperInterface $targetWrapper,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
 
         $target = $targetWrapper->get();

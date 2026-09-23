@@ -6,9 +6,8 @@ namespace Stu\Module\Spacecraft\View\ShowRenameCrew;
 
 use Mockery\MockInterface;
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
@@ -29,7 +28,7 @@ class ShowRenameCrewTest extends StuTestCase
 
     public function testHandleAllowsUplink(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
         $ship = $this->mock(Spacecraft::class);
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Research\View\ShowResearch;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Research\SelectedTechFactoryInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
@@ -18,7 +18,7 @@ final class ShowResearch implements ViewControllerInterface
     public function __construct(private ShowResearchRequestInterface $showResearchRequest, private TechlistRetrieverInterface $techlistRetriever, private ResearchedRepositoryInterface $researchedRepository, private SelectedTechFactoryInterface $talFactory) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $researchId = $this->showResearchRequest->getResearchId();

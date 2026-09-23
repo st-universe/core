@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\View\ShowPartnerSites;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 /**
@@ -18,7 +18,7 @@ final class ShowPartnerSites implements ViewControllerInterface
     public function __construct(private ConfigInterface $config) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setPageTitle('Partnerseiten - Star Trek Universe');
         $game->setTemplateFile('html/index/partnerSites.twig');

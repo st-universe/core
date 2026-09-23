@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowDockingPrivileges;
 
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Station\Lib\DockingPrivilegeItem;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -19,7 +19,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
     public function __construct(private StationUiFactoryInterface $stationUiFactory, private StationLoaderInterface $stationLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

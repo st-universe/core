@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapImage;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\MapBorderType;
@@ -36,7 +36,7 @@ final class ShowFullMapEditor implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layers = $this->layerRepository->findAllIndexed();
         $requestedLayerId = request::getInt('layerid', MapEnum::DEFAULT_LAYER);

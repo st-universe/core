@@ -15,6 +15,7 @@ use Stu\Module\Control\ControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
 
@@ -52,8 +53,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars([]);
 
@@ -88,8 +89,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
         $exception = new SanityCheckException();
 
         request::setMockVars(['SHOW_THIS' => 1]);
@@ -141,8 +142,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
         $exception = new EntityLockedException('LOCKED');
 
         request::setMockVars(['SHOW_THIS' => 1]);
@@ -197,8 +198,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
@@ -249,8 +250,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
@@ -301,8 +302,8 @@ class ViewExecutionTest extends StuTestCase
     {
         $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
-        $controller1 = $this->mock(ControllerInterface::class);
-        $controller2 = $this->mock(ControllerInterface::class);
+        $controller1 = $this->mock(ViewControllerInterface::class);
+        $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowWormholeControl;
 
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftUiFactoryInterface;
@@ -25,7 +25,7 @@ final class ShowWormholeControl implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

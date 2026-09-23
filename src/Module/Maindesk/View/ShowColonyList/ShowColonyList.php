@@ -6,7 +6,7 @@ namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
@@ -21,7 +21,7 @@ final class ShowColonyList implements ViewControllerInterface, ViewWithTutorialI
     public function __construct(private ColonyRepositoryInterface $colonyRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $state = $user->getState();

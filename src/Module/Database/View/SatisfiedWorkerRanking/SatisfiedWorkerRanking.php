@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\SatisfiedWorkerRanking;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -32,7 +32,7 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setNavigation([
             [
@@ -60,7 +60,7 @@ final class SatisfiedWorkerRanking implements ViewControllerInterface
         $this->setPointsForUser($game);
     }
 
-    private function setPointsForUser(GameControllerInterface $game): void
+    private function setPointsForUser(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 

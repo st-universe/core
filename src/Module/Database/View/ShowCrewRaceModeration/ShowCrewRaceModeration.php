@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\ShowCrewRaceModeration;
 
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CrewRace;
@@ -33,7 +33,7 @@ final class ShowCrewRaceModeration implements ViewControllerInterface, AccessChe
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $playableFactions = $this->factionRepository->getByChooseable(true);
         $factionNames = [];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchiveComments;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnCommentArchivRepositoryInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
@@ -20,7 +20,7 @@ final class ShowKnArchiveComments implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $postId = $this->showKnArchiveCommentsRequest->getKnPostId();
 

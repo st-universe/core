@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\Map;
 
 use request;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowMapEditor implements ViewControllerInterface
     public function __construct(private LayerRepositoryInterface $layerRepository, private StarSystemRepositoryInterface $starSystemRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setTemplateFile('html/admin/mapeditor_overview.twig');
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));

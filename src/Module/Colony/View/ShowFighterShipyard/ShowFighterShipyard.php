@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\View\ShowFighterShipyard;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowFighterShipyard implements ViewControllerInterface
@@ -17,7 +17,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
     public function __construct(private ColonyLoaderInterface $colonyLoader, private ColonyGuiHelperInterface $colonyGuiHelper, private ShowFighterShipyardRequestInterface $showFighterShipyardRequest) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Mockery;
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\SkillEnhancementLog;
@@ -41,7 +41,7 @@ final class ShowCrewmanDetailsTest extends StuTestCase
 
     public function testUsesFiveLogEntriesByDefault(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
         $crew = $this->mock(Crew::class);
         $crewAssignment = $this->mock(CrewAssignment::class);

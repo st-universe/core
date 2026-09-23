@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowBuilding;
 
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +22,7 @@ final class ShowBuilding implements ViewControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private PlanetFieldRepositoryInterface $planetFieldRepository, private ShowBuildingRequestInterface $showBuildingRequest, private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository, private BuildingRepositoryInterface $buildingRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 
@@ -60,7 +60,7 @@ final class ShowBuilding implements ViewControllerInterface
         $this->setBuildingLimit($building, $host, $game);
     }
 
-    private function setBuildingLimit(Building $building, PlanetFieldHostInterface $host, GameControllerInterface $game): void
+    private function setBuildingLimit(Building $building, PlanetFieldHostInterface $host, ViewControllerContext $game): void
     {
         $buildingcount = null;
 

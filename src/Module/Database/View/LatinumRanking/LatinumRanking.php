@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\LatinumRanking;
 
 use Generator;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -21,7 +21,7 @@ final class LatinumRanking implements ViewControllerInterface
     public function __construct(private StorageRepositoryInterface $storageRepository, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setNavigation([
             [

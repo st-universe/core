@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
@@ -26,7 +26,7 @@ final class TradeProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();

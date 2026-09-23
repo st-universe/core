@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -26,7 +26,7 @@ final class DiplomaticRelations implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setPageTitle('Diplomatische Beziehungen');
         $game->setNavigation([

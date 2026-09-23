@@ -11,7 +11,7 @@ use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Paging\Paging;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Orm\Entity\PrivateMessage;
@@ -59,7 +59,7 @@ class MessengerStyleProviderTest extends StuTestCase
     public function testSetTemplateVariablesThrowsWhenMainFolderIsMissing(): void
     {
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $userId = 42;
 
         $game->shouldReceive('getUser')->withNoArgs()->once()->andReturn($user);
@@ -79,7 +79,7 @@ class MessengerStyleProviderTest extends StuTestCase
     public function testSetTemplateVariablesGroupsConversationsAndResetsInvalidMark(): void
     {
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $message = $this->mock(PrivateMessage::class);
         $sender = $this->mock(User::class);
         $mainFolder = $this->mock(PrivateMessageFolder::class);

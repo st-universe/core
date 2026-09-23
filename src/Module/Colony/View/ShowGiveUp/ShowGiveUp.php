@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowGiveUp;
 
 use request;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowGiveUp implements ViewControllerInterface
@@ -16,7 +16,7 @@ final class ShowGiveUp implements ViewControllerInterface
     public function __construct(private ColonyLoaderInterface $colonyLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),

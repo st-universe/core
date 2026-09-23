@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\ShowBuildMenuPart;
 
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

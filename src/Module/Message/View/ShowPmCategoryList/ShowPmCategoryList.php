@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowPmCategoryList;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
@@ -18,7 +18,7 @@ final class ShowPmCategoryList implements ViewControllerInterface
     public function __construct(private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageUiFactoryInterface $privateMessageUiFactory) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->showMacro('html/communication/pmCategoryListAjax.twig');
 

@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\RumpCreator;
 
 use Stu\Module\Admin\Lib\RumpCreatorData;
 use Stu\Module\Admin\Lib\RumpCreatorDataProvider;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowRumpCreator implements ViewControllerInterface
@@ -16,7 +16,7 @@ final class ShowRumpCreator implements ViewControllerInterface
     public function __construct(private readonly RumpCreatorDataProvider $dataProvider) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setTemplateFile('html/admin/rumpCreator.twig');
         $game->appendNavigationPart('/admin/?SHOW_RUMP_CREATOR=1', _('Rump Creator'));

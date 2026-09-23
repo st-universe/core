@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -33,7 +33,7 @@ final class ShowBuildplanCreator implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = request::getInt('userId');
         $rumpId = request::getInt('rumpId');

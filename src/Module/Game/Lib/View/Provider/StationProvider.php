@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Entity\Station;
@@ -18,7 +18,7 @@ final class StationProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

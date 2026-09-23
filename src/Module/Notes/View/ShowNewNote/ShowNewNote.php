@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\View\ShowNewNote;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
@@ -15,7 +15,7 @@ final class ShowNewNote implements ViewControllerInterface
     public function __construct(private NoteRepositoryInterface $noteRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $note = $this->noteRepository->prototype();
         $note->setTitle('');

@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\View\Scripts;
 
 use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
@@ -21,7 +21,7 @@ final class ShowScripts implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setTemplateFile('html/admin/scripts.twig');
         $game->appendNavigationPart('/admin/?SHOW_SCRIPTS=1', _('Scripts'));

@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\View\ShowRepairOptions;
 use request;
 use Stu\Component\Spacecraft\Repair\RepairTaskConstants;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -23,7 +23,7 @@ final class ShowRepairOptions implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 
