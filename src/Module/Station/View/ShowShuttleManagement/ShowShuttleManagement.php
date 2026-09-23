@@ -6,7 +6,7 @@ namespace Stu\Module\Station\View\ShowShuttleManagement;
 
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -29,7 +29,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $stationId = $this->request->getStationId();
         $shipId = $this->request->getShipId();

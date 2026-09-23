@@ -7,7 +7,7 @@ namespace Stu\Module\Game\View\Overview;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewContext;
 use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -26,7 +26,7 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $moduleView = $this->getModuleView($game);
         $this->moduleView = $this->getModuleView($game);
@@ -36,7 +36,7 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
         $game->setViewTemplate($moduleView->getTemplate());
     }
 
-    private function getModuleView(GameControllerInterface $game): ModuleEnum
+    private function getModuleView(ViewControllerContext $game): ModuleEnum
     {
         $moduleView = null;
         if (request::has('view')) {

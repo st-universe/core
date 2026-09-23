@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\CommoditiesOverview;
 
 use Mockery\MockInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\Lib\StorageWrapper;
 use Stu\Orm\Entity\User;
@@ -34,7 +34,7 @@ class CommoditiesOverviewTest extends StuTestCase
 
     public function testHandleRenders(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
         $storageWrapper = $this->mock(StorageWrapper::class);
 

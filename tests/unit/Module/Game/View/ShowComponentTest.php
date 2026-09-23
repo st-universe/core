@@ -10,7 +10,7 @@ use request;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +22,7 @@ class ShowComponentTest extends StuTestCase
     private MockInterface&ComponentRegistrationInterface  $componentRegistration;
     private MockInterface&PlanetFieldHostProviderInterface  $planetFieldHostProvider;
 
-    private MockInterface&GameControllerInterface  $game;
+    private MockInterface&ViewControllerContext  $game;
 
     private ViewControllerInterface $subject;
 
@@ -32,7 +32,7 @@ class ShowComponentTest extends StuTestCase
         $this->componentRegistration = $this->mock(ComponentRegistrationInterface::class);
         $this->planetFieldHostProvider = $this->mock(PlanetFieldHostProviderInterface::class);
 
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->game = $this->mock(ViewControllerContext::class);
 
         $this->subject = new ShowComponent(
             $this->componentRegistration,

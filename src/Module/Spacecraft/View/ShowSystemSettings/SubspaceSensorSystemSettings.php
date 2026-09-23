@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\View\ShowSystemSettings;
 use Stu\Component\Spacecraft\System\Data\SubspaceSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -24,7 +24,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $game->setMacroInAjaxWindow('html/spacecraft/system/subspaceScanner.twig');
 
@@ -58,7 +58,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
 
     private function setAnalyzedSignature(
         SubspaceSystemData $subspaceSystemData,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $flightSigId = $subspaceSystemData->getFlightSigId();
         if ($flightSigId) {
@@ -70,7 +70,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
     private function setAnalyzeTime(
         int $time,
         SubspaceSystemData $subspaceSystemData,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $analyzeTime = $subspaceSystemData->getAnalyzeTime();
         if ($analyzeTime) {
@@ -87,7 +87,7 @@ class SubspaceSensorSystemSettings implements SystemSettingsProviderInterface
     private function setSignatures(
         SpacecraftWrapperInterface $wrapper,
         int $time,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $spacecraft = $wrapper->get();
         $location = $spacecraft->getLocation();

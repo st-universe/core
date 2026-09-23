@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SkillEnhancementLogRepositoryInterface;
@@ -26,7 +26,7 @@ final class ShowCrewmanDetails implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $count = request::postInt('count');
         if ($count < 1) {

@@ -11,7 +11,7 @@ use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
@@ -49,7 +49,7 @@ final class ShowModuleFab implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 
@@ -142,7 +142,7 @@ final class ShowModuleFab implements ViewControllerInterface
         return $additionalBuildplans;
     }
 
-    private function setModuleTypes(GameControllerInterface $game): void
+    private function setModuleTypes(ViewControllerContext $game): void
     {
         $moduleTypes = [];
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
@@ -165,7 +165,7 @@ final class ShowModuleFab implements ViewControllerInterface
     private function setBuildplans(
         array $rumps,
         array &$allModules,
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         array $exclusiveBuildplansByRump = [],
         array $exclusiveModulesByRump = [],
         array $additionalBuildplans = []
@@ -211,7 +211,7 @@ final class ShowModuleFab implements ViewControllerInterface
     private function setModules(
         Colony $colony,
         BuildingFunction $func,
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         array &$allModules,
         array $accumulatedStorage
     ): void {
@@ -245,7 +245,7 @@ final class ShowModuleFab implements ViewControllerInterface
     }
 
     /** @return array<int, int> */
-    private function getAccumulatedStorageByCommodityId(GameControllerInterface $game): array
+    private function getAccumulatedStorageByCommodityId(ViewControllerContext $game): array
     {
         $storage = [];
 

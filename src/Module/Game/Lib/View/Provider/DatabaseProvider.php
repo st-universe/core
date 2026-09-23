@@ -8,7 +8,7 @@ use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Image\ImageCreationInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class DatabaseProvider implements ViewComponentProviderInterface
@@ -20,7 +20,7 @@ final class DatabaseProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $game->setTemplateVar(
             'RUMP_LIST',

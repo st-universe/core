@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Repository\NewsRepositoryInterface;
@@ -18,7 +18,7 @@ final class Overview implements ViewControllerInterface
     public function __construct(private NewsRepositoryInterface $newsRepository, private NewsFactoryInterface $newsFactory, private ConfigInterface $config) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setPageTitle(ModuleEnum::INDEX->getTitle());
         $game->setTemplateFile(ModuleEnum::INDEX->getTemplate());

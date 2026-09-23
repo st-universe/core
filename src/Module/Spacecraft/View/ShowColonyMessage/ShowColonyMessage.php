@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Colony\ColonyMessageBbCodeParser;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -24,7 +24,7 @@ final class ShowColonyMessage implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),

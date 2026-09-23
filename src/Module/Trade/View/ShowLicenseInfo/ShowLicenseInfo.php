@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLicenseInfo;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -22,7 +22,7 @@ final class ShowLicenseInfo implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $tradePostId = $this->showLicenseInfoRequest->getTradePostId();
 

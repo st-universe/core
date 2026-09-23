@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\StuTestCase;
 
@@ -15,7 +15,7 @@ class ViewComponentLoaderTest extends StuTestCase
 {
     private MockInterface&ViewComponentProviderInterface  $componentProvider;
 
-    private MockInterface&GameControllerInterface  $game;
+    private MockInterface&ViewControllerContext  $game;
 
     private ViewComponentLoaderInterface $subject;
 
@@ -23,7 +23,7 @@ class ViewComponentLoaderTest extends StuTestCase
     protected function setUp(): void
     {
         $this->componentProvider = $this->mock(ViewComponentProviderInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->game = $this->mock(ViewControllerContext::class);
 
         $this->subject = new ViewComponentLoader([ModuleEnum::MAINDESK->value => $this->componentProvider]);
     }

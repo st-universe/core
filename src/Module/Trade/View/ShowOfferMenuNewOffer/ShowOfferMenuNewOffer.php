@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\View\ShowOfferMenuNewOffer;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
     public function __construct(private ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest, private CommodityRepositoryInterface $commodityRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

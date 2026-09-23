@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\NPC\View\ShowNPCQuests;
 
 use Override;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\NPCQuest;
@@ -30,7 +30,7 @@ final class ShowNPCQuests implements ViewControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             sprintf(

@@ -10,7 +10,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SignatureWrapper;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -39,7 +39,7 @@ final class ShowSensorScan implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

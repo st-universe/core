@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Component\ComponentRegistrationInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
@@ -28,7 +28,7 @@ final class MessageProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         if (!request::has('pmcat') && $this->userSettingsProvider->isInboxMessengerStyle($game->getUser())) {
             $this->messengerStyleProvider->setTemplateVariables($game);

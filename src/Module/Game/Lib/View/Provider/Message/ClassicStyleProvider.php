@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
@@ -31,7 +31,7 @@ final class ClassicStyleProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
         $categoryId = request::indInt('pmcat');

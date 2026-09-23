@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowTakeOffer implements ViewControllerInterface
     public function __construct(private ShowTakeOfferRequestInterface $showTakeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\View\Sandbox;
 
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -25,7 +25,7 @@ final class ShowNewSandbox implements
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->setPageTitle(_('Neue Sandbox erstellen'));
         $game->setMacroInAjaxWindow('html/colony/sandbox/newSandbox.twig');

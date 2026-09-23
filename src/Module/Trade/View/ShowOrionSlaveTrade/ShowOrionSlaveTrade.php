@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\View\ShowOrionSlaveTrade;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CrewSkill;
 use Stu\Orm\Entity\OrionAuction;
@@ -27,7 +27,7 @@ final class ShowOrionSlaveTrade implements ViewControllerInterface
         private UserCrewRankRepositoryInterface $userCrewRankRepository
     ) {}
 
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $game->appendNavigationPart('trade.php', 'Handel');

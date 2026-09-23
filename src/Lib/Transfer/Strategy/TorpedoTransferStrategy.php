@@ -7,7 +7,7 @@ namespace Stu\Lib\Transfer\Strategy;
 use request;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TorpedoType;
 
@@ -18,7 +18,7 @@ class TorpedoTransferStrategy implements TransferStrategyInterface
         bool $isUnload,
         StorageEntityWrapperInterface $source,
         StorageEntityWrapperInterface $target,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
 
         $torpedoSource = $isUnload ? $source : $target;

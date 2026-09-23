@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnArchivePlotList;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostArchivRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotArchivRepositoryInterface;
@@ -22,7 +22,7 @@ final class ShowKnArchivePlotList implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $version = $this->showKnArchivePlotListRequest->getVersion();
 

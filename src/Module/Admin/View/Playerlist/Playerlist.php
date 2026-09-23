@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Playerlist;
 
 use Stu\Module\Admin\Lib\UserlistEntry;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -17,7 +17,7 @@ final class Playerlist implements ViewControllerInterface
     public function __construct(private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             sprintf(

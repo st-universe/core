@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\RpgRanking;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListWithPoints;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
@@ -17,7 +17,7 @@ final class RpgRanking implements ViewControllerInterface
     public function __construct(private DatabaseUiFactoryInterface $databaseUiFactory, private KnPostRepositoryInterface $knPostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             'database.php',

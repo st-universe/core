@@ -9,7 +9,7 @@ use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
 use request;
 use Stu\Component\Image\ImageCreationInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\GraphInfo;
 use Stu\Module\Database\Lib\PlotInfo;
@@ -52,7 +52,7 @@ final class ShowStatistics implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $period = request::getInt('period');
         if (!$period || $period < 0 || $period > 150) {

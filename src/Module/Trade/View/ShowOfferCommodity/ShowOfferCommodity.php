@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferCommodity;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowOfferCommodity implements ViewControllerInterface
     public function __construct(private ShowOfferCommodityRequestInterface $showOfferCommodityRequest, private TradePostRepositoryInterface $tradePostRepository, private TradeOfferRepositoryInterface $tradeOfferRepository, private CommodityRepositoryInterface $commodityRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $commodity = $this->commodityRepository->find($this->showOfferCommodityRequest->getCommodityId());
         $tradepost = $this->tradePostRepository->find($this->showOfferCommodityRequest->getTradePostId());

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowWriteKn;
 
 use Mockery\MockInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\StuTestCase;
@@ -28,7 +28,7 @@ class ShowWriteKnTest extends StuTestCase
 
     public function testHandleRendersView(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $plot = $this->mock(RpgPlot::class);
 
         $userId = 666;

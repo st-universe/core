@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib\View;
 
 use RuntimeException;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 
 final class ViewComponentLoader implements ViewComponentLoaderInterface
@@ -17,7 +17,7 @@ final class ViewComponentLoader implements ViewComponentLoaderInterface
     #[\Override]
     public function registerViewComponents(
         ModuleEnum $view,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
 
         if (!array_key_exists($view->value, $this->viewComponentProviders)) {

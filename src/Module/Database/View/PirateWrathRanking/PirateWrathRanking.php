@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\PirateWrathRanking;
 
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\Pirate\Component\PirateWrathManager;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -28,7 +28,7 @@ final class PirateWrathRanking implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             'database.php',

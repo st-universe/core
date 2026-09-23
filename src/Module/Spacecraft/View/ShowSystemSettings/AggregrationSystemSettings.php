@@ -9,7 +9,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
@@ -26,7 +26,7 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
     public function setTemplateVariables(
         SpacecraftSystemTypeEnum $systemType,
         SpacecraftWrapperInterface $wrapper,
-        GameControllerInterface $game
+        ViewControllerContext $game
     ): void {
         $userId = $game->getUser()->getId();
         $spacecraft = $wrapper->get();

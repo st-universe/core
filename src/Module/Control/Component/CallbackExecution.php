@@ -8,6 +8,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\AccessCheckInterface;
+use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 
@@ -40,6 +41,7 @@ class CallbackExecution implements CallbackExecutionInterface
     {
         $actions = $this->controllerDiscovery->getControllers($module, false);
 
+        /** @var ActionControllerInterface $controller */
         foreach ($actions as $actionIdentifier => $controller) {
             if (!request::has($actionIdentifier)) {
                 continue;

@@ -7,7 +7,7 @@ use request;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Paging\PagingFactory;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Game\Lib\View\Provider\ViewComponentProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -30,7 +30,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $category = $this->privateMessageFolderRepository->getByUserAndSpecial(

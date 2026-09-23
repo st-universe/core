@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\View\ShowPlayerList;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Admin\Lib\UserlistEntry;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -25,7 +25,7 @@ final class ShowPlayerList implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart(
             sprintf(

@@ -10,6 +10,7 @@ use Mockery\MockInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
@@ -336,7 +337,7 @@ class ShowModuleFabTest extends StuTestCase
 
     public function testSetBuildplansUsesHangarCostModulesInsteadOfBuildplanModules(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $colony = $this->mock(Colony::class);
         $rump = $this->mock(SpacecraftRump::class);
         $hangarBuildplan = $this->mock(SpacecraftBuildplan::class);
@@ -404,7 +405,7 @@ class ShowModuleFabTest extends StuTestCase
 
     public function testSetBuildplansAddsAdditionalBuildplansWithoutAvailableRump(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $colony = $this->mock(Colony::class);
         $additionalBuildplan = $this->mock(SpacecraftBuildplan::class);
         $buildplanModule = $this->mock(BuildplanModule::class);
@@ -731,7 +732,7 @@ class ShowModuleFabTest extends StuTestCase
     private function invokeSetBuildplans(
         array $rumps,
         array &$allModules,
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         array $exclusiveBuildplansByRump,
         array $exclusiveModulesByRump,
         array $additionalBuildplans = []
@@ -740,7 +741,7 @@ class ShowModuleFabTest extends StuTestCase
             function (
                 array $rumps,
                 array &$allModules,
-                GameControllerInterface $game,
+                ViewControllerContext $game,
                 array $exclusiveBuildplansByRump,
                 array $exclusiveModulesByRump,
                 array $additionalBuildplans
@@ -780,10 +781,10 @@ class ShowModuleFabTest extends StuTestCase
     }
 
     /** @return array<int, int> */
-    private function invokeGetAccumulatedStorageByCommodityId(GameControllerInterface $game): array
+    private function invokeGetAccumulatedStorageByCommodityId(ViewControllerContext $game): array
     {
         $callable = \Closure::bind(
-            function (GameControllerInterface $game): array {
+            function (ViewControllerContext $game): array {
                 return $this->getAccumulatedStorageByCommodityId($game);
             },
             $this->subject,

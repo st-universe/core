@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\View\ShowMemberRumpInfo;
 
 use JBBCode\Parser;
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -28,7 +28,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $memberId = request::getIntFatal('userid');
         $rumpId = request::getIntFatal('rumpid');

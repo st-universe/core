@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\View\ShowCrewRaceManagement;
 
 use request;
 use Stu\Component\Crew\CrewRaceInput;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -27,7 +27,7 @@ final class ShowCrewRaceManagement implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $ownCrewRaces = $this->crewRaceRepository->getByCreatorUserId($user->getId());

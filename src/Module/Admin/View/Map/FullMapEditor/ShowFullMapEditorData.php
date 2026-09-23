@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\View\Map\FullMapEditor;
 use JsonException;
 use request;
 use Stu\Module\Admin\View\Map\LiveMap\ShowLiveMapImage;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -28,7 +28,7 @@ final class ShowFullMapEditorData implements ViewControllerInterface
      * @throws JsonException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $layerId = request::getIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);

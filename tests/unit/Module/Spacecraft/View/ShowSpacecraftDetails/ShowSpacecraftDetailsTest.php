@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -47,7 +47,7 @@ class ShowSpacecraftDetailsTest extends StuTestCase
 
     public function testHandleAllowsUplinkForStationDetails(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $alliance = $this->mock(Alliance::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $station = $this->mock(Station::class);

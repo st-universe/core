@@ -6,7 +6,7 @@ namespace Stu\Module\Index\View\ShowRegistration;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Index\Lib\FactionItem;
 use Stu\Module\Index\Lib\UiItemFactoryInterface;
 use Stu\Orm\Entity\Faction;
@@ -43,7 +43,7 @@ class ShowRegistrationTest extends StuTestCase
 
     public function testHandleRenders(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $faction = $this->mock(Faction::class);
         $factionItem = $this->mock(FactionItem::class);
 

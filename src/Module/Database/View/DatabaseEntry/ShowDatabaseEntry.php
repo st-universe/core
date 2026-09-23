@@ -14,7 +14,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Map\VisualPanel\Layer\Data\MapData;
 use Stu\Lib\Map\VisualPanel\Layer\Render\SystemLayerRenderer;
 use Stu\Lib\Map\VisualPanel\PanelAttributesInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Orm\Entity\ColonyScan;
@@ -54,7 +54,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
         $entryId = $this->databaseEntryRequest->getEntryId();
@@ -110,7 +110,7 @@ final class ShowDatabaseEntry implements ViewControllerInterface
         $game->setTemplateVar('ENTRY', $entry);
     }
 
-    private function addSpecialVars(GameControllerInterface $game, DatabaseEntry $entry): void
+    private function addSpecialVars(ViewControllerContext $game, DatabaseEntry $entry): void
     {
         $entry_object_id = $entry->getObjectId();
 

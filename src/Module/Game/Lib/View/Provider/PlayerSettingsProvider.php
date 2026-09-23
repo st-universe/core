@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Lib\View\Provider;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Faction\FactionEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 use Stu\Module\PlayerSetting\Lib\UserSettingWrapper;
@@ -22,7 +22,7 @@ final class PlayerSettingsProvider implements ViewComponentProviderInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 

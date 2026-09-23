@@ -7,7 +7,7 @@ namespace Stu\Module\Communication\View\ShowSingleKn;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
@@ -22,7 +22,7 @@ final class ShowSingleKn implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
         $post = $this->knPostRepository->findActiveById($this->showSingleKnRequest->getKnId());

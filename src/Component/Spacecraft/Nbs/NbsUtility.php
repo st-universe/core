@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\Nbs;
 
 use Stu\Lib\Session\SessionStorageInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Ship\Lib\Fleet\FleetNfsIterator;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsIterator;
 use Stu\Orm\Entity\Map;
@@ -34,7 +34,7 @@ final class NbsUtility implements NbsUtilityInterface
     #[\Override]
     public function setNbsTemplateVars(
         Spacecraft $spacecraft,
-        GameControllerInterface $game,
+        ViewControllerContext $game,
         ?SessionStorageInterface $sessionStorage,
         bool $tachyonActive,
         Map|StarSystemMap|null $field = null

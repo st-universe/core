@@ -8,7 +8,7 @@ use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 
 final class Edit implements ViewControllerInterface
@@ -18,7 +18,7 @@ final class Edit implements ViewControllerInterface
     public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceActionManagerInterface $allianceActionManager) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $alliance = $game->getUser()->getAlliance();
         if ($alliance === null) {

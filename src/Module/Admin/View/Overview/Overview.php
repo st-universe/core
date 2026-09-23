@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Overview;
 
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class Overview implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $game->appendNavigationPart('/admin/', _('Übersicht'));
         $game->setTemplateFile('html/admin/overview.twig');
@@ -26,7 +26,7 @@ final class Overview implements ViewControllerInterface
         $this->setWeatherReport($game);
     }
 
-    private function setWeatherReport(GameControllerInterface $game): void
+    private function setWeatherReport(ViewControllerContext $game): void
     {
         // load event map from file
         $historyFolder = $this->config->getGameSettings()->getTempDir() . '/history';

@@ -12,7 +12,7 @@ use request;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
@@ -49,7 +49,7 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
 
     public function testListsOnlyOwnCrewOutsideTroopQuarters(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
         $spacecraft = $this->mock(Spacecraft::class);
         $rump = $this->mock(SpacecraftRump::class);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowTradePostInfo;
 
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
     public function __construct(private ShowTradePostInfoRequestInterface $showTradePostInfoRequest, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $talFactory, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 

@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\LatinumRanking;
 
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -35,7 +35,7 @@ class LatinumRankingTest extends StuTestCase
 
     public function testHandleRenders(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
 
         $userId = 666;

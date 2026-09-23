@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\View\ShowAvailableShips;
 
 use request;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -18,7 +18,7 @@ final class ShowAvailableShips implements ViewControllerInterface
     public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
 

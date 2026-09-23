@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\PassiveRepairPreviewWrapper;
@@ -30,7 +30,7 @@ final class ShowShipRepair implements ViewControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
 
