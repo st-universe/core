@@ -60,8 +60,8 @@ class ViewExecution
 
             $game->getGameRequest()->setView($viewIdentifier);
 
-            if ($this->accessCheck->checkUserAccess($controller, $game)) {
-                $this->handleView($controller, $game);
+            if ($this->accessCheck->checkUserAccess($controller, $game->getInfo())) {
+                $this->handleView($controller, $context);
                 return;
             }
             break;
@@ -71,7 +71,7 @@ class ViewExecution
 
         if (
             $view !== null
-            && $this->accessCheck->checkUserAccess($view, $game)
+            && $this->accessCheck->checkUserAccess($view, $game->getInfo())
         ) {
             $this->handleView($view, $game);
         }

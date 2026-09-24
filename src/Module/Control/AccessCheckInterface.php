@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Stu\Lib\Information\InformationInterface;
+
 interface AccessCheckInterface
 {
     public function checkUserAccess(
         ControllerInterface $controller,
-        GameControllerInterface $game
+        InformationInterface $info
     ): bool;
 
     public function isFeatureGranted(
