@@ -49,7 +49,7 @@ class CallbackExecution implements CallbackExecutionInterface
 
             $game->getGameRequest()->setAction($actionIdentifier);
 
-            if ($this->accessCheck->checkUserAccess($controller, $game)) {
+            if ($this->accessCheck->checkUserAccess($controller, $game->getInfo())) {
                 $controller->handle($game);
                 $this->entityManager->flush();
             }

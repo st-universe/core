@@ -9,6 +9,8 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Lib\AccountNotVerifiedException;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\User;
@@ -20,8 +22,9 @@ class AccessCheckTest extends StuTestCase
     private MockInterface&SessionStringRepositoryInterface $sessionStringRepository;
     private MockInterface&StuConfigInterface $stuConfig;
     private MockInterface&GameUserRoleCheckerInterface $gameUserRoleChecker;
+    private MockInterface&SessionInterface $session;
 
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&InformationInterface $info;
 
     private AccessCheckInterface $subject;
 
@@ -31,13 +34,15 @@ class AccessCheckTest extends StuTestCase
         $this->sessionStringRepository = $this->mock(SessionStringRepositoryInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->gameUserRoleChecker = $this->mock(GameUserRoleCheckerInterface::class);
-
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->session = $this->mock(SessionInterface::class);
+        
+        $this->info = $this->mock(InformationInterface::class);
 
         $this->subject = new AccessCheck(
             $this->sessionStringRepository,
             $this->stuConfig,
-            $this->gameUserRoleChecker
+            $this->gameUserRoleChecker,
+            $this->session
         );
     }
 
@@ -45,7 +50,7 @@ class AccessCheckTest extends StuTestCase
     {
         $controller = $this->mock(NoAccessCheckControllerInterface::class);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertTrue($result);
     }
@@ -54,34 +59,38 @@ class AccessCheckTest extends StuTestCase
     {
         static::expectException(AccountNotVerifiedException::class);
 
-        $this->game->shouldReceive('hasUser')
+        $user = $this->mock(User::class);
+
+        $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn(true);
-        $this->game->shouldReceive('getUser->getState')
+            ->andReturn($user);
+        $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
             ->andReturn(UserStateEnum::ACCOUNT_VERIFICATION);
 
         $controller = $this->mock(ControllerInterface::class);
 
-        $this->subject->checkUserAccess($controller, $this->game);
+        $this->subject->checkUserAccess($controller, $this->info);
     }
 
     public function testCheckUserAccessExpectTrueWhenNoAccessCheckNeeded(): void
     {
         $controller = $this->mock(ControllerInterface::class);
 
-        $this->game->shouldReceive('hasUser')
+        $user = $this->mock(User::class);
+
+        $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn(true);
-        $this->game->shouldReceive('getUser->getState')
+            ->andReturn($user);
+        $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
             ->andReturn(UserStateEnum::ACTIVE);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertTrue($result);
     }
@@ -96,6 +105,11 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn(AccessGrantedFeatureEnum::COLONY_SANDBOX);
 
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
@@ -105,18 +119,12 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->game->shouldReceive('hasUser')
-            ->withNoArgs()
-            ->andReturn(true);
-        $this->game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->andReturn($user);
         $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertTrue($result);
     }
@@ -131,6 +139,11 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn(AccessGrantedFeatureEnum::COLONY_SANDBOX);
 
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $user->shouldReceive('getState')
             ->withNoArgs()
             ->once()
@@ -140,12 +153,6 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->game->shouldReceive('hasUser')
-            ->withNoArgs()
-            ->andReturn(true);
-        $this->game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->andReturn($user);
         $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
@@ -156,7 +163,7 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn([['feature' => 'COLONY_SANDBOX', 'userIds' => [42]]]);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertTrue($result);
     }
@@ -182,6 +189,11 @@ class AccessCheckTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(AccessGrantedFeatureEnum::COLONY_SANDBOX);
+        
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
 
         $user->shouldReceive('getState')
             ->withNoArgs()
@@ -192,17 +204,11 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->game->shouldReceive('hasUser')
-            ->withNoArgs()
-            ->andReturn(true);
-        $this->game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->andReturn($user);
         $this->gameUserRoleChecker->shouldReceive('isAdmin')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->info->shouldReceive('addInformation')
             ->with('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]')
             ->once();
 
@@ -211,7 +217,7 @@ class AccessCheckTest extends StuTestCase
             ->once()
             ->andReturn($grantedFeatures);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertFalse($result);
     }
@@ -246,6 +252,11 @@ class AccessCheckTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($performSessionCheck);
 
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         if ($user !== null) {
             $user->shouldReceive('getState')
                 ->withNoArgs()
@@ -256,19 +267,12 @@ class AccessCheckTest extends StuTestCase
                 ->andReturn(42);
         }
 
-        $this->game->shouldReceive('hasUser')
-            ->withNoArgs()
-            ->andReturn($user !== null);
-        $this->game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->andReturn($user);
-
         $this->sessionStringRepository->shouldReceive('isValid')
             ->with($sstr, 42)
             ->zeroOrMoreTimes()
             ->andReturn($expectedResult);
 
-        $result = $this->subject->checkUserAccess($controller, $this->game);
+        $result = $this->subject->checkUserAccess($controller, $this->info);
 
         $this->assertEquals($expectedResult, $result);
     }

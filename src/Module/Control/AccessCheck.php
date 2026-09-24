@@ -4,8 +4,11 @@ namespace Stu\Module\Control;
 
 use request;
 use Stu\Lib\AccountNotVerifiedException;
+use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 class AccessCheck implements AccessCheckInterface
@@ -13,25 +16,26 @@ class AccessCheck implements AccessCheckInterface
     public function __construct(
         private readonly SessionStringRepositoryInterface $sessionStringRepository,
         private readonly StuConfigInterface $stuConfig,
-        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
+        private readonly SessionInterface $session
     ) {}
 
     #[\Override]
     public function checkUserAccess(
         ControllerInterface $controller,
-        GameControllerInterface $game
+        InformationInterface $info
     ): bool {
 
         if ($controller instanceof NoAccessCheckControllerInterface) {
             return true;
         }
 
-        $hasUser = $game->hasUser();
-        if ($hasUser && $game->getUser()->getState() === UserStateEnum::ACCOUNT_VERIFICATION) {
+        $user = $this->session->getUser();
+        if ($user?->getState() === UserStateEnum::ACCOUNT_VERIFICATION) {
             throw new AccountNotVerifiedException();
         }
 
-        if (!$this->isSessionValid($controller, $hasUser, $game)) {
+        if (!$this->isSessionValid($controller, $user)) {
             return false;
         }
 
@@ -40,19 +44,18 @@ class AccessCheck implements AccessCheckInterface
         }
 
         $feature = $controller->getFeatureIdentifier();
-        if ($hasUser && $this->isFeatureGranted($game->getUser()->getId(), $feature)) {
+        if ($user !== null && $this->isFeatureGranted($user->getId(), $feature)) {
             return true;
         }
 
-        $game->getInfo()->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
+        $info->addInformation('[b][color=#ff2626]Aktion nicht möglich, Spieler ist nicht berechtigt![/color][/b]');
 
         return false;
     }
 
     private function isSessionValid(
         ControllerInterface $controller,
-        bool $hasUser,
-        GameControllerInterface $game
+        ?User $user
     ): bool {
 
         if (!$controller instanceof ActionControllerInterface) {
@@ -68,13 +71,13 @@ class AccessCheck implements AccessCheckInterface
             return false;
         }
 
-        if (!$hasUser) {
+        if ($user === null) {
             return false;
         }
 
         return $this->sessionStringRepository->isValid(
             $sessionString,
-            $game->getUser()->getId()
+            $user->getId()
         );
     }
 
