@@ -21,6 +21,8 @@ use Stu\Module\Game\Component\ServertimeComponent;
 use Stu\Module\Game\Component\UserProfileComponent;
 use Stu\Module\Game\Lib\GameSetup;
 use Stu\Module\Game\Lib\GameSetupInterface;
+use Stu\Module\Game\Lib\GameTurnProvider;
+use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Module\Game\Lib\View\Provider\AllianceProvider;
 use Stu\Module\Game\Lib\View\Provider\ColonyListProvider;
 use Stu\Module\Game\Lib\View\Provider\CommunicationProvider;
@@ -52,6 +54,7 @@ use function DI\get;
 
 return [
     GameSetupInterface::class => autowire(GameSetup::class),
+    GameTurnProviderInterface::class => autowire(GameTurnProvider::class),
     ClassicStyleProvider::class => autowire(ClassicStyleProvider::class),
     MessengerStyleProvider::class => autowire(MessengerStyleProvider::class),
     ViewComponentLoaderInterface::class => autowire(ViewComponentLoader::class)->constructorParameter(
