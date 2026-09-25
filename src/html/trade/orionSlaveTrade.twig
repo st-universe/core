@@ -57,7 +57,7 @@
                             <br />
                             <b>Höchste Position:</b><br />
                             {{ highestSkill.getPosition.getDescription }}<br />
-                            <b>Rang:</b> {{ CREW_RANK_NAMES[highestSkill.getRank.value] }}
+                            <b>Rang:</b> {{ CREW_RANK_NAMES[crew.getRank.value] }}
                             <br />
                             <b>Höchstbietender:</b><br />
                             {% if highestBid %}
@@ -93,15 +93,25 @@
     <div class="box_title">Ersteigerte Crew der letzten 14 Tage</div>
     <div class="box_body">
         <table class="tcal" style="width: 100%;">
-            <tr><th>Crewman</th><th>Rang</th><th>Ersteigert von</th><th>Abschluss</th></tr>
+            <tr><th>Rasse</th><th>Rang</th><th>Preis</th><th>Ersteigert von</th><th>Abschluss</th></tr>
             {% if HISTORY is empty %}
-            <tr><td colspan="4">Noch keine Crewman ersteigert</td></tr>
+            <tr><td colspan="5">Noch keine Crewman ersteigert</td></tr>
             {% endif %}
             {% for auction in HISTORY %}
             {% set crew = auction.getCrew %}
+            {% set wantedCommodity = auction.getWantedCommodity %}
             <tr class="row{{ loop.index is odd }}">
-                <td><img src="{{ crew.getRace.getImagePath(crew.getGenderShort, auction.getCrewImageType) }}" /> {{ crew.getName }}</td>
+                <td><img src="{{ crew.getRace.getImagePath(crew.getGenderShort, auction.getCrewImageType) }}" /> {{ crew.getRace.getDescription|bbcode }}</td>
                 <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>
+                <td>
+                    {% if wantedCommodity %}
+                    <img src="assets/commodities/{{ wantedCommodity.getId }}.png" title="{{ wantedCommodity.getName }}" />
+                    {{ auction.getAuctionAmount }} {{ wantedCommodity.getName }}
+                    {% else %}
+                    <img src="assets/buttons/prestige.png" title="Prestige" />
+                    {{ auction.getAuctionAmount }} Prestige
+                    {% endif %}
+                </td>
                 <td>{% if auction.getWinner %}{{ auction.getWinner.getName|bbcode }} ({{ auction.getWinner.getId }}){% else %}{{ auction.getWinnerName|bbcode }}{% endif %}</td>
                 <td>{{ auction.getCompletedAt|stuDateTime }}</td>
             </tr>
