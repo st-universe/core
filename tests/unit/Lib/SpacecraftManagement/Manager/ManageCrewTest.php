@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use RuntimeException;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -548,6 +549,8 @@ class ManageCrewTest extends StuTestCase
     {
         $shipCrew1 = $this->mock(CrewAssignment::class);
         $shipCrew2 = $this->mock(CrewAssignment::class);
+        $shipCrew1->shouldReceive('getSlot')->withNoArgs()->andReturn(CrewTypeEnum::CREWMAN);
+        $shipCrew2->shouldReceive('getSlot')->withNoArgs()->andReturn(CrewTypeEnum::CREWMAN);
 
         $shipCrewlist = new ArrayCollection([$shipCrew1, $shipCrew2]);
         $rumpMock = $this->mock(SpacecraftRump::class);
@@ -637,6 +640,8 @@ class ManageCrewTest extends StuTestCase
         $foreignCrew = $this->mock(Crew::class);
         $foreignCrewUser = $this->mock(User::class);
         $foreignCrewAssignment = $this->mock(CrewAssignment::class);
+        $ownCrew->shouldReceive('getSlot')->withNoArgs()->andReturn(CrewTypeEnum::CREWMAN);
+        $foreignCrewAssignment->shouldReceive('getSlot')->withNoArgs()->andReturn(CrewTypeEnum::CREWMAN);
         $rumpMock = $this->mock(SpacecraftRump::class);
         $buildplan = $this->mock(SpacecraftBuildplan::class);
 
