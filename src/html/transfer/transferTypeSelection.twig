@@ -15,7 +15,7 @@
             <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
         </a>
         {% endif %}
-        {% if TRANSFER_INFO.isCrewTransferPossible %}
+        {% if TRANSFER_INFO.isCrewTransferPossible(not (CREW_TRANSFER_MODE|default(false))) %}
         <a href="javascript:void(0);"
             onclick="showTransfer(null, {{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}', 2, {{ isUnload }}, true);"
             onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
@@ -37,6 +37,14 @@
             <img src="assets/buttons/torp.png" name="torpedobeamtrigger" title="Torpedos beamen" />
         </a>
         {% endif %}
+        {% endif %}
+        {% if TRANSFER_INFO.isIndividualCrewTransferPossible and not (CREW_TRANSFER_MODE|default(false)) %}
+        <a href="javascript:void(0);"
+            onclick="showIndividualCrewTransfer({{ sourceId }}, '{{ sourceEntityType }}', {{ targetId }}, '{{ targetEntityType }}');"
+            onmouseover="cp('individualcrewbeamtrigger','buttons/crew_2');"
+            onmouseout="cp('individualcrewbeamtrigger','buttons/crew_3');">
+            <img src="assets/buttons/crew_3.png" name="individualcrewbeamtrigger" title="Einzelne Crewman transferieren" />
+        </a>
         {% endif %}
         <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
     </td>

@@ -1,0 +1,45 @@
+<form action="{{ TRANSFER_INFO.getSourceType.value }}.php" method="post" onsubmit="return submitIndividualCrewTransfer(this);">
+    <input type="hidden" name="id" value="{{ SOURCE.getId }}" />
+    <input type="hidden" name="source_type" value="{{ TRANSFER_INFO.getSourceType.value }}" />
+    <input type="hidden" name="target" value="{{ TARGET.getId }}" />
+    <input type="hidden" name="target_type" value="{{ TRANSFER_INFO.getTargetType.value }}" />
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    <input type="hidden" name="transfer_type" value="2" />
+    <input type="hidden" name="is_unload" value="1" />
+    <input type="hidden" name="individual_crew" value="1" />
+    <input type="hidden" name="crew_placements" value="" />
+    <div id="crewAssignmentManagement" class="crew-assignment-management crew-transfer-management" data-individual-transfer="1">
+        <div class="crew-assignment-management-toolbar">
+            <table>
+                <tbody>
+                    {% include 'html/transfer/transferTypeSelection.twig' with {CREW_TRANSFER_MODE: true} %}
+                </tbody>
+            </table>
+        </div>
+        <div class="crew-assignment-management-scroll crew-transfer-layout" ondragover="scrollCrewAssignmentManagement(event);">
+            {% for side in CREW_TRANSFER_SIDES %}
+            <aside class="crew-transfer-entity crew-transfer-entity-{{ loop.index0 }}">
+                <strong>{{ side.entity.getName|bbcode }}</strong>
+                {% if side.entity.getTransferEntityType.value == 'colony' %}
+                <img src="assets/planets/{{ side.entity.getColonyClass.getId }}.png" alt="" />
+                {% else %}
+                <img src="assets/ships/{{ side.entity.getRump.getId }}.png" alt="" />
+                {% endif %}
+                <div>Crew: <span data-side-count="{{ loop.index0 }}">{{ side.count }}</span> / {{ side.maximum }}</div>
+                {% if loop.first %}<div>Mindestbestand: {{ side.minimum }}</div>{% endif %}
+                {% if side.fixedCount %}<div>{{ side.fixedCount }} fremde Crewman verbleiben an Bord</div>{% endif %}
+            </aside>
+            <div class="crew-transfer-side crew-transfer-side-{{ loop.index0 }}" data-transfer-side="{{ loop.index0 }}"
+                data-fixed-count="{{ side.fixedCount }}" data-minimum="{{ side.minimum }}" data-maximum="{{ side.maximum }}">
+                {% include 'html/spacecraft/crewAssignmentPositions.twig' with {POSITIONS: side.positions, CREW_TRANSFER_MODE: true} %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="crew-transfer-feedback" role="status" aria-live="polite"></div>
+        <div class="crew-assignment-management-toolbar">
+            <input type="submit" class="button" name="B_TRANSFER" value="Transferieren" />
+            <input type="button" class="button" value="Zurücksetzen" onclick="resetIndividualCrewTransfer();" />
+        </div>
+    </div>
+</form>
+<script>initializeIndividualCrewTransfer();</script>

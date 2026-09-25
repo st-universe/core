@@ -60,6 +60,7 @@ use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\Transfer\CommodityTransfer;
 use Stu\Lib\Transfer\CommodityTransferInterface;
+use Stu\Lib\Transfer\IndividualCrewTransfer;
 use Stu\Lib\Transfer\Storage\StorageManager;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Lib\Transfer\Strategy\CommodityTransferStrategy;
@@ -142,7 +143,8 @@ return [
     TransferInformationFactoryInterface::class => autowire(TransferInformationFactory::class),
     TransferStrategyInterface::class => [
         TransferTypeEnum::COMMODITIES->value => autowire(CommodityTransferStrategy::class),
-        TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class),
+        TransferTypeEnum::CREW->value => autowire(TroopTransferStrategy::class)
+            ->constructorParameter('individualCrewTransfer', autowire(IndividualCrewTransfer::class)),
         TransferTypeEnum::TORPEDOS->value => autowire(TorpedoTransferStrategy::class)
     ]
 ];

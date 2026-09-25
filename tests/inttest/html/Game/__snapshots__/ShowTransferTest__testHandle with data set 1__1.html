@@ -38,7 +38,13 @@
             onmouseout="cp('commoditybeamtrigger','buttons/lager_1');">
             <img src="assets/buttons/lager_1.png" name="commoditybeamtrigger" title="Waren beamen" />
         </a>
-                                <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
+                                        <a href="javascript:void(0);"
+            onclick="showIndividualCrewTransfer(42, 'ship', 43, 'station');"
+            onmouseover="cp('individualcrewbeamtrigger','buttons/crew_2');"
+            onmouseout="cp('individualcrewbeamtrigger','buttons/crew_3');">
+            <img src="assets/buttons/crew_3.png" name="individualcrewbeamtrigger" title="Einzelne Crewman transferieren" />
+        </a>
+                <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
     </td>
     </tr>
         <tr>
