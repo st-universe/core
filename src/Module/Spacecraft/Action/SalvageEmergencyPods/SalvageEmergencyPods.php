@@ -14,6 +14,7 @@ use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -24,7 +25,6 @@ use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -35,7 +35,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     /** @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader */
     public function __construct(
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private CrewCreatorInterface $crewCreator,
         private TradePostRepositoryInterface $tradePostRepository,
         private PrivateMessageSenderInterface $privateMessageSender,
         private TroopTransferUtilityInterface  $troopTransferUtility,
@@ -196,11 +196,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
                 );
-                foreach ($target->getCrewAssignments() as $crewAssignment) {
+                foreach ($target->getCrewAssignments()->toArray() as $crewAssignment) {
                     if ($crewAssignment->getCrew()->getUser()->getId() === $ownerId) {
-                        $crewAssignment->setSpacecraft(null);
-                        $crewAssignment->setTradepost($closestTradepost);
-                        $this->shipCrewRepository->save($crewAssignment);
+                        $this->troopTransferUtility->assignCrew($crewAssignment, $closestTradepost);
                     }
                 }
                 if (!$sentGameInfoForForeignCrew) {
@@ -208,12 +206,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $sentGameInfoForForeignCrew = true;
                 }
             } elseif ($this->gotEnoughFreeTroopQuarters($spacecraft, $count)) {
-                foreach ($target->getCrewAssignments() as $crewAssignment) {
-                    if ($crewAssignment->getCrew()->getUser()->getId() === $game->getUser()->getId()) {
-                        $crewAssignment->setSpacecraft($spacecraft);
-                        $this->shipCrewRepository->save($crewAssignment);
-                    }
-                }
+                $this->crewCreator->createCrewAssignments($spacecraft, $target, $count, $game->getUser());
                 $game->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
             } else {
                 $closestTradepost ??= $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $game->getUser());

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\SalvageEmergencyPods;
 
 use Stu\Lib\Map\DistanceCalculationInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\TradePost;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class TransferToClosestLocation
 {
     public function __construct(
         private ClosestLocations $closestLocations,
         private DistanceCalculationInterface $distanceCalculation,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository
+        private TroopTransferUtilityInterface $troopTransferUtility,
+        private CrewCreatorInterface $crewCreator
     ) {}
 
     public function transfer(
@@ -43,12 +45,10 @@ final class TransferToClosestLocation
         $minimumDistance = $this->getMinimumDistance($colonyDistance, $stationDistance, $tradepostDistance);
 
         //transfer to closest colony
-        if ($colonyDistance === $minimumDistance) {
-            foreach ($target->getCrewAssignments() as $crewAssignment) {
+        if ($closestColony !== null && $colonyDistance === $minimumDistance) {
+            foreach ($target->getCrewAssignments()->toArray() as $crewAssignment) {
                 if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
-                    $crewAssignment->setColony($closestColony);
-                    $crewAssignment->setSpacecraft(null);
-                    $this->shipCrewRepository->save($crewAssignment);
+                    $this->troopTransferUtility->assignCrew($crewAssignment, $closestColony);
                 }
             }
             return sprintf(
@@ -59,13 +59,8 @@ final class TransferToClosestLocation
         }
 
         //transfer to closest station
-        if ($stationDistance === $minimumDistance) {
-            foreach ($target->getCrewAssignments() as $crewAssignment) {
-                if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
-                    $crewAssignment->setSpacecraft($closestStation);
-                    $this->shipCrewRepository->save($crewAssignment);
-                }
-            }
+        if ($closestStation !== null && $stationDistance === $minimumDistance) {
+            $this->crewCreator->createCrewAssignments($closestStation, $target, $crewCount, $ship->getUser());
             return sprintf(
                 _('Deine Crew wurde geborgen und an die Station "%s" (%s) überstellt'),
                 $closestStation->getName(),
@@ -74,11 +69,9 @@ final class TransferToClosestLocation
         }
 
         //transfer to closest tradepost
-        foreach ($target->getCrewAssignments() as $crewAssignment) {
+        foreach ($target->getCrewAssignments()->toArray() as $crewAssignment) {
             if ($crewAssignment->getCrew()->getUser()->getId() === $ship->getUser()->getId()) {
-                $crewAssignment->setSpacecraft(null);
-                $crewAssignment->setTradepost($closestTradepost);
-                $this->shipCrewRepository->save($crewAssignment);
+                $this->troopTransferUtility->assignCrew($crewAssignment, $closestTradepost);
             }
         }
         return sprintf(

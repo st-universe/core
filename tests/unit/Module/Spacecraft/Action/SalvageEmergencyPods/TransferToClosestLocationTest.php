@@ -8,19 +8,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Map\DistanceCalculationInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\StuTestCase;
 
 class TransferToClosestLocationTest extends StuTestCase
 {
     private MockInterface&ClosestLocations $closestLocations;
-    private MockInterface&CrewAssignmentRepositoryInterface $shipCrewRepository;
+    private MockInterface&TroopTransferUtilityInterface $troopTransferUtility;
+    private MockInterface&CrewCreatorInterface $crewCreator;
     private MockInterface&DistanceCalculationInterface $distanceCalculation;
 
     private MockInterface&Ship $ship;
@@ -34,7 +36,8 @@ class TransferToClosestLocationTest extends StuTestCase
     {
         $this->closestLocations = $this->mock(ClosestLocations::class);
         $this->distanceCalculation = $this->mock(DistanceCalculationInterface::class);
-        $this->shipCrewRepository = $this->mock(CrewAssignmentRepositoryInterface::class);
+        $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
+        $this->crewCreator = $this->mock(CrewCreatorInterface::class);
 
         $this->ship = $this->mock(Ship::class);
         $this->target = $this->mock(Ship::class);
@@ -42,7 +45,8 @@ class TransferToClosestLocationTest extends StuTestCase
         $this->subject = new TransferToClosestLocation(
             $this->closestLocations,
             $this->distanceCalculation,
-            $this->shipCrewRepository
+            $this->troopTransferUtility,
+            $this->crewCreator
         );
     }
 
@@ -235,22 +239,17 @@ class TransferToClosestLocationTest extends StuTestCase
         );
 
         if ($minDistance === $coloDistance) {
-            $shipCrew->shouldReceive('setColony')
-                ->with($closestColony);
-            $shipCrew->shouldReceive('setSpacecraft')
-                ->with(null);
+            $this->troopTransferUtility->shouldReceive('assignCrew')
+                ->with($shipCrew, $closestColony)
+                ->once();
         } elseif ($minDistance === $stationDistance) {
-            $shipCrew->shouldReceive('setSpacecraft')
-                ->with($closestStation);
+            $this->crewCreator->shouldReceive('createCrewAssignments')
+                ->with($closestStation, $this->target, $this->crewCount, $user)
+                ->once();
         } else {
-            $shipCrew->shouldReceive('setSpacecraft')
-                ->with(null);
-            $shipCrew->shouldReceive('setTradepost')
-                ->with($closestTradepost);
+            $this->troopTransferUtility->shouldReceive('assignCrew')
+                ->with($shipCrew, $closestTradepost)
+                ->once();
         }
-
-        $this->shipCrewRepository->shouldReceive('save')
-            ->with($shipCrew)
-            ->once();
     }
 }

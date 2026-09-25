@@ -16,11 +16,11 @@ use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Station;
-use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 
 final class SalvageCrew implements ActionControllerInterface
 {
@@ -28,7 +28,7 @@ final class SalvageCrew implements ActionControllerInterface
 
     public function __construct(
         private ShipLoaderInterface $shipLoader,
-        private CrewAssignmentRepositoryInterface $shipCrewRepository,
+        private CrewCreatorInterface $crewCreator,
         private TroopTransferUtilityInterface  $troopTransferUtility,
         private ActivatorDeactivatorHelperInterface $helper,
         private CancelRepairInterface $cancelRepair,
@@ -87,7 +87,8 @@ final class SalvageCrew implements ActionControllerInterface
             return;
         }
 
-        if ($tradepost->getCrewCountOfUser($user) === 0) {
+        $availableCrew = $this->troopTransferUtility->ownCrewOnTarget($user, $tradepost);
+        if ($availableCrew === 0) {
             throw new SanityCheckException('no crew to rescue', self::ACTION_IDENTIFIER);
         }
         $epsSystem = $wrapper->getEpsSystemData();
@@ -104,7 +105,7 @@ final class SalvageCrew implements ActionControllerInterface
 
         $crewToTransfer = min(
             $this->troopTransferUtility->getFreeQuarters($ship),
-            $tradepost->getCrewCountOfUser($user)
+            $availableCrew
         );
 
         if (
@@ -117,19 +118,8 @@ final class SalvageCrew implements ActionControllerInterface
 
         $game->getInfo()->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
 
-        foreach ($tradepost->getCrewAssignments() as $crewAssignment) {
-            if ($crewToTransfer === 0) {
-                break;
-            }
-            if ($crewAssignment->getUser()->getId() !== $game->getUser()->getId()) {
-                continue;
-            }
-            $crewAssignment->setTradepost(null);
-            $crewAssignment->setSpacecraft($ship);
-            $ship->getCrewAssignments()->add($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
-
-            $crewToTransfer--;
+        if ($crewToTransfer > 0) {
+            $this->crewCreator->createCrewAssignments($ship, $tradepost, $crewToTransfer, $user);
         }
 
         $epsSystem->lowerEps(1)->update();
