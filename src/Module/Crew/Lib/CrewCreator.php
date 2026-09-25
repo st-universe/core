@@ -142,8 +142,15 @@ final class CrewCreator implements CrewCreatorInterface
                     $freeSlots--;
                 }
 
-                $crewAssignment = $this->getCrewByType($crewType, $crewProvider, $crewUser);
-                $crewAssignment ??= $this->getCrew($crewProvider, $crewUser);
+                $crewmanOnly = $crewProvider instanceof Spacecraft
+                    && $crewProvider->getCrewAssignments()->exists(
+                        static fn (int $key, CrewAssignment $assignment): bool =>
+                            $assignment->getSlot() === CrewTypeEnum::CREWMAN
+                            && ($crewUser === null || $assignment->getCrew()->getUser()->getId() === $crewUser->getId())
+                    );
+
+                $crewAssignment = $this->getCrewByType($crewType, $crewProvider, $crewUser, $crewmanOnly);
+                $crewAssignment ??= $this->getCrew($crewProvider, $crewUser, $crewmanOnly);
 
                 if ($crewAssignment === null) {
                     throw new CrewOriginException('no assignable crew found');
@@ -158,12 +165,14 @@ final class CrewCreator implements CrewCreatorInterface
     private function getCrewByType(
         CrewTypeEnum $crewType,
         EntityWithCrewAssignmentsInterface $crewProvider,
-        ?User $crewUser
+        ?User $crewUser,
+        bool $crewmanOnly
     ): ?CrewAssignment {
         $matchingAssignments = $crewProvider->getCrewAssignments()
             ->filter(
                 static fn (CrewAssignment $crewAssignment): bool =>
                     ($crewUser === null || $crewAssignment->getCrew()->getUser()->getId() === $crewUser->getId())
+                    && (!$crewmanOnly || $crewAssignment->getSlot() === CrewTypeEnum::CREWMAN)
                     && $crewAssignment->getCrew()->isSkilledAt($crewType)
             )
             ->toArray();
@@ -186,11 +195,12 @@ final class CrewCreator implements CrewCreatorInterface
         return $crewAssignment;
     }
 
-    private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider, ?User $crewUser): ?CrewAssignment
+    private function getCrew(EntityWithCrewAssignmentsInterface $crewProvider, ?User $crewUser, bool $crewmanOnly): ?CrewAssignment
     {
         $crewAssignments = $crewProvider->getCrewAssignments()->filter(
             static fn (CrewAssignment $crewAssignment): bool =>
-                $crewUser === null || $crewAssignment->getCrew()->getUser()->getId() === $crewUser->getId()
+                ($crewUser === null || $crewAssignment->getCrew()->getUser()->getId() === $crewUser->getId())
+                && (!$crewmanOnly || $crewAssignment->getSlot() === CrewTypeEnum::CREWMAN)
         );
 
         if ($crewAssignments->isEmpty()) {

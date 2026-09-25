@@ -18,13 +18,14 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
+use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Orm\Repository\TradePostRepository;
 
 #[Table(name: 'stu_trade_posts')]
 #[Index(name: 'trade_network_idx', columns: ['trade_network'])]
 #[Index(name: 'trade_post_station_idx', columns: ['station_id'])]
 #[Entity(repositoryClass: TradePostRepository::class)]
-class TradePost
+class TradePost implements EntityWithCrewAssignmentsInterface
 {
     #[Id]
     #[Column(type: 'integer')]
@@ -208,6 +209,7 @@ class TradePost
     /**
      * @return Collection<int, CrewAssignment>
      */
+    #[\Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crewAssignments;

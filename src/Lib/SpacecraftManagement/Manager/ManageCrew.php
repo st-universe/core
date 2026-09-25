@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\SpacecraftManagement\Manager;
 
 use RuntimeException;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -16,6 +17,7 @@ use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftStartupInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 
@@ -181,8 +183,15 @@ class ManageCrew implements ManagerInterface
 
         $this->dumpForeignCrew($ship);
 
+        $crewAssignments = $ship->getCrewAssignments()->toArray();
+        usort(
+            $crewAssignments,
+            static fn (CrewAssignment $a, CrewAssignment $b): int =>
+                ($b->getSlot() === CrewTypeEnum::CREWMAN) <=> ($a->getSlot() === CrewTypeEnum::CREWMAN)
+        );
+
         $managerProvider->addCrewAssignments(array_slice(
-            $ship->getCrewAssignments()->toArray(),
+            $crewAssignments,
             0,
             $removedCrew
         ));

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer\Strategy;
 
 use request;
+use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\IndividualCrewTransfer;
@@ -14,6 +15,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 
 class TroopTransferStrategy implements TransferStrategyInterface
@@ -106,6 +108,13 @@ class TroopTransferStrategy implements TransferStrategyInterface
         $crewProvider = $isUnload ? $source->get() : $target->get();
         $crewAssignments = $crewProvider->getCrewAssignments();
         $filteredByUser = $crewAssignments->filter(fn (CrewAssignment $crewAssignment): bool => $crewAssignment->getCrew()->getUser()->getId() === $source->getUser()->getId())->toArray();
+        if ($crewProvider instanceof Spacecraft) {
+            usort(
+                $filteredByUser,
+                static fn (CrewAssignment $a, CrewAssignment $b): int =>
+                    ($b->getSlot() === CrewTypeEnum::CREWMAN) <=> ($a->getSlot() === CrewTypeEnum::CREWMAN)
+            );
+        }
         $slice = array_slice($filteredByUser, 0, $amount);
 
         $destinationEntity = $destination->get();
