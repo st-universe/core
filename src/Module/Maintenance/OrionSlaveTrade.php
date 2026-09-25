@@ -170,10 +170,11 @@ final class OrionSlaveTrade implements MaintenanceHandlerInterface
             ->setRace($race)
             ->setGender($this->stuRandom->rand(1, 100) > $race->getMaleRatio() ? Crew::CREW_GENDER_FEMALE : Crew::CREW_GENDER_MALE)
             ->setType(CrewTypeEnum::CREWMAN)
-            ->setRank($rank);
+            ->setIsSlave(true);
         $this->crewRepository->save($crew);
 
         $this->createSkills($crew, $position, $rank);
+        $crew->setRank(CrewSkillLevelEnum::getForExpertise($crew->getHighestSkillExpertise()));
 
         $auction = $this->orionAuctionRepository->prototype()
             ->setCrew($crew)

@@ -38,6 +38,9 @@ class Crew
     #[Column(type: 'string', enumType: CrewSkillLevelEnum::class, options: ['default' => 'CADET'])]
     private CrewSkillLevelEnum $rank = CrewSkillLevelEnum::CADET;
 
+    #[Column(type: 'boolean', options: ['default' => false])]
+    private bool $is_slave = false;
+
     #[Column(type: 'smallint')]
     private int $gender = 0;
 
@@ -92,6 +95,18 @@ class Crew
     public function setRank(CrewSkillLevelEnum $rank): Crew
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function isSlave(): bool
+    {
+        return $this->is_slave;
+    }
+
+    public function setIsSlave(bool $isSlave): Crew
+    {
+        $this->is_slave = $isSlave;
 
         return $this;
     }
