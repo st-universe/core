@@ -100,9 +100,17 @@ final class AllianceProvider implements ViewComponentProviderInterface
     private function getAllianceRelations(Alliance $alliance): ?array
     {
         $relations = [];
-        foreach ($this->allianceRelationRepository->getActiveByAlliance($alliance->getId()) as $key => $relation) {
-            $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
+        $userRelations = [];
+        foreach ($this->allianceRelationRepository->getActiveByAlliance($alliance->getId(), true) as $relation) {
+            $wrapper = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
+            if ($wrapper->getCounterpart() instanceof Alliance) {
+                $relations[] = $wrapper;
+            } else {
+                $userRelations[] = $wrapper;
+            }
         }
+
+        $relations = array_merge($relations, $userRelations);
 
         return $relations !== [] ? $relations : null;
     }

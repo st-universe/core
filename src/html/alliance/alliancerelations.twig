@@ -42,7 +42,7 @@
 {% endif %}
 <table class="tcal">
     <tr>
-        <th colspan="6">Beziehungen</th>
+        <th colspan="6">Beziehungen mit Allianzen</th>
     </tr>
     <tr>
         <td class="darkbg">Allianz</td>
@@ -54,7 +54,7 @@
     </tr>
     {% if not RELATIONS %}
     <tr>
-        <td colspan="5">Keine Beziehungen vorhanden</td>
+        <td colspan="6">Keine Beziehungen vorhanden</td>
     </tr>
     {% else %}
     {% for data in RELATIONS %}
@@ -170,7 +170,7 @@
 <br />
 <table class="tcal">
     <tr>
-        <th colspan="5">Abkommen mit Siedlern</th>
+        <th colspan="6">Abkommen mit Spielern</th>
     </tr>
     <tr>
         <td class="darkbg">Siedler</td>
@@ -178,15 +178,23 @@
         <td class="darkbg">Zeitpunkt</td>
         <td class="darkbg">Rechte</td>
         <td class="darkbg">Aktionen</td>
+        <td class="darkbg">Vertragswerk</td>
     </tr>
     {% if not USER_RELATIONS %}
     <tr>
-        <td colspan="5">Keine Abkommen vorhanden</td>
+        <td colspan="6">Keine Abkommen vorhanden</td>
     </tr>
     {% else %}
     {% for relation in USER_RELATIONS %}
+    {% set counterpart = relation.isSourceParty(USER_RELATION_ACTOR) ? relation.getRecipientParty : relation.getSourceParty %}
     <tr class="row{{ loop.index0 % 2 }}">
-        <td>{{ relation.getCounterpartName(USER_RELATION_ACTOR)|bbcode }}</td>
+        <td>
+            {% if counterpart.getFactionId is defined %}
+            <a href="/userprofile.php?uid={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+            {% else %}
+            <a href="alliance.php?id={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+            {% endif %}
+        </td>
         <td>{{ relation.getType.getDescription }}</td>
         <td>{% if not relation.isPending %}{{ relation.getDate|stuDateTime }}{% endif %}</td>
         <td>
@@ -243,6 +251,16 @@
                 {% endif %}
             {% else %}
             Keine Aktionen verfügbar
+            {% endif %}
+        </td>
+        <td>
+            {% if not relation.isPending and not relation.hasPendingPermissionChanges %}
+                {% if relation.hasText %}
+                <a href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});" class="linkbutton">Anzeigen</a>
+                {% endif %}
+                {% if relation.getId in EDITABLE_RELATION_IDS %}
+                <a href="javascript:void(0);" onclick="editRelationText({{ relation.getId }});" class="linkbutton">Bearbeiten</a>
+                {% endif %}
             {% endif %}
         </td>
     </tr>

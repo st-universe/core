@@ -82,8 +82,15 @@
 				<td class="darkbg">Aktionen</td>
 			</tr>
 			{% for relation in USER_RELATIONS %}
+			{% set counterpart = relation.isSourceParty(USER_RELATION_ACTOR) ? relation.getRecipientParty : relation.getSourceParty %}
 			<tr class="row{{ loop.index0 % 2 }}">
-				<td>{{ relation.getCounterpartName(USER)|bbcode }}</td>
+				<td>
+					{% if counterpart.getFactionId is defined %}
+					<a href="/userprofile.php?uid={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+					{% else %}
+					<a href="alliance.php?id={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+					{% endif %}
+				</td>
 				<td>{{ relation.getType.getDescription }}</td>
 				<td>{% if not relation.isPending %}{{ relation.getDate|stuDateTime }}{% endif %}</td>
 				<td>
@@ -97,7 +104,7 @@
 				</td>
 				<td>
 					{% if relation.isPending %}
-						{% if relation.isSourceParty(USER) and CAN_MANAGE_USER_RELATIONS %}
+						{% if relation.isSourceParty(USER_RELATION_ACTOR) and CAN_MANAGE_USER_RELATIONS %}
 						<a class="linkbutton" href="pm.php?SHOW_CONTACTLIST=1&B_CANCEL_USER_RELATION=1&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Zurückziehen</a>
 						{% elseif CAN_MANAGE_USER_RELATIONS %}
 						<a class="linkbutton" href="pm.php?SHOW_CONTACTLIST=1&B_ACCEPT_USER_RELATION=1&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Annehmen</a>
@@ -106,7 +113,7 @@
 						Wurde angeboten
 						{% endif %}
 					{% elseif relation.hasPendingPermissionChanges %}
-						{% if relation.isPermissionChangeOfferedBy(USER) and CAN_MANAGE_USER_RELATIONS %}
+						{% if relation.isPermissionChangeOfferedBy(USER_RELATION_ACTOR) and CAN_MANAGE_USER_RELATIONS %}
 						<a class="linkbutton" href="pm.php?SHOW_CONTACTLIST=1&B_CANCEL_USER_RELATION=1&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Rechteänderung zurückziehen</a>
 						{% elseif CAN_MANAGE_USER_RELATIONS %}
 						<a class="linkbutton" href="pm.php?SHOW_CONTACTLIST=1&B_ACCEPT_USER_RELATION=1&ur={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Rechteänderung annehmen</a>
@@ -131,6 +138,14 @@
 						{% endif %}
 					{% else %}
 					Keine Aktionen verfügbar
+					{% endif %}
+					{% if not relation.isPending and not relation.hasPendingPermissionChanges %}
+						{% if relation.hasText %}
+						<a class="linkbutton" href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});">Vertragswerk</a>
+						{% endif %}
+						{% if relation.getId in EDITABLE_RELATION_IDS %}
+						<a class="linkbutton" href="javascript:void(0);" onclick="editRelationText({{ relation.getId }});">Bearbeiten</a>
+						{% endif %}
 					{% endif %}
 				</td>
 			</tr>

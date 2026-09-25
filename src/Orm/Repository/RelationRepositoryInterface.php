@@ -46,7 +46,7 @@ interface RelationRepositoryInterface extends ObjectRepository
     public function getPendingCountByAlliances(int $allianceId, int $opponentId): int;
 
     /** @return array<int, Relation> */
-    public function getActiveByAlliance(int $allianceId): array;
+    public function getActiveByAlliance(int $allianceId, bool $includeUserRelations = false): array;
 
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?Relation;
 

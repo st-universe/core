@@ -105,10 +105,14 @@ final class RelationRepository extends EntityRepository implements RelationRepos
     }
 
     /** @return array<int, Relation> */
-    public function getActiveByAlliance(int $allianceId): array
+    public function getActiveByAlliance(int $allianceId, bool $includeUserRelations = false): array
     {
+        $partyFilter = $includeUserRelations
+            ? ''
+            : ' AND r.sourceAlliance IS NOT NULL AND r.recipientAlliance IS NOT NULL';
+
         return $this->query(
-            'r.date > 0 AND r.sourceAlliance IS NOT NULL AND r.recipientAlliance IS NOT NULL AND (r.sourceAlliance = :allianceId OR r.recipientAlliance = :allianceId) ORDER BY r.id ASC',
+            'r.date > 0' . $partyFilter . ' AND (r.sourceAlliance = :allianceId OR r.recipientAlliance = :allianceId) ORDER BY r.id ASC',
             ['allianceId' => $allianceId]
         )->getResult();
     }

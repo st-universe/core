@@ -99,7 +99,7 @@
         <div class="allianceRelationImage"><img
             src="/assets/alliance/relation_types/{{ wrapper.getType.getImage }}.png" />
         </div>
-        <div class="allianceRelationOpponentName">{{ wrapper.getDescription|bbcode }}</div>
+        <div class="allianceRelationOpponentName">{{ wrapper.getDescriptionPrefix }}<a href="{{ wrapper.getCounterpartUrl }}">{{ wrapper.getCounterpart.getName|bbcode }}</a>{{ wrapper.getDescriptionSuffix }}</div>
         <div class="allianceRelationDate">
           seit {{ wrapper.getDate|stuDate }}
           {% if wrapper.hasText %}

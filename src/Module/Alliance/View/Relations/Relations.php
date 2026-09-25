@@ -89,10 +89,18 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateVar('RELATIONS', $relations);
         $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
         $game->setTemplateVar('RELATION_PERMISSIONS', RelationPermissionEnum::cases());
-        $game->setTemplateVar('USER_RELATIONS', $this->userRelationRepository->getByUserAndAlliance(
+        $userRelations = $this->userRelationRepository->getByUserAndAlliance(
             $user,
             $alliance
-        ));
+        );
+        $editableRelationIds = [];
+        foreach ($userRelations as $relation) {
+            if ($this->userRelationManager->canEditRelationContract($user, $relation)) {
+                $editableRelationIds[] = $relation->getId();
+            }
+        }
+        $game->setTemplateVar('USER_RELATIONS', $userRelations);
+        $game->setTemplateVar('EDITABLE_RELATION_IDS', $editableRelationIds);
         $game->setTemplateVar('USER_RELATION_ACTOR', $user);
         $game->setTemplateVar(
             'CAN_MANAGE_USER_RELATIONS',

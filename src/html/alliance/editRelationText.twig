@@ -1,8 +1,8 @@
 {% block body %}
 <div id="popup-drag" style="padding: 5px; text-align: center; font-weight: bold; cursor: grab;">
     {{ RELATION.getType.getDescription }} zwischen
-    <br>{{ RELATION.getAlliance.getName|bbcode }} <br>und<br>{{
-    RELATION.getOpponent.getName|bbcode }}
+    <br>{{ RELATION.getSourceParty.getName|bbcode }} <br>und<br>{{
+    RELATION.getRecipientParty.getName|bbcode }}
     <br> bearbeiten
 </div>
 <div style="padding: 10px;">

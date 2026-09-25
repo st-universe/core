@@ -7,6 +7,7 @@ namespace Stu\Component\Player\Relation;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Relation;
 use Stu\Orm\Entity\User;
 
 final class UserRelationAccessChecker
@@ -28,6 +29,32 @@ final class UserRelationAccessChecker
         $alliance = $user->getAlliance();
 
         return $alliance === null || $this->canManageForAlliance($user, $alliance);
+    }
+
+    public function canEditRelationContract(User $user, Relation $relation): bool
+    {
+        foreach ([$relation->getSourceParty(), $relation->getRecipientParty()] as $party) {
+            if ($party instanceof User) {
+                if ($user->getAlliance() === null && $user->getId() === $party->getId()) {
+                    return true;
+                }
+
+                continue;
+            }
+
+            if (
+                $user->getAlliance()?->getId() === $party->getId()
+                && $this->allianceJobManager->hasUserPermission(
+                    $user,
+                    $party,
+                    AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
+                )
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function canCreateForParty(User $actor, User|Alliance $party): bool
