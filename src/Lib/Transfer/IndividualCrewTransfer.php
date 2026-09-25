@@ -12,6 +12,7 @@ use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -65,6 +66,17 @@ final class IndividualCrewTransfer
                 || ($targetEntity instanceof Spacecraft && $targetEntity->hasUplink()));
     }
 
+    /**
+     * @return array{
+     *     entity: EntityWithStorageInterface,
+     *     positions: array<int, array{position: CrewTypeEnum, capacity: int|null, crewAssignments: list<CrewAssignment>}>,
+     *     count: int,
+     *     fixedCount: int,
+     *     minimum: int,
+     *     maximum: int,
+     *     ownsEntity: bool
+     * }
+     */
     private function getSide(StorageEntityWrapperInterface $wrapper, User $user, bool $isTarget): array
     {
         $entity = $wrapper->get();
@@ -83,22 +95,23 @@ final class IndividualCrewTransfer
             }
         }
 
-        foreach ($hasPositions ? CrewTypeEnum::getOrder() : [CrewTypeEnum::CREWMAN] as $position) {
-            $positions[$position->value] = [
-                'position' => $position,
-                'capacity' => $position === CrewTypeEnum::CREWMAN ? null : ($config?->getCrewForPosition($position) ?? 0),
-                'crewAssignments' => []
-            ];
-        }
-
+        $crewBySlot = [];
         $ownCount = 0;
         foreach ($entity->getCrewAssignments() as $assignment) {
             if ($assignment->getCrew()->getUserId() !== $user->getId()) {
                 continue;
             }
             $slot = $hasPositions ? ($assignment->getSlot() ?? CrewTypeEnum::CREWMAN) : CrewTypeEnum::CREWMAN;
-            $positions[$slot->value]['crewAssignments'][] = $assignment;
+            $crewBySlot[$slot->value][] = $assignment;
             $ownCount++;
+        }
+
+        foreach ($hasPositions ? CrewTypeEnum::getOrder() : [CrewTypeEnum::CREWMAN] as $position) {
+            $positions[$position->value] = [
+                'position' => $position,
+                'capacity' => $position === CrewTypeEnum::CREWMAN ? null : ($config?->getCrewForPosition($position) ?? 0),
+                'crewAssignments' => $crewBySlot[$position->value] ?? []
+            ];
         }
 
         $count = $entity->getCrewAssignments()->count();
@@ -110,7 +123,7 @@ final class IndividualCrewTransfer
             'fixedCount' => $count - $ownCount,
             'minimum' => $isTarget ? 0 : max(0, $count - $wrapper->getMaxTransferrableCrew(false, $user)),
             'maximum' => $count + $wrapper->getFreeCrewSpace($user),
-            'ownsEntity' => $entity->getUser()->getId() === $user->getId()
+            'ownsEntity' => $wrapper->getUser()->getId() === $user->getId()
         ];
     }
 
