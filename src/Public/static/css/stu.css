@@ -3667,6 +3667,105 @@ label.linkbutton:hover {
   min-width: 0;
 }
 
+.crew-transfer-layout {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.7fr) minmax(0, 2fr) minmax(0, 2fr) minmax(90px, 0.7fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.crew-transfer-entity {
+  text-align: center;
+  overflow-wrap: anywhere;
+  position: sticky;
+  top: 0;
+}
+
+.crew-transfer-entity img {
+  display: block;
+  max-width: 100%;
+  max-height: 180px;
+  margin: 12px auto;
+  object-fit: contain;
+}
+
+.crew-transfer-entity-0 { grid-column: 1; grid-row: 1; }
+.crew-transfer-side-0 { grid-column: 2; grid-row: 1; }
+.crew-transfer-side-1 { grid-column: 3; grid-row: 1; }
+.crew-transfer-entity-1 { grid-column: 4; grid-row: 1; }
+
+.crew-transfer-side {
+  min-width: 0;
+}
+
+.crew-transfer-side .crew-assignment-positions {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.crew-transfer-side .crew-assignment-position-wide .crew-assignment-dropzone {
+  display: block;
+}
+
+.crew-transfer-side .crew-assignment-card {
+  margin-bottom: 3px;
+  overflow-wrap: anywhere;
+}
+
+.crew-transfer-side .crew-assignment-insert-zone {
+  display: flex;
+}
+
+.crew-transfer-side .crew-transfer-changed {
+  border-color: var(--color-9);
+}
+
+.crew-transfer-moved {
+  position: relative;
+}
+
+.crew-transfer-moved .crew-assignment-card-main {
+  padding-right: 24px;
+}
+
+.crew-transfer-direction {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.crew-transfer-side .crew-assignment-card-main > div {
+  min-width: 0;
+}
+
+.crew-transfer-feedback {
+  min-height: 1.5em;
+  margin: 6px 0;
+}
+
+.crew-transfer-feedback:empty {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .crew-transfer-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .crew-transfer-entity {
+    position: static;
+    grid-row: 1;
+  }
+
+  .crew-transfer-entity-0, .crew-transfer-side-0 { grid-column: 1; }
+  .crew-transfer-entity-1, .crew-transfer-side-1 { grid-column: 2; }
+  .crew-transfer-side { grid-row: 2; }
+  .crew-transfer-entity img { max-height: 70px; }
+}
+
 .crew-assignment-management {
   width: 100%;
 }

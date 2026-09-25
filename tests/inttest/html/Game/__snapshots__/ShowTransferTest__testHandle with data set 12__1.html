@@ -37,7 +37,13 @@
             onmouseover="cp('crewbeamtrigger','buttons/crew_2');" onmouseout="cp('crewbeamtrigger','buttons/crew_1');">
             <img src="assets/buttons/crew_1.png" name="crewbeamtrigger" title="Crew beamen" />
         </a>
-                        <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
+                                <a href="javascript:void(0);"
+            onclick="showIndividualCrewTransfer(42, 'colony', 77, 'ship');"
+            onmouseover="cp('individualcrewbeamtrigger','buttons/crew_2');"
+            onmouseout="cp('individualcrewbeamtrigger','buttons/crew_3');">
+            <img src="assets/buttons/crew_3.png" name="individualcrewbeamtrigger" title="Einzelne Crewman transferieren" />
+        </a>
+                <div id="torpedoTransferMessage" style="display: none;">Torpedotransfer nur zu befreundeten Schiffen</div>
     </td>
     </tr>
         <tr>

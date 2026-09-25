@@ -210,8 +210,8 @@ function dropCrewAssignment(event, element) {
   element.classList.remove("crew-assignment-drop-active");
 
   var crewId = getCrewAssignmentDraggedCrewId();
-  if (crewId && canAssignCrewToSlot(crewId, element)) {
-    saveCrewAssignment(crewId, element.dataset.crewSlot);
+  if (crewId && (element.closest(".crew-transfer-management") !== null || canAssignCrewToSlot(crewId, element))) {
+    saveCrewAssignment(crewId, element.dataset.crewSlot, undefined, element);
   }
 }
 
@@ -340,7 +340,7 @@ function endCrewAssignmentPointerDrag(event) {
     if (target.type === "swap") {
       saveCrewAssignment(crewId, target.element.dataset.crewSlot, target.element.dataset.crewId);
     } else {
-      saveCrewAssignment(crewId, target.element.dataset.crewSlot);
+      saveCrewAssignment(crewId, target.element.dataset.crewSlot, undefined, target.element);
     }
   }
 }
@@ -423,6 +423,11 @@ function removeCrewAssignmentPointerTargetClass(target) {
 }
 
 function canAssignCrewToSlot(crewId, target) {
+  var transferRoot = target.closest(".crew-transfer-management");
+  if (transferRoot !== null) {
+    return getIndividualCrewTransferError(transferRoot, getIndividualCrewTransferMoves(transferRoot, crewId, target)) === null;
+  }
+
   var dropzone = target.closest(".crew-assignment-dropzone");
   if (dropzone === null || !dropzone.dataset.capacity) {
     return true;
@@ -635,11 +640,15 @@ function assignSelectedCrewToSlot(event, element) {
 
   var crewId = crewAssignmentMobileSelection.crewId;
   if (!canAssignCrewToSlot(crewId, element)) {
+    if (root.dataset.individualTransfer === "1") {
+      root.querySelector(".crew-transfer-feedback").textContent =
+        getIndividualCrewTransferError(root, getIndividualCrewTransferMoves(root, crewId, element));
+    }
     return;
   }
 
   clearCrewAssignmentMobileSelection();
-  saveCrewAssignment(crewId, element.dataset.crewSlot);
+  saveCrewAssignment(crewId, element.dataset.crewSlot, undefined, element);
 }
 
 function clearCrewAssignmentDropTargets(root) {
@@ -654,9 +663,14 @@ function cancelCrewAssignmentInteraction() {
   stopCrewAssignmentAutoScroll();
 }
 
-function saveCrewAssignment(crewId, slot, swapCrewId) {
+function saveCrewAssignment(crewId, slot, swapCrewId, target) {
   var root = document.getElementById("crewAssignmentManagement");
   if (root === null || crewAssignmentSaving) {
+    return;
+  }
+
+  if (root.dataset.individualTransfer === "1") {
+    stageIndividualCrewTransfer(root, crewId, target, swapCrewId);
     return;
   }
 
@@ -682,6 +696,175 @@ function saveCrewAssignment(crewId, slot, swapCrewId) {
     }
   });
 }
+function showIndividualCrewTransfer(sourceId, sourceType, targetId, targetType) {
+  cancelCrewAssignmentInteraction();
+  crewAssignmentScrollTop = 0;
+  var width = Math.min(1400, Math.max(280, window.innerWidth - 12));
+  updatePopup("?SHOW_TRANSFER=1&individual_crew=1&transfer_type=2&is_unload=1&id=" + sourceId
+    + "&source_type=" + encodeURIComponent(sourceType) + "&target=" + targetId
+    + "&target_type=" + encodeURIComponent(targetType), width, Math.max(0, (window.innerWidth - width) / 2), 16, true, false);
+}
+
+function initializeIndividualCrewTransfer() {
+  cancelCrewAssignmentInteraction();
+  crewAssignmentDraggedCrewId = null;
+  crewAssignmentSaving = false;
+  initializeCrewAssignmentManagement();
+  var root = document.getElementById("crewAssignmentManagement");
+  root.querySelectorAll(".crew-assignment-card").forEach(function (card) {
+    var zone = card.closest(".crew-assignment-dropzone");
+    card.dataset.crewSlot = zone.dataset.crewSlot;
+    card.dataset.originalSlot = zone.dataset.crewSlot;
+    card.dataset.originalSide = card.closest(".crew-transfer-side").dataset.transferSide;
+  });
+  root.querySelectorAll(".crew-assignment-dropzone").forEach(function (zone) {
+    zone.dataset.initialCount = zone.querySelectorAll(".crew-assignment-card").length;
+  });
+  refreshIndividualCrewTransfer(root);
+}
+
+function getIndividualCrewTransferMoves(root, crewId, target, swapCrewId) {
+  var card = root.querySelector('.crew-assignment-card[data-crew-id="' + crewId + '"]');
+  if (swapCrewId !== undefined) {
+    target = root.querySelector('.crew-assignment-card[data-crew-id="' + swapCrewId + '"]');
+  }
+  if (!card || !target || !root.contains(target)) {
+    return [];
+  }
+  var zone = target.closest(".crew-assignment-dropzone");
+  if (zone === null) {
+    return [];
+  }
+  var moves = [{ card: card, zone: zone }];
+  if (swapCrewId !== undefined && target !== card) {
+    moves.push({ card: target, zone: card.closest(".crew-assignment-dropzone") });
+  }
+  return moves;
+}
+
+function getIndividualCrewTransferError(root, moves) {
+  if (moves.length === 0) {
+    return "Bitte wähle einen Crewman und einen Crewposten aus";
+  }
+  var error = null;
+  root.querySelectorAll(".crew-transfer-side").forEach(function (side) {
+    var count = Number(side.dataset.fixedCount) + side.querySelectorAll(".crew-assignment-card").length;
+    moves.forEach(function (move) {
+      count += (side.contains(move.zone) ? 1 : 0) - (side.contains(move.card) ? 1 : 0);
+    });
+    if (count < Number(side.dataset.minimum)) {
+      error = "Die Mindestcrew auf der linken Seite muss erhalten bleiben";
+    } else if (count > Number(side.dataset.maximum)) {
+      error = "Auf dieser Seite ist kein Crewplatz mehr frei";
+    }
+  });
+  root.querySelectorAll(".crew-assignment-dropzone[data-capacity]").forEach(function (zone) {
+    var count = zone.querySelectorAll(".crew-assignment-card").length;
+    moves.forEach(function (move) {
+      count += (move.zone === zone ? 1 : 0) - (zone.contains(move.card) ? 1 : 0);
+    });
+    if (count > Math.max(Number(zone.dataset.capacity), Number(zone.dataset.initialCount))) {
+      error = "Dieser Crewposten ist bereits vollständig besetzt";
+    }
+  });
+  return error;
+}
+
+function stageIndividualCrewTransfer(root, crewId, target, swapCrewId) {
+  var moves = getIndividualCrewTransferMoves(root, crewId, target, swapCrewId);
+  var error = getIndividualCrewTransferError(root, moves);
+  var feedback = root.querySelector(".crew-transfer-feedback");
+  if (error !== null) {
+    feedback.textContent = error;
+    return;
+  }
+  moves.forEach(function (move) {
+    move.zone.insertBefore(move.card, move.zone.querySelector(".crew-assignment-insert-zone"));
+    move.card.dataset.crewSlot = move.zone.dataset.crewSlot;
+    move.card.classList.toggle("crew-transfer-changed",
+      move.card.dataset.originalSide !== move.card.closest(".crew-transfer-side").dataset.transferSide
+      || move.card.dataset.originalSlot !== move.zone.dataset.crewSlot);
+  });
+  clearCrewAssignmentDropTargets(root);
+  refreshIndividualCrewTransfer(root);
+  feedback.textContent = "";
+}
+
+function refreshIndividualCrewTransfer(root) {
+  root.querySelectorAll(".crew-assignment-card").forEach(function (card) {
+    var side = card.closest(".crew-transfer-side").dataset.transferSide;
+    var moved = side !== card.dataset.originalSide;
+    var icon = card.querySelector(".crew-transfer-direction");
+    card.classList.toggle("crew-transfer-moved", moved);
+    if (!moved) {
+      if (icon) {
+        icon.remove();
+      }
+      return;
+    }
+    if (!icon) {
+      icon = document.createElement("img");
+      icon.className = "crew-transfer-direction";
+      icon.draggable = false;
+      card.appendChild(icon);
+    }
+    icon.src = "assets/buttons/" + (side === "0" ? "b_from1.png" : "b_to1.png");
+    icon.alt = side === "0" ? "Transfer von rechts nach links" : "Transfer von links nach rechts";
+    icon.title = icon.alt;
+  });
+  root.querySelectorAll(".crew-transfer-side").forEach(function (side) {
+    root.querySelector('[data-side-count="' + side.dataset.transferSide + '"]').textContent =
+      Number(side.dataset.fixedCount) + side.querySelectorAll(".crew-assignment-card").length;
+  });
+  root.querySelectorAll(".crew-assignment-dropzone").forEach(function (zone) {
+    var count = zone.querySelectorAll(".crew-assignment-card").length;
+    var hasCapacity = zone.dataset.capacity !== undefined;
+    zone.previousElementSibling.querySelector("span").textContent =
+      count + (hasCapacity ? " / " + zone.dataset.capacity : " zugewiesen");
+    var empty = zone.querySelector(".crew-assignment-empty");
+    if (empty) {
+      empty.hidden = count > 0;
+    }
+    var insert = zone.querySelector(".crew-assignment-insert-zone");
+    if (insert) {
+      insert.style.display = hasCapacity && count >= Number(zone.dataset.capacity) ? "none" : "";
+    }
+  });
+}
+
+function resetIndividualCrewTransfer() {
+  cancelCrewAssignmentInteraction();
+  var root = document.getElementById("crewAssignmentManagement");
+  root.querySelectorAll(".crew-assignment-card").forEach(function (card) {
+    var side = root.querySelector('[data-transfer-side="' + card.dataset.originalSide + '"]');
+    var zone = side.querySelector('.crew-assignment-dropzone[data-crew-slot="' + card.dataset.originalSlot + '"]');
+    zone.insertBefore(card, zone.querySelector(".crew-assignment-insert-zone"));
+    card.dataset.crewSlot = card.dataset.originalSlot;
+    card.classList.remove("crew-transfer-changed");
+  });
+  refreshIndividualCrewTransfer(root);
+  root.querySelector(".crew-transfer-feedback").textContent = "";
+}
+
+function submitIndividualCrewTransfer(form) {
+  if (form.dataset.submitting === "1") {
+    return false;
+  }
+  var placements = [];
+  form.querySelectorAll(".crew-assignment-card").forEach(function (card) {
+    placements.push({
+      id: Number(card.dataset.crewId),
+      side: Number(card.closest(".crew-transfer-side").dataset.transferSide),
+      slot: Number(card.dataset.crewSlot),
+      originalSide: Number(card.dataset.originalSide),
+      originalSlot: Number(card.dataset.originalSlot)
+    });
+  });
+  form.elements.crew_placements.value = JSON.stringify(placements);
+  form.dataset.submitting = "1";
+  return true;
+}
+
 function showEpsUsage(element, id) {
   updatePopupAtElement(element, "?SHOW_EPS_USAGE=1&id=" + id);
 }

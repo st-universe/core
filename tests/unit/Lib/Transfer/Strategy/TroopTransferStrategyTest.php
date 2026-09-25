@@ -9,6 +9,7 @@ use Mockery\MockInterface;
 use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Transfer\IndividualCrewTransfer;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -17,6 +18,9 @@ use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
+use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 use Stu\StuTestCase;
 
 class TroopTransferStrategyTest extends StuTestCase
@@ -48,7 +52,13 @@ class TroopTransferStrategyTest extends StuTestCase
         $this->subject = new TroopTransferStrategy(
             $this->shipCrewCalculator,
             $this->troopTransferUtility,
-            $this->crewCreator
+            $this->crewCreator,
+            new IndividualCrewTransfer(
+                $this->mock(ShipRumpCategoryRoleCrewRepositoryInterface::class),
+                $this->mock(UserCrewRankRepositoryInterface::class),
+                $this->mock(CrewAssignmentRepositoryInterface::class),
+                $this->troopTransferUtility
+            )
         );
     }
 

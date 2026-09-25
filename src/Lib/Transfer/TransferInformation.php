@@ -71,6 +71,15 @@ class TransferInformation
         return $this->isFriend || $this->source->getUser()?->getId() === $this->target->getUser()?->getId();
     }
 
+    public function isIndividualCrewTransferPossible(): bool
+    {
+        return $this->source !== $this->target
+            && ($this->source instanceof Spacecraft || $this->source instanceof Colony)
+            && ($this->target instanceof Spacecraft || $this->target instanceof Colony)
+            && ($this->source instanceof Spacecraft || $this->target instanceof Spacecraft)
+            && $this->isCrewTransferPossible(false);
+    }
+
     public function isOtherGoodTransferPossible(): bool
     {
         return $this->isCommodityTransferPossible()

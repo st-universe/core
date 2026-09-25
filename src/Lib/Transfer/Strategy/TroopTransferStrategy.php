@@ -7,6 +7,7 @@ namespace Stu\Lib\Transfer\Strategy;
 use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Transfer\IndividualCrewTransfer;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -20,7 +21,8 @@ class TroopTransferStrategy implements TransferStrategyInterface
     public function __construct(
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private TroopTransferUtilityInterface $troopTransferUtility,
-        private CrewCreatorInterface $crewCreator
+        private CrewCreatorInterface $crewCreator,
+        private IndividualCrewTransfer $individualCrewTransfer
     ) {}
 
     #[\Override]
@@ -30,6 +32,11 @@ class TroopTransferStrategy implements TransferStrategyInterface
         StorageEntityWrapperInterface $target,
         ViewControllerContext $game
     ): void {
+
+        if (request::getInt('individual_crew') === 1) {
+            $this->individualCrewTransfer->setTemplateVariables($source, $target, $game);
+            return;
+        }
 
         $user = $game->getUser();
         $targetEntity = $target->get();
@@ -69,6 +76,11 @@ class TroopTransferStrategy implements TransferStrategyInterface
         StorageEntityWrapperInterface $target,
         InformationInterface $information
     ): void {
+
+        if (request::postInt('individual_crew') === 1) {
+            $this->individualCrewTransfer->transfer(request::postStringFatal('crew_placements'), $source, $target, $information);
+            return;
+        }
 
         $user = $source->getUser();
 
