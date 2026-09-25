@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\EditRelationText;
 
-use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
@@ -17,7 +16,7 @@ final class EditRelationText implements ViewControllerInterface
 
     public function __construct(
         private RelationRepositoryInterface $allianceRelationRepository,
-        private AllianceJobManagerInterface $allianceJobManager,
+        private UserRelationManagerInterface $userRelationManager,
         private EditRelationTextRequestInterface $editRelationTextRequest
     ) {}
 
@@ -30,27 +29,13 @@ final class EditRelationText implements ViewControllerInterface
         }
 
         $user = $game->getUser();
-        $alliance = $user->getAlliance();
-
-        if ($alliance === null) {
-            throw new AccessViolationException('user not in alliance');
-        }
-
-        if (!$this->allianceJobManager->hasUserPermission(
-            $user,
-            $alliance,
-            AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
-        )) {
-            throw new AccessViolationException();
-        }
-
         $relation = $this->allianceRelationRepository->find($relationId);
 
         if ($relation === null) {
             return;
         }
 
-        if ($relation->getAlliance() !== $alliance && $relation->getOpponent() !== $alliance) {
+        if (!$this->userRelationManager->canEditRelationContract($user, $relation)) {
             throw new AccessViolationException();
         }
 

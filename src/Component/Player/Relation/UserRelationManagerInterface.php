@@ -15,6 +15,8 @@ interface UserRelationManagerInterface
 
     public function canManageRelations(User $user): bool;
 
+    public function canEditRelationContract(User $user, Relation $relation): bool;
+
     public function create(
         User $actor,
         User|Alliance $source,

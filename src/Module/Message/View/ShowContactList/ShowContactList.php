@@ -30,6 +30,15 @@ final class ShowContactList implements ViewControllerInterface
     {
         $user = $game->getUser();
         $showUserRelations = $user->getAlliance() === null;
+        $userRelations = $showUserRelations
+            ? $this->userRelationRepository->getByUserAndAlliance($user, null)
+            : [];
+        $editableRelationIds = [];
+        foreach ($userRelations as $relation) {
+            if ($this->userRelationManager->canEditRelationContract($user, $relation)) {
+                $editableRelationIds[] = $relation->getId();
+            }
+        }
 
         $game->setViewTemplate('html/user/contactList.twig');
         $game->appendNavigationPart(
@@ -43,10 +52,9 @@ final class ShowContactList implements ViewControllerInterface
         $game->setTemplateVar('CONTACT_LIST_MODES', ContactListModeEnum::cases());
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('SHOW_USER_RELATIONS', $showUserRelations);
-        $game->setTemplateVar(
-            'USER_RELATIONS',
-            $showUserRelations ? $this->userRelationRepository->getByUserAndAlliance($user, null) : []
-        );
+        $game->setTemplateVar('USER_RELATION_ACTOR', $user);
+        $game->setTemplateVar('USER_RELATIONS', $userRelations);
+        $game->setTemplateVar('EDITABLE_RELATION_IDS', $editableRelationIds);
         $game->setTemplateVar(
             'CAN_MANAGE_USER_RELATIONS',
             $showUserRelations && $this->userRelationManager->canManageRelations($user)
@@ -56,8 +64,8 @@ final class ShowContactList implements ViewControllerInterface
             $showUserRelations && $this->userRelationManager->getRepresentedParty($user) !== null
         );
         $game->setTemplateVar('POSSIBLE_USER_RELATION_TYPES', [
-            AllianceRelationTypeEnum::WAR,
             AllianceRelationTypeEnum::FRIENDS,
+            AllianceRelationTypeEnum::WAR,
             AllianceRelationTypeEnum::ALLIED,
             AllianceRelationTypeEnum::TRADE,
             AllianceRelationTypeEnum::VASSAL

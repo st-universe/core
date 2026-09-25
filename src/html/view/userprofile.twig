@@ -55,18 +55,6 @@
 				</a>
 			</div>
 			{% endif %}
-			{% if USER_RELATIONS %}
-			<br />
-			<div class="divhead">Diplomatische Abkommen</div>
-			<table class="tcal" style="width: 350px;">
-				{% for relation in USER_RELATIONS %}
-				<tr class="row{{ loop.index0 % 2 }}">
-					<td>{{ relation.getCounterpartName(PROFILE)|bbcode }}</td>
-					<td>{{ relation.getType.getDescription }}</td>
-				</tr>
-				{% endfor %}
-			</table>
-			{% endif %}
 			<br />
 			<div class="divhead">Siedler seit</div>
 			<div class="divbody">{{ PROFILE.getRegistration.getCreationDate|stuDateTime }}</div>
@@ -218,6 +206,30 @@
 </div>
 
 <div id="charactersContainer" style="float: left; width: 500px; margin-left: 20px;">
+	{% if USER_RELATIONS %}
+	<div class="divhead">Diplomatische Abkommen</div>
+	<table class="tcal" style="width: 100%; margin-top: 3px;">
+		{% for relation in USER_RELATIONS %}
+		{% set counterpart = relation.isSourceParty(PROFILE) ? relation.getRecipientParty : relation.getSourceParty %}
+		<tr class="row{{ loop.index0 % 2 }}">
+			<td>
+				{% if counterpart.getFactionId is defined %}
+				<a href="/userprofile.php?uid={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+				{% else %}
+				<a href="alliance.php?id={{ counterpart.getId }}">{{ counterpart.getName|bbcode }}</a>
+				{% endif %}
+			</td>
+			<td>{{ relation.getType.getDescription }}</td>
+			<td>
+				{% if relation.hasText %}
+				<a href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});" class="linkbutton">Vertragswerk</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<br />
+	{% endif %}
 	<div class="divhead">
 		Spielercharaktere
 		{% if IS_PROFILE_CURRENT_USER %}

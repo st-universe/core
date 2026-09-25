@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditRelationText;
 
-use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -14,6 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\Relation;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class EditRelationText implements ActionControllerInterface
@@ -30,27 +30,13 @@ final class EditRelationText implements ActionControllerInterface
         private RelationRepositoryInterface $allianceRelationRepository,
         private EditRelationTextRequestInterface $editRelationTextRequest,
         private PrivateMessageSenderInterface $privateMessageSender,
-        private AllianceJobManagerInterface $allianceJobManager
+        private UserRelationManagerInterface $userRelationManager
     ) {}
 
     #[\Override]
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $alliance = $user->getAlliance();
-
-        if ($alliance === null) {
-            throw new AccessViolationException('user not in alliance');
-        }
-
-        if (!$this->allianceJobManager->hasUserPermission(
-            $user,
-            $alliance,
-            AllianceJobPermissionEnum::EDIT_DIPLOMATIC_DOCUMENTS
-        )) {
-            throw new AccessViolationException();
-        }
-
         $relationId = $this->editRelationTextRequest->getRelationId();
         $text = $this->editRelationTextRequest->getText();
 
@@ -60,48 +46,48 @@ final class EditRelationText implements ActionControllerInterface
             return;
         }
 
-        if ($relation->getAlliance() !== $alliance && $relation->getOpponent() !== $alliance) {
+        if (!$this->userRelationManager->canEditRelationContract($user, $relation)) {
             throw new AccessViolationException();
         }
 
-        $relation->getText();
         $relation->setText($text);
         $relation->setLastEdited(time());
 
         $this->allianceRelationRepository->save($relation);
 
-        // Benachrichtigung an beide Allianzen senden
-        $allianceA = $relation->getAlliance();
-        $allianceB = $relation->getOpponent();
-
-        $this->sendNotificationToLeaders($allianceA, $relation, $user->getName(), $user->getId());
-        if ($allianceA->getId() !== $allianceB->getId()) {
-            $this->sendNotificationToLeaders($allianceB, $relation, $user->getName(), $user->getId());
-        }
+        $this->sendNotification($relation->getSourceParty(), $relation, $user);
+        $this->sendNotification($relation->getRecipientParty(), $relation, $user);
 
         $game->getInfo()->addInformation('Der Vertragstext wurde erfolgreich bearbeitet');
     }
 
-    private function sendNotificationToLeaders(
-        Alliance $alliance,
+    private function sendNotification(
+        Alliance|User $party,
         Relation $relation,
-        string $editorName,
-        int $editorId
+        User $editor
     ): void {
         $relationTypeName = $relation->getType()->getDescription();
-        $allianceAName = $relation->getAlliance()->getName();
-        $allianceBName = $relation->getOpponent()->getName();
-
         $message = sprintf(
             'Der Vertragstext für das %s zwischen [b]%s[/b] und [b]%s[/b] wurde von [b]%s[/b] (%d) bearbeitet.',
             $relationTypeName,
-            $allianceAName,
-            $allianceBName,
-            $editorName,
-            $editorId
+            $relation->getSourceParty()->getName(),
+            $relation->getRecipientParty()->getName(),
+            $editor->getName(),
+            $editor->getId()
         );
 
-        $founderJob = $alliance->getFounder();
+        if ($party instanceof User) {
+            $this->privateMessageSender->send(
+                UserConstants::USER_NOONE,
+                $party->getId(),
+                $message,
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
+            );
+
+            return;
+        }
+
+        $founderJob = $party->getFounder();
         foreach ($founderJob->getUsers() as $user) {
             $this->privateMessageSender->send(
                 UserConstants::USER_NOONE,
@@ -111,7 +97,7 @@ final class EditRelationText implements ActionControllerInterface
             );
         }
 
-        $successorJob = $alliance->getSuccessor();
+        $successorJob = $party->getSuccessor();
         if ($successorJob !== null) {
             foreach ($successorJob->getUsers() as $user) {
                 $this->privateMessageSender->send(
@@ -123,7 +109,7 @@ final class EditRelationText implements ActionControllerInterface
             }
         }
 
-        $diplomaticJob = $alliance->getDiplomatic();
+        $diplomaticJob = $party->getDiplomatic();
         if ($diplomaticJob !== null) {
             foreach ($diplomaticJob->getUsers() as $user) {
                 $this->privateMessageSender->send(

@@ -33,6 +33,12 @@ final class UserRelationManager implements UserRelationManagerInterface
     }
 
     #[\Override]
+    public function canEditRelationContract(User $user, Relation $relation): bool
+    {
+        return $this->accessChecker->canEditRelationContract($user, $relation);
+    }
+
+    #[\Override]
     public function create(
         User $actor,
         User|Alliance $source,
