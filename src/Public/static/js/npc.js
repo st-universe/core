@@ -24,17 +24,6 @@ function loadPlayerDetails(userId) {
             document.getElementById('playerDetailsInfo-' + userId).innerHTML = columns[0].innerHTML;
             document.getElementById('playerColonies-' + userId).innerHTML = columns[1].innerHTML;
             document.getElementById('playerShips-' + userId).innerHTML = columns[2].innerHTML;
-
-            fetch('/npc/index.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'B_LOG_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason)
-            })
-                .catch(error => {
-                    console.error('Fehler beim Protokollieren des Zugriffs:', error);
-                });
         })
         .catch(error => {
             console.error('Fehler beim Laden der Spielerdetails:', error);
