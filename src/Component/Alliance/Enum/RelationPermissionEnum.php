@@ -30,7 +30,11 @@ enum RelationPermissionEnum: int
                 ],
                 true
             ),
-            self::SHARE_LIVE_MAP_POSITIONS => $relationType === AllianceRelationTypeEnum::ALLIED
+            self::SHARE_LIVE_MAP_POSITIONS => in_array(
+                $relationType,
+                [AllianceRelationTypeEnum::ALLIED, AllianceRelationTypeEnum::VASSAL],
+                true
+            )
         };
     }
 
