@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Interaction\Member;
 
 use RuntimeException;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Transfer\CommodityTransferInterface;
@@ -18,7 +19,8 @@ class InteractionMemberFactory implements InteractionMemberFactoryInterface
     public function __construct(
         private NbsUtilityInterface $nbsUtility,
         private TholianWebUtilInterface $tholianWebUtil,
-        private CommodityTransferInterface $commodityTransfer
+        private CommodityTransferInterface $commodityTransfer,
+        private PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {}
 
     #[\Override]
@@ -32,7 +34,8 @@ class InteractionMemberFactory implements InteractionMemberFactoryInterface
                 $this->nbsUtility,
                 $this->tholianWebUtil,
                 $this->commodityTransfer,
-                $entity
+                $entity,
+                $this->playerRelationDeterminator
             );
         }
         if ($entity instanceof Trumfield) {

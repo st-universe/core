@@ -3,9 +3,12 @@
 namespace Stu\Lib\Interaction\Member;
 
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Transfer\CommodityTransferInterface;
+use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
@@ -18,7 +21,8 @@ class SpacecraftMember implements InteractionMemberInterface
         private NbsUtilityInterface $nbsUtility,
         private TholianWebUtilInterface $tholianWebUtil,
         private CommodityTransferInterface $commodityTransfer,
-        private Spacecraft $spacecraft
+        private Spacecraft $spacecraft,
+        private ?PlayerRelationDeterminatorInterface $playerRelationDeterminator = null
     ) {}
 
     #[\Override]
@@ -32,6 +36,13 @@ class SpacecraftMember implements InteractionMemberInterface
         InteractionMemberInterface $other,
         callable $shouldCheck
     ): ?InteractionCheckType {
+
+        if (
+            $shouldCheck(InteractionCheckType::EXPECT_SPACECRAFT_BEAMABLE)
+            && $this->isProtectedFromBeam($other)
+        ) {
+            return InteractionCheckType::EXPECT_SPACECRAFT_BEAMABLE;
+        }
 
         if (
             $shouldCheck(InteractionCheckType::EXPECT_SOURCE_UNSHIELDED)
@@ -75,6 +86,13 @@ class SpacecraftMember implements InteractionMemberInterface
 
         $otherEntity = $other->get();
         if (
+            $shouldCheck(InteractionCheckType::EXPECT_SPACECRAFT_BEAMABLE)
+            && $this->isProtectedFromBeam($other)
+        ) {
+            return InteractionCheckType::EXPECT_SPACECRAFT_BEAMABLE;
+        }
+
+        if (
             $otherEntity instanceof Spacecraft
             && $shouldCheck(InteractionCheckType::EXPECT_TARGET_DOCKED_OR_NO_ION_STORM)
             && $this->spacecraft->getLocation()->hasAnomaly(AnomalyTypeEnum::ION_STORM)
@@ -112,6 +130,25 @@ class SpacecraftMember implements InteractionMemberInterface
         }
 
         return null;
+    }
+
+    private function isProtectedFromBeam(InteractionMemberInterface $other): bool
+    {
+        if (
+            !$this->spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::BEAM_BLOCKER)
+            || !$this->spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::BEAM_BLOCKER)
+            || !$this->spacecraft->getSystemState(SpacecraftSystemTypeEnum::BEAM_BLOCKER)
+            || $this->spacecraft->isShielded()
+            || ($this->playerRelationDeterminator !== null
+                && $this->playerRelationDeterminator->isFriend($this->spacecraft->getUser(), $other->getUser()))
+        ) {
+            return false;
+        }
+
+        $otherEntity = $other->get();
+
+        return !($otherEntity instanceof EntityWithStorageInterface)
+            || !$this->commodityTransfer->isDockTransfer($this->spacecraft, $otherEntity);
     }
 
     #[\Override]
