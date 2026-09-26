@@ -7,6 +7,8 @@ namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 use Mockery\MockInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use request;
+use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -14,6 +16,8 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\Alliance;
+use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\Station;
 use Stu\Orm\Entity\User;
@@ -45,17 +49,37 @@ class ShowSpacecraftDetailsTest extends StuTestCase
         );
     }
 
-    public function testHandleAllowsUplinkForStationDetails(): void
+    public function testHandleAllowsUplinkAndGroupsCrewByStationOwner(): void
     {
         $game = $this->mock(ViewControllerContext::class);
         $alliance = $this->mock(Alliance::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $station = $this->mock(Station::class);
         $rump = $this->mock(SpacecraftRump::class);
+        $stationOwner = $this->mock(User::class);
+        $guest = $this->mock(User::class);
+        $ownerCrew = $this->mock(Crew::class);
+        $guestCrew = $this->mock(Crew::class);
+        $ownerAssignment = (new CrewAssignment())->setCrew($ownerCrew)->setSlot(CrewTypeEnum::CREWMAN);
+        $guestAssignment = (new CrewAssignment())->setCrew($guestCrew)->setSlot(CrewTypeEnum::CREWMAN);
 
         $userId = 42;
         $stationId = 23;
         request::setMockVars(['id' => $stationId]);
+
+        $station->shouldReceive('getUser')->withNoArgs()->once()->andReturn($stationOwner);
+        $stationOwner->shouldReceive('getId')->andReturn(101);
+        $guest->shouldReceive('getId')->andReturn($userId);
+        $ownerCrew->shouldReceive('getUser')->andReturn($stationOwner);
+        $ownerCrew->shouldReceive('getId')->andReturn(70);
+        $ownerCrew->shouldReceive('getRank')->andReturn(CrewSkillLevelEnum::CADET);
+        $guestCrew->shouldReceive('getUser')->andReturn($guest);
+        $guestCrew->shouldReceive('getId')->andReturn(71);
+        $guestCrew->shouldReceive('getRank')->andReturn(CrewSkillLevelEnum::CADET);
+        $this->userCrewRankRepository->shouldReceive('getRankName')
+            ->with($stationOwner, CrewSkillLevelEnum::CADET)->once()->andReturn('Kadett');
+        $this->userCrewRankRepository->shouldReceive('getRankName')
+            ->with($guest, CrewSkillLevelEnum::CADET)->once()->andReturn('Gast-Kadett');
 
         $game->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -78,19 +102,19 @@ class ShowSpacecraftDetailsTest extends StuTestCase
             ->with('USER_ID', $userId)
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('OWN_CREW_ASSIGNMENTS', [])
+            ->with('OWN_CREW_ASSIGNMENTS', [$ownerAssignment])
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('FOREIGN_CREW_ASSIGNMENTS', [])
+            ->with('FOREIGN_CREW_ASSIGNMENTS', [$guestAssignment])
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('CREW_RANK_NAMES', [])
+            ->with('CREW_RANK_NAMES', [70 => 'Kadett', 71 => 'Gast-Kadett'])
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('TRACTOR_PAYLOAD', 0)
             ->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('FOREIGNER_COUNT', 0)
+            ->with('FOREIGNER_COUNT', 1)
             ->once();
         $game->shouldReceive('setTemplateVar')
             ->with('MAX_FOREIGNERS', 3)
@@ -107,11 +131,11 @@ class ShowSpacecraftDetailsTest extends StuTestCase
         $this->troopTransferUtility->shouldReceive('foreignerCount')
             ->with($station)
             ->once()
-            ->andReturn(0);
+            ->andReturn(1);
 
         $wrapper->shouldReceive('get')
             ->withNoArgs()
-            ->times(4)
+            ->times(5)
             ->andReturn($station);
 
         $station->shouldReceive('isStation')
@@ -129,7 +153,7 @@ class ShowSpacecraftDetailsTest extends StuTestCase
         $station->shouldReceive('getCrewAssignments')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection());
+            ->andReturn(new ArrayCollection([$guestAssignment, $ownerAssignment]));
         $rump->shouldReceive('getShipRumpRole')
             ->withNoArgs()
             ->once()

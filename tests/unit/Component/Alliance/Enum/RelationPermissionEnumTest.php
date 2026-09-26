@@ -18,7 +18,8 @@ class RelationPermissionEnumTest extends StuTestCase
             [RelationPermissionEnum::FRIENDLY,                 AllianceRelationTypeEnum::FRIENDS, true],
             [RelationPermissionEnum::FRIENDLY,                 AllianceRelationTypeEnum::VASSAL,  true],
             [RelationPermissionEnum::FRIENDLY,                 AllianceRelationTypeEnum::ALLIED,  true],
-            [RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS, AllianceRelationTypeEnum::VASSAL,  false],
+            [RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS, AllianceRelationTypeEnum::FRIENDS, false],
+            [RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS, AllianceRelationTypeEnum::VASSAL,  true],
             [RelationPermissionEnum::SHARE_LIVE_MAP_POSITIONS, AllianceRelationTypeEnum::ALLIED,  true]
         ];
     }
@@ -39,7 +40,7 @@ class RelationPermissionEnumTest extends StuTestCase
 
         self::assertSame(0, RelationPermissionEnum::sanitize($permissions, AllianceRelationTypeEnum::WAR));
         self::assertSame(
-            RelationPermissionEnum::FRIENDLY->value,
+            $permissions,
             RelationPermissionEnum::sanitize(
                 $permissions,
                 AllianceRelationTypeEnum::VASSAL

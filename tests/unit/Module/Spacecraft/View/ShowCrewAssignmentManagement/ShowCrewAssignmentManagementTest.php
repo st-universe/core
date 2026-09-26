@@ -47,7 +47,7 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
         );
     }
 
-    public function testListsOnlyOwnCrewOutsideTroopQuarters(): void
+    public function testListsOwnGuestAndUnassignedCrew(): void
     {
         $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
@@ -69,21 +69,24 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
         $game->shouldReceive('setPageTitle')->with('Crewposten verwalten')->once();
         $game->shouldReceive('setMacroInAjaxWindow')->with('html/spacecraft/crewAssignmentManagement.twig')->once();
         $game->shouldReceive('setTemplateVar')->with('SPACECRAFT', $spacecraft)->once();
+        $game->shouldReceive('setTemplateVar')->with('SHOW_CREW_OWNER_INFO', true)->once();
         $game->shouldReceive('setTemplateVar')
-            ->with('POSITIONS', new Closure(function (array $positions) use ($ownCrewAssignment): bool {
+            ->with('POSITIONS', new Closure(function (array $positions) use ($ownCrewAssignment, $troopCrewAssignment, $foreignCrewAssignment): bool {
                 $this->assertCount(7, $positions);
                 $this->assertSame(CrewTypeEnum::CAPTAIN, $positions[0]['position']);
                 $this->assertSame(1, $positions[0]['capacity']);
                 $this->assertSame(CrewTypeEnum::COMMAND, $positions[1]['position']);
                 $this->assertSame([$ownCrewAssignment], $positions[1]['crewAssignments']);
+                $this->assertSame([$foreignCrewAssignment], $positions[3]['crewAssignments']);
                 $this->assertNull($positions[6]['capacity']);
+                $this->assertSame([$troopCrewAssignment], $positions[6]['crewAssignments']);
 
                 return true;
             }))
             ->once();
         $game->shouldReceive('setTemplateVar')->with('CREW_RANK_NAMES', Mockery::type('array'))->once();
         $user->shouldReceive('getId')->andReturn(101);
-        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
         $spacecraft->shouldReceive('getRump')->andReturn($rump);
         $spacecraft->shouldReceive('getCrewAssignments')->andReturn(new ArrayCollection([
             $ownCrewAssignment,
@@ -108,6 +111,7 @@ final class ShowCrewAssignmentManagementTest extends StuTestCase
         $troopCrewAssignment->shouldReceive('getSlot')->andReturn(null);
         $troopCrew->shouldReceive('getUserId')->andReturn(101);
         $foreignCrewAssignment->shouldReceive('getCrew')->andReturn($foreignCrew);
+        $foreignCrewAssignment->shouldReceive('getSlot')->andReturn(CrewTypeEnum::SCIENCE);
         $foreignCrew->shouldReceive('getUserId')->andReturn(202);
 
         $this->subject->handle($game);
