@@ -34,8 +34,7 @@ final class AssignCrewSlot implements ActionControllerInterface
         $user = $game->getUser();
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $user->getId(),
-            true
+            $user->getId()
         );
         $crewAssignment = $this->crewAssignmentRepository->find(request::postIntFatal('crewid'));
         $slot = CrewTypeEnum::tryFrom(request::postIntFatal('slot'));
@@ -44,9 +43,7 @@ final class AssignCrewSlot implements ActionControllerInterface
         if (
             $crewAssignment === null
             || $slot === null
-            || $crewAssignment->getCrew()->getUserId() !== $user->getId()
             || $crewAssignment->getSpacecraft()?->getId() !== $spacecraft->getId()
-            || $crewAssignment->getSlot() === null
         ) {
             throw new AccessViolationException();
         }
@@ -56,15 +53,13 @@ final class AssignCrewSlot implements ActionControllerInterface
             if (
                 $swapCrewAssignment === null
                 || $swapCrewAssignment === $crewAssignment
-                || $swapCrewAssignment->getCrew()->getUserId() !== $user->getId()
                 || $swapCrewAssignment->getSpacecraft()?->getId() !== $spacecraft->getId()
-                || $swapCrewAssignment->getSlot() === null
             ) {
                 throw new AccessViolationException();
             }
 
-            $sourceSlot = $crewAssignment->getSlot();
-            $crewAssignment->setSlot($swapCrewAssignment->getSlot());
+            $sourceSlot = $crewAssignment->getSlot() ?? CrewTypeEnum::CREWMAN;
+            $crewAssignment->setSlot($swapCrewAssignment->getSlot() ?? CrewTypeEnum::CREWMAN);
             $swapCrewAssignment->setSlot($sourceSlot);
             $this->crewAssignmentRepository->save($crewAssignment);
             $this->crewAssignmentRepository->save($swapCrewAssignment);
@@ -89,8 +84,7 @@ final class AssignCrewSlot implements ActionControllerInterface
             foreach ($spacecraft->getCrewAssignments() as $otherCrewAssignment) {
                 if (
                     $otherCrewAssignment->getCrew()->getId() !== $crewAssignment->getCrew()->getId()
-                    && $otherCrewAssignment->getCrew()->getUserId() === $user->getId()
-                    && $otherCrewAssignment->getSlot() === $slot
+                    && ($otherCrewAssignment->getSlot() ?? CrewTypeEnum::CREWMAN) === $slot
                 ) {
                     $assignedCrewCount++;
                 }

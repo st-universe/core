@@ -92,11 +92,12 @@ final class ShowSpacecraftDetails implements ViewControllerInterface
         $ownCrewAssignments = [];
         $foreignCrewAssignments = [];
         $crewRankNames = [];
+        $spacecraftOwnerId = $wrapper->get()->getUser()->getId();
         foreach ($crewAssignments as $crewAssignment) {
             $crew = $crewAssignment->getCrew();
             $crewRankNames[$crew->getId()] = $this->userCrewRankRepository->getRankName($crew->getUser(), $crew->getRank());
 
-            if ($crew->getUserId() === $userId) {
+            if ($crew->getUser()->getId() === $spacecraftOwnerId) {
                 $ownCrewAssignments[] = $crewAssignment;
             } else {
                 $foreignCrewAssignments[] = $crewAssignment;

@@ -31,8 +31,7 @@ final class ShowCrewAssignmentManagement implements ViewControllerInterface
         $user = $game->getUser();
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $user->getId(),
-            true
+            $user->getId()
         );
         $rump = $spacecraft->getRump();
         $rumpRole = $rump->getShipRumpRole();
@@ -45,15 +44,7 @@ final class ShowCrewAssignmentManagement implements ViewControllerInterface
 
         $crewBySlot = [];
         foreach ($spacecraft->getCrewAssignments() as $crewAssignment) {
-            if ($crewAssignment->getCrew()->getUserId() !== $user->getId()) {
-                continue;
-            }
-
-            $slot = $crewAssignment->getSlot();
-            if ($slot === null) {
-                continue;
-            }
-
+            $slot = $crewAssignment->getSlot() ?? CrewTypeEnum::CREWMAN;
             $crewBySlot[$slot->value][] = $crewAssignment;
         }
 
@@ -72,6 +63,7 @@ final class ShowCrewAssignmentManagement implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/spacecraft/crewAssignmentManagement.twig');
         $game->setTemplateVar('SPACECRAFT', $spacecraft);
         $game->setTemplateVar('POSITIONS', $positions);
+        $game->setTemplateVar('SHOW_CREW_OWNER_INFO', true);
         $crewRankNames = [];
         foreach (CrewSkillLevelEnum::cases() as $rank) {
             $crewRankNames[$rank->value] = $this->userCrewRankRepository->getRankName($user, $rank);
