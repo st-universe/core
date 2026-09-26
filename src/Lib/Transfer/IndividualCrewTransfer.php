@@ -69,7 +69,7 @@ final class IndividualCrewTransfer
     /**
      * @return array{
      *     entity: EntityWithStorageInterface,
-     *     positions: array<int, array{position: CrewTypeEnum, capacity: int|null, crewAssignments: list<CrewAssignment>}>,
+     *     positions: array<int, array{position: CrewTypeEnum, capacity: int|null, crewAssignments: list<CrewAssignment>, occupiedCount: int}>,
      *     count: int,
      *     fixedCount: int,
      *     minimum: int,
@@ -83,7 +83,7 @@ final class IndividualCrewTransfer
         $positions = [];
         $config = null;
         $hasPositions = false;
-        if ($entity instanceof Spacecraft && $entity->getUser()->getId() === $user->getId()) {
+        if ($entity instanceof Spacecraft) {
             $hasPositions = true;
             $rump = $entity->getRump();
             $role = $rump->getShipRumpRole();
@@ -96,12 +96,14 @@ final class IndividualCrewTransfer
         }
 
         $crewBySlot = [];
+        $occupancyBySlot = [];
         $ownCount = 0;
         foreach ($entity->getCrewAssignments() as $assignment) {
+            $slot = $hasPositions ? ($assignment->getSlot() ?? CrewTypeEnum::CREWMAN) : CrewTypeEnum::CREWMAN;
+            $occupancyBySlot[$slot->value] = ($occupancyBySlot[$slot->value] ?? 0) + 1;
             if ($assignment->getCrew()->getUserId() !== $user->getId()) {
                 continue;
             }
-            $slot = $hasPositions ? ($assignment->getSlot() ?? CrewTypeEnum::CREWMAN) : CrewTypeEnum::CREWMAN;
             $crewBySlot[$slot->value][] = $assignment;
             $ownCount++;
         }
@@ -110,7 +112,8 @@ final class IndividualCrewTransfer
             $positions[$position->value] = [
                 'position' => $position,
                 'capacity' => $position === CrewTypeEnum::CREWMAN ? null : ($config?->getCrewForPosition($position) ?? 0),
-                'crewAssignments' => $crewBySlot[$position->value] ?? []
+                'crewAssignments' => $crewBySlot[$position->value] ?? [],
+                'occupiedCount' => $occupancyBySlot[$position->value] ?? 0
             ];
         }
 
@@ -164,6 +167,11 @@ final class IndividualCrewTransfer
         $seen = [];
         $counts = [$sides[0]['fixedCount'], $sides[1]['fixedCount']];
         $slotCounts = [[], []];
+        foreach ($sides as $sideIndex => $side) {
+            foreach ($side['positions'] as $slot => $position) {
+                $slotCounts[$sideIndex][$slot] = $position['occupiedCount'] - count($position['crewAssignments']);
+            }
+        }
         $arrivals = [0, 0];
         $changes = [];
         foreach ($placements as $placement) {
@@ -207,7 +215,7 @@ final class IndividualCrewTransfer
             }
             foreach ($side['positions'] as $slot => $position) {
                 if ($position['capacity'] !== null
-                    && ($slotCounts[$sideIndex][$slot] ?? 0) > max($position['capacity'], count($position['crewAssignments']))) {
+                    && ($slotCounts[$sideIndex][$slot] ?? 0) > max($position['capacity'], $position['occupiedCount'])) {
                     $information->addInformation('Für den ausgewählten Crewposten ist kein Platz mehr frei');
                     return;
                 }
