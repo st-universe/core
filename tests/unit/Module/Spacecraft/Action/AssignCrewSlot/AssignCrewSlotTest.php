@@ -6,12 +6,14 @@ namespace Stu\Module\Spacecraft\Action\AssignCrewSlot;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Exception\AccessViolationException;
+use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement\ShowCrewAssignmentManagement;
 use Stu\Orm\Entity\Crew;
@@ -48,7 +50,13 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         );
     }
 
-    public function testAssignsOwnCrewmanToFreeSpecialPosition(): void
+    public static function provideCrewOwners(): array
+    {
+        return [[101], [202]];
+    }
+
+    #[DataProvider('provideCrewOwners')]
+    public function testAssignsOwnOrGuestCrewmanToFreeSpecialPosition(int $crewOwnerId): void
     {
         $user = $this->mock(User::class);
         $spacecraft = $this->mock(Spacecraft::class);
@@ -61,14 +69,14 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
         $this->game->shouldReceive('getUser')->andReturn($user);
         $user->shouldReceive('getId')->andReturn(101);
-        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
         $this->crewAssignmentRepository->shouldReceive('find')->with(23)->andReturn($crewAssignment);
         $this->crewAssignmentRepository->shouldReceive('save')->with($crewAssignment)->once();
         $crewAssignment->shouldReceive('getCrew')->andReturn($crew);
         $crewAssignment->shouldReceive('getSpacecraft')->andReturn($spacecraft);
         $crewAssignment->shouldReceive('getSlot')->andReturn(CrewTypeEnum::CREWMAN);
         $crewAssignment->shouldReceive('setSlot')->with(CrewTypeEnum::TACTIC)->once();
-        $crew->shouldReceive('getUserId')->andReturn(101);
+        $crew->shouldReceive('getUserId')->andReturn($crewOwnerId);
         $crew->shouldReceive('getId')->andReturn(23);
         $spacecraft->shouldReceive('getId')->andReturn(42);
         $spacecraft->shouldReceive('getCrewAssignments')->andReturn(new ArrayCollection([$crewAssignment]));
@@ -77,7 +85,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $this->subject->handle($this->game);
     }
 
-    public function testDoesNotAssignCrewmanToOccupiedSpecialPosition(): void
+    public function testDoesNotAssignCrewmanToPositionOccupiedByGuest(): void
     {
         $user = $this->mock(User::class);
         $spacecraft = $this->mock(Spacecraft::class);
@@ -92,7 +100,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
         $this->game->shouldReceive('getUser')->andReturn($user);
         $user->shouldReceive('getId')->andReturn(101);
-        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
         $this->crewAssignmentRepository->shouldReceive('find')->with(23)->andReturn($crewAssignment);
         $this->crewAssignmentRepository->shouldReceive('save')->never();
         $crewAssignment->shouldReceive('getCrew')->andReturn($crew);
@@ -102,7 +110,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $crew->shouldReceive('getUserId')->andReturn(101);
         $crew->shouldReceive('getId')->andReturn(23);
         $otherCrew->shouldReceive('getId')->andReturn(24);
-        $otherCrew->shouldReceive('getUserId')->andReturn(101);
+        $otherCrew->shouldReceive('getUserId')->andReturn(202);
         $otherCrewAssignment->shouldReceive('getCrew')->andReturn($otherCrew);
         $otherCrewAssignment->shouldReceive('getSlot')->andReturn(CrewTypeEnum::TACTIC);
         $spacecraft->shouldReceive('getId')->andReturn(42);
@@ -131,7 +139,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
         $this->game->shouldReceive('getUser')->andReturn($user);
         $user->shouldReceive('getId')->andReturn(101);
-        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
         $this->crewAssignmentRepository->shouldReceive('find')->with(23)->andReturn($crewAssignment);
         $this->crewAssignmentRepository->shouldReceive('find')->with(24)->andReturn($swapCrewAssignment);
         $this->crewAssignmentRepository->shouldReceive('save')->with($crewAssignment)->once();
@@ -154,7 +162,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $this->subject->handle($this->game);
     }
 
-    public function testRejectsSwapWithForeignCrewman(): void
+    public function testSwapsGuestCrewmanOnOwnedSpacecraft(): void
     {
         $user = $this->mock(User::class);
         $spacecraft = $this->mock(Spacecraft::class);
@@ -170,24 +178,77 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
             'swapcrewid' => 24
         ]);
 
-        static::expectException(AccessViolationException::class);
-
         $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
         $this->game->shouldReceive('getUser')->andReturn($user);
         $user->shouldReceive('getId')->andReturn(101);
-        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101, true)->andReturn($spacecraft);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
         $this->crewAssignmentRepository->shouldReceive('find')->with(23)->andReturn($crewAssignment);
         $this->crewAssignmentRepository->shouldReceive('find')->with(24)->andReturn($foreignCrewAssignment);
-        $this->crewAssignmentRepository->shouldReceive('save')->never();
+        $this->crewAssignmentRepository->shouldReceive('save')->with($crewAssignment)->once();
+        $this->crewAssignmentRepository->shouldReceive('save')->with($foreignCrewAssignment)->once();
 
         $crewAssignment->shouldReceive('getCrew')->andReturn($crew);
         $crewAssignment->shouldReceive('getSpacecraft')->andReturn($spacecraft);
         $crewAssignment->shouldReceive('getSlot')->andReturn(CrewTypeEnum::CREWMAN);
+        $crewAssignment->shouldReceive('setSlot')->with(CrewTypeEnum::TACTIC)->once();
         $crew->shouldReceive('getUserId')->andReturn(101);
         $spacecraft->shouldReceive('getId')->andReturn(42);
 
         $foreignCrewAssignment->shouldReceive('getCrew')->andReturn($foreignCrew);
+        $foreignCrewAssignment->shouldReceive('getSpacecraft')->andReturn($spacecraft);
+        $foreignCrewAssignment->shouldReceive('getSlot')->andReturn(CrewTypeEnum::TACTIC);
+        $foreignCrewAssignment->shouldReceive('setSlot')->with(CrewTypeEnum::CREWMAN)->once();
         $foreignCrew->shouldReceive('getUserId')->andReturn(102);
+
+        $this->subject->handle($this->game);
+    }
+
+    public function testRejectsGuestAccessViaUplink(): void
+    {
+        request::setMockVars(['id' => 42, 'crewid' => 23, 'slot' => CrewTypeEnum::TACTIC->value]);
+
+        $user = $this->mock(User::class);
+        $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
+        $this->game->shouldReceive('getUser')->andReturn($user);
+        $user->shouldReceive('getId')->andReturn(202);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')
+            ->with(42, 202)
+            ->once()
+            ->andThrow(UnallowedUplinkOperationException::class);
+        $this->crewAssignmentRepository->shouldReceive('find')->never();
+        $this->crewAssignmentRepository->shouldReceive('save')->never();
+
+        self::expectException(UnallowedUplinkOperationException::class);
+
+        $this->subject->handle($this->game);
+    }
+
+    public function testRejectsSwapWithCrewmanOnAnotherSpacecraft(): void
+    {
+        request::setMockVars([
+            'id' => 42,
+            'crewid' => 23,
+            'slot' => CrewTypeEnum::TACTIC->value,
+            'swapcrewid' => 24
+        ]);
+
+        $user = $this->mock(User::class);
+        $spacecraft = $this->mock(Spacecraft::class);
+        $otherSpacecraft = $this->mock(Spacecraft::class);
+        $assignment = (new CrewAssignment())->setSpacecraft($spacecraft)->setSlot(CrewTypeEnum::CREWMAN);
+        $swapAssignment = (new CrewAssignment())->setSpacecraft($otherSpacecraft)->setSlot(CrewTypeEnum::TACTIC);
+
+        $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
+        $this->game->shouldReceive('getUser')->andReturn($user);
+        $user->shouldReceive('getId')->andReturn(101);
+        $spacecraft->shouldReceive('getId')->andReturn(42);
+        $otherSpacecraft->shouldReceive('getId')->andReturn(43);
+        $this->spacecraftLoader->shouldReceive('getByIdAndUser')->with(42, 101)->andReturn($spacecraft);
+        $this->crewAssignmentRepository->shouldReceive('find')->with(23)->andReturn($assignment);
+        $this->crewAssignmentRepository->shouldReceive('find')->with(24)->andReturn($swapAssignment);
+        $this->crewAssignmentRepository->shouldReceive('save')->never();
+
+        self::expectException(AccessViolationException::class);
 
         $this->subject->handle($this->game);
     }
