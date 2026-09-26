@@ -30,7 +30,7 @@
         <input id="alliance-relation-permissions" type="hidden" name="relation_permissions" value="0" />
         <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions" style="display: none;">
             {% for permission in RELATION_PERMISSIONS %}
-            <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}" style="display: none;">
+            <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4,6{% endif %}" style="display: none;">
                 <input type="checkbox" name="relation_permission_{{ permission.value }}" value="{{ permission.value }}" data-relation-permission />
                 {{ permission.getDescription }}
             </label>
@@ -61,45 +61,45 @@
     {% set opponent = data.getOpponent %}
     {% set relation = data.getRelation %}
     <tr class="row{{ loop.index0 % 2 }}">
-        <form method="post" action="alliance.php">
-            <input type="hidden" name="SHOW_RELATIONS" value="1" />
-            <input type="hidden" name="oid" value="{{ opponent.getId }}" />
-            <td>
-                <a href="?id={{ opponent.getId }}">{{ opponent.getName|bbcode }}</a>
-            </td>
-            <td>
-                <span>{{ relation.getType.getDescription }}</span>
-            </td>
-            <td>
-                {% if not relation.isPending %}
-                {{ relation.getDate|stuDateTime }}
-                {% endif %}
-            </td>
-            <td>
-                {% if not relation.hasPermissions %}
-                Keine Rechte
-                {% else %}
-                {% for permission in RELATION_PERMISSIONS %}
-                {% if relation.hasPermission(permission) %}{{ permission.getDescription }}<br />{% endif %}
-                {% endfor %}
-                {% endif %}
-            </td>
-            <td>
-                {% if relation.isPending %}
-                {% if data.offerIsSend %}
-                Wird angeboten
-                {% else %}
-                Wurde angeboten
-                {% endif %}
-                {% elseif relation.hasPendingPermissionChanges %}
-                Rechteänderung ausstehend
-                {% else %}
-                {% if hasAlliancePermission(4) %}
-                {% if relation.isWar %}
-                <a class="linkbutton"
-                    href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden
-                    vorschlagen</a>
-                {% else %}
+        <td>
+            <a href="?id={{ opponent.getId }}">{{ opponent.getName|bbcode }}</a>
+        </td>
+        <td>
+            <span>{{ relation.getType.getDescription }}</span>
+        </td>
+        <td>
+            {% if not relation.isPending %}
+            {{ relation.getDate|stuDateTime }}
+            {% endif %}
+        </td>
+        <td>
+            {% if not relation.hasPermissions %}
+            Keine Rechte
+            {% else %}
+            {% for permission in RELATION_PERMISSIONS %}
+            {% if relation.hasPermission(permission) %}{{ permission.getDescription }}<br />{% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
+        <td>
+            {% if relation.isPending %}
+            {% if data.offerIsSend %}
+            Wird angeboten
+            {% else %}
+            Wurde angeboten
+            {% endif %}
+            {% elseif relation.hasPendingPermissionChanges %}
+            Rechteänderung ausstehend
+            {% else %}
+            {% if hasAlliancePermission(4) %}
+            {% if relation.isWar %}
+            <a class="linkbutton"
+                href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Frieden
+                vorschlagen</a>
+            {% else %}
+            <form method="post" action="alliance.php">
+                <input type="hidden" name="SHOW_RELATIONS" value="1" />
+                <input type="hidden" name="oid" value="{{ opponent.getId }}" />
                 <select id="alliance-relation-type-{{ relation.getId }}" name="type" data-relation-permission-selector="alliance-relation-permissions-{{ relation.getId }}">
                     <option value="{{ relation.getType.value }}">{{ relation.getType.getDescription }}</option>
                     {% for rels in relation.getType.getPossibleTypes %}
@@ -109,60 +109,60 @@
                 <input id="alliance-relation-permissions-{{ relation.getId }}" type="hidden" name="relation_permissions" value="0" />
                 <span class="crew-management-filters" data-relation-permissions="alliance-relation-permissions-{{ relation.getId }}">
                     {% for permission in RELATION_PERMISSIONS %}
-                    <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4{% endif %}">
+                    <label data-relation-permission-types="{% if permission.value == 1 %}3,4,5,6{% else %}4,6{% endif %}">
                         <input type="checkbox" name="relation_permission_{{ permission.value }}" value="{{ permission.value }}" data-relation-permission {% if relation.hasPermission(permission) %}checked="checked"{% endif %} />
                         {{ permission.getDescription }}
                     </label>
                     {% endfor %}
                 </span>
                 <input type="submit" value="Änderung anbieten" name="B_NEW_RELATION" />
-                {% endif %}
-                {% endif %}
-                {% endif %}
-                {% if hasAlliancePermission(4) %}
-                {% if not relation.isPending %}
-                {% if not relation.isWar %}
-                <a class="linkbutton"
-                    href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Vertrag
-                    lösen</a>
-                {% endif %}
-                {% endif %}
-                {% else %}
-                Keine Aktionen verfügbar
-                {% endif %}
-            </td>
-            <td>
-                {% if relation.isPending %}
-                {% if data.offerIsSend %}
-                <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Zurückziehen</a>
-                {% else %}
-                <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Annehmen</a>
-                <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
-                    class="linkbutton">Ablehnen</a>
-                {% endif %}
-                {% elseif relation.hasPendingPermissionChanges %}
-                {% if data.permissionChangeIsOfferedByCurrentParty %}
-                <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung zurückziehen</a>
-                {% else %}
-                <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung annehmen</a>
-                <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung ablehnen</a>
-                {% endif %}
-                {% else %}
-                {% if relation.hasText %}
-                <a href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});"
-                    class="linkbutton">Anzeigen</a>
-                {% else %}
-                Kein Vertragswerk
-                {% endif %}
-                {% if hasAlliancePermission(5) %}
-                <a href="javascript:void(0);" onclick="editRelationText({{ relation.getId }});"
-                    class="linkbutton">Bearbeiten</a>
-                {% endif %}
-                {% endif %}
-            </td>
-        </form>
+            </form>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% if hasAlliancePermission(4) %}
+            {% if not relation.isPending %}
+            {% if not relation.isWar %}
+            <a class="linkbutton"
+                href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}">Vertrag
+                lösen</a>
+            {% endif %}
+            {% endif %}
+            {% else %}
+            Keine Aktionen verfügbar
+            {% endif %}
+        </td>
+        <td>
+            {% if relation.isPending %}
+            {% if data.offerIsSend %}
+            <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
+                class="linkbutton">Zurückziehen</a>
+            {% else %}
+            <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
+                class="linkbutton">Annehmen</a>
+            <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}"
+                class="linkbutton">Ablehnen</a>
+            {% endif %}
+            {% elseif relation.hasPendingPermissionChanges %}
+            {% if data.permissionChangeIsOfferedByCurrentParty %}
+            <a href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung zurückziehen</a>
+            {% else %}
+            <a href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung annehmen</a>
+            <a href="alliance.php?SHOW_RELATIONS=1&B_DECLINE_OFFER=1&al={{ relation.getId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">Rechteänderung ablehnen</a>
+            {% endif %}
+            {% else %}
+            {% if relation.hasText %}
+            <a href="javascript:void(0);" onclick="showRelationText({{ relation.getId }});"
+                class="linkbutton">Anzeigen</a>
+            {% else %}
+            Kein Vertragswerk
+            {% endif %}
+            {% if hasAlliancePermission(5) %}
+            <a href="javascript:void(0);" onclick="editRelationText({{ relation.getId }});"
+                class="linkbutton">Bearbeiten</a>
+            {% endif %}
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
     {% endif %}
