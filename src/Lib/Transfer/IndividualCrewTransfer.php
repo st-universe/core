@@ -174,26 +174,23 @@ final class IndividualCrewTransfer
         }
         $arrivals = [0, 0];
         $changes = [];
-        foreach ($placements as $placement) {
-            if (!is_array($placement)
-                || !is_int($placement['id'] ?? null)
-                || !is_int($placement['side'] ?? null)
-                || !is_int($placement['slot'] ?? null)
-                || !isset($assignments[$placement['id']])
-                || isset($seen[$placement['id']])
-                || !isset($sides[$placement['side']]['positions'][$placement['slot']])) {
+        foreach ($placements as $input) {
+            $placement = IndividualCrewPlacement::fromInput($input);
+            if ($placement === null
+                || !isset($assignments[$placement->id])
+                || isset($seen[$placement->id])
+                || !isset($sides[$placement->side]['positions'][$placement->slot])) {
                 $information->addInformation('Die Crewauswahl ist ungültig. Bitte öffne das Transferfenster erneut');
                 return;
             }
-            [$assignment, $originalSide, $originalSlot] = $assignments[$placement['id']];
-            if (($placement['originalSide'] ?? null) !== $originalSide
-                || ($placement['originalSlot'] ?? null) !== $originalSlot) {
+            [$assignment, $originalSide, $originalSlot] = $assignments[$placement->id];
+            if (!$this->hasOriginalPlacement($placement->originalSide, $placement->originalSlot, $originalSide, $originalSlot)) {
                 $information->addInformation('Die Crewzuordnung hat sich geändert. Bitte öffne das Transferfenster erneut');
                 return;
             }
-            $seen[$placement['id']] = true;
-            $side = $placement['side'];
-            $slot = $placement['slot'];
+            $seen[$placement->id] = true;
+            $side = $placement->side;
+            $slot = $placement->slot;
             $counts[$side]++;
             $slotCounts[$side][$slot] = ($slotCounts[$side][$slot] ?? 0) + 1;
             if ($side !== $originalSide || $slot !== $originalSlot) {
@@ -209,13 +206,12 @@ final class IndividualCrewTransfer
             return;
         }
         foreach ($sides as $sideIndex => $side) {
-            if ($counts[$sideIndex] < $side['minimum'] || $counts[$sideIndex] > $side['maximum']) {
+            if (!$this->isCrewCountValid($counts[$sideIndex], $side['minimum'], $side['maximum'])) {
                 $information->addInformation('Mindestcrew oder Crewkapazität würden verletzt. Bitte passe die Auswahl an');
                 return;
             }
             foreach ($side['positions'] as $slot => $position) {
-                if ($position['capacity'] !== null
-                    && ($slotCounts[$sideIndex][$slot] ?? 0) > max($position['capacity'], $position['occupiedCount'])) {
+                if (!$this->hasSlotCapacity($position['capacity'], $position['occupiedCount'], $slotCounts[$sideIndex][$slot] ?? 0)) {
                     $information->addInformation('Für den ausgewählten Crewposten ist kein Platz mehr frei');
                     return;
                 }
@@ -230,31 +226,70 @@ final class IndividualCrewTransfer
         $netToTarget = $counts[1] - $sides[1]['count'];
         foreach ($wrappers as $sideIndex => $wrapper) {
             $increase = $counts[$sideIndex] - $sides[$sideIndex]['count'];
-            if (!$wrapper->checkCrewStorage(abs($increase), $increase < 0, $information)) {
-                return;
-            }
-            if ($arrivals[$sideIndex] > 0 && !$wrapper->acceptsCrewFrom(max(0, $increase), $user, $information)) {
+            if (!$this->canTransferCrew($wrapper, $increase, $arrivals[$sideIndex], $user, $information)) {
                 return;
             }
         }
 
         foreach ($changes as [$assignment, $originalSide, $side, $slot]) {
-            $destination = $wrappers[$side]->get();
-            if ($side !== $originalSide) {
-                $this->troopTransferUtility->assignCrew($assignment, $destination, $destination instanceof Spacecraft ? $slot : null);
-            } else {
-                $assignment->setSlot($destination instanceof Spacecraft ? $slot : null);
-                $this->assignmentRepository->save($assignment);
-            }
+            $this->applyChange($assignment, $originalSide, $side, $slot, $source, $target);
         }
 
         $source->postCrewTransfer(0, $target, $information);
         $target->postCrewTransfer($sides[1]['ownsEntity'] ? 0 : $netToTarget, $source, $information);
-        if ($arrivals[1] > 0) {
-            $information->addInformationf('%d Crew von %s zu %s transferiert', $arrivals[1], $source->getName(), $target->getName());
+        $this->reportTransfers($arrivals[0], $arrivals[1], $source, $target, $information);
+    }
+
+    private function hasOriginalPlacement(mixed $side, mixed $slot, int $originalSide, int $originalSlot): bool
+    {
+        return $side === $originalSide && $slot === $originalSlot;
+    }
+
+    private function isCrewCountValid(int $count, int $minimum, int $maximum): bool
+    {
+        return $count >= $minimum && $count <= $maximum;
+    }
+
+    private function hasSlotCapacity(?int $capacity, int $occupiedCount, int $slotCount): bool
+    {
+        return $capacity === null || $slotCount <= max($capacity, $occupiedCount);
+    }
+
+    private function canTransferCrew(StorageEntityWrapperInterface $wrapper, int $increase, int $arrivals, User $user, InformationInterface $information): bool
+    {
+        return $wrapper->checkCrewStorage(abs($increase), $increase < 0, $information)
+            && ($arrivals === 0 || $wrapper->acceptsCrewFrom(max(0, $increase), $user, $information));
+    }
+
+    private function applyChange(
+        CrewAssignment $assignment,
+        int $originalSide,
+        int $side,
+        CrewTypeEnum $slot,
+        StorageEntityWrapperInterface $source,
+        StorageEntityWrapperInterface $target
+    ): void {
+        $destination = ($side === 0 ? $source : $target)->get();
+        if ($side !== $originalSide) {
+            $this->troopTransferUtility->assignCrew($assignment, $destination, $destination instanceof Spacecraft ? $slot : null);
+        } else {
+            $assignment->setSlot($destination instanceof Spacecraft ? $slot : null);
+            $this->assignmentRepository->save($assignment);
         }
-        if ($arrivals[0] > 0) {
-            $information->addInformationf('%d Crew von %s zu %s transferiert', $arrivals[0], $target->getName(), $source->getName());
+    }
+
+    private function reportTransfers(
+        int $arrivalsAtSource,
+        int $arrivalsAtTarget,
+        StorageEntityWrapperInterface $source,
+        StorageEntityWrapperInterface $target,
+        InformationInterface $information
+    ): void {
+        if ($arrivalsAtTarget > 0) {
+            $information->addInformationf('%d Crew von %s zu %s transferiert', $arrivalsAtTarget, $source->getName(), $target->getName());
+        }
+        if ($arrivalsAtSource > 0) {
+            $information->addInformationf('%d Crew von %s zu %s transferiert', $arrivalsAtSource, $target->getName(), $source->getName());
         }
     }
 }
