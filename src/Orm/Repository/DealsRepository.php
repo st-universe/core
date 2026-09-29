@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\User;
 
@@ -383,13 +382,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function hasOwnAuctionsToTake(int $userId): bool
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT count(d.id) FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction = TRUE
                     AND d.auction_user = :userId',
@@ -397,8 +394,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getSingleScalarResult() > 0;
@@ -552,13 +548,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsGoods(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -569,8 +563,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
@@ -579,13 +572,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsShips(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -596,8 +587,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
@@ -606,13 +596,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsBuildplans(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -623,8 +611,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
@@ -633,13 +620,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsGoodsPrestige(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -650,8 +635,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
@@ -660,13 +644,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsShipsPrestige(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -677,8 +659,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
@@ -687,13 +668,11 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     #[\Override]
     public function getOwnEndedAuctionsBuildplansPrestige(int $userId): array
     {
-        $time = time();
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d
-                    WHERE d.end BETWEEN :threshold AND :actime
+                    WHERE d.end < :actime
                     AND d.taken_time IS NULL
                     AND d.auction_user = :userId
                     AND d.auction = TRUE
@@ -704,8 +683,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 )
             )
             ->setParameters([
-                'actime' => $time,
-                'threshold' => $time - 30 * TimeConstants::ONE_DAY_IN_SECONDS,
+                'actime' => time(),
                 'userId' => $userId,
             ])
             ->getResult();
