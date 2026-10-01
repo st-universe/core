@@ -14,7 +14,10 @@ use org\bovigo\vfs\vfsStream;
 use ReflectionAttribute;
 use ReflectionClass;
 use Stu\Orm\Attribute\TruncateOnGameReset;
+use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\OpenedAdventDoor;
+use Stu\Orm\Entity\OrionAuction;
+use Stu\Orm\Entity\OrionAuctionBid;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Station;
 use Stu\StuTestCase;
@@ -145,5 +148,31 @@ class EntityResetTest extends StuTestCase
             ->andReturn($truncateAttributeWithHighPriority);
 
         $this->subject->reset($this->interactor);
+    }
+
+    public function testOrionAuctionsAreRemovedBeforeCrew(): void
+    {
+        $metadata = [];
+        foreach ([Crew::class, OrionAuction::class, OrionAuctionBid::class] as $className) {
+            $entry = $this->mock(ClassMetadata::class);
+            $entry->shouldReceive('getName')->once()->andReturn($className);
+            $metadata[] = $entry;
+        }
+
+        $this->entityManager->shouldReceive('getMetadataFactory->getAllMetadata')
+            ->once()
+            ->andReturn($metadata);
+
+        foreach ([OrionAuctionBid::class, OrionAuction::class, Crew::class] as $className) {
+            $query = $this->mock(Query::class);
+            $this->entityManager->shouldReceive('createQuery')
+                ->with('DELETE FROM ' . $className)
+                ->once()
+                ->ordered()
+                ->andReturn($query);
+            $query->shouldReceive('execute')->once();
+        }
+
+        (new EntityReset($this->entityManager))->reset($this->interactor);
     }
 }
