@@ -1,69 +1,36 @@
 # Starmap Realtime
 
-Der User-Starmap-WebSocket läuft als eigener Node-Prozess. PHP bleibt autoritativ: Beim Öffnen der Live-Sensorkontakte erzeugt PHP ein kurzlebiges Token, schreibt die Sensor-Coverage des Users nach Redis und veröffentlicht Bewegungen als Redis-Stream.
+PHP erzeugt Zugriffstokens, speichert Sensor-Coverage in Redis und veröffentlicht
+Bewegungen. Ein separater Node-Prozess liefert die Ereignisse per WebSocket aus
 
-## Installation
+## Konfiguration
 
-```bash
-cd /var/www/stu/core
-npm install
-STU_REALTIME_SECRET='dein game.map.encryptionKey wert' pm2 start npm --name stu-starmap-realtime -- run realtime:starmap
-pm2 save
-```
+Einstellungen unter `realtime` in `config/config.json`:
 
-Wenn `game.map.encryptionKey` in `config/config.json` gesetzt ist, kann `STU_REALTIME_SECRET` auch weggelassen werden.
+| Feld | Bedeutung |
+| --- | --- |
+| `host`, `port` | Bind-Adresse des Node-Dienstes |
+| `path` | WebSocket-Endpunkt |
+| `webSocketUrl` | Vom Browser erreichbare WebSocket-URL |
+| `redisNamespace` | Präfix für Bewegungsstream und Coverage; Standard `stu` |
+| `coverageReloadMs` | Coverage-Aktualisierung; Standard 60000 ms |
 
-## Lokal ohne Nginx
+Redis-Verbindung über `cache.redis_socket` beziehungsweise
+`cache.redis_host` und `cache.redis_port`. PHP und Node müssen dieselbe
+Redis-Instanz und denselben Namespace verwenden
 
-Wenn du lokal den PHP-Built-in-Server nutzt, reicht nach der einmaligen Installation:
+## Betrieb
 
-```bash
-npm install
-composer dev:serve-node
-```
+Start über `npm run realtime:starmap`; Prozessüberwachung separat.
+Ein Reverse-Proxy muss WebSocket-Upgrades unterstützen, unter HTTPS ist WSS nötig
 
-`composer dev:serve-node` prüft Redis, startet bei Bedarf einen lokalen Redis ohne Persistenz, startet den Node-WebSocket-Server und danach den PHP-Built-in-Server auf `localhost:1337`.
-`composer dev:serve` bleibt der reine PHP-Built-in-Server ohne Realtime-Node-Prozess.
+Token-Schlüssel aus `game.map.encryptionKey`; ein Node-Override über
+`STU_REALTIME_SECRET` muss zum PHP-Signaturschlüssel passen.
+Getrennte Installationen benötigen getrennte Namespaces, Signaturschlüssel
+und bei gemeinsamem Host unterschiedliche Bind-Adressen beziehungsweise Ports
 
-Die lokale WebSocket-URL kommt aus `config/config.json`:
+Nach Namespace-Änderungen Node neu starten und die Karte neu öffnen.
+Kein Redis-Neustart oder Leeren der Daten nötig. Der Namespace trennt nur
+Kartendaten, nicht sämtliche Core-Caches
 
-```json
-"realtime": {
-  "host": "127.0.0.1",
-  "port": 8787,
-  "path": "/realtime/starmap",
-  "webSocketUrl": "ws://127.0.0.1:8787/realtime/starmap",
-  "coverageReloadMs": 60000
-}
-```
-
-Für einen einzelnen Start kann `STU_REALTIME_WEBSOCKET_URL` die Config überschreiben.
-
-## Nginx
-
-In den `nginx`-Serverblock:
-
-```nginx
-location /realtime/starmap {
-    proxy_pass http://127.0.0.1:8787/realtime/starmap;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $host;
-    proxy_read_timeout 75s;
-}
-```
-
-Danach:
-
-```bash
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-## Checks
-
-```bash
-pm2 logs stu-starmap-realtime
-redis-cli XINFO STREAM stu:realtime:starmap:spacecraft
-```
+Optionale Module: [Extension-Deployment](extensions-deployment.md)

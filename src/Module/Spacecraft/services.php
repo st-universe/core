@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Extension\ExtensionHooks;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Game\Action\Transfer\Transfer;
 use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
@@ -535,7 +536,8 @@ return [
         ShowShipCommunication::VIEW_IDENTIFIER => autowire(ShowShipCommunication::class),
         ShowSpacecraftDetails::VIEW_IDENTIFIER => autowire(ShowSpacecraftDetails::class),
         ShowSpacecraftStorage::VIEW_IDENTIFIER => autowire(ShowSpacecraftStorage::class),
-        ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class),
+        ShowSpacecraft::VIEW_IDENTIFIER => autowire(ShowSpacecraft::class)
+            ->constructorParameter('extensions', get(ExtensionHooks::class)),
         ShowSystemSettings::VIEW_IDENTIFIER => autowire(ShowSystemSettings::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),

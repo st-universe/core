@@ -1,0 +1,19 @@
+{
+  "extensions": {
+    "exampleExtension": {
+      "enabled": false,
+      "deployment": {
+        "repository": "git@git.example.invalid:example/extension.git",
+        "branch": "example-branch",
+        "intervalSeconds": 300
+      },
+      "tablePrefixes": ["example_extension_"],
+      "realtime": {
+        "host": "127.0.0.1",
+        "port": 8790,
+        "path": "/realtime/example",
+        "webSocketUrl": "/realtime/example"
+      }
+    }
+  }
+}

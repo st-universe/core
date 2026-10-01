@@ -14,7 +14,15 @@ class JavascriptExecutionTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        JavascriptExecution::reset();
         $this->subject = new JavascriptExecution();
+    }
+
+    #[\Override]
+    public function tearDown(): void
+    {
+        JavascriptExecution::reset();
+        parent::tearDown();
     }
 
     public function testGetExecuteJS(): void

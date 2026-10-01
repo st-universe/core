@@ -1,4 +1,5 @@
 {
+  "extensions": {},
   "db": {
     "useSqlite": true,
     "sqliteDsn": "sqlite:///:memory:",
@@ -28,6 +29,7 @@
     "redis_port": 6379
   },
   "realtime": {
+    "redisNamespace": "stu",
     "host": "127.0.0.1",
     "port": 8787,
     "path": "/realtime/starmap",

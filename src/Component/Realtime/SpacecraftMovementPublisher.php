@@ -26,7 +26,8 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
 
     public function __construct(
         private RealtimeRedisFactory $redisFactory,
-        private Parser $bbCodeParser
+        private Parser $bbCodeParser,
+        private RealtimeChannels $channels
     ) {}
 
     #[\Override]
@@ -70,7 +71,7 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             }
 
             $redis->xAdd(
-                RealtimeChannels::STARMAP_SPACECRAFT_STREAM,
+                $this->channels->starmapSpacecraftStream(),
                 '*',
                 ['payload' => $payload],
                 10000,
@@ -114,7 +115,7 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             }
 
             $redis->xAdd(
-                RealtimeChannels::STARMAP_SPACECRAFT_STREAM,
+                $this->channels->starmapSpacecraftStream(),
                 '*',
                 ['payload' => $payload],
                 10000,
@@ -155,7 +156,7 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             }
 
             $redis->xAdd(
-                RealtimeChannels::STARMAP_SPACECRAFT_STREAM,
+                $this->channels->starmapSpacecraftStream(),
                 '*',
                 ['payload' => $payload],
                 10000,
@@ -187,7 +188,7 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             }
 
             $redis->xAdd(
-                RealtimeChannels::STARMAP_SPACECRAFT_STREAM,
+                $this->channels->starmapSpacecraftStream(),
                 '*',
                 ['payload' => $payload],
                 10000,

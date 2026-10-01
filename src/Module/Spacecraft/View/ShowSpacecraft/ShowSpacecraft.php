@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
+use Stu\Extension\ExtensionHooks;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
@@ -62,7 +63,8 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private readonly ColonizationCheckerInterface $colonizationChecker,
         private readonly SessionStorageInterface $sessionStorage,
-        private LoggerUtilFactoryInterface $loggerUtilFactory
+        private LoggerUtilFactoryInterface $loggerUtilFactory,
+        private readonly ?ExtensionHooks $extensions = null
     ) {
         $this->viewContext = new ViewContext(ModuleEnum::SHIP, self::VIEW_IDENTIFIER);
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
@@ -73,6 +75,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
     {
         $user = $game->getUser();
         $userId = $user->getId();
+        $this->extensions?->view('ship.view', $game);
         $ownsCurrentColony = false;
         $spacecraftId = request::indInt('id');
 

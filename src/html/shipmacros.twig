@@ -222,6 +222,7 @@
         onmouseout="cp('att_{{ targetId }}','buttons/phaser1')">
         <img src="/assets/buttons/phaser1.png" name="att_{{ targetId }}" title="{{ nameWithoutMarkup }} angreifen" />
     </div>
+{% for template in EXTENSIONS.templates('ship.actions') %}{% include template %}{% endfor %}
     {% endif %}
 </td>
 <td style="width: 120px;">

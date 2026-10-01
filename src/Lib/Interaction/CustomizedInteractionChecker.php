@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Interaction;
 
+use Stu\Extension\ExtensionHooks;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Interaction\Member\InteractionMemberInterface;
 
 class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterface
 {
+    public function __construct(private ?ExtensionHooks $extensions = null) {}
+
     private InteractionMemberInterface $source;
     private InteractionMemberInterface $target;
 
@@ -34,6 +37,12 @@ class CustomizedInteractionChecker implements CustomizedInteractionCheckerInterf
     #[\Override]
     public function check(InformationInterface $information, bool $expectTargetNoVacation = true): bool
     {
+        $reason = $this->extensions?->interaction($this->source->get(), $this->target->get());
+        if ($reason !== null) {
+            $information->addInformation($reason);
+            return false;
+        }
+
         $targetUser = $this->target->getUser();
         if (
             $expectTargetNoVacation

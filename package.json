@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "realtime:starmap": "node realtime/starmap-server.js"
+    "realtime:starmap": "node realtime/starmap-server.js",
+    "realtime:extensions": "node realtime/extension-server.js",
+    "realtime:all": "node realtime/extension-server.js --with-starmap"
   },
   "dependencies": {
     "redis": "^6.0.0",
