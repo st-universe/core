@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'migrations' => \Stu\Config\Init::getContainer()->get(\Stu\Extension\ExtensionRegistry::class)->migrations('sqlite'),
     'table_storage' => [
         'table_name' => 'doctrine_migration_versions',
         'version_column_name' => 'version',

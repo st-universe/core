@@ -12,21 +12,25 @@ use Doctrine\DBAL\Tools\DsnParser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Extension\ExtensionRegistry;
 
 class ConnectionFactory implements ConnectionFactoryInterface
 {
     public function __construct(
         private ConfigInterface $config,
         private StuConfigInterface $stuConfig,
-        private SqlLogger $sqlLogger
+        private SqlLogger $sqlLogger,
+        private ?ExtensionRegistry $extensions = null
     ) {}
 
     #[\Override]
     public function createConnection(): Connection
     {
-        $configuration = null;
+        $configuration = new Configuration();
+        if ($this->extensions !== null) {
+            $configuration->setSchemaAssetsFilter($this->extensions->managesSchemaAsset(...));
+        }
         if ($this->stuConfig->getDebugSettings()->getSqlLoggingSettings()->isActive()) {
-            $configuration = new Configuration();
             $configuration->setMiddlewares([new Middleware($this->sqlLogger)]);
         }
 

@@ -7,6 +7,7 @@ namespace Stu\Component\Realtime;
 use function DI\autowire;
 
 return [
+    RealtimeChannels::class => autowire(RealtimeChannels::class),
     RealtimeRedisFactory::class => autowire(RealtimeRedisFactory::class),
     StarmapRealtimeTokenFactory::class => autowire(StarmapRealtimeTokenFactory::class),
     SpacecraftMovementPublisherInterface::class => autowire(SpacecraftMovementPublisher::class),

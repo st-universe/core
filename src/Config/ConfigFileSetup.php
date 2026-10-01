@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use RuntimeException;
+use Noodlehaus\Config;
+use Noodlehaus\ConfigInterface;
 
 class ConfigFileSetup
 {
@@ -29,5 +31,18 @@ class ConfigFileSetup
             throw new RuntimeException('no config stage initialized!');
         }
         return self::$configFiles;
+    }
+
+    public static function load(): ConfigInterface
+    {
+        $config = new Config(array_map(
+            fn (string $file): string => sprintf($file, __DIR__ . '/../../config/'),
+            self::getConfigFileSetup()
+        ));
+        $extensions = getenv('STU_EXTENSIONS');
+        if ($extensions !== false && $extensions !== '') {
+            $config->set('extensions', json_decode($extensions, true, 512, JSON_THROW_ON_ERROR));
+        }
+        return $config;
     }
 }

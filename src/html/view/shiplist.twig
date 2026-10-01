@@ -1,4 +1,4 @@
-{% if not SHIPS_AVAILABLE %}
+{% for template in EXTENSIONS.templates('shiplist.before') %}{% include template %}{% endfor %}{% if not SHIPS_AVAILABLE %}
 <table id="noships" class="tcal">
 	<tr>
 		<th>Meldung</th>

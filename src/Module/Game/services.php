@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Game;
 
 use Stu\Component\Game\ModuleEnum;
+use Stu\Extension\ExtensionHooks;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\Action\FinishTutorial\FinishTutorial;
 use Stu\Module\Game\Action\Logout\Logout;
@@ -47,6 +48,7 @@ use Stu\Module\Game\View\ShowTransfer\ShowTransfer;
 use Stu\Module\Game\View\ShowTutorialCloseButton\ShowTutorialCloseButton;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     GameSetupInterface::class => autowire(GameSetup::class),
@@ -57,7 +59,8 @@ return [
         [
             ModuleEnum::MAINDESK->value => autowire(MaindeskProvider::class),
             ModuleEnum::COLONY->value => autowire(ColonyListProvider::class),
-            ModuleEnum::SHIP->value => autowire(ShipListProvider::class),
+            ModuleEnum::SHIP->value => autowire(ShipListProvider::class)
+                ->constructorParameter('extensions', get(ExtensionHooks::class)),
             ModuleEnum::STATION->value => autowire(StationProvider::class),
             ModuleEnum::COMMUNICATION->value => autowire(CommunicationProvider::class),
             ModuleEnum::PM->value => autowire(MessageProvider::class),
