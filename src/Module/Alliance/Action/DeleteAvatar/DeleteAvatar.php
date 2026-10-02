@@ -11,7 +11,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class DeleteAvatar implements ActionControllerInterface
@@ -21,9 +21,9 @@ final class DeleteAvatar implements ActionControllerInterface
     public function __construct(private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config, private AllianceJobManagerInterface $allianceJobManager) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -34,7 +34,7 @@ final class DeleteAvatar implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Edit::VIEW_IDENTIFIER);
+        $context->setView(Edit::VIEW_IDENTIFIER);
 
         if ($alliance->hasAvatar()) {
             $result = @unlink(
@@ -56,7 +56,7 @@ final class DeleteAvatar implements ActionControllerInterface
             $this->allianceRepository->save($alliance);
         }
 
-        $game->getInfo()->addInformation(_('Das Bild wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Das Bild wurde gelöscht'));
     }
 
     #[\Override]

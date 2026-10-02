@@ -12,7 +12,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
@@ -22,9 +22,9 @@ final class ChangeAvatar implements ActionControllerInterface
     public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -35,21 +35,21 @@ final class ChangeAvatar implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Edit::VIEW_IDENTIFIER);
+        $context->setView(Edit::VIEW_IDENTIFIER);
 
         $file = $_FILES['avatar'];
         if ($file['type'] != 'image/png') {
-            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
 
         if ($file['size'] > 200000) {
-            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
+            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
             return;
         }
 
         if ($file['size'] == 0) {
-            $game->getInfo()->addInformation(_('Die Datei ist leer'));
+            $context->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
@@ -58,22 +58,22 @@ final class ChangeAvatar implements ActionControllerInterface
         try {
             $img = imagecreatefrompng($file['tmp_name']);
         } catch (Exception) {
-            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (!$img) {
-            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (imagesx($img) > 600) {
-            $game->getInfo()->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
+            $context->getInfo()->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
             return;
         }
 
         if (imagesy($img) > 150) {
-            $game->getInfo()->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
+            $context->getInfo()->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
             return;
         }
 
@@ -111,7 +111,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $this->allianceRepository->save($alliance);
 
-        $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
+        $context->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
     #[\Override]

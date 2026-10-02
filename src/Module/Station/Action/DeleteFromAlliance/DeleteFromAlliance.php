@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Action\DeleteFromAlliance;
 use request;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -22,11 +22,11 @@ final class DeleteFromAlliance implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $userId = $game->getUser()->getId();
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $userId = $context->getUser()->getId();
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
@@ -35,8 +35,8 @@ final class DeleteFromAlliance implements ActionControllerInterface
             false
         );
 
-        if ($game->getUser()->getAlliance() === null) {
-            $game->getInfo()->addInformation('Du bist in keiner Allianz');
+        if ($context->getUser()->getAlliance() === null) {
+            $context->getInfo()->addInformation('Du bist in keiner Allianz');
             return;
         }
 
@@ -46,7 +46,7 @@ final class DeleteFromAlliance implements ActionControllerInterface
             $this->stationRepository->save($station);
         }
 
-        $game->getInfo()->addInformationf('Die Station wurde von der Allianz %s entfernt', $game->getUser()->getAlliance()->getName());
+        $context->getInfo()->addInformationf('Die Station wurde von der Allianz %s entfernt', $context->getUser()->getAlliance()->getName());
     }
 
     #[\Override]

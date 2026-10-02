@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
@@ -23,43 +23,43 @@ final class PrestigeCheat implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $currentUser = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $currentUser = $context->getUser();
         $userId = request::postInt('userid');
         if ($userId === 0) {
-            $game->getInfo()->addInformation('Es wurde kein User ausgewählt');
+            $context->getInfo()->addInformation('Es wurde kein User ausgewählt');
             return;
         }
 
         $user = $this->userRepository->find($userId);
         if ($user === null) {
-            $game->getInfo()->addInformation('User existiert nicht');
+            $context->getInfo()->addInformation('User existiert nicht');
             return;
         }
 
         $amountStr = request::postString('prestigeamount');
         if ($amountStr === '' || $amountStr === false) {
-            $game->getInfo()->addInformation('Prestigewert fehlt');
+            $context->getInfo()->addInformation('Prestigewert fehlt');
             return;
         }
 
         $amount = (int) $amountStr;
         if ($amount === 0) {
-            $game->getInfo()->addInformation('Prestigewert muss ungleich 0 sein');
+            $context->getInfo()->addInformation('Prestigewert muss ungleich 0 sein');
             return;
         }
 
         $description = request::postString('prestigedescription');
         if ($description === '' || $description === false) {
-            $game->getInfo()->addInformation('Beschreibung fehlt');
+            $context->getInfo()->addInformation('Beschreibung fehlt');
             return;
         }
 
         $reason = request::postString('reason');
-        if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation('Grund fehlt');
+        if ($context->getUser()->isNpc() && $reason === '') {
+            $context->getInfo()->addInformation('Grund fehlt');
             return;
         }
 
@@ -80,11 +80,11 @@ final class PrestigeCheat implements ActionControllerInterface
             $reason
         );
 
-        if ($game->getUser()->isNpc()) {
+        if ($context->getUser()->isNpc()) {
             $this->createEntry($text, $currentUser->getId());
         }
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             'Prestige wurde %s',
             $amount > 0 ? 'hinzugefügt' : 'abgezogen'
         ));

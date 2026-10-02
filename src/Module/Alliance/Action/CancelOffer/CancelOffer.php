@@ -9,7 +9,7 @@ use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\RelationRepositoryInterface;
@@ -27,9 +27,9 @@ final class CancelOffer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -42,11 +42,11 @@ final class CancelOffer implements ActionControllerInterface
 
         if ($relation !== null && !$relation->isPending()) {
             if (!$this->userRelationManager->cancelPermissionChange($user, $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
             return;
         }
 
@@ -97,7 +97,7 @@ final class CancelOffer implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformation(_('Das Angebot wurde zurückgezogen'));
+        $context->getInfo()->addInformation(_('Das Angebot wurde zurückgezogen'));
     }
 
     #[\Override]

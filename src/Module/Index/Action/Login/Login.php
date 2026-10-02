@@ -9,7 +9,7 @@ use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\LoginException;
 use Stu\Lib\Session\SessionLoginInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class Login implements ActionControllerInterface
 {
@@ -25,7 +25,7 @@ final class Login implements ActionControllerInterface
      * @throws LoginException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $success = $this->sessionLogin->login(
             $this->loginRequest->getLoginName(),
@@ -33,7 +33,7 @@ final class Login implements ActionControllerInterface
         );
 
         if ($success) {
-            $view = $this->userSettingsProvider->getDefaultView($game->getUser());
+            $view = $this->userSettingsProvider->getDefaultView($context->getUser());
             throw new RedirectionException(sprintf('/%s', $view->getPhpPage()));
         }
     }

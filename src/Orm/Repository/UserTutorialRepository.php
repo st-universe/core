@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\Control\ViewContext;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserTutorial;
@@ -54,7 +54,7 @@ final class UserTutorialRepository extends EntityRepository implements UserTutor
     }
 
     #[\Override]
-    public function findByUserAndViewContext(User $user, ViewContext $viewContext): ?UserTutorial
+    public function findByUserAndViewContext(User $user, ViewControllerContext $viewContext): ?UserTutorial
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

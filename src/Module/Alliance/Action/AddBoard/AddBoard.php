@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class AddBoard implements ActionControllerInterface
@@ -25,9 +25,9 @@ final class AddBoard implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -38,12 +38,12 @@ final class AddBoard implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Boards::VIEW_IDENTIFIER);
+        $context->setView(Boards::VIEW_IDENTIFIER);
 
         $name = $this->addBoardRequest->getBoardName();
 
         if (mb_strlen($name) < self::NAME_LENGTH_CONSTRAINT) {
-            $game->getInfo()->addInformation(_('Der Name muss mindestens 5 Zeichen lang sein'));
+            $context->getInfo()->addInformation(_('Der Name muss mindestens 5 Zeichen lang sein'));
             return;
         }
 
@@ -53,7 +53,7 @@ final class AddBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->save($board);
 
-        $game->getInfo()->addInformation(_('Das Forum wurde erstellt'));
+        $context->getInfo()->addInformation(_('Das Forum wurde erstellt'));
     }
 
     #[\Override]

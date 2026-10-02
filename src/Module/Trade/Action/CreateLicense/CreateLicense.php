@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Action\CreateLicense;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -24,11 +24,11 @@ final class CreateLicense implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowAccounts::VIEW_IDENTIFIER);
+        $context->setView(ShowAccounts::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $posts_id = $this->createLicenseRequest->getTradePostId();
 
@@ -46,12 +46,12 @@ final class CreateLicense implements ActionControllerInterface
         $days = $this->createLicenseRequest->getLicenseDays();
 
         if ($days < 1 || $days > 365) {
-            $game->getInfo()->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
+            $context->getInfo()->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
             return;
         }
 
         if ($giveAmount < 1 || $commodityId < 1) {
-            $game->getInfo()->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
+            $context->getInfo()->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
             return;
         }
 
@@ -70,7 +70,7 @@ final class CreateLicense implements ActionControllerInterface
         $this->tradeLicenseInfoRepository->save($setLicense);
 
 
-        $game->getInfo()->addInformation('Handelslizenz geändert');
+        $context->getInfo()->addInformation('Handelslizenz geändert');
     }
 
     #[\Override]

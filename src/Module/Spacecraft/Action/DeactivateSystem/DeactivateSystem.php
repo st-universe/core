@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
@@ -30,11 +30,11 @@ final class DeactivateSystem implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::getIntFatal('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $fleetWrapper = request::getInt('isfleet') ? $wrapper->getFleetWrapper() : null;
@@ -44,24 +44,24 @@ final class DeactivateSystem implements ActionControllerInterface
             $success = $this->helper->deactivate(
                 $wrapper,
                 $systemType,
-                $game->getInfo()
+                $context->getInfo()
             );
         } else {
             $success = $this->helper->deactivateFleet(
                 $wrapper,
                 $systemType,
-                $game->getInfo()
+                $context->getInfo()
             );
         }
 
         if ($success && $this->isAlertReactionCheckNeeded($systemType)) {
-            $this->triggerAlertReaction($fleetWrapper, $wrapper, $game->getInfo());
+            $this->triggerAlertReaction($fleetWrapper, $wrapper, $context->getInfo());
             if ($wrapper->get()->getCondition()->isDestroyed()) {
                 return;
             }
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     private function isAlertReactionCheckNeeded(SpacecraftSystemTypeEnum $systemType): bool

@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Action\Logout;
 use Mockery\MockInterface;
 use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Session\SessionInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\StuTestCase;
 
 class LogoutTest extends StuTestCase
@@ -31,14 +31,14 @@ class LogoutTest extends StuTestCase
         static::expectException(RedirectionException::class);
         static::expectExceptionMessage('/index.php');
 
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
-        $game->shouldReceive('hasUser')
+        $context->shouldReceive('getGame->hasUser')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
 
@@ -47,9 +47,9 @@ class LogoutTest extends StuTestCase
         static::expectException(RedirectionException::class);
         static::expectExceptionMessage('/index.php');
 
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
-        $game->shouldReceive('hasUser')
+        $context->shouldReceive('getGame->hasUser')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -58,7 +58,7 @@ class LogoutTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testPerformSessionCheckReturnsFalse(): void

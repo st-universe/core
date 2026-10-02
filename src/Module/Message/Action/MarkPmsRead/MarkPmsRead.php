@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\MarkPmsRead;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -20,16 +20,16 @@ final class MarkPmsRead implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $folder = $this->privateMessageFolderRepository->find($this->markPmsReadRequest->getCategoryId());
-        if ($folder === null || $folder->getUserId() !== $game->getUser()->getId()) {
+        if ($folder === null || $folder->getUserId() !== $context->getUser()->getId()) {
             return;
         }
 
         $this->privateMessageRepository->markAsReadByFolder($folder->getId());
 
-        $game->getInfo()->addInformation(_('Alle Nachrichten im Ordner wurden als gelesen markiert'));
+        $context->getInfo()->addInformation(_('Alle Nachrichten im Ordner wurden als gelesen markiert'));
     }
 
     #[\Override]

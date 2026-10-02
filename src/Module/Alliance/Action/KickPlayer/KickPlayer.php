@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\StationRepositoryInterface;
@@ -28,9 +28,9 @@ final class KickPlayer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -78,9 +78,9 @@ final class KickPlayer implements ActionControllerInterface
 
         $this->privateMessageSender->send(UserConstants::USER_NOONE, $playerId, $text);
 
-        $game->setView(Management::VIEW_IDENTIFIER);
+        $context->setView(Management::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformation(_('Der Siedler wurde rausgeworfen'));
+        $context->getInfo()->addInformation(_('Der Siedler wurde rausgeworfen'));
     }
 
     #[\Override]

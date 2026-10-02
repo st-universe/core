@@ -5,8 +5,9 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 
 final class EffectsProvider implements PlanetFieldHostComponentInterface
@@ -20,7 +21,8 @@ final class EffectsProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
         $commodities = $this->commodityCache->getAll(CommodityTypeConstants::COMMODITY_TYPE_EFFECT);
 
@@ -43,6 +45,6 @@ final class EffectsProvider implements PlanetFieldHostComponentInterface
             $effects[$commodityId]['production'] = $prod[$commodityId];
         }
 
-        $game->setTemplateVar('EFFECTS', $effects);
+        $template->setTemplateVar('EFFECTS', $effects);
     }
 }

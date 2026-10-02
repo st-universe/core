@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action\Map\EditField;
 
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class EditField implements ActionControllerInterface
     public function __construct(private EditFieldRequestInterface $editFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $selectedField = $this->mapRepository->find($this->editFieldRequest->getFieldId());
 
@@ -34,7 +34,7 @@ final class EditField implements ActionControllerInterface
 
         $this->mapRepository->save($selectedField);
 
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
     }
 
     #[\Override]

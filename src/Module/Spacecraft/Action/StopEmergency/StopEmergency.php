@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\StopEmergency;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -28,13 +28,13 @@ final class StopEmergency implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $this->stopEmergencyRequest->getShipId(),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $ship = $wrapper->get();
@@ -53,7 +53,7 @@ final class StopEmergency implements ActionControllerInterface
         }
 
 
-        $game->getInfo()->addInformation('Das Notrufsignal wurde beendet');
+        $context->getInfo()->addInformation('Das Notrufsignal wurde beendet');
     }
 
     #[\Override]

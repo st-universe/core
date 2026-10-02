@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\PromoteCrew;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
@@ -22,11 +22,11 @@ final class PromoteCrew implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewmanDetails::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewmanDetails::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $crew = $this->crewRepository->find(request::indInt('id'));
         if ($crew === null || $crew->getUser()->getId() !== $user->getId()) {
             throw new AccessViolationException();
@@ -34,12 +34,12 @@ final class PromoteCrew implements ActionControllerInterface
 
         $nextRank = $crew->getRank()->getNextRank();
         if ($nextRank === null) {
-            $game->getInfo()->addInformation('Der Crewman hat bereits den höchsten Rang');
+            $context->getInfo()->addInformation('Der Crewman hat bereits den höchsten Rang');
             return;
         }
 
         if ($crew->getHighestSkillExpertise() < $nextRank->getNeededExpertise()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 '%s benötigt mindestens %d Expertise in einer Fähigkeit für die Beförderung zum %s',
                 $crew->getName(),
                 $nextRank->getNeededExpertise(),
@@ -50,7 +50,7 @@ final class PromoteCrew implements ActionControllerInterface
 
         $promotionLimit = $nextRank->getPromotionLimit();
         if ($promotionLimit !== null && $this->crewRepository->getAmountByUserAndRank($user, $nextRank) >= $promotionLimit) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 'Es können gleichzeitig maximal %d Crewman im Rang %s geführt werden',
                 $promotionLimit,
                 $this->userCrewRankRepository->getRankName($user, $nextRank)
@@ -61,7 +61,7 @@ final class PromoteCrew implements ActionControllerInterface
         $crew->setRank($nextRank);
         $this->crewRepository->save($crew);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             '%s wurde zum %s befördert',
             $crew->getName(),
             $this->userCrewRankRepository->getRankName($user, $nextRank)

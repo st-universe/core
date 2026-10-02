@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\DeleteFleet;
 
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -18,9 +18,9 @@ final class DeleteFleet implements ActionControllerInterface
     public function __construct(private DeleteFleetRequestInterface $deleteFleetRequest, private FleetRepositoryInterface $fleetRepository, private ShipLoaderInterface $shipLoader, private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $ship = $this->shipLoader->getByIdAndUser($this->deleteFleetRequest->getShipId(), $game->getUser()->getId());
+        $ship = $this->shipLoader->getByIdAndUser($this->deleteFleetRequest->getShipId(), $context->getUser()->getId());
 
         $fleet = $ship->getFleet();
         if ($fleet === null) {
@@ -34,7 +34,7 @@ final class DeleteFleet implements ActionControllerInterface
         $informations = new InformationWrapper();
         $this->cancelColonyBlockOrDefend->work($ship, $informations);
 
-        $game->getInfo()->addInformationWrapper($informations);
+        $context->getInfo()->addInformationWrapper($informations);
 
         foreach ($fleet->getShips() as $fleetShip) {
             $fleetShip->setFleet(null);
@@ -43,7 +43,7 @@ final class DeleteFleet implements ActionControllerInterface
 
         $this->fleetRepository->delete($fleet);
 
-        $game->getInfo()->addInformation(_('Die Flotte wurde aufgelöst'));
+        $context->getInfo()->addInformation(_('Die Flotte wurde aufgelöst'));
     }
 
     #[\Override]

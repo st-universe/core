@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangePassword implements ActionControllerInterface
@@ -20,17 +20,17 @@ final class ChangePassword implements ActionControllerInterface
     public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $currentPassword = $this->changePasswordRequest->getCurrentPassword();
 
         if ($currentPassword === '') {
-            $game->getInfo()->addInformation(_('Das alte Passwort wurde nicht angegeben'));
+            $context->getInfo()->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
         if (!password_verify($currentPassword, $user->getRegistration()->getPassword())) {
-            $game->getInfo()->addInformation(_('Das alte Passwort ist falsch'));
+            $context->getInfo()->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
 
@@ -38,22 +38,22 @@ final class ChangePassword implements ActionControllerInterface
         $newPasswordReEntered = $this->changePasswordRequest->getNewPasswordReEntered();
 
         if ($newPassword === '') {
-            $game->getInfo()->addInformation(_('Es wurde kein neues Passwort eingegeben'));
+            $context->getInfo()->addInformation(_('Es wurde kein neues Passwort eingegeben'));
             return;
         }
         if (!preg_match(self::PASSWORD_REGEX, $newPassword)) {
-            $game->getInfo()->addInformation(_('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein'));
+            $context->getInfo()->addInformation(_('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein'));
             return;
         }
         if ($newPassword !== $newPasswordReEntered) {
-            $game->getInfo()->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
+            $context->getInfo()->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
             return;
         }
         $user->getRegistration()->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
 
         $this->userRepository->save($user);
 
-        $game->getInfo()->addInformation(_('Das Passwort wurde geändert'));
+        $context->getInfo()->addInformation(_('Das Passwort wurde geändert'));
     }
 
     #[\Override]

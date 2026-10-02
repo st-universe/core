@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -25,11 +25,11 @@ final class CancelShipRepair implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $targetId = request::getIntFatal('shipid');
 
         $repairJob = $this->stationShipRepairRepository->getByShip($targetId);
@@ -45,12 +45,12 @@ final class CancelShipRepair implements ActionControllerInterface
             return;
         }
 
-        if ($station->getUser()->getId() !== $game->getUser()->getId()) {
+        if ($station->getUser()->getId() !== $context->getUser()->getId()) {
             return;
         }
 
         $this->cancelRepair->cancelRepair($target);
-        $game->getInfo()->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $target->getName()));
+        $context->getInfo()->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $target->getName()));
 
         $this->privateMessageSender->send(
             $userId,

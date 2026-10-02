@@ -12,7 +12,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -30,11 +30,11 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
@@ -59,25 +59,25 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $wantedAmount = 1;
         $amount = 0;
-        while ($amount < $wantedAmount && $this->produceShip($rump, $colony, $game)) {
+        while ($amount < $wantedAmount && $this->produceShip($rump, $colony, $context)) {
             $amount++;
         }
 
         $this->colonyRepository->save($colony);
 
         if ($amount < $wantedAmount) {
-            $game->getInfo()->addInformationf(_('Es wurden daher nur %d Stück %s-Klasse gebaut'), $amount, $rump->getName());
+            $context->getInfo()->addInformationf(_('Es wurden daher nur %d Stück %s-Klasse gebaut'), $amount, $rump->getName());
         } else {
-            $game->getInfo()->addInformationf(_('%d Stück %s-Klasse wurden gebaut'), $amount, $rump->getName());
+            $context->getInfo()->addInformationf(_('%d Stück %s-Klasse wurden gebaut'), $amount, $rump->getName());
         }
     }
 
-    private function produceShip(SpacecraftRump $rump, Colony $colony, GameControllerInterface $game): bool
+    private function produceShip(SpacecraftRump $rump, Colony $colony, ActionControllerContext $context): bool
     {
         $changeable = $colony->getChangeable();
 
         if ($rump->getEpsCost() > $changeable->getEps()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $rump->getEpsCost(),
                 $changeable->getEps()
@@ -89,7 +89,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
             $stor = $storage[$cost->getCommodityId()] ?? null;
 
             if ($stor === null) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es wird %d %s benötigt'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName()
@@ -97,7 +97,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
                 return false;
             }
             if ($stor->getAmount() < $cost->getAmount()) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es wird %d %s benötigt - Vorhanden ist nur %d'),
                     $cost->getAmount(),
                     $cost->getCommodity()->getName(),

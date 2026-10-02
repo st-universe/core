@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -45,11 +45,11 @@ final class SupportTholianWeb implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -78,12 +78,12 @@ final class SupportTholianWeb implements ActionControllerInterface
         }
 
         if ($ship->isWarped()) {
-            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game->getInfo())) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $context->getInfo())) {
             return;
         }
 
@@ -114,7 +114,7 @@ final class SupportTholianWeb implements ActionControllerInterface
             );
         }
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             "Der Aufbau des Energienetz wird unterstützt, Fertigstellung: %s",
             $finishTimeString
         );

@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,7 +22,7 @@ final class LogPlayerDetails implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $userId = request::postIntFatal('userid');
         $reason = request::postStringFatal('reason');
@@ -33,14 +33,14 @@ final class LogPlayerDetails implements ActionControllerInterface
 
         $logText = sprintf(
             '%s hat die Details von Spieler %s (%d) eingesehen. Grund: %s',
-            $game->getUser()->getName(),
+            $context->getUser()->getName(),
             $user->getName(),
             $user->getId(),
             $reason
         );
 
-        if ($game->getUser()->isNpc()) {
-            $this->createLogEntry($logText, $game->getUser()->getId());
+        if ($context->getUser()->isNpc()) {
+            $this->createLogEntry($logText, $context->getUser()->getId());
         }
     }
 

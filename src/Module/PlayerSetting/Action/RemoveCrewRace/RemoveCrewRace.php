@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\RemoveCrewRace;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\UserCrewRace;
 use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
@@ -18,11 +18,11 @@ final class RemoveCrewRace implements ActionControllerInterface
     public function __construct(private readonly UserCrewRaceRepositoryInterface $userCrewRaceRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $crewRaceId = request::postInt('crew_race_id');
         $userCrewRaces = $this->userCrewRaceRepository->getByUserId($user->getId());
         $userCrewRace = null;
@@ -33,16 +33,16 @@ final class RemoveCrewRace implements ActionControllerInterface
             }
         }
         if (!$userCrewRace instanceof UserCrewRace) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse ist nicht ausgewählt'));
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse ist nicht ausgewählt'));
             return;
         }
         if (count($userCrewRaces) <= 1) {
-            $game->getInfo()->addInformation(_('Es muss mindestens eine Crew-Rasse ausgewählt bleiben'));
+            $context->getInfo()->addInformation(_('Es muss mindestens eine Crew-Rasse ausgewählt bleiben'));
             return;
         }
 
         $this->userCrewRaceRepository->delete($userCrewRace);
-        $game->getInfo()->addInformation(_('Die Crew-Rasse wurde abgewählt'));
+        $context->getInfo()->addInformation(_('Die Crew-Rasse wurde abgewählt'));
     }
 
     #[\Override]

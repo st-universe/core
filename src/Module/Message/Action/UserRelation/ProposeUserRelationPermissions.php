@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\UserRelation;
 
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -21,23 +21,23 @@ final class ProposeUserRelationPermissions implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $context->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
         if (
             $relation === null
             || !$this->userRelationManager->proposePermissionChange(
-                $game->getUser(),
+                $context->getUser(),
                 $relation,
                 $this->userRelationRequest->getPermissions()
             )
         ) {
-            $game->getInfo()->addInformation('Die Rechte können nicht geändert werden');
+            $context->getInfo()->addInformation('Die Rechte können nicht geändert werden');
             return;
         }
 
-        $game->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
+        $context->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
     }
 
     #[\Override]

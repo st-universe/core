@@ -4,7 +4,8 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use request;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -20,7 +21,8 @@ final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInte
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
 
         $buildingFunction = $this->buildingFunctionRepository->find(
@@ -31,7 +33,7 @@ final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInte
             return;
         }
 
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             array_map(
                 fn (SpacecraftBuildplan $plan): array => [
@@ -39,7 +41,7 @@ final class SpacecraftBuildplansProvider implements PlanetFieldHostComponentInte
                     'deletable' => $this->buildPlanDeleter->isDeletable($plan)
                 ],
                 $this->spacecraftBuildplanRepository->getByUserAndBuildingFunction(
-                    $game->getUser()->getId(),
+                    $user->getId(),
                     $buildingFunction->getFunction()
                 )
             )

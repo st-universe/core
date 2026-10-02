@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ColonyDefending;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -22,11 +22,11 @@ final class StartDefending implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -52,19 +52,19 @@ final class StartDefending implements ActionControllerInterface
         }
 
         if ($currentColony->getUser()->isVacationRequestOldEnough()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         if ($currentColony->isBlocked()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird blockiert!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird blockiert!'));
             return;
         }
 
         $fleet->setDefendedColony($currentColony);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s verteidigt'), $currentColony->getName(), $fleet->getName());
-        $game->getInfo()->addInformation($text);
+        $context->getInfo()->addInformation($text);
 
         $this->privateMessageSender->send(
             $userId,

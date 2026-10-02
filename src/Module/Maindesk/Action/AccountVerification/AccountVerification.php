@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -37,10 +37,10 @@ final class AccountVerification implements
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if ($user->getState() !== UserStateEnum::ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION');
@@ -75,7 +75,7 @@ final class AccountVerification implements
 
         $this->loggerUtil->log('Account wurde freigeschaltet');
 
-        $game->setTemplateVar(
+        $context->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             $user->getState() === UserStateEnum::UNCOLONIZED
         );
@@ -84,9 +84,9 @@ final class AccountVerification implements
 
         $this->sendWelcomeMessage->sendWelcomeMessage($user);
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
 
-        $game->getInfo()->addInformation('Dein Account wurde erfolgreich freigeschaltet');
+        $context->getInfo()->addInformation('Dein Account wurde erfolgreich freigeschaltet');
     }
 
     #[\Override]

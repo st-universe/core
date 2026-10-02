@@ -6,6 +6,7 @@ namespace Stu\Module\Game\Lib;
 
 use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
@@ -17,7 +18,7 @@ class GameSetupTest extends StuTestCase
         request::setMockVars(['switch' => '1']);
 
         $componentRegistration = $this->mock(ComponentRegistrationInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
 
         $game->shouldReceive('setTemplateFile')
             ->with('html/view/breadcrumbAndView.twig')
@@ -36,7 +37,7 @@ class GameSetupTest extends StuTestCase
         request::setMockVars([]);
 
         $componentRegistration = $this->mock(ComponentRegistrationInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
 
         $game->shouldReceive('setTemplateVar')
             ->with('VIEW_TEMPLATE', 'view-template')

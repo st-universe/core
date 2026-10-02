@@ -6,7 +6,7 @@ namespace Stu\Module\Database\Action;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
@@ -19,19 +19,19 @@ final class DeleteColonyScan implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $colonyScan = $this->colonyScanRepository->find(request::getIntFatal('id'));
 
         if (
             $colonyScan === null
-            || $colonyScan->getUser()->getId() !== $game->getUser()->getId()
+            || $colonyScan->getUser()->getId() !== $context->getUser()->getId()
         ) {
             return;
         }
 
         $this->colonyScanRepository->delete($colonyScan);
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
     }
 
     #[\Override]

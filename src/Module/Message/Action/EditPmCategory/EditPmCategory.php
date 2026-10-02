@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\EditPmCategory;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
@@ -17,9 +17,9 @@ final class EditPmCategory implements ActionControllerInterface
     public function __construct(private EditPmCategoryRequestInterface $editPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
+        $context->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
 
         $name = $this->editPmCategoryRequest->getName();
         if (mb_strlen($name) < 1) {
@@ -27,7 +27,7 @@ final class EditPmCategory implements ActionControllerInterface
         }
 
         $cat = $this->privateMessageFolderRepository->find($this->editPmCategoryRequest->getCategoryId());
-        if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
+        if ($cat === null || $cat->getUserId() !== $context->getUser()->getId()) {
             throw new AccessViolationException();
         }
 
@@ -35,7 +35,7 @@ final class EditPmCategory implements ActionControllerInterface
 
         $this->privateMessageFolderRepository->save($cat);
 
-        $game->setTemplateVar('CATEGORY', $cat);
+        $context->setTemplateVar('CATEGORY', $cat);
     }
 
     #[\Override]

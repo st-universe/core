@@ -10,7 +10,7 @@ use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class RemoveBuilding implements ActionControllerInterface
 {
@@ -23,11 +23,11 @@ final class RemoveBuilding implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
 
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($context->getUser());
         $building = $field->getBuilding();
 
         if ($building === null) {
@@ -37,9 +37,9 @@ final class RemoveBuilding implements ActionControllerInterface
             return;
         }
 
-        $this->buildingAction->remove($field, $game);
+        $this->buildingAction->remove($field, $context);
 
-        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
+        $context->addExecuteJS(sprintf("refreshHost('%s');", $context->getSessionString()));
 
         $host = $field->getHost();
 

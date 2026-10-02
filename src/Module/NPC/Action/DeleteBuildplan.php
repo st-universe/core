@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -24,18 +24,18 @@ final class DeleteBuildplan implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $buildplanId = request::postIntFatal('planid');
         if ($buildplanId == null) {
-            $game->getInfo()->addInformation('Es wurde kein Bauplan ausgewählt');
+            $context->getInfo()->addInformation('Es wurde kein Bauplan ausgewählt');
             return;
         }
 
         $buildplan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($buildplan === null) {
-            $game->getInfo()->addInformation('Der Bauplan konnte nicht gelöscht werden');
+            $context->getInfo()->addInformation('Der Bauplan konnte nicht gelöscht werden');
             return;
         }
 
@@ -45,7 +45,7 @@ final class DeleteBuildplan implements ActionControllerInterface
                 $buildplan->getUserId(),
                 sprintf(
                     'Der Spieler %s hat deine Bauplan %s gelöscht',
-                    $game->getUser()->getName(),
+                    $context->getUser()->getName(),
                     $buildplan->getName()
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM
@@ -59,18 +59,18 @@ final class DeleteBuildplan implements ActionControllerInterface
 
         $logText = sprintf(
             '%s hat den Bauplan %s (%d) von Benutzer %s (%d) gelöscht. Crew: %d',
-            $game->getUser()->getName(),
+            $context->getUser()->getName(),
             $buildplan->getName(),
             $buildplan->getId(),
             $buildplan->getUser()->getName(),
             $buildplan->getUserId(),
             $crewCount
         );
-        if ($game->getUser()->isNpc()) {
+        if ($context->getUser()->isNpc()) {
             $this->createLogEntry($logText, $userId);
         }
 
-        $game->getInfo()->addInformation('Der Bauplan wurde gelöscht');
+        $context->getInfo()->addInformation('Der Bauplan wurde gelöscht');
     }
 
     private function createLogEntry(string $text, int $userId): void

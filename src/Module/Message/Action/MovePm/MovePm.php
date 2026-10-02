@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\MovePm;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -16,13 +16,13 @@ final class MovePm implements ActionControllerInterface
     public function __construct(private MovePmRequestInterface $movePmRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
         if ($pm === null || $pm->getRecipientId() !== $userId) {
-            $game->getInfo()->addInformation(_('Diese Nachricht existiert nicht'));
+            $context->getInfo()->addInformation(_('Diese Nachricht existiert nicht'));
             return;
         }
 
@@ -33,14 +33,14 @@ final class MovePm implements ActionControllerInterface
 
         $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
         if ($destination === null || $destination->getUserId() !== $userId) {
-            $game->getInfo()->addInformation(_('Dieser Ordner existiert nicht'));
+            $context->getInfo()->addInformation(_('Dieser Ordner existiert nicht'));
             return;
         }
         $pm->setCategory($destination);
 
         $this->privateMessageRepository->save($pm);
 
-        $game->getInfo()->addInformation(_('Die Nachricht wurde verschoben'));
+        $context->getInfo()->addInformation(_('Die Nachricht wurde verschoben'));
     }
 
     #[\Override]

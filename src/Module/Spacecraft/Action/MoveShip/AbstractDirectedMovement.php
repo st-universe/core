@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\MoveShip;
 
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteFactoryInterface;
@@ -30,23 +30,23 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         private DistributedMessageSenderInterface $distributedMessageSender
     ) {}
 
-    abstract protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool;
+    abstract protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool;
 
     abstract protected function getFlightRoute(SpacecraftWrapperInterface $wrapper): FlightRouteInterface;
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $this->moveShipRequest->getShipId(),
             $userId
         );
 
-        if ($this->isSanityCheckFaulty($wrapper, $game)) {
+        if ($this->isSanityCheckFaulty($wrapper, $context)) {
             return;
         }
 
@@ -56,7 +56,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             $wrapper,
             $this->getFlightRoute($wrapper)
         );
-        $game->getInfo()->addInformationWrapper($messages->getInformationDump());
+        $context->getInfo()->addInformationWrapper($messages->getInformationDump());
 
 
         $this->distributedMessageSender->distributeMessageCollection(
@@ -67,7 +67,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
 
 
         if ($ship->getCondition()->isDestroyed()) {
-            $game->setView(ModuleEnum::SHIP);
+            $context->setView(ModuleEnum::SHIP);
         }
     }
 
@@ -77,23 +77,23 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         return true;
     }
 
-    private function isSanityCheckFaulty(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
+    private function isSanityCheckFaulty(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool
     {
         $spacecraft = $wrapper->get();
 
-        if (!$spacecraft->hasEnoughCrew($game)) {
+        if (!$spacecraft->hasEnoughCrew($context)) {
             return true;
         }
 
         if ($spacecraft->getHoldingWeb() !== null && $spacecraft->getHoldingWeb()->isFinished()) {
-            $game->getInfo()->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
+            $context->getInfo()->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
             return true;
         }
 
         if ($spacecraft instanceof Ship) {
 
             if ($spacecraft->isTractored()) {
-                $game->getInfo()->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+                $context->getInfo()->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
                 return true;
             }
 
@@ -105,7 +105,7 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
                 && $spacecraft->isFleetLeader()
                 && $fleet->getDefendedColony() !== null
             ) {
-                $game->getInfo()->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
+                $context->getInfo()->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
 
                 return true;
             }
@@ -115,12 +115,12 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
                 && $spacecraft->isFleetLeader()
                 && $fleet->getBlockedColony() !== null
             ) {
-                $game->getInfo()->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
+                $context->getInfo()->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
 
                 return true;
             }
         }
 
-        return $this->isSanityCheckFaultyConcrete($wrapper, $game);
+        return $this->isSanityCheckFaultyConcrete($wrapper, $context);
     }
 }

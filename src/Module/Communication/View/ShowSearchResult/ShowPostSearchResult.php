@@ -27,7 +27,7 @@ final class ShowPostSearchResult implements ViewControllerInterface
         $user = $game->getUser();
 
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
 
         if (strlen($this->showSearchResultRequest->getSearchString()) < self::MINIMUM_SEARCH_WORD_LENGTH) {
             $game->setTemplateVar('KN_POSTINGS', null);

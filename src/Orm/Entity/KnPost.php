@@ -245,7 +245,7 @@ class KnPost implements EntityWithHrefInterface
     public function getUrl(): string
     {
         return sprintf(
-            '/comm.php?%s=1&knid=%d',
+            '/communication.php?%s=1&knid=%d',
             ShowSingleKn::VIEW_IDENTIFIER,
             $this->getId()
         );

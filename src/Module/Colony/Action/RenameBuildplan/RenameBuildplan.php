@@ -8,7 +8,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
 final class RenameBuildplan implements ActionControllerInterface
@@ -21,10 +21,10 @@ final class RenameBuildplan implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+        $userId = $context->getUser()->getId();
+        $context->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
 
         $newName = CleanTextUtils::clearEmojis($this->renameBuildplanRequest->getNewName());
         if (mb_strlen($newName) === 0) {
@@ -33,17 +33,17 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
         if ($newName !== $nameWithoutUnicode) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($newName) > 255) {
-            $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
             return;
         }
 
         if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $newName) !== null) {
-            $game->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            $context->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             return;
         }
 
@@ -56,7 +56,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $this->spacecraftBuildplanRepository->save($plan);
 
-        $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
+        $context->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
     #[\Override]

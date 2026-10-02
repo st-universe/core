@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -25,11 +25,11 @@ final class StartBlocking implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -55,12 +55,12 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         if ($currentColony->getUser()->isVacationRequestOldEnough()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         if ($currentColony->isDefended()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird verteidigt!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie wird verteidigt!'));
             return;
         }
 
@@ -69,14 +69,14 @@ final class StartBlocking implements ActionControllerInterface
             || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::PARTICLE_PHALANX)
             || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingFunctionEnum::ANTI_PARTICLE)
         ) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
             return;
         }
 
         $fleet->setBlockedColony($currentColony);
 
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s blockiert'), $currentColony->getName(), $fleet->getName());
-        $game->getInfo()->addInformation($text);
+        $context->getInfo()->addInformation($text);
 
         $this->privateMessageSender->send(
             $userId,

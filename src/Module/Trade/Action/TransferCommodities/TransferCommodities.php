@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\Action\TransferCommodities;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
@@ -23,11 +23,11 @@ final class TransferCommodities implements ActionControllerInterface
     public function __construct(private TransferCommoditiesRequestInterface $transferCommoditiesRequest, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowAccounts::VIEW_IDENTIFIER);
+        $context->setView(ShowAccounts::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $amount = $this->transferCommoditiesRequest->getAmount();
         $destinationTradePostId = $this->transferCommoditiesRequest->getDestinationTradePostId();
 
@@ -61,7 +61,7 @@ final class TransferCommodities implements ActionControllerInterface
         $freeTransferCapacity = $tradepost->getTransferCapacity() - $usedTransferCapacity;
 
         if ($freeTransferCapacity <= 0) {
-            $game->getInfo()->addInformation(_('Du hast an diesem Posten derzeit keine freie Transferkapaziztät'));
+            $context->getInfo()->addInformation(_('Du hast an diesem Posten derzeit keine freie Transferkapaziztät'));
             return;
         }
 
@@ -78,13 +78,13 @@ final class TransferCommodities implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
-        $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $game->getUser());
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $context->getUser());
+        $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $context->getUser());
 
         $freeStorage = $storageManagerTarget->getFreeStorage();
 
         if ($freeStorage <= 0) {
-            $game->getInfo()->addInformation(_('Am Zielposten ist kein freier Lagerplatz mehr vorhanden'));
+            $context->getInfo()->addInformation(_('Am Zielposten ist kein freier Lagerplatz mehr vorhanden'));
             return;
         }
         $amount = min(min($freeStorage, $amount), $freeTransferCapacity);
@@ -94,13 +94,13 @@ final class TransferCommodities implements ActionControllerInterface
 
         $transfer = $this->tradeTransferRepository->prototype();
         $transfer->setTradePost($tradepost);
-        $transfer->setUser($game->getUser());
+        $transfer->setUser($context->getUser());
         $transfer->setAmount($amount);
         $transfer->setDate(time());
 
         $this->tradeTransferRepository->save($transfer);
 
-        $game->getInfo()->addInformation(
+        $context->getInfo()->addInformation(
             sprintf(
                 _('Es wurde %d %s zum %s transferiert'),
                 $amount,

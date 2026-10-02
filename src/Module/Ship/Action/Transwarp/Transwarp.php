@@ -8,7 +8,7 @@ use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
@@ -50,13 +50,13 @@ final class Transwarp extends AbstractDirectedMovement
     }
 
     #[\Override]
-    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool
     {
         $layerId = request::postIntFatal('transwarplayer');
 
         //sanity check if user knows layer
         /** @var null|UserLayer */
-        $userLayer = $game->getUser()->getUserLayers()->get($layerId);
+        $userLayer = $context->getUser()->getUserLayers()->get($layerId);
         if ($userLayer === null) {
             return true;
         }
@@ -70,24 +70,24 @@ final class Transwarp extends AbstractDirectedMovement
         $cy = request::postInt('transwarpcy');
 
         if (!$cx || !$cy) {
-            $game->getInfo()->addInformation(_('Zielkoordinaten müssen angegeben werden'));
+            $context->getInfo()->addInformation(_('Zielkoordinaten müssen angegeben werden'));
             return true;
         }
 
         $ship = $wrapper->get();
 
         if ($ship->getSystem() !== null) {
-            $game->getInfo()->addInformation(_('Transwarp kann nur außerhalb von Systemen genutzt werden'));
+            $context->getInfo()->addInformation(_('Transwarp kann nur außerhalb von Systemen genutzt werden'));
             return true;
         }
 
         if (!$ship->getWarpDriveState()) {
-            $game->getInfo()->addInformation(_('Der Warpantrieb muss aktiviert sein'));
+            $context->getInfo()->addInformation(_('Der Warpantrieb muss aktiviert sein'));
             return true;
         }
 
         if ($ship->isTractoring()) {
-            $game->getInfo()->addInformation(_('Transwarpflug nicht möglich bei aktiviertem Traktorstrahl'));
+            $context->getInfo()->addInformation(_('Transwarpflug nicht möglich bei aktiviertem Traktorstrahl'));
             return true;
         }
 
@@ -96,13 +96,13 @@ final class Transwarp extends AbstractDirectedMovement
             && $ship->getFleet() !== null
             && $ship->getFleet()->getShipCount() > 1
         ) {
-            $game->getInfo()->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
+            $context->getInfo()->addInformation('Transwarpflug nicht möglich wenn Teil einer Flotte');
             return true;
         }
 
         $map = $this->mapRepository->getByCoordinates($userLayer->getLayer(), $cx, $cy);
         if ($map === null) {
-            $game->getInfo()->addInformation(_('Zielkoordinaten existieren nicht'));
+            $context->getInfo()->addInformation(_('Zielkoordinaten existieren nicht'));
             return true;
         }
 
@@ -116,7 +116,7 @@ final class Transwarp extends AbstractDirectedMovement
         }
 
         if (!$map->getFieldType()->getPassable()) {
-            $game->getInfo()->addInformation(_('Zielkoordinaten können nicht angeflogen werden'));
+            $context->getInfo()->addInformation(_('Zielkoordinaten können nicht angeflogen werden'));
             return true;
         }
 

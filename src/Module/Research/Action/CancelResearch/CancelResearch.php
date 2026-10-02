@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\AuthenticatedActionController;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -25,20 +25,20 @@ final class CancelResearch extends AuthenticatedActionController
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $id = request::getIntFatal('id');
 
-        $currentResearch = $this->researchedRepository->getCurrentResearch($game->getUser());
+        $currentResearch = $this->researchedRepository->getCurrentResearch($context->getUser());
 
         foreach ($currentResearch as $researched) {
             if ($researched->getId() === $id) {
                 $this->researchedRepository->delete($researched);
-                $game->getInfo()->addInformation('Die laufende Forschung wurde abgebrochen');
+                $context->getInfo()->addInformation('Die laufende Forschung wurde abgebrochen');
 
                 $this->componentRegistration->addComponentUpdate(GameComponentEnum::RESEARCH);
             }
         }
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
     }
 }

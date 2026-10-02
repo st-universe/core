@@ -9,7 +9,7 @@ use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\Award;
@@ -42,16 +42,16 @@ final class ClaimQuestReward implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowQuest::VIEW_IDENTIFIER);
+        $context->setView(ShowQuest::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $questId = $this->claimQuestRewardRequest->getQuestId();
 
         $quest = $this->npcQuestRepository->find($questId);
         if ($quest === null) {
-            $game->getInfo()->addInformation('Quest nicht gefunden');
+            $context->getInfo()->addInformation('Quest nicht gefunden');
             return;
         }
 
@@ -61,22 +61,22 @@ final class ClaimQuestReward implements ActionControllerInterface
         ]);
 
         if ($questUser === null) {
-            $game->getInfo()->addInformation('Du bist kein Teilnehmer dieser Quest');
+            $context->getInfo()->addInformation('Du bist kein Teilnehmer dieser Quest');
             return;
         }
 
         if ($questUser->getMode() !== QuestUserModeEnum::ACTIVE_MEMBER) {
-            $game->getInfo()->addInformation('Du bist kein aktives Mitglied dieser Quest');
+            $context->getInfo()->addInformation('Du bist kein aktives Mitglied dieser Quest');
             return;
         }
 
         if ($quest->getEnd() === null) {
-            $game->getInfo()->addInformation('Die Quest ist noch nicht beendet');
+            $context->getInfo()->addInformation('Die Quest ist noch nicht beendet');
             return;
         }
 
         if ($questUser->isRewardReceived()) {
-            $game->getInfo()->addInformation('Du hast die Belohnung bereits erhalten');
+            $context->getInfo()->addInformation('Du hast die Belohnung bereits erhalten');
             return;
         }
 
@@ -86,19 +86,19 @@ final class ClaimQuestReward implements ActionControllerInterface
             $colonyId = $this->claimQuestRewardRequest->getColonyId();
 
             if ($colonyId === 0) {
-                $game->getInfo()->addInformation('Keine Kolonie ausgewählt');
+                $context->getInfo()->addInformation('Keine Kolonie ausgewählt');
                 return;
             }
 
             $colony = $this->colonyRepository->find($colonyId);
 
             if ($colony === null) {
-                $game->getInfo()->addInformation('Kolonie nicht gefunden');
+                $context->getInfo()->addInformation('Kolonie nicht gefunden');
                 return;
             }
 
             if ($colony->getUserId() !== $user->getId()) {
-                $game->getInfo()->addInformation('Die Kolonie gehört dir nicht');
+                $context->getInfo()->addInformation('Die Kolonie gehört dir nicht');
                 return;
             }
 
@@ -110,7 +110,7 @@ final class ClaimQuestReward implements ActionControllerInterface
         $questUser->setRewardReceived(true);
         $this->npcQuestUserRepository->save($questUser);
 
-        $game->getInfo()->addInformation('Belohnung erfolgreich erhalten!');
+        $context->getInfo()->addInformation('Belohnung erfolgreich erhalten!');
     }
 
     private function distributePersonalRewards(NPCQuest $quest, User $user): void

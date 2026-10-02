@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-enum ViewContextTypeEnum: int
+enum ViewContextMetadataTypeEnum: int
 {
     case VIEW = 1;
     case MODULE_VIEW = 2;

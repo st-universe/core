@@ -9,7 +9,7 @@ use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
@@ -24,7 +24,7 @@ class DemotePlayerTest extends StuTestCase
     private MockInterface&AllianceJobManagerInterface $allianceJobManager;
 
     private MockInterface&User $user;
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ActionControllerContext $context;
     private MockInterface&Alliance $alliance;
 
     private DemotePlayer $subject;
@@ -42,7 +42,7 @@ class DemotePlayerTest extends StuTestCase
         $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
 
         $this->user = $this->mock(User::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ActionControllerContext::class);
         $this->alliance = $this->mock(Alliance::class);
 
         $this->alliance->shouldReceive('getId')
@@ -69,7 +69,7 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleErrorsIfUserWasNotFound(): void
@@ -88,7 +88,7 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturnNull();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleErrorsIfPlayerIdIsSameAsUser(): void
@@ -114,7 +114,7 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($this->userId);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleErrorsIfPlayerIsNotInAlliance(): void
@@ -144,7 +144,7 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDemotesPlayer(): void
@@ -194,19 +194,19 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($allianceName);
 
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->context->shouldReceive('getInfo->addInformation')
             ->with('Das Mitglied wurde von seinem Posten enthoben')
             ->once();
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(Management::VIEW_IDENTIFIER)
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function createBasicExpectation(): void
     {
-        $this->game->shouldReceive('getUser')
+        $this->context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($this->user);

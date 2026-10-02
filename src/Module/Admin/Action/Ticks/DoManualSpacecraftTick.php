@@ -9,7 +9,7 @@ use request;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
@@ -28,13 +28,13 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $context->setView(ShowTicks::VIEW_IDENTIFIER);
         //check if single or all ships
         if (!request::getVarByMethod(request::postvars(), 'spacecrafttickid')) {
             $this->spacecraftTickManager->work();
-            $game->getInfo()->addInformation("Der Spacecraft-Tick für alle Spacecrafts wurde durchgeführt!");
+            $context->getInfo()->addInformation("Der Spacecraft-Tick für alle Spacecrafts wurde durchgeführt!");
         } else {
             $shipId = request::postInt('spacecrafttickid');
             $wrapper = $this->spacecraftLoader->find($shipId);
@@ -46,7 +46,7 @@ final class DoManualSpacecraftTick implements ActionControllerInterface
             $this->spacecraftTick->workSpacecraft($wrapper);
             $this->entityManager->flush();
 
-            $game->getInfo()->addInformation("Der Spacecraft-Tick für dieses Spacecraft wurde durchgeführt!");
+            $context->getInfo()->addInformation("Der Spacecraft-Tick für dieses Spacecraft wurde durchgeführt!");
         }
     }
 

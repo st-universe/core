@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\UpdateUserCrewRaceChance;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\UserCrewRace;
 use Stu\Orm\Repository\UserCrewRaceRepositoryInterface;
@@ -18,11 +18,11 @@ final class UpdateUserCrewRaceChance implements ActionControllerInterface
     public function __construct(private readonly UserCrewRaceRepositoryInterface $userCrewRaceRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $crewRaceId = request::postInt('crew_race_id');
         $chanceValue = request::postString('chance');
         $chance = $chanceValue === false ? 0 : filter_var($chanceValue, FILTER_VALIDATE_INT);
@@ -35,17 +35,17 @@ final class UpdateUserCrewRaceChance implements ActionControllerInterface
             }
         }
         if (!$userCrewRace instanceof UserCrewRace) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse ist nicht ausgewählt'));
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse ist nicht ausgewählt'));
             return;
         }
         if ($chance < 1 || $chance > 100) {
-            $game->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
+            $context->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
             return;
         }
 
         $userCrewRace->setChance($chance);
         $this->userCrewRaceRepository->save($userCrewRace);
-        $game->getInfo()->addInformation(_('Die Zufallsrate wurde gespeichert'));
+        $context->getInfo()->addInformation(_('Die Zufallsrate wurde gespeichert'));
     }
 
     #[\Override]

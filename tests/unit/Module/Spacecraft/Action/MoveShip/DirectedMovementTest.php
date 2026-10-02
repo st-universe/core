@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -74,7 +74,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
         $messages = $this->mock(MessageCollectionInterface::class);
@@ -112,7 +112,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($shipPosY);
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -162,18 +162,18 @@ class DirectedMovementTest extends StuTestCase
             ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformationWrapper')
+        $context->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
-        $subject->handle($game);
+        $subject->handle($context);
 
         self::assertTrue(
             $subject->performSessionCheck()
@@ -187,7 +187,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -204,15 +204,15 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($shipId);
 
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnFalse();
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
@@ -225,7 +225,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($ship);
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 
     public function testHandleExpectNoMovementWhenShipIsTractored(): void
@@ -235,7 +235,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -252,7 +252,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($shipId);
 
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -263,14 +263,14 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(null);
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Schiff wird von einem Traktorstrahl gehalten')
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
@@ -283,7 +283,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($ship);
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 
     public function testHandleExpectNoMovementWhenShipIsInWeb(): void
@@ -293,7 +293,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $holdingWeb = $this->mock(TholianWeb::class);
 
         $subject = new MoveShipRight(
@@ -311,7 +311,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($shipId);
 
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('getHoldingWeb')
@@ -323,14 +323,14 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Schiff ist in einem Energienetz gefangen')
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
@@ -344,7 +344,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($ship);
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 
     public function testHandleExpectNoMovementWhenFleetIsDefending(): void
@@ -355,7 +355,7 @@ class DirectedMovementTest extends StuTestCase
         $ship = $this->mock(Ship::class);
         $fleet = $this->mock(Fleet::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -372,7 +372,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($shipId);
 
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -392,14 +392,14 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(Colony::class));
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Flug während Kolonie-Verteidigung nicht möglich')
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
@@ -412,7 +412,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($ship);
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 
     public function testHandleExpectNoMovementWhenFleetIsBlocking(): void
@@ -423,7 +423,7 @@ class DirectedMovementTest extends StuTestCase
         $ship = $this->mock(Ship::class);
         $fleet = $this->mock(Fleet::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -440,7 +440,7 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($shipId);
 
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -463,14 +463,14 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($this->mock(Colony::class));
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Flug während Kolonie-Blockierung nicht möglich')
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
@@ -483,7 +483,7 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($ship);
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 
     public function testHandleEndsIfDestroyed(): void
@@ -498,7 +498,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
@@ -535,7 +535,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturn($shipPosY);
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -585,21 +585,21 @@ class DirectedMovementTest extends StuTestCase
             ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformationWrapper')
+        $context->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ModuleEnum::SHIP)
             ->once();
 
-        $subject->handle($game);
+        $subject->handle($context);
 
         self::assertTrue(
             $subject->performSessionCheck()
@@ -616,7 +616,7 @@ class DirectedMovementTest extends StuTestCase
 
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $messages = $this->mock(MessageCollectionInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
@@ -649,7 +649,7 @@ class DirectedMovementTest extends StuTestCase
             ->once()
             ->andReturnFalse();
         $ship->shouldReceive('hasEnoughCrew')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andReturnTrue();
         $ship->shouldReceive('isTractored')
@@ -699,17 +699,17 @@ class DirectedMovementTest extends StuTestCase
             ->with($messages, $userId, PrivateMessageFolderTypeEnum::SPECIAL_SHIP)
             ->once();
 
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo->addInformationWrapper')
+        $context->shouldReceive('getInfo->addInformationWrapper')
             ->with($informationWrapper)
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
 
-        $subject->handle($game);
+        $subject->handle($context);
     }
 }

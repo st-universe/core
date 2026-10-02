@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeleteIgnores;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
 final class DeleteIgnores implements ActionControllerInterface
@@ -15,9 +15,9 @@ final class DeleteIgnores implements ActionControllerInterface
     public function __construct(private DeleteIgnoresRequestInterface $deleteIgnoresRequest, private IgnoreListRepositoryInterface $ignoreListRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         foreach ($this->deleteIgnoresRequest->getIgnoreIds() as $val) {
             $contact = $this->ignoreListRepository->find($val);
@@ -27,7 +27,7 @@ final class DeleteIgnores implements ActionControllerInterface
 
             $this->ignoreListRepository->delete($contact);
         }
-        $game->getInfo()->addInformation(_('Die Einträge wurden gelöscht'));
+        $context->getInfo()->addInformation(_('Die Einträge wurden gelöscht'));
     }
 
     #[\Override]

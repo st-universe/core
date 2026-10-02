@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\DeleteTopic;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeleteTopic implements ActionControllerInterface
@@ -20,9 +20,9 @@ final class DeleteTopic implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->deleteTopicRequest->getTopicId());
         if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
@@ -31,9 +31,9 @@ final class DeleteTopic implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->delete($topic);
 
-        $game->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
 
-        $game->setView(Board::VIEW_IDENTIFIER);
+        $context->setView(Board::VIEW_IDENTIFIER);
     }
 
     #[\Override]

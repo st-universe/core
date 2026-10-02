@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Router\Handler;
 
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\Router\FallbackRouteException;
 
 class UplinkFallbackHandler implements FallbackHandlerInterface
 {
     #[\Override]
-    public function handle(FallbackRouteException $e, GameControllerInterface $game): void
+    public function handle(FallbackRouteException $e, ViewControllerContext $context): void
     {
-        $game->getInfo()->addInformation('Diese Aktion ist per Uplink nicht möglich!');
+        $context->getInfo()->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
         if (request::isAjaxRequest() && !request::has('switch')) {
-            $game->setMacroInAjaxWindow('html/systeminformation.twig');
+            $context->setMacroInAjaxWindow('html/systeminformation.twig');
         } else {
-            $game->setViewTemplate('html/empty.twig');
+            $context->setViewTemplate('html/empty.twig');
         }
     }
 }

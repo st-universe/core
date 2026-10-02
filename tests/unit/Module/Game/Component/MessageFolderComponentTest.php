@@ -6,10 +6,10 @@ namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
 use Stu\Component\Player\UserAwardEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -37,7 +37,7 @@ class MessageFolderComponentTest extends StuTestCase
 
     public function testRenderRendersFolderListWithoutStation(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(TemplateInterface::class);
         $user = $this->mock(User::class);
         $folder = $this->mock(PrivateMessageFolder::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
@@ -58,11 +58,6 @@ class MessageFolderComponentTest extends StuTestCase
                 ->once()
                 ->andReturn($folder);
         }
-
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($user);
 
         $this->privateMessageUiFactory->shouldReceive('createPrivateMessageFolderItem')
             ->with($folder)
@@ -94,12 +89,12 @@ class MessageFolderComponentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->setTemplateVariables($game);
+        $this->subject->setTemplateVariables($user, $game);
     }
 
     public function testRenderRendersFolderListWithStation(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(TemplateInterface::class);
         $user = $this->mock(User::class);
         $folder = $this->mock(PrivateMessageFolder::class);
         $folderItem = $this->mock(PrivateMessageFolderItem::class);
@@ -114,12 +109,6 @@ class MessageFolderComponentTest extends StuTestCase
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE,
             PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
         ];
-
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($user);
-
 
         foreach ($folderTypeIds as $typeId) {
             $this->privateMessageFolderRepository->shouldReceive('getByUserAndSpecial')
@@ -155,6 +144,6 @@ class MessageFolderComponentTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->setTemplateVariables($game);
+        $this->subject->setTemplateVariables($user, $game);
     }
 }

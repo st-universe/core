@@ -8,7 +8,7 @@ use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,9 +22,9 @@ final class UnlockUser implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Playerlist::VIEW_IDENTIFIER);
+        $context->setView(Playerlist::VIEW_IDENTIFIER);
         $userIdToUnlock = request::getIntFatal('uid');
         $user = $this->userRepository->find($userIdToUnlock);
         if ($user === null) {
@@ -45,7 +45,7 @@ final class UnlockUser implements ActionControllerInterface
         $lock->setFormerUserId($user->getId());
         $this->userLockRepository->save($lock);
 
-        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
+        $context->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
     }
 
     #[\Override]

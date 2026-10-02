@@ -9,12 +9,14 @@ use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\JavascriptExecutionInterface;
+use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -35,7 +37,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly AchievementManagerInterface $achievementManager,
         private readonly BenchmarkResultInterface $benchmarkResult,
-        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
+        private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
+        private readonly GameTurnProviderInterface $gameTurnProvider,
+        private readonly SessionStringFactoryInterface $sessionStringFactory
     ) {}
 
     #[\Override]
@@ -71,10 +75,11 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('IS_NPC', $this->gameUserRoleChecker->isNpc());
         $this->twigPage->setVar('IS_ADMIN', $this->gameUserRoleChecker->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $this->benchmarkResult);
-        $this->twigPage->setVar('GAME_STATS', $this->getGameStats($game));
+        $this->twigPage->setVar('GAME_STATS', $this->getGameStats());
 
         if ($game->hasUser()) {
-            $this->twigPage->setVar('SESSIONSTRING', $game->getSessionString(), true);
+            $sessionString = $this->sessionStringFactory->createSessionString($game->getUser());
+            $this->twigPage->setVar('SESSIONSTRING', $sessionString, true);
         }
     }
 
@@ -121,12 +126,12 @@ final class GameTwigRenderer implements GameTwigRendererInterface
     }
 
     /** @return array{currentTurn: int, player: int, playeronline: int, gameState: int, gameStateTextual: string} */
-    private function getGameStats(GameControllerInterface $game): array
+    private function getGameStats(): array
     {
         $gameState = $this->gameState->getGameState();
 
         return [
-            'currentTurn' => $game->getCurrentRound()->getTurn(),
+            'currentTurn' => $this->gameTurnProvider->getCurrentRound()->getTurn(),
             'player' => $this->userRepository->getActiveAmount(),
             'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
             'gameState' => $gameState->value,

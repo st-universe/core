@@ -7,7 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeCrewRankNames;
 use request;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserCrewRankRepositoryInterface;
 
 final class ChangeCrewRankNames implements ActionControllerInterface
@@ -17,19 +17,19 @@ final class ChangeCrewRankNames implements ActionControllerInterface
     public function __construct(private UserCrewRankRepositoryInterface $userCrewRankRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $rankNames = request::postArray('crew_rank_names');
 
         foreach (CrewSkillLevelEnum::cases() as $rank) {
             $name = (string) ($rankNames[$rank->value] ?? '');
             if ($name !== '' && !$this->isValidName($name)) {
-                $game->getInfo()->addInformation(_('Rangnamen dürfen nur Buchstaben, einzelne Leerzeichen, Apostrophe und Akzentzeichen enthalten'));
+                $context->getInfo()->addInformation(_('Rangnamen dürfen nur Buchstaben, einzelne Leerzeichen, Apostrophe und Akzentzeichen enthalten'));
                 return;
             }
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         foreach (CrewSkillLevelEnum::cases() as $rank) {
             $name = (string) ($rankNames[$rank->value] ?? '');
             $rankEntry = $this->userCrewRankRepository->getByUserAndRank($user, $rank);
@@ -48,7 +48,7 @@ final class ChangeCrewRankNames implements ActionControllerInterface
             $this->userCrewRankRepository->save($rankEntry);
         }
 
-        $game->getInfo()->addInformation(_('Die Crew-Ränge wurden aktualisiert'));
+        $context->getInfo()->addInformation(_('Die Crew-Ränge wurden aktualisiert'));
     }
 
     private function isValidName(string $name): bool

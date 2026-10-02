@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Lib;
 
 use request;
 use Stu\Component\Crew\CrewRaceInput;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 
@@ -14,7 +14,7 @@ final class CrewRaceSubmissionRequestFactory
 {
     public function __construct(private readonly CrewRaceRepositoryInterface $crewRaceRepository) {}
 
-    public function create(GameControllerInterface $game, ?CrewRace $crewRace): ?CrewRaceSubmissionData
+    public function create(ActionControllerContext $game, ?CrewRace $crewRace): ?CrewRaceSubmissionData
     {
         $description = $this->getDescription($game);
         if ($description === null) {
@@ -46,7 +46,7 @@ final class CrewRaceSubmissionRequestFactory
         );
     }
 
-    private function getDescription(GameControllerInterface $game): ?string
+    private function getDescription(ActionControllerContext $game): ?string
     {
         $description = trim((string) request::postString('crew_race_name'));
         if (CrewRaceInput::isValidDescription($description)) {
@@ -57,7 +57,7 @@ final class CrewRaceSubmissionRequestFactory
         return null;
     }
 
-    private function getMaleRatio(GameControllerInterface $game): ?int
+    private function getMaleRatio(ActionControllerContext $game): ?int
     {
         $maleRatio = filter_var(request::postString('crew_race_male_ratio'), FILTER_VALIDATE_INT);
         if ($maleRatio !== false && $maleRatio >= 0 && $maleRatio <= 100) {
@@ -69,7 +69,7 @@ final class CrewRaceSubmissionRequestFactory
     }
 
     private function getGfxPath(
-        GameControllerInterface $game,
+        ActionControllerContext $game,
         ?CrewRace $crewRace,
         string $description
     ): ?string {
@@ -88,7 +88,7 @@ final class CrewRaceSubmissionRequestFactory
         return null;
     }
 
-    private function getChance(GameControllerInterface $game): ?int
+    private function getChance(ActionControllerContext $game): ?int
     {
         $chance = filter_var(request::postString('crew_race_chance'), FILTER_VALIDATE_INT);
         if ($chance !== false && $chance >= 1 && $chance <= 100) {

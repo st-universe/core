@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\View\Noop\Noop;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
@@ -23,7 +23,7 @@ class SetTutorialTest extends StuTestCase
 
     private MockInterface&UserTutorialRepositoryInterface $userTutorialRepository;
 
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ActionControllerContext $context;
 
     private MockInterface&User $user;
 
@@ -34,7 +34,7 @@ class SetTutorialTest extends StuTestCase
     {
         $this->tutorialStepRepository = $this->mock(TutorialStepRepositoryInterface::class);
         $this->userTutorialRepository = $this->mock(UserTutorialRepositoryInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ActionControllerContext::class);
         $this->user = $this->mock(User::class);
 
         $this->subject = new SetTutorial(
@@ -73,7 +73,7 @@ class SetTutorialTest extends StuTestCase
             'isforward' => 1
         ]);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleSkipsStaleForwardRequestWhenTutorialAlreadyAdvanced(): void
@@ -109,16 +109,16 @@ class SetTutorialTest extends StuTestCase
             'isforward' => 1
         ]);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     /** @param ArrayCollection<int, UserTutorial> $tutorials */
     private function expectCommonCalls(TutorialStep $currentStep, ArrayCollection $tutorials): void
     {
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(Noop::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('getUser')
+        $this->context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($this->user);

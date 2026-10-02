@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -42,27 +42,27 @@ final class DealsTakeOffer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
         $dealId = $this->dealstakeOfferRequest->getDealId();
         $amount = $this->dealstakeOfferRequest->getAmount();
-        $game->setView(ShowDeals::VIEW_IDENTIFIER);
+        $context->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $selectedDeal = $this->dealsRepository->find($dealId);
         if ($selectedDeal === null) {
-            $game->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
         if ($userId < 100) {
-            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $context->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
         if ($amount < 1 && $selectedDeal->getGiveCommodityId() !== null) {
-            $game->getInfo()->addInformation(_('Zu geringe Anzahl ausgewählt'));
+            $context->getInfo()->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;
         }
 
@@ -75,9 +75,9 @@ final class DealsTakeOffer implements ActionControllerInterface
         }
 
         if ($selectedDeal->getWantPrestige() !== null) {
-            $userprestige = $game->getUser()->getPrestige();
+            $userprestige = $context->getUser()->getPrestige();
             if ($userprestige < $selectedDeal->getWantPrestige()) {
-                $game->getInfo()->addInformation(_('Du hast nicht genügend Prestige'));
+                $context->getInfo()->addInformation(_('Du hast nicht genügend Prestige'));
                 return;
             }
         }
@@ -92,7 +92,7 @@ final class DealsTakeOffer implements ActionControllerInterface
                 );
 
                 if ($storage === null || $storage->getAmount() < $selectedDeal->getWantCommodityAmount()) {
-                    $game->getInfo()->addInformation(sprintf(
+                    $context->getInfo()->addInformation(sprintf(
                         _('Nicht genügend %s auf diesem Handelsposten vorhanden'),
                         $wantedCommodity->getName()
                     ));
@@ -123,7 +123,7 @@ final class DealsTakeOffer implements ActionControllerInterface
                         $freeStorage <= 0 &&
                         $selectedDeal->getGiveCommodityAmount() > $selectedDeal->getWantCommodityAmount()
                     ) {
-                        $game->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                        $context->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
                         return;
                     }
                     if ($amount * $selectedDeal->getWantCommodityAmount() > $storageAmount) {
@@ -132,18 +132,18 @@ final class DealsTakeOffer implements ActionControllerInterface
                     if ($amount * $selectedDeal->getGiveCommodityAmount() - $amount * $selectedDeal->getWantCommodityAmount() > $freeStorage) {
                         $amount = (int) floor($freeStorage / ($selectedDeal->getGiveCommodityAmount() - $selectedDeal->getWantCommodityAmount()));
                         if ($amount <= 0) {
-                            $game->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                            $context->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                             return;
                         }
                     }
                 }
 
                 if ($selectedDeal->getWantPrestige() !== null) {
-                    $userprestige = $game->getUser()->getPrestige();
+                    $userprestige = $context->getUser()->getPrestige();
                     if (
                         $freeStorage <= 0
                     ) {
-                        $game->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                        $context->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
                         return;
                     }
                     if ($amount * $selectedDeal->getWantPrestige() > $userprestige) {
@@ -152,7 +152,7 @@ final class DealsTakeOffer implements ActionControllerInterface
                     if ($amount * $selectedDeal->getGiveCommodityAmount() - $amount * $selectedDeal->getWantPrestige() > $freeStorage) {
                         $amount = (int) floor($freeStorage / ($selectedDeal->getGiveCommodityAmount() - $selectedDeal->getWantPrestige()));
                         if ($amount <= 0) {
-                            $game->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                            $context->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                             return;
                         }
                     }
@@ -205,9 +205,9 @@ final class DealsTakeOffer implements ActionControllerInterface
                     '-%d Prestige: Eingebüßt beim Deal des Großen Nagus',
                     $amount * $selectedDeal->getWantPrestige()
                 );
-                $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getWantPrestige()), $description, $game->getUser(), time());
+                $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getWantPrestige()), $description, $context->getUser(), time());
             }
-            $game->getInfo()->addInformationf('Der Deal wurde %d mal angenommen', $amount);
+            $context->getInfo()->addInformationf('Der Deal wurde %d mal angenommen', $amount);
         }
     }
 

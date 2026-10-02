@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\EditKnPlot;
 
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EditKnPlot implements ActionControllerInterface
@@ -16,11 +16,11 @@ final class EditKnPlot implements ActionControllerInterface
     public function __construct(private EditKnPlotRequestInterface $editKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $plot = $this->rpgPlotRepository->find($this->editKnPlotRequest->getPlotId());
 
-        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
+        if ($plot === null || $plot->getUserId() !== $context->getUser()->getId()) {
             return;
         }
         $title = $this->editKnPlotRequest->getTitle();
@@ -29,15 +29,15 @@ final class EditKnPlot implements ActionControllerInterface
         $plot->setTitle($title);
         $plot->setDescription($description);
         if (mb_strlen($title) < 6) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
 
         $this->rpgPlotRepository->save($plot);
 
-        $game->getInfo()->addInformation(_('Der Plot wurde editiert'));
+        $context->getInfo()->addInformation(_('Der Plot wurde editiert'));
 
-        $game->setView(ShowKnPlot::VIEW_IDENTIFIER);
+        $context->setView(ShowKnPlot::VIEW_IDENTIFIER);
     }
 
     #[\Override]

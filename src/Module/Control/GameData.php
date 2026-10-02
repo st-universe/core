@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control;
 
 use Stu\Lib\Information\InformationWrapper;
-use Stu\Orm\Entity\GameTurn;
 
 final class GameData
 {
@@ -18,8 +17,6 @@ final class GameData
 
     public string $pagetitle = '';
     public string $macro = '';
-
-    public ?GameTurn $currentRound = null;
 
     /** @var array<int, mixed> $viewContext */
     public array $viewContext = [];

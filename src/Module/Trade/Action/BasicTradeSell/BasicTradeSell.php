@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
@@ -23,11 +23,11 @@ final class BasicTradeSell implements ActionControllerInterface
     public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
+        $context->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $tradePostId = request::postIntFatal('postid');
         $uniqId = request::postStringFatal('uid');
@@ -40,12 +40,12 @@ final class BasicTradeSell implements ActionControllerInterface
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
         if ($userId < 100) {
-            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $context->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
         if (!$isNewest) {
-            $game->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
+            $context->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
             return;
         }
 
@@ -55,10 +55,10 @@ final class BasicTradeSell implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $context->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
+            $context->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
             return;
         }
 
@@ -67,7 +67,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $sellValue = (int)($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE * BasicTradeItem::BASIC_TRADE_SELL_BUY_ALPHA);
 
         if ($commodityStorage === null || $commodityStorage->getAmount() < $sellValue) {
-            $game->getInfo()->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
+            $context->getInfo()->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
             return;
         }
 
@@ -92,14 +92,14 @@ final class BasicTradeSell implements ActionControllerInterface
         $newBasicTrade->setValue($newValue);
         $newBasicTrade->setDate((int)round(microtime(true) * 1000));
         $newBasicTrade->setUniqId(uniqid());
-        $newBasicTrade->setUserId($game->getUser()->getId());
+        $newBasicTrade->setUserId($context->getUser()->getId());
 
         $this->basicTradeRepository->save($newBasicTrade);
 
         $storageManager->upperStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
         $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), $sellValue);
 
-        $game->getInfo()->addInformation('Die Waren wurden verkauft');
+        $context->getInfo()->addInformation('Die Waren wurden verkauft');
     }
 
     #[\Override]

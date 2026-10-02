@@ -10,7 +10,7 @@ use request;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\IonStorm\IonStormMovementType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
 
@@ -30,7 +30,7 @@ final class SetIonStormMovement implements ActionControllerInterface
      * @throws JsonException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $rootId = request::postInt('rootId');
         $directionInDegrees = $this->parseIntPostValue('directionInDegrees');

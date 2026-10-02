@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Component;
 
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContext;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
@@ -19,30 +18,29 @@ class TutorialProvider
     ) {}
 
     public function setTemplateVariables(
-        ViewContext $viewContext,
-        GameControllerInterface $game
+        ViewControllerContext $context
     ): void {
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $userTutorials = $user->getTutorials();
         if ($userTutorials->isEmpty()) {
             return;
         }
 
-        $userTutorial = $this->userTutorialRepository->findByUserAndViewContext($user, $viewContext);
+        $userTutorial = $this->userTutorialRepository->findByUserAndViewContext($user, $context);
         if ($userTutorial === null) {
             return;
         }
 
-        $tutorialSteps = $this->tutorialStepRepository->findByUserAndViewContext($user, $viewContext);
+        $tutorialSteps = $this->tutorialStepRepository->findByUserAndViewContext($user, $context);
         if ($tutorialSteps == []) {
             return;
         }
 
         $payloadArray = array_map(fn (TutorialStep $tutorialStep): array => $this->convertTutorialStep($tutorialStep), $tutorialSteps);
 
-        $game->addExecuteJS(sprintf(
+        $context->addExecuteJS(sprintf(
             "initTutorialSteps('%s', %d);",
             json_encode($payloadArray),
             $userTutorial->getTutorialStep()->getId()

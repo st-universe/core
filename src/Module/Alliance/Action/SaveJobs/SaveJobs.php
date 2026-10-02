@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Repository\AllianceJobPermissionRepositoryInterface;
@@ -31,9 +31,9 @@ final class SaveJobs implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -44,12 +44,12 @@ final class SaveJobs implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Edit::VIEW_IDENTIFIER);
+        $context->setView(Edit::VIEW_IDENTIFIER);
 
         $jobsData = json_decode($this->saveJobsRequest->getJobsData(), true);
 
         if (!is_array($jobsData)) {
-            $game->getInfo()->addInformation('Fehlerhafte Daten übermittelt');
+            $context->getInfo()->addInformation('Fehlerhafte Daten übermittelt');
             return;
         }
 
@@ -72,7 +72,7 @@ final class SaveJobs implements ActionControllerInterface
             $permissions = $jobData['permissions'] ?? [];
 
             if (strlen($title) < 3) {
-                $game->getInfo()->addInformation('Alle Rollenbezeichnungen müssen mindestens 3 Zeichen lang sein');
+                $context->getInfo()->addInformation('Alle Rollenbezeichnungen müssen mindestens 3 Zeichen lang sein');
                 return;
             }
 
@@ -133,7 +133,7 @@ final class SaveJobs implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformation('Die Allianz-Rollen wurden gespeichert');
+        $context->getInfo()->addInformation('Die Allianz-Rollen wurden gespeichert');
     }
 
     /**

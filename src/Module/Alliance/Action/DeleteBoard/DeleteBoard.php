@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\DeleteBoard;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class DeleteBoard implements ActionControllerInterface
@@ -17,9 +17,9 @@ final class DeleteBoard implements ActionControllerInterface
     public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $board = $this->allianceBoardRepository->find($this->deleteBoardRequest->getBoardId());
         if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
@@ -28,9 +28,9 @@ final class DeleteBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->delete($board);
 
-        $game->getInfo()->addInformation(_('Das Forum wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Das Forum wurde gelöscht'));
 
-        $game->setView(Boards::VIEW_IDENTIFIER);
+        $context->setView(Boards::VIEW_IDENTIFIER);
     }
 
     #[\Override]

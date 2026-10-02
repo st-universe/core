@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\AttackTrackedShip;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -34,9 +34,9 @@ final class AttackTrackedShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $spacecraftId = request::getIntFatal('id');
         $targetId = request::getIntFatal('target');
@@ -62,16 +62,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         if (!$spacecraft->hasActiveWeapon()) {
-            $game->getInfo()->addInformation(_('Waffen sind offline'));
+            $context->getInfo()->addInformation(_('Waffen sind offline'));
             return;
         }
 
         if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
-        if (!$spacecraft->hasEnoughCrew($game)) {
+        if (!$spacecraft->hasEnoughCrew($context)) {
             return;
         }
         if (!$this->interactionChecker->checkPosition($target, $spacecraft)) {
@@ -80,11 +80,11 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
+            $context->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
         if ($spacecraft->getCondition()->isDisabled()) {
-            $game->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
+            $context->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
 
@@ -128,16 +128,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         if ($spacecraft->getCondition()->isDestroyed()) {
-            $game->getInfo()->addInformationWrapper($informations);
+            $context->getInfo()->addInformationWrapper($informations);
             return;
         }
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($fleet) {
-            $game->getInfo()->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
+            $context->getInfo()->addInformation(_("Angriff durchgeführt"));
+            $context->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->getInfo()->addInformationWrapper($informations);
+            $context->getInfo()->addInformationWrapper($informations);
         }
     }
 

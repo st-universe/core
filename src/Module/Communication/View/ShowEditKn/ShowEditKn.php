@@ -41,13 +41,13 @@ final class ShowEditKn implements ViewControllerInterface
         }
 
         $game->setViewTemplate('html/communication/editKn.twig');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
 
         if ($post->getDate() < $this->stuTime->time() - EditKnPost::EDIT_TIME && !$this->gameUserRoleChecker->isAdmin()) {
             $game->getInfo()->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
         } else {
             $game->appendNavigationPart(
-                sprintf('comm.php?%s=1&knid=%d', self::VIEW_IDENTIFIER, $post->getId()),
+                sprintf('communication.php?%s=1&knid=%d', self::VIEW_IDENTIFIER, $post->getId()),
                 _('Beitrag bearbeiten')
             );
             $game->setPageTitle(_('Beitrag bearbeiten'));

@@ -12,7 +12,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -39,11 +39,11 @@ final class OpenEasterEgg implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $shipId = request::indInt('id');
@@ -67,25 +67,25 @@ final class OpenEasterEgg implements ActionControllerInterface
             throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
         $openedDoors = $this->openedAdventDoorRepository->getOpenedDoorsCountOfToday($user);
         //check for easter prestige
         if ($openedDoors === 2) {
-            $this->easterPrestige($game);
+            $this->easterPrestige($context);
             $this->createOpenedAdventDoor($user);
             return;
         }
 
         if ($openedDoors > 1) {
-            $game->getInfo()->addInformation("Du hast bereits alle Ostereier erhalten");
+            $context->getInfo()->addInformation("Du hast bereits alle Ostereier erhalten");
             return;
         }
 
         if ($ship->getStorageSum() === $ship->getMaxStorage()) {
-            $game->getInfo()->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
 
@@ -94,22 +94,22 @@ final class OpenEasterEgg implements ActionControllerInterface
         $commodity = $this->commodityCache->get(CommodityTypeConstants::COMMODITY_EASTER_EGG);
         $this->storageManager->upperStorage($ship, $commodity, 1);
 
-        $game->getInfo()->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
+        $context->getInfo()->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
         $this->easterEggHandler->handleSpacecraftTick($anomaly);
     }
 
-    private function easterPrestige(GameControllerInterface $game): void
+    private function easterPrestige(ActionControllerContext $context): void
     {
         $msg = sprintf('%d Prestige vom Osterhasen erhalten', self::EASTER_EGG_AMOUNT);
 
         $this->createPrestigeLog->createLog(
             self::EASTER_EGG_AMOUNT,
             $msg,
-            $game->getUser(),
+            $context->getUser(),
             time()
         );
 
-        $game->getInfo()->addInformation("Du hast " . $msg);
+        $context->getInfo()->addInformation("Du hast " . $msg);
     }
 
     private function createOpenedAdventDoor(User $user): void

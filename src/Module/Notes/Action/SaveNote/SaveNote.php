@@ -7,7 +7,7 @@ namespace Stu\Module\Notes\Action\SaveNote;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class SaveNote implements ActionControllerInterface
@@ -17,9 +17,9 @@ final class SaveNote implements ActionControllerInterface
     public function __construct(private SaveNoteRequestInterface $saveNoteRequest, private NoteRepositoryInterface $noteRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $noteId = $this->saveNoteRequest->getNoteId();
 
         if ($noteId === 0) {
@@ -31,7 +31,7 @@ final class SaveNote implements ActionControllerInterface
             }
         }
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
 
         $title = $this->saveNoteRequest->getTitle();
 
@@ -40,18 +40,18 @@ final class SaveNote implements ActionControllerInterface
         }
 
         if (mb_strlen($title) > 200) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 200 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 200 Zeichen)'));
             return;
         }
 
         $note->setText($this->saveNoteRequest->getText());
         $note->setTitle($title);
         $note->setDate(time());
-        $note->setUser($game->getUser());
+        $note->setUser($context->getUser());
 
         $this->noteRepository->save($note);
 
-        $game->getInfo()->addInformation(_('Die Notiz wurde gespeichert'));
+        $context->getInfo()->addInformation(_('Die Notiz wurde gespeichert'));
     }
 
     #[\Override]

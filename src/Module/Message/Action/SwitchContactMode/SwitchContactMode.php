@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\SwitchContactMode;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
@@ -18,15 +18,15 @@ final class SwitchContactMode implements ActionControllerInterface
     public function __construct(private SwitchContactModeRequestInterface $switchContactModeRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactMode::VIEW_IDENTIFIER);
+        $context->setView(ShowContactMode::VIEW_IDENTIFIER);
 
-        $game->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
+        $context->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
 
         $contact = $this->contactRepository->find($this->switchContactModeRequest->getContactId());
         $mode = ContactListModeEnum::tryFrom($this->switchContactModeRequest->getModeId());
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         if ($contact === null || $contact->getUserId() !== $userId) {
             return;
@@ -52,7 +52,7 @@ final class SwitchContactMode implements ActionControllerInterface
             } else {
                 $obj = $this->contactRepository->prototype();
                 $obj->setUser($contact->getRecipient());
-                $obj->setRecipient($game->getUser());
+                $obj->setRecipient($context->getUser());
                 $obj->setMode($mode);
                 $obj->setDate(time());
 
@@ -60,7 +60,7 @@ final class SwitchContactMode implements ActionControllerInterface
             }
         }
 
-        $game->setTemplateVar('contact', $contact);
+        $context->setTemplateVar('contact', $contact);
     }
 
     #[\Override]

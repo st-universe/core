@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\UpdateCrewRaceDistribution;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -22,13 +22,13 @@ final class UpdateCrewRaceDistribution implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
         $crewRace = $this->crewRaceRepository->find(request::postInt('crew_race_id'));
-        if ($crewRace === null || $crewRace->getCreatorUserId() !== $game->getUser()->getId() || !$crewRace->canEditDistribution()) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse kann nicht geändert werden'));
+        if ($crewRace === null || $crewRace->getCreatorUserId() !== $context->getUser()->getId() || !$crewRace->canEditDistribution()) {
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse kann nicht geändert werden'));
             return;
         }
 
@@ -51,7 +51,7 @@ final class UpdateCrewRaceDistribution implements ActionControllerInterface
             ->setShared($shared)
             ->setFactionIds(array_values(array_unique($factionIds)));
         $this->crewRaceRepository->save($crewRace);
-        $game->getInfo()->addInformation(_('Die Freigaben der Crew-Rasse wurden aktualisiert'));
+        $context->getInfo()->addInformation(_('Die Freigaben der Crew-Rasse wurden aktualisiert'));
     }
 
     #[\Override]

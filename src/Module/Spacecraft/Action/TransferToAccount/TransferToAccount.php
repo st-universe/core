@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\TransferToAccount;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -31,11 +31,11 @@ final class TransferToAccount implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
@@ -52,21 +52,21 @@ final class TransferToAccount implements ActionControllerInterface
         }
 
         if ($spacecraft->isCloaked()) {
-            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
+            $context->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($spacecraft->isWarped()) {
-            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $context->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->getInfo()->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
+            $context->getInfo()->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
             return;
         }
         $commodities = request::postArray('commodities');
@@ -75,14 +75,14 @@ final class TransferToAccount implements ActionControllerInterface
         $shipStorage = $spacecraft->getStorage();
 
         if ($shipStorage->isEmpty()) {
-            $game->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
         if (count($commodities) === 0 || count($gcount) === 0) {
-            $game->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
+            $context->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
-        $game->getInfo()->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
+        $context->getInfo()->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
 
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
@@ -102,14 +102,14 @@ final class TransferToAccount implements ActionControllerInterface
                 continue;
             }
             if (!$commodity->isBeamable()) {
-                $game->getInfo()->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
+                $context->getInfo()->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
             $count = min($count, $storage->getAmount());
             if ($storageManager->getStorageSum() + $count > $tradepost->getStorage()) {
                 $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
-            $game->getInfo()->addInformationf(_('%d %s'), $count, $commodity->getName());
+            $context->getInfo()->addInformationf(_('%d %s'), $count, $commodity->getName());
             $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
             $storageManager->upperStorage((int) $value, $count);
         }

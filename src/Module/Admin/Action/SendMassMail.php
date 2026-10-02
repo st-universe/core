@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Logging\LogLevelEnum;
@@ -36,9 +36,9 @@ final class SendMassMail implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(MassMail::VIEW_IDENTIFIER);
+        $context->setView(MassMail::VIEW_IDENTIFIER);
 
         $text = trim(request::postStringFatal('text'));
         $subject = trim(request::postStringFatal('subject'));
@@ -51,7 +51,7 @@ final class SendMassMail implements ActionControllerInterface
             $count = $this->sendMassPm($text, $subject);
         }
 
-        $game->getInfo()->addInformationf(_('Die Massen-Mail wurde an %d Spieler verschickt.'), $count);
+        $context->getInfo()->addInformationf(_('Die Massen-Mail wurde an %d Spieler verschickt.'), $count);
     }
 
     private function sendMassEmails(string $text, string $subject): int

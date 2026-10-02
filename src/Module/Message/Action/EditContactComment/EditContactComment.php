@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\EditContactComment;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class EditContactComment implements ActionControllerInterface
@@ -16,17 +16,17 @@ final class EditContactComment implements ActionControllerInterface
     public function __construct(private EditContactCommentRequestInterface $editContactCommentRequest, private ContactRepositoryInterface $contactRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $contact = $this->contactRepository->find($this->editContactCommentRequest->getContactId());
-        if ($contact == null || $contact->getUserId() !== $game->getUser()->getId()) {
+        if ($contact == null || $contact->getUserId() !== $context->getUser()->getId()) {
             return;
         }
 
         $text = $this->editContactCommentRequest->getText();
 
         if (mb_strlen($text) > self::CHARACTER_LIMIT) {
-            $game->getInfo()->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), self::CHARACTER_LIMIT));
+            $context->getInfo()->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), self::CHARACTER_LIMIT));
             return;
         }
 
@@ -34,7 +34,7 @@ final class EditContactComment implements ActionControllerInterface
 
         $this->contactRepository->save($contact);
 
-        $game->getInfo()->addInformation(_('Kommentar wurde editiert'));
+        $context->getInfo()->addInformation(_('Kommentar wurde editiert'));
     }
 
     #[\Override]

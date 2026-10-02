@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Stu\Lib\Component\ComponentInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
@@ -25,9 +26,8 @@ final class ResearchComponent implements ComponentInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(User $user, TemplateInterface $template): void
     {
-        $user = $game->getUser();
         $researchStatusBar = '';
         $currentResearch = $this->researchedRepository->getCurrentResearch($user);
 
@@ -44,7 +44,7 @@ final class ResearchComponent implements ComponentInterface
                 ->setValue($researchPoints - current($currentResearch)->getActive())
                 ->setSizeModifier(2);
 
-            $game->setTemplateVar(
+            $template->setTemplateVar(
                 'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
                 max(
                     0,
@@ -60,9 +60,9 @@ final class ResearchComponent implements ComponentInterface
         $hasResearchList = $researchList !== [];
         $hasCurrentResearch = $currentResearch !== [];
 
-        $game->setTemplateVar('CURRENT_RESEARCH', current($currentResearch));
-        $game->setTemplateVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
-        $game->setTemplateVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
-        $game->setTemplateVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
+        $template->setTemplateVar('CURRENT_RESEARCH', current($currentResearch));
+        $template->setTemplateVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
+        $template->setTemplateVar('WAITING_RESEARCH', count($currentResearch) === 2 ? $currentResearch[1] : null);
+        $template->setTemplateVar('RESEARCH_POSSIBLE', $hasResearchList || $hasCurrentResearch);
     }
 }

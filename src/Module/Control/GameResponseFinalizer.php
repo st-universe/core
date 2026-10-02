@@ -26,7 +26,7 @@ final class GameResponseFinalizer implements GameResponseFinalizerInterface
             StuLogger::log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
         }
 
-        $this->componentSetup->setup($game);
+        $this->componentSetup->setup();
 
         $user = $game->hasUser() ? $game->getUser() : null;
         $startTime = hrtime(true);

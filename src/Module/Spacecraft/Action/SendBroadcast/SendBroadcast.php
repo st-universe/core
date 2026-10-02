@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -32,9 +32,9 @@ final class SendBroadcast implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $ship = $this->spacecraftLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
+        $ship = $this->spacecraftLoader->getByIdAndUser(request::indInt('id'), $context->getUser()->getId());
 
         $text = request::postStringFatal('text');
 
@@ -46,10 +46,10 @@ final class SendBroadcast implements ActionControllerInterface
 
         if ($usersToBroadcast->toArray() == []) {
             $message = _("Keine Ziele in Reichweite");
-            $game->getInfo()->addInformation($message);
+            $context->getInfo()->addInformation($message);
 
             if ($this->isPopupBroadcast()) {
-                $this->finishFailedPopupBroadcast($game, $message);
+                $this->finishFailedPopupBroadcast($context, $message);
                 return;
             }
         } else {
@@ -59,10 +59,10 @@ final class SendBroadcast implements ActionControllerInterface
                 $text
             );
             $message = _("Der Broadcast wurde erfolgreich versendet");
-            $game->getInfo()->addInformation($message);
+            $context->getInfo()->addInformation($message);
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     private function isPopupBroadcast(): bool
@@ -70,10 +70,10 @@ final class SendBroadcast implements ActionControllerInterface
         return request::has('broadcastPopup');
     }
 
-    private function finishFailedPopupBroadcast(GameControllerInterface $game, string $message): void
+    private function finishFailedPopupBroadcast(ActionControllerContext $context, string $message): void
     {
-        $game->setTemplateVar('BROADCAST_MESSAGE', $message);
-        $game->setView(ShowBroadcastResponse::VIEW_IDENTIFIER);
+        $context->setTemplateVar('BROADCAST_MESSAGE', $message);
+        $context->setView(ShowBroadcastResponse::VIEW_IDENTIFIER);
     }
 
     /**

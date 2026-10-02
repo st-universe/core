@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\View\ShowWasteMenu;
 
 use request;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -34,7 +34,7 @@ final class ShowWasteMenu implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Müllverbrennung'));
-        if ($game->getViewContext(ViewContextTypeEnum::NO_AJAX) === true) {
+        if ($game->getViewContextMetadata(ViewContextMetadataTypeEnum::NO_AJAX) === true) {
             $game->showMacro('html/spacecraft/waste.twig');
         } else {
             $game->setMacroInAjaxWindow('html/spacecraft/waste.twig');

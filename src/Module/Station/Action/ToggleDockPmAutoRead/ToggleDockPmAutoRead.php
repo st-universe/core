@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Action\ToggleDockPmAutoRead;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -19,13 +19,13 @@ final class ToggleDockPmAutoRead implements ActionControllerInterface
     public function __construct(private StationLoaderInterface $stationLoader, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $tradePost = $wrapper->get()->getTradePost();

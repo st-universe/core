@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class ResetCaches implements ActionControllerInterface
 {
@@ -16,13 +16,13 @@ final class ResetCaches implements ActionControllerInterface
     public function __construct(private CacheItemPoolInterface $cache) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $this->cache->clear();
 
-        $game->getInfo()->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
+        $context->getInfo()->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
     }
 
     #[\Override]

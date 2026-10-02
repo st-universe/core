@@ -11,7 +11,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -29,9 +29,9 @@ final class AcceptOffer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -45,11 +45,11 @@ final class AcceptOffer implements ActionControllerInterface
 
         if ($relation !== null && !$relation->isPending()) {
             if (!$this->userRelationManager->acceptPermissionChange($user, $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
             return;
         }
 
@@ -131,7 +131,7 @@ final class AcceptOffer implements ActionControllerInterface
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
-        $game->getInfo()->addInformation(_('Das Angebot wurden angenommen'));
+        $context->getInfo()->addInformation(_('Das Angebot wurden angenommen'));
     }
 
     #[\Override]

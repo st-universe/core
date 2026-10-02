@@ -15,7 +15,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -38,10 +38,10 @@ final class SalvageCrew implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $shipId = request::indInt('id');
@@ -79,11 +79,11 @@ final class SalvageCrew implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game->getInfo(), false)) {
+            ->check($context->getInfo(), false)) {
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
@@ -93,14 +93,14 @@ final class SalvageCrew implements ActionControllerInterface
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->getInfo()->addInformationf('Zum Bergen der Crew wird %d Energie benötigt', 1);
+            $context->getInfo()->addInformationf('Zum Bergen der Crew wird %d Energie benötigt', 1);
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
         $crewToTransfer = min(
@@ -111,12 +111,12 @@ final class SalvageCrew implements ActionControllerInterface
         if (
             $ship->getCrewCount() + $crewToTransfer > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
             && $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TROOP_QUARTERS)->getMode() == SpacecraftSystemModeEnum::MODE_OFF
-            && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game->getInfo())
+            && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TROOP_QUARTERS, $context->getInfo())
         ) {
             return;
         }
 
-        $game->getInfo()->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
+        $context->getInfo()->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
 
         if ($crewToTransfer > 0) {
             $this->crewCreator->createCrewAssignments($ship, $tradepost, $crewToTransfer, $user);

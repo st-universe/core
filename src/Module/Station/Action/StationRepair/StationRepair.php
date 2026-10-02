@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 
@@ -22,11 +22,11 @@ final class StationRepair implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::postIntFatal('id'),
@@ -34,7 +34,7 @@ final class StationRepair implements ActionControllerInterface
         );
 
         $station = $wrapper->get();
-        if (!$station->hasEnoughCrew($game)) {
+        if (!$station->hasEnoughCrew($context)) {
             return;
         }
 
@@ -43,7 +43,7 @@ final class StationRepair implements ActionControllerInterface
         }
 
         if ($station->getCondition()->isUnderRepair()) {
-            $game->getInfo()->addInformation(_('Die Station wird bereits repariert.'));
+            $context->getInfo()->addInformation(_('Die Station wird bereits repariert.'));
             return;
         }
 
@@ -51,7 +51,7 @@ final class StationRepair implements ActionControllerInterface
 
         $duration = $this->repairUtil->getRepairDuration($wrapper);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             'Die Station wird repariert. Fertigstellung in %s Ticks.',
             $duration
         );

@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -40,9 +40,9 @@ final class ShowModuleScreenRetrofit implements ViewControllerInterface
             false
         );
 
-        $planId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('planid');
+        $planId = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::BUILDPLAN) ?? request::indInt('planid');
 
-        $shipId = $game->getViewContext(ViewContextTypeEnum::BUILDPLAN) ?? request::indInt('shipid');
+        $shipId = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::BUILDPLAN) ?? request::indInt('shipid');
 
         $plan = $this->spacecraftBuildplanRepository->find($planId);
         if ($plan === null || $plan->getUser()->getId() !== $user->getId()) {

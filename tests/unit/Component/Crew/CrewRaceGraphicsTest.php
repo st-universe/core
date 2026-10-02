@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Crew;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\StuTestCase;
 
 final class CrewRaceGraphicsTest extends StuTestCase
@@ -43,7 +43,7 @@ final class CrewRaceGraphicsTest extends StuTestCase
 
     public function testKeepsExistingGraphicsWhenRenamingDefinition(): void
     {
-        self::assertTrue($this->subject->store('NEW', 100, 'OLD', $this->mock(GameControllerInterface::class)));
+        self::assertTrue($this->subject->store('NEW', 100, 'OLD', $this->mock(ControllerContext::class)));
         foreach (range(1, 6) as $imageType) {
             self::assertSame('old-' . $imageType, file_get_contents($this->directory . '/crew/NEW/m/1_' . $imageType . '.png'));
         }
@@ -53,7 +53,7 @@ final class CrewRaceGraphicsTest extends StuTestCase
 
     public function testMissingNewGenderDoesNotTouchExistingGraphics(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $game->shouldReceive('getInfo->addInformationf')->with('Für %s Grafik %d wurde keine Datei hochgeladen', 'Frauen', 1)->once();
         self::assertFalse($this->subject->store('NEW', 50, 'OLD', $game));
         self::assertSame('old-1', file_get_contents($this->directory . '/crew/OLD/m/1_1.png'));
@@ -63,7 +63,7 @@ final class CrewRaceGraphicsTest extends StuTestCase
     public function testExistingTargetDirectoryIsNotOverwritten(): void
     {
         mkdir($this->directory . '/crew/NEW');
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $game->shouldReceive('getInfo->addInformation')->with('Das Zielverzeichnis für die Grafikdefinition existiert bereits')->once();
         self::assertFalse($this->subject->store('NEW', 100, 'OLD', $game));
         self::assertFileExists($this->directory . '/crew/OLD/m/1_1.png');
@@ -84,7 +84,7 @@ final class CrewRaceGraphicsTest extends StuTestCase
             'size' => ['m' => [3 => filesize($temporaryFile)]],
             'error' => ['m' => [3 => UPLOAD_ERR_OK]]
         ]];
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $game->shouldReceive('getInfo->addInformation')->with('Eine Crew-Grafik konnte nicht gespeichert werden')->once();
         // A valid PNG outside an HTTP upload must not be accepted by move_uploaded_file.
         self::assertFalse($this->subject->store('OLD', 100, 'OLD', $game));

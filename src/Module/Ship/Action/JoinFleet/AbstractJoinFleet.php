@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolationException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -28,27 +28,27 @@ abstract class AbstractJoinFleet
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function tryToAddToFleet(Ship $ship, GameControllerInterface $game): void
+    public function tryToAddToFleet(Ship $ship, ActionControllerContext $context): void
     {
         $fleetId = request::indInt('fleetid');
         $fleet = $this->fleetRepository->find($fleetId);
 
-        if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
+        if ($fleet === null || $fleet->getUserId() !== $context->getUser()->getId()) {
             throw new AccessViolationException();
         }
 
         if ($ship->getFleet() !== null) {
-            $game->getInfo()->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.'), $ship->getName());
+            $context->getInfo()->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.'), $ship->getName());
             return;
         }
 
         if ($ship->getTakeoverPassive() !== null) {
-            $game->getInfo()->addInformationf(_('%s: Schiffsübernahme verhindert den Beitritt.'), $ship->getName());
+            $context->getInfo()->addInformationf(_('%s: Schiffsübernahme verhindert den Beitritt.'), $ship->getName());
             return;
         }
 
         if ($this->isTholianWebPreventing($fleet->getLeadShip(), $ship)) {
-            $game->getInfo()->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
+            $context->getInfo()->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
             return;
         }
 
@@ -63,7 +63,7 @@ abstract class AbstractJoinFleet
             return;
         }
         if ($ship->isTractored()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('%s: Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
                 $ship->getName(),
             );
@@ -71,7 +71,7 @@ abstract class AbstractJoinFleet
         }
         $newCrewAmount = $fleet->getCrewSum() + ($ship->getBuildplan()?->getCrew() ?? 0);
         if ($newCrewAmount > GameEnum::CREW_PER_FLEET) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 _('%s: Es sind maximal %d Crew pro Flotte möglich'),
                 $ship->getName(),
                 GameEnum::CREW_PER_FLEET
@@ -80,7 +80,7 @@ abstract class AbstractJoinFleet
         }
         $ship->setFleet($fleet);
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('Die %s ist der Flotte %s beigetreten'),
             $ship->getName(),
             $fleet->getName()

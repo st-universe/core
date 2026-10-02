@@ -16,7 +16,7 @@ use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -59,9 +59,9 @@ final class AttackBuilding implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $colonyId = request::getIntFatal('colonyid');
@@ -75,47 +75,47 @@ final class AttackBuilding implements ActionControllerInterface
 
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
-            $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            $context->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
         $field = $this->planetFieldRepository->find($fieldId);
         if ($field === null) {
-            $game->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            $context->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
         if ($field->getFieldId() >= 80) {
-            $game->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
+            $context->getInfo()->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($field->getBuilding() === null) {
-            $game->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
+            $context->getInfo()->addInformation(_('Gebäude nicht vorhanden'));
             return;
         }
 
         $ship = $wrapper->get();
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
         if ($colony->getUser()->isVacationRequestOldEnough()) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
+            $context->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
         if ($ship->getCondition()->isDisabled()) {
-            $game->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
+            $context->getInfo()->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
 
@@ -236,17 +236,17 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->getCondition()->isDestroyed()) {
-            $game->setView(ModuleEnum::SHIP);
-            $game->getInfo()->addInformationWrapper($informations);
+            $context->setView(ModuleEnum::SHIP);
+            $context->getInfo()->addInformationWrapper($informations);
             return;
         }
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($isFleetAttack) {
-            $game->getInfo()->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
+            $context->getInfo()->addInformation(_("Angriff durchgeführt"));
+            $context->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->getInfo()->addInformationWrapper($informations);
+            $context->getInfo()->addInformationWrapper($informations);
         }
     }
 

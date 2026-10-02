@@ -9,7 +9,7 @@ use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -39,11 +39,11 @@ final class PlanAstroMapping implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -61,18 +61,18 @@ final class PlanAstroMapping implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
         // system needs to be active
         if (!$ship->getAstroState()) {
-            $game->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
+            $context->getInfo()->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
             return;
         }
 
         $astroEntry = $this->astroEntryRepository->prototype();
-        $astroEntry->setUser($game->getUser());
+        $astroEntry->setUser($context->getUser());
         $astroEntry->setState(AstronomicalMappingStateEnum::PLANNED);
         $this->obtainMeasurementFields($system, $mapRegion, $astroEntry, $ship->getLocation());
 
@@ -81,11 +81,11 @@ final class PlanAstroMapping implements ActionControllerInterface
         $lss = $wrapper->getLssSystemData();
 
         if ($lss !== null && $lss->getMode() !== SpacecraftLssModeEnum::CARTOGRAPHING) {
-            $this->helper->setLssMode($ship->getId(), SpacecraftLssModeEnum::CARTOGRAPHING, $game);
+            $this->helper->setLssMode($ship->getId(), SpacecraftLssModeEnum::CARTOGRAPHING, $context);
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $game->getInfo()->addInformation("Kartographie-Messpunkte wurden ermittelt");
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->getInfo()->addInformation("Kartographie-Messpunkte wurden ermittelt");
     }
 
 

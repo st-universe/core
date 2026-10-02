@@ -10,7 +10,7 @@ use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
@@ -31,7 +31,7 @@ class RegisterTest extends StuTestCase
 
     private MockInterface&RegistrationReferralTrackerInterface $registrationReferralTracker;
 
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ActionControllerContext $context;
 
     private MockInterface&Faction $faction;
 
@@ -43,7 +43,7 @@ class RegisterTest extends StuTestCase
         $this->playerCreator = $this->mock(PlayerCreatorInterface::class);
         $this->config = $this->mock(ConfigInterface::class);
         $this->registrationReferralTracker = $this->mock(RegistrationReferralTrackerInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ActionControllerContext::class);
         $this->faction = $this->mock(Faction::class);
 
         $this->subject = new Register(
@@ -62,7 +62,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfFactioWasNotFound(): void
@@ -83,7 +83,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfNoFreeFactionSlots(): void
@@ -109,7 +109,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(1);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfRegistrationExceptionOccurs(): void
@@ -180,7 +180,7 @@ class RegisterTest extends StuTestCase
         static::expectException(RegistrationException::class);
         static::expectExceptionMessage('The provided login name is invalid (invalid characters or invalid length)');
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfMobileNumberIsEmpty(): void
@@ -225,7 +225,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfPasswordIsEmpty(): void
@@ -277,7 +277,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn('');
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfPasswordIsInvalid(): void
@@ -331,7 +331,7 @@ class RegisterTest extends StuTestCase
             ->andReturn($invalidPassword);
 
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingIfPasswordsDoNotMatch(): void
@@ -384,7 +384,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleShowFinishRegistrationIfSmsRegistrationSuccessful(): void
@@ -440,7 +440,7 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn(2);
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
             ->once();
 
@@ -455,7 +455,7 @@ class RegisterTest extends StuTestCase
         $this->playerCreator->shouldReceive('createWithMobileNumber')
             ->with('login', 'email', $this->faction, '+4912345', $password, null)
             ->once();
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleShowFinishRegistrationWithReferralIfRegistrationWithoutSmsIsSuccessful(): void
@@ -530,11 +530,11 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andReturn($user);
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testPerformSessionCheckReturnsFalse(): void

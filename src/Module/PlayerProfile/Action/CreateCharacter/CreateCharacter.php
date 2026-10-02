@@ -7,7 +7,7 @@ namespace Stu\Module\PlayerProfile\Action\CreateCharacter;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 
 final class CreateCharacter implements ActionControllerInterface
@@ -17,38 +17,38 @@ final class CreateCharacter implements ActionControllerInterface
     public function __construct(private CreateCharacterRequestInterface $request, private UserCharacterRepositoryInterface $userCharactersRepository, private ConfigInterface $config) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser();
+        $userId = $context->getUser();
         $name = $this->request->getName();
         $description = $this->request->getDescription();
         $avatarFile = $this->request->getAvatar();
 
         if ($name === '' || $name === '0') {
-            $game->getInfo()->addInformation(_('Der Charaktername darf nicht leer sein.'));
+            $context->getInfo()->addInformation(_('Der Charaktername darf nicht leer sein.'));
             return;
         }
 
         if ($description === '' || $description === '0') {
-            $game->getInfo()->addInformation(_('Die Beschreibung darf nicht leer sein.'));
+            $context->getInfo()->addInformation(_('Die Beschreibung darf nicht leer sein.'));
             return;
         }
 
         if (empty($avatarFile['name'])) {
-            $game->getInfo()->addInformation(_('Ein Bild muss hochgeladen werden.'));
+            $context->getInfo()->addInformation(_('Ein Bild muss hochgeladen werden.'));
             return;
         }
 
         if ($avatarFile['type'] !== 'image/png') {
-            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
         if ($avatarFile['size'] > 1000000) {
-            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
+            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
             return;
         }
         if ($avatarFile['size'] === 0) {
-            $game->getInfo()->addInformation(_('Die Datei ist leer'));
+            $context->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
@@ -69,7 +69,7 @@ final class CreateCharacter implements ActionControllerInterface
         }
 
         if (!move_uploaded_file($avatarFile['tmp_name'], $uploadPath)) {
-            $game->getInfo()->addInformation(_('Fehler beim Speichern des Avatars.'));
+            $context->getInfo()->addInformation(_('Fehler beim Speichern des Avatars.'));
             return;
         }
 
@@ -82,7 +82,7 @@ final class CreateCharacter implements ActionControllerInterface
 
         $this->userCharactersRepository->save($character);
 
-        $game->getInfo()->addInformation(_('Der Charakter wurde erfolgreich erstellt.'));
+        $context->getInfo()->addInformation(_('Der Charakter wurde erfolgreich erstellt.'));
     }
 
     #[\Override]

@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\LeaveFleet;
 
 use Stu\Exception\EntityLockedException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
 use Stu\Orm\Entity\Ship;
@@ -21,23 +21,23 @@ final class LeaveFleet implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
 
         try {
             $ship = $this->shipLoader->getByIdAndUser(
                 $this->leaveFleetRequest->getShipId(),
-                $game->getUser()->getId()
+                $context->getUser()->getId()
             );
 
-            $this->entferneSchiffAusFlotte($ship, $game);
+            $this->entferneSchiffAusFlotte($ship, $context);
         } catch (EntityLockedException $e) {
-            $game->getInfo()->addInformation($e->getMessage());
+            $context->getInfo()->addInformation($e->getMessage());
         }
     }
 
-    private function entferneSchiffAusFlotte(Ship $ship, GameControllerInterface $game): void
+    private function entferneSchiffAusFlotte(Ship $ship, ActionControllerContext $context): void
     {
         $fleet = $ship->getFleet();
         if ($fleet === null) {
@@ -47,8 +47,8 @@ final class LeaveFleet implements ActionControllerInterface
             return;
         }
 
-        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
-        $game->addExecuteJS('refreshShiplistSingles();');
+        $context->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
+        $context->addExecuteJS('refreshShiplistSingles();');
 
         // Initialize the fleet's ships collection to ensure Doctrine properly tracks the removal
         // This is necessary due to Doctrine's lazy-loading behavior with inverse-side OneToMany relationships
@@ -56,7 +56,7 @@ final class LeaveFleet implements ActionControllerInterface
 
         $ship->setFleet(null);
 
-        $game->getInfo()->addInformation(
+        $context->getInfo()->addInformation(
             sprintf(_('Die %s hat die Flotte verlassen'), $ship->getName())
         );
     }

@@ -12,7 +12,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\Terraforming;
@@ -36,14 +36,14 @@ final class Terraform implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($context->getUser());
         $host = $field->getHost();
 
         if ($field->getBuildingId() > 0) {
@@ -72,19 +72,19 @@ final class Terraform implements ActionControllerInterface
         }
 
         if ($host instanceof Colony) {
-            if (!$this->doColonyCheckAndConsume($terraforming, $field, $host, $game)) {
+            if (!$this->doColonyCheckAndConsume($terraforming, $field, $host, $context)) {
                 return;
             }
         } else {
             $field->setFieldType($terraforming->getToFieldTypeId());
 
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('%s wurde durchgeführt'),
                 $terraforming->getDescription()
             );
         }
 
-        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
+        $context->addExecuteJS(sprintf("refreshHost('%s');", $context->getSessionString()));
 
         $this->componentRegistration
             ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
@@ -98,13 +98,13 @@ final class Terraform implements ActionControllerInterface
         Terraforming $terraforming,
         PlanetField $field,
         Colony $colony,
-        GameControllerInterface $game
+        ActionControllerContext $context
     ): bool {
 
         $changeable = $colony->getChangeable();
 
         if ($terraforming->getEnergyCosts() > $changeable->getEps()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
                 $terraforming->getEnergyCosts(),
                 $changeable->getEps()
@@ -122,7 +122,7 @@ final class Terraform implements ActionControllerInterface
             $commodityId = $obj->getCommodityId();
             $storage = $storages->get($obj->getCommodityId());
             if ($storage === null) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName()
@@ -131,7 +131,7 @@ final class Terraform implements ActionControllerInterface
             }
 
             if ($obj->getAmount() > $storage->getAmount()) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
@@ -167,7 +167,7 @@ final class Terraform implements ActionControllerInterface
 
         $field->setTerraforming($terraforming);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
             $terraforming->getDescription(),
             date('d.m.Y H:i', $time)

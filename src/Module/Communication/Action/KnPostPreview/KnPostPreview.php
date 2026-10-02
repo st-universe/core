@@ -9,7 +9,7 @@ use Stu\Component\Communication\Kn\KnBbCodeParser;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class KnPostPreview implements ActionControllerInterface
 {
@@ -21,24 +21,24 @@ final class KnPostPreview implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $title = $this->request->getTitle();
         $text = request::indString('text') ?: '';
         $plotId = $this->request->getPlotId();
         $mark = $this->request->getPostMark();
 
-        $game->setTemplateVar('TITLE', $title);
-        $game->setTemplateVar('TEXT', $text);
-        $game->setTemplateVar('PLOT_ID', $plotId);
-        $game->setTemplateVar('MARK', $mark);
-        $game->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
+        $context->setTemplateVar('TITLE', $title);
+        $context->setTemplateVar('TEXT', $text);
+        $context->setTemplateVar('PLOT_ID', $plotId);
+        $context->setTemplateVar('MARK', $mark);
+        $context->setTemplateVar('CHARACTER_IDS_STRING', request::indString('characterids'));
 
-        $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parseToHtml($text));
+        $context->setTemplateVar('PREVIEW', $this->bbcodeParser->parseToHtml($text));
 
-        $game->getInfo()->addInformation(_('Vorschau wurde erstellt'));
+        $context->getInfo()->addInformation(_('Vorschau wurde erstellt'));
 
-        $game->setView(ShowWriteKn::VIEW_IDENTIFIER);
+        $context->setView(ShowWriteKn::VIEW_IDENTIFIER);
     }
 
     #[\Override]

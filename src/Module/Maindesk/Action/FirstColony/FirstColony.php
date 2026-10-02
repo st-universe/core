@@ -12,7 +12,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -36,12 +36,12 @@ final class FirstColony implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if ($user->getState() !== UserStateEnum::UNCOLONIZED) {
-            $game->getInfo()->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
+            $context->getInfo()->addInformation(_('Es ist bereits eine Kolonie kolonisiert'));
             return;
         }
 
@@ -50,7 +50,7 @@ final class FirstColony implements ActionControllerInterface
         $colony = $this->colonyRepository->find($planetId);
 
         if ($colony === null || !$colony->isFree()) {
-            $game->getInfo()->addInformation(_('Dieser Planet wurde bereits besiedelt'));
+            $context->getInfo()->addInformation(_('Dieser Planet wurde bereits besiedelt'));
             return;
         }
         $colonyList = $this->colonyRepository->getStartingByFaction($user->getFactionId());

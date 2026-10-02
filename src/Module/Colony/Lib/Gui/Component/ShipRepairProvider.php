@@ -10,7 +10,8 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Module\Spacecraft\Lib\PassiveRepairPreviewWrapper;
 use Stu\Module\Spacecraft\Lib\ShipRepairCost;
 use Stu\Orm\Entity\Colony;
@@ -28,9 +29,10 @@ final class ShipRepairProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($user, false);
         $building = $field->getBuilding();
         if ($building === null) {
             throw new RuntimeException('building is null');
@@ -79,7 +81,7 @@ final class ShipRepairProvider implements PlanetFieldHostComponentInterface
             }
         }
 
-        $game->setTemplateVar('REPAIRABLE_SHIP_WRAPPERS', $repairableShipWrappers);
-        $game->setTemplateVar('FIELD', $field);
+        $template->setTemplateVar('REPAIRABLE_SHIP_WRAPPERS', $repairableShipWrappers);
+        $template->setTemplateVar('FIELD', $field);
     }
 }

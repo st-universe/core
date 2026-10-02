@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -27,16 +27,16 @@ final class WarpdriveBoost implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
-        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER, $game->getInfo());
+        $activated = $this->helper->activate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE_BOOSTER, $context->getInfo());
         if ($activated) {
             $warpdrive = $wrapper->getWarpDriveSystemData();
             if ($warpdrive === null) {
@@ -51,7 +51,7 @@ final class WarpdriveBoost implements ActionControllerInterface
             );
             $warpdrive->setWarpDrive($newValue)->update();
 
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 'Der Warpdrive wurde um %d Einheiten aufgeladen',
                 $newValue - $currentValue
             );

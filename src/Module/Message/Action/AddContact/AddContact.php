@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\AddContact;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
@@ -20,42 +20,42 @@ final class AddContact implements ActionControllerInterface
     public function __construct(private AddContactRequestInterface $addContactRequest, private ContactRepositoryInterface $contactRepository, private PrivateMessageSenderInterface $privateMessageSender, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $contactDiv = $this->addContactRequest->getContactDiv();
         $isAjaxRequest = $contactDiv !== '';
 
-        $game->setView($isAjaxRequest ? ShowContactMode::VIEW_IDENTIFIER : ShowContactList::VIEW_IDENTIFIER);
+        $context->setView($isAjaxRequest ? ShowContactMode::VIEW_IDENTIFIER : ShowContactList::VIEW_IDENTIFIER);
 
         if ($isAjaxRequest) {
-            $game->setTemplateVar('div', $contactDiv);
-            $game->setTemplateVar('contact', null);
+            $context->setTemplateVar('div', $contactDiv);
+            $context->setTemplateVar('contact', null);
         }
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $recipiendIdString = trim($this->addContactRequest->getRecipientId());
 
         if (!is_numeric($recipiendIdString) || ((int)$recipiendIdString) < 1) {
-            $game->getInfo()->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
+            $context->getInfo()->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
             return;
         }
 
         $recipient = $this->userRepository->find((int)$recipiendIdString);
         if ($recipient === null) {
-            $game->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
+            $context->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
         if ($recipient->isContactable() === false) {
-            $game->getInfo()->addInformation(_('Dieser Spieler kann nicht hinzugefügt werden'));
+            $context->getInfo()->addInformation(_('Dieser Spieler kann nicht hinzugefügt werden'));
             return;
         }
         if ($recipient->getId() === $userId) {
-            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst auf die Kontaktliste setzen'));
+            $context->getInfo()->addInformation(_('Du kannst Dich nicht selbst auf die Kontaktliste setzen'));
             return;
         }
         if ($this->contactRepository->getByUserAndOpponent($userId, $recipient->getId()) !== null) {
-            $game->getInfo()->addInformation(_('Dieser Spieler befindet sich bereits auf Deiner Kontaktliste'));
+            $context->getInfo()->addInformation(_('Dieser Spieler befindet sich bereits auf Deiner Kontaktliste'));
             return;
         }
 
@@ -65,7 +65,7 @@ final class AddContact implements ActionControllerInterface
             return;
         }
         $contact = $this->contactRepository->prototype();
-        $contact->setUser($game->getUser());
+        $contact->setUser($context->getUser());
         $contact->setMode($mode);
         $contact->setRecipient($recipient);
         $contact->setDate(time());
@@ -93,10 +93,10 @@ final class AddContact implements ActionControllerInterface
                 _('Der Siedler betrachtet Dich von nun an als neutral')
             );
         }
-        $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
+        $context->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
 
         if ($isAjaxRequest) {
-            $game->setTemplateVar('contact', $contact);
+            $context->setTemplateVar('contact', $contact);
         }
     }
 

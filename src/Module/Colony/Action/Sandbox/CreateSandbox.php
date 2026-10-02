@@ -9,8 +9,8 @@ use Stu\Module\Colony\View\Sandbox\ShowColonySandbox;
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonySandboxRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -33,14 +33,14 @@ final class CreateSandbox implements
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColonySandbox::VIEW_IDENTIFIER);
+        $context->setView(ShowColonySandbox::VIEW_IDENTIFIER);
 
         $colonyId = request::getIntFatal('colonyid');
 
         /** @var Colony|null */
-        $colony = $game->getUser()->getColonies()->get($colonyId);
+        $colony = $context->getUser()->getColonies()->get($colonyId);
         if ($colony === null) {
             return;
         }
@@ -75,9 +75,9 @@ final class CreateSandbox implements
             $sandbox->getPlanetFields()->set($fieldId, $sandboxField);
         }
 
-        $game->getInfo()->addInformationf(_('Sandbox %s wurde erstellt'), $sandboxName);
+        $context->getInfo()->addInformationf(_('Sandbox %s wurde erstellt'), $sandboxName);
 
-        $game->setViewContext(ViewContextTypeEnum::HOST, $sandbox);
+        $context->setViewContext(ViewContextMetadataTypeEnum::HOST, $sandbox);
     }
 
     #[\Override]

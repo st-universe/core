@@ -17,7 +17,7 @@ enum ModuleEnum: string
     case COLONY = 'colony';
     case SHIP = 'ship';
     case STATION = 'station';
-    case COMMUNICATION = 'comm';
+    case COMMUNICATION = 'communication';
     case PM = 'pm';
     case NOTES = 'notes';
     case RESEARCH = 'research';

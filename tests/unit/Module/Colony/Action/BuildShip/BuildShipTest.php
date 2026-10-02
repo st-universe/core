@@ -16,8 +16,8 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\Module;
@@ -70,7 +70,7 @@ class BuildShipTest extends StuTestCase
         $buildplanSignatureCreation = $this->mock(BuildplanSignatureCreationInterface::class);
         $colonyRepository = $this->mock(ColonyRepositoryInterface::class);
 
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $colony = $this->mock(Colony::class);
         $changeable = $this->mock(ColonyChangeable::class);
@@ -82,16 +82,16 @@ class BuildShipTest extends StuTestCase
         $plan = $this->mock(SpacecraftBuildplan::class);
         $informationWrapper = new InformationWrapper();
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowModuleScreenBuildplan::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('setViewContext')
-            ->with(ViewContextTypeEnum::BUILDPLAN, $planId)
+        $context->shouldReceive('setViewContext')
+            ->with(ViewContextMetadataTypeEnum::BUILDPLAN, $planId)
             ->once();
-        $game->shouldReceive('getInfo')
+        $context->shouldReceive('getInfo')
             ->withNoArgs()
             ->andReturn($informationWrapper);
 
@@ -225,7 +225,7 @@ class BuildShipTest extends StuTestCase
             $colonyRepository
         );
 
-        $subject->handle($game);
+        $subject->handle($context);
 
         $this->assertSame(['Dieser Bauplan ist nicht mehr baubar'], $informationWrapper->getInformations());
     }

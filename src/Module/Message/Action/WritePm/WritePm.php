@@ -7,7 +7,7 @@ namespace Stu\Module\Message\Action\WritePm;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\QuickPmCrewExperienceInterface;
@@ -28,29 +28,29 @@ final class WritePm implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $text = $this->writePmRequest->getText();
         $recipientId = $this->writePmRequest->getRecipientId();
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $recipient = $this->userRepository->find($recipientId);
         if ($recipient === null) {
-            $this->finish($game, false, "Dieser Siedler existiert nicht");
+            $this->finish($context, false, "Dieser Siedler existiert nicht");
             return;
         }
         if ($recipient->getId() === $userId) {
-            $this->finish($game, false, "Du kannst keine Nachricht an Dich selbst schreiben");
+            $this->finish($context, false, "Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
         if ($this->ignoreListRepository->exists($recipient->getId(), $userId)) {
-            $this->finish($game, false, "Der Siedler ignoriert Dich");
+            $this->finish($context, false, "Der Siedler ignoriert Dich");
             return;
         }
 
         if (strlen($text) < 5) {
-            $this->finish($game, false, "Der Text ist zu kurz");
+            $this->finish($context, false, "Der Text ist zu kurz");
             return;
         }
 
@@ -67,22 +67,22 @@ final class WritePm implements ActionControllerInterface
             );
         }
 
-        $this->finish($game, true, _('Die Nachricht wurde abgeschickt'));
+        $this->finish($context, true, _('Die Nachricht wurde abgeschickt'));
     }
 
-    private function finish(GameControllerInterface $game, bool $success, string $message): void
+    private function finish(ActionControllerContext $context, bool $success, string $message): void
     {
-        $game->getInfo()->addInformation($message);
+        $context->getInfo()->addInformation($message);
 
         if ($this->isQuickPm()) {
-            $game->setTemplateVar('QUICKPM_SUCCESS', $success);
-            $game->setTemplateVar('QUICKPM_MESSAGE', $message);
-            $game->setView(ShowWriteQuickPmResponse::VIEW_IDENTIFIER);
+            $context->setTemplateVar('QUICKPM_SUCCESS', $success);
+            $context->setTemplateVar('QUICKPM_MESSAGE', $message);
+            $context->setView(ShowWriteQuickPmResponse::VIEW_IDENTIFIER);
             return;
         }
 
         if ($success) {
-            $game->setView(ModuleEnum::PM);
+            $context->setView(ModuleEnum::PM);
         }
     }
 

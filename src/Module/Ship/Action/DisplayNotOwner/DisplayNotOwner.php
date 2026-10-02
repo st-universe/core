@@ -6,18 +6,18 @@ namespace Stu\Module\Ship\Action\DisplayNotOwner;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class DisplayNotOwner implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_NOT_OWNER';
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->getInfo()->addInformation(_('Du bist nicht Besitzer dieses Schiffes'));
+        $context->getInfo()->addInformation(_('Du bist nicht Besitzer dieses Schiffes'));
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
     }
 
     #[\Override]

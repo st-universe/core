@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\EnterStarSystem;
 
 use RuntimeException;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -15,7 +15,7 @@ final class EnterStarSystem extends AbstractDirectedMovement
     public const string ACTION_IDENTIFIER = 'B_ENTER_STARSYSTEM';
 
     #[\Override]
-    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool
     {
         $ship = $wrapper->get();
 

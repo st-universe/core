@@ -9,7 +9,7 @@ use Stu\Component\Game\RedirectionException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ActivateVacation implements ActionControllerInterface
@@ -19,11 +19,11 @@ final class ActivateVacation implements ActionControllerInterface
     public function __construct(private SessionInterface $session, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         //wenn die letzte Aktivierung älter als eine Woche ist
-        if ((time() - $game->getUser()->getVacationRequestDate()) > TimeConstants::SEVEN_DAYS_IN_SECONDS) {
-            $user = $game->getUser();
+        if ((time() - $context->getUser()->getVacationRequestDate()) > TimeConstants::SEVEN_DAYS_IN_SECONDS) {
+            $user = $context->getUser();
 
             $user->setVacationMode(true);
             $user->setVacationRequestDate(time());
@@ -34,7 +34,7 @@ final class ActivateVacation implements ActionControllerInterface
 
             throw new RedirectionException(sprintf('/%s.php', ModuleEnum::INDEX->value));
         }
-        $game->getInfo()->addInformation(
+        $context->getInfo()->addInformation(
             _('Urlaubsmodus ist noch gesperrt. Letzte Aktivierung ist weniger als eine Woche her!')
         );
     }

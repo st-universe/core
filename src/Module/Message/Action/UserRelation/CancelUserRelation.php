@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\UserRelation;
 
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -21,27 +21,27 @@ final class CancelUserRelation implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $context->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
 
         if ($relation !== null && !$relation->isPending()) {
-            if (!$this->userRelationManager->cancelPermissionChange($game->getUser(), $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
+            if (!$this->userRelationManager->cancelPermissionChange($context->getUser(), $relation)) {
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht zurückgezogen werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde zurückgezogen');
             return;
         }
 
-        if ($relation === null || !$this->userRelationManager->cancel($game->getUser(), $relation)) {
-            $game->getInfo()->addInformation('Das Abkommen kann nicht aufgelöst werden');
+        if ($relation === null || !$this->userRelationManager->cancel($context->getUser(), $relation)) {
+            $context->getInfo()->addInformation('Das Abkommen kann nicht aufgelöst werden');
             return;
         }
 
-        $game->getInfo()->addInformation('Das Abkommen wurde aufgelöst');
+        $context->getInfo()->addInformation('Das Abkommen wurde aufgelöst');
     }
 
     #[\Override]

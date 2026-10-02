@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Action\AddShoutBoxEntry;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\View\ShowShoutBoxList\ShowShoutBoxList;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
@@ -18,9 +18,9 @@ final class AddShoutBoxEntry implements ActionControllerInterface
     public function __construct(private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest, private TradeShoutboxRepositoryInterface $tradeShoutboxRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $msg = $this->addShoutBoxEntryRequest->getMessage();
         $tradeNetworkId = $this->addShoutBoxEntryRequest->getTradeNetworkId();
 
@@ -31,7 +31,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         if (mb_strlen($msg) > 0) {
             $entry = $this->tradeShoutboxRepository
                 ->prototype()
-                ->setUser($game->getUser())
+                ->setUser($context->getUser())
                 ->setDate(time())
                 ->setTradeNetworkId($tradeNetworkId)
                 ->setMessage($msg);
@@ -41,7 +41,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
 
         $this->tradeShoutboxRepository->deleteHistory($tradeNetworkId);
 
-        $game->setView(ShowShoutBoxList::VIEW_IDENTIFIER);
+        $context->setView(ShowShoutBoxList::VIEW_IDENTIFIER);
     }
 
     #[\Override]

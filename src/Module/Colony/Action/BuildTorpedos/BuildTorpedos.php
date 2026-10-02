@@ -9,7 +9,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -20,9 +20,9 @@ final class BuildTorpedos implements ActionControllerInterface
     public function __construct(private ColonyLoaderInterface $colonyLoader, private TorpedoTypeRepositoryInterface $torpedoTypeRepository, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
@@ -82,11 +82,11 @@ final class BuildTorpedos implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         if ($msg !== []) {
-            $game->getInfo()->addInformationArray($msg, true);
+            $context->getInfo()->addInformationArray($msg, true);
         } else {
-            $game->getInfo()->addInformation(_('Es wurden keine Torpedos hergestellt'));
+            $context->getInfo()->addInformation(_('Es wurden keine Torpedos hergestellt'));
         }
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
     }
 
     #[\Override]

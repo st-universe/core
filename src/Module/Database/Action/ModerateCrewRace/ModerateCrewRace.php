@@ -8,7 +8,7 @@ use request;
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -35,9 +35,9 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceModeration::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceModeration::VIEW_IDENTIFIER);
 
         $crewRace = $this->crewRaceRepository->find(request::postInt('crew_race_id'));
         $decision = request::postString('decision');
@@ -48,21 +48,21 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
             || $crewRace->getAcceptedUserId() !== null
             || !in_array($decision, ['accept', 'reject'], true)
         ) {
-            $game->getInfo()->addInformation(_('Die Crew-Rasse kann nicht moderiert werden'));
+            $context->getInfo()->addInformation(_('Die Crew-Rasse kann nicht moderiert werden'));
             return;
         }
 
         $accepted = $decision === 'accept';
         $reason = trim((string)request::postString('rejection_reason'));
         if (mb_strlen($reason) > 2000) {
-            $game->getInfo()->addInformation(_('Der Ablehnungsgrund darf höchstens 2000 Zeichen enthalten'));
+            $context->getInfo()->addInformation(_('Der Ablehnungsgrund darf höchstens 2000 Zeichen enthalten'));
             return;
         }
 
         $crewRace
             ->setRejectionReason($accepted || $reason === '' ? null : $reason)
             ->setAccepted($accepted)
-            ->setAcceptedUserId($game->getUser()->getId());
+            ->setAcceptedUserId($context->getUser()->getId());
         $this->crewRaceRepository->save($crewRace);
 
         $creatorUserId = $crewRace->getCreatorUserId();
@@ -89,7 +89,7 @@ final class ModerateCrewRace implements ActionControllerInterface, AccessCheckCo
             );
         }
 
-        $game->getInfo()->addInformation($accepted ? _('Die Crew-Rasse wurde akzeptiert') : _('Die Crew-Rasse wurde abgelehnt'));
+        $context->getInfo()->addInformation($accepted ? _('Die Crew-Rasse wurde akzeptiert') : _('Die Crew-Rasse wurde abgelehnt'));
     }
 
     #[\Override]

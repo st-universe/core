@@ -8,7 +8,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\NewPost\NewPost;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -23,16 +23,16 @@ final class CreatePost implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $text = $this->createPostRequest->getText();
         $topicId = $this->createPostRequest->getTopicId();
 
         if (mb_strlen($text) < 1) {
-            $game->setView(NewPost::VIEW_IDENTIFIER);
-            $game->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
+            $context->setView(NewPost::VIEW_IDENTIFIER);
+            $context->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
             return;
         }
 
@@ -49,14 +49,14 @@ final class CreatePost implements ActionControllerInterface
         $post->setText($text);
         $post->setBoard($topic->getBoard());
         $post->setTopic($topic);
-        $post->setUser($game->getUser());
+        $post->setUser($context->getUser());
         $post->setDate($time);
 
         $this->allianceBoardPostRepository->save($post);
 
-        $game->setView(Topic::VIEW_IDENTIFIER);
+        $context->setView(Topic::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde erstellt'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde erstellt'));
     }
 
     #[\Override]

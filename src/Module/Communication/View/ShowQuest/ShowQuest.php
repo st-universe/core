@@ -38,8 +38,8 @@ final class ShowQuest implements ViewControllerInterface
 
         $game->setViewTemplate('html/communication/quest/questDetails.twig');
         $game->setPageTitle(_('Quest'));
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_QUESTLIST=1', _('Quests'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_QUESTLIST=1', _('Quests'));
 
         if ($questId === null) {
             $game->getInfo()->addInformation('Keine Quest-ID angegeben');
@@ -134,7 +134,7 @@ final class ShowQuest implements ViewControllerInterface
         $game->setPageTitle(sprintf('Quest: %s', $quest->getTitle()));
         $game->appendNavigationPart(
             sprintf(
-                'comm.php?%s=1&questid=%d',
+                'communication.php?%s=1&questid=%d',
                 self::VIEW_IDENTIFIER,
                 $quest->getId()
             ),

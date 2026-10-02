@@ -13,7 +13,9 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Mockery;
+use ReflectionClass;
 use Stu\Component\Database\AchievementManager;
+use Stu\Component\Game\ModuleEnum;
 use Stu\Config\ConfigStageEnum;
 use Stu\Config\Init;
 use Stu\Config\StuContainer;
@@ -22,6 +24,7 @@ use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
+use Stu\Module\Control\ControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
@@ -71,6 +74,51 @@ abstract class IntegrationTestCase extends StuTestCase
         self::$testSession ??= new TestSession($dic->get(UserRepositoryInterface::class));
         $dic->setAdditionalService(SessionInterface::class, self::$testSession);
         self::$testSession->getUser()?->setSessiondata('');
+    }
+
+    /**
+     * @param array<string, mixed> $requestVars
+     */
+    protected function getModuleOfController(ControllerInterface $controller, array $requestVars): ModuleEnum
+    {
+        return (isset($requestVars['view']) && is_string($requestVars['view'])
+            ? ModuleEnum::tryFrom($requestVars['view'])
+            : null)
+            ?? $this->getViewControllerModuleInfo($controller)['modules'][0]
+            ?? throw new \LogicException('ViewController has no ModuleEnum mapping');
+    }
+
+    /**
+     * @return array{folder: string, modules: list<ModuleEnum>}
+     */
+    private function getViewControllerModuleInfo(string|ControllerInterface $viewController): array
+    {
+        $className = is_string($viewController) ? $viewController : $viewController::class;
+        $namespaceParts = explode('\\', (new ReflectionClass($className))->getNamespaceName());
+
+        if (($namespaceParts[0] ?? null) !== 'Stu' || ($namespaceParts[1] ?? null) !== 'Module' || !isset($namespaceParts[2])) {
+            throw new \InvalidArgumentException(sprintf('Cannot determine module folder for %s', $className));
+        }
+
+        $folder = $namespaceParts[2];
+        $folderName = strtoupper($folder);
+        $moduleNames = match ($folderName) {
+            'MESSAGE' => ['PM'],
+            'PLAYERPROFILE' => ['USERPROFILE'],
+            'PLAYERSETTING' => ['OPTIONS'],
+            default => [$folderName]
+        };
+        $modules = array_values(array_filter(
+            ModuleEnum::cases(),
+            static fn (ModuleEnum $module): bool => in_array($module->name, $moduleNames, true)
+                || $module->getCommonModule() === $folderName
+        ));
+
+        if ($modules === []) {
+            throw new \InvalidArgumentException(sprintf('No ModuleEnum mapping found for module folder %s', $folder));
+        }
+
+        return ['folder' => $folder, 'modules' => $modules];
     }
 
     private function setupServiceMocks(): IntegrationTestCase

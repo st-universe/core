@@ -10,7 +10,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
@@ -33,11 +33,11 @@ final class ManageShuttles implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowShipManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $stationId = request::indInt('id');
@@ -121,7 +121,7 @@ final class ManageShuttles implements ActionControllerInterface
         }
 
         if (array_sum($requestedCounts) > $ship->getRump()->getShuttleSlots()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es können maximal %d Shuttles geladen werden'),
                 $ship->getRump()->getShuttleSlots()
             );
@@ -144,7 +144,7 @@ final class ManageShuttles implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformationWrapper($informations);
+        $context->getInfo()->addInformationWrapper($informations);
 
         if ($isForeignShip && !$informations->isEmpty()) {
             $pm = sprintf(

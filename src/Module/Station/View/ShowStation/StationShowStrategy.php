@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowStation;
 
 use request;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContext;
 use Stu\Module\Spacecraft\Lib\PassiveRepairProgressBuilder;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\ConstructionProgress;
@@ -144,10 +140,5 @@ final class StationShowStrategy implements SpacecraftTypeShowStragegyInterface
         if ($station->getRump()->isShipyard()) {
             $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
         }
-    }
-    #[\Override]
-    public function getViewContext(): ViewContext
-    {
-        return new ViewContext(ModuleEnum::STATION, ShowSpacecraft::VIEW_IDENTIFIER);
     }
 }

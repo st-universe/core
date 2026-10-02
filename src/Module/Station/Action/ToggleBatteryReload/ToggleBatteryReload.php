@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Action\ToggleBatteryReload;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 
@@ -17,9 +17,9 @@ final class ToggleBatteryReload implements ActionControllerInterface
     public function __construct(private StationLoaderInterface $stationLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $wrapper = $this->stationLoader->getWrapperByIdAndUser(request::getIntFatal('id'), $game->getUser()->getId());
+        $wrapper = $this->stationLoader->getWrapperByIdAndUser(request::getIntFatal('id'), $context->getUser()->getId());
 
         if (!$wrapper->get()->isStation()) {
             return;
@@ -31,9 +31,9 @@ final class ToggleBatteryReload implements ActionControllerInterface
         }
         $epsSystem->setReloadBattery(!$epsSystem->reloadBattery())->update();
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformationf('Die automatische Ladung der Ersatzbatterie ist nun %s', $epsSystem->reloadBattery() ? 'aktiv' : 'inaktiv');
+        $context->getInfo()->addInformationf('Die automatische Ladung der Ersatzbatterie ist nun %s', $epsSystem->reloadBattery() ? 'aktiv' : 'inaktiv');
     }
 
     #[\Override]

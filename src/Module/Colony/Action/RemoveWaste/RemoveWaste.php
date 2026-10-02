@@ -10,7 +10,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -28,11 +28,11 @@ final class RemoveWaste implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
@@ -78,9 +78,9 @@ final class RemoveWaste implements ActionControllerInterface
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
         $this->colonyRepository->save($colony);
-        $game->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
+        $context->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
         foreach ($wasted as $msg) {
-            $game->getInfo()->addInformation($msg);
+            $context->getInfo()->addInformation($msg);
         }
     }
 

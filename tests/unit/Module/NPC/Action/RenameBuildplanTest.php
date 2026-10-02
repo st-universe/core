@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use Mockery\MockInterface;
 use request;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
@@ -36,7 +36,7 @@ final class RenameBuildplanTest extends StuTestCase
         $buildplanId = 42;
         $newName = 'Neuer Bauplanname';
         $oldName = 'Alter Bauplanname';
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $admin = $this->mock(User::class);
         $buildplan = $this->mock(SpacecraftBuildplan::class);
 
@@ -45,10 +45,10 @@ final class RenameBuildplanTest extends StuTestCase
             'newName' => $newName
         ]);
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->once()
             ->andReturn($admin);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Der Name des Bauplans wurde geändert')
             ->once();
 
@@ -74,6 +74,6 @@ final class RenameBuildplanTest extends StuTestCase
             ->with($buildplan)
             ->once();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 }

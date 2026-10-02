@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\LeaveWormhole;
 
 use RuntimeException;
 use Stu\Component\Ship\Wormhole\WormholeEntryPrivilegeUtilityInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Spacecraft\Action\MoveShip\AbstractDirectedMovement;
 use Stu\Module\Spacecraft\Action\MoveShip\MoveShipRequestInterface;
@@ -40,7 +40,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
         );
     }
     #[\Override]
-    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool
     {
         $ship = $wrapper->get();
         $starsystemMap = $ship->getStarsystemMap();
@@ -59,7 +59,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
         }
 
         if (!$this->wormholeEntryPrivilegeUtility->checkPrivilegeFor($wormholeEntry, $ship)) {
-            $game->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
+            $context->getInfo()->addInformation(_("Du hast keine Berechtigung um das Wurmloch zu verlassen"));
             return true;
         }
 

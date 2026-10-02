@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
@@ -19,11 +19,11 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
     public function __construct(private ShipLoaderInterface $shipLoader, private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -35,7 +35,7 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
         if ($tracker === null || $tracker->targetId === null) {
             return;
         }
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACKER, $game->getInfo());
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACKER, $context->getInfo());
     }
 
     #[\Override]

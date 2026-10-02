@@ -3,7 +3,7 @@
 <table id="activequests" class="tcal">
     <tr>
         <th colspan="2">
-            <a href="comm.php?SHOW_QUESTLIST=1">
+            <a href="communication.php?SHOW_QUESTLIST=1">
                 Aktive Quests ({{ ACTIVE_QUEST_COUNT }})
             </a>
         </th>
@@ -14,7 +14,7 @@
             {% set activeMembersCount = quest.getQuestUsers|filter(u => u.getMode.value == 1)|length %}
             {% set questText = quest.getText|bbcode|striptags %}
             {% set textPreview = questText|length > 100 ? questText|slice(0, 100) ~ '...' : questText %}
-            <a href="comm.php?SHOW_QUEST=1&questid={{ quest.getId }}">
+            <a href="communication.php?SHOW_QUEST=1&questid={{ quest.getId }}">
                 {{ quest.getTitle|bbcode }}
             </a>
             von {{ quest.getUser.getName|bbcode }} - {{ activeMembersCount }}{% if quest.getApplicantMax %} /

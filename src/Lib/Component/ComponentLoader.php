@@ -9,8 +9,10 @@ use RuntimeException;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Config\Init;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\JavascriptExecutionInterface;
 use Stu\Module\Game\View\ShowComponent\ShowComponent;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 
 final class ComponentLoader implements ComponentLoaderInterface
 {
@@ -18,14 +20,15 @@ final class ComponentLoader implements ComponentLoaderInterface
     private array $registeredStubs = [];
 
     public function __construct(
-        private ComponentRegistrationInterface $componentRegistration
+        private readonly ComponentRegistrationInterface $componentRegistration,
+        private readonly JavascriptExecutionInterface $javascriptExecution
     ) {}
 
     /**
      * Adds the execute javascript after render.
      */
     #[\Override]
-    public function loadComponentUpdates(GameControllerInterface $game): void
+    public function loadComponentUpdates(): void
     {
         foreach ($this->componentRegistration->getComponentUpdates() as $id => $componentUpdate) {
 
@@ -34,8 +37,7 @@ final class ComponentLoader implements ComponentLoaderInterface
                 $this->addExecuteJs(
                     $id,
                     $componentUpdate,
-                    '',
-                    $game
+                    ''
                 );
                 continue;
             }
@@ -45,8 +47,7 @@ final class ComponentLoader implements ComponentLoaderInterface
                 $this->addExecuteJs(
                     $id,
                     $componentUpdate,
-                    sprintf(', %d', $refreshInterval * 1000),
-                    $game
+                    sprintf(', %d', $refreshInterval * 1000)
                 );
             }
         }
@@ -55,11 +56,11 @@ final class ComponentLoader implements ComponentLoaderInterface
     private function addExecuteJs(
         string $id,
         ComponentUpdate $componentUpdate,
-        string $refreshParam,
-        GameControllerInterface $game
+        string $refreshParam
     ): void {
 
-        $game->addExecuteJS(sprintf(
+        $this->javascriptExecution
+            ->addExecuteJS(sprintf(
             "updateComponent('%s', '/%s?%s=1&component=%s%s'%s);",
             $id,
             ModuleEnum::GAME->getPhpPage(),
@@ -71,7 +72,7 @@ final class ComponentLoader implements ComponentLoaderInterface
     }
 
     #[\Override]
-    public function loadRegisteredComponents(GameControllerInterface $game): void
+    public function loadRegisteredComponents(User $user, TemplateInterface $template): void
     {
         foreach ($this->componentRegistration->getRegisteredComponents() as $id => $registeredComponent) {
 
@@ -81,7 +82,7 @@ final class ComponentLoader implements ComponentLoaderInterface
             if (!$isStubbed && $componentEnum->hasTemplateVariables()) {
                 $moduleId = strtoupper($componentEnum->getModuleView()->value);
 
-                /** @var array<string, ComponentInterface|EntityComponentInterface<object>> */
+                /** @var array<string, ComponentInterface> */
                 $moduleComponents = Init::getContainer()
                     ->get(sprintf('%s_COMPONENTS', $moduleId));
 
@@ -91,19 +92,18 @@ final class ComponentLoader implements ComponentLoaderInterface
 
                 $component = $moduleComponents[$componentEnum->getValue()];
 
-                if ($component instanceof ComponentInterface) {
-                    $component->setTemplateVariables($game);
-                }
                 if ($component instanceof EntityComponentInterface) {
                     $entity = $registeredComponent->entity;
                     if ($entity === null) {
                         throw new RuntimeException('this should not happen');
                     }
-                    $component->setTemplateVariables($entity, $game);
+                    $component->setTemplateVariables($entity, $template, $user);
+                } else {
+                    $component->setTemplateVariables($user, $template);
                 }
             }
 
-            $game->setTemplateVar($id, ['id' => $id, 'template' => $isStubbed ? null : $componentEnum->getTemplate()]);
+            $template->setTemplateVar($id, ['id' => $id, 'template' => $isStubbed ? null : $componentEnum->getTemplate()]);
         }
     }
 

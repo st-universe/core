@@ -3,7 +3,7 @@
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -151,7 +151,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
     }
 
     #[\Override]
-    public function setProtectionTimeoutFromPrestige(User $user, int $prestige, GameControllerInterface $game): void
+    public function setProtectionTimeoutFromPrestige(User $user, int $prestige, ActionControllerContext $context): void
     {
         $wrath = $this->getPirateWrathOfUser($user);
 
@@ -182,7 +182,7 @@ class PirateWrathManager implements PirateWrathManagerInterface
         );
 
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('Der Nagus konnte einen Nichtangriffspakt mit den Kazon bis zum %s aushandeln'),
             $this->stuTime->transformToStuDateTime($timestamp)
         ));

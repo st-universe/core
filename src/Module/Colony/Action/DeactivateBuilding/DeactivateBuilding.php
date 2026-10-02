@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\DeactivateBuilding;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class DeactivateBuilding implements ActionControllerInterface
 {
@@ -16,20 +16,20 @@ final class DeactivateBuilding implements ActionControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($context->getUser());
         $host = $field->getHost();
 
-        $game->setView($host->getDefaultViewIdentifier());
+        $context->setView($host->getDefaultViewIdentifier());
 
         if ($field->isUnderConstruction()) {
             $field->setActivateAfterBuild(false);
-            $game->getInfo()->addInformation("Gebäude wird nach Bau deaktiviert");
+            $context->getInfo()->addInformation("Gebäude wird nach Bau deaktiviert");
         } else {
             $this->buildingAction->deactivate(
                 $field,
-                $game
+                $context
             );
         }
     }

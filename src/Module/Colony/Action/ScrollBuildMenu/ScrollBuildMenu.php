@@ -9,7 +9,7 @@ use Stu\Component\Building\BuildMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
@@ -21,11 +21,11 @@ final class ScrollBuildMenu implements ActionControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingRepositoryInterface $buildingRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($context->getUser(), false);
 
         $menu = BuildMenuEnum::from(request::getIntFatal('menu'));
         $offset = request::getInt('offset');
@@ -59,10 +59,10 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 $fieldType
             );
         }
-        $game->setTemplateVar('menu', ['buildings' => $ret, 'name' => $menu->getDescription()]);
-        $game->setTemplateVar('menutype', $menu->value);
-        $game->setTemplateVar('scrolloffset', $offset);
-        $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
+        $context->setTemplateVar('menu', ['buildings' => $ret, 'name' => $menu->getDescription()]);
+        $context->setTemplateVar('menutype', $menu->value);
+        $context->setTemplateVar('scrolloffset', $offset);
+        $context->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
     }
 
     #[\Override]

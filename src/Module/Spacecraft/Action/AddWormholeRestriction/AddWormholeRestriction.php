@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum as RestrictionTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowWormholeRestrictions\ShowWormholeRestrictions;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -28,7 +28,7 @@ final class AddWormholeRestriction implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
 
         if (!request::has('entryId')) {
@@ -42,7 +42,7 @@ final class AddWormholeRestriction implements ActionControllerInterface
         $type = RestrictionTypeEnum::from($typeId);
         $mode = WormholeEntryModeEnum::from($modeId);
 
-        $game->setView(ShowWormholeRestrictions::VIEW_IDENTIFIER);
+        $context->setView(ShowWormholeRestrictions::VIEW_IDENTIFIER);
 
         $wormholeEntry = $this->wormholeEntryRepository->find($entryId);
         if ($wormholeEntry === null) {

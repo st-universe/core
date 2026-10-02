@@ -14,7 +14,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -49,11 +49,11 @@ final class StartAirfieldShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -82,7 +82,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE) &&
             $this->spacecraftRepository->getAmountByUserAndSpecialAbility($userId, SpacecraftRump::SPECIAL_ABILITY_COLONIZE) > 0
         ) {
-            $game->getInfo()->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
+            $context->getInfo()->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
 
@@ -92,14 +92,14 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
 
         if ($hangar->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
-            $game->getInfo()->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
+            $context->getInfo()->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
 
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $hangar->getStartEnergyCosts()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $hangar->getStartEnergyCosts(),
                 $changeable->getEps()
@@ -109,7 +109,7 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $storages = $colony->getStorage();
         if (!$storages->containsKey($commodity->getId())) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
                 $commodity->getName()
@@ -148,7 +148,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $databaseEntry = $colony->getSystem()->getSystemType()->getDatabaseEntry();
         $this->achievementManager->checkDatabaseItem($databaseEntry?->getId(), $user);
         $this->achievementManager->checkDatabaseItem($rump->getDatabaseId(), $user);
-        $game->getInfo()->addInformation(_('Das Schiff wurde gestartet'));
+        $context->getInfo()->addInformation(_('Das Schiff wurde gestartet'));
     }
 
     /**

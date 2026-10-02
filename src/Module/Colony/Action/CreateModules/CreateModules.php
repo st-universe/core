@@ -10,7 +10,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -32,11 +32,11 @@ final class CreateModules implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $moduleAdded = false;
 
@@ -184,16 +184,16 @@ final class CreateModules implements ActionControllerInterface
         }
 
         if ($moduleAdded) {
-            $game->getInfo()->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt:'));
+            $context->getInfo()->addInformation(_('Es wurden folgende Module zur Warteschlange hinzugefügt:'));
             foreach ($prod as $msg) {
-                $game->getInfo()->addInformation($msg);
+                $context->getInfo()->addInformation($msg);
             }
         } elseif ($prod !== []) {
             foreach ($prod as $msg) {
-                $game->getInfo()->addInformation($msg);
+                $context->getInfo()->addInformation($msg);
             }
         } else {
-            $game->getInfo()->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
+            $context->getInfo()->addInformation(_('Es wurden keine Module hergestellt oder ausgewählt'));
         }
     }
 

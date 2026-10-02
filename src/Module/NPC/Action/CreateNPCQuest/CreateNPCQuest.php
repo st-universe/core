@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action\CreateNPCQuest;
 use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\AwardRepositoryInterface;
@@ -29,11 +29,11 @@ final class CreateNPCQuest implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowNPCQuests::VIEW_IDENTIFIER);
+        $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $title = trim(request::postString('title') ?: '');
         $text = trim(request::postString('text') ?: '');
@@ -55,26 +55,26 @@ final class CreateNPCQuest implements ActionControllerInterface
 
 
         if (empty($title)) {
-            $game->getInfo()->addInformation('Titel muss ausgefüllt werden');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Titel muss ausgefüllt werden');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if (empty($text)) {
-            $game->getInfo()->addInformation('Beschreibung muss ausgefüllt werden');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Beschreibung muss ausgefüllt werden');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if (empty($startDate) || empty($startTime)) {
-            $game->getInfo()->addInformation('Startdatum und -zeit müssen ausgefüllt werden');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Startdatum und -zeit müssen ausgefüllt werden');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if (empty($applicationEndDate) || empty($applicationEndTime)) {
-            $game->getInfo()->addInformation('Anmeldeschluss-Datum und -zeit müssen ausgefüllt werden');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Anmeldeschluss-Datum und -zeit müssen ausgefüllt werden');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
@@ -82,45 +82,45 @@ final class CreateNPCQuest implements ActionControllerInterface
         $applicationEndTimestamp = $this->parseDateTime($applicationEndDate, $applicationEndTime);
 
         if ($startTimestamp === null) {
-            $game->getInfo()->addInformation('Ungültiges Startdatum oder -zeit. Format: TT.MM.JJJJ und HH:MM');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Ungültiges Startdatum oder -zeit. Format: TT.MM.JJJJ und HH:MM');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if ($applicationEndTimestamp === null) {
-            $game->getInfo()->addInformation('Ungültiges Anmeldeschluss-Datum oder -zeit. Format: TT.MM.JJJJ und HH:MM');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Ungültiges Anmeldeschluss-Datum oder -zeit. Format: TT.MM.JJJJ und HH:MM');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if ($startTimestamp <= time()) {
-            $game->getInfo()->addInformation('Das Startdatum muss in der Zukunft liegen');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Das Startdatum muss in der Zukunft liegen');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if ($applicationEndTimestamp <= time()) {
-            $game->getInfo()->addInformation('Der Anmeldeschluss muss in der Zukunft liegen');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Der Anmeldeschluss muss in der Zukunft liegen');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if ($applicationEndTimestamp >= $startTimestamp) {
-            $game->getInfo()->addInformation('Der Anmeldeschluss muss vor dem Start liegen');
-            $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+            $context->getInfo()->addInformation('Der Anmeldeschluss muss vor dem Start liegen');
+            $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
             return;
         }
 
         if ($plotId > 0) {
             $plot = $this->rpgPlotRepository->find($plotId);
             if ($plot === null) {
-                $game->getInfo()->addInformation('Der angegebene Plot existiert nicht');
-                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                $context->getInfo()->addInformation('Der angegebene Plot existiert nicht');
+                $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
                 return;
             }
             if ($plot->getUserId() !== $user->getId()) {
-                $game->getInfo()->addInformation('Du bist nicht der Ersteller dieses Plots');
-                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                $context->getInfo()->addInformation('Du bist nicht der Ersteller dieses Plots');
+                $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
                 return;
             }
         }
@@ -129,14 +129,14 @@ final class CreateNPCQuest implements ActionControllerInterface
         if ($awardId > 0) {
             $selectedAward = $this->awardRepository->find($awardId);
             if ($selectedAward === null) {
-                $game->getInfo()->addInformation('Der angegebene Award existiert nicht');
-                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                $context->getInfo()->addInformation('Der angegebene Award existiert nicht');
+                $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
                 return;
             }
 
             if ($selectedAward->getIsNpc() !== true) {
-                $game->getInfo()->addInformation('Es können nur NPC-Awards als Quest-Belohnung verwendet werden');
-                $this->setFormData($game, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
+                $context->getInfo()->addInformation('Es können nur NPC-Awards als Quest-Belohnung verwendet werden');
+                $this->setFormData($context, $title, $text, $startDate, $startTime, $applicationEndDate, $applicationEndTime, $prestige, $awardId, $applicantMax, $plotId, $approvalRequired, $factionIds, $secretFactionIds, $commodities, $spacecrafts);
                 return;
             }
         }
@@ -196,7 +196,7 @@ final class CreateNPCQuest implements ActionControllerInterface
 
         $this->npcQuestRepository->save($quest);
 
-        $game->getInfo()->addInformation('Die Quest wurde erfolgreich erstellt');
+        $context->getInfo()->addInformation('Die Quest wurde erfolgreich erstellt');
     }
 
     #[Override]
@@ -327,7 +327,7 @@ final class CreateNPCQuest implements ActionControllerInterface
      * @param array<mixed> $spacecrafts
      */
     private function setFormData(
-        GameControllerInterface $game,
+        ActionControllerContext $context,
         string $title,
         string $text,
         string $startDate,
@@ -344,21 +344,21 @@ final class CreateNPCQuest implements ActionControllerInterface
         array $commodities,
         array $spacecrafts
     ): void {
-        $game->setTemplateVar('FORM_TITLE', $title);
-        $game->setTemplateVar('FORM_TEXT', $text);
-        $game->setTemplateVar('FORM_START_DATE', $startDate);
-        $game->setTemplateVar('FORM_START_TIME', $startTime);
-        $game->setTemplateVar('FORM_APPLICATION_END_DATE', $applicationEndDate);
-        $game->setTemplateVar('FORM_APPLICATION_END_TIME', $applicationEndTime);
-        $game->setTemplateVar('FORM_PRESTIGE', $prestige > 0 ? $prestige : '');
-        $game->setTemplateVar('FORM_AWARD_ID', $awardId > 0 ? $awardId : '');
-        $game->setTemplateVar('FORM_APPLICANT_MAX', $applicantMax > 0 ? $applicantMax : '');
-        $game->setTemplateVar('FORM_PLOT_ID', $plotId > 0 ? $plotId : '');
-        $game->setTemplateVar('FORM_APPROVAL_REQUIRED', $approvalRequired);
-        $game->setTemplateVar('FORM_SELECTED_FACTIONS', $factionIds);
-        $game->setTemplateVar('FORM_SELECTED_SECRET_FACTIONS', $secretFactionIds);
-        $game->setTemplateVar('FORM_COMMODITIES', $commodities);
-        $game->setTemplateVar('FORM_SPACECRAFTS', $spacecrafts);
-        $game->setTemplateVar('QUEST_CREATOR_OPEN', true);
+        $context->setTemplateVar('FORM_TITLE', $title);
+        $context->setTemplateVar('FORM_TEXT', $text);
+        $context->setTemplateVar('FORM_START_DATE', $startDate);
+        $context->setTemplateVar('FORM_START_TIME', $startTime);
+        $context->setTemplateVar('FORM_APPLICATION_END_DATE', $applicationEndDate);
+        $context->setTemplateVar('FORM_APPLICATION_END_TIME', $applicationEndTime);
+        $context->setTemplateVar('FORM_PRESTIGE', $prestige > 0 ? $prestige : '');
+        $context->setTemplateVar('FORM_AWARD_ID', $awardId > 0 ? $awardId : '');
+        $context->setTemplateVar('FORM_APPLICANT_MAX', $applicantMax > 0 ? $applicantMax : '');
+        $context->setTemplateVar('FORM_PLOT_ID', $plotId > 0 ? $plotId : '');
+        $context->setTemplateVar('FORM_APPROVAL_REQUIRED', $approvalRequired);
+        $context->setTemplateVar('FORM_SELECTED_FACTIONS', $factionIds);
+        $context->setTemplateVar('FORM_SELECTED_SECRET_FACTIONS', $secretFactionIds);
+        $context->setTemplateVar('FORM_COMMODITIES', $commodities);
+        $context->setTemplateVar('FORM_SPACECRAFTS', $spacecrafts);
+        $context->setTemplateVar('QUEST_CREATOR_OPEN', true);
     }
 }

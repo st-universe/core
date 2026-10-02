@@ -7,8 +7,8 @@ use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\PirateLoggerInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -52,7 +52,7 @@ class PirateCreation implements PirateCreationInterface
         private ShipCreatorInterface $shipCreator,
         private LayerRepositoryInterface $layerRepository,
         private MapRepositoryInterface $mapRepository,
-        private GameControllerInterface $game,
+        private GameTurnProviderInterface $gameTurnProvider,
         private StuRandom $stuRandom,
         private EntityManagerInterface $entityManager,
         private NamesRepositoryInterface $namesRepository,
@@ -76,7 +76,7 @@ class PirateCreation implements PirateCreationInterface
             return [];
         }
 
-        $gameTurn = $this->game->getCurrentRound();
+        $gameTurn = $this->gameTurnProvider->getCurrentRound();
         $pirateFleets = $this->fleetRepository->getByUser(UserConstants::USER_NPC_KAZON);
         $currentFleetCount = count($pirateFleets);
 

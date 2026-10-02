@@ -5,8 +5,9 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 
 final class AcademyProvider implements PlanetFieldHostComponentInterface
 {
@@ -16,10 +17,9 @@ final class AcademyProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
-        $user = $game->getUser();
-
         $crewInTrainingCount = $this->crewCountRetriever->getInTrainingCount($user);
         $crewRemainingCount = $this->crewCountRetriever->getRemainingCount($user);
         $crewTrainableCount = $this->crewCountRetriever->getTrainableCount($user);
@@ -55,16 +55,16 @@ final class AcademyProvider implements PlanetFieldHostComponentInterface
             $trainableCrew = 0;
         }
 
-        $game->setTemplateVar('TRAINABLE_CREW_COUNT_PER_TICK', $trainableCrew);
-        $game->setTemplateVar(
+        $template->setTemplateVar('TRAINABLE_CREW_COUNT_PER_TICK', $trainableCrew);
+        $template->setTemplateVar(
             'CREW_COUNT_TRAINING',
             $crewInTrainingCount
         );
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'CREW_COUNT_REMAINING',
             $crewRemainingCount
         );
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'CREW_COUNT_TRAINABLE',
             $crewTrainableCount
         );

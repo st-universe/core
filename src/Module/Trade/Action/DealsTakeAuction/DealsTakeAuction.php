@@ -10,7 +10,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -39,22 +39,22 @@ final class DealsTakeAuction implements ActionControllerInterface
     public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime, private StorageManagerInterface $storageManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
         $dealId = $this->dealstakeAuctionRequest->getDealId();
-        $game->setView(ShowDeals::VIEW_IDENTIFIER);
+        $context->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $auction = $this->dealsRepository->find($dealId);
 
         if ($auction === null) {
-            $game->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
         if ($userId < 100) {
-            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            $context->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
@@ -89,7 +89,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         //check if enough space in storage
 
         if ($neededStorageSpace > $freeStorage) {
-            /*$game->getInfo()->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            /*$context->getInfo()->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
 
             return; */
         }
@@ -110,13 +110,13 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $refundAmount
                 );
                 $this->createPrestigeLog->createLog($refundAmount, $description, $user, time());
-                $game->getInfo()->addInformation(sprintf(
+                $context->getInfo()->addInformation(sprintf(
                     _('Dir wurden %d Prestige gutgeschrieben'),
                     $refundAmount,
                 ));
             } else {
                 $this->refundCommodityOverbid(
-                    $game,
+                    $context,
                     $tradePost,
                     $user,
                     $wantedCommodity,
@@ -134,20 +134,20 @@ final class DealsTakeAuction implements ActionControllerInterface
                 (int) $auction->getGiveCommodityAmount()
             );
 
-            $game->getInfo()->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getGiveCommodityAmount(), $givenCommodity->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getGiveCommodityAmount(), $givenCommodity->getName()));
         }
 
         $buildplan = $auction->getBuildplan();
         if ($buildplan !== null) {
             if ($auction->getShip() == true) {
                 $this->createShip($buildplan, $tradePost, $userId);
-                $game->getInfo()->addInformation(_('Du hast dein Schiff erhalten'));
+                $context->getInfo()->addInformation(_('Du hast dein Schiff erhalten'));
             }
 
             if ($auction->getShip() == false) {
                 $this->copyBuildplan($buildplan, $user);
 
-                $game->getInfo()->addInformation(_('Du hast deinen Bauplan erhalten'));
+                $context->getInfo()->addInformation(_('Du hast deinen Bauplan erhalten'));
             }
         }
 
@@ -171,7 +171,7 @@ final class DealsTakeAuction implements ActionControllerInterface
     }
 
     private function refundCommodityOverbid(
-        GameControllerInterface $game,
+        ActionControllerContext $context,
         TradePost $tradePost,
         User $user,
         Commodity $wantedCommodity,
@@ -188,7 +188,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                 $amountForUserStorage
             );
 
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
                 $amountForUserStorage,
                 $wantedCommodity->getName()
@@ -205,7 +205,7 @@ final class DealsTakeAuction implements ActionControllerInterface
             $amountForTradePostStorage
         );
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('Da sich nicht genügend Platz für die vollständige Rückerstattung auf deinem Warenkonto befand, wurden %d %s in das Lager des Handelspostens übertragen'),
             $amountForTradePostStorage,
             $wantedCommodity->getName()

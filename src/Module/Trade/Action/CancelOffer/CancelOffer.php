@@ -7,8 +7,8 @@ namespace Stu\Module\Trade\Action\CancelOffer;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -26,13 +26,13 @@ final class CancelOffer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $viewIdentifier = $this->cancelOfferRequest->getView() ?? ModuleEnum::TRADE;
-        $game->setView($viewIdentifier);
-        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
+        $context->setView($viewIdentifier);
+        $context->setViewContext(ViewContextMetadataTypeEnum::FILTER_ACTIVE, true);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $offerId = $this->cancelOfferRequest->getOfferId();
 
         /** @var TradeOffer $offer */
@@ -44,7 +44,7 @@ final class CancelOffer implements ActionControllerInterface
 
         $this->tradeLibFactory->createTradePostStorageManager(
             $offer->getTradePost(),
-            $game->getUser()
+            $context->getUser()
         )->upperStorage(
             $offer->getOfferedCommodityId(),
             $offer->getOfferedCommodityCount() * $offer->getOfferCount()
@@ -53,7 +53,7 @@ final class CancelOffer implements ActionControllerInterface
         $this->storageRepository->delete($offer->getStorage());
         $this->tradeOfferRepository->delete($offer);
 
-        $game->getInfo()->addInformation(_('Das Angebot wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Das Angebot wurde gelöscht'));
     }
 
     #[\Override]

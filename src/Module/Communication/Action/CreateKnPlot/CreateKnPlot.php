@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\CreateKnPlot;
 
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
@@ -17,19 +17,19 @@ final class CreateKnPlot implements ActionControllerInterface
     public function __construct(private CreateKnPlotRequestInterface $createKnPlotRequest, private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $title = $this->createKnPlotRequest->getTitle();
         $description = $this->createKnPlotRequest->getText();
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if (mb_strlen($title) < 6) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
 
         if (mb_strlen($title) > 80) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
             return;
         }
 
@@ -49,9 +49,9 @@ final class CreateKnPlot implements ActionControllerInterface
 
         $plot->getMembers()->add($member);
 
-        $game->getInfo()->addInformation(_('Der Plot wurde erstellt'));
+        $context->getInfo()->addInformation(_('Der Plot wurde erstellt'));
 
-        $game->setView(ShowPlotList::VIEW_IDENTIFIER);
+        $context->setView(ShowPlotList::VIEW_IDENTIFIER);
     }
 
     #[\Override]

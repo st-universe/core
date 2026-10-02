@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\AddPmCategory;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
@@ -16,16 +16,16 @@ final class AddPmCategory implements ActionControllerInterface
     public function __construct(private AddPmCategoryRequestInterface $addPmCategoryRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
+        $context->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
 
         $name = $this->addPmCategoryRequest->getName();
         if (mb_strlen($name) < 1) {
             return;
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $sort = $this->privateMessageFolderRepository->getMaxOrderIdByUser($user);
 
@@ -36,7 +36,7 @@ final class AddPmCategory implements ActionControllerInterface
 
         $this->privateMessageFolderRepository->save($cat);
 
-        $game->setTemplateVar('CATEGORY', $cat);
+        $context->setTemplateVar('CATEGORY', $cat);
     }
 
     #[\Override]
