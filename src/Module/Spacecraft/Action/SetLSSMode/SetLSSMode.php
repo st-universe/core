@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class SetLSSMode implements ActionControllerInterface
@@ -18,9 +18,9 @@ final class SetLSSMode implements ActionControllerInterface
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $modeInt = request::indInt('mode');
 
@@ -30,7 +30,7 @@ final class SetLSSMode implements ActionControllerInterface
 
         $mode = SpacecraftLssModeEnum::from($modeInt);
 
-        $this->helper->setLssMode(request::indInt('id'), $mode, $game);
+        $this->helper->setLssMode(request::indInt('id'), $mode, $context);
     }
 
     #[\Override]

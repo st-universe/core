@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use request;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
@@ -24,37 +24,37 @@ final class CreateCrew implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $spacecraftId = request::postInt('spacecraft_id');
         $colonyId = request::postInt('colony_id');
         $amount = request::postIntFatal('crew_amount');
 
         if ($amount <= 0) {
-            $game->getInfo()->addInformation('Anzahl muss größer als 0 sein');
+            $context->getInfo()->addInformation('Anzahl muss größer als 0 sein');
             return;
         }
 
         if ($spacecraftId > 0 && $colonyId > 0) {
-            $game->getInfo()->addInformation('Nur Spacecraft-ID ODER Kolonie-ID angeben');
+            $context->getInfo()->addInformation('Nur Spacecraft-ID ODER Kolonie-ID angeben');
             return;
         }
 
         if ($spacecraftId === 0 && $colonyId === 0) {
-            $game->getInfo()->addInformation('Spacecraft-ID oder Kolonie-ID angeben');
+            $context->getInfo()->addInformation('Spacecraft-ID oder Kolonie-ID angeben');
             return;
         }
 
         if ($spacecraftId > 0) {
-            $this->createCrewForSpacecraft($spacecraftId, $amount, $game);
+            $this->createCrewForSpacecraft($spacecraftId, $amount, $context);
         } else {
-            $this->createCrewForColony($colonyId, $amount, $game);
+            $this->createCrewForColony($colonyId, $amount, $context);
         }
     }
 
-    private function createCrewForSpacecraft(int $spacecraftId, int $amount, GameControllerInterface $game): void
+    private function createCrewForSpacecraft(int $spacecraftId, int $amount, ActionControllerContext $context): void
     {
         $spacecraft = $this->spacecraftRepository->find($spacecraftId);
         if ($spacecraft === null) {
@@ -73,7 +73,7 @@ final class CreateCrew implements ActionControllerInterface
             $spacecraft->getCrewAssignments()->add($crewAssignment);
         }
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             '%d Crew wurde für das Raumschiff %s (ID: %d) von Spieler %s erstellt',
             $amount,
             $spacecraft->getName(),
@@ -82,7 +82,7 @@ final class CreateCrew implements ActionControllerInterface
         ));
     }
 
-    private function createCrewForColony(int $colonyId, int $amount, GameControllerInterface $game): void
+    private function createCrewForColony(int $colonyId, int $amount, ActionControllerContext $context): void
     {
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null) {
@@ -95,7 +95,7 @@ final class CreateCrew implements ActionControllerInterface
             $this->crewCreator->create($user->getId(), $colony);
         }
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             '%d Crew wurde für die Kolonie %s (ID: %d) von Spieler %s erstellt',
             $amount,
             $colony->getName(),

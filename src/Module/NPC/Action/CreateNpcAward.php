@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Repository\AwardRepositoryInterface;
@@ -29,13 +29,13 @@ final class CreateNpcAward implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $currentUser = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $currentUser = $context->getUser();
         $description = trim((string) request::postString('award_description'));
         if ($description === '' || $description === '0') {
-            $game->getInfo()->addInformation('Beschreibung fehlt');
+            $context->getInfo()->addInformation('Beschreibung fehlt');
             return;
         }
 
@@ -47,13 +47,13 @@ final class CreateNpcAward implements ActionControllerInterface
         );
 
         if ($prestige === false) {
-            $game->getInfo()->addInformation('Prestigewert muss eine positive Zahl sein');
+            $context->getInfo()->addInformation('Prestigewert muss eine positive Zahl sein');
             return;
         }
 
         $reason = trim((string) request::postString('reason'));
         if (!$this->gameUserRoleChecker->isAdmin() && $currentUser->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation('Grund fehlt');
+            $context->getInfo()->addInformation('Grund fehlt');
             return;
         }
 
@@ -62,33 +62,33 @@ final class CreateNpcAward implements ActionControllerInterface
             !is_array($file)
             || !isset($file['error'], $file['name'], $file['size'], $file['tmp_name'])
         ) {
-            $game->getInfo()->addInformation('Es wurde keine Datei hochgeladen');
+            $context->getInfo()->addInformation('Es wurde keine Datei hochgeladen');
             return;
         }
 
         if ((int) $file['error'] !== UPLOAD_ERR_OK) {
-            $game->getInfo()->addInformation('Fehler beim Dateiupload');
+            $context->getInfo()->addInformation('Fehler beim Dateiupload');
             return;
         }
 
         if ((string) $file['name'] === '') {
-            $game->getInfo()->addInformation('Es wurde keine Datei hochgeladen');
+            $context->getInfo()->addInformation('Es wurde keine Datei hochgeladen');
             return;
         }
 
         $fileSize = (int) $file['size'];
         if ($fileSize > self::MAX_FILE_SIZE) {
-            $game->getInfo()->addInformation('Die maximale Dateigröße liegt bei 1 Megabyte');
+            $context->getInfo()->addInformation('Die maximale Dateigröße liegt bei 1 Megabyte');
             return;
         }
         if ($fileSize === 0) {
-            $game->getInfo()->addInformation('Die Datei ist leer');
+            $context->getInfo()->addInformation('Die Datei ist leer');
             return;
         }
 
         $imageInfo = @getimagesize((string) $file['tmp_name']);
         if ($imageInfo === false || $imageInfo['mime'] !== 'image/png') {
-            $game->getInfo()->addInformation('Es können nur Bilder im PNG-Format hochgeladen werden');
+            $context->getInfo()->addInformation('Es können nur Bilder im PNG-Format hochgeladen werden');
             return;
         }
 
@@ -96,7 +96,7 @@ final class CreateNpcAward implements ActionControllerInterface
             $imageInfo[0] !== self::AWARD_IMAGE_SIZE
             || $imageInfo[1] !== self::AWARD_IMAGE_SIZE
         ) {
-            $game->getInfo()->addInformation('Das Bild muss exakt 100x100 Pixel groß sein');
+            $context->getInfo()->addInformation('Das Bild muss exakt 100x100 Pixel groß sein');
             return;
         }
 
@@ -113,12 +113,12 @@ final class CreateNpcAward implements ActionControllerInterface
 
         $uploadPath = sprintf('%s/%d.png', $uploadDirectory, $awardId);
         if (file_exists($uploadPath)) {
-            $game->getInfo()->addInformation('Dateiname für den Award ist bereits belegt');
+            $context->getInfo()->addInformation('Dateiname für den Award ist bereits belegt');
             return;
         }
 
         if (!move_uploaded_file((string) $file['tmp_name'], $uploadPath)) {
-            $game->getInfo()->addInformation('Fehler beim Speichern des Awards');
+            $context->getInfo()->addInformation('Fehler beim Speichern des Awards');
             return;
         }
 
@@ -145,7 +145,7 @@ final class CreateNpcAward implements ActionControllerInterface
             $this->createEntry($logText, $currentUser->getId());
         }
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             'NPC Award %d wurde erfolgreich erstellt und hochgeladen',
             $awardId
         ));

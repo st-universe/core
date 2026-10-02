@@ -10,9 +10,11 @@ use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\ControllerInterface;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\GameRequest;
@@ -22,6 +24,7 @@ class CallbackExecutionTest extends StuTestCase
 {
     private MockInterface&ControllerDiscoveryInterface $controllerDiscovery;
     private MockInterface&AccessCheckInterface $accessCheck;
+    private MockInterface&ActionContextFactoryInterface $actionContextFactory;
     private MockInterface&StuTime $stuTime;
     private MockInterface&EntityManagerInterface $entityManager;
 
@@ -32,12 +35,14 @@ class CallbackExecutionTest extends StuTestCase
     {
         $this->controllerDiscovery = $this->mock(ControllerDiscoveryInterface::class);
         $this->accessCheck = $this->mock(AccessCheckInterface::class);
+        $this->actionContextFactory = $this->mock(ActionContextFactoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new CallbackExecution(
             $this->controllerDiscovery,
             $this->accessCheck,
+            $this->actionContextFactory,
             $this->stuTime,
             $this->entityManager
         );
@@ -79,6 +84,8 @@ class CallbackExecutionTest extends StuTestCase
     public function testExecuteExpectErrorIfSanityException(): void
     {
         $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ActionControllerInterface::class);
         $controller2 = $this->mock(ActionControllerInterface::class);
@@ -89,6 +96,9 @@ class CallbackExecutionTest extends StuTestCase
         $game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setActionMs')
             ->with(1)
@@ -101,7 +111,7 @@ class CallbackExecutionTest extends StuTestCase
             ->once();
 
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andThrow($exception);
 
@@ -119,9 +129,14 @@ class CallbackExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
+
+        $this->actionContextFactory->shouldReceive('createActionContext')
+            ->with($game)
+            ->once()
+            ->andReturn($context);
 
         $this->subject->execute(ModuleEnum::ALLIANCE, $game);
     }
@@ -129,6 +144,8 @@ class CallbackExecutionTest extends StuTestCase
     public function testExecuteExpectInfoIfEntityLocked(): void
     {
         $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ActionControllerInterface::class);
         $controller2 = $this->mock(ActionControllerInterface::class);
@@ -139,9 +156,12 @@ class CallbackExecutionTest extends StuTestCase
         $game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
-        $game->shouldReceive('getInfo->addInformation')
+        $info->shouldReceive('addInformation')
             ->with('LOCKED')
             ->once();
+        $game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setActionMs')
             ->with(1)
@@ -151,7 +171,7 @@ class CallbackExecutionTest extends StuTestCase
             ->once();
 
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($context)
             ->once()
             ->andThrow($exception);
 
@@ -169,9 +189,14 @@ class CallbackExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
+
+        $this->actionContextFactory->shouldReceive('createActionContext')
+            ->with($game)
+            ->once()
+            ->andReturn($context);
 
         $this->subject->execute(ModuleEnum::ALLIANCE, $game);
     }
@@ -179,6 +204,8 @@ class CallbackExecutionTest extends StuTestCase
     public function testExecuteExpectHandleIfAccess(): void
     {
         $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ActionControllerInterface::class);
         $controller2 = $this->mock(ActionControllerInterface::class);
@@ -188,6 +215,9 @@ class CallbackExecutionTest extends StuTestCase
         $game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setActionMs')
             ->with(1)
@@ -197,7 +227,7 @@ class CallbackExecutionTest extends StuTestCase
             ->once();
 
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($context)
             ->once();
 
         $this->stuTime->shouldReceive('hrtime')
@@ -214,9 +244,14 @@ class CallbackExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
+
+        $this->actionContextFactory->shouldReceive('createActionContext')
+            ->with($game)
+            ->once()
+            ->andReturn($context);
 
         $this->entityManager->shouldReceive('flush')
             ->withNoArgs()
@@ -228,6 +263,7 @@ class CallbackExecutionTest extends StuTestCase
     public function testExecuteExpectNothingIfNoAccess(): void
     {
         $game = $this->mock(GameControllerInterface::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ActionControllerInterface::class);
         $controller2 = $this->mock(ActionControllerInterface::class);
@@ -237,6 +273,9 @@ class CallbackExecutionTest extends StuTestCase
         $game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setActionMs')
             ->with(1)
@@ -259,7 +298,7 @@ class CallbackExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(false);
 

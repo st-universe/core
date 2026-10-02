@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\CreateTopic;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
@@ -24,23 +24,23 @@ final class CreateTopic implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
-        $user = $game->getUser();
+        $alliance = $context->getUser()->getAlliance();
+        $user = $context->getUser();
 
         $name = $this->createTopicRequest->getTopicTitle();
         $text = $this->createTopicRequest->getText();
 
         if (mb_strlen($name) < 1) {
-            $game->setView("SHOW_NEW_TOPIC");
-            $game->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
+            $context->setView("SHOW_NEW_TOPIC");
+            $context->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
             return;
         }
 
         if (mb_strlen($text) < 1) {
-            $game->setView("SHOW_NEW_TOPIC");
-            $game->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
+            $context->setView("SHOW_NEW_TOPIC");
+            $context->getInfo()->addInformation(_('Es wurde kein Text eingegeben'));
             return;
         }
 
@@ -74,9 +74,9 @@ final class CreateTopic implements ActionControllerInterface
 
         $topic->getPosts()->add($post);
 
-        $game->setView(Board::VIEW_IDENTIFIER);
+        $context->setView(Board::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformation(_('Das Thema wurde erstellt'));
+        $context->getInfo()->addInformation(_('Das Thema wurde erstellt'));
     }
 
     #[\Override]

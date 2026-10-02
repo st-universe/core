@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeletePms;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class DeletePms implements ActionControllerInterface
@@ -18,9 +18,9 @@ final class DeletePms implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $timestamp = time();
 
         foreach ($this->deletePmsRequest->getDeletionIds() as $messageId) {
@@ -33,7 +33,7 @@ final class DeletePms implements ActionControllerInterface
             $pm->setDeleted($timestamp);
             $this->privateMessageRepository->save($pm);
         }
-        $game->getInfo()->addInformation(_('Die Nachrichten wurden gelöscht'));
+        $context->getInfo()->addInformation(_('Die Nachrichten wurden gelöscht'));
     }
 
     #[\Override]

@@ -12,7 +12,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -48,13 +48,13 @@ final class CreateTholianWeb implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         //TODO other web spinners in fleet should join
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -74,7 +74,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         if ($ship->isWarped()) {
-            $game->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Aktion nicht möglich, Schiff befindet sich im Warp");
             return;
         }
 
@@ -82,19 +82,19 @@ final class CreateTholianWeb implements ActionControllerInterface
 
         $possibleCatches = [];
         foreach ($chosenShipIds as $targetId) {
-            $target = $this->tryToCatch($ship, (int)$targetId, $game);
+            $target = $this->tryToCatch($ship, (int)$targetId, $context);
             if ($target !== null) {
                 $possibleCatches[] = $target;
             }
         }
 
         if ($possibleCatches === []) {
-            $game->getInfo()->addInformation("Es konnten keine Ziele erfasst werden");
+            $context->getInfo()->addInformation("Es konnten keine Ziele erfasst werden");
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $game->getInfo())) {
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::THOLIAN_WEB, $context->getInfo())) {
             return;
         }
         $this->spacecraftStateChanger->changeState($wrapper, SpacecraftStateEnum::WEB_SPINNING);
@@ -135,14 +135,14 @@ final class CreateTholianWeb implements ActionControllerInterface
             throw new RuntimeException('this should not happen');
         }
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             "Es wird ein Energienetz um %d Ziele gespannt, Fertigstellung: %s",
             count($possibleCatches),
             $this->stuTime->transformToStuDateTime($finishedTime)
         );
     }
 
-    private function tryToCatch(Ship $ship, int $targetId, GameControllerInterface $game): ?Spacecraft
+    private function tryToCatch(Ship $ship, int $targetId, ActionControllerContext $context): ?Spacecraft
     {
         $target = $this->spacecraftRepository->find($targetId);
 
@@ -151,11 +151,11 @@ final class CreateTholianWeb implements ActionControllerInterface
         }
 
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
-            $game->getInfo()->addInformationf(_('%s: Ziel nicht gefunden'), $target->getName());
+            $context->getInfo()->addInformationf(_('%s: Ziel nicht gefunden'), $target->getName());
             return null;
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
-            $game->getInfo()->addInformationf(_('%s: Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'), $target->getName());
+            $context->getInfo()->addInformationf(_('%s: Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'), $target->getName());
             return null;
         }
 

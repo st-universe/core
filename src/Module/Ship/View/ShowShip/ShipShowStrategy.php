@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Ship\AstronomicalMappingStateEnum;
 use Stu\Component\Spacecraft\System\Type\AstroLaboratoryShipSystem;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContext;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\SpacecraftTypeShowStragegyInterface;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Ship;
@@ -63,7 +59,7 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         }
         $turnsLeft = null;
         if ($state === AstronomicalMappingStateEnum::FINISHING && $astroEntry !== null) {
-            $turnsLeft = AstroLaboratoryShipSystem::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
+            $turnsLeft = AstroLaboratoryShipSystem::TURNS_TO_FINISH - ($game->getGame()->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
         }
         $measurementpointsleft = null;
         if ($state === AstronomicalMappingStateEnum::PLANNED && $astroEntry !== null) {
@@ -91,11 +87,5 @@ class ShipShowStrategy implements SpacecraftTypeShowStragegyInterface
         }
 
         return null;
-    }
-
-    #[\Override]
-    public function getViewContext(): ViewContext
-    {
-        return new ViewContext(ModuleEnum::SHIP, ShowSpacecraft::VIEW_IDENTIFIER);
     }
 }

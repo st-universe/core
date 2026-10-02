@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
@@ -24,24 +24,24 @@ final class DeleteSpacecraft implements ActionControllerInterface
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private NPCLogRepositoryInterface $npcLogRepository, private SpacecraftRemoverInterface $spacecraftRemover, private CrewRepositoryInterface $crewRepository, private CrewAssignmentRepositoryInterface $shipCrewRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid')) {
-            $game->getInfo()->addInformation("Es wurde kein Spacecraft ausgewählt");
+            $context->getInfo()->addInformation("Es wurde kein Spacecraft ausgewählt");
             return;
         }
         $spacecraftIdInput = request::postString('spacecraftid');
         $reason = request::postString('reason');
         $spacecraftIdInput = $spacecraftIdInput === false ? '' : $spacecraftIdInput;
         $reason = $reason === false ? '' : $reason;
-        if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+        if ($context->getUser()->isNpc() && $reason === '') {
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
         if (!preg_match('/^[\d\s,]+$/', $spacecraftIdInput)) {
-            $game->getInfo()->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
+            $context->getInfo()->addInformation("Die Spacecraft-ID darf nur Zahlen, Kommas und Leerzeichen enthalten");
             return;
         }
         $spacecraftIds = array_filter(
@@ -52,7 +52,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
             fn($id): bool => is_numeric($id) && $id > 0
         );
         if ($spacecraftIds === []) {
-            $game->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
+            $context->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");
             return;
         }
         $deletedCount = 0;
@@ -60,14 +60,14 @@ final class DeleteSpacecraft implements ActionControllerInterface
             $wrapper = $this->spacecraftLoader->find((int)$spacecraftId);
 
             if ($wrapper === null) {
-                $game->getInfo()->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
+                $context->getInfo()->addInformationf("Spacecraft mit ID %d existiert nicht!", (int)$spacecraftId);
                 continue;
             }
 
             $spacecraft = $wrapper->get();
 
             if ($spacecraft->isStation()) {
-                $game->getInfo()->addInformation("Stationen können nicht gelöscht werden");
+                $context->getInfo()->addInformation("Stationen können nicht gelöscht werden");
                 continue;
             }
 
@@ -81,7 +81,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 $reason
             );
 
-            if ($game->getUser()->isNpc()) {
+            if ($context->getUser()->isNpc()) {
                 $this->createEntry($text, $user->getId());
             }
 
@@ -90,9 +90,9 @@ final class DeleteSpacecraft implements ActionControllerInterface
             $deletedCount++;
         }
         if ($deletedCount > 0) {
-            $game->getInfo()->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
+            $context->getInfo()->addInformationf("%d Schiff(e) gelöscht", $deletedCount);
         } else {
-            $game->getInfo()->addInformation("Es wurden keine Schiffe gelöscht");
+            $context->getInfo()->addInformation("Es wurden keine Schiffe gelöscht");
         }
     }
 

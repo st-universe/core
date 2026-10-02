@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -31,9 +31,9 @@ final class AddDockPrivilege implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
@@ -46,7 +46,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         $type = DockTypeEnum::from(request::getIntFatal('type'));
         $mode = DockModeEnum::from(request::getIntFatal('mode'));
 
-        $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
+        $context->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, $station)) {
             return;
         }

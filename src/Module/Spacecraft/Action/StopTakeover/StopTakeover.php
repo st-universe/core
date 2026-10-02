@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\StopTakeover;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipTakeoverManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -23,11 +23,11 @@ final class StopTakeover implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $shipId = request::getIntFatal('id');
@@ -46,7 +46,7 @@ final class StopTakeover implements ActionControllerInterface
 
         $this->shipTakeoverManager->cancelTakeover($takeover);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             'Übernahme der %s wurde abgebrochen',
             $takeover->getTargetSpacecraft()->getName()
         );

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 
 final class FighterShipyardProvider implements PlanetFieldHostComponentInterface
@@ -15,13 +16,14 @@ final class FighterShipyardProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
 
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'BUILDABLE_SHIPS',
             $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction(
-                $game->getUser()->getId(),
+                $user->getId(),
                 BuildingFunctionEnum::FIGHTER_SHIPYARD
             )
         );

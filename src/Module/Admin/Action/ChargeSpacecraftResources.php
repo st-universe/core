@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\ReactorWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -45,23 +45,23 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $target = (string) request::postString('spacecraft_charge_target');
         if (!array_key_exists($target, self::TARGET_LABELS)) {
-            $game->getInfo()->addInformation(_('Ungültige Ladeoption'));
+            $context->getInfo()->addInformation(_('Ungültige Ladeoption'));
             return;
         }
 
-        $chargeValue = $this->parseChargeValue((string) request::postString('spacecraft_charge_value'), $game);
+        $chargeValue = $this->parseChargeValue((string) request::postString('spacecraft_charge_value'), $context);
         if ($chargeValue === null) {
             return;
         }
 
-        $spacecraftIds = $this->parseIdList((string) request::postString('spacecraft_charge_spacecraft_ids'), 'Spacecraft-ID', $game);
-        $userIds = $this->parseIdList((string) request::postString('spacecraft_charge_user_ids'), 'User-ID', $game);
+        $spacecraftIds = $this->parseIdList((string) request::postString('spacecraft_charge_spacecraft_ids'), 'Spacecraft-ID', $context);
+        $userIds = $this->parseIdList((string) request::postString('spacecraft_charge_user_ids'), 'User-ID', $context);
         if ($spacecraftIds === null || $userIds === null) {
             return;
         }
@@ -75,7 +75,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
             $includeShips,
             $includeStations,
             request::postString('spacecraft_charge_confirmed') === '1',
-            $game
+            $context
         );
         if ($spacecrafts === null || $spacecrafts === []) {
             return;
@@ -112,18 +112,18 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
             );
         }
 
-        $game->getInfo()->addInformation($message);
+        $context->getInfo()->addInformation($message);
     }
 
     /**
      * @return null|array{isMax: bool, value: int|null}
      */
-    private function parseChargeValue(string $input, GameControllerInterface $game): ?array
+    private function parseChargeValue(string $input, ActionControllerContext $context): ?array
     {
         $value = trim($input);
 
         if ($value === '') {
-            $game->getInfo()->addInformation(_('Bitte einen Wert oder max angeben'));
+            $context->getInfo()->addInformation(_('Bitte einen Wert oder max angeben'));
             return null;
         }
 
@@ -132,7 +132,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         }
 
         if (!ctype_digit($value) || (int) $value <= 0) {
-            $game->getInfo()->addInformation(_('Der Wert muss eine positive Zahl oder max sein'));
+            $context->getInfo()->addInformation(_('Der Wert muss eine positive Zahl oder max sein'));
             return null;
         }
 
@@ -142,7 +142,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
     /**
      * @return null|array<int, int>
      */
-    private function parseIdList(string $input, string $label, GameControllerInterface $game): ?array
+    private function parseIdList(string $input, string $label, ActionControllerContext $context): ?array
     {
         $input = trim($input);
         if ($input === '') {
@@ -153,7 +153,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         foreach (explode(',', $input) as $rawId) {
             $id = trim($rawId);
             if ($id === '' || !ctype_digit($id) || (int) $id <= 0) {
-                $game->getInfo()->addInformation(sprintf('%s-Liste enthält einen ungültigen Wert', $label));
+                $context->getInfo()->addInformation(sprintf('%s-Liste enthält einen ungültigen Wert', $label));
                 return null;
             }
 
@@ -175,27 +175,27 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         bool $includeShips,
         bool $includeStations,
         bool $confirmed,
-        GameControllerInterface $game
+        ActionControllerContext $context
     ): ?array {
         if ($spacecraftIds !== []) {
-            return $this->loadBySpacecraftIds($spacecraftIds, $game);
+            return $this->loadBySpacecraftIds($spacecraftIds, $context);
         }
 
         if (!$includeShips && !$includeStations) {
-            $game->getInfo()->addInformation(_('Bitte Schiffe, Stationen oder konkrete Spacecraft-IDs auswählen'));
+            $context->getInfo()->addInformation(_('Bitte Schiffe, Stationen oder konkrete Spacecraft-IDs auswählen'));
             return null;
         }
 
         if ($userIds !== []) {
-            return $this->loadByUserIds($userIds, $includeShips, $includeStations, $game);
+            return $this->loadByUserIds($userIds, $includeShips, $includeStations, $context);
         }
 
         if (!$confirmed) {
-            $game->getInfo()->addInformation(_('Bitte die globale Spacecraft-Ladung zuerst bestätigen'));
+            $context->getInfo()->addInformation(_('Bitte die globale Spacecraft-Ladung zuerst bestätigen'));
             return null;
         }
 
-        return $this->loadForAllPlayers($includeShips, $includeStations, $game);
+        return $this->loadForAllPlayers($includeShips, $includeStations, $context);
     }
 
     /**
@@ -203,7 +203,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
      *
      * @return array<Spacecraft>
      */
-    private function loadBySpacecraftIds(array $spacecraftIds, GameControllerInterface $game): array
+    private function loadBySpacecraftIds(array $spacecraftIds, ActionControllerContext $context): array
     {
         $spacecrafts = [];
         $missingIds = [];
@@ -219,11 +219,11 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         }
 
         if ($missingIds !== []) {
-            $game->getInfo()->addInformation(sprintf('Spacecraft-ID%s nicht gefunden: %s', count($missingIds) === 1 ? '' : 's', implode(', ', $missingIds)));
+            $context->getInfo()->addInformation(sprintf('Spacecraft-ID%s nicht gefunden: %s', count($missingIds) === 1 ? '' : 's', implode(', ', $missingIds)));
         }
 
         if ($spacecrafts === []) {
-            $game->getInfo()->addInformation(_('Keine Spacecrafts gefunden'));
+            $context->getInfo()->addInformation(_('Keine Spacecrafts gefunden'));
         }
 
         return array_values($spacecrafts);
@@ -234,7 +234,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
      *
      * @return array<Spacecraft>
      */
-    private function loadByUserIds(array $userIds, bool $includeShips, bool $includeStations, GameControllerInterface $game): array
+    private function loadByUserIds(array $userIds, bool $includeShips, bool $includeStations, ActionControllerContext $context): array
     {
         $spacecrafts = [];
 
@@ -251,7 +251,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         }
 
         if ($spacecrafts === []) {
-            $game->getInfo()->addInformation(_('Keine Spacecrafts für die angegebene Auswahl gefunden'));
+            $context->getInfo()->addInformation(_('Keine Spacecrafts für die angegebene Auswahl gefunden'));
         }
 
         return array_values($spacecrafts);
@@ -260,7 +260,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
     /**
      * @return array<Spacecraft>
      */
-    private function loadForAllPlayers(bool $includeShips, bool $includeStations, GameControllerInterface $game): array
+    private function loadForAllPlayers(bool $includeShips, bool $includeStations, ActionControllerContext $context): array
     {
         $spacecrafts = [];
 
@@ -277,7 +277,7 @@ final class ChargeSpacecraftResources implements ActionControllerInterface
         }
 
         if ($spacecrafts === []) {
-            $game->getInfo()->addInformation(_('Keine Spieler-Spacecrafts gefunden'));
+            $context->getInfo()->addInformation(_('Keine Spieler-Spacecrafts gefunden'));
         }
 
         return array_values($spacecrafts);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\DeleteTutorials;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
 final class DeleteTutorials implements ActionControllerInterface
@@ -15,14 +15,14 @@ final class DeleteTutorials implements ActionControllerInterface
     public function __construct(private UserTutorialRepositoryInterface $userTutorialRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $this->userTutorialRepository->truncateByUser($user);
 
 
-        $game->getInfo()->addInformation(_('Tutorial wurden deaktiviert'));
+        $context->getInfo()->addInformation(_('Tutorial wurden deaktiviert'));
     }
 
 

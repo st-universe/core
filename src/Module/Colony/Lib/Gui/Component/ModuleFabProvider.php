@@ -5,8 +5,9 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use request;
 use RuntimeException;
 use Stu\Module\Colony\View\ShowModuleFab\ModuleFabricationListItem;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -19,7 +20,8 @@ final class ModuleFabProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
 
         $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
@@ -29,7 +31,7 @@ final class ModuleFabProvider implements PlanetFieldHostComponentInterface
 
         $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
             $func->getFunction(),
-            $game->getUser()->getId()
+            $user->getId()
         );
 
         $list = [];
@@ -41,7 +43,7 @@ final class ModuleFabProvider implements PlanetFieldHostComponentInterface
             );
         }
 
-        $game->setTemplateVar('FUNC', $func);
-        $game->setTemplateVar('MODULE_LIST', $list);
+        $template->setTemplateVar('FUNC', $func);
+        $template->setTemplateVar('MODULE_LIST', $list);
     }
 }

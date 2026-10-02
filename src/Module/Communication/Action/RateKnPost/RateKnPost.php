@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\RateKnPost;
 
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -21,21 +21,21 @@ final class RateKnPost implements ActionControllerInterface
     public function __construct(private KnPostRepositoryInterface $knPostRepository, private RateKnPostRequestInterface $knPostRequest, private CreatePrestigeLogInterface $createPrestigeLog) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $post = $this->knPostRepository->find($this->knPostRequest->getKnId());
         if ($post === null) {
             return;
         }
 
-        $game->setView(ShowKnRating::VIEW_IDENTIFIER);
-        $game->setViewContext(ViewContextTypeEnum::KN_POST, $post);
+        $context->setView(ShowKnRating::VIEW_IDENTIFIER);
+        $context->setViewContext(ViewContextMetadataTypeEnum::KN_POST, $post);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ratings = $post->getRatings();
 
-        if (array_key_exists($userId, $ratings) || $post->getUser()->getId() === $game->getUser()->getId()) {
+        if (array_key_exists($userId, $ratings) || $post->getUser()->getId() === $context->getUser()->getId()) {
             return;
         }
         $rating = $this->knPostRequest->getRating();

@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Logging\LogLevelEnum;
@@ -33,9 +33,9 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $updatedBuildplans = 0;
 
@@ -59,7 +59,7 @@ final class RecalculateBuildplanCrewUsage implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
+        $context->getInfo()->addInformationf("Es wurden %d Baupläne aktualisiert", $updatedBuildplans);
     }
 
     private function updateBuildplanCrew(SpacecraftBuildplan $buildplan, int $crewUsage): void

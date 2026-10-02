@@ -32,8 +32,8 @@ final class ShowKnArchive implements ViewControllerInterface
             return;
         }
         $game->setPageTitle(sprintf('KN-Archiv - Version %s', $this->formatVersion($version)));
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
 
         $knPostCount = $this->knPostArchivRepository->getAmountByVersion($version);
 

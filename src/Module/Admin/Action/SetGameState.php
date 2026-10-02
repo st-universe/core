@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
@@ -19,28 +19,28 @@ final class SetGameState implements ActionControllerInterface
     public function __construct(private GameConfigRepositoryInterface $gameConfigRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
-        $gameState = GameStateEnum::tryFrom(request::postInt('game_state'));
-        if ($gameState === null) {
-            $game->getInfo()->addInformation(_('Ungültiger Spielmodus'));
+        $contextState = GameStateEnum::tryFrom(request::postInt('game_state'));
+        if ($contextState === null) {
+            $context->getInfo()->addInformation(_('Ungültiger Spielmodus'));
             return;
         }
 
         $config = $this->gameConfigRepository->getByOption(GameStateInterface::CONFIG_GAMESTATE);
         if ($config === null) {
-            $game->getInfo()->addInformation(_('Spielmodus-Konfiguration nicht gefunden'));
+            $context->getInfo()->addInformation(_('Spielmodus-Konfiguration nicht gefunden'));
             return;
         }
 
-        $config->setValue($gameState->value);
+        $config->setValue($contextState->value);
         $this->gameConfigRepository->save($config);
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('Der Spielmodus wurde auf "%s" gesetzt'),
-            $gameState->getDescription()
+            $contextState->getDescription()
         ));
     }
 

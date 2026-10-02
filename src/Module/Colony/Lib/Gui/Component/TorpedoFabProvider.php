@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class TorpedoFabProvider implements PlanetFieldHostComponentInterface
@@ -14,12 +15,13 @@ final class TorpedoFabProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
 
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'BUILDABLE_TORPEDO_TYPES',
-            $this->torpedoTypeRepository->getForUser($game->getUser()->getId())
+            $this->torpedoTypeRepository->getForUser($user->getId())
         );
     }
 }

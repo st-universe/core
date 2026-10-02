@@ -11,7 +11,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
@@ -69,7 +69,7 @@ class PromotePlayerTest extends StuTestCase
         $promotedPlayer = $this->mock(User::class);
         $job = $this->mock(AllianceJob::class);
         $founderJob = $this->mock(AllianceJob::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
         $alliance->shouldReceive('getId')
             ->withNoArgs()
@@ -127,13 +127,13 @@ class PromotePlayerTest extends StuTestCase
                 ->once();
         }
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Mitglied wurde befördert')
             ->once();
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with($isFounderJob ? ModuleEnum::ALLIANCE : Management::VIEW_IDENTIFIER)
             ->once();
 
@@ -173,6 +173,6 @@ class PromotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($promotedPlayer);
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 }

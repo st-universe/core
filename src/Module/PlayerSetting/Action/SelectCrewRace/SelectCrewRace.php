@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\SelectCrewRace;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -22,11 +22,11 @@ final class SelectCrewRace implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $crewRaceId = request::postInt('crew_race_id');
         $crewRace = $this->crewRaceRepository->find($crewRaceId);
         $selectableCrewRaceIds = array_map(
@@ -34,11 +34,11 @@ final class SelectCrewRace implements ActionControllerInterface
             $this->crewRaceRepository->getSelectableForUser($user->getId(), $user->getFactionId())
         );
         if ($crewRace === null || !in_array($crewRaceId, $selectableCrewRaceIds, true)) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse kann nicht ausgewählt werden'));
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse kann nicht ausgewählt werden'));
             return;
         }
         if ($this->userCrewRaceRepository->exists($crewRaceId, $user->getId())) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse ist bereits ausgewählt'));
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse ist bereits ausgewählt'));
             return;
         }
 
@@ -48,7 +48,7 @@ final class SelectCrewRace implements ActionControllerInterface
                 ->setUserId($user->getId())
                 ->setChance($crewRace->getChance())
         );
-        $game->getInfo()->addInformation(_('Die Crew-Rasse wurde ausgewählt'));
+        $context->getInfo()->addInformation(_('Die Crew-Rasse wurde ausgewählt'));
     }
 
     #[\Override]

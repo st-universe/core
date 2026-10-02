@@ -11,7 +11,7 @@ use Stu\Component\Game\RedirectionException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -29,9 +29,9 @@ final class ColonizationShip implements ActionControllerInterface
     public function __construct(private ShipCreatorInterface $shipCreator, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if ($user->getState() !== UserStateEnum::UNCOLONIZED) {
             throw new AccessViolationException();

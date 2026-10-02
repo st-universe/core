@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowBuildplanCreator\ShowBuildplanCreator;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -39,12 +39,12 @@ final class CreateBuildplan implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowBuildplanCreator::VIEW_IDENTIFIER);
+        $context->setView(ShowBuildplanCreator::VIEW_IDENTIFIER);
         $userId = request::postIntFatal('userId');
         $rumpId = request::postIntFatal('rumpId');
-        $buildplanCount = $this->determineBuildplanCount($game);
+        $buildplanCount = $this->determineBuildplanCount($context);
         if ($buildplanCount === false) {
             return;
         }
@@ -77,7 +77,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         if (count($moduleList) < $mod_level->getMandatoryModulesCount()) {
-            $game->getInfo()->addInformation('Nicht alle benötigten Module wurden ausgewählt');
+            $context->getInfo()->addInformation('Nicht alle benötigten Module wurden ausgewählt');
             return;
         }
 
@@ -101,7 +101,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $crewInput = request::postString('crew_input');
         if ($crewInput !== false && $crewInput !== '') {
             if (!ctype_digit($crewInput)) {
-                $game->getInfo()->addInformation('Benötigte Crew muss leer sein oder eine Zahl größer/gleich 0 enthalten');
+                $context->getInfo()->addInformation('Benötigte Crew muss leer sein oder eine Zahl größer/gleich 0 enthalten');
                 return;
             }
 
@@ -170,13 +170,13 @@ final class CreateBuildplan implements ActionControllerInterface
             $reason = request::postString('reason');
 
             if ($reason === '') {
-                $game->getInfo()->addInformation("Grund fehlt");
+                $context->getInfo()->addInformation("Grund fehlt");
                 return;
             }
 
             $logText = sprintf(
                 '%s hat für Spieler %s (%s) einen Bauplan erstellt. Rumpf: %s, Module: %s, Crew: %d, Baubar: %s, Grund: %s',
-                $game->getUser()->getName(),
+                $context->getUser()->getName(),
                 $user->getName(),
                 $user->getId(),
                 $rump->getName(),
@@ -186,13 +186,13 @@ final class CreateBuildplan implements ActionControllerInterface
                 $reason
             );
 
-            if ($game->getUser()->isNpc()) {
-                $this->createLogEntry($logText, $game->getUser()->getId());
+            if ($context->getUser()->isNpc()) {
+                $this->createLogEntry($logText, $context->getUser()->getId());
             }
 
-            $game->getInfo()->addInformation('Bauplan wurde erstellt');
+            $context->getInfo()->addInformation('Bauplan wurde erstellt');
         } else {
-            $game->getInfo()->addInformation('Bauplan existiert bereits');
+            $context->getInfo()->addInformation('Bauplan existiert bereits');
         }
     }
 
@@ -213,7 +213,7 @@ final class CreateBuildplan implements ActionControllerInterface
         return true;
     }
 
-    private function determineBuildplanCount(GameControllerInterface $game): int|false|null
+    private function determineBuildplanCount(ActionControllerContext $context): int|false|null
     {
         $buildplanCount = request::postString('buildplan_count');
         if ($buildplanCount === false || $buildplanCount === '') {
@@ -221,7 +221,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         if (!ctype_digit($buildplanCount) || (int)$buildplanCount <= 0) {
-            $game->getInfo()->addInformation('X mal baubar muss leer sein oder eine Zahl größer 0 enthalten');
+            $context->getInfo()->addInformation('X mal baubar muss leer sein oder eine Zahl größer 0 enthalten');
             return false;
         }
 

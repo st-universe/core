@@ -9,7 +9,7 @@ use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -31,34 +31,34 @@ final class ApplyForQuest implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowQuest::VIEW_IDENTIFIER);
+        $context->setView(ShowQuest::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $questId = $this->applyForQuestRequest->getQuestId();
 
         $quest = $this->npcQuestRepository->find($questId);
         if ($quest === null) {
-            $game->getInfo()->addInformation('Quest nicht gefunden');
+            $context->getInfo()->addInformation('Quest nicht gefunden');
             return;
         }
 
         if ($quest->getEnd() !== null) {
-            $game->getInfo()->addInformation('Quest ist bereits beendet');
+            $context->getInfo()->addInformation('Quest ist bereits beendet');
             return;
         }
 
         $currentTime = time();
         if ($quest->getApplicationEnd() < $currentTime) {
-            $game->getInfo()->addInformation('Anmeldeschluss ist bereits abgelaufen');
+            $context->getInfo()->addInformation('Anmeldeschluss ist bereits abgelaufen');
             return;
         }
 
         $userFactionId = $user->getFactionId();
         $allowedFactions = $quest->getFactions();
         if ($allowedFactions !== null && !in_array($userFactionId, $allowedFactions)) {
-            $game->getInfo()->addInformation('Deine Fraktion darf sich nicht für diese Quest bewerben');
+            $context->getInfo()->addInformation('Deine Fraktion darf sich nicht für diese Quest bewerben');
             return;
         }
 
@@ -70,16 +70,16 @@ final class ApplyForQuest implements ActionControllerInterface
         if ($existingQuestUser !== null) {
             switch($existingQuestUser->getMode()) {
                 case QuestUserModeEnum::ACTIVE_MEMBER:
-                    $game->getInfo()->addInformation('Du bist bereits aktiver Teilnehmer dieser Quest');
+                    $context->getInfo()->addInformation('Du bist bereits aktiver Teilnehmer dieser Quest');
                     return;
                 case QuestUserModeEnum::APPLICANT:
-                    $game->getInfo()->addInformation('Du hast dich bereits für diese Quest beworben');
+                    $context->getInfo()->addInformation('Du hast dich bereits für diese Quest beworben');
                     return;
                 case QuestUserModeEnum::INVITED:
-                    $game->getInfo()->addInformation('Du bist bereits zu dieser Quest eingeladen');
+                    $context->getInfo()->addInformation('Du bist bereits zu dieser Quest eingeladen');
                     return;
                 case QuestUserModeEnum::REJECTED_EXCLUDED:
-                    $game->getInfo()->addInformation('Du wurdest für diese Quest abgelehnt oder ausgeschlossen');
+                    $context->getInfo()->addInformation('Du wurdest für diese Quest abgelehnt oder ausgeschlossen');
                     return;
             }
         }
@@ -90,7 +90,7 @@ final class ApplyForQuest implements ActionControllerInterface
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {
-                $game->getInfo()->addInformation('Die maximale Teilnehmerzahl ist bereits erreicht');
+                $context->getInfo()->addInformation('Die maximale Teilnehmerzahl ist bereits erreicht');
                 return;
             }
         }
@@ -103,7 +103,7 @@ final class ApplyForQuest implements ActionControllerInterface
 
         if ($quest->isApprovalRequired()) {
             $questUser->setMode(QuestUserModeEnum::APPLICANT);
-            $game->getInfo()->addInformation('Bewerbung erfolgreich eingereicht. Du musst nun auf die Bestätigung durch den Quest-Leiter warten');
+            $context->getInfo()->addInformation('Bewerbung erfolgreich eingereicht. Du musst nun auf die Bestätigung durch den Quest-Leiter warten');
             $this->notifyQuestLeader(
                 $quest,
                 $questUser,
@@ -125,7 +125,7 @@ final class ApplyForQuest implements ActionControllerInterface
                     $quest->getTitle()
                 )
             );
-            $game->getInfo()->addInformation('Du nimmst ab sofort an der Quest teil!');
+            $context->getInfo()->addInformation('Du nimmst ab sofort an der Quest teil!');
         }
 
         $this->npcQuestUserRepository->save($questUser);

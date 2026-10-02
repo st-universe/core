@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ResubmitCrewRace;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\CrewRaceSubmission;
 
 final class ResubmitCrewRace implements ActionControllerInterface
@@ -15,9 +15,9 @@ final class ResubmitCrewRace implements ActionControllerInterface
     public function __construct(private readonly CrewRaceSubmission $submission) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $this->submission->submit($game, true);
+        $this->submission->submit($context, true);
     }
 
     #[\Override]

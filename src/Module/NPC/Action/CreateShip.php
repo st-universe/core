@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use request;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowShipCreator\ShowShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
@@ -48,9 +48,9 @@ final class CreateShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowShipCreator::VIEW_IDENTIFIER);
+        $context->setView(ShowShipCreator::VIEW_IDENTIFIER);
         $userId = request::postIntFatal('userId');
         $buildplanId = request::postIntFatal('buildplanId');
         $shipCount = request::postIntFatal('shipcount');
@@ -62,8 +62,8 @@ final class CreateShip implements ActionControllerInterface
         $crewAmount = request::postInt('crew_input');
         $underConstruction = request::postInt('underConstruction') === 1;
 
-        if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+        if ($context->getUser()->isNpc() && $reason === '') {
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
@@ -84,7 +84,7 @@ final class CreateShip implements ActionControllerInterface
 
         $field = $this->mapRepository->getByCoordinates($layer, $cx, $cy);
         if ($field === null) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 'Die Position %s|%d|%d existiert nicht!',
                 $layer->getName(),
                 $cx,
@@ -133,7 +133,7 @@ final class CreateShip implements ActionControllerInterface
 
         $logText = sprintf(
             '%s hat für Spieler %s (%d) %dx %s erstellt. Module: %s, Position: %s (%d|%d), Crew: %d%s Grund: %s',
-            $game->getUser()->getName(),
+            $context->getUser()->getName(),
             $user->getName(),
             $userId,
             $shipCount,
@@ -146,11 +146,11 @@ final class CreateShip implements ActionControllerInterface
             ($buildplan->getRump()->isStation() && $underConstruction) ? ', Im Bau: Ja' : '',
             $reason
         );
-        if ($game->getUser()->isNpc()) {
-            $this->createLogEntry($logText, $game->getUser()->getId());
+        if ($context->getUser()->isNpc()) {
+            $this->createLogEntry($logText, $context->getUser()->getId());
         }
 
-        $game->getInfo()->addInformation(sprintf('%d %s wurden erstellt', $shipCount, $entityType));
+        $context->getInfo()->addInformation(sprintf('%d %s wurden erstellt', $shipCount, $entityType));
     }
 
     /**

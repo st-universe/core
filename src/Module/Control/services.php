@@ -13,11 +13,17 @@ use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\UserLockedException;
+use Stu\Module\Control\Component\Action\ActionContextFactory;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\CallbackExecutionInterface;
+use Stu\Module\Control\Component\ContextFactory;
+use Stu\Module\Control\Component\ContextFactoryInterface;
 use Stu\Module\Control\Component\ControllerDiscovery;
 use Stu\Module\Control\Component\ControllerDiscoveryInterface;
 use Stu\Module\Control\Component\TutorialProvider;
+use Stu\Module\Control\Component\View\ViewContextFactory;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTwigRenderer;
 use Stu\Module\Control\Render\GameTwigRendererInterface;
@@ -37,6 +43,9 @@ use Stu\Module\Control\Router\Handler\UserLockedFallbackHandler;
 use function DI\autowire;
 
 return [
+    ContextFactoryInterface::class => autowire(ContextFactory::class),
+    ActionContextFactoryInterface::class => autowire(ActionContextFactory::class),
+    ViewContextFactoryInterface::class => autowire(ViewContextFactory::class),
     GameSessionInitializerInterface::class => autowire(GameSessionInitializer::class),
     AdminSessionGuardInterface::class => autowire(AdminSessionGuard::class),
     UserLockCheckerInterface::class => autowire(UserLockChecker::class),

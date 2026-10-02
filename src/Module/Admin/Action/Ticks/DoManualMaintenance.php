@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action\Ticks;
 
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Maintenance\DatabaseBackup;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
@@ -21,9 +21,9 @@ final class DoManualMaintenance implements ActionControllerInterface
     public function __construct(private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory, private array $handlerList) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $context->setView(ShowTicks::VIEW_IDENTIFIER);
         // load maintance tick runner without DatabaseBackup maintenance handler
         $maintenance = $this->maintenanceTickRunnerFactory->createMaintenanceTickRunner(
             array_filter(
@@ -34,7 +34,7 @@ final class DoManualMaintenance implements ActionControllerInterface
 
         $maintenance->run(1, 1);
 
-        $game->getInfo()->addInformation('Der Wartungs-Tick wurde durchgeführt!');
+        $context->getInfo()->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
 
     #[\Override]

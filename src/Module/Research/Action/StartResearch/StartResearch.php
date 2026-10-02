@@ -7,7 +7,7 @@ namespace Stu\Module\Research\Action\StartResearch;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -24,13 +24,13 @@ final class StartResearch implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $research = $this->techlistRetriever->canResearch($user, $this->startResearchRequest->getResearchId());
         if ($research === null) {
-            $game->getInfo()->addInformation('Kann aktuell nicht erforscht werden');
+            $context->getInfo()->addInformation('Kann aktuell nicht erforscht werden');
             return;
         }
 
@@ -41,19 +41,19 @@ final class StartResearch implements ActionControllerInterface
 
         $researched = $this->researchedRepository->prototype();
         $researched->setActive($research->getPoints());
-        $researched->setUser($game->getUser());
+        $researched->setUser($context->getUser());
         $researched->setResearch($research);
         $researched->setFinished(0);
 
         $this->researchedRepository->save($researched);
 
         if ($researches === []) {
-            $game->getInfo()->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
+            $context->getInfo()->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
         } else {
-            $game->getInfo()->addInformation(sprintf(_('%s wird als Nächstes erforscht'), $research->getName()));
+            $context->getInfo()->addInformation(sprintf(_('%s wird als Nächstes erforscht'), $research->getName()));
         }
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
 
         $this->componentRegistration->addComponentUpdate(GameComponentEnum::RESEARCH);
     }

@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\StarSystem\StarSystemCreationInterface;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystem;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\NamesRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -20,9 +20,9 @@ final class RegenerateSystem implements ActionControllerInterface
     public function __construct(private StarSystemRepositoryInterface $starSystemRepository, private NamesRepositoryInterface $namesRepository, private StarSystemCreationInterface $starSystemCreation) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSystem::VIEW_IDENTIFIER);
+        $context->setView(ShowSystem::VIEW_IDENTIFIER);
 
         $systemId = request::getInt('systemid');
 
@@ -42,7 +42,7 @@ final class RegenerateSystem implements ActionControllerInterface
         }
 
         if ($layer->isFinished()) {
-            $game->getInfo()->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
+            $context->getInfo()->addInformation('Der Layer ist fertig, kein Neugenerierung mehr möglich');
             return;
         }
 
@@ -53,7 +53,7 @@ final class RegenerateSystem implements ActionControllerInterface
 
         $this->starSystemCreation->recreateStarSystem($map, $systemName->getName());
 
-        $game->getInfo()->addInformation('Das System wurde neu generiert.');
+        $context->getInfo()->addInformation('Das System wurde neu generiert.');
     }
 
     #[\Override]

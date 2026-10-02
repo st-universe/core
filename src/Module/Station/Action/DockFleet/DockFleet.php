@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -37,11 +37,11 @@ final class DockFleet implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -54,7 +54,7 @@ final class DockFleet implements ActionControllerInterface
         if ($targetFleet === null) {
             return;
         }
-        if ($targetFleet->getUser()->getId() !== $game->getUser()->getId()) {
+        if ($targetFleet->getUser()->getId() !== $context->getUser()->getId()) {
             return;
         }
         if (!$station->isStation()) {
@@ -77,14 +77,14 @@ final class DockFleet implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED,
                 InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
                 return;
         }
 
-        $this->fleetDock($wrapper, $targetFleet, $game);
+        $this->fleetDock($wrapper, $targetFleet, $context);
     }
 
-    private function fleetDock(StationWrapperInterface $stationWrapper, Fleet $targetFleet, GameControllerInterface $game): void
+    private function fleetDock(StationWrapperInterface $stationWrapper, Fleet $targetFleet, ActionControllerContext $context): void
     {
         $station = $stationWrapper->get();
         $epsSystem = $stationWrapper->getEpsSystemData();
@@ -140,7 +140,7 @@ final class DockFleet implements ActionControllerInterface
             $epsSystem->update();
         }
 
-        $game->getInfo()->addInformationArray($msg, true);
+        $context->getInfo()->addInformationArray($msg, true);
     }
 
     #[\Override]

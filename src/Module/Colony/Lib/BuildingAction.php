@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
@@ -20,7 +20,7 @@ final class BuildingAction implements BuildingActionInterface
     ) {}
 
     #[\Override]
-    public function activate(PlanetField $field, GameControllerInterface $game): void
+    public function activate(PlanetField $field, ControllerContext $game): void
     {
         $building = $field->getBuilding();
         if ($building === null) {
@@ -52,7 +52,7 @@ final class BuildingAction implements BuildingActionInterface
     }
 
     #[\Override]
-    public function deactivate(PlanetField $field, GameControllerInterface $game): void
+    public function deactivate(PlanetField $field, ControllerContext $game): void
     {
         $building = $field->getBuilding();
         if ($building === null) {
@@ -80,7 +80,7 @@ final class BuildingAction implements BuildingActionInterface
     #[\Override]
     public function remove(
         PlanetField $field,
-        GameControllerInterface $game,
+        ControllerContext $game,
         bool $isDueToUpgrade = false
     ): void {
         $building = $field->getBuilding();
@@ -111,7 +111,7 @@ final class BuildingAction implements BuildingActionInterface
         }
     }
 
-    private function canActivateField(PlanetField $field, Building $building, GameControllerInterface $game): bool
+    private function canActivateField(PlanetField $field, Building $building, ControllerContext $game): bool
     {
         if (!$field->isActivateable()) {
             return false;
@@ -141,7 +141,7 @@ final class BuildingAction implements BuildingActionInterface
         return $isDueToUpgrade || $building->isRemovable();
     }
 
-    private function recycleBuildingCosts(Building $building, Colony $host, GameControllerInterface $game): void
+    private function recycleBuildingCosts(Building $building, Colony $host, ControllerContext $game): void
     {
         $game->getInfo()->addInformation(_('Es konnten folgende Waren recycled werden'));
 
@@ -170,7 +170,7 @@ final class BuildingAction implements BuildingActionInterface
         return $halfAmount;
     }
 
-    private function addActivationInformation(PlanetField $field, Building $building, GameControllerInterface $game): void
+    private function addActivationInformation(PlanetField $field, Building $building, ControllerContext $game): void
     {
         $game->getInfo()->addInformationf(
             _('%s auf Feld %s wurde aktiviert'),
@@ -179,7 +179,7 @@ final class BuildingAction implements BuildingActionInterface
         );
     }
 
-    private function addDeactivationInformation(PlanetField $field, Building $building, GameControllerInterface $game): void
+    private function addDeactivationInformation(PlanetField $field, Building $building, ControllerContext $game): void
     {
         $game->getInfo()->addInformationf(
             _('%s auf Feld %s wurde deaktiviert'),
@@ -188,7 +188,7 @@ final class BuildingAction implements BuildingActionInterface
         );
     }
 
-    private function addRemovalInformation(PlanetField $field, Building $building, GameControllerInterface $game): void
+    private function addRemovalInformation(PlanetField $field, Building $building, ControllerContext $game): void
     {
         $game->getInfo()->addInformationf(
             _('%s auf Feld %d wurde demontiert'),

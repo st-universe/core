@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\View\Overview;
 
-use request;
-use Stu\Component\Game\ModuleEnum;
-use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContext;
-use Stu\Module\Control\ViewContextTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Game\Lib\View\ViewComponentLoaderInterface;
@@ -18,41 +13,17 @@ final class Overview implements ViewControllerInterface, ViewWithTutorialInterfa
 {
     public const string VIEW_IDENTIFIER = 'OVERVIEW';
 
-    private ModuleEnum $moduleView;
-
     public function __construct(
-        private readonly ViewComponentLoaderInterface $viewComponentLoader,
-        private readonly UserSettingsProviderInterface $userSettingsProvider
+        private readonly ViewComponentLoaderInterface $viewComponentLoader
     ) {}
 
     #[\Override]
-    public function handle(ViewControllerContext $game): void
+    public function handle(ViewControllerContext $context): void
     {
-        $moduleView = $this->getModuleView($game);
-        $this->moduleView = $this->getModuleView($game);
-        $this->viewComponentLoader->registerViewComponents($moduleView, $game);
+        $module = $context->getModule();
+        $this->viewComponentLoader->registerViewComponents($module, $context);
 
-        $game->setPageTitle($moduleView->getTitle());
-        $game->setViewTemplate($moduleView->getTemplate());
-    }
-
-    private function getModuleView(ViewControllerContext $game): ModuleEnum
-    {
-        $moduleView = null;
-        if (request::has('view')) {
-            $moduleView = ModuleEnum::tryFrom(request::getStringFatal('view'));
-        }
-
-        if ($moduleView !== null) {
-            return $moduleView;
-        }
-
-        return $game->getViewContext(ViewContextTypeEnum::MODULE_VIEW) ?? $this->userSettingsProvider->getDefaultView($game->getUser());
-    }
-
-    #[\Override]
-    public function getViewContext(): ViewContext
-    {
-        return new ViewContext($this->moduleView, self::VIEW_IDENTIFIER);
+        $context->setPageTitle($module->getTitle());
+        $context->setViewTemplate($module->getTemplate());
     }
 }

@@ -11,6 +11,7 @@ use Stu\Component\Station\Dock\DockModeEnum;
 use Stu\Component\Station\Dock\DockTypeEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 
 class AllStationActionsTest extends ActionTestCase
@@ -39,7 +40,7 @@ class AllStationActionsTest extends ActionTestCase
         $subject = Init::getContainer()
             ->getDefinedImplementationsOf(ActionControllerInterface::class, true)->get($key);
 
-        $subject->handle($game);
+        $subject->handle($dic->get(ActionContextFactoryInterface::class)->createActionContext($game));
     }
 
     private function getUserId(string $key): int

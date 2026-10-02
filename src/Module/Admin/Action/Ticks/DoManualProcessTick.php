@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action\Ticks;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 
 final class DoManualProcessTick implements ActionControllerInterface
@@ -20,16 +20,16 @@ final class DoManualProcessTick implements ActionControllerInterface
     public function __construct(private EntityManagerInterface $entityManager, private array $tickHandler) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $context->setView(ShowTicks::VIEW_IDENTIFIER);
         foreach ($this->tickHandler as $process) {
             $process->work();
         }
 
         $this->entityManager->flush();
 
-        $game->getInfo()->addInformation("Der Process-Tick wurde durchgeführt!");
+        $context->getInfo()->addInformation("Der Process-Tick wurde durchgeführt!");
     }
 
     #[\Override]

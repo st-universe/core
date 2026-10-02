@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class SuggestPeace implements ActionControllerInterface
@@ -25,10 +25,10 @@ final class SuggestPeace implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $relation = $this->allianceRelationRepository->find($this->suggestPeaceRequest->getRelationId());
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         if ($alliance === null) {
             throw new AccessViolationException();
@@ -39,7 +39,7 @@ final class SuggestPeace implements ActionControllerInterface
         if (
             $relation === null
             || !$this->allianceJobManager->hasUserPermission(
-                $game->getUser(),
+                $context->getUser(),
                 $alliance,
                 AllianceJobPermissionEnum::CREATE_AGREEMENTS
             )
@@ -57,7 +57,7 @@ final class SuggestPeace implements ActionControllerInterface
             $opponentId
         );
         if ($rel !== null) {
-            $game->getInfo()->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
+            $context->getInfo()->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
             return;
         }
 
@@ -96,7 +96,7 @@ final class SuggestPeace implements ActionControllerInterface
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
-        $game->getInfo()->addInformation(_('Der Frieden wurde angeboten'));
+        $context->getInfo()->addInformation(_('Der Frieden wurde angeboten'));
     }
 
     #[\Override]

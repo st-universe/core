@@ -8,7 +8,7 @@ use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class EditPost implements ActionControllerInterface
@@ -18,9 +18,9 @@ final class EditPost implements ActionControllerInterface
     public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $post = $this->allianceBoardPostRepository->find(request::postIntFatal('pid'));
         if ($post === null) {
@@ -31,14 +31,14 @@ final class EditPost implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Topic::VIEW_IDENTIFIER);
+        $context->setView(Topic::VIEW_IDENTIFIER);
 
         $post->setText(request::postStringFatal('text'));
         $post->setEditDate(time());
 
         $this->allianceBoardPostRepository->save($post);
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
     #[\Override]

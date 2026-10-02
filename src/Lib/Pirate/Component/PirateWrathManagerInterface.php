@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Pirate\Component;
 
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\User;
 
 interface PirateWrathManagerInterface
@@ -16,5 +16,5 @@ interface PirateWrathManagerInterface
 
     public function decreaseWrath(User $user, int $amount): void;
 
-    public function setProtectionTimeoutFromPrestige(User $user, int $prestige, GameControllerInterface $game): void;
+    public function setProtectionTimeoutFromPrestige(User $user, int $prestige, ActionControllerContext $context): void;
 }

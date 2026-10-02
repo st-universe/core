@@ -47,11 +47,11 @@ final class ShowKnPlot implements ViewControllerInterface
         $game->setViewTemplate('html/communication/plotdetails.twig');
         $game->setPageTitle(sprintf('Plot: %s', $plot->getTitle()));
 
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_PLOTLIST=1', _('Plots'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_PLOTLIST=1', _('Plots'));
         $game->appendNavigationPart(
             sprintf(
-                'comm.php?%s=1&plotid=%d',
+                'communication.php?%s=1&plotid=%d',
                 self::VIEW_IDENTIFIER,
                 $plot->getId()
             ),

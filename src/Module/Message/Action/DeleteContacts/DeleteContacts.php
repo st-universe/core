@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeleteContacts;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
@@ -20,17 +20,17 @@ final class DeleteContacts implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         foreach ($this->deleteContactsRequest->getContactIds() as $contactId) {
             $contact = $this->contactRepository->find((int) $contactId);
-            if ($contact === null || $contact->getUserId() !== $game->getUser()->getId()) {
+            if ($contact === null || $contact->getUserId() !== $context->getUser()->getId()) {
                 continue;
             }
 
             //send info PM to contact
             $this->privateMessageSender->send(
-                $game->getUser()->getId(),
+                $context->getUser()->getId(),
                 $contact->getRecipientId(),
                 sprintf(
                     'Der Siedler betrachtet Dich nun nicht mehr als %s',
@@ -40,7 +40,7 @@ final class DeleteContacts implements ActionControllerInterface
 
             $this->contactRepository->delete($contact);
         }
-        $game->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
+        $context->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
     }
 
     #[\Override]

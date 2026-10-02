@@ -9,7 +9,7 @@ use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\User;
@@ -44,14 +44,14 @@ class AddBoardTest extends StuTestCase
     {
         static::expectException(AccessViolationException::class);
 
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
-        $game->shouldReceive('getUser->getAlliance')
+        $context->shouldReceive('getUser->getAlliance')
             ->withNoArgs()
             ->once()
             ->andReturnNull();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleThrowsIfUserMayNotEditAlliance(): void
@@ -59,10 +59,10 @@ class AddBoardTest extends StuTestCase
         static::expectException(AccessViolationException::class);
 
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $alliance = $this->mock(Alliance::class);
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
@@ -77,23 +77,23 @@ class AddBoardTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleErrorsIfNameIsTooShort(): void
     {
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $alliance = $this->mock(Alliance::class);
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(Boards::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Der Name muss mindestens 5 Zeichen lang sein')
             ->once();
 
@@ -112,26 +112,26 @@ class AddBoardTest extends StuTestCase
             ->once()
             ->andReturn('abcd');
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleCreatesBoard(): void
     {
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $alliance = $this->mock(Alliance::class);
         $board = $this->mock(AllianceBoard::class);
 
         $name = 'abcdc';
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(Boards::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Forum wurde erstellt')
             ->once();
 
@@ -165,7 +165,7 @@ class AddBoardTest extends StuTestCase
             ->with($name)
             ->once();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testPerformSessionCheckReturnsFalse(): void

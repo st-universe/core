@@ -8,6 +8,7 @@ use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
@@ -48,7 +49,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     public function activateFleet(
         int $shipId,
         SpacecraftSystemTypeEnum $type,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         $userId = $game->getUser()->getId();
 
@@ -151,7 +152,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     public function setLssMode(
         int $shipId,
         SpacecraftLssModeEnum $lssMode,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         $lss = $this->getTargetWrapper(
             $shipId,

@@ -12,7 +12,7 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
@@ -35,9 +35,9 @@ final class EditDetails implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $alliance = $user->getAlliance();
         if ($alliance === null) {
@@ -52,19 +52,19 @@ final class EditDetails implements ActionControllerInterface
 
         $name = $this->editDetailsRequest->getName();
         if (!CleanTextUtils::checkBBCode($name)) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
             return;
         }
 
         $name = CleanTextUtils::clearEmojis($this->editDetailsRequest->getName());
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($name);
         if ($name !== $nameWithoutUnicode) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($name) > 255) {
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 _('Der Name darf inklusive BBCode nur maximal 255 Zeichen lang sein')
             );
             return;
@@ -76,7 +76,7 @@ final class EditDetails implements ActionControllerInterface
         $acceptApplications = $this->editDetailsRequest->getAcceptApplications();
         $rgbCode = $this->editDetailsRequest->getRgbCode();
 
-        $game->setView(Edit::VIEW_IDENTIFIER);
+        $context->setView(Edit::VIEW_IDENTIFIER);
 
         if ($this->allianceActionManager->mayEditFactionMode($alliance, $user->getFactionId())) {
             if ($faction_mode === 1) {
@@ -104,32 +104,32 @@ final class EditDetails implements ActionControllerInterface
         }
 
         if (mb_strlen(trim($this->bbcodeParser->parse($name)->getAsText())) < 5) {
-            $game->getInfo()->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
+            $context->getInfo()->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
             return;
         }
 
         if (mb_strlen($homepage) > 0 && strpos($homepage, 'http') !== 0) {
-            $game->getInfo()->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
+            $context->getInfo()->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
             return;
         }
 
         if ($rgbCode !== '') {
             if (strlen($rgbCode) !== 7) {
-                $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
+                $context->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
                 return;
             }
 
             if (!$this->validHex($rgbCode)) {
-                $game->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
+                $context->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
                 return;
             }
 
             $alliance->setRgbCode($rgbCode);
         }
 
-        $this->updateJobTitle($this->editDetailsRequest->getJobIdFounder(), $this->editDetailsRequest->getJobTitleFounder(), $alliance, $game);
-        $this->updateJobTitle($this->editDetailsRequest->getJobIdSuccessor(), $this->editDetailsRequest->getJobTitleSuccessor(), $alliance, $game);
-        $this->updateJobTitle($this->editDetailsRequest->getJobIdDiplomatic(), $this->editDetailsRequest->getJobTitleDiplomatic(), $alliance, $game);
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdFounder(), $this->editDetailsRequest->getJobTitleFounder(), $alliance, $context);
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdSuccessor(), $this->editDetailsRequest->getJobTitleSuccessor(), $alliance, $context);
+        $this->updateJobTitle($this->editDetailsRequest->getJobIdDiplomatic(), $this->editDetailsRequest->getJobTitleDiplomatic(), $alliance, $context);
 
         $alliance->setName($name);
         $alliance->setHomepage($homepage);
@@ -137,17 +137,17 @@ final class EditDetails implements ActionControllerInterface
 
         $this->allianceRepository->save($alliance);
 
-        $game->getInfo()->addInformation(_('Die Allianz wurde editiert'));
+        $context->getInfo()->addInformation(_('Die Allianz wurde editiert'));
     }
 
-    private function updateJobTitle(int $jobId, string $title, \Stu\Orm\Entity\Alliance $alliance, GameControllerInterface $game): void
+    private function updateJobTitle(int $jobId, string $title, \Stu\Orm\Entity\Alliance $alliance, ActionControllerContext $context): void
     {
         if ($jobId === 0 || $title === '') {
             return;
         }
 
         if (strlen($title) < 3) {
-            $game->getInfo()->addInformation(_('Alle Postenbeschreibungen müssen mindestens 3 Zeichen lang sein'));
+            $context->getInfo()->addInformation(_('Alle Postenbeschreibungen müssen mindestens 3 Zeichen lang sein'));
             return;
         }
 

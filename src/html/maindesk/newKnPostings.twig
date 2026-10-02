@@ -3,7 +3,7 @@
 <table id="newknposts" class="tcal">
     <tr>
         <th colspan="2">
-            <a href="comm.php?user_mark=1#kn_post_{{ MARKED_KN_ID}}">
+            <a href="communication.php?user_mark=1#kn_post_{{ MARKED_KN_ID}}">
                 Neue KN-Beiträge ({{ NEW_KN_POSTING_COUNT }})
             </a>
         </th>
@@ -19,12 +19,12 @@
         <td>
             {% if data.getPlot%}
             <span>Plot:</span>
-            <a href="comm.php?mark={{ data.getMark }}&markedPost={{ data.getId }}#kn_post_{{ data.getId }}">
+            <a href="communication.php?mark={{ data.getMark }}&markedPost={{ data.getId }}#kn_post_{{ data.getId }}">
                 {{ data.getPlot.getTitle|bbcode }}
             </a>
             {% else %}
             <span>Titel:</span>
-            <a href="comm.php?mark={{ data.getMark }}&markedPost={{ data.getId }}#kn_post_{{ data.getId }}">{{
+            <a href="communication.php?mark={{ data.getMark }}&markedPost={{ data.getId }}#kn_post_{{ data.getId }}">{{
                 data.getTitle|bbcode }}</a>
             {% endif %}
         </td>

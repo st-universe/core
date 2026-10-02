@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Action\FinishTutorial;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\View\Noop\Noop;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
@@ -22,16 +22,16 @@ final class FinishTutorial implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
 
         $tutorialStep = $this->tutorialStepRepository->find(request::postIntFatal('stepId'));
         if ($tutorialStep === null) {
             throw new RuntimeException('Current Tutorial not found');
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $allStepsForView = $this->tutorialStepRepository->findBy([
             'module' => $tutorialStep->getModule(),

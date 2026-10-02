@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -37,12 +37,12 @@ final class EmailManagement implements
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $emailInput = request::postString('email');
         $this->loggerUtil->log('EmailManagement wurde aufgerufen mit email: ' . ($emailInput ?: 'LEER'));
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if ($user->getState() !== UserStateEnum::ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION: ' . $user->getState()->value);

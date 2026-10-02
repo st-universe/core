@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action;
 use request;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 
@@ -21,9 +21,9 @@ final class RenameBuildplan implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
         $buildplanId = request::postIntFatal('planid');
         $newName = CleanTextUtils::clearEmojis(request::postStringFatal('newName'));
@@ -34,18 +34,18 @@ final class RenameBuildplan implements ActionControllerInterface
 
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
         if ($newName !== $nameWithoutUnicode) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         if (mb_strlen($newName) > 255) {
-            $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
             return;
         }
 
         $plan = $this->spacecraftBuildplanRepository->find($buildplanId);
         if ($plan === null) {
-            $game->getInfo()->addInformation(_('Der Bauplan existiert nicht'));
+            $context->getInfo()->addInformation(_('Der Bauplan existiert nicht'));
             return;
         }
 
@@ -58,7 +58,7 @@ final class RenameBuildplan implements ActionControllerInterface
             $this->createLogEntry($oldName, $newName, $userId, $user->getName(), $plan->getUser()->getName());
         }
 
-        $game->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
+        $context->getInfo()->addInformation(_('Der Name des Bauplans wurde geändert'));
     }
 
     private function createLogEntry(string $oldName, string $newName, int $userId, string $userName, string $planuser): void

@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -27,11 +27,11 @@ final class CancelShipRepair implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = $this->request->getShipId();
 
         $obj = $this->colonyShipRepairRepository->getByShip($shipId);
@@ -52,7 +52,7 @@ final class CancelShipRepair implements ActionControllerInterface
         }
 
         $this->cancelRepair->cancelRepair($ship);
-        $game->getInfo()->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
+        $context->getInfo()->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
 
         $this->privateMessageSender->send(
             $userId,

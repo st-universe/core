@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
 use Stu\Module\Config\StuConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Orm\Entity\Colony;
@@ -18,16 +18,11 @@ use Stu\StuTestCase;
 class ManualColonyTickTest extends StuTestCase
 {
     private MockInterface&ManualColonyTickRequestInterface $request;
-
     private MockInterface&ColonyTickManagerInterface $colonyTickManager;
-
     private MockInterface&ColonyTickInterface $colonyTick;
-
     private MockInterface&ColonyRepositoryInterface $colonyRepository;
-
     private MockInterface&StuConfigInterface $config;
-
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ActionControllerContext $context;
 
     private ManualColonyTick $subject;
 
@@ -40,7 +35,7 @@ class ManualColonyTickTest extends StuTestCase
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
 
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ActionControllerContext::class);
 
         $this->subject = new ManualColonyTick(
             $this->request,
@@ -53,7 +48,7 @@ class ManualColonyTickTest extends StuTestCase
 
     public function testHandleExecutesForAllColoniesWhenRequestParameterEmpty(): void
     {
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
 
@@ -71,11 +66,11 @@ class ManualColonyTickTest extends StuTestCase
             ->with(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT)
             ->once();
 
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->context->shouldReceive('getInfo->addInformation')
             ->with('Der Kolonie-Tick für alle Kolonien wurde durchgeführt!')
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleExecutesForColonyGroupWhenGroupParamSet(): void
@@ -83,7 +78,7 @@ class ManualColonyTickTest extends StuTestCase
         $groupId = 5;
         $groupCount = 42;
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
 
@@ -106,18 +101,18 @@ class ManualColonyTickTest extends StuTestCase
             ->with($groupId, $groupCount)
             ->once();
 
-        $this->game->shouldReceive('getInfo->addInformationf')
+        $this->context->shouldReceive('getInfo->addInformationf')
             ->with('Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!', $groupId, $groupCount)
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleDoNothingWhenColonyDoesNotExist(): void
     {
         $colonyId = 5;
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
 
@@ -131,11 +126,11 @@ class ManualColonyTickTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $this->game->shouldReceive('getInfo->addInformationf')
+        $this->context->shouldReceive('getInfo->addInformationf')
             ->with('Keine Kolonie mit der ID %d vorhanden!', $colonyId)
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleExecutesForSingleColonyWhenColonyExists(): void
@@ -143,7 +138,7 @@ class ManualColonyTickTest extends StuTestCase
         $colonyId = 5;
         $colony = $this->mock(Colony::class);
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowTicks::VIEW_IDENTIFIER)
             ->once();
 
@@ -161,10 +156,10 @@ class ManualColonyTickTest extends StuTestCase
             ->with($colony)
             ->once();
 
-        $this->game->shouldReceive('getInfo->addInformationf')
+        $this->context->shouldReceive('getInfo->addInformationf')
             ->with('Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!', $colonyId)
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 }

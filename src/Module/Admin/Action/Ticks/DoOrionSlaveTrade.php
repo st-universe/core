@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action\Ticks;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Maintenance\OrionSlaveTrade;
 
 final class DoOrionSlaveTrade implements ActionControllerInterface
@@ -16,12 +16,12 @@ final class DoOrionSlaveTrade implements ActionControllerInterface
 
     public function __construct(private OrionSlaveTrade $orionSlaveTrade, private EntityManagerInterface $entityManager) {}
 
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $context->setView(ShowTicks::VIEW_IDENTIFIER);
         $this->orionSlaveTrade->handle();
         $this->entityManager->flush();
-        $game->getInfo()->addInformation('Der Orion Sklavenhandel wurde durchgeführt');
+        $context->getInfo()->addInformation('Der Orion Sklavenhandel wurde durchgeführt');
     }
 
     public function performSessionCheck(): bool

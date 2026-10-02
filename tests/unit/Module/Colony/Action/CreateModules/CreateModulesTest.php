@@ -11,7 +11,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\Commodity;
@@ -49,7 +49,7 @@ class CreateModulesTest extends StuTestCase
         $planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $storageManager = $this->mock(StorageManagerInterface::class);
         $colonyRepository = $this->mock(ColonyRepositoryInterface::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $colony = $this->mock(Colony::class);
         $changeable = $this->mock(ColonyChangeable::class);
@@ -62,13 +62,13 @@ class CreateModulesTest extends StuTestCase
         $cost1 = $this->mock(ModuleCost::class);
         $cost2 = $this->mock(ModuleCost::class);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowColony::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->andReturn($user);
-        $game->shouldReceive('getInfo')
+        $context->shouldReceive('getInfo')
             ->withNoArgs()
             ->andReturn($informationWrapper);
 
@@ -180,7 +180,7 @@ class CreateModulesTest extends StuTestCase
             $colonyRepository
         );
 
-        $subject->handle($game);
+        $subject->handle($context);
 
         $this->assertSame(
             [

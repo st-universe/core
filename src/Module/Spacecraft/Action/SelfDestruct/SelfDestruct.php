@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\SelfDestruct;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
@@ -37,10 +37,10 @@ final class SelfDestruct implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -52,7 +52,7 @@ final class SelfDestruct implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
@@ -63,16 +63,16 @@ final class SelfDestruct implements ActionControllerInterface
 
         $trimmedCode = trim($code);
         if ($trimmedCode !== substr(md5($ship->getName()), 0, 6)) {
-            $game->getInfo()->addInformation(_('Der Selbstzerstörungscode war fehlerhaft'));
-            $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+            $context->getInfo()->addInformation(_('Der Selbstzerstörungscode war fehlerhaft'));
+            $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
 
-        $game->setView(ModuleEnum::SHIP);
+        $context->setView(ModuleEnum::SHIP);
 
         $tractoredShipWrapperToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpDriveState()) ? $wrapper->getTractoredShipWrapper() : null;
 
-        $game->getInfo()->addInformation(_('Die Selbstzerstörung war erfolgreich'));
+        $context->getInfo()->addInformation(_('Die Selbstzerstörung war erfolgreich'));
 
         $prestigeAmount = $ship->getRump()->getPrestige();
         $rumpName = $ship->getRump()->getName();
@@ -81,12 +81,12 @@ final class SelfDestruct implements ActionControllerInterface
             null,
             $wrapper,
             SpacecraftDestructionCauseEnum::SELF_DESTRUCTION,
-            $game->getInfo()
+            $context->getInfo()
         );
 
         //Alarm-Rot check for tractor ship
         if ($tractoredShipWrapperToTriggerAlertRed !== null) {
-            $this->alertReactionFacade->doItAll($tractoredShipWrapperToTriggerAlertRed, $game->getInfo());
+            $this->alertReactionFacade->doItAll($tractoredShipWrapperToTriggerAlertRed, $context->getInfo());
         }
 
         if (

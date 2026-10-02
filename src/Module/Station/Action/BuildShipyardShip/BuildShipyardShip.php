@@ -7,7 +7,7 @@ namespace Stu\Module\Station\Action\BuildShipyardShip;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\SpacecraftBuildplan;
@@ -28,15 +28,15 @@ final class BuildShipyardShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
         $shipyard = $wrapper->get();
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipyardId = $shipyard->getId();
 
         $plan = $this->spacecraftBuildplanRepository->find(request::getIntFatal('planid'));
@@ -44,23 +44,23 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
-        if ($plan->getUser()->getId() !== $game->getUser()->getId()) {
+        if ($plan->getUser()->getId() !== $context->getUser()->getId()) {
             return;
         }
 
-        if (!$shipyard->hasEnoughCrew($game)) {
+        if (!$shipyard->hasEnoughCrew($context)) {
             return;
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($this->shipyardShipQueueRepository->getAmountByShipyard($shipyardId) > 0) {
-            $game->getInfo()->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
+            $context->getInfo()->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
             return;
         }
 
         if ($plan->getCount() !== null && $plan->getCount() <= 0) {
-            $game->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
+            $context->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
             return;
         }
 
@@ -68,7 +68,7 @@ final class BuildShipyardShip implements ActionControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < $rump->getEpsCost()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
                 $epsSystem === null ? 0 : $epsSystem->getEps()
@@ -83,7 +83,7 @@ final class BuildShipyardShip implements ActionControllerInterface
             $module = $moduleObj->getModule();
 
             if (!$storage->containsKey($module->getCommodityId())) {
-                $game->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
+                $context->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
         }
@@ -109,7 +109,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         $this->stationRepository->save($shipyard);
         $this->shipyardShipQueueRepository->save($queue);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
             $rump->getName(),
             date("d.m.Y H:i", (time() + $plan->getBuildtime()))

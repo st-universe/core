@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Transfer\Wrapper\SpacecraftStorageCrewLogic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Database\View\ShowCrewManagement\ShowCrewManagement;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -32,11 +32,11 @@ final class DismissCrew implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $spacecrafts = [];
         $dismissedCrewCount = 0;
 
@@ -86,7 +86,7 @@ final class DismissCrew implements ActionControllerInterface
             $this->spacecraftStorageCrewLogic->postCrewTransfer(
                 $wrapper,
                 $data['foreignCrewChange'],
-                $game->getInfo()
+                $context->getInfo()
             );
 
             if ($this->hasEnoughCrew($spacecraft)) {
@@ -101,7 +101,7 @@ final class DismissCrew implements ActionControllerInterface
         }
 
         if ($dismissedCrewCount > 0) {
-            $game->getInfo()->addInformationf('%d Crewman wurde(n) entlassen', $dismissedCrewCount);
+            $context->getInfo()->addInformationf('%d Crewman wurde(n) entlassen', $dismissedCrewCount);
         }
     }
 

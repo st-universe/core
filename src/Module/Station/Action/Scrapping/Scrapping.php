@@ -10,7 +10,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -38,9 +38,9 @@ final class Scrapping implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
@@ -58,33 +58,33 @@ final class Scrapping implements ActionControllerInterface
 
         $trimmedCode = trim($code);
         if ($trimmedCode !== substr(md5($station->getName()), 0, 6)) {
-            $game->getInfo()->addInformation(_('Der Bestätigungscode war fehlerhaft'));
+            $context->getInfo()->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }
 
         if ($station->getRump()->getCategoryId() === SpacecraftRumpCategoryEnum::CONSTRUCTION) {
 
-            $game->setView(ModuleEnum::STATION);
+            $context->setView(ModuleEnum::STATION);
 
             $progress = $station->getConstructionProgress();
             if ($progress !== null) {
                 $this->constructionProgressRepository->delete($progress);
             }
             $this->spacecraftRemover->remove($station);
-            $game->getInfo()->addInformation(_('Konstrukt wurde entfernt'));
+            $context->getInfo()->addInformation(_('Konstrukt wurde entfernt'));
             return;
         }
 
         if ($station->getCrewCount() > 0) {
-            $game->getInfo()->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
+            $context->getInfo()->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
             return;
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $this->startScrapping($station);
 
-        $game->getInfo()->addInformation(_('Das Demontieren hat begonnen'));
+        $context->getInfo()->addInformation(_('Das Demontieren hat begonnen'));
     }
 
     private function startScrapping(Station $station): void

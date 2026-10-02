@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action\CreateDeal;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Entity\Deals;
@@ -30,10 +30,10 @@ final class CreateDeal implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         $dealType = request::postInt('deal_type');
         $dealCount = request::postInt('deal_count');
         $factionId = request::postInt('faction_restriction');
@@ -52,12 +52,12 @@ final class CreateDeal implements ActionControllerInterface
         $giveType = request::postInt('give_type');
 
         if ($this->gameUserRoleChecker->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
         if (empty($startDate) || empty($startTime) || empty($endDate) || empty($endTime)) {
-            $game->getInfo()->addInformation("Start- oder Endzeit fehlt");
+            $context->getInfo()->addInformation("Start- oder Endzeit fehlt");
             return;
         }
 
@@ -65,23 +65,23 @@ final class CreateDeal implements ActionControllerInterface
         $endTimestamp = $this->parseDateTime($endDate, $endTime);
 
         if ($startTimestamp === false || $endTimestamp === false) {
-            $game->getInfo()->addInformation("Ungültiges Datum oder Zeitformat. Bitte verwende TT.MM.JJJJ und HH:MM");
+            $context->getInfo()->addInformation("Ungültiges Datum oder Zeitformat. Bitte verwende TT.MM.JJJJ und HH:MM");
             return;
         }
 
         if ($startTimestamp >= $endTimestamp) {
-            $game->getInfo()->addInformation("Endzeit muss nach Startzeit liegen");
+            $context->getInfo()->addInformation("Endzeit muss nach Startzeit liegen");
             return;
         }
 
         if ($startTimestamp <= time()) {
-            $game->getInfo()->addInformation("Startzeit muss in der Zukunft liegen");
+            $context->getInfo()->addInformation("Startzeit muss in der Zukunft liegen");
             return;
         }
 
         $isDeal = $dealType === 1;
         if ($isDeal && $dealCount < 0) {
-            $game->getInfo()->addInformation("Bei einem Deal darf die Anzahl nicht negativ sein");
+            $context->getInfo()->addInformation("Bei einem Deal darf die Anzahl nicht negativ sein");
             return;
         }
 
@@ -89,12 +89,12 @@ final class CreateDeal implements ActionControllerInterface
         $hasWantPrestige = $wantPrestige > 0;
 
         if ($hasWantCommodity && $hasWantPrestige) {
-            $game->getInfo()->addInformation("Es kann entweder eine Ware oder Prestige verlangt werden, nicht beides");
+            $context->getInfo()->addInformation("Es kann entweder eine Ware oder Prestige verlangt werden, nicht beides");
             return;
         }
 
         if (!$hasWantCommodity && !$hasWantPrestige) {
-            $game->getInfo()->addInformation("Es muss entweder eine Ware oder Prestige verlangt werden");
+            $context->getInfo()->addInformation("Es muss entweder eine Ware oder Prestige verlangt werden");
             return;
         }
 
@@ -102,12 +102,12 @@ final class CreateDeal implements ActionControllerInterface
         $hasGiveBuildplan = $giveBuildplanId > 0;
 
         if ($hasGiveCommodity && $hasGiveBuildplan) {
-            $game->getInfo()->addInformation("Es kann entweder eine Ware oder ein Schiff/Bauplan angeboten werden, nicht beides");
+            $context->getInfo()->addInformation("Es kann entweder eine Ware oder ein Schiff/Bauplan angeboten werden, nicht beides");
             return;
         }
 
         if (!$hasGiveCommodity && !$hasGiveBuildplan) {
-            $game->getInfo()->addInformation("Es muss entweder eine Ware oder ein Schiff/Bauplan angeboten werden");
+            $context->getInfo()->addInformation("Es muss entweder eine Ware oder ein Schiff/Bauplan angeboten werden");
             return;
         }
 
@@ -115,7 +115,7 @@ final class CreateDeal implements ActionControllerInterface
         if ($hasWantCommodity) {
             $wantedCommodity = $this->commodityRepository->find($wantCommodityId);
             if ($wantedCommodity === null) {
-                $game->getInfo()->addInformation("Ungültige verlangte Ware mit ID: " . $wantCommodityId);
+                $context->getInfo()->addInformation("Ungültige verlangte Ware mit ID: " . $wantCommodityId);
                 return;
             }
         }
@@ -124,7 +124,7 @@ final class CreateDeal implements ActionControllerInterface
         if ($hasGiveCommodity) {
             $giveCommodity = $this->commodityRepository->find($giveCommodityId);
             if ($giveCommodity === null) {
-                $game->getInfo()->addInformation("Ungültige angebotene Ware mit ID: " . $giveCommodityId);
+                $context->getInfo()->addInformation("Ungültige angebotene Ware mit ID: " . $giveCommodityId);
                 return;
             }
         }
@@ -133,7 +133,7 @@ final class CreateDeal implements ActionControllerInterface
         if ($hasGiveBuildplan) {
             $buildplan = $this->buildplanRepository->find($giveBuildplanId);
             if ($buildplan === null) {
-                $game->getInfo()->addInformation("Ungültiger Bauplan mit ID: " . $giveBuildplanId);
+                $context->getInfo()->addInformation("Ungültiger Bauplan mit ID: " . $giveBuildplanId);
                 return;
             }
         }
@@ -142,7 +142,7 @@ final class CreateDeal implements ActionControllerInterface
         if ($factionId > 0) {
             $faction = $this->factionRepository->find($factionId);
             if ($faction === null) {
-                $game->getInfo()->addInformation("Ungültige Fraktion mit ID: " . $factionId);
+                $context->getInfo()->addInformation("Ungültige Fraktion mit ID: " . $factionId);
                 return;
             }
         }
@@ -191,11 +191,11 @@ final class CreateDeal implements ActionControllerInterface
 
         $text = $this->createLogText($user->getName(), $deal, $reasonStr);
 
-        if ($game->getUser()->isNpc()) {
+        if ($context->getUser()->isNpc()) {
             $this->createLogEntry($text, $user->getId());
         }
 
-        $game->getInfo()->addInformation("Deal erfolgreich erstellt");
+        $context->getInfo()->addInformation("Deal erfolgreich erstellt");
     }
 
     private function parseDateTime(string $date, string $time): int|false

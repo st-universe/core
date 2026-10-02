@@ -24,9 +24,9 @@ final class ShowWriteKn implements ViewControllerInterface
     public function handle(ViewControllerContext $game): void
     {
         $game->setViewTemplate('html/communication/writeKn.twig');
-        $game->appendNavigationPart('comm.php', 'KommNet');
+        $game->appendNavigationPart('communication.php', 'KommNet');
         $game->appendNavigationPart(
-            sprintf('comm.php?%s=1', self::VIEW_IDENTIFIER),
+            sprintf('communication.php?%s=1', self::VIEW_IDENTIFIER),
             'Beitrag schreiben'
         );
         $game->setPageTitle('Beitrag schreiben');

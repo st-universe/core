@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\SelectTorpedo;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -23,9 +23,9 @@ final class SelectTorpedo implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if (!request::has('torpedo_type')) {
             return;
@@ -33,7 +33,7 @@ final class SelectTorpedo implements ActionControllerInterface
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
         $spacecraft = $wrapper->get();
         $torpedoTypeId = request::getIntFatal('torpedo_type');
@@ -47,7 +47,7 @@ final class SelectTorpedo implements ActionControllerInterface
         }
 
         if ($selectedStorage === null) {
-            $game->getInfo()->addInformation('Der ausgewählte Torpedotyp ist nicht schussbereit geladen');
+            $context->getInfo()->addInformation('Der ausgewählte Torpedotyp ist nicht schussbereit geladen');
             return;
         }
 
@@ -56,7 +56,7 @@ final class SelectTorpedo implements ActionControllerInterface
             $this->torpedoStorageRepository->save($torpedoStorage);
         }
 
-        $game->getInfo()->addInformationf('%s ist nun als schussbereiter Torpedotyp ausgewählt', $selectedStorage->getTorpedo()->getName());
+        $context->getInfo()->addInformationf('%s ist nun als schussbereiter Torpedotyp ausgewählt', $selectedStorage->getTorpedo()->getName());
     }
 
     #[\Override]

@@ -8,7 +8,7 @@ use request;
 use RuntimeException;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\ReactorUtilInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -28,11 +28,11 @@ final class LoadReactor implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -56,7 +56,7 @@ final class LoadReactor implements ActionControllerInterface
                 $reactor = $wrapper->getReactorWrapper();
 
                 if ($reactor === null) {
-                    $game->getInfo()->addInformation(sprintf(
+                    $context->getInfo()->addInformation(sprintf(
                         _('%s: Kein Reaktor vorhanden'),
                         $ship->getName()
                     ));
@@ -64,7 +64,7 @@ final class LoadReactor implements ActionControllerInterface
                 }
 
                 if (!$ship->hasEnoughCrew()) {
-                    $game->getInfo()->addInformation(sprintf(
+                    $context->getInfo()->addInformation(sprintf(
                         _('%s: Nicht genügend Crew vorhanden'),
                         $ship->getName()
                     ));
@@ -78,10 +78,10 @@ final class LoadReactor implements ActionControllerInterface
                     $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
                     if ($loadMessage !== null) {
-                        $game->getInfo()->addInformation($loadMessage);
+                        $context->getInfo()->addInformation($loadMessage);
                     }
                 } else {
-                    $game->getInfo()->addInformation(sprintf(
+                    $context->getInfo()->addInformation(sprintf(
                         _('%s: Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
                         $ship->getName(),
                         $reactor->get()->getSystemType()->getDescription()
@@ -89,32 +89,32 @@ final class LoadReactor implements ActionControllerInterface
 
                     foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                         $commodity = $this->commodityCache->get($commodityId);
-                        $game->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
+                        $context->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
                     }
                     continue;
                 }
             }
-            $game->getInfo()->addInformationArray($msg, true);
+            $context->getInfo()->addInformationArray($msg, true);
             return;
         }
 
         $reactor = $wrapper->getReactorWrapper();
 
         if ($reactor === null) {
-            $game->getInfo()->addInformation(_('Kein Reaktor vorhanden'));
+            $context->getInfo()->addInformation(_('Kein Reaktor vorhanden'));
             return;
         }
 
         $ship = $wrapper->get();
         if (!$ship->hasEnoughCrew()) {
-            $game->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
+            $context->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
 
         $systemName = $reactor->get()->getSystemType()->getDescription();
 
         if ($reactor->getLoad() >= $reactor->getCapacity()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Der %s ist bereits vollständig geladen'),
                 $systemName
             );
@@ -124,17 +124,17 @@ final class LoadReactor implements ActionControllerInterface
             $loadMessage = $this->reactorUtil->loadReactor($ship, $requestedLoad, null, $reactor);
 
             if ($loadMessage !== null) {
-                $game->getInfo()->addInformation($loadMessage);
+                $context->getInfo()->addInformation($loadMessage);
             }
         } else {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es werden mindestens folgende Waren zum Aufladen des %ss benötigt:'),
                 $systemName
             );
 
             foreach ($reactor->get()->getLoadCost() as $commodityId => $loadCost) {
                 $commodity = $this->commodityCache->get($commodityId);
-                $game->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
+                $context->getInfo()->addInformation(sprintf(_('%d %s'), $loadCost, $commodity->getName()));
             }
         }
     }

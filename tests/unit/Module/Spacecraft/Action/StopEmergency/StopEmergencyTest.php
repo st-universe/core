@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\StopEmergency;
 
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -51,12 +51,12 @@ class StopEmergencyTest extends StuTestCase
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
@@ -87,7 +87,7 @@ class StopEmergencyTest extends StuTestCase
             ->andReturnFalse();
 
         $this->subject->handle(
-            $game
+            $context
         );
     }
 
@@ -99,18 +99,18 @@ class StopEmergencyTest extends StuTestCase
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $user = $this->mock(User::class);
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $emergency = $this->mock(SpacecraftEmergency::class);
         $computer = $this->mock(ComputerSystemData::class);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Notrufsignal wurde beendet')
             ->once();
 
@@ -172,7 +172,7 @@ class StopEmergencyTest extends StuTestCase
             ->once();
 
         $this->subject->handle(
-            $game
+            $context
         );
     }
 

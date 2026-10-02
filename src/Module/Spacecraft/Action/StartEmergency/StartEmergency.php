@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\StartEmergency;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -28,13 +28,13 @@ final class StartEmergency implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             $this->startEmergencyRequest->getShipId(),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $ship = $wrapper->get();
@@ -47,12 +47,12 @@ final class StartEmergency implements ActionControllerInterface
         $text = $this->startEmergencyRequest->getEmergencyText();
 
         if (mb_strlen(trim($text)) < 1) {
-            $game->getInfo()->addInformation('Nachricht leer oder unzulässige Zeichen verwendet.');
+            $context->getInfo()->addInformation('Nachricht leer oder unzulässige Zeichen verwendet.');
             return;
         }
 
         if (mb_strlen($text) > self::CHARACTER_LIMIT) {
-            $game->getInfo()->addInformationf('Maximal %d Zeichen erlaubt', self::CHARACTER_LIMIT);
+            $context->getInfo()->addInformationf('Maximal %d Zeichen erlaubt', self::CHARACTER_LIMIT);
             return;
         }
 
@@ -63,7 +63,7 @@ final class StartEmergency implements ActionControllerInterface
         $this->spacecraftEmergencyRepository->save($emergency);
         $wrapper->getComputerSystemDataMandatory()->setIsInEmergency(true)->update();
 
-        $game->getInfo()->addInformation('Das Notrufsignal wurde gestartet');
+        $context->getInfo()->addInformation('Das Notrufsignal wurde gestartet');
     }
 
     #[\Override]

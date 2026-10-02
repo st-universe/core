@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -24,24 +24,24 @@ final class AddKnPlotMember implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId() || !$plot->isActive()) {
+        if ($plot === null || $plot->getUserId() !== $context->getUser()->getId() || !$plot->isActive()) {
             return;
         }
 
         $recipient = $this->userRepository->find($this->addKnPlotMemberRequest->getRecipientId());
         if ($recipient === null) {
-            $game->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
+            $context->getInfo()->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
         if ($plot->getUserId() === $recipient->getId()) {
-            $game->getInfo()->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
+            $context->getInfo()->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
             return;
         }
         if ($this->rpgPlotMemberRepository->getByPlotAndUser($plot->getId(), $recipient->getId()) !== null) {
-            $game->getInfo()->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
+            $context->getInfo()->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
             return;
         }
 
@@ -52,12 +52,12 @@ final class AddKnPlotMember implements ActionControllerInterface
         $this->rpgPlotMemberRepository->save($member);
 
         $this->privateMessageSender->send(
-            $game->getUser()->getId(),
+            $context->getUser()->getId(),
             $recipient->getId(),
             sprintf(_('Du wurdest dem RPG-Plot \'%s\' als Schreiber hinzugefügt'), $plot->getTitle())
         );
 
-        $game->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
+        $context->getInfo()->addInformation(_('Der Spieler wurde hinzugefügt'));
     }
 
     #[\Override]

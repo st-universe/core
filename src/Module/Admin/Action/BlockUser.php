@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action;
 use request;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -32,9 +32,9 @@ final class BlockUser implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Playerlist::VIEW_IDENTIFIER);
+        $context->setView(Playerlist::VIEW_IDENTIFIER);
 
         $this->loggerUtil->log('A');
         // only Admins can trigger ticks
@@ -46,13 +46,13 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser = $this->blockedUserRepository->find($userIdToBlock);
 
         if ($userToBlock === null) {
-            $game->getInfo()->addInformation(_('Der User konnte nicht gefunden werden!'));
+            $context->getInfo()->addInformation(_('Der User konnte nicht gefunden werden!'));
             return;
         }
 
         if ($blockedUser !== null) {
             $this->loggerUtil->log('D');
-            $game->getInfo()->addInformation(_('Dieser User ist bereits blockiert!'));
+            $context->getInfo()->addInformation(_('Dieser User ist bereits blockiert!'));
             return;
         }
 
@@ -76,7 +76,7 @@ final class BlockUser implements ActionControllerInterface
 
         $this->loggerUtil->log('E');
 
-        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
+        $context->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
     }
 
     #[\Override]

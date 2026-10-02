@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
@@ -27,32 +27,32 @@ final class RejectQuestApplication implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowNPCQuests::VIEW_IDENTIFIER);
+        $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questUserIdParameter = request::postInt('quest_user_id');
 
         if ($questUserIdParameter === 0) {
-            $game->getInfo()->addInformation('Ungültige Quest-User-ID');
+            $context->getInfo()->addInformation('Ungültige Quest-User-ID');
             return;
         }
 
         $questUser = $this->npcQuestUserRepository->find($questUserIdParameter);
 
         if ($questUser === null) {
-            $game->getInfo()->addInformation('Quest-User nicht gefunden');
+            $context->getInfo()->addInformation('Quest-User nicht gefunden');
             return;
         }
 
         $quest = $questUser->getQuest();
-        if ($quest === null || $quest->getUserId() !== $game->getUser()->getId()) {
-            $game->getInfo()->addInformation('Du bist nicht der Ersteller dieser Quest');
+        if ($quest === null || $quest->getUserId() !== $context->getUser()->getId()) {
+            $context->getInfo()->addInformation('Du bist nicht der Ersteller dieser Quest');
             return;
         }
 
         if ($questUser->getMode() !== QuestUserModeEnum::APPLICANT) {
-            $game->getInfo()->addInformation('User ist kein Bewerber');
+            $context->getInfo()->addInformation('User ist kein Bewerber');
             return;
         }
 
@@ -64,8 +64,8 @@ final class RejectQuestApplication implements ActionControllerInterface
             $logEntry = $this->npcQuestLogRepository->prototype();
             $logEntry->setQuestId($quest->getId());
             $logEntry->setQuest($quest);
-            $logEntry->setUserId($game->getUser()->getId());
-            $logEntry->setUser($game->getUser());
+            $logEntry->setUserId($context->getUser()->getId());
+            $logEntry->setUser($context->getUser());
             $logEntry->setMode(1);
             $logEntry->setDate(time());
             $logEntry->setText(sprintf(
@@ -84,11 +84,11 @@ final class RejectQuestApplication implements ActionControllerInterface
                     $quest->getTitle()
                 ),
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
+                sprintf('/communication.php?SHOW_QUEST=1&questid=%d', $quest->getId())
             );
         }
 
-        $game->getInfo()->addInformation('Bewerbung wurde abgelehnt');
+        $context->getInfo()->addInformation('Bewerbung wurde abgelehnt');
     }
 
     #[Override]

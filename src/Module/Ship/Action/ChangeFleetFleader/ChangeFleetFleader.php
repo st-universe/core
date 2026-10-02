@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ChangeFleetFleader;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -18,9 +18,9 @@ final class ChangeFleetFleader implements ActionControllerInterface
     public function __construct(private ShipLoaderInterface $shipLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
@@ -52,14 +52,14 @@ final class ChangeFleetFleader implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $fleet->setLeadShip($target);
 
         $ship->setIsFleetLeader(false);
         $target->setIsFleetLeader(true);
 
-        $game->getInfo()->addInformation(sprintf(_('Die %s führt nun die Flotte an'), $target->getName()));
+        $context->getInfo()->addInformation(sprintf(_('Die %s führt nun die Flotte an'), $target->getName()));
     }
 
     #[\Override]

@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action\EndNPCQuest;
 use Override;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
@@ -27,9 +27,9 @@ final class EndNPCQuest implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowNPCQuests::VIEW_IDENTIFIER);
+        $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questId = request::postInt('quest_id');
 
@@ -39,7 +39,7 @@ final class EndNPCQuest implements ActionControllerInterface
 
         $quest = $this->npcQuestRepository->find($questId);
 
-        if ($quest === null || $quest->getUserId() !== $game->getUser()->getId()) {
+        if ($quest === null || $quest->getUserId() !== $context->getUser()->getId()) {
             return;
         }
 
@@ -54,8 +54,8 @@ final class EndNPCQuest implements ActionControllerInterface
         $logEntry = $this->npcQuestLogRepository->prototype();
         $logEntry->setQuestId($questId);
         $logEntry->setQuest($quest);
-        $logEntry->setUserId($game->getUser()->getId());
-        $logEntry->setUser($game->getUser());
+        $logEntry->setUserId($context->getUser()->getId());
+        $logEntry->setUser($context->getUser());
         $logEntry->setMode(2);
         $logEntry->setDate($currentTime);
         $logEntry->setText(sprintf(
@@ -91,7 +91,7 @@ final class EndNPCQuest implements ActionControllerInterface
                 $user->getId(),
                 $text,
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
+                sprintf('/communication.php?SHOW_QUEST=1&questid=%d', $quest->getId())
             );
         }
     }

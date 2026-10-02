@@ -13,7 +13,7 @@ use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -49,11 +49,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             request::postIntFatal('id'),
@@ -79,29 +79,29 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_UNCLOAKED,
                 InteractionCheckType::EXPECT_SOURCE_UNWARPED
             ])
-            ->check($game->getInfo(), false)) {
+            ->check($context->getInfo(), false)) {
             return;
         }
 
         if ($this->isTargetHeldByForeignTholianWeb($target, $userId)) {
-            $game->getInfo()->addInformation('Rettungskapseln können nur vom Besitzer des Energienetzes geborgen werden');
+            $context->getInfo()->addInformation('Rettungskapseln können nur vom Besitzer des Energienetzes geborgen werden');
             return;
         }
 
         if ($target->getCrewCount() === 0) {
-            $game->getInfo()->addInformation('Keine Rettungskapseln vorhanden');
+            $context->getInfo()->addInformation('Keine Rettungskapseln vorhanden');
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < 1) {
-            $game->getInfo()->addInformationf('Zum Bergen der Rettungskapseln wird %d Energie benötigt', 1);
+            $context->getInfo()->addInformationf('Zum Bergen der Rettungskapseln wird %d Energie benötigt', 1);
             return;
         }
         if ($this->cancelRepair->cancelRepair($spacecraft)) {
-            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($spacecraft instanceof Ship && $this->cancelRetrofit->cancelRetrofit($spacecraft)) {
-            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
 
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
@@ -110,7 +110,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
 
         //send PMs to crew owners
-        $success = $this->sendPMsToCrewOwners($crewmanPerUser, $spacecraft, $target, $game);
+        $success = $this->sendPMsToCrewOwners($crewmanPerUser, $spacecraft, $target, $context);
         if (!$success) {
             return;
         }
@@ -161,9 +161,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         array $crewmanPerUser,
         Spacecraft $spacecraft,
         Spacecraft $target,
-        GameControllerInterface $game
+        ActionControllerContext $context
     ): bool {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $sentGameInfoForForeignCrew = false;
         $closestTradepost = null;
@@ -173,13 +173,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 if ($closestTradepost === null) {
                     $crewOwner = $this->userRepository->find($ownerId);
                     if ($crewOwner === null) {
-                        $game->getInfo()->addInformation('Crew-Besitzer nicht gefunden');
+                        $context->getInfo()->addInformation('Crew-Besitzer nicht gefunden');
                         return false;
                     }
 
                     $closestTradepost = $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $crewOwner);
                     if ($closestTradepost === null) {
-                        $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die fremde Crew überstellt werden könnte');
+                        $context->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die fremde Crew überstellt werden könnte');
                         return false;
                     }
                 }
@@ -189,7 +189,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $ownerId,
                     sprintf(
                         _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an den Handelsposten "%s" (%s) überstellt.'),
-                        $game->getUser()->getName(),
+                        $context->getUser()->getName(),
                         $count,
                         $closestTradepost->getName(),
                         $closestTradepost->getStation()->getSectorString()
@@ -202,21 +202,21 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     }
                 }
                 if (!$sentGameInfoForForeignCrew) {
-                    $game->getInfo()->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
+                    $context->getInfo()->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
                     $sentGameInfoForForeignCrew = true;
                 }
             } elseif ($this->gotEnoughFreeTroopQuarters($spacecraft, $count)) {
-                $this->crewCreator->createCrewAssignments($spacecraft, $target, $count, $game->getUser());
-                $game->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
+                $this->crewCreator->createCrewAssignments($spacecraft, $target, $count, $context->getUser());
+                $context->getInfo()->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
             } else {
-                $closestTradepost ??= $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $game->getUser());
+                $closestTradepost ??= $this->tradePostRepository->getClosestTradePost($spacecraft->getLocation(), $context->getUser());
 
                 if ($closestTradepost === null) {
-                    $game->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die eigene Crew überstellt werden könnte');
+                    $context->getInfo()->addInformation('Kein Handelposten in der Nähe, an den die eigene Crew überstellt werden könnte');
                     return false;
                 }
 
-                $game->getInfo()->addInformation($this->transferToClosestLocation->transfer(
+                $context->getInfo()->addInformation($this->transferToClosestLocation->transfer(
                     $spacecraft,
                     $target,
                     $count,

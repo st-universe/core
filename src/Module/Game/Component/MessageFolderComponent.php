@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Component;
 
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Lib\Component\ComponentInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -24,10 +24,8 @@ final class MessageFolderComponent implements ComponentInterface
     ) {}
 
     #[\Override]
-    public function setTemplateVariables(GameControllerInterface $game): void
+    public function setTemplateVariables(User $user, TemplateInterface $template): void
     {
-        $user = $game->getUser();
-
         $pmFolder = [
             PrivateMessageFolderTypeEnum::SPECIAL_MAIN,
             PrivateMessageFolderTypeEnum::SPECIAL_SHIP,
@@ -52,7 +50,7 @@ final class MessageFolderComponent implements ComponentInterface
             $folder[$folderType->value] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
-        $game->setTemplateVar('PM', $folder);
+        $template->setTemplateVar('PM', $folder);
     }
 
     private function hasStationsPmCategory(User $user): bool

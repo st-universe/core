@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -52,7 +52,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Handelstransfermenü'));
-        if ($game->getViewContext(ViewContextTypeEnum::NO_AJAX) === true) {
+        if ($game->getViewContextMetadata(ViewContextMetadataTypeEnum::NO_AJAX) === true) {
             $game->showMacro('html/spacecraft/trademenu.twig');
         } else {
             $game->setMacroInAjaxWindow('html/spacecraft/trademenu.twig');

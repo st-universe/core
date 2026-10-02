@@ -41,11 +41,11 @@ class ShowWriteKnTest extends StuTestCase
             ->with('html/communication/writeKn.twig')
             ->once();
         $game->shouldReceive('appendNavigationPart')
-            ->with('comm.php', 'KommNet')
+            ->with('communication.php', 'KommNet')
             ->once();
         $game->shouldReceive('appendNavigationPart')
             ->with(
-                sprintf('comm.php?%s=1', ShowWriteKn::VIEW_IDENTIFIER),
+                sprintf('communication.php?%s=1', ShowWriteKn::VIEW_IDENTIFIER),
                 'Beitrag schreiben'
             )
             ->once();

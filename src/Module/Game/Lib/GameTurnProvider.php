@@ -8,7 +8,7 @@ use BadMethodCallException;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 
-final class GameTurnProvider
+final class GameTurnProvider implements GameTurnProviderInterface
 {
     private ?GameTurn $currentRound = null;
 

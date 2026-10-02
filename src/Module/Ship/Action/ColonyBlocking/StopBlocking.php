@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ColonyBlocking;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -22,11 +22,11 @@ final class StopBlocking implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -50,7 +50,7 @@ final class StopBlocking implements ActionControllerInterface
         $fleet->setBlockedColony(null);
 
         $text = sprintf(_('Die Flotte %s hat die Blockierung der Kolonie %s aufgehoben'), $fleet->getName(), $currentColony->getName());
-        $game->getInfo()->addInformation($text);
+        $context->getInfo()->addInformation($text);
 
         if (!$currentColony->isFree()) {
             $this->privateMessageSender->send(

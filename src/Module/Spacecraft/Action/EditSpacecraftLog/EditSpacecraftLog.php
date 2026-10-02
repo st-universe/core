@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\EditSpacecraftLog;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -26,13 +26,13 @@ final class EditSpacecraftLog implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $this->setReturnView($game);
+        $this->setReturnView($context);
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $spacecraftLog = $this->spacecraftLogRepository->find(request::postIntFatal('logid'));
@@ -49,7 +49,7 @@ final class EditSpacecraftLog implements ActionControllerInterface
         $spacecraftLog->setEdited($this->stuTime->time());
         $this->spacecraftLogRepository->save($spacecraftLog);
 
-        $game->getInfo()->addInformation('Logbucheintrag wurde bearbeitet');
+        $context->getInfo()->addInformation('Logbucheintrag wurde bearbeitet');
     }
 
     #[\Override]
@@ -58,9 +58,9 @@ final class EditSpacecraftLog implements ActionControllerInterface
         return true;
     }
 
-    private function setReturnView(GameControllerInterface $game): void
+    private function setReturnView(ActionControllerContext $context): void
     {
-        $game->setView(
+        $context->setView(
             request::postInt('communicationPopup') === 1
                 ? ShowShipCommunication::VIEW_IDENTIFIER
                 : ShowSpacecraft::VIEW_IDENTIFIER

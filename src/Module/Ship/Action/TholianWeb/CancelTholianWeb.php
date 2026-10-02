@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -30,11 +30,11 @@ final class CancelTholianWeb implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -77,7 +77,7 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
 
-        $game->getInfo()->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
+        $context->getInfo()->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
 
     #[\Override]

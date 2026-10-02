@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\RemoveWaste;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -29,11 +29,11 @@ final class RemoveWaste implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $spacecraft = $this->spaceCraftLoader->getByIdAndUser(request::indInt('id'), $userId);
 
@@ -42,13 +42,13 @@ final class RemoveWaste implements ActionControllerInterface
         $reason = request::postString('reason');
 
         if ($commodities === []) {
-            $game->getInfo()->addInformation(_('Es wurden keine Waren ausgewählt'));
+            $context->getInfo()->addInformation(_('Es wurden keine Waren ausgewählt'));
             return;
         }
 
 
-        if ($game->getUser()->isNpc() && ($reason === '' || $reason == null)) {
-            $game->getInfo()->addInformation("Grund fehlt");
+        if ($context->getUser()->isNpc() && ($reason === '' || $reason == null)) {
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
@@ -80,17 +80,17 @@ final class RemoveWaste implements ActionControllerInterface
             $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
-        $game->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
+        $context->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
         foreach ($wasted as $msg) {
-            $game->getInfo()->addInformation($msg);
+            $context->getInfo()->addInformation($msg);
         }
 
-        if ($game->getUser()->isNpc()) {
+        if ($context->getUser()->isNpc()) {
             $this->createEntry(
                 sprintf(
                     '%s (%d) hat auf dem Spacecraft %s (%d) %s entsorgt. Grund: %s',
-                    $game->getUser()->getName(),
-                    $game->getUser()->getId(),
+                    $context->getUser()->getName(),
+                    $context->getUser()->getId(),
                     $spacecraft->getName(),
                     $spacecraft->getId(),
                     implode(', ', $wasted),

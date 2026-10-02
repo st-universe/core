@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeleteAllContacts;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
@@ -16,13 +16,13 @@ final class DeleteAllContacts implements ActionControllerInterface
     public function __construct(private ContactRepositoryInterface $contactRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $context->setView(ShowContactList::VIEW_IDENTIFIER);
 
-        $this->contactRepository->truncateByUser($game->getUser()->getId());
+        $this->contactRepository->truncateByUser($context->getUser()->getId());
 
-        $game->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
+        $context->getInfo()->addInformation(_('Die Kontakte wurden gelöscht'));
     }
 
     #[\Override]

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Router;
 
+use Stu\Component\Game\ModuleEnum;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Router\Handler\FallbackHandlerInterface;
 
@@ -11,7 +13,8 @@ class FallbackRouter implements FallbackRouterInterface
 {
     /** @param array<FallbackHandlerInterface> $handlers */
     public function __construct(
-        private array $handlers
+        private readonly ViewContextFactoryInterface $viewContextFactory,
+        private readonly array $handlers
     ) {}
 
     #[\Override]
@@ -26,6 +29,7 @@ class FallbackRouter implements FallbackRouterInterface
             );
         }
 
-        $this->handlers[$className]->handle($e, $game);
+        $context = $this->viewContextFactory->createViewContext($game, ModuleEnum::GAME);
+        $this->handlers[$className]->handle($e, $context);
     }
 }

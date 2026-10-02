@@ -2,23 +2,18 @@
 
 namespace Stu\Module\Control;
 
-use BadMethodCallException;
-use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Session\SessionInterface;
-use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Control\Component\CallbackExecution;
 use Stu\Module\Control\Component\ViewExecution;
 use Stu\Module\Control\Router\FallbackRouteException;
 use Stu\Module\Control\Router\FallbackRouterInterface;
-use Stu\Module\Game\Lib\GameSetupInterface;
-use Stu\Module\Twig\TwigPageInterface;
+use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\User;
-use Stu\Orm\Repository\GameTurnRepositoryInterface;
 
 final class GameController implements GameControllerInterface
 {
@@ -36,90 +31,19 @@ final class GameController implements GameControllerInterface
         private readonly MaintenanceLoginExecutorInterface $maintenanceLoginExecutor,
         private readonly CallbackExecution $callbackExecution,
         private readonly ViewExecution $viewExecution,
-        private readonly TwigPageInterface $twigPage,
         private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
-        private readonly GameTurnRepositoryInterface $gameTurnRepository,
         private readonly GameResponseFinalizerInterface $gameResponseFinalizer,
         private readonly FallbackRouterInterface $fallbackRouter,
-        private readonly GameSetupInterface $gameSetup,
         private readonly GameStateInterface $gameState,
-        private readonly JavascriptExecutionInterface $javascriptExecution,
-        private readonly SessionStringFactoryInterface $sessionStringFactory
+        private readonly GameTurnProviderInterface $gameTurnProvider
     ) {
         $this->gameData = new GameData();
-    }
-
-    #[\Override]
-    public function setView(ModuleEnum|string $view): void
-    {
-        if ($view instanceof ModuleEnum) {
-            unset($this->gameData->viewContext[ViewContextTypeEnum::VIEW->value]);
-            $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $view);
-        } else {
-            $this->setViewContext(ViewContextTypeEnum::VIEW, $view);
-        }
-    }
-
-    #[\Override]
-    public function getViewContext(ViewContextTypeEnum $type): mixed
-    {
-        if (!array_key_exists($type->value, $this->gameData->viewContext)) {
-            return null;
-        }
-
-        return $this->gameData->viewContext[$type->value];
-    }
-
-    #[\Override]
-    public function setViewContext(ViewContextTypeEnum $type, mixed $value): void
-    {
-        $this->gameData->viewContext[$type->value] = $value;
-    }
-
-    #[\Override]
-    public function setViewTemplate(string $viewTemplate): void
-    {
-        $this->gameSetup->setTemplateAndComponents($viewTemplate, $this);
-    }
-
-    #[\Override]
-    public function setTemplateFile(string $template): void
-    {
-        $this->twigPage->setTemplate($template);
-    }
-
-    #[\Override]
-    public function setMacroInAjaxWindow(string $macro): void
-    {
-        $this->gameData->macro = $macro;
-
-        $this->setTemplateFile('html/ajaxwindow.twig');
-    }
-
-    #[\Override]
-    public function showMacro(string $macro): void
-    {
-        $this->gameData->macro = $macro;
-
-        $this->setTemplateFile('html/ajaxempty.twig');
     }
 
     #[\Override]
     public function getGameData(): GameData
     {
         return $this->gameData;
-    }
-
-    #[\Override]
-    public function getInfo(): InformationWrapper
-    {
-        return $this->gameData->gameInformations;
-    }
-
-    #[\Override]
-    public function setTemplateVar(string $key, mixed $variable): void
-    {
-        $this->twigPage->setVar($key, $variable);
     }
 
     #[\Override]
@@ -140,55 +64,6 @@ final class GameController implements GameControllerInterface
     }
 
     #[\Override]
-    public function setNavigation(
-        array $navigationItems
-    ): GameControllerInterface {
-        foreach ($navigationItems as $item) {
-            $this->appendNavigationPart($item['url'], $item['title']);
-        }
-
-        return $this;
-    }
-
-    #[\Override]
-    public function appendNavigationPart(
-        string $url,
-        string $title
-    ): void {
-        $this->gameData->siteNavigation[$url] = $title;
-    }
-
-    #[\Override]
-    public function setPageTitle(string $title): void
-    {
-        $this->gameData->pagetitle = $title;
-    }
-
-    #[\Override]
-    public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
-    {
-        $this->javascriptExecution->addExecuteJS($value, $when);
-    }
-
-    #[\Override]
-    public function getCurrentRound(): GameTurn
-    {
-        if ($this->gameData->currentRound === null) {
-            $this->gameData->currentRound = $this->gameTurnRepository->getCurrent();
-            if ($this->gameData->currentRound === null) {
-                throw new BadMethodCallException('no current round existing');
-            }
-        }
-        return $this->gameData->currentRound;
-    }
-
-    #[\Override]
-    public function getSessionString(): string
-    {
-        return $this->sessionStringFactory->createSessionString($this->getUser());
-    }
-
-    #[\Override]
     public function getGameRequest(): GameRequest
     {
         return $this->gameRequest;
@@ -196,7 +71,7 @@ final class GameController implements GameControllerInterface
 
     #[\Override]
     public function main(ModuleEnum $module, GameRequest $gameRequest): void {
-        $this->setViewContext(ViewContextTypeEnum::MODULE_VIEW, $module);
+        $this->gameData->viewContext[ViewContextMetadataTypeEnum::MODULE_VIEW->value] = $module;
 
         $this->gameRequest = $gameRequest;
 
@@ -227,6 +102,18 @@ final class GameController implements GameControllerInterface
         ob_start();
         echo $this->gameResponseFinalizer->finalize($this, $gameRequest);
         ob_end_flush();
+    }
+
+    #[\Override]
+    public function getInfo(): InformationWrapper
+    {
+        return $this->gameData->gameInformations;
+    }
+
+    #[\Override]
+    public function getCurrentRound(): GameTurn
+    {
+        return $this->gameTurnProvider->getCurrentRound();
     }
 
     #[\Override]

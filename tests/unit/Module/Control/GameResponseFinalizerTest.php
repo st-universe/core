@@ -21,7 +21,7 @@ class GameResponseFinalizerTest extends StuTestCase
         $gameRequest = $this->mock(GameRequest::class);
 
         $twigPage->shouldReceive('isTemplateSet')->once()->andReturnTrue();
-        $componentSetup->shouldReceive('setup')->with($game)->once();
+        $componentSetup->shouldReceive('setup')->withNoArgs()->once();
         $game->shouldReceive('hasUser')->once()->andReturnFalse();
         $renderer->shouldReceive('render')
             ->with($game, null)

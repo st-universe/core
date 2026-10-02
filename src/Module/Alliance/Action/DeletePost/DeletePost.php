@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
@@ -23,9 +23,9 @@ final class DeletePost implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $post = $this->allianceBoardPostRepository->find(request::getIntFatal('pid'));
         if ($post === null) {
@@ -40,18 +40,18 @@ final class DeletePost implements ActionControllerInterface
         $this->allianceBoardPostRepository->delete($post);
 
         if ($postcount == 1) {
-            $game->setView(Board::VIEW_IDENTIFIER);
+            $context->setView(Board::VIEW_IDENTIFIER);
 
             $this->allianceBoardTopicRepository->delete($post->getTopic());
 
-            $game->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
+            $context->getInfo()->addInformation(_('Das Thema wurde gelöscht'));
             return;
         }
 
-        $game->setView(Topic::VIEW_IDENTIFIER);
+        $context->setView(Topic::VIEW_IDENTIFIER);
 
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     #[\Override]

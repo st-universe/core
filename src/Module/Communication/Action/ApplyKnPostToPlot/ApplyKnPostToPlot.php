@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\ApplyKnPostToPlot;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -23,9 +23,9 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
     public function __construct(private RpgPlotRepositoryInterface $rpgPlotRepository, private KnPostRepositoryInterface $knPostRepository, private KnPostToPlotApplicationRepositoryInterface $knPostToPlotApplicationRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $plot = $this->rpgPlotRepository->find(request::postIntFatal('plotid'));
         if ($plot === null || $plot->getUserId() !== $userId || !$plot->isActive()) {
@@ -40,18 +40,18 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
 
         $post = $this->knPostRepository->find($postId);
         if ($post === null) {
-            $game->getInfo()->addInformation(_('Dieser Beitrag existiert nicht'));
+            $context->getInfo()->addInformation(_('Dieser Beitrag existiert nicht'));
             return;
         }
         if ($post->getPlotId() !== null) {
-            $game->getInfo()->addInformation(_('Dieser Beitrag ist bereits einem Plot zugewiesen'));
+            $context->getInfo()->addInformation(_('Dieser Beitrag ist bereits einem Plot zugewiesen'));
             return;
         }
 
         $application = $this->knPostToPlotApplicationRepository->getByPostAndPlot($post->getId(), $plot->getId());
 
         if ($application !== null) {
-            $game->getInfo()->addInformation(_('Diese Aktion wurde bereits beantragt'));
+            $context->getInfo()->addInformation(_('Diese Aktion wurde bereits beantragt'));
             return;
         }
 
@@ -63,7 +63,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
 
             $this->notifyPlotMembers($post, $plot);
 
-            $game->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
+            $context->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
         } else {
             $application = $this->knPostToPlotApplicationRepository->prototype();
             $application->setKnPost($post);
@@ -71,14 +71,14 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
             $application->setTime(time());
             $this->knPostToPlotApplicationRepository->save($application);
 
-            $href = sprintf(_('comm.php?B_ADD_POST_TO_PLOT=1&knid=%d&plotid=%d'), $post->getId(), $plot->getId());
+            $href = sprintf(_('communication.php?B_ADD_POST_TO_PLOT=1&knid=%d&plotid=%d'), $post->getId(), $plot->getId());
 
             $this->privateMessageSender->send(
                 $userId,
                 $post->getUser()->getId(),
                 sprintf(
                     _('Der Spieler %s hat beantragt deinen Beitrag mit der ID %d und Titel "%s" zu dem RPG-Plot "%s" hinzuzufügen. Zum Annehmen den Link klicken, sonst ignorieren. Erlischt nach 48 Stunden.'),
-                    $game->getUser()->getName(),
+                    $context->getUser()->getName(),
                     $post->getId(),
                     $post->getTitle(),
                     $plot->getTitle()
@@ -87,7 +87,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                 $href
             );
 
-            $game->getInfo()->addInformation(_('Es wurde beantragt den Beitrag hinzuzufügen'));
+            $context->getInfo()->addInformation(_('Es wurde beantragt den Beitrag hinzuzufügen'));
         }
     }
 

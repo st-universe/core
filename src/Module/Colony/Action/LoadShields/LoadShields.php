@@ -8,7 +8,7 @@ use request;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -25,11 +25,11 @@ final class LoadShields implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
@@ -57,7 +57,7 @@ final class LoadShields implements ActionControllerInterface
         $changeable->setShields($changeable->getShields() + $load);
 
         $this->colonyRepository->save($colony);
-        $game->getInfo()->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
+        $context->getInfo()->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
     }
 
     #[\Override]

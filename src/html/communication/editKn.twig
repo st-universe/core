@@ -1,7 +1,7 @@
 {% block body %}
 <script src="{{ javascriptPath }}/js/comm.js"></script>
 {% if POST %}
-<form action="comm.php" method="POST">
+<form action="communication.php" method="POST">
     <input type="hidden" name="EDIT_KN" value="1" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <input type="hidden" name="knid" value="{{ POST.getId }}" />

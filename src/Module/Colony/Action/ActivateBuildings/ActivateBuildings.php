@@ -10,8 +10,8 @@ use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\PlanetField;
 
 final class ActivateBuildings implements ActionControllerInterface
@@ -21,9 +21,9 @@ final class ActivateBuildings implements ActionControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction, private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($context->getUser());
 
         $mode = request::indInt('mode');
         $selection = request::getvars()['selection'] ?? request::postvars()['selection'] ?? null;
@@ -41,11 +41,11 @@ final class ActivateBuildings implements ActionControllerInterface
             if ($field->isActive()) {
                 continue;
             }
-            $this->buildingAction->activate($field, $game);
+            $this->buildingAction->activate($field, $context);
         }
 
-        $game->setView($host->getDefaultViewIdentifier());
-        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
+        $context->setView($host->getDefaultViewIdentifier());
+        $context->setViewContext(ViewContextMetadataTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
     }
 
     #[\Override]

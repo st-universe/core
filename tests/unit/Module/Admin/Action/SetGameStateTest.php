@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use request;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
@@ -17,8 +17,7 @@ use Stu\StuTestCase;
 class SetGameStateTest extends StuTestCase
 {
     private MockInterface&GameConfigRepositoryInterface $gameConfigRepository;
-
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ActionControllerContext $context;
 
     private SetGameState $subject;
 
@@ -28,7 +27,7 @@ class SetGameStateTest extends StuTestCase
         parent::setUp();
 
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ActionControllerContext::class);
 
         $this->subject = new SetGameState(
             $this->gameConfigRepository
@@ -39,57 +38,57 @@ class SetGameStateTest extends StuTestCase
     {
         request::setMockVars(['game_state' => 999]);
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->context->shouldReceive('getInfo->addInformation')
             ->with('Ungültiger Spielmodus')
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleRejectsMissingGameStateConfig(): void
     {
         request::setMockVars(['game_state' => GameStateEnum::MAINTENANCE->value]);
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
         $this->gameConfigRepository->shouldReceive('getByOption')
             ->with(GameStateInterface::CONFIG_GAMESTATE)
             ->once()
             ->andReturn(null);
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->context->shouldReceive('getInfo->addInformation')
             ->with('Spielmodus-Konfiguration nicht gefunden')
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
     }
 
     public function testHandleUpdatesGameState(): void
     {
         request::setMockVars(['game_state' => GameStateEnum::RELOCATION->value]);
 
-        $gameConfig = new GameConfig();
+        $contextConfig = new GameConfig();
 
-        $this->game->shouldReceive('setView')
+        $this->context->shouldReceive('setView')
             ->with(ShowScripts::VIEW_IDENTIFIER)
             ->once();
         $this->gameConfigRepository->shouldReceive('getByOption')
             ->with(GameStateInterface::CONFIG_GAMESTATE)
             ->once()
-            ->andReturn($gameConfig);
+            ->andReturn($contextConfig);
         $this->gameConfigRepository->shouldReceive('save')
-            ->with($gameConfig)
+            ->with($contextConfig)
             ->once();
-        $this->game->shouldReceive('getInfo->addInformation')
+        $this->context->shouldReceive('getInfo->addInformation')
             ->with('Der Spielmodus wurde auf "Umzug" gesetzt')
             ->once();
 
-        $this->subject->handle($this->game);
+        $this->subject->handle($this->context);
 
-        self::assertSame(GameStateEnum::RELOCATION->value, $gameConfig->getValue());
+        self::assertSame(GameStateEnum::RELOCATION->value, $contextConfig->getValue());
     }
 
     public function testPerformSessionCheckReturnsTrue(): void

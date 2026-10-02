@@ -5,25 +5,34 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use request;
 use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\JavascriptExecutionInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildmenuProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private BuildingRepositoryInterface $buildingRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
+    public function __construct(
+        private readonly BuildingRepositoryInterface $buildingRepository,
+        private readonly PlanetFieldRepositoryInterface $planetFieldRepository,
+        private readonly JavascriptExecutionInterface $javascriptExecution
+    ) {}
 
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
         $fieldType = $this->getFieldType();
         if ($fieldType !== null) {
-            $game->addExecuteJS(sprintf('fieldType = %d;', $fieldType), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
+            $this->javascriptExecution->addExecuteJS(sprintf('fieldType = %d;', $fieldType), JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
         } else {
-            $game->addExecuteJS('fieldType = null;', JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
+            $this->javascriptExecution->addExecuteJS('fieldType = null;', JavascriptExecutionTypeEnum::ON_AJAX_UPDATE);
         }
+
+        $menus = [];
 
         foreach (BuildMenuEnum::cases() as $menu) {
 
@@ -31,7 +40,7 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
             $menus[$id]['name'] = $menu->getDescription();
             $menus[$id]['buildings'] = $this->buildingRepository->getBuildmenuBuildings(
                 $entity,
-                $game->getUser()->getId(),
+                $user->getId(),
                 $menu,
                 0,
                 request::has('cid') ? request::getIntFatal('cid') : null,
@@ -39,7 +48,7 @@ final class BuildmenuProvider implements PlanetFieldHostComponentInterface
             );
         }
 
-        $game->setTemplateVar('BUILD_MENUS', $menus);
+        $template->setTemplateVar('BUILD_MENUS', $menus);
     }
 
     private function getFieldType(): ?int

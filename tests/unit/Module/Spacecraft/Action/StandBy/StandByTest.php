@@ -11,7 +11,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -46,7 +46,7 @@ class StandByTest extends StuTestCase
 
     public function testHandle(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $info = $this->mock(InformationWrapper::class);
         $spacecraft = $this->mock(Spacecraft::class);
         $spacecraftWrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -56,14 +56,14 @@ class StandByTest extends StuTestCase
 
         request::setMockVars(['id' => $shipId]);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser->getId')
+        $context->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $game->shouldReceive('getInfo')
+        $context->shouldReceive('getInfo')
             ->withNoArgs()
             ->andReturn($info);
 
@@ -110,6 +110,6 @@ class StandByTest extends StuTestCase
             ->ordered()
             ->andReturn(new ArrayCollection());
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 }

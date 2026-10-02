@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\UnloadBattery;
 use request;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -27,11 +27,11 @@ final class UnloadBattery implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
@@ -51,11 +51,11 @@ final class UnloadBattery implements ActionControllerInterface
             foreach ($ship->getFleet()?->getShips() ?? [] as $ship) {
                 $msg[] = $this->unloadBattery($ship, $load);
             }
-            $game->getInfo()->addInformationArray($msg, true);
+            $context->getInfo()->addInformationArray($msg, true);
             return;
         }
 
-        $game->getInfo()->addInformation($this->unloadBattery($ship, $load));
+        $context->getInfo()->addInformation($this->unloadBattery($ship, $load));
     }
 
     private function unloadBattery(Spacecraft $ship, int $load): string

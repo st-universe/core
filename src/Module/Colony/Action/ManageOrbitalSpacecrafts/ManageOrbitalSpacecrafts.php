@@ -11,7 +11,7 @@ use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -31,11 +31,11 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -45,7 +45,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
 
         $spacecraftIds = request::postArray('spacecrafts');
         if (count($spacecraftIds) === 0) {
-            $game->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
+            $context->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
         $msg = [];
@@ -67,7 +67,7 @@ final class ManageOrbitalSpacecrafts implements ActionControllerInterface
         }
         $this->colonyRepository->save($colony);
 
-        $game->getInfo()->addInformationArray($msg, true);
+        $context->getInfo()->addInformationArray($msg, true);
     }
 
     /**

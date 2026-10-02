@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Manager\ManageWarpcoreTransfer;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderSpacecraft;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
@@ -38,11 +38,11 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
@@ -52,7 +52,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         $spacecraft = $wrapper->get();
 
         if (!$spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER)) {
-            $game->getInfo()->addInformation('Dieses Schiff verfügt über kein Warpkern Ladungstransfer System');
+            $context->getInfo()->addInformation('Dieses Schiff verfügt über kein Warpkern Ladungstransfer System');
             return;
         }
 
@@ -60,20 +60,20 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
             $spacecraft->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) ||
             $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SHIELDS)
         ) {
-            $game->getInfo()->addInformation('Warpantrieb und Schilde müssen deaktiviert sein');
+            $context->getInfo()->addInformation('Warpantrieb und Schilde müssen deaktiviert sein');
             return;
         }
 
         $sourceReactor = $wrapper->getReactorWrapper();
 
         if (!$sourceReactor || $sourceReactor->getLoad() <= 0) {
-            $game->getInfo()->addInformation('Kein Warpkern oder keine Ladung vorhanden');
+            $context->getInfo()->addInformation('Kein Warpkern oder keine Ladung vorhanden');
             return;
         }
 
         $shipIds = request::postArray('spacecrafts');
         if (count($shipIds) === 0) {
-            $game->getInfo()->addInformation('Es wurden keine Schiffe ausgewählt');
+            $context->getInfo()->addInformation('Es wurden keine Schiffe ausgewählt');
             return;
         }
 
@@ -119,7 +119,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
 
         $this->sendPrivateMessages($transfersByUser, $managerProvider, $spacecraft);
 
-        $game->getInfo()->addInformationArray($msg, true);
+        $context->getInfo()->addInformationArray($msg, true);
     }
 
     /**

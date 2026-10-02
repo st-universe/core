@@ -9,7 +9,7 @@ use request;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -36,7 +36,7 @@ class TorpedoTransferStrategyTest extends StuTestCase
 
     public function testProvidesEveryCompatibleLoadedTorpedoType(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $targetEntity = $this->mock(EntityWithStorageInterface::class);
         [$firstStorage, $firstTorpedo] = $this->createTorpedoStorage(1, 20);
         [$secondStorage, $secondTorpedo] = $this->createTorpedoStorage(2, 30);
@@ -103,7 +103,7 @@ class TorpedoTransferStrategyTest extends StuTestCase
 
     public function testShowsCompatibleTypesWhenDestinationIsFull(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $targetEntity = $this->mock(EntityWithStorageInterface::class);
         [$firstStorage, $firstTorpedo] = $this->createTorpedoStorage(1, 20);
         [$secondStorage, $secondTorpedo] = $this->createTorpedoStorage(2, 30);
@@ -126,7 +126,7 @@ class TorpedoTransferStrategyTest extends StuTestCase
 
     public function testHidesMismatchingLevelsForDestinationWithoutTransportModule(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $targetEntity = $this->mock(Spacecraft::class);
         $rump = $this->mock(SpacecraftRump::class);
         [$matchingStorage, $matchingTorpedo] = $this->createTorpedoStorage(1, 20);

@@ -8,7 +8,7 @@ use Override;
 use request;
 use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
@@ -31,27 +31,27 @@ final class InviteQuestUsers implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowNPCQuests::VIEW_IDENTIFIER);
+        $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questId = request::postInt('quest_id');
         $userIdsString = trim(request::postString('user_ids') ?: '');
 
         if ($questId === 0) {
-            $game->getInfo()->addInformation('Ungültige Quest-ID');
+            $context->getInfo()->addInformation('Ungültige Quest-ID');
             return;
         }
 
         if (empty($userIdsString)) {
-            $game->getInfo()->addInformation('Keine User-IDs angegeben');
+            $context->getInfo()->addInformation('Keine User-IDs angegeben');
             return;
         }
 
         $quest = $this->npcQuestRepository->find($questId);
 
-        if ($quest === null || $quest->getUserId() !== $game->getUser()->getId()) {
-            $game->getInfo()->addInformation('Du bist nicht der Ersteller dieser Quest');
+        if ($quest === null || $quest->getUserId() !== $context->getUser()->getId()) {
+            $context->getInfo()->addInformation('Du bist nicht der Ersteller dieser Quest');
             return;
         }
 
@@ -59,7 +59,7 @@ final class InviteQuestUsers implements ActionControllerInterface
         $userIds = array_filter($userIds, fn ($id): bool => $id > 0);
 
         if ($userIds === []) {
-            $game->getInfo()->addInformation('Keine gültigen User-IDs gefunden');
+            $context->getInfo()->addInformation('Keine gültigen User-IDs gefunden');
             return;
         }
 
@@ -102,8 +102,8 @@ final class InviteQuestUsers implements ActionControllerInterface
                 $logEntry = $this->npcQuestLogRepository->prototype();
                 $logEntry->setQuestId($questId);
                 $logEntry->setQuest($quest);
-                $logEntry->setUserId($game->getUser()->getId());
-                $logEntry->setUser($game->getUser());
+                $logEntry->setUserId($context->getUser()->getId());
+                $logEntry->setUser($context->getUser());
                 $logEntry->setMode(1);
                 $logEntry->setDate(time());
                 $logEntry->setText(sprintf(
@@ -122,12 +122,12 @@ final class InviteQuestUsers implements ActionControllerInterface
                         $quest->getTitle()
                     ),
                     PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
-                    sprintf('/comm.php?SHOW_QUEST=1&questid=%d', $quest->getId())
+                    sprintf('/communication.php?SHOW_QUEST=1&questid=%d', $quest->getId())
                 );
             }
-            $game->getInfo()->addInformation(sprintf('%d User wurden zur Quest eingeladen', $invitedCount));
+            $context->getInfo()->addInformation(sprintf('%d User wurden zur Quest eingeladen', $invitedCount));
         } else {
-            $game->getInfo()->addInformation('Keine neuen User wurden eingeladen');
+            $context->getInfo()->addInformation('Keine neuen User wurden eingeladen');
         }
     }
 

@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\System\Data\WarpDriveSystemData;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
@@ -21,9 +21,9 @@ final class SplitReactorOutput implements ActionControllerInterface
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -35,7 +35,7 @@ final class SplitReactorOutput implements ActionControllerInterface
             throw new SanityCheckException('no warpdrive in fleet leader', self::ACTION_IDENTIFIER);
         }
 
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
 
         $warpsplit = request::postInt('value');
         if ($warpsplit < 0) {
@@ -57,12 +57,12 @@ final class SplitReactorOutput implements ActionControllerInterface
                     $this->setValues($systemData, $warpsplit, $autoCarryOver);
                 }
             }
-            $this->addGameInfo(true, $warpsplit, $autoCarryOver, $game);
+            $this->addGameInfo(true, $warpsplit, $autoCarryOver, $context);
             return;
         }
 
         $this->setValues($systemData, $warpsplit, $autoCarryOver);
-        $this->addGameInfo(false, $warpsplit, $autoCarryOver, $game);
+        $this->addGameInfo(false, $warpsplit, $autoCarryOver, $context);
     }
 
     private function setValues(WarpDriveSystemData $systemData, int $split, bool $autoCarryOver): void
@@ -73,9 +73,9 @@ final class SplitReactorOutput implements ActionControllerInterface
             ->update();
     }
 
-    private function addGameInfo(bool $isFleet, int $warpsplit, bool $autoCarryOver, GameControllerInterface $game): void
+    private function addGameInfo(bool $isFleet, int $warpsplit, bool $autoCarryOver, ActionControllerContext $context): void
     {
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('%sReaktorleistung geht zu %d Prozent in den Warpantrieb (Übertrag %s)'),
             $isFleet ? 'Flottenbefehl ausgeführt: ' : '',
             100 - $warpsplit,

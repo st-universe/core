@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\UnsetTopicSticky;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class UnsetTopicSticky implements ActionControllerInterface
@@ -20,9 +20,9 @@ final class UnsetTopicSticky implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->unsetTopicStickyRequest->getTopicId());
         if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
@@ -33,9 +33,9 @@ final class UnsetTopicSticky implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->getInfo()->addInformation(_('Die Markierung des Themas wurde entfernt'));
+        $context->getInfo()->addInformation(_('Die Markierung des Themas wurde entfernt'));
 
-        $game->setView(Topic::VIEW_IDENTIFIER);
+        $context->setView(Topic::VIEW_IDENTIFIER);
     }
 
     #[\Override]

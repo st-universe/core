@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\UserRelation;
 
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -21,27 +21,27 @@ final class AcceptUserRelation implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $context->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
 
         if ($relation !== null && !$relation->isPending()) {
-            if (!$this->userRelationManager->acceptPermissionChange($game->getUser(), $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
+            if (!$this->userRelationManager->acceptPermissionChange($context->getUser(), $relation)) {
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht angenommen werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde angenommen');
             return;
         }
 
-        if ($relation === null || !$this->userRelationManager->accept($game->getUser(), $relation)) {
-            $game->getInfo()->addInformation('Das Angebot kann nicht angenommen werden');
+        if ($relation === null || !$this->userRelationManager->accept($context->getUser(), $relation)) {
+            $context->getInfo()->addInformation('Das Angebot kann nicht angenommen werden');
             return;
         }
 
-        $game->getInfo()->addInformation('Das Angebot wurde angenommen');
+        $context->getInfo()->addInformation('Das Angebot wurde angenommen');
     }
 
     #[\Override]

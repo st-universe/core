@@ -5,7 +5,8 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use request;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -21,7 +22,8 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
 
         $buildingFunction = $this->buildingFunctionRepository->find(
@@ -32,10 +34,10 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
             return;
         }
 
-        $user = $game->getUser();
+        $user = $user;
         $userId = $user->getId();
 
-        $game->setTemplateVar(
+        $template->setTemplateVar(
             'BUILDABLE_SHIPS',
             array_map(
                 fn (SpacecraftRump $shipRump): BuildableRumpListItemInterface => $this->colonyLibFactory->createBuildableRumpItem(
@@ -45,6 +47,6 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
                 $this->spacecraftRumpRepository->getBuildableByUserAndBuildingFunction($userId, $buildingFunction->getFunction())
             )
         );
-        $game->setTemplateVar('BUILDABLE_RUMPS', $this->spacecraftRumpRepository->getBuildableByUser($userId));
+        $template->setTemplateVar('BUILDABLE_RUMPS', $this->spacecraftRumpRepository->getBuildableByUser($userId));
     }
 }

@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
@@ -25,13 +25,13 @@ final class ReactivateShipRepair implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId(),
+            $context->getUser()->getId(),
             false,
             false
         );
@@ -61,7 +61,7 @@ final class ReactivateShipRepair implements ActionControllerInterface
             $job->setStopDate(0);
         }
 
-        $game->getInfo()->addInformation('Die Reparaturwarteschlange wurde reaktiviert');
+        $context->getInfo()->addInformation('Die Reparaturwarteschlange wurde reaktiviert');
     }
 
     #[\Override]

@@ -22,7 +22,7 @@ use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Creation\SpacecraftFactoryInterface;
@@ -68,11 +68,11 @@ final class BuildConstruction implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -89,54 +89,54 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
         if ($ship->getLocation()->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_STATION_CONSTRUCTION)) {
-            $game->getInfo()->addInformation(_('In diesem Sektor kann keine Station errichtet werden'));
+            $context->getInfo()->addInformation(_('In diesem Sektor kann keine Station errichtet werden'));
             return;
         }
 
         // check if ship in wormhole
         if ($ship->getSystem() !== null && $ship->getSystem()->isWormhole()) {
-            $game->getInfo()->addInformation(_("In Wurmlöchern können keine Stationen errichtet werden"));
+            $context->getInfo()->addInformation(_("In Wurmlöchern können keine Stationen errichtet werden"));
             return;
         }
 
         // check if there already is a base
         if ($this->stationRepository->getStationOnLocation($ship->getLocation()) !== null) {
-            $game->getInfo()->addInformation("Hier ist bereits eine Station errichtet");
+            $context->getInfo()->addInformation("Hier ist bereits eine Station errichtet");
             return;
         }
 
         // check if the construction limit is reached
         $limit = SpacecraftRumpRoleEnum::CONSTRUCTION->getBuildLimit();
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
-            $game->getInfo()->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
+            $context->getInfo()->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
             return;
         }
 
         if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->isCloaked()) {
-            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
+            $context->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->isWarped()) {
-            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->isShielded()) {
-            $game->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
+            $context->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
 
@@ -172,7 +172,7 @@ final class BuildConstruction implements ActionControllerInterface
 
         // check if ship has excess crew
         if ($ship->getExcessCrewCount() < $neededCrew) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 _('Nicht genügend Crew für den Start der %d Workbees vorhanden, benötigt wird %d'),
                 count($workbeePlans),
                 $neededCrew
@@ -182,7 +182,7 @@ final class BuildConstruction implements ActionControllerInterface
 
         // check if ship got enough energy
         if ($epsSystem->getEps() < $neededEps) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 _('Es wird insgesamt %d Energie für den Start der %d Workbees benötigt'),
                 $neededEps,
                 count($workbeePlans)
@@ -207,7 +207,7 @@ final class BuildConstruction implements ActionControllerInterface
 
             // start workbee and transfer crew
             $workbees[] = $this->startWorkbee($ship, $epsSystem, $plan);
-            $game->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
+            $context->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
         }
 
         // use build ressources
@@ -242,8 +242,8 @@ final class BuildConstruction implements ActionControllerInterface
             SkillEnhancementEnum::CONSTRUCTION_CREATED
         ));
 
-        $game->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich errichtet'), $construction->getName()));
-        $game->getInfo()->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
+        $context->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich errichtet'), $construction->getName()));
+        $context->getInfo()->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
     private function startWorkbee(Ship $ship, EpsSystemData $epsSystem, SpacecraftBuildplan $plan): Ship

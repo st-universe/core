@@ -3,9 +3,10 @@
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Stu\Lib\Colony\PlanetFieldHostInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class EpsBarProvider implements PlanetFieldHostComponentInterface
@@ -15,13 +16,14 @@ final class EpsBarProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByHost($entity);
 
-        $game->setTemplateVar('EPS_STATUS_BAR', self::getEpsStatusBar($entity, $energyProduction));
-        $game->setTemplateVar('EPS_PRODUCTION', $energyProduction);
-        $game->setTemplateVar('EPS_BAR_TITLE_STRING', $this->getEpsBarTitleString($entity, $energyProduction));
+        $template->setTemplateVar('EPS_STATUS_BAR', self::getEpsStatusBar($entity, $energyProduction));
+        $template->setTemplateVar('EPS_PRODUCTION', $energyProduction);
+        $template->setTemplateVar('EPS_BAR_TITLE_STRING', $this->getEpsBarTitleString($entity, $energyProduction));
     }
 
     public static function getEpsStatusBar(PlanetFieldHostInterface $host, int $energyProduction, int $width = 360): string

@@ -8,7 +8,7 @@ use request;
 use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -24,15 +24,15 @@ final class CommodityCheat implements ActionControllerInterface
     public function __construct(private SpacecraftLoaderInterface $spacecraftLoader, private StorageManagerInterface $storageManager, private CommodityRepositoryInterface $commodityRepository, private NPCLogRepositoryInterface $npcLogRepository, private ColonyRepositoryInterface $colonyRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         $text = '';
         $colony = null;
         $spacecraft = null;
         if (!request::getVarByMethod(request::postvars(), 'spacecraftid') && !request::getVarByMethod(request::postvars(), 'colonyid')) {
-            $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
+            $context->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;
         }
 
@@ -42,22 +42,22 @@ final class CommodityCheat implements ActionControllerInterface
         $commodities = request::postArray('commodities');
 
         if ($spacecraftId !== 0 && $colonyId !== 0) {
-            $game->getInfo()->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
+            $context->getInfo()->addInformation("Es dürfen nicht Spacecraft und Kolonie gleichzeitig ausgewählt sein");
             return;
         }
 
         if ($spacecraftId === 0 && $colonyId === 0) {
-            $game->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
+            $context->getInfo()->addInformation("Es wurde weder Spacecraft noch Kolonie ausgewählt");
             return;
         }
 
-        if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+        if ($context->getUser()->isNpc() && $reason === '') {
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
         if ($commodities === []) {
-            $game->getInfo()->addInformation("Keine Waren angegeben");
+            $context->getInfo()->addInformation("Keine Waren angegeben");
             return;
         }
 
@@ -73,7 +73,7 @@ final class CommodityCheat implements ActionControllerInterface
         if ($colonyId !== 0) {
             $colony = $this->colonyRepository->find($colonyId);
             if ($colony === null) {
-                $game->getInfo()->addInformation("Kolonie existiert nicht");
+                $context->getInfo()->addInformation("Kolonie existiert nicht");
                 return;
             }
         }
@@ -83,7 +83,7 @@ final class CommodityCheat implements ActionControllerInterface
 
         foreach ($commodities as $commodityData) {
             if (!isset($commodityData['id']) || !isset($commodityData['amount'])) {
-                $game->getInfo()->addInformation("Ungültige Wareneingabe");
+                $context->getInfo()->addInformation("Ungültige Wareneingabe");
                 return;
             }
 
@@ -95,14 +95,14 @@ final class CommodityCheat implements ActionControllerInterface
             }
 
             if ($amount < 1) {
-                $game->getInfo()->addInformation("Anzahl muss größer als 0 sein");
+                $context->getInfo()->addInformation("Anzahl muss größer als 0 sein");
                 return;
             }
 
             $commodity = $this->commodityRepository->find($commodityId);
 
             if ($commodity === null) {
-                $game->getInfo()->addInformation("Ungültige Ware mit ID: " . $commodityId);
+                $context->getInfo()->addInformation("Ungültige Ware mit ID: " . $commodityId);
                 return;
             }
 
@@ -115,7 +115,7 @@ final class CommodityCheat implements ActionControllerInterface
         }
 
         if ($validatedCommodities === []) {
-            $game->getInfo()->addInformation("Keine gültigen Waren ausgewählt");
+            $context->getInfo()->addInformation("Keine gültigen Waren ausgewählt");
             return;
         }
 
@@ -163,10 +163,10 @@ final class CommodityCheat implements ActionControllerInterface
             );
         }
 
-        if ($game->getUser()->isNpc()) {
+        if ($context->getUser()->isNpc()) {
             $this->createEntry($text, $user->getId());
         }
-        $game->getInfo()->addInformation("Waren hinzugefügt");
+        $context->getInfo()->addInformation("Waren hinzugefügt");
     }
 
     private function createEntry(

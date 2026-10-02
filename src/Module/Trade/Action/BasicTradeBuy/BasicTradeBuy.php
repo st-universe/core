@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
@@ -23,16 +23,16 @@ final class BasicTradeBuy implements ActionControllerInterface
     public function __construct(private TradeLibFactoryInterface $tradeLibFactory, private BasicTradeRepositoryInterface $basicTradeRepository, private TradePostRepositoryInterface $tradePostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
+        $context->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
         $tradePostId = request::postIntFatal('postid');
         $uniqId = request::postStringFatal('uid');
         $basicTrade = $this->basicTradeRepository->getByUniqId($uniqId);
 
-        if ($game->getUser()->getId() < 100) {
-            $game->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+        if ($context->getUser()->getId() < 100) {
+            $context->getInfo()->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
             return;
         }
 
@@ -43,7 +43,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
         if (!$isNewest) {
-            $game->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht gekauft werden");
+            $context->getInfo()->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht gekauft werden");
             return;
         }
 
@@ -53,10 +53,10 @@ final class BasicTradeBuy implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $context->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
+            $context->getInfo()->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
 
             return;
         }
@@ -65,7 +65,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $latinumStorage = $storageManager->getStorage()->get(CommodityTypeConstants::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage->getAmount() < 1) {
-            $game->getInfo()->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
+            $context->getInfo()->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
 
             return;
         }
@@ -91,7 +91,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $newBasicTrade->setValue($newValue);
         $newBasicTrade->setDate((int)round(microtime(true) * 1000));
         $newBasicTrade->setUniqId(uniqid());
-        $newBasicTrade->setUserId($game->getUser()->getId());
+        $newBasicTrade->setUserId($context->getUser()->getId());
 
         $this->basicTradeRepository->save($newBasicTrade);
 
@@ -100,7 +100,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $storageManager->upperStorage($basicTrade->getCommodity()->getId(), $amount);
         $storageManager->lowerStorage(CommodityTypeConstants::COMMODITY_LATINUM, 1);
 
-        $game->getInfo()->addInformation('Die Waren wurden gekauft');
+        $context->getInfo()->addInformation('Die Waren wurden gekauft');
     }
 
     #[\Override]

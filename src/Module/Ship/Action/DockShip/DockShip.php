@@ -14,7 +14,7 @@ use Stu\Component\Station\Dock\DockPrivilegeUtilityInterface;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
@@ -38,11 +38,11 @@ final class DockShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
@@ -81,7 +81,7 @@ final class DockShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED,
                 InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
@@ -104,23 +104,23 @@ final class DockShip implements ActionControllerInterface
                 $target
             );
 
-            $game->getInfo()->addInformation('Das Andocken wurde verweigert');
+            $context->getInfo()->addInformation('Das Andocken wurde verweigert');
             return;
         }
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($ship->isFleetLeader() && $fleetWrapper !== null) {
-            $this->fleetDock($fleetWrapper, $target, $game);
+            $this->fleetDock($fleetWrapper, $target, $context);
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() < Spacecraft::SYSTEM_ECOST_DOCK) {
-            $game->getInfo()->addInformation('Zum Andocken wird 1 Energie benötigt');
+            $context->getInfo()->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
         if (!$target->hasFreeDockingSlots()) {
-            $game->getInfo()->addInformation('Zurzeit sind alle Dockplätze belegt');
+            $context->getInfo()->addInformation('Zurzeit sind alle Dockplätze belegt');
             return;
         }
 
@@ -131,10 +131,10 @@ final class DockShip implements ActionControllerInterface
         }
 
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo($target);
@@ -147,13 +147,13 @@ final class DockShip implements ActionControllerInterface
             $target,
             $this->isAutoReadOnDock($target)
         );
-        $game->getInfo()->addInformation('Andockvorgang abgeschlossen');
+        $context->getInfo()->addInformation('Andockvorgang abgeschlossen');
     }
 
     private function fleetDock(
         FleetWrapperInterface $fleetWrapper,
         Station $target,
-        GameControllerInterface $game
+        ActionControllerContext $context
     ): void {
         $msg = [_("Flottenbefehl ausgeführt: Andocken an ") . $target->getName()];
 
@@ -216,14 +216,14 @@ final class DockShip implements ActionControllerInterface
         }
 
         $this->privateMessageSender->send(
-            $game->getUser()->getId(),
+            $context->getUser()->getId(),
             $target->getUser()->getId(),
             'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderTypeEnum::SPECIAL_STATION,
             $target,
             $this->isAutoReadOnDock($target)
         );
-        $game->getInfo()->addInformationArray($msg, true);
+        $context->getInfo()->addInformationArray($msg, true);
     }
 
     private function isAutoReadOnDock(Station $target): bool

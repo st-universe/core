@@ -10,7 +10,7 @@ use Stu\Component\Crew\CrewRaceInput;
 use Stu\Module\Control\AccessCheckControllerInterface;
 use Stu\Module\Control\AccessGrantedFeatureEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Orm\Entity\CrewRace;
@@ -36,45 +36,45 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewRaceModeration::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewRaceModeration::VIEW_IDENTIFIER);
 
         $crewRace = $this->crewRaceRepository->find(request::postInt('crew_race_id'));
         if ($crewRace === null || !$crewRace->isCustom()) {
-            $game->getInfo()->addInformation(_('Die Crew-Rasse kann nicht geändert werden'));
+            $context->getInfo()->addInformation(_('Die Crew-Rasse kann nicht geändert werden'));
             return;
         }
 
         $isAdmin = $this->gameUserRoleChecker->isAdmin();
         if (!$isAdmin && (!$this->isPending($crewRace))) {
-            $game->getInfo()->addInformation(_('Diese Crew-Rasse kann nur vor der Entscheidung geändert werden'));
+            $context->getInfo()->addInformation(_('Diese Crew-Rasse kann nur vor der Entscheidung geändert werden'));
             return;
         }
 
         $description = trim((string)request::postString('crew_race_name'));
         if (!CrewRaceInput::isValidDescription($description)) {
-            $game->getInfo()->addInformation(_('Der Name muss mit einem Großbuchstaben beginnen und darf nur Buchstaben, einzelne Leerzeichen sowie einzelne Apostrophe oder Backticks enthalten'));
+            $context->getInfo()->addInformation(_('Der Name muss mit einem Großbuchstaben beginnen und darf nur Buchstaben, einzelne Leerzeichen sowie einzelne Apostrophe oder Backticks enthalten'));
             return;
         }
 
         $define = CrewRaceInput::normalizeDefine((string)request::postString('crew_race_define'));
         if (!CrewRaceInput::isValidDefine($define)) {
-            $game->getInfo()->addInformation(_('Die Grafikdefinition darf nur Großbuchstaben und einzelne Unterstriche enthalten'));
+            $context->getInfo()->addInformation(_('Die Grafikdefinition darf nur Großbuchstaben und einzelne Unterstriche enthalten'));
             return;
         }
 
         $existing = $this->crewRaceRepository->getByGfxPath($define);
         if ($existing !== null && $existing->getId() !== $crewRace->getId()) {
-            $game->getInfo()->addInformation(_('Eine Crew-Rasse mit dieser Grafikdefinition existiert bereits'));
+            $context->getInfo()->addInformation(_('Eine Crew-Rasse mit dieser Grafikdefinition existiert bereits'));
             return;
         }
 
-        if ($isAdmin && !$this->updateAdminValues($crewRace, $game)) {
+        if ($isAdmin && !$this->updateAdminValues($crewRace, $context)) {
             return;
         }
 
-        if ($define !== $crewRace->getGfxPath() && !$this->renameGraphicsDirectory($crewRace->getGfxPath(), $define, $game)) {
+        if ($define !== $crewRace->getGfxPath() && !$this->renameGraphicsDirectory($crewRace->getGfxPath(), $define, $context)) {
             return;
         }
 
@@ -83,7 +83,7 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
             ->setGfxPath($define);
 
         $this->crewRaceRepository->save($crewRace);
-        $game->getInfo()->addInformation(_('Die Crew-Rasse wurde aktualisiert'));
+        $context->getInfo()->addInformation(_('Die Crew-Rasse wurde aktualisiert'));
     }
 
     private function isPending(CrewRace $crewRace): bool
@@ -91,17 +91,17 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
         return !$crewRace->isAccepted() && $crewRace->getAcceptedUserId() === null;
     }
 
-    private function updateAdminValues(CrewRace $crewRace, GameControllerInterface $game): bool
+    private function updateAdminValues(CrewRace $crewRace, ActionControllerContext $context): bool
     {
         $maleRatio = filter_var(request::postString('crew_race_male_ratio'), FILTER_VALIDATE_INT);
         if ($maleRatio === false || $maleRatio < 0 || $maleRatio > 100) {
-            $game->getInfo()->addInformation(_('Das Männerverhältnis muss eine Zahl zwischen 0 und 100 sein'));
+            $context->getInfo()->addInformation(_('Das Männerverhältnis muss eine Zahl zwischen 0 und 100 sein'));
             return false;
         }
 
         $chance = filter_var(request::postString('crew_race_chance'), FILTER_VALIDATE_INT);
         if ($chance === false || $chance < 1 || $chance > 100) {
-            $game->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
+            $context->getInfo()->addInformation(_('Die Zufallsrate muss eine Zahl zwischen 1 und 100 sein'));
             return false;
         }
 
@@ -117,7 +117,7 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
             }
         }
         if ($factionIds === []) {
-            $game->getInfo()->addInformation(_('Es muss mindestens eine spielbare Fraktion gewählt werden'));
+            $context->getInfo()->addInformation(_('Es muss mindestens eine spielbare Fraktion gewählt werden'));
             return false;
         }
 
@@ -131,7 +131,7 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
         return true;
     }
 
-    private function renameGraphicsDirectory(string $currentDefine, string $newDefine, GameControllerInterface $game): bool
+    private function renameGraphicsDirectory(string $currentDefine, string $newDefine, ActionControllerContext $context): bool
     {
         $baseDirectory = rtrim((string)$this->config->get('game.webroot'), '/\\')
             . DIRECTORY_SEPARATOR
@@ -142,15 +142,15 @@ final class UpdateCrewRaceModeration implements ActionControllerInterface, Acces
         $newDirectory = $baseDirectory . DIRECTORY_SEPARATOR . $newDefine;
 
         if (!is_dir($currentDirectory)) {
-            $game->getInfo()->addInformation(_('Das bisherige Grafikverzeichnis wurde nicht gefunden'));
+            $context->getInfo()->addInformation(_('Das bisherige Grafikverzeichnis wurde nicht gefunden'));
             return false;
         }
         if (file_exists($newDirectory)) {
-            $game->getInfo()->addInformation(_('Das Zielverzeichnis für die Grafikdefinition existiert bereits'));
+            $context->getInfo()->addInformation(_('Das Zielverzeichnis für die Grafikdefinition existiert bereits'));
             return false;
         }
         if (!rename($currentDirectory, $newDirectory)) {
-            $game->getInfo()->addInformation(_('Das Grafikverzeichnis konnte nicht umbenannt werden'));
+            $context->getInfo()->addInformation(_('Das Grafikverzeichnis konnte nicht umbenannt werden'));
             return false;
         }
 

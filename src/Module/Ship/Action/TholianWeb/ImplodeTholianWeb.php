@@ -8,7 +8,7 @@ use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -37,11 +37,11 @@ final class ImplodeTholianWeb implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -74,7 +74,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedSpacecrafts())));
         $this->loggerUtil->log('6');
 
-        $game->getInfo()->addInformation("Das Energienetz ist implodiert");
+        $context->getInfo()->addInformation("Das Energienetz ist implodiert");
 
         //damage captured targets
         foreach ($web->getCapturedSpacecrafts() as $target) {
@@ -102,7 +102,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
                 $isTargetBase ? PrivateMessageFolderTypeEnum::SPECIAL_STATION : PrivateMessageFolderTypeEnum::SPECIAL_SHIP
             );
 
-            $game->getInfo()->addInformationWrapper($informations);
+            $context->getInfo()->addInformationWrapper($informations);
         }
 
         $this->spacecraftRemover->remove($web);

@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -28,9 +28,9 @@ final class PromotePlayer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
 
@@ -76,9 +76,9 @@ final class PromotePlayer implements ActionControllerInterface
         $this->allianceJobManager->assignUserToJob($promotedPlayer, $job);
 
         if ($userLosesFounderRights) {
-            $game->setView(ModuleEnum::ALLIANCE);
+            $context->setView(ModuleEnum::ALLIANCE);
         } else {
-            $game->setView(Management::VIEW_IDENTIFIER);
+            $context->setView(Management::VIEW_IDENTIFIER);
         }
 
         $text = sprintf(
@@ -89,7 +89,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $promotedPlayerId, $text);
 
-        $game->getInfo()->addInformation('Das Mitglied wurde befördert');
+        $context->getInfo()->addInformation('Das Mitglied wurde befördert');
     }
 
     #[\Override]

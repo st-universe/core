@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\Action\OrionDeleteAuction;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -33,17 +33,17 @@ final class OrionDeleteAuction implements ActionControllerInterface
         private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowOrionSlaveTrade::VIEW_IDENTIFIER);
+        $context->setView(ShowOrionSlaveTrade::VIEW_IDENTIFIER);
         if (!$this->gameUserRoleChecker->isAdmin()) {
-            $game->getInfo()->addInformation('Aktion nicht möglich');
+            $context->getInfo()->addInformation('Aktion nicht möglich');
             return;
         }
 
         $auction = $this->orionAuctionRepository->find($this->request->getAuctionId());
         if ($auction === null || $auction->getCompletedAt() !== null) {
-            $game->getInfo()->addInformation('Die Auktion ist nicht verfügbar');
+            $context->getInfo()->addInformation('Die Auktion ist nicht verfügbar');
             return;
         }
 
@@ -57,7 +57,7 @@ final class OrionDeleteAuction implements ActionControllerInterface
 
         $this->orionAuctionRepository->delete($auction);
         $this->crewRepository->delete($auction->getCrew());
-        $game->getInfo()->addInformation('Die Orion-Auktion wurde gelöscht');
+        $context->getInfo()->addInformation('Die Orion-Auktion wurde gelöscht');
     }
 
     private function refund(OrionAuction $auction, OrionAuctionBid $bid): void

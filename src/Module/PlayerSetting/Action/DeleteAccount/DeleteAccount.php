@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\DeleteAccount;
 
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class DeleteAccount implements ActionControllerInterface
 {
@@ -15,11 +15,11 @@ final class DeleteAccount implements ActionControllerInterface
     public function __construct(private RequestDeletionConfirmation $requestDeletionConfirmation) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $this->requestDeletionConfirmation->request($game->getUser());
+        $this->requestDeletionConfirmation->request($context->getUser());
 
-        $game->getInfo()->addInformation(
+        $context->getInfo()->addInformation(
             _('Dein Account wurde zur Löschung vorgemerkt. Zur engültigen Bestätigung wurde Dir eine Email geschickt.')
         );
     }

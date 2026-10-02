@@ -7,7 +7,7 @@ namespace Stu\Module\Communication\Action\AddKnPost;
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -36,9 +36,9 @@ final class AddKnPost implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
         $plot = null;
 
@@ -48,7 +48,7 @@ final class AddKnPost implements ActionControllerInterface
         $mark = $this->addKnPostRequest->getPostMark();
 
         if (mb_strlen($text) < 50) {
-            $game->getInfo()->addInformation(_('Der Text ist zu kurz (mindestens 50 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Text ist zu kurz (mindestens 50 Zeichen)'));
             return;
         }
 
@@ -61,12 +61,12 @@ final class AddKnPost implements ActionControllerInterface
             }
         } else {
             if (mb_strlen($title) < 6) {
-                $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+                $context->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
                 return;
             }
 
             if (mb_strlen($title) > 80) {
-                $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+                $context->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
                 return;
             }
         }
@@ -97,7 +97,7 @@ final class AddKnPost implements ActionControllerInterface
         foreach ($validIds as $id) {
             $userCharacter = $this->userCharactersRepository->find($id);
             if ($userCharacter === null) {
-                $game->getInfo()->addInformation(_("Kein Character mit der ID $id gefunden."));
+                $context->getInfo()->addInformation(_("Kein Character mit der ID $id gefunden."));
                 continue;
             }
             if ($userCharacter->getUser()->getId() === UserConstants::USER_NOONE) {
@@ -117,7 +117,7 @@ final class AddKnPost implements ActionControllerInterface
             $this->newKnPostNotificator->notify($post, $plot);
         }
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde hinzugefügt'));
 
         if ($mark !== 0) {
             $user->setKNMark($post->getId());
@@ -125,7 +125,7 @@ final class AddKnPost implements ActionControllerInterface
             $this->userRepository->save($user);
         }
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $context->setView(GameController::DEFAULT_VIEW);
     }
 
     /**

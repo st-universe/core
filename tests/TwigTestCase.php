@@ -6,6 +6,8 @@ namespace Stu;
 
 use request;
 use Spatie\Snapshots\MatchesSnapshots;
+use Stu\Module\Control\Component\View\ViewContext;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\ComponentSetupInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\JavascriptExecution;
@@ -47,12 +49,19 @@ abstract class TwigTestCase extends IntegrationTestCase
         self::$testSession->setUserById($userId);
         request::setMockVars($requestVars);
 
+        /** @var GameControllerInterface */
         $game = $dic->get(GameControllerInterface::class);
+
+        /** @var ViewControllerInterface */
         $subject = $viewController instanceof ViewControllerInterface ? $viewController : $dic->get($viewController);
+        $module = $this->getModuleOfController($subject, $requestVars);
+
+        /** @var ViewContext */
+        $context = $dic->get(ViewContextFactoryInterface::class)->createViewContext($game, $module);
 
         // execute ViewController setup components and render
-        $subject->handle($game);
-        $dic->get(ComponentSetupInterface::class)->setup($game);
+        $subject->handle($context);
+        $dic->get(ComponentSetupInterface::class)->setup();
         $renderResult = $dic->get(GameTwigRendererInterface::class)->render($game, $game->getUser());
 
         $this->assertMatchesHtmlSnapshot($renderResult);

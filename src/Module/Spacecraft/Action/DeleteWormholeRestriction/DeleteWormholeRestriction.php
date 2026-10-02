@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\DeleteWormholeRestriction;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowWormholeRestrictions\ShowWormholeRestrictions;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 use Stu\Orm\Repository\WormholeRestrictionRepositoryInterface;
@@ -21,13 +21,13 @@ final class DeleteWormholeRestriction implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
 
         $entryId = request::getIntFatal('entryId');
         $restrictionId = request::getIntFatal('restrictionId');
 
-        $game->setView(ShowWormholeRestrictions::VIEW_IDENTIFIER);
+        $context->setView(ShowWormholeRestrictions::VIEW_IDENTIFIER);
 
         $restriction = $this->wormholeRestrictionRepository->find($restrictionId);
         $wormholeEntry = $this->wormholeEntryRepository->find($entryId);

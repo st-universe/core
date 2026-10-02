@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
@@ -29,11 +29,11 @@ final class EpsTransfer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
@@ -66,31 +66,31 @@ final class EpsTransfer implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
         $eps = $wrapper->getEpsSystemData();
 
         if ($eps === null || $eps->getEps() === 0) {
-            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
 
         $load = request::postInt('ecount');
         if ($load < 1) {
-            $game->getInfo()->addInformation(_("Es wurde keine Energiemenge angegeben"));
+            $context->getInfo()->addInformation(_("Es wurde keine Energiemenge angegeben"));
             return;
         }
 
         $targetEps = $targetWrapper->getEpsSystemData();
 
         if ($targetEps === null) {
-            $game->getInfo()->addInformation(sprintf(_('Die %s hat kein Energiesystem installiert'), $target->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Die %s hat kein Energiesystem installiert'), $target->getName()));
             return;
         }
         if ($targetEps->getBattery() >= $targetEps->getMaxBattery()) {
-            $game->getInfo()->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
             return;
         }
         if ($load * 3 > $eps->getEps()) {
@@ -112,7 +112,7 @@ final class EpsTransfer implements ActionControllerInterface
             PrivateMessageFolderTypeEnum::SPECIAL_TRADE
         );
         $this->npcLogTradeMessageLogger->logIfNpcInvolved($userId, $recipientId, $text);
-        $game->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
+        $context->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
     #[\Override]

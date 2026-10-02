@@ -15,8 +15,8 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -44,17 +44,17 @@ final class RepairShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
-        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_SHIP_REPAIR);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setViewContext(ViewContextMetadataTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_SHIP_REPAIR);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $colony = $this->colonyLoader->loadWithOwnerValidation(request::indInt('id'), $userId);
 
         $target = $this->shipRepository->find(request::indInt('ship_id'));
         if ($target === null) {
-            $game->getInfo()->addInformation('Das Schiff existiert nicht');
+            $context->getInfo()->addInformation('Das Schiff existiert nicht');
             return;
         }
 
@@ -68,7 +68,7 @@ final class RepairShip implements ActionControllerInterface
         );
 
         if ($field === null || $field->getBuilding() === null) {
-            $game->getInfo()->addInformation('Es ist keine Werft vorhanden');
+            $context->getInfo()->addInformation('Es ist keine Werft vorhanden');
             return;
         }
 
@@ -93,17 +93,17 @@ final class RepairShip implements ActionControllerInterface
         }
 
         if (!array_key_exists($target->getId(), $repairableShipWrappers)) {
-            $game->getInfo()->addInformation('Das Schiff kann nicht repariert werden.');
+            $context->getInfo()->addInformation('Das Schiff kann nicht repariert werden.');
             return;
         }
 
         if ($colony->isBlocked()) {
-            $game->getInfo()->addInformation('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird');
+            $context->getInfo()->addInformation('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird');
             return;
         }
 
         if ($target->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
-            $game->getInfo()->addInformation('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.');
+            $context->getInfo()->addInformation('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.');
             return;
         }
 
@@ -129,7 +129,7 @@ final class RepairShip implements ActionControllerInterface
         $target->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         if ($isQueued) {
-            $game->getInfo()->addInformation('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt');
+            $context->getInfo()->addInformation('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt');
             return;
         }
 
@@ -138,7 +138,7 @@ final class RepairShip implements ActionControllerInterface
         $activationSuffix = $field->isActive() ? '' : ', sobald die Werft wieder aktiv ist';
         $estimatedFinishDate = date('d.m.Y H:i', time() + $estimatedDuration);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             'Das Schiff wird repariert. Voraussichtliche Fertigstellung: %s%s',
             $estimatedFinishDate,
             $activationSuffix

@@ -16,8 +16,8 @@ use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -40,24 +40,24 @@ final class CreateBuildplan implements ActionControllerInterface
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation
     ) {}
 
-    private function exitOnError(GameControllerInterface $game): void
+    private function exitOnError(ActionControllerContext $context): void
     {
-        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+        $context->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
-        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+        $context->setView(ShowModuleScreen::VIEW_IDENTIFIER);
 
         //$this->loggerUtil->init('stu', LogLevelEnum::ERROR);
 
         $rump = $this->spacecraftRumpRepository->find(request::indInt('rumpid'));
         if ($rump === null) {
-            $this->exitOnError($game);
+            $this->exitOnError($context);
             return;
         }
 
@@ -87,11 +87,11 @@ final class CreateBuildplan implements ActionControllerInterface
                 && $moduleLevels->isMandatory($moduleType)
                 && count($module) === 0
             ) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     $moduleType->getDescription()
                 );
-                $this->exitOnError($game);
+                $this->exitOnError($context);
                 $error = true;
             }
             if ($moduleType->isSpecialSystemType()) {
@@ -108,8 +108,8 @@ final class CreateBuildplan implements ActionControllerInterface
                 }
 
                 if ($specialCount > $rump->getBaseValues()->getSpecialSlots()) {
-                    $game->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
-                    $this->exitOnError($game);
+                    $context->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $this->exitOnError($context);
                     $error = true;
                 }
                 continue;
@@ -125,7 +125,7 @@ final class CreateBuildplan implements ActionControllerInterface
                     throw new RuntimeException(sprintf('moduleId %d does not exist', $moduleId));
                 }
             } elseif (!$moduleLevels->getDefaultLevel($moduleType)) {
-                $this->exitOnError($game);
+                $this->exitOnError($context);
                 return;
             }
             if ($mod !== null) {
@@ -139,8 +139,8 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $crewUsage = $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
-            $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
-            $this->exitOnError($game);
+            $context->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
+            $this->exitOnError($context);
             return;
         }
         $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
@@ -152,14 +152,14 @@ final class CreateBuildplan implements ActionControllerInterface
             $planname = CleanTextUtils::clearEmojis($plannameFromRequest);
             $nameWithoutUnicode = CleanTextUtils::clearUnicode($planname);
             if ($planname !== $nameWithoutUnicode) {
-                $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
-                $this->exitOnError($game);
+                $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
+                $this->exitOnError($context);
                 return;
             }
 
             if (mb_strlen($planname) > 255) {
-                $game->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
-                $this->exitOnError($game);
+                $context->getInfo()->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+                $this->exitOnError($context);
                 return;
             }
         } else {
@@ -172,22 +172,22 @@ final class CreateBuildplan implements ActionControllerInterface
 
 
         if ($this->spacecraftBuildplanRepository->findByUserAndName($userId, $planname) !== null) {
-            $game->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
-            $this->exitOnError($game);
+            $context->getInfo()->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            $this->exitOnError($context);
             return;
         }
 
-        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+        $context->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
 
         $existingPlan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($existingPlan !== null) {
-            $game->getInfo()->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
-            $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $existingPlan->getId());
+            $context->getInfo()->addInformationf('Ein Bauplan mit dieser Konfiguration existiert bereits: %s', $existingPlan->getName());
+            $context->setViewContext(ViewContextMetadataTypeEnum::BUILDPLAN, $existingPlan->getId());
 
             return;
         }
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             _('Lege neuen Bauplan an: %s'),
             $planname
         );
@@ -214,7 +214,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
         $this->entityManager->flush();
 
-        $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $plan->getId());
+        $context->setViewContext(ViewContextMetadataTypeEnum::BUILDPLAN, $plan->getId());
     }
 
     #[\Override]

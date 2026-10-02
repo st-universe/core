@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\AddShipLog;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowShipCommunication\ShowShipCommunication;
@@ -24,11 +24,11 @@ final class AddShipLog implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $this->setReturnView($game);
+        $this->setReturnView($context);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
@@ -45,7 +45,7 @@ final class AddShipLog implements ActionControllerInterface
 
         $this->spacecraftLogRepository->save($spacecraftLog);
 
-        $game->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');
+        $context->getInfo()->addInformation('Logbucheintrag wurde hinzugefügt');
     }
 
     #[\Override]
@@ -54,9 +54,9 @@ final class AddShipLog implements ActionControllerInterface
         return true;
     }
 
-    private function setReturnView(GameControllerInterface $game): void
+    private function setReturnView(ActionControllerContext $context): void
     {
-        $game->setView(
+        $context->setView(
             request::postInt('communicationPopup') === 1
                 ? ShowShipCommunication::VIEW_IDENTIFIER
                 : ShowSpacecraft::VIEW_IDENTIFIER

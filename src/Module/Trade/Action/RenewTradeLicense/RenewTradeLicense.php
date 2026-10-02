@@ -10,8 +10,8 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -36,12 +36,12 @@ final class RenewTradeLicense implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowAccounts::VIEW_IDENTIFIER);
-        $game->setViewContext(ViewContextTypeEnum::NO_AJAX, true);
+        $context->setView(ShowAccounts::VIEW_IDENTIFIER);
+        $context->setViewContext(ViewContextMetadataTypeEnum::NO_AJAX, true);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $postId = request::postIntFatal('postid');
@@ -71,13 +71,13 @@ final class RenewTradeLicense implements ActionControllerInterface
         try {
             $this->payLicenseViaAccount($activeLicense, $licenseInfo);
         } catch (CommodityMissingException) {
-            $game->getInfo()->addInformation('Dein Warenkonto verfügt nicht über ausreichend Waren');
+            $context->getInfo()->addInformation('Dein Warenkonto verfügt nicht über ausreichend Waren');
             return;
         }
 
         $this->renewLicense($activeLicense, $licenseInfo);
 
-        $game->getInfo()->addInformation('Handelslizenz wurde erteilt');
+        $context->getInfo()->addInformation('Handelslizenz wurde erteilt');
 
         $this->privateMessageSender->send(
             $userId,

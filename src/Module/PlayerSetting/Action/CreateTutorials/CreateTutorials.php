@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\CreateTutorials;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
 use Stu\Orm\Repository\UserTutorialRepositoryInterface;
 
@@ -16,9 +16,9 @@ final class CreateTutorials implements ActionControllerInterface
     public function __construct(private UserTutorialRepositoryInterface $userTutorialRepository, private TutorialStepRepositoryInterface $tutorialStepRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $this->userTutorialRepository->truncateByUser($user);
 
@@ -33,7 +33,7 @@ final class CreateTutorials implements ActionControllerInterface
         }
 
 
-        $game->getInfo()->addInformation(_('Tutorial wurde neu gestartet'));
+        $context->getInfo()->addInformation(_('Tutorial wurde neu gestartet'));
     }
 
 

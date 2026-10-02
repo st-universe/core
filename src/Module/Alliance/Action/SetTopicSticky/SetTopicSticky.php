@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\SetTopicSticky;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class SetTopicSticky implements ActionControllerInterface
@@ -20,9 +20,9 @@ final class SetTopicSticky implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->setTopicStickyRequest->getTopicId());
         if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
@@ -33,9 +33,9 @@ final class SetTopicSticky implements ActionControllerInterface
 
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->getInfo()->addInformation(_('Das Thema wurde als wichtig markiert'));
+        $context->getInfo()->addInformation(_('Das Thema wurde als wichtig markiert'));
 
-        $game->setView(Topic::VIEW_IDENTIFIER);
+        $context->setView(Topic::VIEW_IDENTIFIER);
     }
 
     #[\Override]

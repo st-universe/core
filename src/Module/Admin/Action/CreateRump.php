@@ -15,7 +15,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Admin\Lib\RumpCreatorData;
 use Stu\Module\Admin\View\RumpCreator\ShowRumpCreator;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
@@ -58,24 +58,24 @@ final class CreateRump implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowRumpCreator::VIEW_IDENTIFIER);
+        $context->setView(ShowRumpCreator::VIEW_IDENTIFIER);
 
         $isUpdate = request::postString(self::UPDATE_ACTION_IDENTIFIER) !== false;
         $editRumpId = $isUpdate
-            ? $this->readOptionalInteger($game, 'edit_rump_id', 'Zu bearbeitender Rumpf', 1, PHP_INT_MAX)
+            ? $this->readOptionalInteger($context, 'edit_rump_id', 'Zu bearbeitender Rumpf', 1, PHP_INT_MAX)
             : null;
         if ($editRumpId === false) {
             return;
         }
         if ($isUpdate && $editRumpId === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Bitte einen bestehenden Rumpf zum Bearbeiten auswählen'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Bitte einen bestehenden Rumpf zum Bearbeiten auswählen'));
             return;
         }
 
-        $data = $this->readData($game, $editRumpId);
+        $data = $this->readData($context, $editRumpId);
         if ($data === null) {
             return;
         }
@@ -90,12 +90,12 @@ final class CreateRump implements ActionControllerInterface
             });
         } catch (Throwable) {
             $this->entityManager->clear();
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Der Rumpf konnte nicht gespeichert werden'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Der Rumpf konnte nicht gespeichert werden'));
             return;
         }
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             $editRumpId === null
                 ? _('Der Rumpf %s mit der ID %d wurde erstellt')
                 : _('Der Rumpf %s mit der ID %d wurde aktualisiert'),
@@ -110,102 +110,102 @@ final class CreateRump implements ActionControllerInterface
         return true;
     }
 
-    private function readData(GameControllerInterface $game, ?int $editRumpId): ?RumpCreatorData
+    private function readData(ActionControllerContext $context, ?int $editRumpId): ?RumpCreatorData
     {
-        $id = $this->readInteger($game, 'rump_id', 'Rumpf-ID', 1, PHP_INT_MAX);
+        $id = $this->readInteger($context, 'rump_id', 'Rumpf-ID', 1, PHP_INT_MAX);
         if ($id === false) {
             return null;
         }
 
-        $name = $this->readString($game, 'rump_name', 'Rumpfname', 255);
+        $name = $this->readString($context, 'rump_name', 'Rumpfname', 255);
         if ($name === false) {
             return null;
         }
 
         if ($editRumpId === null && $this->spacecraftRumpRepository->find($id) !== null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Die Rumpf-ID ist bereits vergeben'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Die Rumpf-ID ist bereits vergeben'));
             return null;
         }
         if ($editRumpId !== null && $id !== $editRumpId) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Die Rumpf-ID darf beim Bearbeiten nicht geändert werden'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Die Rumpf-ID darf beim Bearbeiten nicht geändert werden'));
             return null;
         }
 
-        $categoryId = $this->readInteger($game, 'category_id', 'Kategorie', 1, PHP_INT_MAX);
+        $categoryId = $this->readInteger($context, 'category_id', 'Kategorie', 1, PHP_INT_MAX);
         if ($categoryId === false) {
             return null;
         }
         if ($this->shipRumpCategoryRepository->find($categoryId) === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('Kategorie mit der ID %d existiert nicht'), $categoryId));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('Kategorie mit der ID %d existiert nicht'), $categoryId));
             return null;
         }
 
-        $roleId = $this->readOptionalInteger($game, 'role_id', 'Rolle', 1, PHP_INT_MAX);
+        $roleId = $this->readOptionalInteger($context, 'role_id', 'Rolle', 1, PHP_INT_MAX);
         if ($roleId === false) {
             return null;
         }
         if ($roleId !== null && $this->shipRumpRoleRepository->find($roleId) === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('Rolle mit der ID %d existiert nicht'), $roleId));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('Rolle mit der ID %d existiert nicht'), $roleId));
             return null;
         }
 
-        $commodityId = $this->readOptionalInteger($game, 'commodity_id', 'Waren-ID', 1, PHP_INT_MAX);
+        $commodityId = $this->readOptionalInteger($context, 'commodity_id', 'Waren-ID', 1, PHP_INT_MAX);
         if ($commodityId === false) {
             return null;
         }
         if ($commodityId !== null && $this->commodityRepository->find($commodityId) === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('Ware mit der ID %d existiert nicht'), $commodityId));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('Ware mit der ID %d existiert nicht'), $commodityId));
             return null;
         }
 
-        $factionId = $this->readOptionalInteger($game, 'faction_id', 'Fraktions-ID', 1, PHP_INT_MAX);
+        $factionId = $this->readOptionalInteger($context, 'faction_id', 'Fraktions-ID', 1, PHP_INT_MAX);
         if ($factionId === false) {
             return null;
         }
         if ($factionId !== null && $this->factionRepository->find($factionId) === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('Fraktion mit der ID %d existiert nicht'), $factionId));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('Fraktion mit der ID %d existiert nicht'), $factionId));
             return null;
         }
 
-        $databaseId = $this->readOptionalInteger($game, 'database_id', 'Datenbankeintrag', 1, PHP_INT_MAX);
+        $databaseId = $this->readOptionalInteger($context, 'database_id', 'Datenbankeintrag', 1, PHP_INT_MAX);
         if ($databaseId === false) {
             return null;
         }
         if ($databaseId !== null) {
             $databaseEntry = $this->databaseEntryRepository->find($databaseId);
             if ($databaseEntry === null || $databaseEntry->getTypeId() !== DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Der Datenbankeintrag ist kein Rumpf-Eintrag'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Der Datenbankeintrag ist kein Rumpf-Eintrag'));
                 return null;
             }
         }
 
         $createDatabaseEntry = request::postString('create_database_entry') !== false;
         if ($createDatabaseEntry && $databaseId !== null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Bitte einen vorhandenen Datenbankeintrag auswählen oder einen neuen anlegen'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Bitte einen vorhandenen Datenbankeintrag auswählen oder einen neuen anlegen'));
             return null;
         }
 
         $databaseEntry = null;
         if ($createDatabaseEntry) {
-            $databaseEntryId = $this->readOptionalInteger($game, 'database_entry_id', 'Datenbank-ID', 1, PHP_INT_MAX);
+            $databaseEntryId = $this->readOptionalInteger($context, 'database_entry_id', 'Datenbank-ID', 1, PHP_INT_MAX);
             if ($databaseEntryId === false) {
                 return null;
             }
             if ($databaseEntryId !== null && $this->databaseEntryRepository->find($databaseEntryId) !== null) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Die Datenbank-ID ist bereits vergeben'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Die Datenbank-ID ist bereits vergeben'));
                 return null;
             }
 
-            $databaseEntry = $this->readDatabaseEntryData($game);
+            $databaseEntry = $this->readDatabaseEntryData($context);
             if ($databaseEntry === null) {
                 return null;
             }
@@ -223,12 +223,12 @@ final class CreateRump implements ActionControllerInterface
         $databaseEntryUpdate = null;
         if (request::postString('update_database_entry') !== false) {
             if ($createDatabaseEntry || $databaseId === null) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Zum Bearbeiten muss ein vorhandener Datenbankeintrag verknüpft sein'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Zum Bearbeiten muss ein vorhandener Datenbankeintrag verknüpft sein'));
                 return null;
             }
 
-            $databaseEntryUpdate = $this->readDatabaseEntryData($game);
+            $databaseEntryUpdate = $this->readDatabaseEntryData($context);
             if ($databaseEntryUpdate === null) {
                 return null;
             }
@@ -236,8 +236,8 @@ final class CreateRump implements ActionControllerInterface
 
         $npcBuildableValue = request::postString('npc_buildable');
         if (!in_array($npcBuildableValue, [false, '', '0', '1'], true)) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('NPC-Baubarkeit ist ungültig'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('NPC-Baubarkeit ist ungültig'));
             return null;
         }
         $npcBuildable = match ($npcBuildableValue) {
@@ -277,13 +277,13 @@ final class CreateRump implements ActionControllerInterface
             'tractor_payload' => ['Traktor-Zuladung', 0, PHP_INT_MAX],
             'prestige' => ['Prestige', PHP_INT_MIN, PHP_INT_MAX]
         ] as $field => [$label, $minimum, $maximum]) {
-            $value = $this->readInteger($game, $field, $label, $minimum, $maximum);
+            $value = $this->readInteger($context, $field, $label, $minimum, $maximum);
             if ($value === false) {
                 return null;
             }
             $core[$field] = $value;
         }
-        $neededWorkbees = $this->readOptionalInteger($game, 'needed_workbees', 'Benötigte Workbees', 0, 32767);
+        $neededWorkbees = $this->readOptionalInteger($context, 'needed_workbees', 'Benötigte Workbees', 0, 32767);
         if ($neededWorkbees === false) {
             return null;
         }
@@ -305,7 +305,7 @@ final class CreateRump implements ActionControllerInterface
             'base_warpdrive' => ['Basis-Warpantrieb', 0, PHP_INT_MAX],
             'special_slots' => ['Spezialslots', 0, 32767]
         ] as $field => [$label, $minimum, $maximum]) {
-            $value = $this->readInteger($game, $field, $label, $minimum, $maximum);
+            $value = $this->readInteger($context, $field, $label, $minimum, $maximum);
             if ($value === false) {
                 return null;
             }
@@ -313,33 +313,33 @@ final class CreateRump implements ActionControllerInterface
         }
         $moduleLevels = request::postString('create_module_levels') === false
             ? null
-            : $this->readModuleLevels($game);
+            : $this->readModuleLevels($context);
         if ($moduleLevels === null && request::postString('create_module_levels') !== false) {
             return null;
         }
         $model3d = request::postString('create_model_3d') === false
             ? null
-            : $this->readModel3dData($game, $id);
+            : $this->readModel3dData($context, $id);
         if ($model3d === false) {
             return null;
         }
-        $costs = $this->readCosts($game);
+        $costs = $this->readCosts($context);
         if ($costs === null) {
             return null;
         }
-        $moduleSpecialIds = $this->readModuleSpecialIds($game);
+        $moduleSpecialIds = $this->readModuleSpecialIds($context);
         if ($moduleSpecialIds === null) {
             return null;
         }
-        $buildingFunctionIds = $this->readBuildingFunctionIds($game);
+        $buildingFunctionIds = $this->readBuildingFunctionIds($context);
         if ($buildingFunctionIds === null) {
             return null;
         }
-        $specialAbilityIds = $this->readSpecialAbilityIds($game);
+        $specialAbilityIds = $this->readSpecialAbilityIds($context);
         if ($specialAbilityIds === null) {
             return null;
         }
-        $colonizationBuildingId = $this->readColonizationBuildingId($game);
+        $colonizationBuildingId = $this->readColonizationBuildingId($context);
         if ($colonizationBuildingId === false) {
             return null;
         }
@@ -740,7 +740,7 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($entries);
     }
 
-    private function readModel3dData(GameControllerInterface $game, int $rumpId): RumpCreatorData|false
+    private function readModel3dData(ActionControllerContext $context, int $rumpId): RumpCreatorData|false
     {
         $model3d = ['rump_id' => $rumpId];
         foreach ([
@@ -748,7 +748,7 @@ final class CreateRump implements ActionControllerInterface
             'height' => ['model_3d_height', '3D-Modellhöhe'],
             'rotation' => ['model_3d_rotation', '3D-Modellrotation']
         ] as $field => [$requestField, $label]) {
-            $value = $this->readInteger($game, $requestField, $label, 0, PHP_INT_MAX);
+            $value = $this->readInteger($context, $requestField, $label, 0, PHP_INT_MAX);
             if ($value === false) {
                 return false;
             }
@@ -758,17 +758,17 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($model3d);
     }
 
-    private function readDatabaseEntryData(GameControllerInterface $game): ?RumpCreatorData
+    private function readDatabaseEntryData(ActionControllerContext $context): ?RumpCreatorData
     {
-        $description = $this->readString($game, 'database_entry_description', 'Datenbank-Beschreibung', 255);
+        $description = $this->readString($context, 'database_entry_description', 'Datenbank-Beschreibung', 255);
         if ($description === false) {
             return null;
         }
-        $categoryId = $this->readInteger($game, 'database_entry_category_id', 'Datenbank-Kategorie', 1, PHP_INT_MAX);
+        $categoryId = $this->readInteger($context, 'database_entry_category_id', 'Datenbank-Kategorie', 1, PHP_INT_MAX);
         if ($categoryId === false) {
             return null;
         }
-        $insertBeforeId = $this->readOptionalInteger($game, 'database_entry_before_id', 'Datenbank-Einfügeposition', 1, PHP_INT_MAX);
+        $insertBeforeId = $this->readOptionalInteger($context, 'database_entry_before_id', 'Datenbank-Einfügeposition', 1, PHP_INT_MAX);
         if ($insertBeforeId === false) {
             return null;
         }
@@ -780,8 +780,8 @@ final class CreateRump implements ActionControllerInterface
         ];
         $databaseCategory = $this->databaseCategoryRepository->find($databaseEntry['category_id']);
         if ($databaseCategory === null || $databaseCategory->getType() !== DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(_('Die Datenbank-Kategorie ist nicht für Rümpfe vorgesehen'));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(_('Die Datenbank-Kategorie ist nicht für Rümpfe vorgesehen'));
             return null;
         }
 
@@ -792,8 +792,8 @@ final class CreateRump implements ActionControllerInterface
                 || $insertBeforeEntry->getTypeId() !== DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP
                 || $insertBeforeEntry->getCategoryId() !== $databaseEntry['category_id']
             ) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Die gewählte Einfügeposition gehört nicht zur Datenbank-Kategorie'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Die gewählte Einfügeposition gehört nicht zur Datenbank-Kategorie'));
                 return null;
             }
         }
@@ -801,12 +801,12 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($databaseEntry);
     }
 
-    private function preserveFormValues(GameControllerInterface $game): void
+    private function preserveFormValues(ActionControllerContext $context): void
     {
-        $game->setTemplateVar('RUMP_CREATOR_FORM_VALUES', request::postvars());
+        $context->setTemplateVar('RUMP_CREATOR_FORM_VALUES', request::postvars());
     }
 
-    private function readModuleLevels(GameControllerInterface $game): ?RumpCreatorData
+    private function readModuleLevels(ActionControllerContext $context): ?RumpCreatorData
     {
         $levels = [];
 
@@ -815,15 +815,15 @@ final class CreateRump implements ActionControllerInterface
                 continue;
             }
 
-            $minimum = $this->readInteger($game, 'module_min_' . $type->value, $type->getDescription() . ': Minimum', 0, 32767);
-            $default = $this->readInteger($game, 'module_default_' . $type->value, $type->getDescription() . ': Standard', 0, 32767);
-            $maximum = $this->readInteger($game, 'module_max_' . $type->value, $type->getDescription() . ': Maximum', 0, 32767);
+            $minimum = $this->readInteger($context, 'module_min_' . $type->value, $type->getDescription() . ': Minimum', 0, 32767);
+            $default = $this->readInteger($context, 'module_default_' . $type->value, $type->getDescription() . ': Standard', 0, 32767);
+            $maximum = $this->readInteger($context, 'module_max_' . $type->value, $type->getDescription() . ': Maximum', 0, 32767);
             if ($minimum === false || $default === false || $maximum === false) {
                 return null;
             }
             if ($minimum > $maximum) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(sprintf(_('Der minimale Modullevel für %s darf nicht größer als der maximale sein'), $type->getDescription()));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(sprintf(_('Der minimale Modullevel für %s darf nicht größer als der maximale sein'), $type->getDescription()));
                 return null;
             }
 
@@ -838,7 +838,7 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($levels);
     }
 
-    private function readCosts(GameControllerInterface $game): ?RumpCreatorData
+    private function readCosts(ActionControllerContext $context): ?RumpCreatorData
     {
         $commodityIds = request::postArray('cost_commodity_ids');
         $amounts = request::postArray('cost_amounts');
@@ -852,21 +852,21 @@ final class CreateRump implements ActionControllerInterface
                 continue;
             }
             if ($commodityValue === '' || $amountValue === '') {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Jede Baukosten-Zeile benötigt Ware und Menge'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Jede Baukosten-Zeile benötigt Ware und Menge'));
                 return null;
             }
 
-            $commodityId = $this->parseInteger($game, $commodityValue, 'Baukosten-Ware', 1, PHP_INT_MAX);
+            $commodityId = $this->parseInteger($context, $commodityValue, 'Baukosten-Ware', 1, PHP_INT_MAX);
             if ($commodityId === false) {
                 return null;
             }
             if ($this->commodityRepository->find($commodityId) === null) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(sprintf(_('Baukosten-Ware mit der ID %d existiert nicht'), $commodityId));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(sprintf(_('Baukosten-Ware mit der ID %d existiert nicht'), $commodityId));
                 return null;
             }
-            $amount = $this->parseInteger($game, $amountValue, 'Baukosten-Menge', 1, PHP_INT_MAX);
+            $amount = $this->parseInteger($context, $amountValue, 'Baukosten-Menge', 1, PHP_INT_MAX);
             if ($amount === false) {
                 return null;
             }
@@ -879,17 +879,17 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData(array_values($costs));
     }
 
-    private function readModuleSpecialIds(GameControllerInterface $game): ?RumpCreatorData
+    private function readModuleSpecialIds(ActionControllerContext $context): ?RumpCreatorData
     {
-        $idList = $this->readIdList($game, 'module_special_ids', 'Spezialmodul');
+        $idList = $this->readIdList($context, 'module_special_ids', 'Spezialmodul');
         if ($idList === null) {
             return null;
         }
         $ids = $idList->all();
         foreach ($ids as $id) {
             if ($this->moduleSpecialRepository->find($id) === null) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(sprintf(_('Spezialmodul mit der ID %d existiert nicht'), $id));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(sprintf(_('Spezialmodul mit der ID %d existiert nicht'), $id));
                 return null;
             }
         }
@@ -897,17 +897,17 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($ids);
     }
 
-    private function readBuildingFunctionIds(GameControllerInterface $game): ?RumpCreatorData
+    private function readBuildingFunctionIds(ActionControllerContext $context): ?RumpCreatorData
     {
-        $idList = $this->readIdList($game, 'building_function_ids', 'Gebäudefunktion');
+        $idList = $this->readIdList($context, 'building_function_ids', 'Gebäudefunktion');
         if ($idList === null) {
             return null;
         }
         $ids = $idList->all();
         foreach ($ids as $id) {
             if (BuildingFunctionEnum::tryFrom($id) === null) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Eine ausgewählte Gebäudefunktion existiert nicht'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Eine ausgewählte Gebäudefunktion existiert nicht'));
                 return null;
             }
         }
@@ -915,17 +915,17 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($ids);
     }
 
-    private function readSpecialAbilityIds(GameControllerInterface $game): ?RumpCreatorData
+    private function readSpecialAbilityIds(ActionControllerContext $context): ?RumpCreatorData
     {
-        $idList = $this->readIdList($game, 'special_ability_ids', 'Sonderfähigkeit');
+        $idList = $this->readIdList($context, 'special_ability_ids', 'Sonderfähigkeit');
         if ($idList === null) {
             return null;
         }
         $ids = $idList->all();
         foreach ($ids as $id) {
             if ($id !== SpacecraftRump::SPECIAL_ABILITY_COLONIZE) {
-                $this->preserveFormValues($game);
-                $game->getInfo()->addInformation(_('Eine ausgewählte Sonderfähigkeit existiert nicht'));
+                $this->preserveFormValues($context);
+                $context->getInfo()->addInformation(_('Eine ausgewählte Sonderfähigkeit existiert nicht'));
                 return null;
             }
         }
@@ -933,26 +933,26 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData($ids);
     }
 
-    private function readColonizationBuildingId(GameControllerInterface $game): int|false|null
+    private function readColonizationBuildingId(ActionControllerContext $context): int|false|null
     {
-        $buildingId = $this->readOptionalInteger($game, 'colonization_building_id', 'Kolonisationsgebäude', 1, PHP_INT_MAX);
+        $buildingId = $this->readOptionalInteger($context, 'colonization_building_id', 'Kolonisationsgebäude', 1, PHP_INT_MAX);
         if ($buildingId === false) {
             return false;
         }
         if ($buildingId !== null && $this->buildingRepository->find($buildingId) === null) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('Kolonisationsgebäude mit der ID %d existiert nicht'), $buildingId));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('Kolonisationsgebäude mit der ID %d existiert nicht'), $buildingId));
             return false;
         }
 
         return $buildingId;
     }
 
-    private function readIdList(GameControllerInterface $game, string $field, string $label): ?RumpCreatorData
+    private function readIdList(ActionControllerContext $context, string $field, string $label): ?RumpCreatorData
     {
         $ids = [];
         foreach (request::postArray($field) as $value) {
-            $id = $this->parseInteger($game, (string) $value, $label, 1, PHP_INT_MAX);
+            $id = $this->parseInteger($context, (string) $value, $label, 1, PHP_INT_MAX);
             if ($id === false) {
                 return null;
             }
@@ -962,45 +962,45 @@ final class CreateRump implements ActionControllerInterface
         return new RumpCreatorData(array_values($ids));
     }
 
-    private function readInteger(GameControllerInterface $game, string $field, string $label, int $minimum, int $maximum): int|false
+    private function readInteger(ActionControllerContext $context, string $field, string $label, int $minimum, int $maximum): int|false
     {
-        return $this->parseInteger($game, (string) request::postString($field), $label, $minimum, $maximum);
+        return $this->parseInteger($context, (string) request::postString($field), $label, $minimum, $maximum);
     }
 
-    private function readOptionalInteger(GameControllerInterface $game, string $field, string $label, int $minimum, int $maximum): int|false|null
+    private function readOptionalInteger(ActionControllerContext $context, string $field, string $label, int $minimum, int $maximum): int|false|null
     {
         $value = trim((string) request::postString($field));
         if ($value === '') {
             return null;
         }
 
-        return $this->parseInteger($game, $value, $label, $minimum, $maximum);
+        return $this->parseInteger($context, $value, $label, $minimum, $maximum);
     }
 
-    private function readString(GameControllerInterface $game, string $field, string $label, int $maximumLength): string|false
+    private function readString(ActionControllerContext $context, string $field, string $label, int $maximumLength): string|false
     {
         $value = trim((string) request::postString($field));
         if ($value === '' || mb_strlen($value) > $maximumLength) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('%s muss zwischen 1 und %d Zeichen lang sein'), $label, $maximumLength));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('%s muss zwischen 1 und %d Zeichen lang sein'), $label, $maximumLength));
             return false;
         }
 
         return $value;
     }
 
-    private function parseInteger(GameControllerInterface $game, string $value, string $label, int $minimum, int $maximum): int|false
+    private function parseInteger(ActionControllerContext $context, string $value, string $label, int $minimum, int $maximum): int|false
     {
         if (!preg_match('/^-?\\d+$/', $value)) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('%s muss eine ganze Zahl sein'), $label));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('%s muss eine ganze Zahl sein'), $label));
             return false;
         }
 
         $integer = (int) $value;
         if ($integer < $minimum || $integer > $maximum) {
-            $this->preserveFormValues($game);
-            $game->getInfo()->addInformation(sprintf(_('%s muss zwischen %d und %d liegen'), $label, $minimum, $maximum));
+            $this->preserveFormValues($context);
+            $context->getInfo()->addInformation(sprintf(_('%s muss zwischen %d und %d liegen'), $label, $minimum, $maximum));
             return false;
         }
 

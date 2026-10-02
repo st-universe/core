@@ -29,8 +29,8 @@ final class ShowPlotList implements ViewControllerInterface
         }
 
         $game->setViewTemplate('html/communication/plot/plots.twig');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart(sprintf('comm.php?%s=1', self::VIEW_IDENTIFIER), _('Plots'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart(sprintf('communication.php?%s=1', self::VIEW_IDENTIFIER), _('Plots'));
         $game->setPageTitle(_('Plots'));
         $game->setTemplateVar('PLOTS', $active_plots);
         $game->setTemplateVar('ENDED_PLOTS', $ended_plots);

@@ -9,7 +9,7 @@ use request;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -26,9 +26,9 @@ final class SpawnPirateFleet implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $layerId = request::postIntFatal('pirate_layer');
         $cx = request::postIntFatal('pirate_cx');
@@ -41,7 +41,7 @@ final class SpawnPirateFleet implements ActionControllerInterface
 
         $field = $this->mapRepository->getByCoordinates($layer, $cx, $cy);
         if ($field === null) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 'Die Position %s|%d|%d existiert nicht!',
                 $layer->getName(),
                 $cx,
@@ -51,7 +51,7 @@ final class SpawnPirateFleet implements ActionControllerInterface
         }
 
         if (!$field->getFieldType()->getPassable()) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 'Die Position %s|%d|%d ist nicht passierbar!',
                 $layer->getName(),
                 $cx,
@@ -70,7 +70,7 @@ final class SpawnPirateFleet implements ActionControllerInterface
             $this->shipRepository->save($ship);
         }
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             'Piratenflotte "%s" mit %d Schiffen wurde bei %s|%d|%d gespawnt',
             $fleet->getName(),
             $fleet->getShips()->count(),

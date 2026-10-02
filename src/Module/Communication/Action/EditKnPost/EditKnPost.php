@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -37,9 +37,9 @@ final class EditKnPost implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $isAdmin = $this->gameUserRoleChecker->isAdmin();
         $post = $this->knPostRepository->find($this->editKnPostRequest->getKnId());
@@ -47,7 +47,7 @@ final class EditKnPost implements ActionControllerInterface
             throw new AccessViolationException();
         }
         if ($post->getDate() < time() - self::EDIT_TIME && !$isAdmin) {
-            $game->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
+            $context->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
 
@@ -55,11 +55,11 @@ final class EditKnPost implements ActionControllerInterface
 
         $title = $this->editKnPostRequest->getTitle();
         if ($plotId === 0 && mb_strlen($title) < 6) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
         if (mb_strlen($title) > 80) {
-            $game->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            $context->getInfo()->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
             return;
         }
 
@@ -77,7 +77,7 @@ final class EditKnPost implements ActionControllerInterface
         $post->setText($text);
 
         if (mb_strlen($text) < 10) {
-            $game->getInfo()->addInformation(_('Der Text ist zu kurz'));
+            $context->getInfo()->addInformation(_('Der Text ist zu kurz'));
             return;
         }
 
@@ -188,17 +188,17 @@ final class EditKnPost implements ActionControllerInterface
 
         $this->knPostRepository->save($post);
 
-        if ($isAdmin && $game->getUser() != $post->getUser()) {
+        if ($isAdmin && $context->getUser() != $post->getUser()) {
             $this->privateMessageSender->send(
                 UserConstants::USER_NOONE,
                 $post->getUser()->getId(),
-                sprintf(_('Der Beitrag "%s" mit der ID %d wurde von Admin %s bearbeitet'), $post->getTitle(), $post->getId(), $game->getUser()->getName()),
+                sprintf(_('Der Beitrag "%s" mit der ID %d wurde von Admin %s bearbeitet'), $post->getTitle(), $post->getId(), $context->getUser()->getName()),
                 PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
                 $post
             );
         }
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde editiert'));
     }
 
     #[\Override]

@@ -12,7 +12,7 @@ use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
@@ -38,11 +38,11 @@ final class StoreShuttle implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shipId = request::indInt('id');
         $shuttleId = request::getIntFatal('target');
@@ -81,12 +81,12 @@ final class StoreShuttle implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_SAME_USER,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
         if ($shuttle instanceof Ship && $shuttle->isTractored()) {
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 _('Das Shuttle kann nicht eingesammelt werden, solange es von einem Traktorstrahl festgehalten wird')
             );
             return;
@@ -94,25 +94,25 @@ final class StoreShuttle implements ActionControllerInterface
 
         // check if ship got shuttle ramp
         if (!$spacecraft->hasShuttleRamp()) {
-            $game->getInfo()->addInformation(_("Das Schiff verfügt über keine Shuttle-Rampe"));
+            $context->getInfo()->addInformation(_("Das Schiff verfügt über keine Shuttle-Rampe"));
             return;
         }
 
         // check if shuttle ramp is healthy
         if (!$spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
 
         // check if shuttle slot available
         if (!$this->hasFreeShuttleSpace($spacecraft)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist belegt"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe ist belegt"));
             return;
         }
 
         // check if troop quarter free
         if ($this->troopTransferUtility->getFreeQuarters($spacecraft) < $shuttle->getCrewCount()) {
-            $game->getInfo()->addInformation(_('Nicht genügend Crew-Quartiere frei'));
+            $context->getInfo()->addInformation(_('Nicht genügend Crew-Quartiere frei'));
             return;
         }
 
@@ -126,7 +126,7 @@ final class StoreShuttle implements ActionControllerInterface
         // land shuttle and transfer crew
         $this->storeShuttle($spacecraft, $shuttle);
 
-        $game->getInfo()->addInformation("Shuttle erfolgreich eingesammelt");
+        $context->getInfo()->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
     private function storeShuttle(Spacecraft $spacecraft, Spacecraft $shuttle): void

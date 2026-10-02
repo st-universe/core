@@ -6,7 +6,8 @@ use RuntimeException;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
@@ -24,9 +25,10 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($user, false);
 
         $building = $field->getBuilding();
         if ($building === null) {
@@ -63,7 +65,7 @@ final class ShipRetrofitProvider implements PlanetFieldHostComponentInterface
             }
         }
 
-        $game->setTemplateVar('RETROFIT_SHIP_WRAPPERS', $retrofitShipWrappers);
-        $game->setTemplateVar('FIELD', $field);
+        $template->setTemplateVar('RETROFIT_SHIP_WRAPPERS', $retrofitShipWrappers);
+        $template->setTemplateVar('FIELD', $field);
     }
 }

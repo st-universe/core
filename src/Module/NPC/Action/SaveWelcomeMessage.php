@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 
@@ -21,10 +21,10 @@ final class SaveWelcomeMessage implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
         $factionId = $user->getFactionId();
         $welcomeMessage = request::postString('welcomemessage');
 
@@ -42,11 +42,11 @@ final class SaveWelcomeMessage implements ActionControllerInterface
 
         $this->factionRepository->save($faction);
 
-        if ($game->getUser()->isNpc()) {
-            $this->createLogEntry($userId, $game->getUser()->getName(), $faction->getName());
+        if ($context->getUser()->isNpc()) {
+            $this->createLogEntry($userId, $context->getUser()->getName(), $faction->getName());
         }
 
-        $game->getInfo()->addInformation(_('Die Willkommensnachricht wurde gespeichert'));
+        $context->getInfo()->addInformation(_('Die Willkommensnachricht wurde gespeichert'));
     }
 
     private function createLogEntry(int $userId, string $userName, string $factionName): void

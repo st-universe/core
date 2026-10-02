@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement\ShowCrewAssignmentManagement;
@@ -27,11 +27,11 @@ final class AssignCrewSlot implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewAssignmentManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewAssignmentManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
             $user->getId()

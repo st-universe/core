@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\SetRpgModuleInvisibility;
 use request;
 use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -25,9 +25,9 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if (!$this->gameUserRoleChecker->isAdmin()) {
             return;
@@ -35,13 +35,13 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
         $spacecraft = $wrapper->get();
         $rpgModule = $wrapper->getRpgModuleSystemData();
 
         if ($rpgModule === null) {
-            $game->getInfo()->addInformation('Aktion nicht möglich, kein RPG-Modul installiert');
+            $context->getInfo()->addInformation('Aktion nicht möglich, kein RPG-Modul installiert');
             return;
         }
 
@@ -50,10 +50,10 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
 
         if ($isInvisible) {
             $this->spacecraftMovementPublisher->publishRemoval($spacecraft);
-            $game->getInfo()->addInformation('RPG-Unsichtbarkeit aktiviert');
+            $context->getInfo()->addInformation('RPG-Unsichtbarkeit aktiviert');
         } else {
             $this->spacecraftMovementPublisher->publishState($spacecraft);
-            $game->getInfo()->addInformation('RPG-Unsichtbarkeit deaktiviert');
+            $context->getInfo()->addInformation('RPG-Unsichtbarkeit deaktiviert');
         }
     }
 

@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
@@ -23,9 +23,9 @@ final class TrainCrew implements ActionControllerInterface
     public function __construct(private ColonyFunctionManagerInterface $colonyFunctionManager, private ColonyLoaderInterface $colonyLoader, private CrewTrainingRepositoryInterface $crewTrainingRepository, private ColonyRepositoryInterface $colonyRepository, private ColonyLibFactoryInterface $colonyLibFactory, private CrewCountRetrieverInterface $crewCountRetriever) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
         $crewRemainingCount = $this->crewCountRetriever->getRemainingCount($user);
 
@@ -33,7 +33,7 @@ final class TrainCrew implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
         $changeable = $colony->getChangeable();
 
         $localcrewlimit = $this->colonyLibFactory->createColonyPopulationCalculator(
@@ -70,11 +70,11 @@ final class TrainCrew implements ActionControllerInterface
             return;
         }
         if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingFunctionEnum::ACADEMY)) {
-            $game->getInfo()->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
+            $context->getInfo()->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }
         if ($trainableCrewPerTick <= 0) {
-            $game->getInfo()->addInformation(_('Derzeit kann keine weitere Crew ausgebildet werden'));
+            $context->getInfo()->addInformation(_('Derzeit kann keine weitere Crew ausgebildet werden'));
             return;
         }
 
@@ -83,7 +83,7 @@ final class TrainCrew implements ActionControllerInterface
         )->getFreeAssignmentCount();
 
         if ($freeAssignmentCount === 0) {
-            $game->getInfo()->addInformation(_('Auf dieser Kolonie kann derzeit keine weitere Crew ausgebildet werden'));
+            $context->getInfo()->addInformation(_('Auf dieser Kolonie kann derzeit keine weitere Crew ausgebildet werden'));
             return;
         }
         if ($count > $freeAssignmentCount) {
@@ -93,7 +93,7 @@ final class TrainCrew implements ActionControllerInterface
         for ($i = 0; $i < $count; $i++) {
             $crew = $this->crewTrainingRepository->prototype();
 
-            $crew->setUser($game->getUser());
+            $crew->setUser($context->getUser());
             $crew->setColony($colony);
 
             $this->crewTrainingRepository->save($crew);
@@ -102,7 +102,7 @@ final class TrainCrew implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $game->getInfo()->addInformationf(_('Es werden %d Crew auf dieser Kolonie ausgebildet'), $count);
+        $context->getInfo()->addInformationf(_('Es werden %d Crew auf dieser Kolonie ausgebildet'), $count);
     }
 
     #[\Override]

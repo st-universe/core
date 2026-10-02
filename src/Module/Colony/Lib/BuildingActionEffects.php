@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Lib;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
@@ -22,7 +22,7 @@ final class BuildingActionEffects
         private BuildingCommodityDeltaTracker $buildingCommodityDeltaTracker
     ) {}
 
-    public function canActivateOnColony(Colony $host, Building $building, GameControllerInterface $game): bool
+    public function canActivateOnColony(Colony $host, Building $building, ControllerContext $game): bool
     {
         if (!$this->hasEnoughWorkers($host, $building)) {
             $game->getInfo()->addInformationf(
@@ -53,7 +53,7 @@ final class BuildingActionEffects
         $this->buildingCommodityDeltaTracker->registerForBuilding($host, $building, $delta);
     }
 
-    public function handleDeactivation(Building $building, Colony $host, GameControllerInterface $game): void
+    public function handleDeactivation(Building $building, Colony $host, ControllerContext $game): void
     {
         $this->colonyBuildingEffects->adjustUndergroundLogisticsCapacity($building, $host, -1);
         $this->handleOrbitalMaintenanceDeactivation($building, $host, $game);
@@ -65,7 +65,7 @@ final class BuildingActionEffects
         Building $building,
         Colony $host,
         bool $isDueToUpgrade,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         if (!$isDueToUpgrade) {
             $this->colonyBuildingEffects->clearReactivationMarkers($field, $host);
@@ -100,7 +100,7 @@ final class BuildingActionEffects
         Building $building,
         int $commodityId,
         string $commodityName,
-        GameControllerInterface $game
+        ControllerContext $game
     ): bool {
         $consumption = $this->buildingCommodityDeltaTracker->getBuildingCommodityAmount($building, $commodityId);
         if ($consumption >= 0) {
@@ -125,7 +125,7 @@ final class BuildingActionEffects
     private function handleOrbitalMaintenanceDeactivation(
         Building $building,
         Colony $host,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         $deactivatedCount = $this->deactivateCommodityConsumers(
             $building,
@@ -144,7 +144,7 @@ final class BuildingActionEffects
     private function handleShipyardLogisticsDeactivation(
         Building $building,
         Colony $host,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         $deactivatedCount = $this->deactivateCommodityConsumers(
             $building,
@@ -182,7 +182,7 @@ final class BuildingActionEffects
         PlanetField $field,
         Building $building,
         Colony $host,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void {
         $reactivationId = $field->getId();
         $field->setReactivateAfterUpgrade($reactivationId);

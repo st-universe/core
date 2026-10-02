@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\SetBasicTradeChartLimit;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 
 final class SetBasicTradeChartLimit implements ActionControllerInterface
@@ -13,9 +13,9 @@ final class SetBasicTradeChartLimit implements ActionControllerInterface
     public const string ACTION_IDENTIFIER = 'B_SET_BASIC_TRADE_CHART_LIMIT';
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
+        $context->setView(ShowBasicTrade::VIEW_IDENTIFIER);
     }
 
     #[\Override]

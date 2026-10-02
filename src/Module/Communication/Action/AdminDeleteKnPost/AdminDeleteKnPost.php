@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\AdminDeleteKnPost;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
@@ -20,9 +20,9 @@ final class AdminDeleteKnPost implements ActionControllerInterface
     public function __construct(private AdminDeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $admin = $game->getUser();
+        $admin = $context->getUser();
 
         /** @var KnPost|null $post */
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
@@ -40,7 +40,7 @@ final class AdminDeleteKnPost implements ActionControllerInterface
 
         $post->setDeleted(time());
         $this->knPostRepository->save($post);
-        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     private function sendPm(string $text, User $user): void

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -27,9 +27,9 @@ final class Signup implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $alliance = $this->allianceRepository->find($this->signupRequest->getAllianceId());
@@ -68,7 +68,7 @@ final class Signup implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
+        $context->getInfo()->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
     }
 
     #[\Override]

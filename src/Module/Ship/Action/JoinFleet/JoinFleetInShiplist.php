@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowInformation\ShowInformation;
 
 final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionControllerInterface
@@ -14,18 +14,18 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
     public const string ACTION_IDENTIFIER = 'B_JOIN_FLEET';
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $chosenShipIds = request::postArray('chosen');
 
         foreach ($chosenShipIds as $shipId) {
-            $ship = $this->shipLoader->getByIdAndUser((int)$shipId, $game->getUser()->getId());
-            $this->tryToAddToFleet($ship, $game);
+            $ship = $this->shipLoader->getByIdAndUser((int)$shipId, $context->getUser()->getId());
+            $this->tryToAddToFleet($ship, $context);
         }
 
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::postIntFatal('fleetid')));
-        $game->addExecuteJS('refreshShiplistSingles();');
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::postIntFatal('fleetid')));
+        $context->addExecuteJS('refreshShiplistSingles();');
     }
 
     #[\Override]

@@ -7,7 +7,7 @@ namespace Stu\Module\NPC\Action;
 use request;
 use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -26,10 +26,10 @@ final class CreateHistoryEntry implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         $reason = request::postString('reason');
         $historyText = request::postString('historytext');
         $x = request::postIntFatal('x');
@@ -37,7 +37,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
         $layer = $this->layerRepository->find(request::postIntFatal('layer')) ?? throw new \RuntimeException('Layer not found');
 
         if (($x !== 0 && $y === 0) || ($x === 0 && $y !== 0)) {
-            $game->getInfo()->addInformation("X und Y Koordinaten müssen beide gesetzt oder beide leer sein");
+            $context->getInfo()->addInformation("X und Y Koordinaten müssen beide gesetzt oder beide leer sein");
             return;
         }
 
@@ -52,17 +52,17 @@ final class CreateHistoryEntry implements ActionControllerInterface
         }
 
         if ($historyType === null) {
-            $game->getInfo()->addInformation("Ungültiger Kategorie-Typ ausgewählt");
+            $context->getInfo()->addInformation("Ungültiger Kategorie-Typ ausgewählt");
             return;
         }
 
-        if ($game->getUser()->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation("Grund fehlt");
+        if ($context->getUser()->isNpc() && $reason === '') {
+            $context->getInfo()->addInformation("Grund fehlt");
             return;
         }
 
         if ($historyText === '' || !$historyText) {
-            $game->getInfo()->addInformation("Es wurde kein Text ausgewählt");
+            $context->getInfo()->addInformation("Es wurde kein Text ausgewählt");
             return;
         }
 
@@ -81,7 +81,7 @@ final class CreateHistoryEntry implements ActionControllerInterface
             $this->createReasonEntry($text, $user->getId());
         }
 
-        $game->getInfo()->addInformation("History Eintrag wurde hinzugefügt");
+        $context->getInfo()->addInformation("History Eintrag wurde hinzugefügt");
     }
 
     private function createReasonEntry(

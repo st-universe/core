@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -26,19 +26,19 @@ final class SendPassword implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
+        $context->setView(ShowLostPassword::VIEW_IDENTIFIER);
 
         $emailAddress = $this->sendPasswordRequest->getEmailAddress();
 
         if (mb_strlen($emailAddress) === 0) {
-            $game->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
+            $context->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
         $user = $this->userRepository->getByEmail($emailAddress);
         if ($user === null) {
-            $game->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
+            $context->getInfo()->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
 
@@ -70,10 +70,10 @@ Das Star Trek Universe Team\n
         try {
             $mail->send();
         } catch (RuntimeException) {
-            $game->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
+            $context->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
             return;
         }
-        $game->getInfo()->addInformation(_('Die eMail wurde verschickt'));
+        $context->getInfo()->addInformation(_('Die eMail wurde verschickt'));
     }
 
     #[\Override]
