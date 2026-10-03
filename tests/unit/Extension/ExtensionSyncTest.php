@@ -4,15 +4,31 @@ declare(strict_types=1);
 
 namespace Stu\Extension;
 
-use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-final class ExtensionSyncTest extends TestCase
+final class ExtensionSyncTest extends MockeryTestCase
 {
     private string $root;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->root = sys_get_temp_dir() . '/stu-sync-test-' . bin2hex(random_bytes(8));
+        mkdir($this->root, 0750, true);
+
+        $shell = @proc_open(['sh', '-c', 'exit 0'], [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes);
+        if (!is_resource($shell)) {
+            self::markTestSkipped('The sync integration test requires sh.');
+        }
+        foreach ($pipes as $pipe) {
+            fclose($pipe);
+        }
+        proc_close($shell);
+
         mkdir($this->root . '/commands', 0750, true);
         mkdir($this->root . '/config');
         mkdir($this->root . '/.git');
