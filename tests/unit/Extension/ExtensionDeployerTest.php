@@ -13,12 +13,20 @@ final class ExtensionDeployerTest extends StuTestCase
     private string $root;
     private array $commands = [];
     private string $revision;
+    private bool $supportsSymlinks;
 
     protected function setUp(): void
     {
         $this->root = sys_get_temp_dir() . '/stu-extension-test-' . bin2hex(random_bytes(8));
         mkdir($this->root);
         $this->revision = str_repeat('a', 40);
+        $target = $this->root . '/symlink-target';
+        mkdir($target);
+        $this->supportsSymlinks = @symlink(basename($target), $this->root . '/symlink-probe');
+        if ($this->supportsSymlinks) {
+            unlink($this->root . '/symlink-probe');
+        }
+        rmdir($target);
     }
 
     protected function tearDown(): void
@@ -55,6 +63,7 @@ final class ExtensionDeployerTest extends StuTestCase
 
     public function testInstallationLoadsThroughRegistryAndUnchangedRevisionIsNotDownloadedAgain(): void
     {
+        $this->requireSymlinkSupport();
         $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         self::assertSame('npm', $this->commands[5][0]);
@@ -72,6 +81,7 @@ final class ExtensionDeployerTest extends StuTestCase
 
     public function testFailedUpdateKeepsExistingReleaseAndRemovesIncompleteDownload(): void
     {
+        $this->requireSymlinkSupport();
         $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $current = realpath($this->root . '/var/extensions/demo/current');
@@ -90,6 +100,7 @@ final class ExtensionDeployerTest extends StuTestCase
 
     public function testChangedRevisionReplacesSymlinkAndOptionalRestartUsesArguments(): void
     {
+        $this->requireSymlinkSupport();
         $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $previous = readlink($this->root . '/var/extensions/demo/current');
@@ -113,6 +124,7 @@ final class ExtensionDeployerTest extends StuTestCase
 
     public function testConfiguredBranchControlsUpdatesIndependentlyOfCore(): void
     {
+        $this->requireSymlinkSupport();
         $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
         $settings = $this->settings();
         self::assertTrue($deployer->deploy($settings)['changed']);
@@ -169,8 +181,16 @@ final class ExtensionDeployerTest extends StuTestCase
         return ($command[1] ?? null) === 'rev-parse' ? $this->revision : '';
     }
 
+    private function requireSymlinkSupport(): void
+    {
+        if (!$this->supportsSymlinks) {
+            self::markTestSkipped('The deployment tests require relative symlink support.');
+        }
+    }
+
     public function testExpiredIntervalFetchesNewBranchRevision(): void
     {
+        $this->requireSymlinkSupport();
         $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $this->revision = str_repeat('b', 40);
