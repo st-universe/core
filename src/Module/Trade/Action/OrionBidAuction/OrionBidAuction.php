@@ -8,7 +8,7 @@ use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -43,29 +43,29 @@ final class OrionBidAuction implements ActionControllerInterface
         private StuTime $stuTime
     ) {}
 
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowOrionSlaveTrade::VIEW_IDENTIFIER);
-        $user = $game->getUser();
+        $context->setView(ShowOrionSlaveTrade::VIEW_IDENTIFIER);
+        $user = $context->getUser();
         $auction = $this->orionAuctionRepository->find($this->request->getAuctionId());
         $amount = $this->request->getAmount();
 
         $time = $this->stuTime->time();
         if ($auction === null || $auction->getStart() > $time || $auction->getEnd() <= $time || $auction->getCompletedAt() !== null) {
-            $game->getInfo()->addInformation('Die Auktion ist nicht mehr verfügbar');
+            $context->getInfo()->addInformation('Die Auktion ist nicht mehr verfügbar');
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($user->getId(), TradeEnum::ORION_ZAGOS_TRADEPOST_ID)) {
             throw new AccessViolationException(sprintf('UserId %d does not have license for Zagos', $user->getId()));
         }
         if ($amount < 1 || $amount <= $auction->getAuctionAmount()) {
-            $game->getInfo()->addInformation('Das Gebot muss höher als das aktuelle Gebot sein');
+            $context->getInfo()->addInformation('Das Gebot muss höher als das aktuelle Gebot sein');
             return;
         }
 
         $highestBid = $this->orionAuctionBidRepository->getHighestBid($auction);
         if ($highestBid === null) {
-            if (!$this->collect($auction, $amount, $game)) {
+            if (!$this->collect($auction, $amount, $context)) {
                 return;
             }
             $bid = $this->orionAuctionBidRepository->prototype()
@@ -75,28 +75,28 @@ final class OrionBidAuction implements ActionControllerInterface
             $this->orionAuctionBidRepository->save($bid);
             $auction->setAuctionAmount($amount);
             $this->orionAuctionRepository->save($auction);
-            $game->getInfo()->addInformationf('Du bist mit %d aktuell Meistbietender', $amount);
+            $context->getInfo()->addInformationf('Du bist mit %d aktuell Meistbietender', $amount);
             return;
         }
 
         if ($highestBid->getUser()->getId() === $user->getId()) {
             $additionalAmount = $amount - $highestBid->getMaxAmount();
             if ($additionalAmount < 1) {
-                $game->getInfo()->addInformation('Dein neues Gebot muss höher sein');
+                $context->getInfo()->addInformation('Dein neues Gebot muss höher sein');
                 return;
             }
-            if (!$this->collect($auction, $additionalAmount, $game)) {
+            if (!$this->collect($auction, $additionalAmount, $context)) {
                 return;
             }
             $highestBid->setMaxAmount($amount);
             $this->orionAuctionBidRepository->save($highestBid);
             $auction->setAuctionAmount($amount);
             $this->orionAuctionRepository->save($auction);
-            $game->getInfo()->addInformationf('Dein Gebot wurde auf %d erhöht', $amount);
+            $context->getInfo()->addInformationf('Dein Gebot wurde auf %d erhöht', $amount);
             return;
         }
 
-        if (!$this->collect($auction, $amount, $game)) {
+        if (!$this->collect($auction, $amount, $context)) {
             return;
         }
         $this->refund($auction, $highestBid);
@@ -110,17 +110,17 @@ final class OrionBidAuction implements ActionControllerInterface
         );
         $auction->setAuctionAmount($amount);
         $this->orionAuctionRepository->save($auction);
-        $game->getInfo()->addInformationf('Du bist mit %d aktuell Meistbietender', $amount);
+        $context->getInfo()->addInformationf('Du bist mit %d aktuell Meistbietender', $amount);
     }
 
-    private function collect(OrionAuction $auction, int $amount, GameControllerInterface $game): bool
+    private function collect(OrionAuction $auction, int $amount, ActionControllerContext $context): bool
     {
-        if (!$this->hasEnough($auction, $amount, $game)) {
+        if (!$this->hasEnough($auction, $amount, $context)) {
             return false;
         }
 
         $wantedCommodity = $auction->getWantedCommodity();
-        $user = $game->getUser();
+        $user = $context->getUser();
         if ($wantedCommodity === null) {
             $this->createPrestigeLog->createLog(-$amount, sprintf('-%d Prestige: Orion-Auktion', $amount), $user, $this->stuTime->time());
             return true;
@@ -130,13 +130,13 @@ final class OrionBidAuction implements ActionControllerInterface
         return true;
     }
 
-    private function hasEnough(OrionAuction $auction, int $amount, GameControllerInterface $game): bool
+    private function hasEnough(OrionAuction $auction, int $amount, ActionControllerContext $context): bool
     {
         $wantedCommodity = $auction->getWantedCommodity();
-        $user = $game->getUser();
+        $user = $context->getUser();
         if ($wantedCommodity === null) {
             if ($user->getPrestige() < $amount) {
-                $game->getInfo()->addInformation('Du hast nicht genügend Prestige');
+                $context->getInfo()->addInformation('Du hast nicht genügend Prestige');
                 return false;
             }
             return true;
@@ -148,7 +148,7 @@ final class OrionBidAuction implements ActionControllerInterface
             $wantedCommodity->getId()
         );
         if ($storage === null || $storage->getAmount() < $amount) {
-            $game->getInfo()->addInformationf('Es befindet sich nicht genügend %s auf deinem Warenkonto bei Zagos', $wantedCommodity->getName());
+            $context->getInfo()->addInformationf('Es befindet sich nicht genügend %s auf deinem Warenkonto bei Zagos', $wantedCommodity->getName());
             return false;
         }
         return true;

@@ -76,7 +76,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private AllianceJobManagerInterface $allianceJobManager,
         private RelationRepositoryInterface $allianceRelationRepository,
         private ContactRepositoryInterface $contactRepository,
-        private MapRepositoryInterface $mapRepository
+        private MapRepositoryInterface $mapRepository,
+        private RealtimeChannels $channels
     ) {}
 
     /**
@@ -196,7 +197,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             }
 
             $redis->setex(
-                RealtimeChannels::starmapCoverageKey($userId, $layerId),
+                $this->channels->starmapCoverageKey($userId, $layerId),
                 self::COVERAGE_TTL_SECONDS,
                 json_encode([
                     'runs' => $coverage['runs'],

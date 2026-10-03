@@ -8,7 +8,7 @@ use request;
 use Stu\Component\StarSystem\GenerateEmptySystemsInterface;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 final class GenerateEmptySystems implements ActionControllerInterface
 {
@@ -17,13 +17,13 @@ final class GenerateEmptySystems implements ActionControllerInterface
     public function __construct(private GenerateEmptySystemsInterface $generateEmptySystems) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowMapEditor::VIEW_IDENTIFIER);
+        $context->setView(ShowMapEditor::VIEW_IDENTIFIER);
 
-        $count = $this->generateEmptySystems->generate(request::getInt('layerid'), $game);
+        $count = $this->generateEmptySystems->generate(request::getInt('layerid'), $context);
 
-        $game->getInfo()->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
+        $context->getInfo()->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
     }
 
     #[\Override]

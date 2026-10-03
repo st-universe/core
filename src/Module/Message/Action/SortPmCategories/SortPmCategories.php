@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\SortPmCategories;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\Noop\Noop;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
@@ -17,13 +17,13 @@ final class SortPmCategories implements ActionControllerInterface
     public function __construct(private SortPmCategoriesRequestInterface $sortPmCategoriesRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
 
         foreach ($this->sortPmCategoriesRequest->getCategoryIds() as $key => $value) {
             $cat = $this->privateMessageFolderRepository->find((int) $value);
-            if ($cat === null || $cat->getUserId() !== $game->getUser()->getId()) {
+            if ($cat === null || $cat->getUserId() !== $context->getUser()->getId()) {
                 throw new AccessViolationException();
             }
             $cat->setSort((int) $key);

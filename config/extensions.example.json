@@ -1,0 +1,15 @@
+{
+  "extensions": {
+    "exampleExtension": {
+      "enabled": false,
+      "path": "../example-extension",
+      "tablePrefixes": ["example_extension_"],
+      "realtime": {
+        "host": "127.0.0.1",
+        "port": 8790,
+        "path": "/realtime/example",
+        "webSocketUrl": "/realtime/example"
+      }
+    }
+  }
+}

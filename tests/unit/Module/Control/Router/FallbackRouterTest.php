@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Router;
 
 use Mockery\MockInterface;
+use Stu\Component\Game\ModuleEnum;
+use Stu\Module\Control\Component\View\ViewContext;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\Router\Handler\FallbackHandlerInterface;
 use Stu\StuTestCase;
 
 class FallbackRouterTest extends StuTestCase
 {
+    private MockInterface&ViewContextFactoryInterface $viewContextFactory;
     private MockInterface&FallbackHandlerInterface $handler;
 
     private FallbackRouterInterface $subject;
@@ -18,9 +22,13 @@ class FallbackRouterTest extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        $this->viewContextFactory = $this->mock(ViewContextFactoryInterface::class);
         $this->handler = $this->mock(FallbackHandlerInterface::class);
 
-        $this->subject = new FallbackRouter([FallbackRouteException::class => $this->handler]);
+        $this->subject = new FallbackRouter(
+            $this->viewContextFactory,
+            [FallbackRouteException::class => $this->handler]
+        );
     }
 
     public function testShowFallbackSiteExpectExceptionIfUnknownClass(): void
@@ -37,9 +45,15 @@ class FallbackRouterTest extends StuTestCase
     {
         $exception = new FallbackRouteException();
         $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ViewContext::class);
+
+        $this->viewContextFactory->shouldReceive('createViewContext')
+            ->with($game, ModuleEnum::GAME)
+            ->once()
+            ->andReturn($context);
 
         $this->handler->shouldReceive('handle')
-            ->with($exception, $game)
+            ->with($exception, $context)
             ->once();
 
         $this->subject->showFallbackSite($exception, $game);

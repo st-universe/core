@@ -10,7 +10,7 @@ use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobPermission;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -32,17 +32,17 @@ final class CreateAlliance implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $name = $this->createAllianceRequest->getName();
         $faction_mode = $this->createAllianceRequest->getFactionMode();
         $description = $this->createAllianceRequest->getDescription();
 
         if (mb_strlen($name) < 5) {
-            $game->setView(Create::VIEW_IDENTIFIER);
-            $game->getInfo()->addInformation('Der Name muss aus mindestens 5 Zeichen bestehen');
+            $context->setView(Create::VIEW_IDENTIFIER);
+            $context->getInfo()->addInformation('Der Name muss aus mindestens 5 Zeichen bestehen');
             return;
         }
 
@@ -93,7 +93,7 @@ final class CreateAlliance implements ActionControllerInterface
 
         $this->entityManager->refresh($alliance);
 
-        $game->getInfo()->addInformation('Die Allianz wurde gegründet');
+        $context->getInfo()->addInformation('Die Allianz wurde gegründet');
     }
 
     #[\Override]

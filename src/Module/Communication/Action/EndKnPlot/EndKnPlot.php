@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\EndKnPlot;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EndKnPlot implements ActionControllerInterface
@@ -15,10 +15,10 @@ final class EndKnPlot implements ActionControllerInterface
     public function __construct(private EndKnPlotRequestInterface $endKnPlotRequest, private RpgPlotRepositoryInterface $rpgPlotRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $plot = $this->rpgPlotRepository->find($this->endKnPlotRequest->getPlotId());
-        if ($plot === null || $plot->getUserId() !== $game->getUser()->getId()) {
+        if ($plot === null || $plot->getUserId() !== $context->getUser()->getId()) {
             return;
         }
         if (!$plot->isActive()) {
@@ -28,7 +28,7 @@ final class EndKnPlot implements ActionControllerInterface
 
         $this->rpgPlotRepository->save($plot);
 
-        $game->getInfo()->addInformation(_('Der Plot wurde beendet'));
+        $context->getInfo()->addInformation(_('Der Plot wurde beendet'));
     }
 
     #[\Override]

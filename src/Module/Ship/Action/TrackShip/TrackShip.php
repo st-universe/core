@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Ship;
@@ -28,11 +28,11 @@ final class TrackShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shipId = request::getIntFatal('id');
         $targetId = request::getIntFatal('target');
@@ -69,7 +69,7 @@ final class TrackShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNCLOAKED,
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
@@ -80,13 +80,13 @@ final class TrackShip implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
         if ($eps === null || $eps->getEps() === 0) {
-            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $game->getInfo())) {
-            $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        if (!$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::TRACKER, $context->getInfo())) {
+            $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             return;
         }
 
@@ -94,7 +94,7 @@ final class TrackShip implements ActionControllerInterface
             ->setRemainingTicks(self::MAXIMUM_TICKS)
             ->update();
 
-        $game->getInfo()->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
+        $context->getInfo()->addInformationf('Die %s ist nun mit einem verborgenen Tracker markiert', $target->getName());
     }
 
     #[\Override]

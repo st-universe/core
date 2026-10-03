@@ -11,7 +11,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -28,14 +28,14 @@ final class LandShip implements ActionControllerInterface
     public function __construct(private ColonyLoaderInterface $colonyLoader, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
         $wrapper = $this->shipLoader->find(request::getIntFatal('shipid'));
 
@@ -46,13 +46,13 @@ final class LandShip implements ActionControllerInterface
         $ship = $wrapper->get();
 
         if (
-            $ship->getUser()->getId() !== $game->getUser()->getId()
+            $ship->getUser()->getId() !== $context->getUser()->getId()
             || !$wrapper->canLandOnCurrentColony()
         ) {
             return;
         }
         if ($colony->getMaxStorage() <= $colony->getStorageSum()) {
-            $game->getInfo()->addInformation(_('Kein Lagerraum verfügbar'));
+            $context->getInfo()->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
 
@@ -61,7 +61,7 @@ final class LandShip implements ActionControllerInterface
         )->getFreeAssignmentCount();
 
         if ($ship->getCrewCount() > $freeAssignmentCount) {
-            $game->getInfo()->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
+            $context->getInfo()->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
             return;
         }
 
@@ -81,13 +81,13 @@ final class LandShip implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $this->retrieveLoadedTorpedos($wrapper, $colony, $game);
+        $this->retrieveLoadedTorpedos($wrapper, $colony, $context);
 
         $this->transferCrewToColony($ship, $colony);
 
         $this->spacecraftRemover->remove($ship);
 
-        $game->getInfo()->addInformationf(_('Die %s ist gelandet'), $ship->getName());
+        $context->getInfo()->addInformationf(_('Die %s ist gelandet'), $ship->getName());
     }
 
     private function transferCrewToColony(Ship $ship, Colony $colony): void
@@ -97,7 +97,7 @@ final class LandShip implements ActionControllerInterface
         }
     }
 
-    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, Colony $colony, GameControllerInterface $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, Colony $colony, ActionControllerContext $context): void
     {
         $ship = $wrapper->get();
         $torpedoStorages = $ship->getTorpedoStorages();
@@ -108,7 +108,7 @@ final class LandShip implements ActionControllerInterface
         $maxStorage = $colony->getMaxStorage();
 
         if ($colony->getStorageSum() >= $maxStorage) {
-            $game->getInfo()->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
+            $context->getInfo()->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
             return;
         }
 
@@ -129,7 +129,7 @@ final class LandShip implements ActionControllerInterface
                 $amount
             );
 
-            $game->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
+            $context->getInfo()->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
         }
 
         $this->clearTorpedo->clearTorpedoStorage($wrapper);

@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -33,11 +33,11 @@ final class StartShuttle implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -55,29 +55,29 @@ final class StartShuttle implements ActionControllerInterface
 
         $rump = $plan->getRump();
 
-        if (!$ship->hasEnoughCrew($game)) {
+        if (!$ship->hasEnoughCrew($context)) {
             return;
         }
 
         if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->isCloaked()) {
-            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
+            $context->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->isWarped()) {
-            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->isShielded()) {
-            $game->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
+            $context->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
 
@@ -86,7 +86,7 @@ final class StartShuttle implements ActionControllerInterface
 
         $rumpCommodity = $rump->getCommodity();
         if ($rumpCommodity !== null && !$storage->containsKey($rumpCommodity->getId())) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
                 $rumpCommodity->getName()
@@ -96,13 +96,13 @@ final class StartShuttle implements ActionControllerInterface
 
         // check if ship has excess crew
         if ($ship->getExcessCrewCount() < $plan->getCrew()) {
-            $game->getInfo()->addInformation(sprintf(_('Es werden %d freie Crewman für den Start des %s benötigt'), $plan->getCrew(), $rump->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Es werden %d freie Crewman für den Start des %s benötigt'), $plan->getCrew(), $rump->getName()));
             return;
         }
 
         // check if ship got enough energy
         if ($epsSystem->getEps() < $rump->getBaseValues()->getBaseEps()) {
-            $game->getInfo()->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseValues()->getBaseEps(), $rump->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseValues()->getBaseEps(), $rump->getName()));
             return;
         }
 
@@ -116,16 +116,16 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         // start shuttle and transfer crew
-        $this->startShuttle($ship, $epsSystem, $plan, $game);
+        $this->startShuttle($ship, $epsSystem, $plan, $context);
 
-        $game->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
+        $context->getInfo()->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
     }
 
     private function startShuttle(
         Spacecraft $ship,
         EpsSystemData $epsSystem,
         SpacecraftBuildplan $plan,
-        GameControllerInterface $game
+        ActionControllerContext $context
     ): void {
         $rump = $plan->getRump();
 
@@ -150,7 +150,7 @@ final class StartShuttle implements ActionControllerInterface
             && $ship->getSystemState(SpacecraftSystemTypeEnum::TROOP_QUARTERS)
             && $ship->getExcessCrewCount() <= 0
         ) {
-            $this->helper->deactivate($ship->getId(), SpacecraftSystemTypeEnum::TROOP_QUARTERS, $game->getInfo());
+            $this->helper->deactivate($ship->getId(), SpacecraftSystemTypeEnum::TROOP_QUARTERS, $context->getInfo());
         }
     }
 

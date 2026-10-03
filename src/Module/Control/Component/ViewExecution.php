@@ -8,10 +8,12 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\AccessCheckInterface;
+use Stu\Module\Control\Component\View\ViewContext;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 
@@ -20,6 +22,7 @@ class ViewExecution
     public function __construct(
         private readonly ControllerDiscoveryInterface $controllerDiscovery,
         private readonly AccessCheckInterface $accessCheck,
+        private readonly ViewContextFactoryInterface $viewContextFactory,
         private readonly TutorialProvider $tutorialProvider,
         private readonly StuTime $stuTime,
         private readonly EntityManagerInterface $entityManager
@@ -28,23 +31,24 @@ class ViewExecution
     public function execute(ModuleEnum $module, GameControllerInterface $game): void
     {
         $startTime = $this->stuTime->hrtime();
+        $context = $this->viewContextFactory->createViewContext($game, $module);
 
         try {
-            $this->executeView($module, $game);
+            $this->executeView($module, $game, $context);
         } catch (SanityCheckException $e) {
             $game->getGameRequest()->addError($e);
         } catch (EntityLockedException $e) {
             $game->getInfo()->addInformation($e->getMessage());
-            $game->setMacroInAjaxWindow('');
+            $context->setMacroInAjaxWindow('');
         }
 
         $viewMs = $this->stuTime->hrtime() - $startTime;
         $game->getGameRequest()->setViewMs((int)ceil($viewMs / 1_000_000));
     }
 
-    private function executeView(ModuleEnum $module, GameControllerInterface $game): void
+    private function executeView(ModuleEnum $module, GameControllerInterface $game, ViewContext $context): void
     {
-        $viewFromContext = $game->getViewContext(ViewContextTypeEnum::VIEW);
+        $viewFromContext = $context->getViewContextMetadata(ViewContextMetadataTypeEnum::VIEW);
 
         /** @var array<string, ViewControllerInterface> $views */
         $views = $this->controllerDiscovery->getControllers($module, true);
@@ -60,8 +64,8 @@ class ViewExecution
 
             $game->getGameRequest()->setView($viewIdentifier);
 
-            if ($this->accessCheck->checkUserAccess($controller, $game)) {
-                $this->handleView($controller, $game);
+            if ($this->accessCheck->checkUserAccess($controller, $game->getInfo())) {
+                $this->handleView($controller, $context, $viewIdentifier);
                 return;
             }
             break;
@@ -71,20 +75,20 @@ class ViewExecution
 
         if (
             $view !== null
-            && $this->accessCheck->checkUserAccess($view, $game)
+            && $this->accessCheck->checkUserAccess($view, $game->getInfo())
         ) {
-            $this->handleView($view, $game);
+            $this->handleView($view, $context, GameController::DEFAULT_VIEW);
         }
     }
 
-    private function handleView(ViewControllerInterface $view, GameControllerInterface $game): void
+    private function handleView(ViewControllerInterface $view, ViewContext $context, string $viewIdentifier): void
     {
-        $view->handle($game);
+        $context->setViewIdentifier($viewIdentifier);
+        $view->handle($context);
 
         if ($view instanceof ViewWithTutorialInterface) {
             $this->tutorialProvider->setTemplateVariables(
-                $view->getViewContext(),
-                $game
+                $context
             );
         }
 

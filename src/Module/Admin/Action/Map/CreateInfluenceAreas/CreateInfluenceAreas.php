@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action\Map\CreateInfluenceAreas;
 use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\Layer;
@@ -40,13 +40,13 @@ final class CreateInfluenceAreas implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTicks::VIEW_IDENTIFIER);
+        $context->setView(ShowTicks::VIEW_IDENTIFIER);
         $layerId = request::postIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
-            $game->getInfo()->addInformationf("Layer mit ID %d nicht gefunden", $layerId);
+            $context->getInfo()->addInformationf("Layer mit ID %d nicht gefunden", $layerId);
             return;
         }
 
@@ -109,7 +109,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
 
-        $game->getInfo()->addInformation("Influence Areas wurden randomisiert verteilt");
+        $context->getInfo()->addInformation("Influence Areas wurden randomisiert verteilt");
     }
 
     private function spreadInCircle(Map $map, StarSystem $system, Layer $layer): void

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Component\Building\BuildingManagerInterface;
@@ -13,7 +12,7 @@ use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Colony;
@@ -59,7 +58,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testActivateReturnsIfColonyLacksWorkers(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $field = $this->mock(PlanetField::class);
         $building = $this->mock(Building::class);
         $host = $this->mock(Colony::class);
@@ -115,7 +114,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testActivateWithMultipleFieldsBlocksWhenProjectedCommodityTurnsNegative(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $host = $this->mock(Colony::class);
         $changeable = $this->mock(ColonyChangeable::class);
         $field1 = $this->mock(PlanetField::class);
@@ -243,7 +242,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testDeactivateDeactivatesOrbitalMaintenanceConsumers(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $field = $this->mock(PlanetField::class);
         $building = $this->mock(Building::class);
         $host = $this->mock(Colony::class);
@@ -323,7 +322,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testDeactivateDeactivatesShipyardLogisticsConsumers(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $field = $this->mock(PlanetField::class);
         $building = (new Building())->setName('WERFTHUB');
         $building->getCommodities()->add(
@@ -388,7 +387,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testRemoveHandlesOrbitalMaintenanceUpgradePathForColony(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $field = $this->mock(PlanetField::class);
         $activeConsumerField = $this->mock(PlanetField::class);
         $building = $this->mock(Building::class);
@@ -489,7 +488,7 @@ class BuildingActionTest extends StuTestCase
 
     public function testRemoveExpectRemovalOfPreviousBuilding(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ControllerContext::class);
         $building = $this->mock(Building::class);
 
         $this->field->shouldReceive('getBuilding')

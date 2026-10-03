@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
@@ -28,11 +28,11 @@ final class TransformResources implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
@@ -51,14 +51,14 @@ final class TransformResources implements ActionControllerInterface
 
         if ($commodityId === 0) {
             if ($ship->isSystemHealthy(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)) {
-                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game->getInfo());
+                $this->helper->deactivate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $context->getInfo());
                 $aggregationsystem->setCommodityId($commodityId)->update();
             }
         } else {
 
             if (
                 !$ship->getSystemState(SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM)
-                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $game->getInfo())
+                && !$this->helper->activate($wrapper, SpacecraftSystemTypeEnum::AGGREGATION_SYSTEM, $context->getInfo())
             ) {
                 return;
             }
@@ -79,13 +79,13 @@ final class TransformResources implements ActionControllerInterface
             }
 
             if (!$canProduce) {
-                $game->getInfo()->addInformation("Diese Ressource kann nicht produziert werden");
+                $context->getInfo()->addInformation("Diese Ressource kann nicht produziert werden");
                 return;
             }
 
             $aggregationsystem->setCommodityId($commodityId)->update();
             if ($sourceCommodity &&  $targetCommodity) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     sprintf(
                         "%s wird in %s umgewandelt",
                         $sourceCommodity->getName(),

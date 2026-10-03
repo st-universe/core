@@ -15,7 +15,7 @@ use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
@@ -57,11 +57,11 @@ final class Colonize implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(

@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\PostKnComment;
 
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -21,9 +21,9 @@ final class PostKnComment implements ActionControllerInterface
     public function __construct(private PostKnCommentRequestInterface $postKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowKnComments::VIEW_IDENTIFIER);
+        $context->setView(ShowKnComments::VIEW_IDENTIFIER);
 
         $post = $this->knPostRepository->find($this->postKnCommentRequest->getKnId());
         if ($post === null) {
@@ -39,22 +39,22 @@ final class PostKnComment implements ActionControllerInterface
             return;
         }
         $obj = $this->knCommentRepository->prototype()
-            ->setUser($game->getUser())
+            ->setUser($context->getUser())
             ->setDate(time())
             ->setPosting($post)
             ->setText($text);
 
         $this->knCommentRepository->save($obj);
 
-        $notificatedPlayers = [$game->getUser()->getId()];
+        $notificatedPlayers = [$context->getUser()->getId()];
 
         // send notification to post owner
-        if ($game->getUser()->getId() !== $post->getUser()->getId()) {
+        if ($context->getUser()->getId() !== $post->getUser()->getId()) {
             $notificatedPlayers[] = $post->getUserId();
 
             $text = sprintf(
                 _('Der Spieler %s hat deinen KN-Beitrag (%d) kommentiert.'),
-                $game->getUser()->getName(),
+                $context->getUser()->getName(),
                 $post->getId()
             );
 
@@ -76,7 +76,7 @@ final class PostKnComment implements ActionControllerInterface
 
                 $text = sprintf(
                     _('Der Spieler %s hat einen KN-Beitrag (%d) kommentiert, den du ebenfalls kommentiert hast.'),
-                    $game->getUser()->getName(),
+                    $context->getUser()->getName(),
                     $post->getId()
                 );
 

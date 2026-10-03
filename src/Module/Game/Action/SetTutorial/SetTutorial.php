@@ -7,7 +7,7 @@ namespace Stu\Module\Game\Action\SetTutorial;
 use request;
 use RuntimeException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\View\Noop\Noop;
 use Stu\Orm\Entity\TutorialStep;
 use Stu\Orm\Entity\User;
@@ -25,9 +25,9 @@ final class SetTutorial implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
 
         $currentStepId = request::postIntFatal('currentstep');
         $isForward = request::postIntFatal('isforward') !== 0;
@@ -37,7 +37,7 @@ final class SetTutorial implements ActionControllerInterface
             throw new RuntimeException('Current Tutorial not found');
         }
 
-        $userTutorial = $this->determineUserTutorial($tutorialStep, $isForward, $game->getUser());
+        $userTutorial = $this->determineUserTutorial($tutorialStep, $isForward, $context->getUser());
 
         $followingTutorial = $isForward ? $tutorialStep->getNextStep() : $tutorialStep->getPreviousStep();
         if ($followingTutorial == null) {

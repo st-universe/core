@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
@@ -17,9 +17,9 @@ final class ChangeSettings implements ActionControllerInterface
     public function __construct(private ChangeUserSettingInterface $changeUserSetting) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         foreach (UserSettingEnum::getNonDistinct() as $setting) {
             if (!request::has($setting->value)) {
@@ -35,7 +35,7 @@ final class ChangeSettings implements ActionControllerInterface
             }
         }
 
-        $game->getInfo()->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
+        $context->getInfo()->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
     }
 
     #[\Override]

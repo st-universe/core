@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
+use Stu\Extension\ExtensionHooks;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
@@ -18,8 +18,7 @@ use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInterface;
@@ -44,8 +43,6 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
 
     public const string VIEW_IDENTIFIER = 'SHOW_SPACECRAFT';
 
-    private ViewContext $viewContext;
-
     private LoggerUtilInterface $loggerUtil;
 
     /**
@@ -62,9 +59,9 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private readonly ColonizationCheckerInterface $colonizationChecker,
         private readonly SessionStorageInterface $sessionStorage,
-        private LoggerUtilFactoryInterface $loggerUtilFactory
+        private LoggerUtilFactoryInterface $loggerUtilFactory,
+        private readonly ?ExtensionHooks $extensions = null
     ) {
-        $this->viewContext = new ViewContext(ModuleEnum::SHIP, self::VIEW_IDENTIFIER);
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
     }
 
@@ -73,6 +70,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
     {
         $user = $game->getUser();
         $userId = $user->getId();
+        $this->extensions?->view('ship.view', $game);
         $ownsCurrentColony = false;
         $spacecraftId = request::indInt('id');
 
@@ -89,12 +87,11 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
             throw new InvalidArgumentException('this should not happen');
         }
 
-        $this->viewContext = $spacecraftTypeShowStrategy
+        $spacecraftTypeShowStrategy
             ->appendNavigationPart($game)
-            ->setTemplateVariables($spacecraftId, $game)
-            ->getViewContext();
+            ->setTemplateVariables($spacecraftId, $game);
 
-        $tachyonFresh = $game->getViewContext(ViewContextTypeEnum::TACHYON_SCAN_JUST_HAPPENED) ?? false;
+        $tachyonFresh = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::TACHYON_SCAN_JUST_HAPPENED) ?? false;
         $tachyonActive = $tachyonFresh;
 
         // check if tachyon scan still active
@@ -236,11 +233,5 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         }
 
         return $spacecraft->getStarsystemMap()->getColony();
-    }
-
-    #[\Override]
-    public function getViewContext(): ViewContext
-    {
-        return $this->viewContext;
     }
 }

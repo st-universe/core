@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\PriorizeFleet;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class PriorizeFleet implements ActionControllerInterface
@@ -16,16 +16,16 @@ final class PriorizeFleet implements ActionControllerInterface
     public function __construct(private PriorizeFleetRequestInterface $priorizeFleetRequest, private FleetRepositoryInterface $fleetRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $fleet = $this->fleetRepository->find($this->priorizeFleetRequest->getFleetId());
-        if ($fleet === null || $fleet->getUser()->getId() !== $game->getUser()->getId()) {
+        if ($fleet === null || $fleet->getUser()->getId() !== $context->getUser()->getId()) {
             throw new AccessViolationException();
         }
 
-        $fleet->setSort($this->fleetRepository->getHighestSortByUser($game->getUser()->getId()));
+        $fleet->setSort($this->fleetRepository->getHighestSortByUser($context->getUser()->getId()));
 
-        $game->getInfo()->addInformation(_('Die Flotte wurde nach oben sortiert'));
+        $context->getInfo()->addInformation(_('Die Flotte wurde nach oben sortiert'));
     }
 
     #[\Override]

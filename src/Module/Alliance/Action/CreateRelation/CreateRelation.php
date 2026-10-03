@@ -14,7 +14,7 @@ use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\RelationPermissionRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
@@ -34,16 +34,16 @@ final class CreateRelation implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         if ($alliance === null) {
             throw new AccessViolationException();
         }
 
         $allianceId = $alliance->getId();
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if (!$this->allianceJobManager->hasUserPermission(
             $user,
@@ -66,7 +66,7 @@ final class CreateRelation implements ActionControllerInterface
 
         $cnt = $this->allianceRelationRepository->getPendingCountByAlliances($allianceId, $counterpartId);
         if ($cnt >= 2) {
-            $game->getInfo()->addInformation('Es gibt bereits ein Angebot für diese Allianz');
+            $context->getInfo()->addInformation('Es gibt bereits ein Angebot für diese Allianz');
             return;
         }
 
@@ -89,7 +89,7 @@ final class CreateRelation implements ActionControllerInterface
             }
 
             if ($this->userRelationManager->proposePermissionChange($user, $existingRelation, $permissions)) {
-                $game->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
+                $context->getInfo()->addInformation('Die Rechteänderung wurde angeboten');
             }
             return;
         }
@@ -101,7 +101,7 @@ final class CreateRelation implements ActionControllerInterface
                 $user
             ));
 
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 sprintf('Der Allianz %s wurde der Krieg erklärt', $counterpart->getName())
             );
         } else {
@@ -112,7 +112,7 @@ final class CreateRelation implements ActionControllerInterface
                 $permissions
             ));
 
-            $game->getInfo()->addInformation('Das Abkommen wurde angeboten');
+            $context->getInfo()->addInformation('Das Abkommen wurde angeboten');
         }
     }
 

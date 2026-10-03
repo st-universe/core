@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
+use Stu\Extension\ExtensionHooks;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
@@ -19,13 +20,15 @@ final class ShipListProvider implements ViewComponentProviderInterface
         private readonly ShipRepositoryInterface $shipRepository,
         private readonly SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private readonly BuoyRepositoryInterface $buoyRepository,
-        private readonly SessionStorageInterface $sessionStorage
+        private readonly SessionStorageInterface $sessionStorage,
+        private readonly ?ExtensionHooks $extensions = null
     ) {}
 
     #[\Override]
     public function setTemplateVariables(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
+        $this->extensions?->view('shiplist', $game);
 
         $fleets = $this->fleetRepository->getByUser($userId);
         $singleShips = $this->shipRepository->getByUserAndFleet($userId, null);

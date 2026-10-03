@@ -10,7 +10,7 @@ use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class DeactivateShields implements ActionControllerInterface
@@ -24,13 +24,13 @@ final class DeactivateShields implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
 
         $colony = $this->colonyLoader->loadWithOwnerValidation(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $fields = $this->planetFieldRepository->getByColonyAndBuildingFunction(
@@ -44,10 +44,10 @@ final class DeactivateShields implements ActionControllerInterface
 
         $this->buildingAction->deactivate(
             current($fields),
-            $game
+            $context
         );
 
-        $game->getInfo()->addInformation("Die Schilde wurden bei der Deaktivierung komplett entladen");
+        $context->getInfo()->addInformation("Die Schilde wurden bei der Deaktivierung komplett entladen");
     }
 
     #[\Override]

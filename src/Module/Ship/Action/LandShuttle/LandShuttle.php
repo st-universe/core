@@ -10,7 +10,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Trait\SpacecraftShuttleSpaceTrait;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\TroopTransferUtilityInterface;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
@@ -35,11 +35,11 @@ final class LandShuttle implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shuttleId = request::getIntFatal('shuttle');
         $targetId = request::getIntFatal('id');
@@ -66,7 +66,7 @@ final class LandShuttle implements ActionControllerInterface
             return;
         }
 
-        if (!$shuttle->hasEnoughCrew($game)) {
+        if (!$shuttle->hasEnoughCrew($context)) {
             return;
         }
 
@@ -76,36 +76,36 @@ final class LandShuttle implements ActionControllerInterface
         }
 
         if ($target->isWarped()) {
-            $game->getInfo()->addInformation(_("Das Ziel befindet sich im Warp"));
+            $context->getInfo()->addInformation(_("Das Ziel befindet sich im Warp"));
             return;
         }
 
         if ($target->isShielded()) {
-            $game->getInfo()->addInformation(_("Das Ziel hat die Schilde aktiviert"));
+            $context->getInfo()->addInformation(_("Das Ziel hat die Schilde aktiviert"));
             return;
         }
 
         // check if target got shuttle ramp
         if (!$target->hasShuttleRamp()) {
-            $game->getInfo()->addInformation(_("Das Ziel verfügt über keine Shuttle-Rampe"));
+            $context->getInfo()->addInformation(_("Das Ziel verfügt über keine Shuttle-Rampe"));
             return;
         }
 
         // check if target shuttle ramp is healthy
         if (!$target->isSystemHealthy(SpacecraftSystemTypeEnum::SHUTTLE_RAMP)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist zerstört"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist zerstört"));
             return;
         }
 
         // check if shuttle slot available
         if (!$this->hasFreeShuttleSpace($target)) {
-            $game->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist belegt"));
+            $context->getInfo()->addInformation(_("Die Shuttle-Rampe des Zieles ist belegt"));
             return;
         }
 
         // check if troop quarter free
         if ($this->troopTransferUtility->getFreeQuarters($target) < $shuttle->getCrewCount()) {
-            $game->getInfo()->addInformation(_('Das Ziel verfügt nicht über genügend Crew-Quartiere'));
+            $context->getInfo()->addInformation(_('Das Ziel verfügt nicht über genügend Crew-Quartiere'));
             return;
         }
 
@@ -119,7 +119,7 @@ final class LandShuttle implements ActionControllerInterface
         // land shuttle and transfer crew
         $this->landShuttle($shuttle, $target);
 
-        $game->getInfo()->addInformation("Shuttle erfolgreich gelandet");
+        $context->getInfo()->addInformation("Shuttle erfolgreich gelandet");
     }
 
     private function landShuttle(Ship $shuttle, Spacecraft $target): void

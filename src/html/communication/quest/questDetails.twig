@@ -37,7 +37,7 @@
 
                 {% if QUEST.getPlot %}
                 <strong>Plot:</strong> {{ QUEST.getPlot.getTitle }}<br>
-                <a href="/comm.php?SHOW_PLOT=1&plotid={{ QUEST.getPlot.getId }}" class="linkbutton" target="_blank"
+                <a href="/communication.php?SHOW_PLOT=1&plotid={{ QUEST.getPlot.getId }}" class="linkbutton" target="_blank"
                     style="font-size: 80%; margin-top: 5px; display: inline-block;">Zum Plot</a><br>
                 {% endif %}
             </div>
@@ -146,7 +146,7 @@
             {% elseif USER_STATUS.value == 3 %}
             <div style="color: #c2b942; font-weight: bold;">Du bist zu dieser Quest eingeladen</div>
             {% if CAN_ACCEPT_INVITATION %}
-            <form method="post" action="comm.php" style="margin-top: 10px;">
+            <form method="post" action="communication.php" style="margin-top: 10px;">
                 <input type="hidden" name="SHOW_QUEST" value="1" />
                 <input type="hidden" name="questid" value="{{ QUEST.getId }}" />
                 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
@@ -159,7 +159,7 @@
                 Einladung abgelehnt</div>
             {% endif %}
             {% elseif CAN_APPLY %}
-            <form method="post" action="comm.php">
+            <form method="post" action="communication.php">
                 <input type="hidden" name="SHOW_QUEST" value="1" />
                 <input type="hidden" name="questid" value="{{ QUEST.getId }}" />
                 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />

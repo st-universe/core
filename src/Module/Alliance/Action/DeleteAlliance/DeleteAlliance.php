@@ -11,7 +11,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
@@ -25,15 +25,15 @@ final class DeleteAlliance implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
         if ($alliance === null) {
             throw new RuntimeException('user not in alliance');
         }
 
-        $game->setView(ModuleEnum::ALLIANCE);
+        $context->setView(ModuleEnum::ALLIANCE);
 
         $isFounder = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER);
         $isSuccessor = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::SUCCESSOR);
@@ -48,7 +48,7 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->getInfo()->addInformation(_('Die Allianz wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Die Allianz wurde gelöscht'));
     }
 
     #[\Override]

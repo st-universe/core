@@ -7,7 +7,7 @@ namespace Stu\Module\Communication\Action\DeleteKnPost;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class DeleteKnPost implements ActionControllerInterface
@@ -17,23 +17,23 @@ final class DeleteKnPost implements ActionControllerInterface
     public function __construct(private DeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $post = $this->knPostRepository->find($this->deleteKnPostRequest->getKnId());
         if ($post === null || $post->getUserId() !== $userId) {
             throw new AccessViolationException();
         }
         if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
-            $game->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
+            $context->getInfo()->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
 
         $post->setDeleted(time());
         $this->knPostRepository->save($post);
 
-        $game->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Der Beitrag wurde gelöscht'));
     }
 
     #[\Override]

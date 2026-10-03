@@ -6,7 +6,7 @@ namespace Stu\Module\Station\Action\DeleteDockPrivilege;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
@@ -18,9 +18,9 @@ final class DeleteDockPrivilege implements ActionControllerInterface
     public function __construct(private StationLoaderInterface $stationLoader, private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
@@ -29,7 +29,7 @@ final class DeleteDockPrivilege implements ActionControllerInterface
             false
         );
 
-        $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
+        $context->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         $privilege = $this->dockingPrivilegeRepository->find(request::getIntFatal('privilegeid'));
 
         if (

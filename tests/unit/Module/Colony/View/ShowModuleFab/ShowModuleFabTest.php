@@ -11,7 +11,6 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Colony;
@@ -36,27 +35,16 @@ use Stu\StuTestCase;
 class ShowModuleFabTest extends StuTestCase
 {
     private MockInterface&ColonyLoaderInterface $colonyLoader;
-
     private MockInterface&ShowModuleFabRequestInterface $showModuleFabRequest;
-
     private MockInterface&ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
-
     private MockInterface&BuildingFunctionRepositoryInterface $buildingFunctionRepository;
-
     private MockInterface&ModuleQueueRepositoryInterface $moduleQueueRepository;
-
     private MockInterface&SpacecraftRumpRepositoryInterface $spacecraftRumpRepository;
-
     private MockInterface&ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
-
     private MockInterface&SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository;
-
     private MockInterface&ModuleRepositoryInterface $moduleRepository;
-
     private MockInterface&BuildplanHangarRepositoryInterface $buildplanHangarRepository;
-
     private MockInterface&ShipRumpCostRepositoryInterface $shipRumpCostRepository;
-
     private MockInterface&StorageRepositoryInterface $storageRepository;
 
     private ShowModuleFab $subject;
@@ -262,7 +250,7 @@ class ShowModuleFabTest extends StuTestCase
 
     public function testGetAccumulatedStorageByCommodityIdReturnsAmountIndexedByCommodity(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(ViewControllerContext::class);
         $user = $this->mock(User::class);
 
         $game->shouldReceive('getUser')

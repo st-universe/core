@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class SetLSSModeBorder implements ActionControllerInterface
@@ -18,11 +18,11 @@ final class SetLSSModeBorder implements ActionControllerInterface
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::BORDER, $game);
+        $this->helper->setLssMode(request::indInt('id'), SpacecraftLssModeEnum::BORDER, $context);
     }
 
     #[\Override]

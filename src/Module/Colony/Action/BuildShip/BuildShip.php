@@ -18,8 +18,8 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -53,9 +53,9 @@ final class BuildShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $mod = null;
@@ -78,25 +78,25 @@ final class BuildShip implements ActionControllerInterface
             }
         }
         if ($building_function === null) {
-            $game->getInfo()->addInformation(_('Die Werft ist nicht aktiviert'));
+            $context->getInfo()->addInformation(_('Die Werft ist nicht aktiviert'));
             return;
         }
-        $this->setModuleScreenView($game);
+        $this->setModuleScreenView($context);
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 1) > 0) {
-            $game->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
+            $context->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff gebaut'));
             return;
         }
 
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunctionAndMode($colonyId, $building_function->getBuildingFunction(), 2) > 0) {
-            $game->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
+            $context->getInfo()->addInformation(_('In dieser Werft wird aktuell ein Schiff umgerüstet'));
             return;
         }
 
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $rump->getEpsCost()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
                 $changeable->getEps()
@@ -105,7 +105,7 @@ final class BuildShip implements ActionControllerInterface
         }
 
         if ($colony->isBlocked()) {
-            $game->getInfo()->addInformation(_('Schiffbau ist nicht möglich während die Kolonie blockiert wird'));
+            $context->getInfo()->addInformation(_('Schiffbau ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
 
@@ -127,7 +127,7 @@ final class BuildShip implements ActionControllerInterface
                 && $moduleLevels->isMandatory($moduleType)
                 && count($module) === 0
             ) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     $moduleType->getDescription()
                 );
@@ -146,7 +146,7 @@ final class BuildShip implements ActionControllerInterface
                 }
 
                 if ($specialCount > $rump->getBaseValues()->getSpecialSlots()) {
-                    $game->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $context->getInfo()->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
                     return;
                 }
                 continue;
@@ -175,7 +175,7 @@ final class BuildShip implements ActionControllerInterface
             : $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
 
         if ($crewUsage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
-            $game->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
+            $context->getInfo()->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }
 
@@ -186,7 +186,7 @@ final class BuildShip implements ActionControllerInterface
             && $submittedPlan->getNpcGift() === true
             && $submittedPlan->getSignature() !== $signature
         ) {
-            $game->getInfo()->addInformation(_('Du kannst diesen Bauplan nicht ändern'));
+            $context->getInfo()->addInformation(_('Du kannst diesen Bauplan nicht ändern'));
             return;
         }
 
@@ -194,14 +194,14 @@ final class BuildShip implements ActionControllerInterface
             ? $submittedPlan
             : $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan !== null && $plan->getCount() !== null && $plan->getCount() <= 0) {
-            $game->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
+            $context->getInfo()->addInformation(_('Dieser Bauplan ist nicht mehr baubar'));
             return;
         }
 
         $storage = $colony->getStorage();
         foreach ($modules as $module) {
             if (!$storage->containsKey($module->getCommodityId())) {
-                $game->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
+                $context->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
             $selector = $this->colonyLibFactory->createModuleSelector(
@@ -217,7 +217,7 @@ final class BuildShip implements ActionControllerInterface
         foreach ($modules as $module) {
             $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $context->setView(ShowColony::VIEW_IDENTIFIER);
         if ($plan === null) {
             $plannameFromRequest = request::indString('buildplanname');
             if (
@@ -231,12 +231,12 @@ final class BuildShip implements ActionControllerInterface
                     date('d.m.Y H:i')
                 );
             }
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Lege neuen Bauplan an: %s'),
                 $planname
             );
             $plan = $this->spacecraftBuildplanRepository->prototype();
-            $plan->setUser($game->getUser());
+            $plan->setUser($context->getUser());
             $plan->setRump($rump);
             $plan->setName($planname);
             $plan->setSignature($signature);
@@ -255,7 +255,7 @@ final class BuildShip implements ActionControllerInterface
                 $this->buildplanModuleRepository->save($mod);
             }
         } else {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 'Benutze verfügbaren Bauplan: %s',
                 $plan->getName()
             );
@@ -278,7 +278,7 @@ final class BuildShip implements ActionControllerInterface
         $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
             $rump->getName(),
             date("d.m.Y H:i", (time() + $plan->getBuildtime()))
@@ -291,17 +291,17 @@ final class BuildShip implements ActionControllerInterface
         return false;
     }
 
-    private function setModuleScreenView(GameControllerInterface $game): void
+    private function setModuleScreenView(ActionControllerContext $context): void
     {
         $planId = request::indInt('planid');
 
         if ($planId > 0) {
-            $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
-            $game->setViewContext(ViewContextTypeEnum::BUILDPLAN, $planId);
+            $context->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+            $context->setViewContext(ViewContextMetadataTypeEnum::BUILDPLAN, $planId);
             return;
         }
 
-        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+        $context->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
     private function getSubmittedBuildplan(int $userId, int $rumpId): ?SpacecraftBuildplan

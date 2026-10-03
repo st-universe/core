@@ -10,7 +10,7 @@ use RuntimeException;
 use Stu\Exception\InvalidParamException;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -27,7 +27,7 @@ final class ResetPassword implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $token = $this->resetPasswordRequest->getToken();
 
@@ -44,8 +44,8 @@ final class ResetPassword implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
-        $game->getInfo()->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
+        $context->setView(ShowLostPassword::VIEW_IDENTIFIER);
+        $context->getInfo()->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 
         $body = <<<EOT
             Hallo.\n\n
@@ -68,7 +68,7 @@ final class ResetPassword implements ActionControllerInterface
         try {
             $mail->send();
         } catch (RuntimeException) {
-            $game->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
+            $context->getInfo()->addInformation(_('Die eMail konnte nicht verschickt werden'));
         }
     }
 

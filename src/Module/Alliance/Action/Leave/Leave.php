@@ -8,7 +8,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\StationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -25,9 +25,9 @@ final class Leave implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
         if ($alliance === null) {
             throw new SanityCheckException();
@@ -61,9 +61,9 @@ final class Leave implements ActionControllerInterface
             }
         }
 
-        $game->setView(ModuleEnum::ALLIANCE);
+        $context->setView(ModuleEnum::ALLIANCE);
 
-        $game->getInfo()->addInformation(_('Du hast die Allianz verlassen'));
+        $context->getInfo()->addInformation(_('Du hast die Allianz verlassen'));
     }
 
     #[\Override]

@@ -29,7 +29,7 @@ final class ShowSingleKn implements ViewControllerInterface
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
 
         $knPostings = [];
         if ($post !== null) {

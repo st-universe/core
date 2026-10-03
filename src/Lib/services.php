@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Psr\Container\ContainerInterface;
+use Stu\Extension\ExtensionHooks;
 use Stu\Lib\Colony\PlanetFieldHostProvider;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Lib\Component\ComponentLoader;
@@ -84,6 +85,7 @@ use Symfony\Component\Mailer\Transport;
 
 use function DI\autowire;
 use function DI\create;
+use function DI\get;
 
 return [
     ComponentRegistrationInterface::class => autowire(ComponentRegistration::class),
@@ -134,7 +136,8 @@ return [
             ]
         ),
     InteractionMemberFactoryInterface::class => autowire(InteractionMemberFactory::class),
-    InteractionCheckerBuilderFactoryInterface::class => autowire(InteractionCheckerBuilderFactory::class),
+    InteractionCheckerBuilderFactoryInterface::class => autowire(InteractionCheckerBuilderFactory::class)
+        ->constructorParameter('extensions', get(ExtensionHooks::class)),
     StorageManagerInterface::class => autowire(StorageManager::class),
     StorageEntityWrapperFactoryInterface::class => autowire(StorageEntityWrapperFactory::class)
         ->constructorParameter('spacecraftStorageCommodityLogic', autowire(SpacecraftStorageCommodityLogic::class))

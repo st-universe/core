@@ -10,8 +10,8 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -35,12 +35,12 @@ final class BuyTradeLicense implements ActionControllerInterface
     public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageManagerInterface $storageManager, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private InteractionCheckerInterface $interactionChecker) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
-        $game->setViewContext(ViewContextTypeEnum::NO_AJAX, true);
+        $context->setView(ShowTradeMenu::VIEW_IDENTIFIER);
+        $context->setViewContext(ViewContextMetadataTypeEnum::NO_AJAX, true);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -71,7 +71,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         $this->buyLicense($ship, $tradePost, $targetId, $licenseInfo, $user);
 
-        $game->getInfo()->addInformation('Handelslizenz wurde erteilt');
+        $context->getInfo()->addInformation('Handelslizenz wurde erteilt');
 
         $this->privateMessageSender->send(
             $userId,

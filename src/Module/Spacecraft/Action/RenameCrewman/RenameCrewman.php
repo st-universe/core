@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\RenameCrewman;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowCrewmanDetails\ShowCrewmanDetails;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 
@@ -18,30 +18,30 @@ final class RenameCrewman implements ActionControllerInterface
     public function __construct(private CrewRepositoryInterface $crewRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowCrewmanDetails::VIEW_IDENTIFIER);
+        $context->setView(ShowCrewmanDetails::VIEW_IDENTIFIER);
 
         $crew = $this->crewRepository->find(request::indInt('id'));
-        if ($crew === null || $crew->getUser()->getId() !== $game->getUser()->getId()) {
+        if ($crew === null || $crew->getUser()->getId() !== $context->getUser()->getId()) {
             throw new AccessViolationException();
         }
 
         $name = request::postString('name');
         if ($name === false) {
-            $game->getInfo()->addInformation('Der Crewmanname darf nicht leer sein');
+            $context->getInfo()->addInformation('Der Crewmanname darf nicht leer sein');
             return;
         }
 
         $name = trim($name);
         if ($name === '') {
-            $game->getInfo()->addInformation('Der Crewmanname darf nicht leer sein');
+            $context->getInfo()->addInformation('Der Crewmanname darf nicht leer sein');
             return;
         }
 
         $crew->setName($name);
         $this->crewRepository->save($crew);
-        $game->getInfo()->addInformation('Der Crewmanname wurde geändert');
+        $context->getInfo()->addInformation('Der Crewmanname wurde geändert');
     }
 
     #[\Override]

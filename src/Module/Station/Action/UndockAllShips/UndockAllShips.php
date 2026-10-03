@@ -6,7 +6,7 @@ namespace Stu\Module\Station\Action\UndockAllShips;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\ShipUndockingInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -21,18 +21,18 @@ final class UndockAllShips implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $stationId = request::indInt('id');
 
-        $station = $this->stationLoader->getByIdAndUser($stationId, $game->getUser()->getId());
+        $station = $this->stationLoader->getByIdAndUser($stationId, $context->getUser()->getId());
 
         $dockedShipsCount = $station->getDockedShipCount();
         $this->shipUndocking->undockAllDocked($station);
 
-        $game->getInfo()->addInformationf('Alle %d Schiffe wurden erfolgreich abgedockt', $dockedShipsCount);
+        $context->getInfo()->addInformationf('Alle %d Schiffe wurden erfolgreich abgedockt', $dockedShipsCount);
     }
 
     #[\Override]

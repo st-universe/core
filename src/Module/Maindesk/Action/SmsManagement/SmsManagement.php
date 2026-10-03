@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\NoAccessCheckControllerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -39,14 +39,14 @@ final class SmsManagement implements
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $mobileInput = request::postString('mobile') ?: '';
         $countryCode = request::postString('countrycode') ?: '';
 
         $this->loggerUtil->log('SmsManagement wurde aufgerufen mit mobile: ' . ($mobileInput ?: 'LEER') . ' und countrycode: ' . ($countryCode ?: 'LEER'));
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         if ($user->getState() !== UserStateEnum::ACCOUNT_VERIFICATION) {
             $this->loggerUtil->log('User State ist nicht ACCOUNT_VERIFICATION: ' . $user->getState()->value);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\MoveShip;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 
@@ -16,7 +16,7 @@ final class MoveShipLeft extends AbstractDirectedMovement
     public const string ACTION_IDENTIFIER = 'B_MOVE_LEFT';
 
     #[\Override]
-    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(SpacecraftWrapperInterface $wrapper, ActionControllerContext $context): bool
     {
         return false;
     }

@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action;
 
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Maintenance\CreateMissingUserAwards;
 
 final class CreateMissingUserWards implements ActionControllerInterface
@@ -18,13 +18,13 @@ final class CreateMissingUserWards implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $this->createMissingUserAwards->handle();
 
-        $game->getInfo()->addInformation('Fehlende User Awards wurden hinzugefügt');
+        $context->getInfo()->addInformation('Fehlende User Awards wurden hinzugefügt');
     }
 
     #[\Override]

@@ -10,8 +10,8 @@ use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\PlanetField;
 
 final class DeactivateBuildings implements ActionControllerInterface
@@ -21,11 +21,11 @@ final class DeactivateBuildings implements ActionControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingActionInterface $buildingAction, private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser());
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($context->getUser());
 
-        $game->setView($host->getDefaultViewIdentifier());
+        $context->setView($host->getDefaultViewIdentifier());
 
         $mode = request::indInt('mode');
         $selection = request::getvars()['selection'] ?? request::postvars()['selection'] ?? null;
@@ -43,11 +43,11 @@ final class DeactivateBuildings implements ActionControllerInterface
             if (!$field->isActive()) {
                 continue;
             }
-            $this->buildingAction->deactivate($field, $game);
+            $this->buildingAction->deactivate($field, $context);
         }
 
-        $game->setView($host->getDefaultViewIdentifier());
-        $game->setViewContext(ViewContextTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
+        $context->setView($host->getDefaultViewIdentifier());
+        $context->setViewContext(ViewContextMetadataTypeEnum::COLONY_MENU, ColonyMenuEnum::MENU_BUILDINGS);
     }
 
     #[\Override]

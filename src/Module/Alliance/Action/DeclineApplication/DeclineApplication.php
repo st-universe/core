@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\AllianceApplicationRepositoryInterface;
@@ -26,15 +26,15 @@ final class DeclineApplication implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         if ($alliance === null) {
             throw new AccessViolationException();
         }
 
-        if (!$this->allianceJobManager->hasUserPermission($game->getUser(), $alliance, AllianceJobPermissionEnum::MANAGE_APPLICATIONS)) {
+        if (!$this->allianceJobManager->hasUserPermission($context->getUser(), $alliance, AllianceJobPermissionEnum::MANAGE_APPLICATIONS)) {
             throw new AccessViolationException();
         }
 
@@ -53,9 +53,9 @@ final class DeclineApplication implements ActionControllerInterface
 
         $this->privateMessageSender->send(UserConstants::USER_NOONE, $applicant->getId(), $text);
 
-        $game->setView(Applications::VIEW_IDENTIFIER);
+        $context->setView(Applications::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformation(_('Die Bewerbung wurde abgelehnt'));
+        $context->getInfo()->addInformation(_('Die Bewerbung wurde abgelehnt'));
     }
 
     #[\Override]

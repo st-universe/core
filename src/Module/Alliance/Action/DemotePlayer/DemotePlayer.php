@@ -9,7 +9,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -31,9 +31,9 @@ final class DemotePlayer implements ActionControllerInterface
      * Demotes a player
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
         $playerId = $this->demotePlayerRequest->getPlayerId();
@@ -67,9 +67,9 @@ final class DemotePlayer implements ActionControllerInterface
             )
         );
 
-        $game->setView(Management::VIEW_IDENTIFIER);
+        $context->setView(Management::VIEW_IDENTIFIER);
 
-        $game->getInfo()->addInformation('Das Mitglied wurde von seinem Posten enthoben');
+        $context->getInfo()->addInformation('Das Mitglied wurde von seinem Posten enthoben');
     }
 
     #[\Override]

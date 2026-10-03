@@ -10,7 +10,7 @@ use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
@@ -25,23 +25,23 @@ final class ChangeAvatar implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $file = $_FILES['avatar'];
         if ($file['type'] !== 'image/png') {
-            $game->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
         if ($file['size'] > 200000) {
-            $game->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
+            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
             return;
         }
         if ($file['size'] === 0) {
-            $game->getInfo()->addInformation(_('Die Datei ist leer'));
+            $context->getInfo()->addInformation(_('Die Datei ist leer'));
             return;
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
 
         $avatar = $this->userSettingsProvider->getAvatar($user);
         if ($avatar !== '') {
@@ -63,12 +63,12 @@ final class ChangeAvatar implements ActionControllerInterface
         try {
             $img = imagecreatefrompng($file['tmp_name']);
         } catch (Exception) {
-            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
         if (!$img) {
-            $game->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
 
@@ -91,7 +91,7 @@ final class ChangeAvatar implements ActionControllerInterface
             $imageName
         );
 
-        $game->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
+        $context->getInfo()->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }
 
     #[\Override]

@@ -19,7 +19,7 @@ use Stu\Lib\Transfer\TransferInformation;
 use Stu\Lib\Transfer\TransferInformationFactoryInterface;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\TargetLink;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -45,7 +45,7 @@ final class Transfer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $isUnload = request::postIntFatal('is_unload') === 1;
         $transferType = TransferTypeEnum::from(request::postIntFatal('transfer_type'));
@@ -58,20 +58,20 @@ final class Transfer implements ActionControllerInterface
                 TransferEntityTypeEnum::from(request::postStringFatal('target_type')),
                 $transferType,
                 $isUnload,
-                $game->getUser(),
+                $context->getUser(),
                 true
             );
         } catch (TransferEntityNotFoundException) {
-            $game->getInfo()->addInformation('Das Ziel konnte nicht gefunden werden');
+            $context->getInfo()->addInformation('Das Ziel konnte nicht gefunden werden');
             return;
         }
 
         $source = $transferInformation->getSource();
         $target = $transferInformation->getTarget();
 
-        $game->setView($source->getTransferEntityType()->getViewIdentifier());
+        $context->setView($source->getTransferEntityType()->getViewIdentifier());
 
-        if (!$transferInformation->getSourceWrapper()->canTransfer($game->getInfo())) {
+        if (!$transferInformation->getSourceWrapper()->canTransfer($context->getInfo())) {
             return;
         }
 
@@ -95,7 +95,7 @@ final class Transfer implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_UNSHIELDED,
                 InteractionCheckType::EXPECT_TARGET_UNBLOCKED
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
@@ -150,13 +150,13 @@ final class Transfer implements ActionControllerInterface
         $this->npcLogTradeMessageLogger->logIfNpcInvolved($senderId, $recipientId, $text);
 
         if ($target->getUser()?->getId() === $source->getUser()?->getId()) {
-            $game->getGameData()->targetLink = new TargetLink(
+            $context->getGame()->getGameData()->targetLink = new TargetLink(
                 $target->getHref(),
                 sprintf('Zu Ziel-%s wechseln', $target->getTransferEntityType()->getName())
             );
         }
 
-        $game->getInfo()->addInformationWrapper($informations);
+        $context->getInfo()->addInformationWrapper($informations);
     }
 
     private function sanityCheck(TransferInformation $transferInformation): void

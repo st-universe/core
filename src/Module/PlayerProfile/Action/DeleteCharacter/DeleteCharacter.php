@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerProfile\Action\DeleteCharacter;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserCharacterRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -16,22 +16,22 @@ final class DeleteCharacter implements ActionControllerInterface
     public function __construct(private DeleteCharacterRequestInterface $deleteCharacterRequest, private UserRepositoryInterface $userRepository, private UserCharacterRepositoryInterface $userCharactersRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $characterId = $this->deleteCharacterRequest->getCharacterId();
         $character = $this->userCharactersRepository->find($characterId);
         $fallbackUser = $this->userRepository->getFallbackUser();
 
-        if (!$character || $character->getUser() !== $game->getUser()) {
-            $game->getInfo()->addInformation(_('Charakter nicht gefunden oder kein Zugriff.'));
+        if (!$character || $character->getUser() !== $context->getUser()) {
+            $context->getInfo()->addInformation(_('Charakter nicht gefunden oder kein Zugriff.'));
             return;
         }
 
         $character->setUser($fallbackUser);
-        $character->setFormerUserId($game->getUser()->getId());
+        $character->setFormerUserId($context->getUser()->getId());
         $this->userCharactersRepository->save($character);
 
-        $game->getInfo()->addInformation(_('Der Charakter wurde erfolgreich entfernt.'));
+        $context->getInfo()->addInformation(_('Der Charakter wurde erfolgreich entfernt.'));
     }
 
     #[\Override]

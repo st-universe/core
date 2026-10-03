@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action;
 use request;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Repository\NewsRepositoryInterface;
 
@@ -21,9 +21,9 @@ final class PostNews implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowScripts::VIEW_IDENTIFIER);
+        $context->setView(ShowScripts::VIEW_IDENTIFIER);
 
         $subject = request::postString('subject');
         $text = request::postString('text');
@@ -31,7 +31,7 @@ final class PostNews implements ActionControllerInterface
         $refs = request::postString('refs');
 
         if ($subject === false || $text === false || $subject === '' || $text === '') {
-            $game->getInfo()->addInformation(_('Bitte fülle alle Felder aus'));
+            $context->getInfo()->addInformation(_('Bitte fülle alle Felder aus'));
             return;
         }
 
@@ -45,7 +45,7 @@ final class PostNews implements ActionControllerInterface
 
         $this->newsRepository->save($news);
 
-        $game->getInfo()->addInformation(_('Die News wurde gespeichert'));
+        $context->getInfo()->addInformation(_('Die News wurde gespeichert'));
     }
 
     #[\Override]

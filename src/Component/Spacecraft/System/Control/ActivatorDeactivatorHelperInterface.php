@@ -7,6 +7,7 @@ namespace Stu\Component\Spacecraft\System\Control;
 use Stu\Component\Spacecraft\SpacecraftLssModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Module\Control\Component\ControllerContext;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Spacecraft\Lib\Movement\Component\PreFlight\ConditionCheckResult;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -24,7 +25,7 @@ interface ActivatorDeactivatorHelperInterface
     public function activateFleet(
         int $shipId,
         SpacecraftSystemTypeEnum $systemId,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void;
 
     public function deactivate(
@@ -43,6 +44,6 @@ interface ActivatorDeactivatorHelperInterface
     public function setLssMode(
         int $shipId,
         SpacecraftLssModeEnum $lssMode,
-        GameControllerInterface $game
+        ControllerContext $game
     ): void;
 }

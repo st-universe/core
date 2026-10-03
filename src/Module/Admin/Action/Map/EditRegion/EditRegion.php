@@ -6,7 +6,7 @@ namespace Stu\Module\Admin\Action\Map\EditRegion;
 
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -17,7 +17,7 @@ final class EditRegion implements ActionControllerInterface
     public function __construct(private EditRegionRequestInterface $editRegionRequest, private MapRegionRepositoryInterface $mapRegionRepository, private MapRepositoryInterface $mapRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $selectedField = $this->mapRepository->find($this->editRegionRequest->getFieldId());
 
@@ -34,7 +34,7 @@ final class EditRegion implements ActionControllerInterface
 
         $this->mapRepository->save($selectedField);
 
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
     }
 
     #[\Override]

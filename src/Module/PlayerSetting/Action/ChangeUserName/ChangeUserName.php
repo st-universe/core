@@ -7,7 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 use JBBCode\Parser;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeUserName implements ActionControllerInterface
@@ -17,54 +17,54 @@ final class ChangeUserName implements ActionControllerInterface
     public function __construct(private ChangeUserNameRequestInterface $changeUserNameRequest, private Parser $bbcodeParser, private UserRepositoryInterface $userRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $text = $this->changeUserNameRequest->getName();
 
         if (!CleanTextUtils::checkBBCode($text)) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
             return;
         }
 
         if (strrpos(strtoupper($text), 'UMODE') || strrpos(strtoupper($text), 'U-MODE') || strrpos(strtoupper($text), 'URLAUB')) {
-            $game->getInfo()->addInformation(_('Das Suffix UMODE wird automatisch an den Namen angehängt!'));
+            $context->getInfo()->addInformation(_('Das Suffix UMODE wird automatisch an den Namen angehängt!'));
             return;
         }
 
         $value = CleanTextUtils::clearEmojis($text);
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($value);
         if ($value !== $nameWithoutUnicode) {
-            $game->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
+            $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
 
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
         if (mb_strlen($valueWithoutMarkup) < 6) {
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 _('Der Siedlername muss aus mindestens 6 Zeichen bestehen')
             );
             return;
         }
         if (mb_strlen($value) > 255) {
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 _('Der Siedlername darf inklusive BBCode nur maximal 255 Zeichen lang sein')
             );
             return;
         }
         if (mb_strlen($valueWithoutMarkup) > 60) {
-            $game->getInfo()->addInformation(
+            $context->getInfo()->addInformation(
                 _('Der Siedlername darf nur maximal 60 Zeichen lang sein')
             );
             return;
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $user->setUsername($value);
 
         $this->userRepository->save($user);
 
-        $game->getInfo()->addInformation(_('Dein Name wurde geändert'));
+        $context->getInfo()->addInformation(_('Dein Name wurde geändert'));
     }
 
     #[\Override]

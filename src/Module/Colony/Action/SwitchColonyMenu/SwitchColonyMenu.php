@@ -10,7 +10,7 @@ use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -21,19 +21,19 @@ final class SwitchColonyMenu implements ActionControllerInterface
     public function __construct(private PlanetFieldHostProviderInterface $planetFieldHostProvider, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private PlanetFieldRepositoryInterface $planetFieldRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($game->getUser(), false);
+        $host = $this->planetFieldHostProvider->loadHostViaRequestParameters($context->getUser(), false);
 
         $menu = ColonyMenuEnum::getFor(request::getIntFatal('menu'));
 
         if (!$host->isMenuAllowed($menu)) {
-            $game->getInfo()->addInformation('Dieses Menü ist nicht für die Sandbox geeignet');
-            $game->setView($host->getDefaultViewIdentifier());
+            $context->getInfo()->addInformation('Dieses Menü ist nicht für die Sandbox geeignet');
+            $context->setView($host->getDefaultViewIdentifier());
             return;
         }
 
-        $game->setView($menu->getViewIdentifier());
+        $context->setView($menu->getViewIdentifier());
 
         $neededBuildingFunctions = $menu->getNeededBuildingFunction();
         if (
@@ -44,13 +44,13 @@ final class SwitchColonyMenu implements ActionControllerInterface
         }
         if ($menu->isBuildingFunctionMandatory()) {
             $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
-            $game->setTemplateVar('FUNC', $func);
+            $context->setTemplateVar('FUNC', $func);
 
             $isFighterShipyard = false;
             if ($func !== null) {
                 $isFighterShipyard = $func->getFunction() === BuildingFunctionEnum::FIGHTER_SHIPYARD;
             }
-            $game->setTemplateVar('IS_FIGHTER_SHIPYARD', $isFighterShipyard);
+            $context->setTemplateVar('IS_FIGHTER_SHIPYARD', $isFighterShipyard);
         }
     }
 

@@ -12,10 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\OrionAuctionRepository;
 
 #[Table(name: 'stu_orion_auction')]
 #[Entity(repositoryClass: OrionAuctionRepository::class)]
+#[TruncateOnGameReset(2)]
 class OrionAuction
 {
     #[Id]

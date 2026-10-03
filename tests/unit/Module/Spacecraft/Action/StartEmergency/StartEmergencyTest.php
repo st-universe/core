@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\StartEmergency;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\System\Data\ComputerSystemData;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -41,7 +41,7 @@ class StartEmergencyTest extends StuTestCase
 
     public function testHandleDoesNothingIfEmergencyCallAlreadyActive(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
@@ -49,10 +49,10 @@ class StartEmergencyTest extends StuTestCase
         $shipId = 666;
         $userId = 42;
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
@@ -82,12 +82,12 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleErrorsIfMessageIsTooLong(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
@@ -96,14 +96,14 @@ class StartEmergencyTest extends StuTestCase
         $userId = 42;
         $text = str_repeat('ö', 251);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('getInfo->addInformationf')
+        $context->shouldReceive('getInfo->addInformationf')
             ->with(
                 'Maximal %d Zeichen erlaubt',
                 250
@@ -139,12 +139,12 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturnFalse();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleCreatesEmergencyCall(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $ship = $this->mock(Ship::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
@@ -155,14 +155,14 @@ class StartEmergencyTest extends StuTestCase
         $userId = 42;
         $text = str_repeat('ö', 250);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Das Notrufsignal wurde gestartet')
             ->once();
 
@@ -222,7 +222,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($computer);
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testPerformSessionCheckReturnsTrue(): void

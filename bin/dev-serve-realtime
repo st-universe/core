@@ -62,7 +62,7 @@ fi
 
 export STU_REALTIME_WEBSOCKET_URL="${STU_REALTIME_WEBSOCKET_URL:-ws://127.0.0.1:8787/realtime/starmap}"
 
-npm run realtime:starmap &
+node realtime/extension-server.js --with-starmap &
 NODE_PID="$!"
 
 sleep 0.75

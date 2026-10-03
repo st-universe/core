@@ -8,7 +8,7 @@ use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -37,17 +37,17 @@ final class DealsBidAuction implements ActionControllerInterface
     public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
         $dealId = $this->dealsbidauctionRequest->getDealId();
         $maxAmount = $this->dealsbidauctionRequest->getMaxAmount();
-        $game->setView(ShowDeals::VIEW_IDENTIFIER);
+        $context->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $auction = $this->dealsRepository->find($dealId);
         if ($auction === null) {
-            $game->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
@@ -61,7 +61,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
 
         if ($maxAmount < 1 || $maxAmount <= $currentBidAmount) {
-            $game->getInfo()->addInformation(_('Zu geringe Anzahl ausgewählt'));
+            $context->getInfo()->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;
         }
 
@@ -74,71 +74,71 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $highestBid = $auction->getHighestBid();
         if ($highestBid === null) {
-            $this->createFirstBid($maxAmount, $auction, $game);
+            $this->createFirstBid($maxAmount, $auction, $context);
             return;
         }
 
         $userHasHighestBid = $highestBid->getUser()->getId() === $user->getId();
         if ($userHasHighestBid) {
-            $this->raiseOwnBid($maxAmount, $highestBid, $game, $auction);
+            $this->raiseOwnBid($maxAmount, $highestBid, $context, $auction);
             return;
         }
 
         $currentMaxAmount = $highestBid->getMaxAmount();
 
         if ($maxAmount <= $currentMaxAmount) {
-            $this->raiseCurrentAmount($maxAmount, $highestBid, $auction, $game);
+            $this->raiseCurrentAmount($maxAmount, $highestBid, $auction, $context);
         }
 
         if ($maxAmount > $currentMaxAmount) {
-            $this->setNewHighestBid($maxAmount, $highestBid, $auction, $game);
+            $this->setNewHighestBid($maxAmount, $highestBid, $auction, $context);
         }
     }
 
-    private function createFirstBid(int $maxAmount, Deals $auction, GameControllerInterface $game): void
+    private function createFirstBid(int $maxAmount, Deals $auction, ActionControllerContext $context): void
     {
         //check if enough available
-        if (!$this->checkAndCollectCosts($auction, null, $maxAmount, self::BID_TYPE_FIRST, $game)) {
+        if (!$this->checkAndCollectCosts($auction, null, $maxAmount, self::BID_TYPE_FIRST, $context)) {
             return;
         }
 
         $bid = $this->auctionBidRepository->prototype();
-        $bid->setUser($game->getUser());
+        $bid->setUser($context->getUser());
         $bid->setMaxAmount($maxAmount);
         $bid->setAuction($auction);
         $this->auctionBidRepository->save($bid);
 
         $auction->getAuctionBids()->add($bid);
-        $auction->setAuctionUser($game->getUser()->getId());
+        $auction->setAuctionUser($context->getUser()->getId());
         $auction->setAuctionAmount(1);
         $this->dealsRepository->save($auction);
 
-        $game->getInfo()->addInformation(sprintf(_('Du hast das erste Gebot abgegeben. Dein Maximalgebot liegt bei %d'), $maxAmount));
+        $context->getInfo()->addInformation(sprintf(_('Du hast das erste Gebot abgegeben. Dein Maximalgebot liegt bei %d'), $maxAmount));
     }
 
-    private function raiseOwnBid(int $maxAmount, AuctionBid $bid, GameControllerInterface $game, Deals $auction): void
+    private function raiseOwnBid(int $maxAmount, AuctionBid $bid, ActionControllerContext $context, Deals $auction): void
     {
         if ($maxAmount <= $bid->getMaxAmount()) {
-            $game->getInfo()->addInformation(_('Dein neues Maximalgebot muss über deinem bisherigen Maximalgebot liegen'));
+            $context->getInfo()->addInformation(_('Dein neues Maximalgebot muss über deinem bisherigen Maximalgebot liegen'));
             return;
         }
 
         $additionalAmount = $maxAmount - $bid->getMaxAmount();
 
         //check if enough available
-        if (!$this->checkAndCollectCosts($auction, $bid, $additionalAmount, self::BID_TYPE_RAISE_OWN, $game)) {
+        if (!$this->checkAndCollectCosts($auction, $bid, $additionalAmount, self::BID_TYPE_RAISE_OWN, $context)) {
             return;
         }
 
-        $game->getInfo()->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
+        $context->getInfo()->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
         $bid->setMaxAmount($maxAmount);
         $this->auctionBidRepository->save($bid);
     }
 
-    private function raiseCurrentAmount(int $maxAmount, AuctionBid $highestBid, Deals $auction, GameControllerInterface $game): void
+    private function raiseCurrentAmount(int $maxAmount, AuctionBid $highestBid, Deals $auction, ActionControllerContext $context): void
     {
         //check if enough available
-        if (!$this->checkAndCollectCosts($auction, $highestBid, $maxAmount, self::BID_TYPE_RAISE_OTHER, $game)) {
+        if (!$this->checkAndCollectCosts($auction, $highestBid, $maxAmount, self::BID_TYPE_RAISE_OTHER, $context)) {
             return;
         }
 
@@ -149,7 +149,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $auction->setAuctionAmount($newAmount);
         $this->dealsRepository->save($auction);
 
-        $game->getInfo()->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $newAmount));
+        $context->getInfo()->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $newAmount));
 
         $wantedCommodity = $auction->getWantedCommodity();
         if ($wantedCommodity === null) {
@@ -177,33 +177,33 @@ final class DealsBidAuction implements ActionControllerInterface
     }
 
 
-    private function setNewHighestBid(int $maxAmount, AuctionBid $highestBid, Deals $auction, GameControllerInterface $game): void
+    private function setNewHighestBid(int $maxAmount, AuctionBid $highestBid, Deals $auction, ActionControllerContext $context): void
     {
         //check if enough available
-        if (!$this->checkAndCollectCosts($auction, $highestBid, $maxAmount, self::BID_TYPE_REVISE, $game)) {
+        if (!$this->checkAndCollectCosts($auction, $highestBid, $maxAmount, self::BID_TYPE_REVISE, $context)) {
             return;
         }
 
         // create new bid
         $bid = $this->auctionBidRepository->prototype();
-        $bid->setUser($game->getUser());
+        $bid->setUser($context->getUser());
         $bid->setMaxAmount($maxAmount);
         $bid->setAuction($auction);
         $this->auctionBidRepository->save($bid);
 
         // modify auction
         $auction->setAuctionAmount($highestBid->getMaxAmount() + 1);
-        $auction->setAuctionUser($game->getUser()->getId());
+        $auction->setAuctionUser($context->getUser()->getId());
         $auction->getAuctionBids()->add($bid);
         $this->dealsRepository->save($auction);
 
-        $game->getInfo()->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $auction->getAuctionAmount(), $maxAmount));
+        $context->getInfo()->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $auction->getAuctionAmount(), $maxAmount));
     }
 
-    private function checkAndCollectCosts(Deals $auction, ?AuctionBid $currentHighestBid, int $neededAmount, int $bidType, GameControllerInterface $game): bool
+    private function checkAndCollectCosts(Deals $auction, ?AuctionBid $currentHighestBid, int $neededAmount, int $bidType, ActionControllerContext $context): bool
     {
         //check for sufficient amount
-        if (!$this->isEnoughAvailable($auction, $neededAmount, $game)) {
+        if (!$this->isEnoughAvailable($auction, $neededAmount, $context)) {
             return false;
         }
 
@@ -212,7 +212,7 @@ final class DealsBidAuction implements ActionControllerInterface
             return true;
         }
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $tradePost = $this->tradepostRepository->find(TradeEnum::DEALS_FERG_TRADEPOST_ID);
         if ($tradePost === null) {
             throw new RuntimeException('no deals ferg tradepost found');
@@ -298,9 +298,9 @@ final class DealsBidAuction implements ActionControllerInterface
         };
     }
 
-    private function isEnoughAvailable(Deals $auction, int $neededAmount, GameControllerInterface $game): bool
+    private function isEnoughAvailable(Deals $auction, int $neededAmount, ActionControllerContext $context): bool
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wantedCommodity = $auction->getWantedCommodity();
         if ($wantedCommodity !== null) {
@@ -311,7 +311,7 @@ final class DealsBidAuction implements ActionControllerInterface
             );
 
             if ($storage === null || $storage->getAmount() < $neededAmount) {
-                $game->getInfo()->addInformation(sprintf(
+                $context->getInfo()->addInformation(sprintf(
                     _('Nicht genügend %s auf diesem Handelsposten vorhanden'),
                     $wantedCommodity->getName()
                 ));
@@ -320,10 +320,10 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         if ($auction->isPrestigeCost()) {
-            $userprestige = $game->getUser()->getPrestige();
+            $userprestige = $context->getUser()->getPrestige();
 
             if ($neededAmount > $userprestige) {
-                $game->getInfo()->addInformation(sprintf(
+                $context->getInfo()->addInformation(sprintf(
                     _('Du hast nicht genügend Prestige, benötigt: %d'),
                     ($neededAmount - $userprestige)
                 ));

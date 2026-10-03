@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -31,10 +31,10 @@ final class TakeBuoy implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
-        $userId = $game->getUser()->getId();
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $userId = $context->getUser()->getId();
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
@@ -44,31 +44,31 @@ final class TakeBuoy implements ActionControllerInterface
 
         $buoy = $ship->getLocation()->getBuoys()->get(request::indInt('buoyid'));
         if ($buoy === null) {
-            $game->getInfo()->addInformation("Die Boje existiert nicht");
+            $context->getInfo()->addInformation("Die Boje existiert nicht");
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            $game->getInfo()->addInformation(_("Keine Energie vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Energie vorhanden"));
             return;
         }
         if ($ship->isCloaked()) {
-            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
+            $context->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($ship->isWarped()) {
-            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if ($ship->isShielded()) {
-            $game->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
+            $context->getInfo()->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
 
         if ($epsSystem->getEps() < 1) {
-            $game->getInfo()->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
+            $context->getInfo()->addInformation(_('Es wird 1 Energie für den Start der Boje benötigt'));
             return;
         }
 
@@ -84,7 +84,7 @@ final class TakeBuoy implements ActionControllerInterface
 
         if ($buoy->getUserId() !== $userId) {
             $this->privateMessageSender->send(
-                $game->getUser()->getId(),
+                $context->getUser()->getId(),
                 $buoy->getUserId(),
                 sprintf(
                     _('Deine Boje %s wurde von der %s bei %s aufgebracht.'),
@@ -100,7 +100,7 @@ final class TakeBuoy implements ActionControllerInterface
 
         $epsSystem->lowerEps(1)->update();
 
-        $game->getInfo()->addInformation('Die Boje wurde erfolgreich eingesammelt');
+        $context->getInfo()->addInformation('Die Boje wurde erfolgreich eingesammelt');
     }
 
     #[\Override]

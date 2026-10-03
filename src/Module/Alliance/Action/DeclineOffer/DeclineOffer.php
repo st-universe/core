@@ -11,7 +11,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
 final class DeclineOffer implements ActionControllerInterface
@@ -26,9 +26,9 @@ final class DeclineOffer implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -49,11 +49,11 @@ final class DeclineOffer implements ActionControllerInterface
 
         if ($relation !== null && !$relation->isPending()) {
             if (!$this->userRelationManager->declinePermissionChange($user, $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
             return;
         }
 
@@ -75,7 +75,7 @@ final class DeclineOffer implements ActionControllerInterface
 
         $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
 
-        $game->getInfo()->addInformation(_('Das Angebot wurden abgelehnt'));
+        $context->getInfo()->addInformation(_('Das Angebot wurden abgelehnt'));
     }
 
     #[\Override]

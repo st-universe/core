@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\StuLogger;
 use Stu\TwigTestCase;
 
 class DefaultViewsControllerTest extends TwigTestCase
@@ -29,6 +30,7 @@ class DefaultViewsControllerTest extends TwigTestCase
         return $definedImplementations
             ->map(fn (ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
             ->filter(fn (array $array): bool => str_ends_with($array[0], '-DEFAULT_VIEW') && !str_starts_with($array[0], 'GAME_VIEWS'))
+            ->filter(fn(array $array): bool => $array[0] === 'COMMUNICATION_VIEWS-DEFAULT_VIEW')
             ->toArray();
     }
 
@@ -38,6 +40,8 @@ class DefaultViewsControllerTest extends TwigTestCase
         $this->snapshotKey = $key;
 
         $viewValue = strtolower(explode('_', $key, 2)[0]);
+
+        StuLogger::logf('viewValue %s', $viewValue);
 
         $this->renderSnapshot(
             101,

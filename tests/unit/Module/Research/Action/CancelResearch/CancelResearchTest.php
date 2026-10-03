@@ -8,7 +8,7 @@ use Mockery\MockInterface;
 use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\GameController;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
@@ -36,7 +36,7 @@ class CancelResearchTest extends StuTestCase
 
     public function testHandleDoesNothingIfNoCurrentResearch(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
 
         request::setMockVars(['id' => 42]);
@@ -46,20 +46,20 @@ class CancelResearchTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(GameController::DEFAULT_VIEW)
             ->once();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testHandleCancelsTheUsersResearch(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $user = $this->mock(User::class);
         $researchReference = $this->mock(Researched::class);
 
@@ -78,14 +78,14 @@ class CancelResearchTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $game->shouldReceive('getInfo->addInformation')
+        $context->shouldReceive('getInfo->addInformation')
             ->with('Die laufende Forschung wurde abgebrochen')
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(GameController::DEFAULT_VIEW)
             ->once();
 
@@ -93,7 +93,7 @@ class CancelResearchTest extends StuTestCase
             ->with(GameComponentEnum::RESEARCH)
             ->once();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 
     public function testPerformSessionCheckReturnsTrue(): void

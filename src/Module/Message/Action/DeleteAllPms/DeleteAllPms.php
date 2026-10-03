@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeleteAllPms;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -16,17 +16,17 @@ final class DeleteAllPms implements ActionControllerInterface
     public function __construct(private DeleteAllPmsRequestInterface $deleteAllPmsRequest, private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository, private PrivateMessageRepositoryInterface $privateMessageRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $timestamp = time();
 
         $folder = $this->privateMessageFolderRepository->find($this->deleteAllPmsRequest->getCategoryId());
-        if ($folder === null || $folder->getUserId() !== $game->getUser()->getId()) {
+        if ($folder === null || $folder->getUserId() !== $context->getUser()->getId()) {
             return;
         }
         $this->privateMessageRepository->setDeleteTimestampByFolder($folder->getId(), $timestamp);
 
-        $game->getInfo()->addInformation(_('Der Ordner wurde geleert'));
+        $context->getInfo()->addInformation(_('Der Ordner wurde geleert'));
     }
 
     #[\Override]

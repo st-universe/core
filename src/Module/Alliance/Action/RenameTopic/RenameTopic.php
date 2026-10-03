@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\RenameTopic;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class RenameTopic implements ActionControllerInterface
@@ -20,9 +20,9 @@ final class RenameTopic implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $name = $this->renameTopicRequest->getTitle();
 
@@ -31,17 +31,17 @@ final class RenameTopic implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Board::VIEW_IDENTIFIER);
+        $context->setView(Board::VIEW_IDENTIFIER);
 
         if (mb_strlen($name) < 1) {
-            $game->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
+            $context->getInfo()->addInformation(_('Es wurde kein Themenname eingegeben'));
             return;
         }
 
         $topic->setName($name);
         $this->allianceBoardTopicRepository->save($topic);
 
-        $game->getInfo()->addInformation(_('Das Thema wurde umbenannt'));
+        $context->getInfo()->addInformation(_('Das Thema wurde umbenannt'));
     }
 
     #[\Override]

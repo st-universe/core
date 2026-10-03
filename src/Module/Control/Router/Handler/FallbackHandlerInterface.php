@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Router\Handler;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\Router\FallbackRouteException;
 
 interface FallbackHandlerInterface
 {
-    public function handle(FallbackRouteException $e, GameControllerInterface $game): void;
+    public function handle(FallbackRouteException $e, ViewControllerContext $context): void;
 }

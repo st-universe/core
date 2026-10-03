@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\EditRelationText;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -34,9 +34,9 @@ final class EditRelationText implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $relationId = $this->editRelationTextRequest->getRelationId();
         $text = $this->editRelationTextRequest->getText();
 
@@ -58,7 +58,7 @@ final class EditRelationText implements ActionControllerInterface
         $this->sendNotification($relation->getSourceParty(), $relation, $user);
         $this->sendNotification($relation->getRecipientParty(), $relation, $user);
 
-        $game->getInfo()->addInformation('Der Vertragstext wurde erfolgreich bearbeitet');
+        $context->getInfo()->addInformation('Der Vertragstext wurde erfolgreich bearbeitet');
     }
 
     private function sendNotification(

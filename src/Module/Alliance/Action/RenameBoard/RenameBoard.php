@@ -7,7 +7,7 @@ namespace Stu\Module\Alliance\Action\RenameBoard;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class RenameBoard implements ActionControllerInterface
@@ -20,9 +20,9 @@ final class RenameBoard implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $alliance = $context->getUser()->getAlliance();
 
         $name = $this->renameBoardRequest->getTitle();
 
@@ -31,10 +31,10 @@ final class RenameBoard implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
-        $game->setView(Boards::VIEW_IDENTIFIER);
+        $context->setView(Boards::VIEW_IDENTIFIER);
 
         if (mb_strlen($name) < 1) {
-            $game->getInfo()->addInformation(_('Es wurde kein Forumname eingegeben'));
+            $context->getInfo()->addInformation(_('Es wurde kein Forumname eingegeben'));
             return;
         }
 
@@ -42,7 +42,7 @@ final class RenameBoard implements ActionControllerInterface
 
         $this->allianceBoardRepository->save($board);
 
-        $game->getInfo()->addInformation(_('Das Forum wurde umbenannt'));
+        $context->getInfo()->addInformation(_('Das Forum wurde umbenannt'));
     }
 
     #[\Override]

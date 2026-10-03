@@ -10,7 +10,7 @@ use Stu\Lib\SpacecraftManagement\HandleManagersInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -33,11 +33,11 @@ final class ManageShips implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
+        $context->setView(ShowShipManagement::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
@@ -52,7 +52,7 @@ final class ManageShips implements ActionControllerInterface
 
         $shipIds = request::postArray('spacecrafts');
         if (count($shipIds) === 0) {
-            $game->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
+            $context->getInfo()->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
 
@@ -74,7 +74,7 @@ final class ManageShips implements ActionControllerInterface
             $msg = array_merge($msg, $this->handleShip($values, $managerProvider, (int)$shipId, $station));
         }
 
-        $game->getInfo()->addInformationArray($msg, true);
+        $context->getInfo()->addInformationArray($msg, true);
     }
 
     /**

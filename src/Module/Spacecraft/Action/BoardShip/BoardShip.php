@@ -11,7 +11,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -50,11 +50,11 @@ final class BoardShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $shipId = request::getIntFatal('id');
@@ -99,7 +99,7 @@ final class BoardShip implements ActionControllerInterface
                 InteractionCheckType::EXPECT_SOURCE_TACHYON,
                 InteractionCheckType::EXPECT_TARGET_ALSO_IN_FINISHED_WEB
             ])
-            ->check($game->getInfo())) {
+            ->check($context->getInfo())) {
             return;
         }
 
@@ -108,7 +108,7 @@ final class BoardShip implements ActionControllerInterface
         }
 
         if ($spacecraft->getCrewCount() === 0) {
-            $game->getInfo()->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
+            $context->getInfo()->addInformation(_('Aktion nicht möglich, keine Crew vorhanden!'));
             return;
         }
 
@@ -117,7 +117,7 @@ final class BoardShip implements ActionControllerInterface
             $lastTakeover !== null
             && time() < $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS
         ) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 'Enterkommando kann erst wieder um %s entsendet werden',
                 date('H:i', $lastTakeover +  ShipTakeoverManagerInterface::BOARDING_COOLDOWN_IN_SECONDS)
             ));
@@ -126,14 +126,14 @@ final class BoardShip implements ActionControllerInterface
 
         $epsSystemData = $wrapper->getEpsSystemData();
         if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $game->getInfo()->addInformation(_('Keine Energie vorhanden'));
+            $context->getInfo()->addInformation(_('Keine Energie vorhanden'));
             return;
         }
 
 
         $neededPrestige = $this->shipTakeoverManager->getPrestigeForBoardingAttempt($target);
         if ($user->getPrestige() < $neededPrestige && !$user->isNpc()) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 'Nicht genügend Prestige vorhanden, benötigt wird: %d',
                 $neededPrestige
             ));
@@ -149,7 +149,7 @@ final class BoardShip implements ActionControllerInterface
         );
 
         if ($spacecraft->getCondition()->isDestroyed()) {
-            $game->setView(ModuleEnum::SHIP);
+            $context->setView(ModuleEnum::SHIP);
             return;
         }
 
@@ -221,7 +221,7 @@ final class BoardShip implements ActionControllerInterface
 
         $informations = $messages->getInformationDump();
 
-        $game->getInfo()->addInformationWrapper($informations);
+        $context->getInfo()->addInformationWrapper($informations);
     }
 
     private function sendPms(

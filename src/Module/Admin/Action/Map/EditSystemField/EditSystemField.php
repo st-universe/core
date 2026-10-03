@@ -7,7 +7,7 @@ namespace Stu\Module\Admin\Action\Map\EditSystemField;
 use RuntimeException;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -19,7 +19,7 @@ final class EditSystemField implements ActionControllerInterface
     public function __construct(private EditSystemFieldRequestInterface $editSystemFieldRequest, private MapFieldTypeRepositoryInterface $mapFieldTypeRepository, private StarSystemMapRepositoryInterface $starSystemMapRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         /** @var StarSystemMap $selectedField */
         $selectedField = $this->starSystemMapRepository->find($this->editSystemFieldRequest->getFieldId());
@@ -33,7 +33,7 @@ final class EditSystemField implements ActionControllerInterface
 
         $this->starSystemMapRepository->save($selectedField);
 
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
     }
 
     #[\Override]

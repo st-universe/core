@@ -9,7 +9,7 @@ use Stu\Component\Quest\QuestUserModeEnum;
 use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Communication\View\ShowQuest\ShowQuest;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -31,21 +31,21 @@ final class AcceptQuestInvitation implements ActionControllerInterface
     ) {}
 
     #[Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowQuest::VIEW_IDENTIFIER);
+        $context->setView(ShowQuest::VIEW_IDENTIFIER);
 
-        $user = $game->getUser();
+        $user = $context->getUser();
         $questId = $this->acceptQuestInvitationRequest->getQuestId();
 
         $quest = $this->npcQuestRepository->find($questId);
         if ($quest === null) {
-            $game->getInfo()->addInformation('Quest nicht gefunden');
+            $context->getInfo()->addInformation('Quest nicht gefunden');
             return;
         }
 
         if ($quest->getEnd() !== null) {
-            $game->getInfo()->addInformation('Quest ist bereits beendet');
+            $context->getInfo()->addInformation('Quest ist bereits beendet');
             return;
         }
 
@@ -55,12 +55,12 @@ final class AcceptQuestInvitation implements ActionControllerInterface
         ]);
 
         if ($questUser === null) {
-            $game->getInfo()->addInformation('Du wurdest nicht zu dieser Quest eingeladen');
+            $context->getInfo()->addInformation('Du wurdest nicht zu dieser Quest eingeladen');
             return;
         }
 
         if ($questUser->getMode() !== QuestUserModeEnum::INVITED) {
-            $game->getInfo()->addInformation('Du bist nicht zu dieser Quest eingeladen');
+            $context->getInfo()->addInformation('Du bist nicht zu dieser Quest eingeladen');
             return;
         }
 
@@ -70,7 +70,7 @@ final class AcceptQuestInvitation implements ActionControllerInterface
             ));
 
             if ($activeMembersCount >= $quest->getApplicantMax()) {
-                $game->getInfo()->addInformation('Die maximale Teilnehmerzahl ist bereits erreicht');
+                $context->getInfo()->addInformation('Die maximale Teilnehmerzahl ist bereits erreicht');
                 return;
             }
         }
@@ -81,8 +81,8 @@ final class AcceptQuestInvitation implements ActionControllerInterface
         $logEntry = $this->npcQuestLogRepository->prototype();
         $logEntry->setQuestId($questId);
         $logEntry->setQuest($quest);
-        $logEntry->setUserId($game->getUser()->getId());
-        $logEntry->setUser($game->getUser());
+        $logEntry->setUserId($context->getUser()->getId());
+        $logEntry->setUser($context->getUser());
         $logEntry->setMode(1);
         $logEntry->setDate(time());
         $logEntry->setText(sprintf(
@@ -105,7 +105,7 @@ final class AcceptQuestInvitation implements ActionControllerInterface
             '/npc/?SHOW_NPC_QUESTS=1'
         );
 
-        $game->getInfo()->addInformation('Du nimmst ab sofort an der Quest teil');
+        $context->getInfo()->addInformation('Du nimmst ab sofort an der Quest teil');
     }
 
     #[Override]

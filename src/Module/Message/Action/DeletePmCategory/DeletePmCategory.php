@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeletePmCategory;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -20,14 +20,14 @@ final class DeletePmCategory implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $timestamp = time();
 
         $folder = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
         if (
             $folder === null ||
-            $folder->getUserId() !== $game->getUser()->getId() ||
+            $folder->getUserId() !== $context->getUser()->getId() ||
             !$folder->isDeleteAble()
         ) {
             return;
@@ -37,7 +37,7 @@ final class DeletePmCategory implements ActionControllerInterface
         $folder->setDeleted($timestamp);
         $this->privateMessageFolderRepository->save($folder);
 
-        $game->getInfo()->addInformation(_('Der Ordner wurde gelöscht'));
+        $context->getInfo()->addInformation(_('Der Ordner wurde gelöscht'));
     }
 
     #[\Override]

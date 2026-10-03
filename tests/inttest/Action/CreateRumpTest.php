@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\ActionTestCase;
 use Stu\Module\Admin\Action\CreateRump;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 
 final class CreateRumpTest extends ActionTestCase
@@ -135,7 +136,8 @@ final class CreateRumpTest extends ActionTestCase
             'database_entry_before_id' => '6501001'
         ]);
 
-        $container->get(CreateRump::class)->handle($container->get(GameControllerInterface::class));
+        $context = $container->get(ActionContextFactoryInterface::class)->createActionContext($container->get(GameControllerInterface::class));
+        $container->get(CreateRump::class)->handle($context);
 
         $rump = $connection->fetchAssociative('SELECT * FROM stu_rump WHERE id = ?', [19999]);
         $baseValues = $connection->fetchAssociative('SELECT * FROM stu_rump_base_values WHERE rump_id = ?', [19999]);
@@ -215,7 +217,8 @@ final class CreateRumpTest extends ActionTestCase
             'database_entry_before_id' => ''
         ]);
 
-        $container->get(CreateRump::class)->handle($container->get(GameControllerInterface::class));
+        $context = $container->get(ActionContextFactoryInterface::class)->createActionContext($container->get(GameControllerInterface::class));
+        $container->get(CreateRump::class)->handle($context);
 
         self::assertSame('Bearbeiteter Creator Testrumpf', $connection->fetchOne('SELECT name FROM stu_rump WHERE id = ?', [19999]));
         self::assertSame('16', (string) $connection->fetchOne('SELECT prestige FROM stu_rump WHERE id = ?', [19999]));

@@ -9,7 +9,7 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class ActivateSystem implements ActionControllerInterface
@@ -19,27 +19,27 @@ final class ActivateSystem implements ActionControllerInterface
     public function __construct(private ActivatorDeactivatorHelperInterface $helper) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $type = SpacecraftSystemTypeEnum::getByName(request::getStringFatal('type'));
 
         if (request::getInt('isfleet')) {
             $this->helper->activateFleet(
                 request::getIntFatal('id'),
                 $type,
-                $game
+                $context
             );
         } else {
             $this->helper->activate(
                 request::getIntFatal('id'),
                 $type,
-                $game->getInfo()
+                $context->getInfo()
             );
         }
 
         if ($type->isReloadOnActivation()) {
-            $game->addExecuteJS(
+            $context->addExecuteJS(
                 sprintf('showSystemSettingsWindow(null, "%s");setAjaxMandatory(false);', $type->name),
                 JavascriptExecutionTypeEnum::AFTER_RENDER
             );

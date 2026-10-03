@@ -8,7 +8,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 
 /**
  * Performs a logout for the user
@@ -20,9 +20,9 @@ final class Logout implements ActionControllerInterface
     public function __construct(private SessionInterface $session) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        if ($game->hasUser()) {
+        if ($context->getGame()->hasUser()) {
             $this->session->logout();
         }
 

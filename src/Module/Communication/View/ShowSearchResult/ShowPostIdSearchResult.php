@@ -25,7 +25,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $user = $game->getUser();
 
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
 
         $id = $this->showSearchResultRequest->getSearchId();
         if ($id === 0) {

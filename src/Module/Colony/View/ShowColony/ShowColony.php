@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowColony;
 
 use Stu\Component\Colony\ColonyMenuEnum;
-use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Colony\PlanetFieldHostTypeEnum;
 use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\Gui\ColonyGuiHelperInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Control\ViewWithTutorialInterface;
 
@@ -38,7 +36,7 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             false
         );
 
-        $menu = ColonyMenuEnum::getFor($game->getViewContext(ViewContextTypeEnum::COLONY_MENU));
+        $menu = ColonyMenuEnum::getFor($game->getViewContextMetadata(ViewContextMetadataTypeEnum::COLONY_MENU));
 
         $this->colonyGuiHelper->registerMenuComponents($menu, $colony, $game);
         $game->setTemplateVar('SELECTED_COLONY_MENU_TEMPLATE', ColonyMenuEnum::MENU_MAINSCREEN->getTemplate());
@@ -75,11 +73,5 @@ final class ShowColony implements ViewControllerInterface, ViewWithTutorialInter
             PlanetFieldHostTypeEnum::COLONY->value,
             $game->getSessionString()
         ));
-    }
-
-    #[\Override]
-    public function getViewContext(): ViewContext
-    {
-        return new ViewContext(ModuleEnum::COLONY, self::VIEW_IDENTIFIER);
     }
 }

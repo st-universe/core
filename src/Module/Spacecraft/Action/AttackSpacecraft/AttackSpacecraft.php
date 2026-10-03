@@ -12,7 +12,7 @@ use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -35,10 +35,10 @@ final class AttackSpacecraft implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $info = $game->getInfo();
-        $userId = $game->getUser()->getId();
+        $info = $context->getInfo();
+        $userId = $context->getUser()->getId();
 
         $wrappers = $this->spacecraftLoader->getWrappersBySourceAndUserAndTarget(
             request::indInt('id'),
@@ -72,7 +72,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         }
 
         if ($target->getCondition()->isDestroyed()) {
-            $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+            $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
             $info->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
         }
@@ -111,13 +111,13 @@ final class AttackSpacecraft implements ActionControllerInterface
             $info->addInformationWrapper($fightInfos);
             return;
         }
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if ($isFleetFight) {
-            $game->getInfo()->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $fightInfos->getInformations());
+            $context->getInfo()->addInformation(_("Angriff durchgeführt"));
+            $context->setTemplateVar('FIGHT_RESULTS', $fightInfos->getInformations());
         } else {
-            $game->getInfo()->addInformationWrapper($fightInfos);
+            $context->getInfo()->addInformationWrapper($fightInfos);
         }
     }
 

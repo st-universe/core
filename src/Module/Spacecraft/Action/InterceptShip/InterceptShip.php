@@ -14,7 +14,7 @@ use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -36,11 +36,11 @@ final class InterceptShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
@@ -60,7 +60,7 @@ final class InterceptShip implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
-        $information = $game->getInfo();
+        $information = $context->getInfo();
 
         if (!$this->interactionCheckerBuilderFactory
             ->createInteractionChecker()

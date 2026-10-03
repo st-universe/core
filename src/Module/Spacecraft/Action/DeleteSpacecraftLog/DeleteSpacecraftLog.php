@@ -6,7 +6,7 @@ namespace Stu\Module\Spacecraft\Action\DeleteSpacecraftLog;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -26,13 +26,13 @@ final class DeleteSpacecraftLog implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $this->setReturnView($game);
+        $this->setReturnView($context);
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $spacecraftLog = $this->spacecraftLogRepository->find(
@@ -46,7 +46,7 @@ final class DeleteSpacecraftLog implements ActionControllerInterface
         $spacecraftLog->setDeleted($this->stuTime->time());
         $this->spacecraftLogRepository->save($spacecraftLog);
 
-        $game->getInfo()->addInformation('Logbucheintrag wurde gelöscht');
+        $context->getInfo()->addInformation('Logbucheintrag wurde gelöscht');
     }
 
     #[\Override]
@@ -55,9 +55,9 @@ final class DeleteSpacecraftLog implements ActionControllerInterface
         return true;
     }
 
-    private function setReturnView(GameControllerInterface $game): void
+    private function setReturnView(ActionControllerContext $context): void
     {
-        $game->setView(
+        $context->setView(
             request::postInt('communicationPopup') === 1
                 ? ShowShipCommunication::VIEW_IDENTIFIER
                 : ShowSpacecraft::VIEW_IDENTIFIER

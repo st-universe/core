@@ -6,7 +6,7 @@ namespace Stu\Module\Message\Action\UserRelation;
 
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -21,27 +21,27 @@ final class DeclineUserRelation implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowContactList::VIEW_IDENTIFIER);
+        $context->setView(ShowContactList::VIEW_IDENTIFIER);
         $relation = $this->userRelationRepository->find($this->userRelationRequest->getRelationId());
 
         if ($relation !== null && !$relation->isPending()) {
-            if (!$this->userRelationManager->declinePermissionChange($game->getUser(), $relation)) {
-                $game->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
+            if (!$this->userRelationManager->declinePermissionChange($context->getUser(), $relation)) {
+                $context->getInfo()->addInformation('Die Rechteänderung kann nicht abgelehnt werden');
                 return;
             }
 
-            $game->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
+            $context->getInfo()->addInformation('Die Rechteänderung wurde abgelehnt');
             return;
         }
 
-        if ($relation === null || !$this->userRelationManager->decline($game->getUser(), $relation)) {
-            $game->getInfo()->addInformation('Das Angebot kann nicht abgelehnt werden');
+        if ($relation === null || !$this->userRelationManager->decline($context->getUser(), $relation)) {
+            $context->getInfo()->addInformation('Das Angebot kann nicht abgelehnt werden');
             return;
         }
 
-        $game->getInfo()->addInformation('Das Angebot wurde abgelehnt');
+        $context->getInfo()->addInformation('Das Angebot wurde abgelehnt');
     }
 
     #[\Override]

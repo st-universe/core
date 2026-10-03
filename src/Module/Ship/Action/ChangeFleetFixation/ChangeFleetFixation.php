@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ChangeFleetFixation;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
@@ -17,11 +17,11 @@ final class ChangeFleetFixation implements ActionControllerInterface
     public function __construct(private ShipLoaderInterface $shipLoader) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $fleet = $ship->getFleet();
@@ -32,14 +32,14 @@ final class ChangeFleetFixation implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         if (request::postString('fleetfixed') !== false) {
             $fleet->setIsFleetFixed(true);
-            $game->getInfo()->addInformation(_('Die Flotte ist nun fixiert'));
+            $context->getInfo()->addInformation(_('Die Flotte ist nun fixiert'));
         } else {
             $fleet->setIsFleetFixed(false);
-            $game->getInfo()->addInformation(_('Die Flotte ist nun nicht mehr fixiert'));
+            $context->getInfo()->addInformation(_('Die Flotte ist nun nicht mehr fixiert'));
         }
     }
 

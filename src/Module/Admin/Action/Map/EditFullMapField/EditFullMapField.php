@@ -10,7 +10,7 @@ use request;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Admin\View\Map\FullMapEditor\ShowFullMapEditorData;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
@@ -41,7 +41,7 @@ final class EditFullMapField implements ActionControllerInterface
      * @throws JsonException
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $selectedFields = $this->getSelectedFields();
         if ($selectedFields === []) {

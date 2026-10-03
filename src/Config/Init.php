@@ -6,6 +6,8 @@ namespace Stu\Config;
 
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
+use Noodlehaus\ConfigInterface;
+use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Twig\TwigHelper;
 
@@ -82,6 +84,16 @@ final class Init
             $builder->addDefinitions(__DIR__ . '/../Module/Twig/services.php');
             $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php');
             $builder->addDefinitions(__DIR__ . '/../Orm/Transaction/services.php');
+
+            $config = ConfigFileSetup::load();
+            $extensions = new ExtensionRegistry($config, dirname(__DIR__, 2));
+            $builder->addDefinitions([
+                ConfigInterface::class => $config,
+                ExtensionRegistry::class => $extensions
+            ]);
+            foreach ($extensions->all() as $extension) {
+                $builder->addDefinitions($extension['directory'] . '/' . $extension['services']);
+            }
 
             self::$CONTAINER = $builder->build();
         }

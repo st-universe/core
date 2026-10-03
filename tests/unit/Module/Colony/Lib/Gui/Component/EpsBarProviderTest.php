@@ -6,8 +6,9 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -16,7 +17,8 @@ class EpsBarProviderTest extends StuTestCase
     private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private MockInterface&Colony $host;
-    private MockInterface&GameControllerInterface $game;
+    private MockInterface&TemplateInterface $game;
+    private MockInterface&User $user;
 
     private PlanetFieldHostComponentInterface $subject;
 
@@ -26,7 +28,8 @@ class EpsBarProviderTest extends StuTestCase
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->host = $this->mock(Colony::class);
-        $this->game = $this->mock(GameControllerInterface::class);
+        $this->game = $this->mock(TemplateInterface::class);
+        $this->user = $this->mock(User::class);
 
         $this->subject = new EpsBarProvider(
             $this->planetFieldRepository
@@ -62,7 +65,8 @@ class EpsBarProviderTest extends StuTestCase
 
         $this->subject->setTemplateVariables(
             $this->host,
-            $this->game
+            $this->game,
+            $this->user
         );
     }
 }

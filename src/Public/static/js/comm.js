@@ -98,7 +98,7 @@ function updateRecipient() {
 }
 
 function showKnComments(element, knId) {
-	updatePopupAtElement(element, "comm.php?SHOW_KN_COMMENTS=1&knid=" + knId,
+	updatePopupAtElement(element, "communication.php?SHOW_KN_COMMENTS=1&knid=" + knId,
 		450
 	);
 }
@@ -110,10 +110,10 @@ function postComment(knId) {
 		$('postCommentButton').disabled = true;
 	}
 	comment = Form.Element.serialize('comment');
-	ajax_update('kncomments', "comm.php?B_POST_COMMENT=1&knid=" + knId + "&" + comment);
+	ajax_update('kncomments', "communication.php?B_POST_COMMENT=1&knid=" + knId + "&" + comment);
 }
 function deletePostingComment(knId, commentId) {
-	ajax_update('kncomments', `comm.php?B_DELETE_COMMENT=1&knid=${knId}&commentid=${commentId}`);
+	ajax_update('kncomments', `communication.php?B_DELETE_COMMENT=1&knid=${knId}&commentid=${commentId}`);
 }
 function updateCategoryOrder() {
 	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + pmCategoryList.toArray().join(','));
@@ -163,7 +163,7 @@ document.addEventListener('click', (event) => {
 function rateKnPost(knId, rating) {
 	ajaxPostUpdate(
 		'kn_rating_' + knId,
-		'comm.php?B_RATE_KN_POST=1',
+		'communication.php?B_RATE_KN_POST=1',
 		{
 			'knid': knId,
 			'rating': rating
@@ -178,21 +178,21 @@ function searchKn(view) {
 }
 
 function showKnCharacter(element, characterId) {
-	updatePopupAtElement(element, "comm.php?SHOW_KN_CHARACTER=1&character=" + characterId,
+	updatePopupAtElement(element, "communication.php?SHOW_KN_CHARACTER=1&character=" + characterId,
 		450
 	);
 }
 
 function showAdminDelete(obj, postid) {
 	var pos = findObject(obj);
-	updatePopup("comm.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid,
+	updatePopup("communication.php?SHOW_ADMIN_DELETE_POST=1&postid=" + postid,
 		450, pos[0], pos[1] + 50, false
 	);
 }
 
 function showKnArchiveComments(obj, knId) {
 	var pos = findObject(obj);
-	updatePopup("comm.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId,
+	updatePopup("communication.php?SHOW_KN_ARCHIVE_COMMENTS=1&knid=" + knId,
 		450, pos[0], pos[1] + 50, false
 	);
 }
@@ -207,12 +207,12 @@ function searchKnArchive(action) {
 		return;
 	}
 
-	window.location.href = '/comm.php?' + action + '=1&search=' + encodeURIComponent(searchValue) + '&version=' + encodeURIComponent(version) + '&sstr=' + sessionString;
+	window.location.href = '/communication.php?' + action + '=1&search=' + encodeURIComponent(searchValue) + '&version=' + encodeURIComponent(version) + '&sstr=' + sessionString;
 }
 
 function showQuestColonySelection(obj, questId) {
 	var pos = findObject(obj);
-	updatePopup("comm.php?SHOW_QUEST_COLONY_SELECTION=1&questid=" + questId, 500, pos[0], pos[1] + 50, false);
+	updatePopup("communication.php?SHOW_QUEST_COLONY_SELECTION=1&questid=" + questId, 500, pos[0], pos[1] + 50, false);
 }
 
 function selectColony(colonyId) {
@@ -240,10 +240,10 @@ function claimQuestReward() {
 		return;
 	}
 
-	window.location.href = '/comm.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&colonyid=' + colonyId + '&sstr=' + sessionString;
+	window.location.href = '/communication.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&colonyid=' + colonyId + '&sstr=' + sessionString;
 }
 
 function claimQuestRewardDirect(questId) {
 	var sessionString = document.getElementById('session_string_quest').value;
-	window.location.href = '/comm.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&sstr=' + sessionString;
+	window.location.href = '/communication.php?B_CLAIM_QUEST_REWARD=1&questid=' + questId + '&sstr=' + sessionString;
 }

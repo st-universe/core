@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\CheckInput;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
@@ -24,7 +24,7 @@ final class CheckInput implements ActionControllerInterface
     public function __construct(private CheckInputRequestInterface $checkInputRequest, private UserRepositoryInterface $userRepository, private BlockedUserRepositoryInterface $blockedUserRepository, private StuHashInterface $stuHash) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $var = $this->checkInputRequest->getVariable();
         $value =  trim($this->checkInputRequest->getValue());

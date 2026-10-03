@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\TransferFromAccount;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\InteractionCheckerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -32,11 +32,11 @@ final class TransferFromAccount implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $spacecraft = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
@@ -53,11 +53,11 @@ final class TransferFromAccount implements ActionControllerInterface
         }
 
         if ($spacecraft->isCloaked()) {
-            $game->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
+            $context->getInfo()->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
         if ($spacecraft->isWarped()) {
-            $game->getInfo()->addInformation("Schiff befindet sich im Warp");
+            $context->getInfo()->addInformation("Schiff befindet sich im Warp");
             return;
         }
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradepost->getId())) {
@@ -66,20 +66,20 @@ final class TransferFromAccount implements ActionControllerInterface
         $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $context->getUser());
         /** @var array<int, Storage> */
         $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
-            $game->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
+            $context->getInfo()->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
         if (count($commodities) === 0 || count($gcount) === 0) {
-            $game->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
+            $context->getInfo()->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
 
-        $game->getInfo()->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
+        $context->getInfo()->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
         foreach ($commodities as $key => $value) {
             if (!array_key_exists($key, $gcount)) {
                 continue;
@@ -96,7 +96,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $commodity = $curCommodities[$value]->getCommodity();
 
             if (!$commodity->isBeamable()) {
-                $game->getInfo()->addInformation($commodity->getName() . " ist nicht beambar");
+                $context->getInfo()->addInformation($commodity->getName() . " ist nicht beambar");
                 continue;
             }
             if ($count > $curCommodities[$value]->getAmount()) {
@@ -109,7 +109,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $storageManager->lowerStorage((int) $value, $count);
             $this->storageManager->upperStorage($spacecraft, $commodity, $count);
 
-            $game->getInfo()->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
+            $context->getInfo()->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }
     }
 

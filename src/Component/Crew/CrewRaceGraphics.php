@@ -6,7 +6,7 @@ namespace Stu\Component\Crew;
 
 use finfo;
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\ControllerContext;
 
 final class CrewRaceGraphics
 {
@@ -16,7 +16,7 @@ final class CrewRaceGraphics
 
     public function __construct(private readonly ConfigInterface $config) {}
 
-    public function store(string $define, int $maleRatio, ?string $currentDefine, GameControllerInterface $game): bool
+    public function store(string $define, int $maleRatio, ?string $currentDefine, ControllerContext $game): bool
     {
         $baseDirectory = rtrim((string)$this->config->get('game.webroot'), '/\\')
             . '/' . trim((string)$this->config->get('game.user_avatar_path'), '/\\') . '/crew';
@@ -98,7 +98,7 @@ final class CrewRaceGraphics
     }
 
     /** @return array<string, array<int, array{name: string, tmp_name: string, size: int, error: int}>>|null */
-    private function getValidatedGraphics(int $maleRatio, ?string $currentDirectory, GameControllerInterface $game): ?array
+    private function getValidatedGraphics(int $maleRatio, ?string $currentDirectory, ControllerContext $game): ?array
     {
         $graphics = [];
         foreach (['m', 'w'] as $gender) {

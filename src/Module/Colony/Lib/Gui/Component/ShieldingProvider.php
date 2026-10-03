@@ -5,8 +5,9 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Template\StatusBarColorEnum;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -17,17 +18,18 @@ final class ShieldingProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
         $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($entity);
 
         if ($shieldingManager->hasShielding()) {
-            $game->setTemplateVar(
+            $template->setTemplateVar(
                 'SHIELD_STATUS_BAR',
                 $this->buildShieldBar($shieldingManager, $entity)
             );
 
-            $game->setTemplateVar('SHIELD_BAR_TITLE_STRING', $this->getShieldBarTitleString($entity));
+            $template->setTemplateVar('SHIELD_BAR_TITLE_STRING', $this->getShieldBarTitleString($entity));
         }
     }
 

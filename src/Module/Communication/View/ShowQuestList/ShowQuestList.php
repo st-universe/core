@@ -78,8 +78,8 @@ final class ShowQuestList implements ViewControllerInterface
         }
 
         $game->setViewTemplate('html/communication/quest/quests.twig');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart(sprintf('comm.php?%s=1', self::VIEW_IDENTIFIER), _('Quests'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart(sprintf('communication.php?%s=1', self::VIEW_IDENTIFIER), _('Quests'));
         $game->setPageTitle(_('Quests'));
         $game->setTemplateVar('ACTIVE_QUESTS', $activeQuests);
         $game->setTemplateVar('PARTICIPATED_QUESTS', $participatedQuests);

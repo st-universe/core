@@ -7,7 +7,7 @@ namespace Stu\Module\Notes\Action\DeleteNotes;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
@@ -17,7 +17,7 @@ final class DeleteNotes implements ActionControllerInterface
     public function __construct(private NoteRepositoryInterface $noteRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $delnotesString = request::indString('delnotes');
 
@@ -35,13 +35,13 @@ final class DeleteNotes implements ActionControllerInterface
             if ($obj === null) {
                 continue;
             }
-            if ($obj->getUserId() !== $game->getUser()->getId()) {
+            if ($obj->getUserId() !== $context->getUser()->getId()) {
                 throw new AccessViolationException();
             }
             $this->noteRepository->delete($obj);
         }
 
-        $game->getInfo()->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
+        $context->getInfo()->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
     }
 
     #[\Override]

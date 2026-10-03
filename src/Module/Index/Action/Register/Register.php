@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -29,7 +29,7 @@ final class Register implements ActionControllerInterface
      * @todo add registration without sms
      */
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         if (!$this->config->get('game.registration.enabled')) {
             return;
@@ -101,7 +101,7 @@ final class Register implements ActionControllerInterface
         }
 
         $this->registrationReferralTracker->clearStoredReferralCode();
-        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
+        $context->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }
 
     private function getMobileNumber(): ?string

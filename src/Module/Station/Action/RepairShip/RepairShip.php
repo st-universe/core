@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -33,11 +33,11 @@ final class RepairShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
+        $context->setView(ShowShipRepair::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $stationId = request::indInt('id');
         $shipId = request::getIntFatal('ship_id');
 
@@ -71,12 +71,12 @@ final class RepairShip implements ActionControllerInterface
         }
 
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            $game->getInfo()->addInformation(_('Das Schiff kann nicht repariert werden.'));
+            $context->getInfo()->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
 
         if ($ship->getState() === SpacecraftStateEnum::ASTRO_FINALIZING) {
-            $game->getInfo()->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
+            $context->getInfo()->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
 
@@ -94,7 +94,7 @@ final class RepairShip implements ActionControllerInterface
         $ship->getCondition()->setState(SpacecraftStateEnum::REPAIR_PASSIVE);
 
         if ($isQueued) {
-            $game->getInfo()->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefuegt'));
+            $context->getInfo()->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefuegt'));
             return;
         }
 
@@ -102,7 +102,7 @@ final class RepairShip implements ActionControllerInterface
         $estimatedDuration = $this->repairUtil->getPassiveRepairEstimatedDuration($wrapper, false);
         $estimatedFinishDate = date('d.m.Y H:i', time() + $estimatedDuration);
 
-        $game->getInfo()->addInformationf(
+        $context->getInfo()->addInformationf(
             _('Das Schiff wird repariert. Voraussichtliche Fertigstellung: %s'),
             $estimatedFinishDate
         );

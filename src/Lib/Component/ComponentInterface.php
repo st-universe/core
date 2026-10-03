@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Component;
 
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 
 interface ComponentInterface
 {
-    public function setTemplateVariables(GameControllerInterface $game): void;
+    public function setTemplateVariables(User $user, TemplateInterface $template): void;
 }

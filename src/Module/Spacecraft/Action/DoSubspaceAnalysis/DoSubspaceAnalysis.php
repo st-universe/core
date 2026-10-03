@@ -12,7 +12,7 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -34,11 +34,11 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -52,30 +52,30 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
 
         $isSubspaceScannerActive = $spacecraft->getSystemState(SpacecraftSystemTypeEnum::SUBSPACE_SCANNER);
         if (!$isSubspaceScannerActive) {
-            $game->getInfo()->addInformation(_("Das Subraum-Sensorsystem ist nicht aktiv"));
+            $context->getInfo()->addInformation(_("Das Subraum-Sensorsystem ist nicht aktiv"));
             return;
         }
 
         $isMatrixScannerHealthy = $spacecraft->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
         if (!$isMatrixScannerHealthy) {
-            $game->getInfo()->addInformation(_("Die Matrixsensoren sind nicht betriebsbereit"));
+            $context->getInfo()->addInformation(_("Die Matrixsensoren sind nicht betriebsbereit"));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null) {
-            $game->getInfo()->addInformation(_("Kein EPS-System vorhanden"));
+            $context->getInfo()->addInformation(_("Kein EPS-System vorhanden"));
             return;
         }
         if ($epsSystem->getEps() < 100) {
-            $game->getInfo()->addInformation(_('Es wird 100 Energie für die Analyse benötigt'));
+            $context->getInfo()->addInformation(_('Es wird 100 Energie für die Analyse benötigt'));
             return;
         }
         $epsSystem->lowerEps(100)->update();
         $subspaceSystem = $wrapper->getSubspaceSystemData();
 
         if ($subspaceSystem === null) {
-            $game->getInfo()->addInformation(_("Kein Subraumfeldsystem vorhanden"));
+            $context->getInfo()->addInformation(_("Kein Subraumfeldsystem vorhanden"));
             return;
         }
 
@@ -96,9 +96,9 @@ final class DoSubspaceAnalysis implements ActionControllerInterface
             ));
         }
 
-        $game->getInfo()->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
+        $context->getInfo()->addInformationf('Analyse gestartet. Fertigstellung in ~ %d Sekunden', $time);
 
-        $game->addExecuteJS(
+        $context->addExecuteJS(
             sprintf('showSystemSettingsWindow(null, "%s"); setAjaxMandatory(false); initializeWarpTraceAnalyzer();', SpacecraftSystemTypeEnum::SUBSPACE_SCANNER->name),
             JavascriptExecutionTypeEnum::AFTER_RENDER
         );

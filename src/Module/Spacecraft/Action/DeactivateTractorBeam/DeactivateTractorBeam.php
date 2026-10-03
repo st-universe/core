@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -24,11 +24,11 @@ final class DeactivateTractorBeam implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $ship = $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
@@ -38,7 +38,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         if (!$ship->isTractoring()) {
             return;
         }
-        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACTOR_BEAM, $game->getInfo());
+        $this->helper->deactivate(request::indInt('id'), SpacecraftSystemTypeEnum::TRACTOR_BEAM, $context->getInfo());
     }
 
     #[\Override]

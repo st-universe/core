@@ -47,11 +47,11 @@ final class ShowKnArchivePlot implements ViewControllerInterface
             $mark = 0;
         }
 
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_KN_ARCHIVE=1&version=' . $plot->getVersion(), _('Archiv'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_KN_ARCHIVE=1&version=' . $plot->getVersion(), _('Archiv'));
         $game->appendNavigationPart(
             sprintf(
-                'comm.php?%s=1&plotid=%d',
+                'communication.php?%s=1&plotid=%d',
                 self::VIEW_IDENTIFIER,
                 $plot->getFormerId()
             ),

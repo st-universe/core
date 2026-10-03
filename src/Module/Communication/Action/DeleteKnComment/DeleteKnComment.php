@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\Action\DeleteKnComment;
 
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class DeleteKnComment implements ActionControllerInterface
@@ -16,11 +16,11 @@ final class DeleteKnComment implements ActionControllerInterface
     public function __construct(private DeleteKnCommentRequestInterface $deleteKnCommentRequest, private KnCommentRepositoryInterface $knCommentRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
-        $game->setView(ShowKnComments::VIEW_IDENTIFIER);
+        $context->setView(ShowKnComments::VIEW_IDENTIFIER);
 
         $obj = $this->knCommentRepository->find($this->deleteKnCommentRequest->getCommentId());
         if ($obj === null) {

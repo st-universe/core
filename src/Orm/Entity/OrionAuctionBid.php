@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\OrionAuctionBidRepository;
 
 #[Table(name: 'stu_orion_auction_bid')]
 #[Index(name: 'orion_auction_bid_auction_idx', columns: ['auction_id', 'max_amount'])]
 #[Entity(repositoryClass: OrionAuctionBidRepository::class)]
+#[TruncateOnGameReset(3)]
 class OrionAuctionBid
 {
     #[Id]

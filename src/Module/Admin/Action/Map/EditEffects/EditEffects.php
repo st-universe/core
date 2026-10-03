@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use ValueError;
@@ -23,7 +23,7 @@ final class EditEffects implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $selectedField = $this->mapRepository->find(request::getIntFatal('field'));
         if ($selectedField === null) {
@@ -66,7 +66,7 @@ final class EditEffects implements ActionControllerInterface
 
         $this->mapFieldTypeRepository->save($mapFieldType);
 
-        $game->setView(Noop::VIEW_IDENTIFIER);
+        $context->setView(Noop::VIEW_IDENTIFIER);
     }
 
     #[\Override]

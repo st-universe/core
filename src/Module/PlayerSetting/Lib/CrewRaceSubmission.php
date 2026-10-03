@@ -7,7 +7,7 @@ namespace Stu\Module\PlayerSetting\Lib;
 use request;
 use Stu\Component\Crew\CrewRaceGraphics;
 use Stu\Component\Crew\CrewRaceSubmissionNotifier;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\PlayerSetting\View\ShowCrewRaceManagement\ShowCrewRaceManagement;
 use Stu\Orm\Entity\CrewRace;
@@ -25,7 +25,7 @@ final class CrewRaceSubmission
         private readonly GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
-    public function submit(GameControllerInterface $game, bool $resubmitted): void
+    public function submit(ActionControllerContext $game, bool $resubmitted): void
     {
         $game->setView(ShowCrewRaceManagement::VIEW_IDENTIFIER);
 
@@ -72,7 +72,7 @@ final class CrewRaceSubmission
     }
 
     private function getResubmittableCrewRace(
-        GameControllerInterface $game,
+        ActionControllerContext $game,
         bool $resubmitted,
         int $userId
     ): ?CrewRace {
@@ -91,7 +91,7 @@ final class CrewRaceSubmission
     }
 
     private function hasReachedSubmissionLimit(
-        GameControllerInterface $game,
+        ActionControllerContext $game,
         bool $resubmitted,
         int $userId
     ): bool {

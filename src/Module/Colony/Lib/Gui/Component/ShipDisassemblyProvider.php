@@ -6,7 +6,8 @@ use RuntimeException;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
@@ -23,9 +24,10 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
     #[\Override]
     public function setTemplateVariables(
         $entity,
-        GameControllerInterface $game
+        TemplateInterface $template,
+        User $user
     ): void {
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser(), false);
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($user, false);
 
         $building = $field->getBuilding();
         if ($building === null) {
@@ -44,7 +46,7 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
 
             foreach ($group->getWrappers() as $wrapper) {
                 $ship = $wrapper->get();
-                if ($ship->getUser()->getId() !== $game->getUser()->getId()) {
+                if ($ship->getUser()->getId() !== $user->getId()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
@@ -56,7 +58,7 @@ final class ShipDisassemblyProvider implements PlanetFieldHostComponentInterface
             }
         }
 
-        $game->setTemplateVar('SHIP_LIST', $repairableShips);
-        $game->setTemplateVar('FIELD', $field);
+        $template->setTemplateVar('SHIP_LIST', $repairableShips);
+        $template->setTemplateVar('FIELD', $field);
     }
 }

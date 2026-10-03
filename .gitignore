@@ -26,3 +26,5 @@ coverage
 stuniverse-ui
 .continue/
 AGENTS.md
+src/Public/static/extensions/
+var/extensions/

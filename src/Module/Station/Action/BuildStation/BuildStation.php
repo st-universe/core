@@ -12,7 +12,7 @@ use Stu\Component\Station\StationLocationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Orm\Entity\Module;
@@ -39,21 +39,21 @@ final class BuildStation implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
         $station = $this->stationLoader->getByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wantedPlanId = request::postInt('plan_select');
 
         if ($wantedPlanId === 0) {
-            $game->getInfo()->addInformation('Bitte Stationstyp auswählen');
+            $context->getInfo()->addInformation('Bitte Stationstyp auswählen');
             return;
         }
 
@@ -71,20 +71,20 @@ final class BuildStation implements ActionControllerInterface
         // check if the limit is reached
         $limit = $role->getBuildLimit();
         if ($this->spacecraftRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
-            $game->getInfo()->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
+            $context->getInfo()->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
         $location = $role->getPossibleBuildLocations();
         if (!$this->isLocationAllowed($station, $location)) {
-            $game->getInfo()->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location->value));
+            $context->getInfo()->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location->value));
             return;
         }
 
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $rump)) {
-            $game->getInfo()->addInformation('Nicht genügend Workbees angedockt');
+            $context->getInfo()->addInformation('Nicht genügend Workbees angedockt');
             return;
         }
 
@@ -104,14 +104,14 @@ final class BuildStation implements ActionControllerInterface
 
         // try to consume needed commodities
         if (!$this->consumeNeededModules($station, $plan, $wantedSpecialModules)) {
-            $game->getInfo()->addInformation('Nicht alle erforderlichen Module geladen');
+            $context->getInfo()->addInformation('Nicht alle erforderlichen Module geladen');
             return;
         }
 
         // transform construction
         $this->startTransformation($station, $plan, $wantedSpecialModules);
 
-        $game->getInfo()->addInformation(sprintf(
+        $context->getInfo()->addInformation(sprintf(
             _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),
             $rump->getName(),
             $rump->getBuildtime()

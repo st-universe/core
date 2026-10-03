@@ -10,7 +10,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 
@@ -27,9 +27,9 @@ final class CancelContract implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $alliance = $user->getAlliance();
 
         if ($alliance === null) {
@@ -115,7 +115,7 @@ final class CancelContract implements ActionControllerInterface
             );
         }
 
-        $game->getInfo()->addInformation(_('Das Abkommen wurde aufgelöst'));
+        $context->getInfo()->addInformation(_('Das Abkommen wurde aufgelöst'));
     }
 
     #[\Override]

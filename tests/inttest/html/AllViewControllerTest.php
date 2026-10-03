@@ -37,7 +37,7 @@ class AllViewControllerTest extends TwigTestCase
         'ALLIANCE_VIEWS-SHOW_EDIT_ALLY_POST',
         'ALLIANCE_VIEWS-EDIT_RELATION_TEXT',
         'ALLIANCE_VIEWS-SHOW_RELATION_TEXT',
-        'COLONY_VIEWS-SHOW_MODULE_CANCEL',          // needs $module = $game->getViewContext(ViewContextTypeEnum::MODULE);
+        'COLONY_VIEWS-SHOW_MODULE_CANCEL',          // needs $module = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::MODULE);
         'COLONY_VIEWS-SHOW_PODS_LOCATIONS',
         'COLONY_VIEWS-SHOW_SPACECRAFTSTORAGE',      // duplication of SPACECRAFT_VIEWS-SHOW_SPACECRAFTSTORAGE
         'COLONY_VIEWS-SHOW_SUBSPACE_TELESCOPE',     // needs corresponding building on colony

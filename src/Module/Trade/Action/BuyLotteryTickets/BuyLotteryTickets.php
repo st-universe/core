@@ -9,7 +9,7 @@ use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowLottery\ShowLottery;
@@ -24,19 +24,19 @@ final class BuyLotteryTickets implements ActionControllerInterface
     public function __construct(private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLibFactoryInterface $tradeLibFactory, private LotteryFacadeInterface $lotteryFacade, private StorageRepositoryInterface $storageRepository) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
-        $user = $game->getUser();
-        $game->setView(ShowLottery::VIEW_IDENTIFIER);
+        $userId = $context->getUser()->getId();
+        $user = $context->getUser();
+        $context->setView(ShowLottery::VIEW_IDENTIFIER);
 
         if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
-            $game->getInfo()->addInformation(_('Um Lotterielose zu kaufen, wird eine Handelslizenz bei der Goldenen Kugel benötigt'));
+            $context->getInfo()->addInformation(_('Um Lotterielose zu kaufen, wird eine Handelslizenz bei der Goldenen Kugel benötigt'));
             return;
         }
 
         if ($userId < 100) {
-            $game->getInfo()->addInformation(_('NPCs können keine Lose kaufen'));
+            $context->getInfo()->addInformation(_('NPCs können keine Lose kaufen'));
             return;
         }
 
@@ -53,7 +53,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
         );
 
         if ($storage === null || $storage->getAmount() < $amount) {
-            $game->getInfo()->addInformation(_('Nicht genügend Latinum auf diesem Handelsposten vorhanden'));
+            $context->getInfo()->addInformation(_('Nicht genügend Latinum auf diesem Handelsposten vorhanden'));
             return;
         }
 
@@ -73,7 +73,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
             $this->lotteryFacade->createLotteryTicket($user, false);
         }
 
-        $game->getInfo()->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
+        $context->getInfo()->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
     }
 
     #[\Override]

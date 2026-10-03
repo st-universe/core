@@ -17,7 +17,7 @@ use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Lib\Pirate\PirateReactionInterface;
 use Stu\Lib\Pirate\PirateReactionTriggerEnum;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SourceAndTargetWrappers;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
@@ -58,7 +58,7 @@ class InterceptShipTest extends StuTestCase
 
     public function testHandleDeactivatesSourceCloakBeforePirateReaction(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $context = $this->mock(ActionControllerContext::class);
         $info = $this->mock(InformationWrapper::class);
         $user = $this->mock(User::class);
         $wrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -83,14 +83,14 @@ class InterceptShipTest extends StuTestCase
         $wrappers = new SourceAndTargetWrappers($wrapper);
         $wrappers->setTarget($targetWrapper);
 
-        $game->shouldReceive('setView')
+        $context->shouldReceive('setView')
             ->with(ShowSpacecraft::VIEW_IDENTIFIER)
             ->once();
-        $game->shouldReceive('getUser')
+        $context->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $game->shouldReceive('getInfo')
+        $context->shouldReceive('getInfo')
             ->withNoArgs()
             ->once()
             ->andReturn($info);
@@ -188,6 +188,6 @@ class InterceptShipTest extends StuTestCase
             ->ordered()
             ->andReturnFalse();
 
-        $this->subject->handle($game);
+        $this->subject->handle($context);
     }
 }

@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { createClient } from "redis";
 import { WebSocketServer } from "ws";
 import { isSpacecraftStaticallyVisible } from "./starmap-visibility.js";
+import { starmapChannels } from "./starmap-channels.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -13,8 +14,7 @@ const config = loadConfig();
 const realtimeConfig = config.realtime || {};
 const cacheConfig = config.cache || config;
 
-const STREAM_KEY = "stu:realtime:starmap:spacecraft";
-const COVERAGE_PREFIX = "stu:realtime:starmap:coverage:";
+const { streamKey: STREAM_KEY, coveragePrefix: COVERAGE_PREFIX } = starmapChannels(realtimeConfig);
 const COVERAGE_RELOAD_MS = Number(process.env.STU_REALTIME_COVERAGE_RELOAD_MS || realtimeConfig.coverageReloadMs || 60000);
 const PORT = Number(process.env.STU_REALTIME_PORT || realtimeConfig.port || 8787);
 const HOST = process.env.STU_REALTIME_HOST || realtimeConfig.host || "127.0.0.1";
@@ -55,6 +55,7 @@ wss.on("connection", function (ws, request) {
 
 server.listen(PORT, HOST, function () {
 	console.log(`STU realtime starmap listening on ${HOST}:${PORT}${WS_PATH}`);
+	console.log(`Redis stream: ${STREAM_KEY}`);
 });
 
 readStream().catch(function (error) {

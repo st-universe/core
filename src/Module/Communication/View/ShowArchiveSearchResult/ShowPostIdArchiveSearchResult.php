@@ -28,8 +28,8 @@ final class ShowPostIdArchiveSearchResult implements ViewControllerInterface
         $searchId = $this->showArchiveSearchResultRequest->getSearchId();
 
         $game->setViewTemplate('html/communication/knArchiv.twig');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
         $game->setPageTitle(sprintf('Archiv-Suche - Version %s', $version));
 
         if ($version === '') {

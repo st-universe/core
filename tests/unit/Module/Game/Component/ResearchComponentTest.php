@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Mockery\MockInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Module\Template\StatusBarInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\User;
@@ -44,7 +44,7 @@ class ResearchComponentTest extends StuTestCase
 
     public function testRenderRendersWithoutCurrentResearch(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(TemplateInterface::class);
         $user = $this->mock(User::class);
 
         $this->researchedRepository->shouldReceive('getCurrentResearch')
@@ -57,10 +57,6 @@ class ResearchComponentTest extends StuTestCase
             ->once()
             ->andReturn([]);
 
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($user);
         $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH', null)
             ->once();
@@ -74,12 +70,12 @@ class ResearchComponentTest extends StuTestCase
             ->with('RESEARCH_POSSIBLE', false)
             ->once();
 
-        $this->subject->setTemplateVariables($game);
+        $this->subject->setTemplateVariables($user, $game);
     }
 
     public function testRenderRendersWithResearch(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $game = $this->mock(TemplateInterface::class);
         $user = $this->mock(User::class);
         $currentResearch = $this->mock(Researched::class);
         $waitingResearch = $this->mock(Researched::class);
@@ -150,10 +146,6 @@ class ResearchComponentTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($user);
         $game->shouldReceive('setTemplateVar')
             ->with('CURRENT_RESEARCH', $currentResearch)
             ->once();
@@ -173,6 +165,6 @@ class ResearchComponentTest extends StuTestCase
             ->with('RESEARCH_POSSIBLE', true)
             ->once();
 
-        $this->subject->setTemplateVariables($game);
+        $this->subject->setTemplateVariables($user, $game);
     }
 }

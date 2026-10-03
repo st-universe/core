@@ -9,6 +9,7 @@ use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
 
@@ -17,6 +18,7 @@ class CallbackExecution implements CallbackExecutionInterface
     public function __construct(
         private readonly ControllerDiscoveryInterface $controllerDiscovery,
         private readonly AccessCheckInterface $accessCheck,
+        private readonly ActionContextFactoryInterface $actionContextFactory,
         private readonly StuTime $stuTime,
         private readonly EntityManagerInterface $entityManager
     ) {}
@@ -49,8 +51,9 @@ class CallbackExecution implements CallbackExecutionInterface
 
             $game->getGameRequest()->setAction($actionIdentifier);
 
-            if ($this->accessCheck->checkUserAccess($controller, $game)) {
-                $controller->handle($game);
+            if ($this->accessCheck->checkUserAccess($controller, $game->getInfo())) {
+                $context = $this->actionContextFactory->createActionContext($game);
+                $controller->handle($context);
                 $this->entityManager->flush();
             }
             break;

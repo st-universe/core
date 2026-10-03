@@ -33,10 +33,10 @@ final class ShowKnArchivePlotList implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf('Archiv-Plots - Version %s', $this->formatVersion($version)));
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart('comm.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php?SHOW_KN_ARCHIVE=1&version=' . $version, _('Archiv'));
         $game->appendNavigationPart(
-            sprintf('comm.php?%s=1&version=%s', self::VIEW_IDENTIFIER, $version),
+            sprintf('communication.php?%s=1&version=%s', self::VIEW_IDENTIFIER, $version),
             _('Plots')
         );
 

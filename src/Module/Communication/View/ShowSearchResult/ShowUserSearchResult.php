@@ -25,7 +25,7 @@ final class ShowUserSearchResult implements ViewControllerInterface
         $user = $game->getUser();
 
         $game->setViewTemplate(ModuleEnum::COMMUNICATION->getTemplate());
-        $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('communication.php', _('KommNet'));
 
         if ($this->showSearchResultRequest->getSearchId() === 0) {
             $game->setTemplateVar('KN_POSTINGS', null);

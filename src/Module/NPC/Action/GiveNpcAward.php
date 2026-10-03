@@ -6,7 +6,7 @@ namespace Stu\Module\NPC\Action;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\NPC\View\ShowTools\ShowTools;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\Award;
@@ -30,41 +30,41 @@ final class GiveNpcAward implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowTools::VIEW_IDENTIFIER);
-        $currentUser = $game->getUser();
+        $context->setView(ShowTools::VIEW_IDENTIFIER);
+        $currentUser = $context->getUser();
         $awardId = request::postInt('assign_award_id');
         if ($awardId === 0) {
-            $game->getInfo()->addInformation('Es wurde keine Award-ID angegeben');
+            $context->getInfo()->addInformation('Es wurde keine Award-ID angegeben');
             return;
         }
 
         $award = $this->awardRepository->find($awardId);
         if ($award === null) {
-            $game->getInfo()->addInformation('Der Award existiert nicht');
+            $context->getInfo()->addInformation('Der Award existiert nicht');
             return;
         }
 
         if ($currentUser->isNpc() && $award->getIsNpc() !== true) {
-            $game->getInfo()->addInformation('NPCs können hier nur NPC-Awards vergeben');
+            $context->getInfo()->addInformation('NPCs können hier nur NPC-Awards vergeben');
             return;
         }
 
         $userIdsInput = trim((string) request::postString('assign_user_ids'));
         if ($userIdsInput === '') {
-            $game->getInfo()->addInformation('Es wurde keine User-ID angegeben');
+            $context->getInfo()->addInformation('Es wurde keine User-ID angegeben');
             return;
         }
 
         if (!preg_match('/^[\d\s,]+$/', $userIdsInput)) {
-            $game->getInfo()->addInformation('Die User-IDs dürfen nur Zahlen, Kommas und Leerzeichen enthalten');
+            $context->getInfo()->addInformation('Die User-IDs dürfen nur Zahlen, Kommas und Leerzeichen enthalten');
             return;
         }
 
         $reason = trim((string) request::postString('reason'));
         if ($currentUser->isNpc() && $reason === '') {
-            $game->getInfo()->addInformation('Grund fehlt');
+            $context->getInfo()->addInformation('Grund fehlt');
             return;
         }
 
@@ -75,7 +75,7 @@ final class GiveNpcAward implements ActionControllerInterface
         $userIds = array_values(array_filter($userIds, static fn (int $id): bool => $id > 0));
 
         if ($userIds === []) {
-            $game->getInfo()->addInformation('Es wurden keine gültigen User-IDs gefunden');
+            $context->getInfo()->addInformation('Es wurden keine gültigen User-IDs gefunden');
             return;
         }
 
@@ -96,7 +96,7 @@ final class GiveNpcAward implements ActionControllerInterface
         }
 
         if ($awardedUsers === []) {
-            $game->getInfo()->addInformation('Es wurde kein Award vergeben');
+            $context->getInfo()->addInformation('Es wurde kein Award vergeben');
             return;
         }
 
@@ -126,7 +126,7 @@ final class GiveNpcAward implements ActionControllerInterface
             $message .= sprintf('. Nicht gefunden: %s', implode(', ', $missingUserIds));
         }
 
-        $game->getInfo()->addInformation($message);
+        $context->getInfo()->addInformation($message);
     }
 
     private function assignAwardToUser(Award $award, User $user): int

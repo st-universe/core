@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -29,11 +29,11 @@ final class RemoveTholianWeb implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $shipId = request::indInt('id');
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
@@ -76,7 +76,7 @@ final class RemoveTholianWeb implements ActionControllerInterface
         //unlink targets
         $this->tholianWebUtil->releaseAllShips($web, $wrapper->getSpacecraftWrapperFactory());
 
-        $game->getInfo()->addInformation("Das Energienetz wurde aufgelöst");
+        $context->getInfo()->addInformation("Das Energienetz wurde aufgelöst");
 
         $this->loggerUtil->log('10');
 

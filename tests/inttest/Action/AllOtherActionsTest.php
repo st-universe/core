@@ -14,6 +14,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 
 class AllOtherActionsTest extends ActionTestCase
@@ -48,11 +49,14 @@ class AllOtherActionsTest extends ActionTestCase
         $vars = $this->getSpecificRequestVariables($key) + $this->getGeneralRequestVariables();
         request::setMockVars($vars);
 
+        /** @var GameControllerInterface */
         $game = $dic->get(GameControllerInterface::class);
+
+        /** @var ActionControllerInterface */
         $subject = Init::getContainer()
             ->getDefinedImplementationsOf(ActionControllerInterface::class, true)->get($key);
 
-        $subject->handle($game);
+        $subject->handle($dic->get(ActionContextFactoryInterface::class)->createActionContext($game));
     }
 
     private function getUserId(string $key): int

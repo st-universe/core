@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Ship\Retrofit\CancelRetrofitInterface;
 use Stu\Component\Spacecraft\Repair\CancelRepairInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
@@ -24,11 +24,11 @@ final class UndockShip implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -79,29 +79,29 @@ final class UndockShip implements ActionControllerInterface
                 $ship->setDockedTo(null);
                 $epsSystem->lowerEps(Spacecraft::SYSTEM_ECOST_DOCK)->update();
             }
-            $game->getInfo()->addInformationArray($msg, true);
+            $context->getInfo()->addInformationArray($msg, true);
             return;
         }
         if (!$ship->hasEnoughCrew()) {
-            $game->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
+            $context->getInfo()->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
-            $game->getInfo()->addInformation('Zum Abdocken wird 1 Energie benötigt');
+            $context->getInfo()->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
-            $game->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Reparatur wurde abgebrochen");
         }
         if ($this->cancelRetrofit->cancelRetrofit($ship)) {
-            $game->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
+            $context->getInfo()->addInformation("Die Umrüstung wurde abgebrochen");
         }
         $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo(null);
 
-        $game->getInfo()->addInformation('Abdockvorgang abgeschlossen');
+        $context->getInfo()->addInformation('Abdockvorgang abgeschlossen');
     }
 
     #[\Override]

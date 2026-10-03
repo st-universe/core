@@ -10,11 +10,13 @@ use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\AccessCheckInterface;
-use Stu\Module\Control\ControllerInterface;
+use Stu\Module\Control\Component\View\ViewContext;
+use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\GameRequest;
 use Stu\StuTestCase;
@@ -23,9 +25,13 @@ class ViewExecutionTest extends StuTestCase
 {
     private MockInterface&ControllerDiscoveryInterface $controllerDiscovery;
     private MockInterface&AccessCheckInterface $accessCheck;
+    private MockInterface&ViewContextFactoryInterface $viewContextFactory;
     private MockInterface&TutorialProvider $tutorialProvider;
     private MockInterface&StuTime $stuTime;
     private MockInterface&EntityManagerInterface $entityManager;
+
+    private MockInterface&GameControllerInterface $game;
+    private MockInterface&ViewContext $context;
 
     private ViewExecution $subject;
 
@@ -36,13 +42,22 @@ class ViewExecutionTest extends StuTestCase
 
         $this->controllerDiscovery = $this->mock(ControllerDiscoveryInterface::class);
         $this->accessCheck = $this->mock(AccessCheckInterface::class);
+        $this->viewContextFactory = $this->mock(ViewContextFactoryInterface::class);
         $this->tutorialProvider = $this->mock(TutorialProvider::class);
         $this->stuTime = $this->mock(StuTime::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
+        $this->game = $this->mock(GameControllerInterface::class);
+        $this->context = $this->mock(ViewContext::class);
+
+        $this->viewContextFactory->shouldReceive('createViewContext')
+            ->with($this->game, ModuleEnum::ALLIANCE)
+            ->andReturn($this->context);
+
         $this->subject = new ViewExecution(
             $this->controllerDiscovery,
             $this->accessCheck,
+            $this->viewContextFactory,
             $this->tutorialProvider,
             $this->stuTime,
             $this->entityManager
@@ -51,17 +66,16 @@ class ViewExecutionTest extends StuTestCase
 
     public function testExecuteExpectNoExecutionIfRequestEmpty(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars([]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
 
@@ -82,12 +96,12 @@ class ViewExecutionTest extends StuTestCase
                 'SHOW_THAT' => $controller2
             ]);
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 
     public function testExecuteExpectErrorIfSanityException(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
@@ -95,12 +109,15 @@ class ViewExecutionTest extends StuTestCase
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setViewMs')
             ->with(1)
@@ -112,8 +129,12 @@ class ViewExecutionTest extends StuTestCase
             ->with($exception)
             ->once();
 
+        $this->context->shouldReceive('setViewIdentifier')
+            ->with('SHOW_THIS')
+            ->once();
+
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($this->context)
             ->once()
             ->andThrow($exception);
 
@@ -131,35 +152,38 @@ class ViewExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 
     public function testExecuteExpectInfoIfEntityLocked(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
         $exception = new EntityLockedException('LOCKED');
+        $info = $this->mock(InformationWrapper::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
-        $game->shouldReceive('getInfo->addInformation')
+        $info->shouldReceive('addInformation')
             ->with('LOCKED')
             ->once();
-        $game->shouldReceive('setMacroInAjaxWindow')
+        $this->context->shouldReceive('setMacroInAjaxWindow')
             ->with('')
             ->once();
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setViewMs')
             ->with(1)
@@ -168,8 +192,12 @@ class ViewExecutionTest extends StuTestCase
             ->with('SHOW_THIS')
             ->once();
 
+        $this->context->shouldReceive('setViewIdentifier')
+            ->with('SHOW_THIS')
+            ->once();
+
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($this->context)
             ->once()
             ->andThrow($exception);
 
@@ -187,28 +215,32 @@ class ViewExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 
     public function testExecuteExpectHandleIfAccess(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $this->game->shouldReceive('getInfo')
+            ->once()
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setViewMs')
             ->with(1)
@@ -217,8 +249,12 @@ class ViewExecutionTest extends StuTestCase
             ->with('SHOW_THIS')
             ->once();
 
+        $this->context->shouldReceive('setViewIdentifier')
+            ->with('SHOW_THIS')
+            ->once();
+
         $controller1->shouldReceive('handle')
-            ->with($game)
+            ->with($this->context)
             ->once();
 
         $this->stuTime->shouldReceive('hrtime')
@@ -235,7 +271,7 @@ class ViewExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(true);
 
@@ -243,24 +279,31 @@ class ViewExecutionTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 
     public function testExecuteExpectHandleOfViewFromContextIfAccess(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
+        $info = $this->mock(InformationWrapper::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('SHOW_THAT');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
+
+        $this->context->shouldReceive('setViewIdentifier')
+            ->with('SHOW_THAT')
+            ->once();
 
         $gameRequest->shouldReceive('setViewMs')
             ->with(1)
@@ -270,7 +313,7 @@ class ViewExecutionTest extends StuTestCase
             ->once();
 
         $controller2->shouldReceive('handle')
-            ->with($game)
+            ->with($this->context)
             ->once();
 
         $this->stuTime->shouldReceive('hrtime')
@@ -287,7 +330,7 @@ class ViewExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller2, $game)
+            ->with($controller2, $info)
             ->once()
             ->andReturn(true);
 
@@ -295,24 +338,27 @@ class ViewExecutionTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 
     public function testExecuteExpectNothingIfNoAccess(): void
     {
-        $game = $this->mock(GameControllerInterface::class);
         $gameRequest = $this->mock(GameRequest::class);
         $controller1 = $this->mock(ViewControllerInterface::class);
         $controller2 = $this->mock(ViewControllerInterface::class);
+        $info = $this->mock(InformationWrapper::class);
 
         request::setMockVars(['SHOW_THIS' => 1]);
 
-        $game->shouldReceive('getViewContext')
-            ->with(ViewContextTypeEnum::VIEW)
+        $this->context->shouldReceive('getViewContextMetadata')
+            ->with(ViewContextMetadataTypeEnum::VIEW)
             ->andReturn('');
-        $game->shouldReceive('getGameRequest')
+        $this->game->shouldReceive('getGameRequest')
             ->withNoArgs()
             ->andReturn($gameRequest);
+        $this->game->shouldReceive('getInfo')
+            ->withNoArgs()
+            ->andReturn($info);
 
         $gameRequest->shouldReceive('setViewMs')
             ->with(1)
@@ -335,10 +381,10 @@ class ViewExecutionTest extends StuTestCase
             ]);
 
         $this->accessCheck->shouldReceive('checkUserAccess')
-            ->with($controller1, $game)
+            ->with($controller1, $info)
             ->once()
             ->andReturn(false);
 
-        $this->subject->execute(ModuleEnum::ALLIANCE, $game);
+        $this->subject->execute(ModuleEnum::ALLIANCE, $this->game);
     }
 }

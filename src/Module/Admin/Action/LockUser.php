@@ -8,7 +8,7 @@ use request;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Logging\LogLevelEnum;
@@ -32,9 +32,9 @@ final class LockUser implements ActionControllerInterface
     }
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(Playerlist::VIEW_IDENTIFIER);
+        $context->setView(Playerlist::VIEW_IDENTIFIER);
 
         $this->loggerUtil->log('A');
 
@@ -43,7 +43,7 @@ final class LockUser implements ActionControllerInterface
         $remainingTicks = request::postInt('ticks');
 
         if ($remainingTicks === 0) {
-            $game->getInfo()->addInformation(_('Bitte Anzahl Ticks angeben'));
+            $context->getInfo()->addInformation(_('Bitte Anzahl Ticks angeben'));
             return;
         }
 
@@ -67,7 +67,7 @@ final class LockUser implements ActionControllerInterface
         //create user lock
 
 
-        $game->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
+        $context->getInfo()->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
     }
 
     private function setUserLock(User $user, int $remainingTicks): void

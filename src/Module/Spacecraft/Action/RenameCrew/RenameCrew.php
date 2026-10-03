@@ -7,7 +7,7 @@ namespace Stu\Module\Spacecraft\Action\RenameCrew;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowRenameCrew\ShowRenameCrew;
@@ -25,9 +25,9 @@ final class RenameCrew implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
 
         $this->spacecraftLoader->getByIdAndUser(
             request::indInt('id'),
@@ -35,7 +35,7 @@ final class RenameCrew implements ActionControllerInterface
             true
         );
 
-        $game->setView(ShowRenameCrew::VIEW_IDENTIFIER);
+        $context->setView(ShowRenameCrew::VIEW_IDENTIFIER);
         $crew_id = request::getIntFatal('crewid');
 
         $crew = $this->crewRepository->find($crew_id);
@@ -50,7 +50,7 @@ final class RenameCrew implements ActionControllerInterface
 
             $this->crewRepository->save($crew);
         }
-        $game->setTemplateVar('CREW', $crew);
+        $context->setTemplateVar('CREW', $crew);
     }
 
     #[\Override]

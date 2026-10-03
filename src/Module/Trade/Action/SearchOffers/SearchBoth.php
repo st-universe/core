@@ -10,8 +10,8 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOffer;
@@ -31,19 +31,19 @@ final class SearchBoth implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $user = $game->getUser();
+        $user = $context->getUser();
         $userId = $user->getId();
 
         $commodityId = request::postIntFatal('cid');
         $postId = request::postIntFatal('postid') > 0 ? request::postIntFatal('postid') : null;
 
-        $game->setView(ModuleEnum::TRADE);
-        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
+        $context->setView(ModuleEnum::TRADE);
+        $context->setViewContext(ViewContextMetadataTypeEnum::FILTER_ACTIVE, true);
 
-        $game->setTemplateVar('POST_ID', request::postIntFatal('postid'));
-        $game->setTemplateVar('COMMODITY_ID', $commodityId);
+        $context->setTemplateVar('POST_ID', request::postIntFatal('postid'));
+        $context->setTemplateVar('COMMODITY_ID', $commodityId);
 
         $this->sessionStorage->deleteSessionData('trade_filter_cid');
         $this->sessionStorage->deleteSessionData('trade_filter_pid');
@@ -54,14 +54,14 @@ final class SearchBoth implements ActionControllerInterface
         $this->sessionStorage->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_BOTH, true);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
-        $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
-        $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
+        $context->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
+        $context->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
 
         $commodityList = $this->commodityRepository->getTradeable();
-        $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
+        $context->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
 
-        $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENSE_COUNT);
-        $game->setTemplateVar(
+        $context->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENSE_COUNT);
+        $context->setTemplateVar(
             'OFFER_LIST',
             array_map(
                 fn (TradeOffer $tradeOffer): TradeOfferItemInterface => new TradeOfferItem($tradeOffer, $user),

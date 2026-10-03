@@ -8,8 +8,8 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
@@ -27,9 +27,9 @@ final class TakeOffer implements ActionControllerInterface
     public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository, private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $userId = $game->getUser()->getId();
+        $userId = $context->getUser()->getId();
         $offerId = $this->takeOfferRequest->getOfferId();
         $amount = $this->takeOfferRequest->getAmount();
 
@@ -40,12 +40,12 @@ final class TakeOffer implements ActionControllerInterface
         $selectedOffer = $this->tradeOfferRepository->find($offerId);
 
         if ($selectedOffer === null) {
-            $game->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
         if ($selectedOffer->getTradePost()->getUserId() === UserConstants::USER_NOONE) {
-            $game->getInfo()->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
+            $context->getInfo()->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }
 
@@ -68,7 +68,7 @@ final class TakeOffer implements ActionControllerInterface
         );
 
         if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedCommodityCount()) {
-            $game->getInfo()->addInformation(sprintf(
+            $context->getInfo()->addInformation(sprintf(
                 _('Nicht genügend %s auf diesem Handelsposten vorhanden'),
                 $selectedOffer->getWantedCommodity()->getName()
             ));
@@ -80,7 +80,7 @@ final class TakeOffer implements ActionControllerInterface
             throw new SanityCheckException(sprintf('storageId %d not on tradepost', $storage->getId()));
         }
 
-        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $context->getUser());
         $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $selectedOffer->getUser());
 
         $freeStorage = $storageManagerUser->getFreeStorage();
@@ -89,7 +89,7 @@ final class TakeOffer implements ActionControllerInterface
             $freeStorage <= 0 &&
             $selectedOffer->getOfferedCommodityCount() > $selectedOffer->getWantedCommodityCount()
         ) {
-            $game->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+            $context->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
             return;
         }
         if ($amount * $selectedOffer->getWantedCommodityCount() > $storage->getAmount()) {
@@ -98,7 +98,7 @@ final class TakeOffer implements ActionControllerInterface
         if ($amount * $selectedOffer->getOfferedCommodityCount() - $amount * $selectedOffer->getWantedCommodityCount() > $freeStorage) {
             $amount = (int) floor($freeStorage / ($selectedOffer->getOfferedCommodityCount() - $selectedOffer->getWantedCommodityCount()));
             if ($amount <= 0) {
-                $game->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                $context->getInfo()->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                 return;
             }
         }
@@ -143,10 +143,10 @@ final class TakeOffer implements ActionControllerInterface
         $transaction->setTradePostId($selectedOffer->getTradePostId());
         $this->tradeTransactionRepository->save($transaction);
 
-        $game->getInfo()->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
+        $context->getInfo()->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        $game->setView(ModuleEnum::TRADE);
-        $game->setViewContext(ViewContextTypeEnum::FILTER_ACTIVE, true);
+        $context->setView(ModuleEnum::TRADE);
+        $context->setViewContext(ViewContextMetadataTypeEnum::FILTER_ACTIVE, true);
 
         $recipientId = $selectedOffer->getUserId();
         $text = sprintf(

@@ -8,7 +8,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\ViewContextTypeEnum;
+use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOffer;
@@ -31,7 +31,7 @@ final class TradeProvider implements ViewComponentProviderInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $isFilterActive = $game->getViewContext(ViewContextTypeEnum::FILTER_ACTIVE) ?? false;
+        $isFilterActive = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::FILTER_ACTIVE) ?? false;
 
         $commodityId = null;
         $postId = null;

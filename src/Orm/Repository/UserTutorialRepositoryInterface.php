@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Module\Control\ViewContext;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserTutorial;
 
@@ -22,5 +22,5 @@ interface UserTutorialRepositoryInterface extends ObjectRepository
 
     public function truncateByUser(User $user): void;
 
-    public function findByUserAndViewContext(User $user, ViewContext $viewContext): ?UserTutorial;
+    public function findByUserAndViewContext(User $user, ViewControllerContext $viewContext): ?UserTutorial;
 }

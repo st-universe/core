@@ -9,7 +9,7 @@ use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -28,11 +28,11 @@ final class StandBy implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $context->getUser()->getId()
         );
 
         $spacecraft = $wrapper->get();
@@ -48,19 +48,19 @@ final class StandBy implements ActionControllerInterface
         //deactivate all systems that can be deactivated
         foreach ($this->spacecraftSystemManager->getActiveSystems($spacecraft) as $system) {
             if ($system->getMode() !== SpacecraftSystemModeEnum::MODE_ALWAYS_ON) {
-                $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $game->getInfo());
+                $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $context->getInfo());
             }
         }
 
-        $game->getInfo()->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
+        $context->getInfo()->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
 
         if ($triggerAlertRed) {
             //Alarm-Rot check for ship
-            $this->alertReactionFacade->doItAll($wrapper, $game->getInfo());
+            $this->alertReactionFacade->doItAll($wrapper, $context->getInfo());
 
             //Alarm-Rot check for traktor ship
             if ($traktoredShipWrapper !== null) {
-                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $game->getInfo(), $spacecraft);
+                $this->alertReactionFacade->doItAll($traktoredShipWrapper, $context->getInfo(), $spacecraft);
             }
 
             if ($spacecraft->getCondition()->isDestroyed()) {
@@ -68,7 +68,7 @@ final class StandBy implements ActionControllerInterface
             }
         }
 
-        $game->setView(ShowSpacecraft::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
     }
 
     #[\Override]

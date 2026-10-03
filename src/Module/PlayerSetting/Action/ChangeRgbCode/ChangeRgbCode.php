@@ -6,7 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeRgbCode;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;
 
@@ -17,26 +17,26 @@ final class ChangeRgbCode implements ActionControllerInterface
     public function __construct(private ChangeUserSettingInterface $changerUserSetting) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
         $value = request::postStringFatal('rgb_code');
         if (strlen($value) !== 7) {
-            $game->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
+            $context->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
             return;
         }
 
         if (!$this->validHex($value)) {
-            $game->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
+            $context->getInfo()->addInformation(_('Der RGB-Code ist ungültig!'));
             return;
         }
 
         $this->changerUserSetting->change(
-            $game->getUser(),
+            $context->getUser(),
             UserSettingEnum::RGB_CODE,
             $value
         );
 
-        $game->getInfo()->addInformation(_('Dein RGB-Code wurde geändert'));
+        $context->getInfo()->addInformation(_('Dein RGB-Code wurde geändert'));
     }
 
     private function validHex(string $hex): int|bool

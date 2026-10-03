@@ -13,7 +13,7 @@ use Stu\Module\Colony\Component\ColonyComponentEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonySandbox;
@@ -41,11 +41,11 @@ final class UpgradeBuilding implements ActionControllerInterface
     ) {}
 
     #[\Override]
-    public function handle(GameControllerInterface $game): void
+    public function handle(ActionControllerContext $context): void
     {
-        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $context->setView(ShowInformation::VIEW_IDENTIFIER);
 
-        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($game->getUser());
+        $field = $this->planetFieldHostProvider->loadFieldViaRequestParameter($context->getUser());
         $host = $field->getHost();
 
         // has to be string because of bigint issue
@@ -63,16 +63,16 @@ final class UpgradeBuilding implements ActionControllerInterface
         $researchId = $upgrade->getResearchId();
         if (
             $researchId > 0 &&
-            $this->researchedRepository->hasUserFinishedResearch($game->getUser(), [$researchId]) === false
+            $this->researchedRepository->hasUserFinishedResearch($context->getUser(), [$researchId]) === false
         ) {
             return;
         }
         if ($field->isUnderConstruction()) {
-            $game->getInfo()->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
+            $context->getInfo()->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
             return;
         }
 
-        if ($host instanceof Colony && !$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $game)) {
+        if ($host instanceof Colony && !$this->doColonyCheckAndConsumeEnergy($upgrade, $host, $context)) {
             return;
         }
 
@@ -84,7 +84,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 
         $isActive = $field->isActive();
-        $this->buildingAction->remove($field, $game, true);
+        $this->buildingAction->remove($field, $context, true);
 
         if ($host instanceof Colony) {
             foreach ($upgrade->getUpgradeCosts() as $obj) {
@@ -95,7 +95,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $field->setBuilding($building);
         $field->setActivateAfterBuild($isActive);
 
-        $game->addExecuteJS(sprintf("refreshHost('%s');", $game->getSessionString()));
+        $context->addExecuteJS(sprintf("refreshHost('%s');", $context->getSessionString()));
 
         $this->componentRegistration
             ->addComponentUpdate(ColonyComponentEnum::SHIELDING, $host)
@@ -105,14 +105,14 @@ final class UpgradeBuilding implements ActionControllerInterface
         if ($host instanceof ColonySandbox) {
             $this->buildingManager->finish($field);
 
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('%s wurde gebaut'),
                 $building->getName()
             );
         } else {
             $field->setActive(time() + $building->getBuildtime());
 
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('%s wird durchgeführt - Fertigstellung: %s'),
                 $upgrade->getDescription(),
                 date('d.m.Y H:i', $field->getBuildtime())
@@ -122,7 +122,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $this->planetFieldRepository->save($field);
     }
 
-    private function doColonyCheckAndConsumeEnergy(BuildingUpgrade $upgrade, Colony $colony, GameControllerInterface $game): bool
+    private function doColonyCheckAndConsumeEnergy(BuildingUpgrade $upgrade, Colony $colony, ActionControllerContext $context): bool
     {
         $storages = $colony->getStorage();
 
@@ -130,7 +130,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
             $storage = $storages->get($obj->getCommodityId());
             if ($storage === null) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName()
@@ -138,7 +138,7 @@ final class UpgradeBuilding implements ActionControllerInterface
                 return false;
             }
             if ($obj->getAmount() > $storage->getAmount()) {
-                $game->getInfo()->addInformationf(
+                $context->getInfo()->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $obj->getAmount(),
                     $obj->getCommodity()->getName(),
@@ -151,7 +151,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $changeable = $colony->getChangeable();
 
         if ($changeable->getEps() < $upgrade->getEnergyCost()) {
-            $game->getInfo()->addInformationf(
+            $context->getInfo()->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $upgrade->getEnergyCost(),
                 $changeable->getEps()
