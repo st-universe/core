@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
-use PHPUnit\Framework\TestCase;
+use Stu\StuTestCase;
 
-final class CrewRaceInputTest extends TestCase
+final class CrewRaceInputTest extends StuTestCase
 {
     public function testNormalizesDefine(): void
     {

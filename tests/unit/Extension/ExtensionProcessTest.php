@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Extension;
 
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Stu\StuTestCase;
 
-final class ExtensionProcessTest extends TestCase
+final class ExtensionProcessTest extends StuTestCase
 {
     public function testRunsWithoutInteractiveGitAuthentication(): void
     {

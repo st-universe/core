@@ -6,9 +6,9 @@ namespace Stu\Component\Realtime;
 
 use InvalidArgumentException;
 use Noodlehaus\Config;
-use PHPUnit\Framework\TestCase;
+use Stu\StuTestCase;
 
-final class RealtimeChannelsTest extends TestCase
+final class RealtimeChannelsTest extends StuTestCase
 {
     public function testDefaultPreservesExistingKeys(): void
     {
