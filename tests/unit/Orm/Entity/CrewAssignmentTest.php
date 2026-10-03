@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\StuTestCase;
 
-final class CrewAssignmentTest extends TestCase
+final class CrewAssignmentTest extends StuTestCase
 {
     /** @return array<string, array{?CrewTypeEnum, int}> */
     public static function crewImageTypeProvider(): array

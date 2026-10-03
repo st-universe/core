@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use Stu\StuTestCase;
 
-final class GradientColorTest extends TestCase
+final class GradientColorTest extends StuTestCase
 {
     #[DataProvider('zeroRangeDataProvider')]
     public function testCalculateGradientColorWithZeroRange(int $modificator, string $expected): void

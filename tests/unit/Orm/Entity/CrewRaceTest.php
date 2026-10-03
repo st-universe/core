@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Stu\StuTestCase;
 
-final class CrewRaceTest extends TestCase
+final class CrewRaceTest extends StuTestCase
 {
     public function testUsesCustomCrewImagePathForUserCreatedRace(): void
     {

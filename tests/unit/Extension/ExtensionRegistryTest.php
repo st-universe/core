@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Extension;
 
 use Noodlehaus\Config;
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Stu\StuTestCase;
 
-final class ExtensionRegistryTest extends TestCase
+final class ExtensionRegistryTest extends StuTestCase
 {
     public function testCoreNeedsNoExtension(): void
     {

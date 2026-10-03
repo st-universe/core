@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Extension;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Stu\StuTestCase;
 
-final class ExtensionSyncTest extends MockeryTestCase
+final class ExtensionSyncTest extends StuTestCase
 {
     private string $root;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Component\Crew\Skill;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use Stu\Component\Faction\FactionEnum;
+use Stu\StuTestCase;
 
-final class CrewSkillLevelEnumTest extends TestCase
+final class CrewSkillLevelEnumTest extends StuTestCase
 {
     /** @return array<string, array{int, CrewSkillLevelEnum}> */
     public static function expertiseProvider(): array
